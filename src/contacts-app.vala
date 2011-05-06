@@ -147,6 +147,12 @@ public class Contacts.App : Window {
   }
 
   private void setup_contacts_view (TreeView tree_view) {
+    /* TODO: This just makes things gray...
+    tree_view.set_margin_top (6);
+    tree_view.set_margin_left (6);
+    tree_view.set_margin_right (6);
+    tree_view.set_margin_bottom (6);
+    */
     tree_view.set_headers_visible (false);
 
     var selection = tree_view.get_selection ();
@@ -160,6 +166,7 @@ public class Contacts.App : Window {
       });
 
     var column = new TreeViewColumn ();
+    column.set_spacing (10);
 
     var icon = new CellRendererPixbuf ();
     column.pack_start (icon, false);
@@ -170,6 +177,7 @@ public class Contacts.App : Window {
     column.pack_start (text, true);
     column.add_attribute (text, "text", ContactColumns.NAME);
     column.add_attribute (text, "visible", ContactColumns.IS_CONTACT);
+    text.set ("weight", Pango.Weight.BOLD);
 
     text = new CellRendererText ();
     column.pack_start (text, true);
