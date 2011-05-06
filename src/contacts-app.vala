@@ -80,31 +80,6 @@ public class Contacts.App : Window {
     group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work");
   }
 
-  private Gdk.Pixbuf lookup_icon(Widget widget, string icon_name) {
-    var context = widget.get_style_context ();
-    context.save ();
-
-    context.add_class (STYLE_CLASS_INFO);
-
-    Gdk.Pixbuf icon = null;
-    var icon_info = IconTheme.get_default ().lookup_icon (icon_name, 16,
-							  IconLookupFlags.GENERIC_FALLBACK);
-
-    try {
-      // vapi file broken, so this is commented out and we do a pure load_icon instead:
-      //Gdk.RGBA color;
-      //context.get_background_color (StateFlags.NORMAL, out color);
-      // var icon = icon_info.load_symbolic (color, null, null, null, null);
-
-      icon = icon_info.load_icon ();
-    } catch {
-    }
-
-    context.restore ();
-
-    return icon;
-  }
-
   public App() {
     set_title (_("Contacts"));
     set_default_size (300, 200);
@@ -132,7 +107,8 @@ public class Contacts.App : Window {
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_vexpand (false);
     var groups_button = new ToggleToolButton ();
-    groups_button.set_icon_widget (new Image.from_pixbuf (lookup_icon (toolbar, "system-users-symbolic")));
+
+    groups_button.set_icon_name ("system-users-symbolic");
     groups_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     groups_button.is_important = false;
     toolbar.add (groups_button);
@@ -140,7 +116,7 @@ public class Contacts.App : Window {
     groups_button.get_style_context ().set_junction_sides (JunctionSides.LEFT);
 
     var favourite_button = new ToggleToolButton ();
-    favourite_button.set_icon_widget (new Image.from_pixbuf (lookup_icon (toolbar, "user-bookmarks-symbolic")));
+    favourite_button.set_icon_name ("user-bookmarks-symbolic");
     favourite_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     favourite_button.is_important = false;
     toolbar.add (favourite_button);
@@ -151,7 +127,7 @@ public class Contacts.App : Window {
     toolbar.add (separator);
 
     var entry = new Entry ();
-    entry.set_icon_from_pixbuf (EntryIconPosition.SECONDARY, lookup_icon (toolbar, "edit-find-symbolic"));
+    entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
 
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
@@ -163,7 +139,8 @@ public class Contacts.App : Window {
     separator.set_draw (false);
     toolbar.add (separator);
 
-    var add_button = new ToolButton (new Image.from_pixbuf (lookup_icon (toolbar, "list-add-symbolic")), null);
+    var add_button = new ToolButton (null, null);
+    add_button.set_icon_name ("list-add-symbolic");
     add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     add_button.is_important = false;
     toolbar.add (add_button);
