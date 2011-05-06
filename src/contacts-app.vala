@@ -21,6 +21,7 @@ using Gtk;
 
 public class Contacts.App : Window {
   private ListStore group_store;
+  private ListStore contacts_store;
 
   private enum GroupColumns {
     TEXT,
@@ -80,6 +81,62 @@ public class Contacts.App : Window {
     group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work");
   }
 
+  private void setup_contacts_view (TreeView tree_view) {
+    tree_view.set_headers_visible (false);
+
+    var selection = tree_view.get_selection ();
+    selection.set_mode (SelectionMode.BROWSE);
+    selection.set_select_function ((selection, model, path, path_currently_selected) => {
+	TreeIter iter;
+	bool is_header;
+	model.get_iter (out iter, path);
+	model.get (iter, ContactColumns.IS_HEADER, out is_header, -1);
+	return !is_header;
+      });
+
+    var column = new TreeViewColumn ();
+    var text = new CellRendererText ();
+    column.pack_start (text, true);
+    column.add_attribute (text, "text", ContactColumns.NAME);
+    column.set_cell_data_func (text, (column, cell, model, iter) => {
+	bool is_header;
+
+	model.get (iter, ContactColumns.IS_HEADER, out is_header, -1);
+	cell.set ("visible", !is_header);
+      });
+
+    text = new CellRendererText ();
+    column.pack_start (text, true);
+    column.add_attribute (text, "text", ContactColumns.NAME);
+    column.add_attribute (text, "visible", ContactColumns.IS_HEADER);
+    text.set ("weight", Pango.Weight.HEAVY);
+    text.set ("cell-background", "#8fa4a8");
+    text.set ("foreground", "#ffffff");
+    text.set ("scale", 0.7);
+
+    tree_view.append_column (column);
+  }
+
+  private void fill_contacts_model () {
+    TreeIter iter;
+    string [] names = {"Angelinus Jolie", "Alfred", "Batman", "Ben", "Cath", "Curly", "Doug"};
+    unichar last = 0;
+
+    foreach (var i in names) {
+      unichar first = i.get_char(0).totitle();
+
+      if (first != last)
+      {
+	contacts_store.append (out iter);
+	contacts_store.set (iter, ContactColumns.IS_HEADER, true, ContactColumns.NAME, first.to_string());
+	last = first;
+      }
+      contacts_store.append (out iter);
+      contacts_store.set (iter, ContactColumns.IS_HEADER, false, ContactColumns.NAME, i, ContactColumns.ICON, null);
+    }
+
+  }
+
   public App() {
     set_title (_("Contacts"));
     set_default_size (300, 200);
@@ -103,7 +160,6 @@ public class Contacts.App : Window {
     scrolled.add(tree_view);
 
     var toolbar = new Toolbar ();
-
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_vexpand (false);
     var groups_button = new ToggleToolButton ();
@@ -147,9 +203,20 @@ public class Contacts.App : Window {
 
     grid.attach (toolbar, 1, 0, 1, 1);
 
-    var label = new Label ("1111111111111222222222222221111111111111111111111111111111");
-    label.vexpand = true;
-    grid.attach (label, 1, 1, 1, 1);
+    contacts_store = new ListStore(ContactColumns.N_COLUMNS,
+				   typeof (Gdk.Pixbuf), typeof (string), typeof (bool));
+    fill_contacts_model ();
+
+    scrolled = new ScrolledWindow(null, null);
+    scrolled.set_min_content_width (400);
+    scrolled.set_vexpand (true);
+    scrolled.set_shadow_type (ShadowType.IN);
+    scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
+    grid.attach (scrolled, 1, 1, 1, 1);
+
+    tree_view = new TreeView.with_model (contacts_store);
+    setup_contacts_view (tree_view);
+    scrolled.add(tree_view);
 
     grid.show_all ();
   }
