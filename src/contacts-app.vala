@@ -56,7 +56,7 @@ public class Contacts.App : Window {
 	bool is_header;
 
 	model.get (iter, GroupColumns.IS_HEADER, out is_header, -1);
-	cell.set ("visible", !is_header);	
+	cell.set ("visible", !is_header);
       });
 
     text = new CellRendererText ();
@@ -79,7 +79,7 @@ public class Contacts.App : Window {
     group_store.append (out iter);
     group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work");
   }
-  
+
   private Gdk.Pixbuf lookup_icon(Widget widget, string icon_name) {
     var context = widget.get_style_context ();
     context.save ();
@@ -87,7 +87,7 @@ public class Contacts.App : Window {
     context.add_class (STYLE_CLASS_INFO);
 
     Gdk.Pixbuf icon = null;
-    var icon_info = IconTheme.get_default ().lookup_icon (icon_name, 16, 
+    var icon_info = IconTheme.get_default ().lookup_icon (icon_name, 16,
 							  IconLookupFlags.GENERIC_FALLBACK);
 
     try {
@@ -132,7 +132,7 @@ public class Contacts.App : Window {
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_vexpand (false);
     var groups_button = new ToggleToolButton ();
-    groups_button.set_icon_widget (new Image.from_pixbuf (lookup_icon (toolbar, "list-add-symbolic")));
+    groups_button.set_icon_widget (new Image.from_pixbuf (lookup_icon (toolbar, "system-users-symbolic")));
     groups_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     groups_button.is_important = false;
     toolbar.add (groups_button);
@@ -140,7 +140,7 @@ public class Contacts.App : Window {
     groups_button.get_style_context ().set_junction_sides (JunctionSides.LEFT);
 
     var favourite_button = new ToggleToolButton ();
-    favourite_button.set_icon_widget (new Image.from_pixbuf (lookup_icon (toolbar, "list-add-symbolic")));
+    favourite_button.set_icon_widget (new Image.from_pixbuf (lookup_icon (toolbar, "user-bookmarks-symbolic")));
     favourite_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     favourite_button.is_important = false;
     toolbar.add (favourite_button);
@@ -173,7 +173,7 @@ public class Contacts.App : Window {
     var label = new Label ("1111111111111222222222222221111111111111111111111111111111");
     label.vexpand = true;
     grid.attach (label, 1, 1, 1, 1);
-    
+
     grid.show_all ();
   }
 }
