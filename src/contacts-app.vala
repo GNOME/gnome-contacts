@@ -208,7 +208,7 @@ public class Contacts.App : Window {
     fill_contacts_model ();
 
     scrolled = new ScrolledWindow(null, null);
-    scrolled.set_min_content_width (400);
+    scrolled.set_min_content_width (340);
     scrolled.set_vexpand (true);
     scrolled.set_shadow_type (ShadowType.IN);
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
