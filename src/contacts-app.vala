@@ -32,7 +32,7 @@ public class Contacts.App : Window {
   private enum ContactColumns {
     ICON,
     NAME,
-    IS_HEADER,
+    IS_CONTACT,
     N_COLUMNS
   }
 
@@ -69,6 +69,71 @@ public class Contacts.App : Window {
     tree_view.append_column (column);
   }
 
+  private void round_rect (Cairo.Context cr, int x, int y, int w, int h, int r) {
+    cr.move_to(x+r,y);
+    cr.line_to(x+w-r,y);
+    cr.curve_to(x+w,y,x+w,y,x+w,y+r);
+    cr.line_to(x+w,y+h-r);
+    cr.curve_to(x+w,y+h,x+w,y+h,x+w-r,y+h);
+    cr.line_to(x+r,y+h);
+    cr.curve_to(x,y+h,x,y+h,x,y+h-r);
+    cr.line_to(x,y+r);
+    cr.curve_to(x,y,x,y,x+r,y);
+  }
+
+  private Gdk.Pixbuf frame (owned Gdk.Pixbuf? image) {
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 50, 50);
+    var cr = new Cairo.Context (cst);
+
+    cr.save ();
+
+    var gradient = new Cairo.Pattern.linear (1,  1, 1, 1+48);
+    gradient.add_color_stop_rgb (0, 0.7098, 0.7098, 0.7098);
+    gradient.add_color_stop_rgb (1, 0.8901, 0.8901, 0.8901);
+    cr.set_source (gradient);
+    cr.rectangle (1, 1, 48, 48);
+    cr.fill ();
+
+    cr.restore ();
+
+    if (image == null) {
+      try {
+	var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", 48, IconLookupFlags.GENERIC_FALLBACK);
+	image = icon_info.load_icon ();
+      } catch {
+      }
+    }
+
+    if (image != null) {
+      Gdk.cairo_set_source_pixbuf (cr, image, 3, 3);
+      cr.paint();
+    }
+
+    cr.push_group ();
+
+    cr.set_source_rgba (0, 0, 0, 0);
+    cr.paint ();
+    round_rect (cr, 0, 0, 50, 50, 5);
+    cr.set_source_rgb (0.74117, 0.74117, 0.74117);
+    cr.fill ();
+    round_rect (cr, 1, 1, 48, 48, 5);
+    cr.set_source_rgb (1, 1, 1);
+    cr.fill ();
+    round_rect (cr, 2, 2, 46, 46, 5);
+    cr.set_source_rgb (0.341176, 0.341176, 0.341176);
+    cr.fill ();
+    cr.set_operator (Cairo.Operator.CLEAR);
+    round_rect (cr, 3, 3, 44, 44, 5);
+    cr.set_source_rgba (0, 0, 0, 0);
+    cr.fill ();
+
+    var pattern = cr.pop_group ();
+    cr.set_source (pattern);
+    cr.paint ();
+
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 50, 50);
+  }
+
   private void fill_group_model () {
     TreeIter iter;
     group_store.append (out iter);
@@ -88,27 +153,33 @@ public class Contacts.App : Window {
     selection.set_mode (SelectionMode.BROWSE);
     selection.set_select_function ((selection, model, path, path_currently_selected) => {
 	TreeIter iter;
-	bool is_header;
+	bool is_contact;
 	model.get_iter (out iter, path);
-	model.get (iter, ContactColumns.IS_HEADER, out is_header, -1);
-	return !is_header;
+	model.get (iter, ContactColumns.IS_CONTACT, out is_contact, -1);
+	return is_contact;
       });
 
     var column = new TreeViewColumn ();
+
+    var icon = new CellRendererPixbuf ();
+    column.pack_start (icon, false);
+    column.add_attribute (icon, "pixbuf", ContactColumns.ICON);
+    column.add_attribute (icon, "visible", ContactColumns.IS_CONTACT);
+
     var text = new CellRendererText ();
     column.pack_start (text, true);
     column.add_attribute (text, "text", ContactColumns.NAME);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
-	bool is_header;
-
-	model.get (iter, ContactColumns.IS_HEADER, out is_header, -1);
-	cell.set ("visible", !is_header);
-      });
+    column.add_attribute (text, "visible", ContactColumns.IS_CONTACT);
 
     text = new CellRendererText ();
     column.pack_start (text, true);
     column.add_attribute (text, "text", ContactColumns.NAME);
-    column.add_attribute (text, "visible", ContactColumns.IS_HEADER);
+    column.set_cell_data_func (text, (column, cell, model, iter) => {
+	bool is_contact;
+
+	model.get (iter, ContactColumns.IS_CONTACT, out is_contact, -1);
+	cell.set ("visible", !is_contact);
+      });
     text.set ("weight", Pango.Weight.HEAVY);
     text.set ("cell-background", "#8fa4a8");
     text.set ("foreground", "#ffffff");
@@ -125,14 +196,18 @@ public class Contacts.App : Window {
     foreach (var i in names) {
       unichar first = i.get_char(0).totitle();
 
-      if (first != last)
-      {
+      if (first != last) {
 	contacts_store.append (out iter);
-	contacts_store.set (iter, ContactColumns.IS_HEADER, true, ContactColumns.NAME, first.to_string());
+	contacts_store.set (iter, ContactColumns.IS_CONTACT, false, ContactColumns.NAME, first.to_string());
 	last = first;
       }
+
+      var icon = frame(null);
       contacts_store.append (out iter);
-      contacts_store.set (iter, ContactColumns.IS_HEADER, false, ContactColumns.NAME, i, ContactColumns.ICON, null);
+      contacts_store.set (iter,
+			  ContactColumns.IS_CONTACT, true,
+			  ContactColumns.NAME, i,
+			  ContactColumns.ICON, icon);
     }
 
   }
