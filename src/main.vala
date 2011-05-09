@@ -20,13 +20,21 @@
 using Gtk;
 using Contacts;
 
-public static int 
+public static int
 main (string[] args) {
   Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
   Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
   Gtk.init (ref args);
+
+  try {
+    var provider = new CssProvider ();
+    provider.load_from_path (Config.PKGDATADIR + "/" + "gnome-contacts.css");
+    StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider,
+					  STYLE_PROVIDER_PRIORITY_APPLICATION);
+  } catch {
+  }
 
   var app = new App ();
   app.show ();

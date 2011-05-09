@@ -10,6 +10,7 @@ AM_MAINTAINER_MODE
 AC_CONFIG_FILES([Makefile
 		vapi/Makefile
 		src/Makefile
+		data/Makefile
 		po/Makefile.in])
 
 LT_INIT
