@@ -284,7 +284,6 @@ public class Contacts.App : Window {
     add_button.is_important = false;
     toolbar.add (add_button);
 
-    grid.attach (toolbar, 1, 0, 1, 1);
 
     contacts_store = new ListStore(ContactColumns.N_COLUMNS,
 				   typeof (Gdk.Pixbuf), typeof (string), typeof (bool));
@@ -293,9 +292,16 @@ public class Contacts.App : Window {
     scrolled = new ScrolledWindow(null, null);
     scrolled.set_min_content_width (340);
     scrolled.set_vexpand (true);
-    scrolled.set_shadow_type (ShadowType.IN);
+    scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
-    grid.attach (scrolled, 1, 1, 1, 1);
+
+    var frame = new Frame (null);
+    var grid2 = new Grid ();
+    frame.add (grid2);
+
+    grid2.attach (toolbar, 0, 0, 1, 1);
+    grid2.attach (scrolled, 0, 1, 1, 1);
+    grid.attach (frame, 1, 0, 1, 2);
 
     tree_view = new TreeView.with_model (contacts_store);
     setup_contacts_view (tree_view);
