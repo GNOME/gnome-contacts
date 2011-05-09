@@ -21,20 +21,18 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
+  protected class IterRef  {
+    public TreeIter iter;
+  }
   private ListStore group_store;
   private ListStore contacts_store;
+
+  public IndividualAggregator aggregator { get; private set; }
+  public BackendStore backend_store { get; private set; }
 
   private enum GroupColumns {
     TEXT,
     IS_HEADER,
-    N_COLUMNS
-  }
-
-  private enum ContactColumns {
-    ICON,
-    NAME,
-    IS_CONTACT,
-    PRESENCE,
     N_COLUMNS
   }
 
@@ -149,48 +147,46 @@ public class Contacts.App : Window {
   }
 
   private void setup_contacts_view (TreeView tree_view) {
-    /* TODO: This just makes things gray...
-    tree_view.set_margin_top (6);
-    tree_view.set_margin_left (6);
-    tree_view.set_margin_right (6);
-    tree_view.set_margin_bottom (6);
-    */
     tree_view.set_headers_visible (false);
 
     var selection = tree_view.get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
-    selection.set_select_function ((selection, model, path, path_currently_selected) => {
-	TreeIter iter;
-	bool is_contact;
-	model.get_iter (out iter, path);
-	model.get (iter, ContactColumns.IS_CONTACT, out is_contact, -1);
-	return is_contact;
-      });
 
     var column = new TreeViewColumn ();
     column.set_spacing (10);
 
     var icon = new CellRendererPixbuf ();
     column.pack_start (icon, false);
-    column.add_attribute (icon, "pixbuf", ContactColumns.ICON);
-    column.add_attribute (icon, "visible", ContactColumns.IS_CONTACT);
+    column.set_cell_data_func (icon, (column, cell, model, iter) => {
+	Individual individual;
+
+	model.get (iter, 0, out individual);
+
+	var pixbuf = frame(null);
+	cell.set ("pixbuf", pixbuf);
+      });
 
     var text = new CellRendererText ();
     column.pack_start (text, true);
-    column.add_attribute (text, "text", ContactColumns.NAME);
-    column.add_attribute (text, "visible", ContactColumns.IS_CONTACT);
     text.set ("weight", Pango.Weight.BOLD);
+    column.set_cell_data_func (text, (column, cell, model, iter) => {
+	Individual individual;
+
+	model.get (iter, 0, out individual);
+
+	string? alias = individual.alias;
+	cell.set ("text", alias);
+      });
 
     icon = new CellRendererPixbuf ();
     column.pack_start (icon, false);
     column.set_cell_data_func (icon, (column, cell, model, iter) => {
-	bool is_contact;
-	PresenceType presence;
+	Individual individual;
 
-	model.get (iter, ContactColumns.IS_CONTACT, out is_contact, ContactColumns.PRESENCE, out presence);
+	model.get (iter, 0, out individual);
 
 	string? iconname = null;
-	switch (presence) {
+	switch (individual.presence_type) {
 	case PresenceType.AVAILABLE:
 	case PresenceType.UNKNOWN:
 	  iconname = "user-available-symbolic";
@@ -203,55 +199,39 @@ public class Contacts.App : Window {
 	  iconname = "user-busy-symbolic";
 	  break;
 	}
-	cell.set ("visible", is_contact && icon != null);
+	cell.set ("visible", icon != null);
 	if (icon != null)
 	  cell.set ("icon-name", iconname);
       });
 
-    text = new CellRendererText ();
-    column.pack_start (text, true);
-    column.add_attribute (text, "text", ContactColumns.NAME);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
-	bool is_contact;
-
-	model.get (iter, ContactColumns.IS_CONTACT, out is_contact);
-	cell.set ("visible", !is_contact);
-      });
-    text.set ("weight", Pango.Weight.HEAVY);
-    text.set ("cell-background", "#8fa4a8");
-    text.set ("foreground", "#ffffff");
-    text.set ("scale", 0.7);
-
     tree_view.append_column (column);
   }
 
-  private void fill_contacts_model () {
-    TreeIter iter;
-    string [] names = {"Angelinus Jolie", "Alfred", "Batman", "Ben", "Cath", "Curly", "Doug"};
-    unichar last = 0;
-    int presence = 0;
-
-    foreach (var i in names) {
-      unichar first = i.get_char(0).totitle();
-
-      if (first != last) {
-	contacts_store.append (out iter);
-	contacts_store.set (iter, ContactColumns.IS_CONTACT, false, ContactColumns.NAME, first.to_string());
-	last = first;
-      }
-
-      var icon = frame(null);
-      contacts_store.append (out iter);
-      contacts_store.set (iter,
-			  ContactColumns.IS_CONTACT, true,
-			  ContactColumns.NAME, i,
-			  ContactColumns.ICON, icon,
-			  ContactColumns.PRESENCE, presence++);
-    }
-
-  }
-
   public App() {
+    contacts_store = new ListStore(1, typeof (Folks.Individual));
+
+    aggregator = new IndividualAggregator ();
+    aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
+	foreach (Individual i in removed) {
+	  IterRef? iter = i.get_data("contacts-iter");
+	  if (iter != null) {
+	    contacts_store.remove (iter.iter);
+	  } else {
+	    stdout.printf("removed %p with no iter!\n", i);
+	  }
+	}
+	foreach (Individual i in added) {
+	  IterRef iter = new IterRef();
+
+	  contacts_store.append (out iter.iter);
+	  contacts_store.set (iter.iter, 0, i);
+	  i.set_data ("contacts-iter", iter);
+
+	  /* TODO: Connect to notify(?) for changes */
+	}
+      });
+    aggregator.prepare ();
+
     set_title (_("Contacts"));
     set_default_size (300, 200);
     this.destroy.connect (Gtk.main_quit);
@@ -314,11 +294,6 @@ public class Contacts.App : Window {
     add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     add_button.is_important = false;
     toolbar.add (add_button);
-
-
-    contacts_store = new ListStore(ContactColumns.N_COLUMNS,
-				   typeof (Gdk.Pixbuf), typeof (string), typeof (bool), typeof (PresenceType));
-    fill_contacts_model ();
 
     scrolled = new ScrolledWindow(null, null);
     scrolled.set_min_content_width (340);
