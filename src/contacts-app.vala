@@ -18,6 +18,7 @@
  */
 
 using Gtk;
+using Folks;
 
 public class Contacts.App : Window {
   private ListStore group_store;
@@ -33,6 +34,7 @@ public class Contacts.App : Window {
     ICON,
     NAME,
     IS_CONTACT,
+    PRESENCE,
     N_COLUMNS
   }
 
@@ -179,13 +181,40 @@ public class Contacts.App : Window {
     column.add_attribute (text, "visible", ContactColumns.IS_CONTACT);
     text.set ("weight", Pango.Weight.BOLD);
 
+    icon = new CellRendererPixbuf ();
+    column.pack_start (icon, false);
+    column.set_cell_data_func (icon, (column, cell, model, iter) => {
+	bool is_contact;
+	PresenceType presence;
+
+	model.get (iter, ContactColumns.IS_CONTACT, out is_contact, ContactColumns.PRESENCE, out presence);
+
+	string? iconname = null;
+	switch (presence) {
+	case PresenceType.AVAILABLE:
+	case PresenceType.UNKNOWN:
+	  iconname = "user-available-symbolic";
+	  break;
+	case PresenceType.AWAY:
+	case PresenceType.EXTENDED_AWAY:
+	  iconname = "user-away-symbolic";
+	  break;
+	case PresenceType.BUSY:
+	  iconname = "user-busy-symbolic";
+	  break;
+	}
+	cell.set ("visible", is_contact && icon != null);
+	if (icon != null)
+	  cell.set ("icon-name", iconname);
+      });
+
     text = new CellRendererText ();
     column.pack_start (text, true);
     column.add_attribute (text, "text", ContactColumns.NAME);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	bool is_contact;
 
-	model.get (iter, ContactColumns.IS_CONTACT, out is_contact, -1);
+	model.get (iter, ContactColumns.IS_CONTACT, out is_contact);
 	cell.set ("visible", !is_contact);
       });
     text.set ("weight", Pango.Weight.HEAVY);
@@ -200,6 +229,7 @@ public class Contacts.App : Window {
     TreeIter iter;
     string [] names = {"Angelinus Jolie", "Alfred", "Batman", "Ben", "Cath", "Curly", "Doug"};
     unichar last = 0;
+    int presence = 0;
 
     foreach (var i in names) {
       unichar first = i.get_char(0).totitle();
@@ -215,7 +245,8 @@ public class Contacts.App : Window {
       contacts_store.set (iter,
 			  ContactColumns.IS_CONTACT, true,
 			  ContactColumns.NAME, i,
-			  ContactColumns.ICON, icon);
+			  ContactColumns.ICON, icon,
+			  ContactColumns.PRESENCE, presence++);
     }
 
   }
@@ -286,7 +317,7 @@ public class Contacts.App : Window {
 
 
     contacts_store = new ListStore(ContactColumns.N_COLUMNS,
-				   typeof (Gdk.Pixbuf), typeof (string), typeof (bool));
+				   typeof (Gdk.Pixbuf), typeof (string), typeof (bool), typeof (PresenceType));
     fill_contacts_model ();
 
     scrolled = new ScrolledWindow(null, null);
