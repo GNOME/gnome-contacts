@@ -21,14 +21,16 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
-  protected class IterRef  {
+  protected class IndividualData  {
     public TreeIter iter;
+    public Gdk.Pixbuf? avatar;
   }
   private ListStore group_store;
   private ListStore contacts_store;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
+  Gdk.Pixbuf fallback_avatar;
 
   private enum GroupColumns {
     TEXT,
@@ -81,8 +83,8 @@ public class Contacts.App : Window {
     cr.curve_to(x,y,x,y,x+r,y);
   }
 
-  private Gdk.Pixbuf frame (owned Gdk.Pixbuf? image) {
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 50, 50);
+  private Gdk.Pixbuf draw_fallback_avatar () {
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
     var cr = new Cairo.Context (cst);
 
     cr.save ();
@@ -91,39 +93,37 @@ public class Contacts.App : Window {
     gradient.add_color_stop_rgb (0, 0.7098, 0.7098, 0.7098);
     gradient.add_color_stop_rgb (1, 0.8901, 0.8901, 0.8901);
     cr.set_source (gradient);
-    cr.rectangle (1, 1, 48, 48);
+    cr.rectangle (1, 1, 46, 46);
     cr.fill ();
 
     cr.restore ();
 
-    if (image == null) {
-      try {
-	var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", 48, IconLookupFlags.GENERIC_FALLBACK);
-	image = icon_info.load_icon ();
-      } catch {
+    try {
+      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", 48, IconLookupFlags.GENERIC_FALLBACK);
+      var image = icon_info.load_icon ();
+      if (image != null) {
+	Gdk.cairo_set_source_pixbuf (cr, image, 3, 3);
+	cr.paint();
       }
+    } catch {
     }
 
-    if (image != null) {
-      Gdk.cairo_set_source_pixbuf (cr, image, 3, 3);
-      cr.paint();
-    }
 
     cr.push_group ();
 
     cr.set_source_rgba (0, 0, 0, 0);
     cr.paint ();
-    round_rect (cr, 0, 0, 50, 50, 5);
+    round_rect (cr, 0, 0, 48, 48, 5);
     cr.set_source_rgb (0.74117, 0.74117, 0.74117);
     cr.fill ();
-    round_rect (cr, 1, 1, 48, 48, 5);
+    round_rect (cr, 1, 1, 46, 46, 5);
     cr.set_source_rgb (1, 1, 1);
     cr.fill ();
-    round_rect (cr, 2, 2, 46, 46, 5);
+    round_rect (cr, 2, 2, 44, 44, 5);
     cr.set_source_rgb (0.341176, 0.341176, 0.341176);
     cr.fill ();
     cr.set_operator (Cairo.Operator.CLEAR);
-    round_rect (cr, 3, 3, 44, 44, 5);
+    round_rect (cr, 3, 3, 42, 42, 5);
     cr.set_source_rgba (0, 0, 0, 0);
     cr.fill ();
 
@@ -131,7 +131,7 @@ public class Contacts.App : Window {
     cr.set_source (pattern);
     cr.paint ();
 
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 50, 50);
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 48, 48);
   }
 
   private void fill_group_model () {
@@ -144,6 +144,20 @@ public class Contacts.App : Window {
     group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Personal");
     group_store.append (out iter);
     group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work");
+  }
+
+  // TODO: This should be async, but the vala bindings are broken (bug #649875)
+  private Gdk.Pixbuf load_icon (File ?file) {
+    Gdk.Pixbuf? res = fallback_avatar;
+    if (file != null) {
+      try {
+	var stream = file.read ();
+	Cancellable c = new Cancellable ();
+	res = new Gdk.Pixbuf.from_stream_at_scale (stream, 48, 48, true, c);
+      } catch (Error e) {
+      }
+    }
+    return res;
   }
 
   private void setup_contacts_view (TreeView tree_view) {
@@ -162,8 +176,10 @@ public class Contacts.App : Window {
 
 	model.get (iter, 0, out individual);
 
-	var pixbuf = frame(null);
-	cell.set ("pixbuf", pixbuf);
+	IndividualData data = individual.get_data("contacts-data");
+	if (data.avatar == null)
+	  data.avatar = load_icon (individual.avatar);
+	cell.set ("pixbuf", data.avatar);
       });
 
     var text = new CellRendererText ();
@@ -208,24 +224,26 @@ public class Contacts.App : Window {
   }
 
   public App() {
+    fallback_avatar = draw_fallback_avatar ();
+
     contacts_store = new ListStore(1, typeof (Folks.Individual));
 
     aggregator = new IndividualAggregator ();
     aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
 	foreach (Individual i in removed) {
-	  IterRef? iter = i.get_data("contacts-iter");
-	  if (iter != null) {
-	    contacts_store.remove (iter.iter);
+	  IndividualData? data = i.get_data("contacts-data");
+	  if (data != null) {
+	    contacts_store.remove (data.iter);
 	  } else {
-	    stdout.printf("removed %p with no iter!\n", i);
+	    stdout.printf("removed %p with no data!\n", i);
 	  }
 	}
 	foreach (Individual i in added) {
-	  IterRef iter = new IterRef();
+	  var data = new IndividualData();
+	  i.set_data ("contacts-data", data);
 
-	  contacts_store.append (out iter.iter);
-	  contacts_store.set (iter.iter, 0, i);
-	  i.set_data ("contacts-iter", iter);
+	  contacts_store.append (out data.iter);
+	  contacts_store.set (data.iter, 0, i);
 
 	  /* TODO: Connect to notify(?) for changes */
 	}
