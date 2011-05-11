@@ -327,6 +327,40 @@ public class Contacts.App : Window {
     grid2.attach (scrolled, 0, 1, 1, 1);
     grid.attach (frame, 1, 0, 1, 2);
 
+    var ebox = new EventBox ();
+    Gdk.RGBA white = {1, 1, 1, 1};
+    ebox.override_background_color (0, white);
+    ebox.set_hexpand (true);
+    grid.attach (ebox, 2, 0, 1, 2);
+
+    var vbox = new Box (Orientation.VERTICAL, 0);
+    vbox.set_border_width (10);
+    ebox.add (vbox);
+    vbox.set_hexpand (true);
+    vbox.set_vexpand (true);
+
+    var hbox = new Box (Orientation.HORIZONTAL, 10);
+    vbox.pack_end (hbox, false, false, 0);
+
+    var bbox = new ButtonBox (Orientation.HORIZONTAL);
+    bbox.set_layout (ButtonBoxStyle.START);
+    hbox.pack_start (bbox, true, true, 0);
+
+    var button = new Button.with_label(_("Notes"));
+    bbox.pack_start (button, false, false, 0);
+    button = new Button.with_label(_("Edit"));
+    bbox.pack_start (button, false, false, 0);
+
+    button = new Button ();
+    var label = new Label (_("More"));
+    var arrow = new Arrow (ArrowType.DOWN, ShadowType.NONE);
+    var hbox2 = new Box (Orientation.HORIZONTAL, 0);
+    hbox2.pack_start (label, true, false, 0);
+    hbox2.pack_start (arrow, false, false, 0);
+    button.add (hbox2);
+    bbox.pack_end (button, false, false, 0);
+    bbox.set_child_secondary (button, true);
+
     tree_view = new TreeView.with_model (contacts_store);
     setup_contacts_view (tree_view);
     scrolled.add(tree_view);
