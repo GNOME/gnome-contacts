@@ -24,9 +24,40 @@ public class Contacts.App : Window {
   protected class IndividualData  {
     public TreeIter iter;
     public Gdk.Pixbuf? avatar;
+    public string filter_data;
+
+    public void update (Individual individual) {
+      var builder = new StringBuilder ();
+      if (individual.alias != null) {
+	builder.append (individual.alias.casefold ());
+	builder.append_unichar (' ');
+      }
+      if (individual.full_name != null) {
+	builder.append (individual.full_name.casefold ());
+	builder.append_unichar (' ');
+      }
+      if (individual.nickname != null) {
+	builder.append (individual.nickname.casefold ());
+	builder.append_unichar (' ');
+      }
+      var im_addresses = individual.im_addresses;
+      foreach (string addr in im_addresses.get_values ()) {
+	builder.append (addr.casefold ());
+	builder.append_unichar (' ');
+      }
+      var emails = individual.email_addresses;
+      foreach (var email in emails) {
+	builder.append (email.value.casefold ());
+	builder.append_unichar (' ');
+      }
+      filter_data = builder.str;
+    }
   }
   private ListStore group_store;
   private ListStore contacts_store;
+  private TreeModelFilter filter_model;
+  private Entry filter_entry;
+  string []? filter_values;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -223,10 +254,44 @@ public class Contacts.App : Window {
     tree_view.append_column (column);
   }
 
+  private bool filter_row (TreeModel model,
+			   TreeIter iter) {
+    Individual individual;
+
+    if (filter_values == null || filter_values.length == 0)
+      return true;
+
+    model.get (iter, 0, out individual);
+    IndividualData data = individual.get_data("contacts-data");
+
+    foreach (string i in filter_values) {
+      if (! (i in data.filter_data))
+	return false;
+    }
+    return true;
+  }
+
+  private void filter_entry_changed (Editable editable) {
+    string []? values;
+    string str = filter_entry.get_text ();
+
+    if (str.length == 0)
+      values = null;
+    else {
+      str = str.casefold();
+      values = str.split(" ");
+    }
+
+    filter_values = values;
+    filter_model.refilter ();
+  }
+
   public App () {
     fallback_avatar = draw_fallback_avatar ();
 
     contacts_store = new ListStore(1, typeof (Folks.Individual));
+    filter_model = new TreeModelFilter(contacts_store, null);
+    filter_model.set_visible_func (filter_row);
 
     aggregator = new IndividualAggregator ();
     aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
@@ -245,6 +310,7 @@ public class Contacts.App : Window {
 	  contacts_store.append (out data.iter);
 	  contacts_store.set (data.iter, 0, i);
 
+	  data.update (i);
 	  /* TODO: Connect to notify(?) for changes */
 	}
       });
@@ -294,13 +360,14 @@ public class Contacts.App : Window {
     separator.set_draw (false);
     toolbar.add (separator);
 
-    var entry = new Entry ();
-    entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
+    filter_entry = new Entry ();
+    filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
+    filter_entry.changed.connect (filter_entry_changed);
 
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
     search_entry_item.set_expand (true);
-    search_entry_item.add (entry);
+    search_entry_item.add (filter_entry);
     toolbar.add (search_entry_item);
 
     separator = new SeparatorToolItem ();
@@ -361,7 +428,7 @@ public class Contacts.App : Window {
     bbox.pack_end (button, false, false, 0);
     bbox.set_child_secondary (button, true);
 
-    tree_view = new TreeView.with_model (contacts_store);
+    tree_view = new TreeView.with_model (filter_model);
     setup_contacts_view (tree_view);
     scrolled.add(tree_view);
 
