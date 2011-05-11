@@ -60,6 +60,9 @@ public class Contacts.App : Window {
   string []? filter_values;
   bool filter_favourites;
   string? filter_group;
+  Widget sidebar;
+  TreeView group_tree_view;
+  TreeView contacts_tree_view;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -298,6 +301,15 @@ public class Contacts.App : Window {
     }
   }
 
+  private void groups_button_toggled (ToggleToolButton toggle_button) {
+    if (toggle_button.get_active ()) {
+      sidebar.show ();
+    } else {
+      sidebar.hide ();
+      group_tree_view.get_selection ().select_path (new TreePath.from_indices(0));
+    }
+  }
+
   private void favourites_button_toggled (ToggleToolButton toggle_button) {
     filter_favourites = toggle_button.get_active ();
     filter_model.refilter ();
@@ -356,6 +368,7 @@ public class Contacts.App : Window {
     add (grid);
 
     var scrolled = new ScrolledWindow(null, null);
+    sidebar = scrolled;
     scrolled.set_vexpand (true);
     scrolled.set_border_width (8);
     grid.attach (scrolled, 0, 0, 1, 2);
@@ -366,9 +379,9 @@ public class Contacts.App : Window {
 				typeof (string), typeof (string), typeof (bool));
     fill_group_model ();
 
-    var tree_view = new TreeView.with_model (group_store);
-    setup_group_view (tree_view);
-    scrolled.add(tree_view);
+    group_tree_view = new TreeView.with_model (group_store);
+    setup_group_view (group_tree_view);
+    scrolled.add(group_tree_view);
 
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
@@ -379,6 +392,8 @@ public class Contacts.App : Window {
     groups_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     groups_button.is_important = false;
     toolbar.add (groups_button);
+    groups_button.toggled.connect (groups_button_toggled);
+    groups_button.set_active (true);
 
     groups_button.get_style_context ().set_junction_sides (JunctionSides.LEFT);
 
@@ -467,9 +482,9 @@ public class Contacts.App : Window {
     bbox.pack_end (button, false, false, 0);
     bbox.set_child_secondary (button, true);
 
-    tree_view = new TreeView.with_model (filter_model);
-    setup_contacts_view (tree_view);
-    scrolled.add(tree_view);
+    contacts_tree_view = new TreeView.with_model (filter_model);
+    setup_contacts_view (contacts_tree_view);
+    scrolled.add (contacts_tree_view);
 
     grid.show_all ();
   }
