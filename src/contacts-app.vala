@@ -77,7 +77,7 @@ public class Contacts.App : Window {
 
     var selection = tree_view.get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
-    selection.select_path (new TreePath.from_indices(1));
+    selection.select_path (new TreePath.from_indices(0));
     selection.changed.connect (group_selected_changed);
     selection.set_select_function ((selection, model, path, path_currently_selected) => {
 	TreeIter iter;
@@ -172,8 +172,6 @@ public class Contacts.App : Window {
 
   private void fill_group_model () {
     TreeIter iter;
-    group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, true, GroupColumns.TEXT, "Groups");
     group_store.append (out iter);
     group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "All contacts", GroupColumns.GROUP, null);
     group_store.append (out iter);
