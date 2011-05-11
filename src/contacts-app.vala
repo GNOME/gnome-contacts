@@ -400,6 +400,11 @@ public class Contacts.App : Window {
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
 
+    map_event.connect (() => {
+	filter_entry.grab_focus ();
+	return true;
+      });
+
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
     search_entry_item.set_expand (true);
