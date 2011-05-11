@@ -223,7 +223,7 @@ public class Contacts.App : Window {
     tree_view.append_column (column);
   }
 
-  public App() {
+  public App () {
     fallback_avatar = draw_fallback_avatar ();
 
     contacts_store = new ListStore(1, typeof (Folks.Individual));
@@ -251,7 +251,7 @@ public class Contacts.App : Window {
     aggregator.prepare ();
 
     set_title (_("Contacts"));
-    set_default_size (300, 200);
+    set_default_size (800, 500);
     this.destroy.connect (Gtk.main_quit);
 
     var grid = new Grid();
