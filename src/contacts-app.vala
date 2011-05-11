@@ -59,6 +59,7 @@ public class Contacts.App : Window {
   private Entry filter_entry;
   string []? filter_values;
   bool filter_favourites;
+  string? filter_group;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -66,6 +67,7 @@ public class Contacts.App : Window {
 
   private enum GroupColumns {
     TEXT,
+    GROUP,
     IS_HEADER,
     N_COLUMNS
   }
@@ -75,6 +77,8 @@ public class Contacts.App : Window {
 
     var selection = tree_view.get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
+    selection.select_path (new TreePath.from_indices(1));
+    selection.changed.connect (group_selected_changed);
     selection.set_select_function ((selection, model, path, path_currently_selected) => {
 	TreeIter iter;
 	bool is_header;
@@ -171,11 +175,11 @@ public class Contacts.App : Window {
     group_store.append (out iter);
     group_store.set (iter, GroupColumns.IS_HEADER, true, GroupColumns.TEXT, "Groups");
     group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "All");
+    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "All contacts", GroupColumns.GROUP, null);
     group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Personal");
+    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Personal", GroupColumns.GROUP, "Gnome");
     group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work");
+    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work", GroupColumns.GROUP, "Buddies");
   }
 
   // TODO: This should be async, but the vala bindings are broken (bug #649875)
@@ -269,6 +273,11 @@ public class Contacts.App : Window {
     if (filter_favourites && !individual.is_favourite)
       return false;
 
+    if (filter_group != null) {
+      if (!(filter_group in individual.groups))
+	return false;
+    }
+
     if (filter_values == null || filter_values.length == 0)
       return true;
 
@@ -278,6 +287,17 @@ public class Contacts.App : Window {
 	return false;
     }
     return true;
+  }
+
+  private void group_selected_changed (TreeSelection selection) {
+    TreeIter iter;
+
+    if (selection.get_selected (null, out iter)) {
+      string? group;
+      group_store.get (iter, GroupColumns.GROUP, out group);
+      filter_group = group;
+      filter_model.refilter ();
+    }
   }
 
   private void favourites_button_toggled (ToggleToolButton toggle_button) {
@@ -345,7 +365,7 @@ public class Contacts.App : Window {
     scrolled.get_style_context ().add_class (STYLE_CLASS_SIDEBAR);
 
     group_store = new ListStore(GroupColumns.N_COLUMNS,
-				typeof (string), typeof (bool));
+				typeof (string), typeof (string), typeof (bool));
     fill_group_model ();
 
     var tree_view = new TreeView.with_model (group_store);
