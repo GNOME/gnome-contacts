@@ -58,6 +58,7 @@ public class Contacts.App : Window {
   private TreeModelFilter filter_model;
   private Entry filter_entry;
   string []? filter_values;
+  bool filter_favourites;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -258,17 +259,30 @@ public class Contacts.App : Window {
 			   TreeIter iter) {
     Individual individual;
 
+    model.get (iter, 0, out individual);
+
+    if (individual == null)
+      return false;
+
+    IndividualData data = individual.get_data("contacts-data");
+
+    if (filter_favourites && !individual.is_favourite)
+      return false;
+
     if (filter_values == null || filter_values.length == 0)
       return true;
 
-    model.get (iter, 0, out individual);
-    IndividualData data = individual.get_data("contacts-data");
 
     foreach (string i in filter_values) {
       if (! (i in data.filter_data))
 	return false;
     }
     return true;
+  }
+
+  private void favourites_button_toggled (ToggleToolButton toggle_button) {
+    filter_favourites = toggle_button.get_active ();
+    filter_model.refilter ();
   }
 
   private void filter_entry_changed (Editable editable) {
@@ -355,6 +369,7 @@ public class Contacts.App : Window {
     favourite_button.is_important = false;
     toolbar.add (favourite_button);
     favourite_button.get_style_context ().set_junction_sides (JunctionSides.RIGHT);
+    favourite_button.toggled.connect (favourites_button_toggled);
 
     var separator = new SeparatorToolItem ();
     separator.set_draw (false);
