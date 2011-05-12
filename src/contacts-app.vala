@@ -21,72 +21,16 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
-  private ListStore group_store;
   private ContactStore contacts_store;
   private TreeModelFilter filter_model;
   private Entry filter_entry;
   string []? filter_values;
   bool filter_favourites;
-  string? filter_group;
-  Widget sidebar;
-  TreeView group_tree_view;
   TreeView contacts_tree_view;
   Grid contacts_grid;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
-
-  private enum GroupColumns {
-    TEXT,
-    GROUP,
-    IS_HEADER,
-    N_COLUMNS
-  }
-
-  private void setup_group_view (TreeView tree_view) {
-    tree_view.set_headers_visible (false);
-
-    var selection = tree_view.get_selection ();
-    selection.set_mode (SelectionMode.BROWSE);
-    selection.select_path (new TreePath.from_indices(0));
-    selection.changed.connect (group_selected_changed);
-    selection.set_select_function ((selection, model, path, path_currently_selected) => {
-	TreeIter iter;
-	bool is_header;
-	model.get_iter (out iter, path);
-	model.get (iter, GroupColumns.IS_HEADER, out is_header, -1);
-	return !is_header;
-      });
-
-    var column = new TreeViewColumn ();
-    var text = new CellRendererText ();
-    column.pack_start (text, true);
-    column.add_attribute (text, "text", GroupColumns.TEXT);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
-	bool is_header;
-
-	model.get (iter, GroupColumns.IS_HEADER, out is_header, -1);
-	cell.set ("visible", !is_header);
-      });
-
-    text = new CellRendererText ();
-    column.pack_start (text, true);
-    column.add_attribute (text, "text", GroupColumns.TEXT);
-    column.add_attribute (text, "visible", GroupColumns.IS_HEADER);
-    text.set ("weight", Pango.Weight.BOLD);
-
-    tree_view.append_column (column);
-  }
-
-  private void fill_group_model () {
-    TreeIter iter;
-    group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "All contacts", GroupColumns.GROUP, null);
-    group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Personal", GroupColumns.GROUP, "Gnome");
-    group_store.append (out iter);
-    group_store.set (iter, GroupColumns.IS_HEADER, false, GroupColumns.TEXT, "Work", GroupColumns.GROUP, "Buddies");
-  }
 
   private void setup_contacts_view (TreeView tree_view) {
     tree_view.set_headers_visible (false);
@@ -161,35 +105,10 @@ public class Contacts.App : Window {
     if (filter_favourites && !contact.individual.is_favourite)
       return false;
 
-    if (filter_group != null) {
-      if (!(filter_group in contact.individual.groups))
-	return false;
-    }
-
     if (filter_values == null || filter_values.length == 0)
       return true;
 
     return contact.contains_strings (filter_values);
-  }
-
-  private void group_selected_changed (TreeSelection selection) {
-    TreeIter iter;
-
-    if (selection.get_selected (null, out iter)) {
-      string? group;
-      group_store.get (iter, GroupColumns.GROUP, out group);
-      filter_group = group;
-      filter_model.refilter ();
-    }
-  }
-
-  private void groups_button_toggled (ToggleToolButton toggle_button) {
-    if (toggle_button.get_active ()) {
-      sidebar.show ();
-    } else {
-      sidebar.hide ();
-      group_tree_view.get_selection ().select_path (new TreePath.from_indices(0));
-    }
   }
 
   private void favourites_button_toggled (ToggleToolButton toggle_button) {
@@ -235,43 +154,15 @@ public class Contacts.App : Window {
     var grid = new Grid();
     add (grid);
 
-    var scrolled = new ScrolledWindow(null, null);
-    sidebar = scrolled;
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_vexpand (true);
-    scrolled.set_border_width (8);
-    grid.attach (scrolled, 0, 0, 1, 2);
-
-    scrolled.get_style_context ().add_class (STYLE_CLASS_SIDEBAR);
-
-    group_store = new ListStore(GroupColumns.N_COLUMNS,
-				typeof (string), typeof (string), typeof (bool));
-    fill_group_model ();
-
-    group_tree_view = new TreeView.with_model (group_store);
-    setup_group_view (group_tree_view);
-    scrolled.add(group_tree_view);
-
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_vexpand (false);
-    var groups_button = new ToggleToolButton ();
-
-    groups_button.set_icon_name ("system-users-symbolic");
-    groups_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    groups_button.is_important = false;
-    toolbar.add (groups_button);
-    groups_button.toggled.connect (groups_button_toggled);
-    groups_button.set_active (true);
-
-    groups_button.get_style_context ().set_junction_sides (JunctionSides.LEFT);
 
     var favourite_button = new ToggleToolButton ();
     favourite_button.set_icon_name ("user-bookmarks-symbolic");
     favourite_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     favourite_button.is_important = false;
     toolbar.add (favourite_button);
-    favourite_button.get_style_context ().set_junction_sides (JunctionSides.RIGHT);
     favourite_button.toggled.connect (favourites_button_toggled);
 
     var separator = new SeparatorToolItem ();
@@ -303,7 +194,7 @@ public class Contacts.App : Window {
     add_button.is_important = false;
     toolbar.add (add_button);
 
-    scrolled = new ScrolledWindow(null, null);
+    var scrolled = new ScrolledWindow(null, null);
     scrolled.set_min_content_width (340);
     scrolled.set_vexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
@@ -315,13 +206,13 @@ public class Contacts.App : Window {
 
     middle_grid.attach (toolbar, 0, 0, 1, 1);
     middle_grid.attach (scrolled, 0, 1, 1, 1);
-    grid.attach (frame, 1, 0, 1, 2);
+    grid.attach (frame, 0, 0, 1, 2);
 
     var ebox = new EventBox ();
     Gdk.RGBA white = {1, 1, 1, 1};
     ebox.override_background_color (0, white);
     ebox.set_hexpand (true);
-    grid.attach (ebox, 2, 0, 1, 2);
+    grid.attach (ebox, 1, 0, 1, 2);
 
     var right_grid = new Grid ();
     right_grid.set_border_width (10);
