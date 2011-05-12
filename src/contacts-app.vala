@@ -369,6 +369,7 @@ public class Contacts.App : Window {
 
     var scrolled = new ScrolledWindow(null, null);
     sidebar = scrolled;
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
     scrolled.set_border_width (8);
     grid.attach (scrolled, 0, 0, 1, 2);
