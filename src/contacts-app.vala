@@ -31,6 +31,7 @@ public class Contacts.App : Window {
   Widget sidebar;
   TreeView group_tree_view;
   TreeView contacts_tree_view;
+  Grid contacts_grid;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -309,11 +310,11 @@ public class Contacts.App : Window {
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
 
     var frame = new Frame (null);
-    var grid2 = new Grid ();
-    frame.add (grid2);
+    var middle_grid = new Grid ();
+    frame.add (middle_grid);
 
-    grid2.attach (toolbar, 0, 0, 1, 1);
-    grid2.attach (scrolled, 0, 1, 1, 1);
+    middle_grid.attach (toolbar, 0, 0, 1, 1);
+    middle_grid.attach (scrolled, 0, 1, 1, 1);
     grid.attach (frame, 1, 0, 1, 2);
 
     var ebox = new EventBox ();
@@ -322,18 +323,18 @@ public class Contacts.App : Window {
     ebox.set_hexpand (true);
     grid.attach (ebox, 2, 0, 1, 2);
 
-    var vbox = new Box (Orientation.VERTICAL, 0);
-    vbox.set_border_width (10);
-    ebox.add (vbox);
-    vbox.set_hexpand (true);
-    vbox.set_vexpand (true);
+    var right_grid = new Grid ();
+    right_grid.set_border_width (10);
+    ebox.add (right_grid);
 
-    var hbox = new Box (Orientation.HORIZONTAL, 10);
-    vbox.pack_end (hbox, false, false, 0);
+    contacts_grid = new Grid ();
+    contacts_grid.set_hexpand (true);
+    contacts_grid.set_vexpand (true);
+    right_grid.attach (contacts_grid, 0, 0, 1, 1);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     bbox.set_layout (ButtonBoxStyle.START);
-    hbox.pack_start (bbox, true, true, 0);
+    right_grid.attach (bbox, 0, 1, 1, 1);
 
     var button = new Button.with_label(_("Notes"));
     bbox.pack_start (button, false, false, 0);
