@@ -59,8 +59,8 @@ public class Contacts.App : Window {
 
 	model.get (iter, 0, out contact);
 
-	string? alias = contact.individual.alias;
-	cell.set ("text", alias);
+	string name = contact.display_name;
+	cell.set ("text", name);
       });
 
     icon = new CellRendererPixbuf ();

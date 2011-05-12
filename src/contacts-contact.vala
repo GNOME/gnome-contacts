@@ -56,6 +56,17 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
+  public string display_name { 
+    get {
+      unowned string name = individual.full_name;
+      if (name != null)
+	return name;
+      if (individual.alias != null)
+	return individual.alias;
+      return "";
+    }
+  }
+
   private string filter_data;
 
   public static Contact from_individual (Individual i) {
