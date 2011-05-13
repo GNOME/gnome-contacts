@@ -27,7 +27,9 @@ public class Contacts.App : Window {
   string []? filter_values;
   bool filter_favourites;
   TreeView contacts_tree_view;
-  Grid contacts_grid;
+  Grid fields_grid;
+  Grid card_grid;
+  SizeGroup label_size_group;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -132,45 +134,34 @@ public class Contacts.App : Window {
     filter_model.refilter ();
   }
 
-  private void add_label (string label, int i) {
+  private Widget add_label (string label) {
     var l = new Label (label);
+    label_size_group.add_widget (l);
     l.get_style_context ().add_class ("dim-label");
-    l.set_valign (Align.CENTER);
-    l.set_halign (Align.END);
-    contacts_grid.attach (l,  0, i, 1, 1);
+    l.set_alignment (1, 0.5f);
+    fields_grid.add (l);
+    return l;
   }
 
-  private void add_string_label (Contact contact, string label, string pname, ref int i) {
+  private void add_string_label (Contact contact, string label, string pname) {
     Value prop_value;
     prop_value = Value (typeof (string));
     contact.individual.get_property (pname, ref prop_value);
     string val = prop_value.get_string ();
 
     if (val != null) {
-      add_label(label, i);
+      var l = add_label(label);
       var v = new Label (val);
       v.set_valign (Align.CENTER);
       v.set_halign (Align.START);
-      contacts_grid.attach (v,  1, i, 2, 1);
-      i++;
+      fields_grid.attach_next_to (v, l, PositionType.RIGHT, 1, 1);
     }
   }
-
-  /* Format:
-
-      col 1      col 2                 col 3
-
-     +-------+  Full Name             <starred>
-     | image |  "nick1", "nick2"
-     +-------+  Job title, company
-
-	 label  Data that spans two columns
-
-   */
 
   private void display_contact (Contact contact) {
 
     var image_frame = new Frame (null);
+    label_size_group.add_widget (image_frame);
     image_frame.get_style_context ().add_class ("contactframe");
     image_frame.set_shadow_type (ShadowType.OUT);
     var image = new Image ();
@@ -184,10 +175,10 @@ public class Contacts.App : Window {
       /* TODO: Set fallback image */
     }
 
-    contacts_grid.attach (image_frame, 0, 0, 1, 1);
+    card_grid.attach (image_frame, 0, 0, 1, 1);
 
     var g = new Grid ();
-    contacts_grid.attach (g, 1, 0, 1, 1);
+    card_grid.attach (g, 1, 0, 1, 1);
 
     var l = new Label (null);
     l.set_markup ("<big><b>" + contact.display_name + "</b></big>");
@@ -206,13 +197,18 @@ public class Contacts.App : Window {
     starred.set_hexpand (false);
     starred.set_vexpand (false);
     starred.set_valign (Align.START);
-    contacts_grid.attach (starred, 2, 0, 1, 1);
-    int i = 1;
+    card_grid.attach (starred, 2, 0, 1, 1);
 
-    add_string_label (contact, _("Alias"), "alias", ref i);
-    add_string_label (contact, _("Full name"), "full-name", ref i);
+    add_string_label (contact, _("Alias"), "alias");
+    add_string_label (contact, _("Alias again"), "alias");
+    add_string_label (contact, _("Alias again"), "alias");
+    add_string_label (contact, _("Alias again"), "alias");
+    add_string_label (contact, _("Alias again"), "alias");
+    add_string_label (contact, _("Alias again"), "alias");
+    add_string_label (contact, _("Full name"), "full-name");
 
-    contacts_grid.show_all ();
+    card_grid.show_all ();
+    fields_grid.show_all ();
   }
 
   private void contacts_selected_changed (TreeSelection selection) {
@@ -222,7 +218,10 @@ public class Contacts.App : Window {
     if (selection.get_selected (out model, out iter)) {
       Contact contact;
       model.get (iter, 0, out contact);
-      foreach (var w in contacts_grid.get_children ()) {
+      foreach (var w in card_grid.get_children ()) {
+	w.destroy ();
+      }
+      foreach (var w in fields_grid.get_children ()) {
 	w.destroy ();
       }
       if (contact != null) {
@@ -310,8 +309,6 @@ public class Contacts.App : Window {
     grid.attach (frame, 0, 0, 1, 2);
 
     var ebox = new EventBox ();
-    Gdk.RGBA white = {1, 1, 1, 1};
-    ebox.override_background_color (0, white);
     ebox.set_hexpand (true);
     grid.attach (ebox, 1, 0, 1, 2);
 
@@ -319,15 +316,25 @@ public class Contacts.App : Window {
     right_grid.set_border_width (10);
     ebox.add (right_grid);
 
-    contacts_grid = new Grid ();
-    contacts_grid.set_row_spacing (8);
-    contacts_grid.set_hexpand (true);
-    contacts_grid.set_vexpand (true);
-    right_grid.attach (contacts_grid, 0, 0, 1, 1);
+    label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
+    card_grid = new Grid ();
+    card_grid.set_row_spacing (8);
+
+    right_grid.attach (card_grid, 0, 0, 1, 1);
+
+    var fields_scrolled = new ScrolledWindow (null, null);
+    fields_scrolled.set_hexpand (true);
+    fields_scrolled.set_vexpand (true);
+    fields_grid = new Grid ();
+    fields_grid.set_row_spacing (8);
+    fields_grid.set_orientation (Orientation.VERTICAL);
+    fields_scrolled.add_with_viewport (fields_grid);
+
+    right_grid.attach (fields_scrolled, 0, 1, 1, 1);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     bbox.set_layout (ButtonBoxStyle.START);
-    right_grid.attach (bbox, 0, 1, 1, 1);
+    right_grid.attach (bbox, 0, 2, 1, 1);
 
     var button = new Button.with_label(_("Notes"));
     bbox.pack_start (button, false, false, 0);
