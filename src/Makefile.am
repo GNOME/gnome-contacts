@@ -18,6 +18,7 @@ bin_PROGRAMS = gnome-contacts
 gnome_contacts_SOURCES = \
 	contacts-app.vala \
 	contacts-contact.vala \
+	contacts-starred-button.vala \
 	main.vala \
 	$(NULL)
 

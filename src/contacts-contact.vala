@@ -23,7 +23,7 @@ using Folks;
 public class Contacts.ContactStore : ListStore  {
   public ContactStore () {
     GLib.Type[] types = { typeof (Contact) };
-    
+
     set_column_types (types);
   }
   public Contact insert_individual (Individual i) {
@@ -48,7 +48,7 @@ public class Contacts.Contact : GLib.Object  {
   ulong changed_id;
 
   private Gdk.Pixbuf? _avatar;
-  public Gdk.Pixbuf avatar { 
+  public Gdk.Pixbuf avatar {
     get {
       if (_avatar == null)
 	_avatar = load_icon (individual.avatar);
@@ -56,7 +56,7 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  public string display_name { 
+  public string display_name {
     get {
       unowned string name = individual.full_name;
       if (name != null)
@@ -76,7 +76,7 @@ public class Contacts.Contact : GLib.Object  {
   static construct {
     fallback_avatar = draw_fallback_avatar ();
   }
-   
+
   public Contact(Individual i, ContactStore s) {
     individual = i;
     store = s;

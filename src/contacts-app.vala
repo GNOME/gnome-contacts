@@ -37,6 +37,7 @@ public class Contacts.App : Window {
 
     var selection = tree_view.get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
+    selection.changed.connect (contacts_selected_changed);
 
     var column = new TreeViewColumn ();
     column.set_spacing (10);
@@ -131,6 +132,106 @@ public class Contacts.App : Window {
     filter_model.refilter ();
   }
 
+  private void add_label (string label, int i) {
+    var l = new Label (label);
+    l.get_style_context ().add_class ("dim-label");
+    l.set_valign (Align.CENTER);
+    l.set_halign (Align.END);
+    contacts_grid.attach (l,  0, i, 1, 1);
+  }
+
+  private void add_string_label (Contact contact, string label, string pname, ref int i) {
+    Value prop_value;
+    prop_value = Value (typeof (string));
+    contact.individual.get_property (pname, ref prop_value);
+    string val = prop_value.get_string ();
+
+    if (val != null) {
+      add_label(label, i);
+      var v = new Label (val);
+      v.set_valign (Align.CENTER);
+      v.set_halign (Align.START);
+      contacts_grid.attach (v,  1, i, 2, 1);
+      i++;
+    }
+  }
+
+  /* Format:
+
+      col 1      col 2                 col 3
+
+     +-------+  Full Name             <starred>
+     | image |  "nick1", "nick2"
+     +-------+  Job title, company
+
+	 label  Data that spans two columns
+
+   */
+
+  private void display_contact (Contact contact) {
+
+    var image_frame = new Frame (null);
+    image_frame.get_style_context ().add_class ("contactframe");
+    image_frame.set_shadow_type (ShadowType.OUT);
+    var image = new Image ();
+    image.set_size_request (100, 100);
+    image_frame.add (image);
+
+    if (contact.individual.avatar != null &&
+	contact.individual.avatar.get_path () != null) {
+      image.set_from_file (contact.individual.avatar.get_path ());
+    } else {
+      /* TODO: Set fallback image */
+    }
+
+    contacts_grid.attach (image_frame, 0, 0, 1, 1);
+
+    var g = new Grid ();
+    contacts_grid.attach (g, 1, 0, 1, 1);
+
+    var l = new Label (null);
+    l.set_markup ("<big><b>" + contact.display_name + "</b></big>");
+    l.set_hexpand (true);
+    l.set_halign (Align.START);
+    g.attach (l,  1, 0, 1, 1);
+    l = new Label ("\xE2\x80\x9Cnick\xE2\x80\x9D");
+    l.set_halign (Align.START);
+    g.attach (l,  1, 1, 1, 1);
+    l = new Label ("Consultant, Company Inc");
+    l.set_halign (Align.START);
+    g.attach (l,  1, 2, 1, 1);
+
+    var starred = new StarredButton ();
+    starred.set_active (contact.individual.is_favourite);
+    starred.set_hexpand (false);
+    starred.set_vexpand (false);
+    starred.set_valign (Align.START);
+    contacts_grid.attach (starred, 2, 0, 1, 1);
+    int i = 1;
+
+    add_string_label (contact, _("Alias"), "alias", ref i);
+    add_string_label (contact, _("Full name"), "full-name", ref i);
+
+    contacts_grid.show_all ();
+  }
+
+  private void contacts_selected_changed (TreeSelection selection) {
+    TreeIter iter;
+    TreeModel model;
+
+    if (selection.get_selected (out model, out iter)) {
+      Contact contact;
+      model.get (iter, 0, out contact);
+      foreach (var w in contacts_grid.get_children ()) {
+	w.destroy ();
+      }
+      if (contact != null) {
+	display_contact (contact);
+      }
+    }
+  }
+
+
   public App () {
     contacts_store = new ContactStore ();
     filter_model = new TreeModelFilter (contacts_store, null);
@@ -219,6 +320,7 @@ public class Contacts.App : Window {
     ebox.add (right_grid);
 
     contacts_grid = new Grid ();
+    contacts_grid.set_row_spacing (8);
     contacts_grid.set_hexpand (true);
     contacts_grid.set_vexpand (true);
     right_grid.attach (contacts_grid, 0, 0, 1, 1);
