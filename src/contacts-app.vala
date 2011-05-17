@@ -180,11 +180,23 @@ public class Contacts.App : Window {
     image.set_size_request (100, 100);
     image_frame.add (image);
 
+    Gdk.Pixbuf pixbuf = null;
+
     if (contact.individual.avatar != null &&
 	contact.individual.avatar.get_path () != null) {
-      image.set_from_file (contact.individual.avatar.get_path ());
-    } else {
+      try {
+	pixbuf = new Gdk.Pixbuf.from_file_at_scale (contact.individual.avatar.get_path (), 100, 100, true);
+      }
+      catch {
+      }
+    }
+
+    if (pixbuf == null) {
       /* TODO: Set fallback image */
+    }
+
+    if (pixbuf != null) {
+	image.set_from_pixbuf (pixbuf);
     }
 
     card_grid.attach (image_frame, 0, 0, 1, 1);
