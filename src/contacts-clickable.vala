@@ -35,7 +35,7 @@ public class Contacts.Clickable : Bin  {
   public Clickable () {
     set_has_window (false);
     set_can_focus (true);
-    focus_on_click = true;
+    focus_on_click = false;
     depress_on_activate = true;
     get_style_context ().add_class ("clickable");
   }
