@@ -45,7 +45,7 @@ public class Contacts.Contact : GLib.Object  {
   public Individual individual;
   public ContactStore store;
   private TreeIter iter;
-  ulong changed_id;
+  uint changed_id;
 
   private Gdk.Pixbuf? _avatar;
   public Gdk.Pixbuf avatar {
@@ -86,12 +86,12 @@ public class Contacts.Contact : GLib.Object  {
     store.append (out iter);
     store.set (iter, 0, this);
 
-    individual.notify.connect( (pspec) => {
-	queue_changed ();
-      });
+    individual.notify.connect(notify_cb);
   }
 
   public void remove () {
+    unqueue_changed ();
+    individual.notify.disconnect(notify_cb);
     store.remove (this.iter);
   }
 
@@ -111,11 +111,22 @@ public class Contacts.Contact : GLib.Object  {
     return false;
   }
 
+  private void unqueue_changed () {
+    if (changed_id != 0) {
+      Source.remove (changed_id);
+      changed_id = 0;
+    }
+  }
+
   private void queue_changed () {
     if (changed_id != 0)
       return;
 
     changed_id = Idle.add (changed_cb);
+  }
+
+  private void notify_cb (ParamSpec pspec) {
+    queue_changed ();
   }
 
   private void update () {
