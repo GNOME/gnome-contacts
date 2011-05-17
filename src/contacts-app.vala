@@ -134,13 +134,25 @@ public class Contacts.App : Window {
     filter_model.refilter ();
   }
 
-  private Widget add_label (string label) {
+  private Grid add_label (string label, bool is_clickable) {
+    var grid = new Grid ();
+    grid.set_row_spacing (8);
+    grid.set_orientation (Orientation.HORIZONTAL);
     var l = new Label (label);
     label_size_group.add_widget (l);
     l.get_style_context ().add_class ("dim-label");
     l.set_alignment (1, 0.5f);
-    fields_grid.add (l);
-    return l;
+    grid.add (l);
+    if (is_clickable) {
+      var clickable = new Contacts.Clickable ();
+      clickable.set_hexpand (true);
+      clickable.add (grid);
+      fields_grid.add (clickable);
+    } else {
+      fields_grid.add (grid);
+    }
+
+    return grid;
   }
 
   private void add_string_label (Contact contact, string label, string pname) {
@@ -150,11 +162,11 @@ public class Contacts.App : Window {
     string val = prop_value.get_string ();
 
     if (val != null) {
-      var l = add_label(label);
+      var grid = add_label(label, true);
       var v = new Label (val);
       v.set_valign (Align.CENTER);
       v.set_halign (Align.START);
-      fields_grid.attach_next_to (v, l, PositionType.RIGHT, 1, 1);
+      grid.add (v);
     }
   }
 
@@ -326,7 +338,6 @@ public class Contacts.App : Window {
     fields_scrolled.set_hexpand (true);
     fields_scrolled.set_vexpand (true);
     fields_grid = new Grid ();
-    fields_grid.set_row_spacing (8);
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_scrolled.add_with_viewport (fields_grid);
 
