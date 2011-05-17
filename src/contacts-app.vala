@@ -134,13 +134,22 @@ public class Contacts.App : Window {
     filter_model.refilter ();
   }
 
-  private Grid add_label (string label, bool is_clickable) {
+  private void add_label_spacer () {
+    if (fields_grid.get_children () != null) {
+      var grid = new Grid ();
+      grid.set_size_request (8, 8);
+      fields_grid.add (grid);
+    }
+  }
+
+  private Grid add_label (string label, bool is_clickable, bool dim) {
     var grid = new Grid ();
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
     var l = new Label (label);
     label_size_group.add_widget (l);
-    l.get_style_context ().add_class ("dim-label");
+    if (dim)
+      l.get_style_context ().add_class ("dim-label");
     l.set_alignment (1, 0.5f);
     grid.add (l);
     if (is_clickable) {
@@ -155,19 +164,22 @@ public class Contacts.App : Window {
     return grid;
   }
 
-  private void add_string_label (Contact contact, string label, string pname) {
+  private void add_string_label (string label, string val) {
+    var grid = add_label(label, true, true);
+    var v = new Label (val);
+    v.set_valign (Align.CENTER);
+    v.set_halign (Align.START);
+    grid.add (v);
+  }
+
+  private void add_string_property_label (string label, Contact contact, string pname) {
     Value prop_value;
     prop_value = Value (typeof (string));
     contact.individual.get_property (pname, ref prop_value);
     string val = prop_value.get_string ();
 
-    if (val != null) {
-      var grid = add_label(label, true);
-      var v = new Label (val);
-      v.set_valign (Align.CENTER);
-      v.set_halign (Align.START);
-      grid.add (v);
-    }
+    if (val != null)
+      add_string_label (label, val);
   }
 
   private void display_contact (Contact contact) {
@@ -223,13 +235,26 @@ public class Contacts.App : Window {
     starred.set_valign (Align.START);
     card_grid.attach (starred, 2, 0, 1, 1);
 
-    add_string_label (contact, _("Alias"), "alias");
-    add_string_label (contact, _("Alias again"), "alias");
-    add_string_label (contact, _("Alias again"), "alias");
-    add_string_label (contact, _("Alias again"), "alias");
-    add_string_label (contact, _("Alias again"), "alias");
-    add_string_label (contact, _("Alias again"), "alias");
-    add_string_label (contact, _("Full name"), "full-name");
+    var emails = contact.individual.email_addresses;
+    if (!emails.is_empty || true) {
+      add_label_spacer ();
+      add_label (_("Email"), false, false);
+      foreach (var p in emails) {
+	var type = "";
+	if (p.parameters.contains ("type"))
+	  type = p.parameters["type"].iterator().get();
+	add_string_label (type, p.value);
+      }
+      add_string_label ("Home", "test@example.com");
+      add_string_label ("Work", "lazy@example.com");
+    }
+
+    add_label_spacer ();
+    add_string_property_label (_("Alias"), contact, "alias");
+    add_label_spacer ();
+    add_string_label (_("Twitter"), "mytwittername");
+    add_label_spacer ();
+    add_string_property_label (_("Full name"), contact, "full-name");
 
     card_grid.show_all ();
     fields_grid.show_all ();

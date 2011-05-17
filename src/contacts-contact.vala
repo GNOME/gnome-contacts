@@ -86,7 +86,6 @@ public class Contacts.Contact : GLib.Object  {
     store.append (out iter);
     store.set (iter, 0, this);
 
-
     individual.notify.connect( (pspec) => {
 	queue_changed ();
       });
