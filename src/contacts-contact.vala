@@ -189,6 +189,8 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void notify_cb (ParamSpec pspec) {
+    if (pspec.get_name () == "avatar")
+      _avatar = null;
     queue_changed ();
   }
 
