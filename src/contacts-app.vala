@@ -24,6 +24,7 @@ public class Contacts.App : Window {
   private ContactStore contacts_store;
   private TreeModelFilter filter_model;
   private Entry filter_entry;
+  private Contact selected_contact;
   string []? filter_values;
   bool filter_favourites;
   TreeView contacts_tree_view;
@@ -39,7 +40,7 @@ public class Contacts.App : Window {
 
     var selection = tree_view.get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
-    selection.changed.connect (contacts_selected_changed);
+    selection.changed.connect (contacts_selection_changed);
 
     var column = new TreeViewColumn ();
     column.set_spacing (10);
@@ -267,25 +268,37 @@ public class Contacts.App : Window {
     fields_grid.show_all ();
   }
 
-  private void contacts_selected_changed (TreeSelection selection) {
-    TreeIter iter;
-    TreeModel model;
-
-    if (selection.get_selected (out model, out iter)) {
-      Contact contact;
-      model.get (iter, 0, out contact);
-      foreach (var w in card_grid.get_children ()) {
-	w.destroy ();
-      }
-      foreach (var w in fields_grid.get_children ()) {
-	w.destroy ();
-      }
-      if (contact != null) {
-	display_contact (contact);
-      }
+  private void clear_display () {
+    foreach (var w in card_grid.get_children ()) {
+      w.destroy ();
+    }
+    foreach (var w in fields_grid.get_children ()) {
+      w.destroy ();
     }
   }
 
+  private void selected_contact_changed () {
+    clear_display ();
+    display_contact (selected_contact);
+  }
+
+  private void contacts_selection_changed (TreeSelection selection) {
+    TreeIter iter;
+    TreeModel model;
+
+    if (selected_contact != null)
+      selected_contact.changed.disconnect (selected_contact_changed);
+    clear_display ();
+    selected_contact = null;
+
+    if (selection.get_selected (out model, out iter)) {
+      model.get (iter, 0, out selected_contact);
+      if (selected_contact != null) {
+	display_contact (selected_contact);
+	selected_contact.changed.connect (selected_contact_changed);
+      }
+    }
+  }
 
   public App () {
     contacts_store = new ContactStore ();

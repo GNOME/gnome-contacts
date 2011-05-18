@@ -69,6 +69,8 @@ public class Contacts.Contact : GLib.Object  {
 
   private string filter_data;
 
+  public signal void changed ();
+
   public static Contact from_individual (Individual i) {
     return i.get_data ("contact");
   }
@@ -169,6 +171,7 @@ public class Contacts.Contact : GLib.Object  {
   private bool changed_cb () {
     changed_id = 0;
     update ();
+    changed ();
     var path = store.get_path (iter);
     store.row_changed (path, iter);
     return false;
