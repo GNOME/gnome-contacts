@@ -129,6 +129,43 @@ public class Contacts.Contact : GLib.Object  {
     return iconname;
   }
 
+  public Persona? find_im_persona (string protocol, string im_address) {
+    foreach (var p in individual.personas) {
+      var iid = protocol + ":" + im_address;
+      var tp = p as Tpf.Persona;
+      if (tp != null && tp.iid == iid) {
+	return p;
+      }
+    }
+    return null;
+  }
+
+  public Widget? create_presence_widget (string protocol, string im_address) {
+    var tp = find_im_persona (protocol, im_address);
+    if (tp == null)
+      return null;
+
+    var presence_details = tp as PresenceDetails;
+    if (presence_details == null)
+      return null;
+
+    var i = new Image ();
+    i.set_from_icon_name (presence_to_icon (presence_details.presence_type), IconSize.BUTTON);
+    i.set_tooltip_text (presence_details.presence_message);
+
+    var id1 = tp.notify["presence-type"].connect ((pspec) => {
+      i.set_from_icon_name (presence_to_icon (presence_details.presence_type), IconSize.BUTTON);
+     });
+    var id2 = tp.notify["presence-message"].connect ( (pspec) => {
+	i.set_tooltip_text (presence_details.presence_message);
+      });
+    i.destroy.connect (() => {
+	tp.disconnect(id1);
+	tp.disconnect(id2);
+      });
+    return i;
+  }
+
   private bool changed_cb () {
     changed_id = 0;
     update ();

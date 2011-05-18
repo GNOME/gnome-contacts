@@ -151,12 +151,13 @@ public class Contacts.App : Window {
     return grid;
   }
 
-  private void add_string_label (string label, string val) {
+  private Grid add_string_label (string label, string val) {
     var grid = add_label(label, true, true);
     var v = new Label (val);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
     grid.add (v);
+    return grid;
   }
 
   private void add_string_property_label (string label, Contact contact, string pname) {
@@ -234,6 +235,25 @@ public class Contacts.App : Window {
       }
       add_string_label ("Home", "test@example.com");
       add_string_label ("Work", "lazy@example.com");
+    }
+
+    var ims = contact.individual.im_addresses;
+    var im_keys = ims.get_keys ();
+    if (!im_keys.is_empty) {
+      add_label_spacer ();
+      add_label (_("Chat"), false, false);
+      foreach (var protocol in im_keys) {
+	foreach (var id in ims[protocol]) {
+	  var label_grid = add_string_label (protocol, id);
+	  var presence = contact.create_presence_widget (protocol, id);
+	  if (presence != null) {
+	    presence.set_valign (Align.CENTER);
+	    presence.set_halign (Align.END);
+	    presence.set_hexpand (true);
+	    label_grid.add (presence);
+	  }
+	}
+      }
     }
 
     add_label_spacer ();
