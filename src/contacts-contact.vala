@@ -103,6 +103,32 @@ public class Contacts.Contact : GLib.Object  {
     return true;
   }
 
+  public static string presence_to_icon (PresenceType presence) {
+    string? iconname = null;
+    switch (presence) {
+    default:
+    case PresenceType.OFFLINE:
+    case PresenceType.UNSET:
+    case PresenceType.ERROR:
+      break;
+    case PresenceType.AVAILABLE:
+    case PresenceType.UNKNOWN:
+      iconname = "user-available-symbolic";
+      break;
+    case PresenceType.AWAY:
+    case PresenceType.EXTENDED_AWAY:
+      iconname = "user-away-symbolic";
+      break;
+    case PresenceType.BUSY:
+      iconname = "user-busy-symbolic";
+      break;
+    case PresenceType.HIDDEN:
+      iconname = "user-invisible-symbolic";
+      break;
+    }
+    return iconname;
+  }
+
   private bool changed_cb () {
     changed_id = 0;
     update ();

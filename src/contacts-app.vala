@@ -74,20 +74,7 @@ public class Contacts.App : Window {
 	model.get (iter, 0, out contact);
 	Individual individual = contact.individual;
 
-	string? iconname = null;
-	switch (individual.presence_type) {
-	case PresenceType.AVAILABLE:
-	case PresenceType.UNKNOWN:
-	  iconname = "user-available-symbolic";
-	  break;
-	case PresenceType.AWAY:
-	case PresenceType.EXTENDED_AWAY:
-	  iconname = "user-away-symbolic";
-	  break;
-	case PresenceType.BUSY:
-	  iconname = "user-busy-symbolic";
-	  break;
-	}
+	string? iconname = Contact.presence_to_icon (individual.presence_type);
 	cell.set ("visible", icon != null);
 	if (icon != null)
 	  cell.set ("icon-name", iconname);
