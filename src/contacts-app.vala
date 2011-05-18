@@ -261,9 +261,27 @@ public class Contacts.App : Window {
 	if (p.parameters.contains ("type"))
 	  type = p.parameters["type"].iterator().get();
 	add_string_label (type, p.value, "mail-unread-symbolic", out row);
+	row.clickable.clicked.connect ( () => {
+	    try {
+	      Gtk.show_uri (null, "mailto:" + Uri.escape_string (p.value, "@" , false), 0);
+	    } catch {
+	    }
+	  });
       }
       add_string_label ("Home", "test@example.com", "mail-unread-symbolic", out row);
+      row.clickable.clicked.connect ( () => {
+	  try {
+	    Gtk.show_uri (null, "mailto:" + Uri.escape_string ("test@example.com", "@" , false), 0);
+	  } catch {
+	  }
+	});
       add_string_label ("Work", "lazy@example.com", "mail-unread-symbolic", out row);
+      row.clickable.clicked.connect ( () => {
+	  try {
+	    Gtk.show_uri (null, "mailto:" + Uri.escape_string ("lazy@example.com", "@" , false), 0);
+	  } catch {
+	  }
+	});
     }
 
     var ims = contact.individual.im_addresses;
