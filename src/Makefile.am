@@ -1,4 +1,4 @@
-NULL = 
+NULL =
 
 AM_CPPFLAGS = \
 	-include config.h \
@@ -19,6 +19,7 @@ gnome_contacts_SOURCES = \
 	contacts-app.vala \
 	contacts-contact.vala \
 	contacts-starred-button.vala \
+	contacts-hover-image.vala \
 	contacts-clickable.vala \
 	main.vala \
 	$(NULL)
