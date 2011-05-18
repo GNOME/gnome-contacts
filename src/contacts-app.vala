@@ -357,6 +357,10 @@ public class Contacts.App : Window {
     middle_grid.attach (scrolled, 0, 1, 1, 1);
     grid.attach (frame, 0, 0, 1, 2);
 
+    contacts_tree_view = new TreeView.with_model (filter_model);
+    setup_contacts_view (contacts_tree_view);
+    scrolled.add (contacts_tree_view);
+
     var ebox = new EventBox ();
     ebox.set_hexpand (true);
     grid.attach (ebox, 1, 0, 1, 2);
@@ -374,6 +378,7 @@ public class Contacts.App : Window {
     var fields_scrolled = new ScrolledWindow (null, null);
     fields_scrolled.set_hexpand (true);
     fields_scrolled.set_vexpand (true);
+    fields_scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     fields_grid = new Grid ();
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_scrolled.add_with_viewport (fields_grid);
@@ -398,10 +403,6 @@ public class Contacts.App : Window {
     button.add (hbox2);
     bbox.pack_end (button, false, false, 0);
     bbox.set_child_secondary (button, true);
-
-    contacts_tree_view = new TreeView.with_model (filter_model);
-    setup_contacts_view (contacts_tree_view);
-    scrolled.add (contacts_tree_view);
 
     grid.show_all ();
   }
