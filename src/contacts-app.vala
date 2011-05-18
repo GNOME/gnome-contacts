@@ -130,16 +130,31 @@ public class Contacts.App : Window {
     }
   }
 
-  private Grid add_label (string label, bool is_clickable, bool dim) {
+  private Grid add_label (string label, bool is_clickable, bool dim, string? icon_name) {
     var grid = new Grid ();
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
     var l = new Label (label);
-    label_size_group.add_widget (l);
+    Widget w = l;
     if (dim)
       l.get_style_context ().add_class ("dim-label");
     l.set_alignment (1, 0.5f);
-    grid.add (l);
+
+    if (icon_name != null) {
+      var grid2 = new Grid ();
+      grid2.set_orientation (Orientation.HORIZONTAL);
+      var image = new HoverImage();
+      image.set_from_icon_name (icon_name, IconSize.BUTTON);
+      grid2.add (image);
+      l.set_hexpand (true);
+      grid2.set_hexpand (false);
+      grid2.add (l);
+      w = grid2;
+    }
+
+    label_size_group.add_widget (w);
+    grid.add (w);
+
     if (is_clickable) {
       var clickable = new Contacts.Clickable ();
       clickable.set_hexpand (true);
@@ -152,8 +167,8 @@ public class Contacts.App : Window {
     return grid;
   }
 
-  private Grid add_string_label (string label, string val) {
-    var grid = add_label(label, true, true);
+  private Grid add_string_label (string label, string val, string? icon_name) {
+    var grid = add_label(label, true, true, icon_name);
     var v = new Label (val);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
@@ -161,14 +176,14 @@ public class Contacts.App : Window {
     return grid;
   }
 
-  private void add_string_property_label (string label, Contact contact, string pname) {
+  private void add_string_property_label (string label, Contact contact, string pname, string? icon_name) {
     Value prop_value;
     prop_value = Value (typeof (string));
     contact.individual.get_property (pname, ref prop_value);
     string val = prop_value.get_string ();
 
     if (val != null)
-      add_string_label (label, val);
+      add_string_label (label, val, icon_name);
   }
 
   private void display_contact (Contact contact) {
@@ -227,25 +242,25 @@ public class Contacts.App : Window {
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty || true) {
       add_label_spacer ();
-      add_label (_("Email"), false, false);
+      add_label (_("Email"), false, false, null);
       foreach (var p in emails) {
 	var type = "";
 	if (p.parameters.contains ("type"))
 	  type = p.parameters["type"].iterator().get();
-	add_string_label (type, p.value);
+	add_string_label (type, p.value, "mail-unread-symbolic");
       }
-      add_string_label ("Home", "test@example.com");
-      add_string_label ("Work", "lazy@example.com");
+      add_string_label ("Home", "test@example.com", "mail-unread-symbolic");
+      add_string_label ("Work", "lazy@example.com", "mail-unread-symbolic");
     }
 
     var ims = contact.individual.im_addresses;
     var im_keys = ims.get_keys ();
     if (!im_keys.is_empty) {
       add_label_spacer ();
-      add_label (_("Chat"), false, false);
+      add_label (_("Chat"), false, false, null);
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  var label_grid = add_string_label (protocol, id);
+	  var label_grid = add_string_label (protocol, id, null);
 	  var presence = contact.create_presence_widget (protocol, id);
 	  if (presence != null) {
 	    presence.set_valign (Align.CENTER);
@@ -258,11 +273,11 @@ public class Contacts.App : Window {
     }
 
     add_label_spacer ();
-    add_string_property_label (_("Alias"), contact, "alias");
+    add_string_property_label (_("Alias"), contact, "alias", null);
     add_label_spacer ();
-    add_string_label (_("Twitter"), "mytwittername");
+    add_string_label (_("Twitter"), "mytwittername", null);
     add_label_spacer ();
-    add_string_property_label (_("Full name"), contact, "full-name");
+    add_string_property_label (_("Full name"), contact, "full-name", null);
 
     card_grid.show_all ();
     fields_grid.show_all ();
