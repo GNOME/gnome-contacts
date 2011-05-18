@@ -122,6 +122,11 @@ public class Contacts.App : Window {
     filter_model.refilter ();
   }
 
+  private struct DetailsRow {
+    Clickable? clickable;
+    Grid grid;
+  }
+
   private void add_label_spacer () {
     if (fields_grid.get_children () != null) {
       var grid = new Grid ();
@@ -130,13 +135,16 @@ public class Contacts.App : Window {
     }
   }
 
-  private Grid add_label (string label, bool is_clickable, bool dim, string? icon_name) {
+  private void add_label (string label, bool is_header, string? icon_name, out DetailsRow row) {
     var grid = new Grid ();
+    row.grid = grid;
+    row.clickable = null;
+
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
     var l = new Label (label);
     Widget w = l;
-    if (dim)
+    if (!is_header)
       l.get_style_context ().add_class ("dim-label");
     l.set_alignment (1, 0.5f);
 
@@ -155,35 +163,39 @@ public class Contacts.App : Window {
     label_size_group.add_widget (w);
     grid.add (w);
 
-    if (is_clickable) {
+    if (!is_header) {
       var clickable = new Contacts.Clickable ();
+      row.clickable = clickable;
       clickable.set_hexpand (true);
       clickable.add (grid);
       fields_grid.add (clickable);
     } else {
       fields_grid.add (grid);
     }
-
-    return grid;
   }
 
-  private Grid add_string_label (string label, string val, string? icon_name) {
-    var grid = add_label(label, true, true, icon_name);
+  private void add_header (string label) {
+    add_label (label, false, null, null);
+  }
+
+  private void add_string_label (string label, string val, string? icon_name, out DetailsRow row) {
+    add_label (label, false, icon_name, out row);
     var v = new Label (val);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
-    grid.add (v);
-    return grid;
+    row.grid.add (v);
   }
 
-  private void add_string_property_label (string label, Contact contact, string pname, string? icon_name) {
+  private bool add_string_property_label (string label, Contact contact, string pname, string? icon_name, out DetailsRow row) {
     Value prop_value;
     prop_value = Value (typeof (string));
     contact.individual.get_property (pname, ref prop_value);
     string val = prop_value.get_string ();
 
     if (val != null)
-      add_string_label (label, val, icon_name);
+      add_string_label (label, val, icon_name, out row);
+
+    return val != null;
   }
 
   private void display_contact (Contact contact) {
@@ -239,45 +251,46 @@ public class Contacts.App : Window {
     starred.set_valign (Align.START);
     card_grid.attach (starred, 2, 0, 1, 1);
 
+    DetailsRow row;
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty || true) {
       add_label_spacer ();
-      add_label (_("Email"), false, false, null);
+      add_header (_("Email"));
       foreach (var p in emails) {
 	var type = "";
 	if (p.parameters.contains ("type"))
 	  type = p.parameters["type"].iterator().get();
-	add_string_label (type, p.value, "mail-unread-symbolic");
+	add_string_label (type, p.value, "mail-unread-symbolic", out row);
       }
-      add_string_label ("Home", "test@example.com", "mail-unread-symbolic");
-      add_string_label ("Work", "lazy@example.com", "mail-unread-symbolic");
+      add_string_label ("Home", "test@example.com", "mail-unread-symbolic", out row);
+      add_string_label ("Work", "lazy@example.com", "mail-unread-symbolic", out row);
     }
 
     var ims = contact.individual.im_addresses;
     var im_keys = ims.get_keys ();
     if (!im_keys.is_empty) {
       add_label_spacer ();
-      add_label (_("Chat"), false, false, null);
+      add_header (_("Chat"));
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  var label_grid = add_string_label (protocol, id, null);
+	  add_string_label (protocol, id, null, out row);
 	  var presence = contact.create_presence_widget (protocol, id);
 	  if (presence != null) {
 	    presence.set_valign (Align.CENTER);
 	    presence.set_halign (Align.END);
 	    presence.set_hexpand (true);
-	    label_grid.add (presence);
+	    row.grid.add (presence);
 	  }
 	}
       }
     }
 
     add_label_spacer ();
-    add_string_property_label (_("Alias"), contact, "alias", null);
+    add_string_property_label (_("Alias"), contact, "alias", null, out row);
     add_label_spacer ();
-    add_string_label (_("Twitter"), "mytwittername", null);
+    add_string_label (_("Twitter"), "mytwittername", null, out row);
     add_label_spacer ();
-    add_string_property_label (_("Full name"), contact, "full-name", null);
+    add_string_property_label (_("Full name"), contact, "full-name", null, out row);
 
     card_grid.show_all ();
     fields_grid.show_all ();
