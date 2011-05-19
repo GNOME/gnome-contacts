@@ -299,6 +299,26 @@ public class Contacts.App : Window {
 	    presence.set_hexpand (true);
 	    row.grid.add (presence);
 	  }
+
+	  var im_persona = contact.find_im_persona (protocol, id);
+
+	  if (im_persona != null) {
+	    row.clickable.clicked.connect ( () => {
+		try {
+		  var account = (im_persona.store as Tpf.PersonaStore).account;
+		  var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal); 
+		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE, TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
+		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE, (int) TelepathyGLib.HandleType.CONTACT);
+		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, id);
+
+		  // TODO: Should really use the event time like:
+		  // tp_user_action_time_from_x11(gtk_get_current_event_time())
+		  var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
+		  request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
+		} catch {
+		}
+	      });
+	  }
 	}
       }
     }
