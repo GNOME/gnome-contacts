@@ -283,7 +283,7 @@ public class Contacts.App : Window {
       add_header (_("Chat"));
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  add_string_label (protocol, id, null, out row);
+	  add_string_label (protocol, id, "user-available-symbolic", out row);
 	  var presence = contact.create_presence_widget (protocol, id);
 	  if (presence != null) {
 	    presence.set_valign (Align.CENTER);
