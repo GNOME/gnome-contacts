@@ -59,6 +59,14 @@ public class Contacts.Store  {
 		return contact.contains_strings (filter_values);
 	}
 
+	public bool is_first (TreeIter iter) {
+		ContactData *data;
+		list_store.get (iter, 1, out data);
+		if (data != null)
+			return data->is_first;
+		return false;
+	}
+
 	private ContactData? get_previous (ContactData data) {
 		ContactData *previous = null;
 		TreeIter iter = data.iter;

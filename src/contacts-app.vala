@@ -42,6 +42,20 @@ public class Contacts.App : Window {
     var column = new TreeViewColumn ();
     column.set_spacing (10);
 
+    var text = new CellRendererText ();
+    column.pack_start (text, true);
+    text.set ("weight", Pango.Weight.BOLD);
+    column.set_cell_data_func (text, (column, cell, model, iter) => {
+	Contact contact;
+
+	model.get (iter, 0, out contact);
+
+	string letter = "";
+	if (contacts_store.is_first (iter))
+	  letter = contact.display_name.get_char ().totitle ().to_string ();
+	cell.set ("text", letter);
+      });
+
     var icon = new CellRendererPixbuf ();
     column.pack_start (icon, false);
     column.set_cell_data_func (icon, (column, cell, model, iter) => {
@@ -52,7 +66,7 @@ public class Contacts.App : Window {
 	cell.set ("pixbuf", contact.avatar);
       });
 
-    var text = new CellRendererText ();
+    text = new CellRendererText ();
     column.pack_start (text, true);
     text.set ("weight", Pango.Weight.BOLD);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
