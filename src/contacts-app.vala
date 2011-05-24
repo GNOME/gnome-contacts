@@ -21,12 +21,9 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
-  private ContactStore contacts_store;
-  private TreeModelFilter filter_model;
+  private Store contacts_store;
   private Entry filter_entry;
   private Contact selected_contact;
-  string []? filter_values;
-  bool filter_favourites;
   TreeView contacts_tree_view;
   Grid fields_grid;
   Grid card_grid;
@@ -84,27 +81,8 @@ public class Contacts.App : Window {
     tree_view.append_column (column);
   }
 
-  private bool filter_row (TreeModel model,
-			   TreeIter iter) {
-    Contact contact;
-
-    model.get (iter, 0, out contact);
-
-    if (contact == null)
-      return false;
-
-    if (filter_favourites && !contact.individual.is_favourite)
-      return false;
-
-    if (filter_values == null || filter_values.length == 0)
-      return true;
-
-    return contact.contains_strings (filter_values);
-  }
-
   private void favourites_button_toggled (ToggleToolButton toggle_button) {
-    filter_favourites = toggle_button.get_active ();
-    filter_model.refilter ();
+    contacts_store.set_filter_favourites (toggle_button.get_active ());
   }
 
   private void filter_entry_changed (Editable editable) {
@@ -118,8 +96,7 @@ public class Contacts.App : Window {
       values = str.split(" ");
     }
 
-    filter_values = values;
-    filter_model.refilter ();
+    contacts_store.set_filter_values (values);
   }
 
   private struct DetailsRow {
@@ -367,17 +344,16 @@ public class Contacts.App : Window {
   }
 
   public App () {
-    contacts_store = new ContactStore ();
-    filter_model = new TreeModelFilter (contacts_store, null);
-    filter_model.set_visible_func (filter_row);
+    contacts_store = new Store ();
 
     aggregator = new IndividualAggregator ();
     aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
 	foreach (Individual i in removed) {
-	  contacts_store.remove_individual (i);
+	  contacts_store.remove (Contact.from_individual (i));
 	}
 	foreach (Individual i in added) {
-	  contacts_store.insert_individual (i);
+	  var c = new Contact (i);
+	  contacts_store.add (c);
 	}
       });
     aggregator.prepare ();
@@ -443,7 +419,7 @@ public class Contacts.App : Window {
     middle_grid.attach (scrolled, 0, 1, 1, 1);
     grid.attach (frame, 0, 0, 1, 2);
 
-    contacts_tree_view = new TreeView.with_model (filter_model);
+    contacts_tree_view = new TreeView.with_model (contacts_store.model);
     setup_contacts_view (contacts_tree_view);
     scrolled.add (contacts_tree_view);
 

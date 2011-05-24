@@ -20,31 +20,10 @@
 using Gtk;
 using Folks;
 
-public class Contacts.ContactStore : ListStore  {
-  public ContactStore () {
-    GLib.Type[] types = { typeof (Contact) };
-
-    set_column_types (types);
-  }
-  public Contact insert_individual (Individual i) {
-    return new Contact (i, this);
-  }
-  public void remove_individual (Individual i) {
-    Contact contact = Contact.from_individual (i);
-    if (contact != null) {
-      contact.remove ();
-    } else {
-      stdout.printf("removed individual %p with no contact!\n", i);
-    }
-  }
-}
-
 public class Contacts.Contact : GLib.Object  {
   static Gdk.Pixbuf fallback_avatar;
 
   public Individual individual;
-  public ContactStore store;
-  private TreeIter iter;
   uint changed_id;
 
   private Gdk.Pixbuf? _avatar;
@@ -79,14 +58,10 @@ public class Contacts.Contact : GLib.Object  {
     fallback_avatar = draw_fallback_avatar ();
   }
 
-  public Contact(Individual i, ContactStore s) {
+  public Contact(Individual i) {
     individual = i;
-    store = s;
     individual.set_data ("contact", this);
     update ();
-
-    store.append (out iter);
-    store.set (iter, 0, this);
 
     individual.notify.connect(notify_cb);
   }
@@ -94,7 +69,6 @@ public class Contacts.Contact : GLib.Object  {
   public void remove () {
     unqueue_changed ();
     individual.notify.disconnect(notify_cb);
-    store.remove (this.iter);
   }
 
   public bool contains_strings (string [] strings) {
@@ -172,8 +146,6 @@ public class Contacts.Contact : GLib.Object  {
     changed_id = 0;
     update ();
     changed ();
-    var path = store.get_path (iter);
-    store.row_changed (path, iter);
     return false;
   }
 
