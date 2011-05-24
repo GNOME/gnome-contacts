@@ -422,6 +422,7 @@ public class Contacts.App : Window {
 
     var scrolled = new ScrolledWindow(null, null);
     scrolled.set_min_content_width (340);
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
