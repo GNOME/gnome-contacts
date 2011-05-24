@@ -43,6 +43,7 @@ public class Contacts.App : Window {
     column.set_spacing (10);
 
     var text = new CellRendererText ();
+    text.set_alignment (0, 0);
     column.pack_start (text, true);
     text.set ("weight", Pango.Weight.BOLD);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
