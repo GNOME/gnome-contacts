@@ -45,7 +45,7 @@ public class Contacts.App : Window {
     var text = new CellRendererText ();
     text.set_alignment (0, 0);
     column.pack_start (text, true);
-    text.set ("weight", Pango.Weight.BOLD);
+    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	Contact contact;
 
