@@ -129,6 +129,7 @@ public class Contacts.Store  {
 			next = get_next (data);
 
 		list_store.remove (data.iter);
+		data.is_first = false;
 
 		if (next != null)
 			update_is_first (next, get_previous (next));
