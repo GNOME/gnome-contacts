@@ -167,7 +167,7 @@ public class Contacts.App : Window {
   }
 
   private void add_header (string label) {
-    add_label (label, false, null, null);
+    add_label (label, true, null, null);
   }
 
   private void add_string_label (string label, string val, string? icon_name, out DetailsRow row) {
