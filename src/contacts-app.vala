@@ -194,7 +194,7 @@ public class Contacts.App : Window {
 
     var image_frame = new Frame (null);
     label_size_group.add_widget (image_frame);
-    image_frame.get_style_context ().add_class ("contactframe");
+    image_frame.get_style_context ().add_class ("contact-frame");
     image_frame.set_shadow_type (ShadowType.OUT);
     var image = new Image ();
     image.set_size_request (100, 100);
@@ -440,6 +440,7 @@ public class Contacts.App : Window {
     scrolled.add (contacts_tree_view);
 
     var ebox = new EventBox ();
+    ebox.get_style_context ().add_class ("contact-pane");
     ebox.set_hexpand (true);
     grid.attach (ebox, 1, 0, 1, 2);
 
@@ -460,6 +461,7 @@ public class Contacts.App : Window {
     fields_grid = new Grid ();
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_scrolled.add_with_viewport (fields_grid);
+    fields_scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
     right_grid.attach (fields_scrolled, 0, 1, 1, 1);
 

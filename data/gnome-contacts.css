@@ -4,22 +4,31 @@ ContactsApp > GtkFrame.frame {
     padding: 0 1 1 1;
 }
 
-.contactframe {
+.contact-frame {
     border-style: solid;
     border-radius: 2;
     border-width: 2;
     padding: 1;
 }
 
-ContactsApp GtkEventBox {
+.contact-pane {
     background-color: #ffffff;
 }
 
+.contact-pane .clickable {
+    background-color: #ffffff;
+}
 
 .clickable:prelight,
 .clickable:prelight:active,
-.clickable:active{
+.clickable:active {
     background-color: @selected_bg_color;
     border-radius: 0;
+    color: #ffffff;
+}
+
+.clickable :prelight,
+.clickable :prelight:active,
+.clickable :active {
     color: #ffffff;
 }
