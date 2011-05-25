@@ -474,15 +474,23 @@ public class Contacts.App : Window {
     button = new Button.with_label(_("Edit"));
     bbox.pack_start (button, false, false, 0);
 
-    button = new Button ();
-    var label = new Label (_("More"));
-    var arrow = new Arrow (ArrowType.DOWN, ShadowType.NONE);
-    var hbox2 = new Box (Orientation.HORIZONTAL, 0);
-    hbox2.pack_start (label, true, false, 0);
-    hbox2.pack_start (arrow, false, false, 0);
-    button.add (hbox2);
-    bbox.pack_end (button, false, false, 0);
-    bbox.set_child_secondary (button, true);
+    MenuButton menu_button = new MenuButton (_("More"));
+
+    bbox.pack_end (menu_button, false, false, 0);
+    bbox.set_child_secondary (menu_button, true);
+
+    var menu = new Menu ();
+    var mi = new MenuItem.with_label (_("Add/Remove linked contacts..."));
+    menu.append (mi);
+    mi.show ();
+    mi = new MenuItem.with_label (_("Send..."));
+    menu.append (mi);
+    mi.show ();
+    mi = new MenuItem.with_label (_("Delete"));
+    menu.append (mi);
+    mi.show ();
+
+    menu_button.set_menu (menu);
 
     grid.show_all ();
   }
