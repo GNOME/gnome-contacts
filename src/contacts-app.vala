@@ -471,8 +471,10 @@ public class Contacts.App : Window {
     right_grid.attach (bbox, 0, 2, 1, 1);
 
     var button = new Button.with_label(_("Notes"));
+    button.get_style_context ().set_junction_sides (JunctionSides.RIGHT);
     bbox.pack_start (button, false, false, 0);
     button = new Button.with_label(_("Edit"));
+    button.get_style_context ().set_junction_sides (JunctionSides.LEFT);
     bbox.pack_start (button, false, false, 0);
 
     MenuButton menu_button = new MenuButton (_("More"));
