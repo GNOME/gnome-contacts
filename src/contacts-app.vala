@@ -245,7 +245,7 @@ public class Contacts.App : Window {
 
     DetailsRow row;
     var emails = contact.individual.email_addresses;
-    if (!emails.is_empty || true) {
+    if (!emails.is_empty) {
       add_label_spacer ();
       add_header (_("Email"));
       foreach (var p in emails) {
@@ -264,20 +264,6 @@ public class Contacts.App : Window {
 	    }
 	  });
       }
-      add_string_label ("Home", "test@example.com", "mail-unread-symbolic", out row);
-      row.clickable.clicked.connect ( () => {
-	  try {
-	    Gtk.show_uri (null, "mailto:" + Uri.escape_string ("test@example.com", "@" , false), 0);
-	  } catch {
-	  }
-	});
-      add_string_label ("Work", "lazy@example.com", "mail-unread-symbolic", out row);
-      row.clickable.clicked.connect ( () => {
-	  try {
-	    Gtk.show_uri (null, "mailto:" + Uri.escape_string ("lazy@example.com", "@" , false), 0);
-	  } catch {
-	  }
-	});
     }
 
     var ims = contact.individual.im_addresses;
