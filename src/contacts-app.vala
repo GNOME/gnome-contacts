@@ -250,8 +250,12 @@ public class Contacts.App : Window {
       add_header (_("Email"));
       foreach (var p in emails) {
 	var type = "";
-	if (p.parameters.contains ("type"))
-	  type = p.parameters["type"].iterator().get();
+	var types = p.parameters["type"];
+	if (types != null) {
+	  var i = types.iterator();
+	  if (i.next())
+	    type = i.get();
+	}
 	add_string_label (type, p.value, "mail-unread-symbolic", out row);
 	row.clickable.clicked.connect ( () => {
 	    try {
