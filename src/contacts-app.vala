@@ -335,8 +335,6 @@ public class Contacts.App : Window {
     add_string_property_label (_("Alias"), contact, "alias", null, out row);
     add_label_spacer ();
     add_string_label (_("Twitter"), "mytwittername", null, out row);
-    add_label_spacer ();
-    add_string_property_label (_("Full name"), contact, "full-name", null, out row);
 
     card_grid.show_all ();
     fields_grid.show_all ();
