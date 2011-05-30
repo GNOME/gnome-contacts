@@ -184,10 +184,11 @@ public class Contacts.App : Window {
     contact.individual.get_property (pname, ref prop_value);
     string val = prop_value.get_string ();
 
-    if (val != null)
-      add_string_label (label, val, icon_name, out row);
+    if (val == null || val.length == 0)
+      return false;
 
-    return val != null;
+    add_string_label (label, val, icon_name, out row);
+    return true;
   }
 
   private void display_contact (Contact contact) {
