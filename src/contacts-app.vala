@@ -309,6 +309,28 @@ public class Contacts.App : Window {
       }
     }
 
+    var phone_numbers = contact.individual.phone_numbers;
+    if (!phone_numbers.is_empty) {
+      add_label_spacer ();
+      add_header (_("Phone"));
+      foreach (var p in phone_numbers) {
+	var type = "";
+	var types = p.parameters["type"];
+	if (types != null) {
+	  var i = types.iterator();
+	  if (i.next())
+	    type = i.get();
+	}
+	add_string_label (type, p.value, null, out row);
+	row.clickable.clicked.connect ( () => {
+	    try {
+	      // How to call?
+	    } catch {
+	    }
+	  });
+      }
+    }
+
     add_label_spacer ();
     add_string_property_label (_("Alias"), contact, "alias", null, out row);
     add_label_spacer ();
