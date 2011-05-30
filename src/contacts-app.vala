@@ -230,10 +230,13 @@ public class Contacts.App : Window {
     l.set_hexpand (true);
     l.set_halign (Align.START);
     g.attach (l,  1, 0, 1, 1);
-    l = new Label ("\xE2\x80\x9Cnick\xE2\x80\x9D");
-    l.set_halign (Align.START);
-    g.attach (l,  1, 1, 1, 1);
-    l = new Label ("Consultant, Company Inc");
+    var nick = contact.individual.nickname;
+    if (nick != null && nick.length > 0) {
+      l = new Label ("\xE2\x80\x9C" + nick + "\xE2\x80\x9D");
+      l.set_halign (Align.START);
+      g.attach (l,  1, 1, 1, 1);
+    }
+    l = new Label ("<title>, <Company>");
     l.set_halign (Align.START);
     g.attach (l,  1, 2, 1, 1);
 
