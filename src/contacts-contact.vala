@@ -37,11 +37,17 @@ public class Contacts.Contact : GLib.Object  {
 
   public string display_name {
     get {
-      unowned string name = individual.full_name;
-      if (name != null)
+      unowned string? name = individual.full_name;
+      if (name != null && name.length > 0)
 	return name;
-      if (individual.alias != null)
+      unowned string? alias = individual.alias;
+      if (alias != null && alias.length > 0)
 	return individual.alias;
+      foreach (var email in individual.email_addresses) {
+	string? e = email.value;
+	if (e != null && e.length > 0)
+	  return email.value;
+      }
       return "";
     }
   }
