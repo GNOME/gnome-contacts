@@ -111,6 +111,46 @@ public class Contacts.Contact : GLib.Object  {
     return iconname;
   }
 
+
+  public static string[] format_address (PostalAddress addr) {
+    string[] lines = {};
+    string str;
+
+    str = addr.street;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.extension;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.locality;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.region;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.postal_code;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.po_box;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.country;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    str = addr.address_format;
+    if (str != null && str.length > 0)
+      lines += str;
+
+    return lines;
+  }
+
   public Persona? find_im_persona (string protocol, string im_address) {
     foreach (var p in individual.personas) {
       var iid = protocol + ":" + im_address;

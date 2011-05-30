@@ -117,6 +117,7 @@ public class Contacts.App : Window {
   private struct DetailsRow {
     Clickable? clickable;
     Grid grid;
+    Label label;
   }
 
   private void add_label_spacer () {
@@ -173,9 +174,19 @@ public class Contacts.App : Window {
   private void add_string_label (string label, string val, string? icon_name, out DetailsRow row) {
     add_label (label, false, icon_name, out row);
     var v = new Label (val);
+    row.label = v;
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
     row.grid.add (v);
+  }
+
+  private void add_extra_row (string val, ref DetailsRow row) {
+    var more_label = new Label (val);
+    more_label.set_valign (Align.CENTER);
+    more_label.set_halign (Align.START);
+    row.grid.attach_next_to (more_label, row.label, PositionType.BOTTOM, 1, 1);
+    more_label.show ();
+    row.label = more_label;
   }
 
   private bool add_string_property_label (string label, Contact contact, string pname, string? icon_name, out DetailsRow row) {
@@ -328,6 +339,34 @@ public class Contacts.App : Window {
 	    } catch {
 	    }
 	  });
+      }
+    }
+
+    var postals = contact.individual.postal_addresses;
+    if (!postals.is_empty) {
+      add_label_spacer ();
+      add_header (_("Addresses"));
+      foreach (var addr in postals) {
+	var type = "";
+	var types = addr.types;
+	if (types != null) {
+	  var i = types.iterator();
+	  if (i.next())
+	    type = i.get();
+	}
+	string[] strs = Contact.format_address (addr);
+	if (strs.length > 0) {
+	  add_string_label (type, strs[0], null, out row);
+	  foreach (var s in strs[1:strs.length])
+	    add_extra_row (s, ref row);
+
+	  row.clickable.clicked.connect ( () => {
+	      try {
+		// How to call?
+	      } catch {
+	      }
+	    });
+	}
       }
     }
 
