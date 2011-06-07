@@ -514,20 +514,18 @@ public class Contacts.App : Window {
     right_grid.attach (fields_scrolled, 0, 1, 1, 1);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
+    bbox.set_spacing (5);
     bbox.set_layout (ButtonBoxStyle.START);
     right_grid.attach (bbox, 0, 2, 1, 1);
 
     var button = new Button.with_label(_("Notes"));
-    button.get_style_context ().set_junction_sides (JunctionSides.RIGHT);
     bbox.pack_start (button, false, false, 0);
+
     button = new Button.with_label(_("Edit"));
-    button.get_style_context ().set_junction_sides (JunctionSides.LEFT);
     bbox.pack_start (button, false, false, 0);
 
     MenuButton menu_button = new MenuButton (_("More"));
-
-    bbox.pack_end (menu_button, false, false, 0);
-    bbox.set_child_secondary (menu_button, true);
+    bbox.pack_start (menu_button, false, false, 0);
 
     var menu = new Menu ();
     var mi = new MenuItem.with_label (_("Add/Remove linked contacts..."));
