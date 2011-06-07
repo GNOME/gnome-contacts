@@ -26,7 +26,6 @@ public class Contacts.App : Window {
   private Contact selected_contact;
   TreeView contacts_tree_view;
   Grid fields_grid;
-  Grid card_grid;
   SizeGroup label_size_group;
 
   public IndividualAggregator aggregator { get; private set; }
@@ -239,6 +238,11 @@ public class Contacts.App : Window {
 	image.set_from_pixbuf (pixbuf);
     }
 
+    var card_grid = new Grid ();
+    card_grid.set_row_spacing (8);
+
+    fields_grid.attach (card_grid, 0, 0, 1, 1);
+
     card_grid.attach (image_frame, 0, 0, 1, 1);
 
     var g = new Grid ();
@@ -376,14 +380,10 @@ public class Contacts.App : Window {
     add_label_spacer ();
     add_string_label (_("Twitter"), "mytwittername", null, out row);
 
-    card_grid.show_all ();
     fields_grid.show_all ();
   }
 
   private void clear_display () {
-    foreach (var w in card_grid.get_children ()) {
-      w.destroy ();
-    }
     foreach (var w in fields_grid.get_children ()) {
       w.destroy ();
     }
@@ -496,22 +496,19 @@ public class Contacts.App : Window {
     right_grid.set_border_width (10);
     ebox.add (right_grid);
 
-    label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
-    card_grid = new Grid ();
-    card_grid.set_row_spacing (8);
-
-    right_grid.attach (card_grid, 0, 0, 1, 1);
-
     var fields_scrolled = new ScrolledWindow (null, null);
     fields_scrolled.set_hexpand (true);
     fields_scrolled.set_vexpand (true);
     fields_scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+
     fields_grid = new Grid ();
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_scrolled.add_with_viewport (fields_grid);
     fields_scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
     right_grid.attach (fields_scrolled, 0, 1, 1, 1);
+
+    label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     bbox.set_spacing (5);
