@@ -31,12 +31,10 @@ public class Contacts.Store  {
 	ListStore list_store;
 	Gee.ArrayList<ContactData> contacts;
 	string []? filter_values;
-	bool filter_favourites;
 
 	public Store () {
 		list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
 		contacts = new Gee.ArrayList<ContactData>();
-		filter_favourites = false;
 
 		list_store.set_sort_func (0, (model, iter_a, iter_b) => {
 				Contact a, b;
@@ -50,9 +48,6 @@ public class Contacts.Store  {
 	public TreeModel model { get { return list_store; } }
 
 	private bool apply_filter (Contact contact) {
-		if (filter_favourites && !contact.individual.is_favourite)
-			return false;
-
 		if (filter_values == null || filter_values.length == 0)
 			return true;
 
@@ -151,14 +146,6 @@ public class Contacts.Store  {
 		foreach (var d in contacts) {
 			update_visible (d);
 		}
-	}
-
-	public void set_filter_favourites (bool filter) {
-		if (filter_favourites == filter)
-			return;
-
-		filter_favourites = filter;
-		refilter ();
 	}
 
 	public void set_filter_values (string []? values) {

@@ -96,10 +96,6 @@ public class Contacts.App : Window {
     tree_view.append_column (column);
   }
 
-  private void favourites_button_toggled (ToggleToolButton toggle_button) {
-    contacts_store.set_filter_favourites (toggle_button.get_active ());
-  }
-
   private void filter_entry_changed (Editable editable) {
     string []? values;
     string str = filter_entry.get_text ();
@@ -250,13 +246,6 @@ public class Contacts.App : Window {
     l = new Label ("<title>, <Company>");
     l.set_halign (Align.START);
     g.attach (l,  1, 2, 1, 1);
-
-    var starred = new StarredButton ();
-    starred.set_active (contact.individual.is_favourite);
-    starred.set_hexpand (false);
-    starred.set_vexpand (false);
-    starred.set_valign (Align.START);
-    card_grid.attach (starred, 2, 0, 1, 1);
 
     DetailsRow row;
     var emails = contact.individual.email_addresses;
@@ -437,13 +426,6 @@ public class Contacts.App : Window {
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.set_vexpand (false);
-
-    var favourite_button = new ToggleToolButton ();
-    favourite_button.set_icon_name ("user-bookmarks-symbolic");
-    favourite_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    favourite_button.is_important = false;
-    toolbar.add (favourite_button);
-    favourite_button.toggled.connect (favourites_button_toggled);
 
     var separator = new SeparatorToolItem ();
     separator.set_draw (false);
