@@ -67,8 +67,15 @@ public class Contacts.App : Window {
 	cell.set ("pixbuf", contact.avatar);
       });
 
+    tree_view.append_column (column);
+
+    column = new TreeViewColumn ();
+
+    var area = (CellAreaBox)column.get_area ();
+    area.set_orientation (Orientation.VERTICAL);
+
     text = new CellRendererText ();
-    column.pack_start (text, true);
+    column.pack_start (text, false);
     text.set ("weight", Pango.Weight.BOLD);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	Contact contact;
@@ -80,6 +87,8 @@ public class Contacts.App : Window {
       });
 
     icon = new CellRendererPixbuf ();
+
+    icon.set_alignment (0, 0.5f);
     column.pack_start (icon, false);
     column.set_cell_data_func (icon, (column, cell, model, iter) => {
 	Contact contact;
@@ -88,9 +97,12 @@ public class Contacts.App : Window {
 	Individual individual = contact.individual;
 
 	string? iconname = Contact.presence_to_icon (individual.presence_type);
-	cell.set ("visible", icon != null);
+	//cell.set ("visible", icon != null);
 	if (icon != null)
 	  cell.set ("icon-name", iconname);
+	else
+	  cell.set ("icon-name", null);
+
       });
 
     tree_view.append_column (column);
