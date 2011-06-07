@@ -30,7 +30,7 @@ public class Contacts.Contact : GLib.Object  {
   public Gdk.Pixbuf avatar {
     get {
       if (_avatar == null)
-	_avatar = load_icon (individual.avatar);
+	_avatar = frame_icon (load_icon (individual.avatar));
       return _avatar;
     }
   }
@@ -249,7 +249,7 @@ public class Contacts.Contact : GLib.Object  {
       try {
 	var stream = file.read ();
 	Cancellable c = new Cancellable ();
-	res = new Gdk.Pixbuf.from_stream_at_scale (stream, 48, 48, true, c);
+	res = new Gdk.Pixbuf.from_stream_at_scale (stream, 44, 44, true, c);
       } catch (Error e) {
       }
     }
@@ -268,54 +268,42 @@ public class Contacts.Contact : GLib.Object  {
     cr.curve_to(x,y,x,y,x+r,y);
   }
 
-  private static Gdk.Pixbuf draw_fallback_avatar () {
+  private static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
     var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
     var cr = new Cairo.Context (cst);
 
-    cr.save ();
-
-    var gradient = new Cairo.Pattern.linear (1,  1, 1, 1+48);
-    gradient.add_color_stop_rgb (0, 0.7098, 0.7098, 0.7098);
-    gradient.add_color_stop_rgb (1, 0.8901, 0.8901, 0.8901);
-    cr.set_source (gradient);
-    cr.rectangle (1, 1, 46, 46);
+    cr.set_source_rgba (0, 0, 0, 0);
+    cr.rectangle (0, 0, 48, 48);
     cr.fill ();
 
-    cr.restore ();
+    round_rect (cr, 0, 0, 48, 48, 5);
+    cr.set_source_rgb (0.74117, 0.74117, 0.74117);
+    cr.fill ();
+
+    round_rect (cr, 1, 1, 46, 46, 5);
+    cr.set_source_rgb (1, 1, 1);
+    cr.fill ();
+
+    Gdk.cairo_set_source_pixbuf (cr, icon, 2, 2);
+    cr.paint();
+
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 48, 48);
+  }
+
+  private static Gdk.Pixbuf draw_fallback_avatar () {
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 44, 44);
+    var cr = new Cairo.Context (cst);
 
     try {
-      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", 48, IconLookupFlags.GENERIC_FALLBACK);
+      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", 44, IconLookupFlags.GENERIC_FALLBACK);
       var image = icon_info.load_icon ();
       if (image != null) {
-	Gdk.cairo_set_source_pixbuf (cr, image, 3, 3);
+	Gdk.cairo_set_source_pixbuf (cr, image, 0, 0);
 	cr.paint();
       }
     } catch {
     }
 
-
-    cr.push_group ();
-
-    cr.set_source_rgba (0, 0, 0, 0);
-    cr.paint ();
-    round_rect (cr, 0, 0, 48, 48, 5);
-    cr.set_source_rgb (0.74117, 0.74117, 0.74117);
-    cr.fill ();
-    round_rect (cr, 1, 1, 46, 46, 5);
-    cr.set_source_rgb (1, 1, 1);
-    cr.fill ();
-    round_rect (cr, 2, 2, 44, 44, 5);
-    cr.set_source_rgb (0.341176, 0.341176, 0.341176);
-    cr.fill ();
-    cr.set_operator (Cairo.Operator.CLEAR);
-    round_rect (cr, 3, 3, 42, 42, 5);
-    cr.set_source_rgba (0, 0, 0, 0);
-    cr.fill ();
-
-    var pattern = cr.pop_group ();
-    cr.set_source (pattern);
-    cr.paint ();
-
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 48, 48);
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 44, 44);
   }
 }
