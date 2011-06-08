@@ -27,6 +27,10 @@ public class Contacts.App : Window {
   TreeView contacts_tree_view;
   Grid fields_grid;
   SizeGroup label_size_group;
+  bool has_notes;
+  Widget notes_dot;
+  ButtonBox normal_buttons;
+  ButtonBox editing_buttons;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -208,8 +212,7 @@ public class Contacts.App : Window {
     return true;
   }
 
-  private void display_contact (Contact contact) {
-
+  private void display_card (Contact contact) {
     var card_grid = new Grid ();
     fields_grid.attach (card_grid, 0, 0, 1, 1);
     card_grid.set_row_spacing (8);
@@ -270,7 +273,11 @@ public class Contacts.App : Window {
     merged_presence.set_valign (Align.END);
     merged_presence.set_vexpand (true);
     g.attach (merged_presence,  0, 3, 1, 1);
+  }
 
+  private void display_contact (Contact contact) {
+    set_has_notes (!contact.individual.notes.is_empty);
+    display_card (contact);
 
     DetailsRow row;
     var emails = contact.individual.email_addresses;
@@ -359,6 +366,11 @@ public class Contacts.App : Window {
     foreach (var w in fields_grid.get_children ()) {
       w.destroy ();
     }
+  }
+
+  private void set_has_notes (bool has_notes) {
+    this.has_notes = has_notes;
+    notes_dot.queue_draw ();
   }
 
   private void selected_contact_changed () {
@@ -485,18 +497,54 @@ public class Contacts.App : Window {
     label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
+    normal_buttons = bbox;
     bbox.set_spacing (5);
     bbox.set_layout (ButtonBoxStyle.START);
     right_grid.attach (bbox, 0, 2, 1, 1);
 
-    var button = new Button.with_label(_("Notes"));
-    bbox.pack_start (button, false, false, 0);
+    var notes_button = new Button ();
+    var notes_grid = new Grid ();
+    var label = new Label(_("Notes"));
+    label.set_hexpand (true);
+    // We create an empty widget the same size as the dot in order
+    // to make the label center correctly
+    var a = new DrawingArea();
+    a.set_size_request (6, -1);
+    a.set_has_window (false);
+    notes_grid.add (a);
+    notes_grid.add (label);
+    notes_dot = new DrawingArea();
+    notes_dot.set_has_window (false);
+    notes_dot.set_size_request (6, -1);
+    notes_dot.draw.connect ( (widget, cr) => {
+	if (has_notes) {
+	  cr.arc (3, 3 + 2, 3, 0, 2 * Math.PI);
+	  Gdk.RGBA color;
+	  color = widget.get_style_context ().get_color (0);
+	  Gdk.cairo_set_source_rgba (cr, color);
+	  cr.fill ();
+	}
+	return true;
+      });
+    notes_grid.add (notes_dot);
+    notes_button.add (notes_grid);
 
-    button = new Button.with_label(_("Edit"));
+    bbox.pack_start (notes_button, false, false, 0);
+
+    var button = new Button.with_label(_("Edit"));
     bbox.pack_start (button, false, false, 0);
 
     MenuButton menu_button = new MenuButton (_("More"));
     bbox.pack_start (menu_button, false, false, 0);
+
+    bbox = new ButtonBox (Orientation.HORIZONTAL);
+    editing_buttons = bbox;
+    bbox.set_spacing (5);
+    bbox.set_layout (ButtonBoxStyle.END);
+    right_grid.attach (bbox, 0, 3, 1, 1);
+
+    button = new Button.with_label(_("Close"));
+    bbox.pack_start (button, false, false, 0);
 
     var menu = new Menu ();
     var mi = new MenuItem.with_label (_("Add/Remove linked contacts..."));
@@ -512,5 +560,6 @@ public class Contacts.App : Window {
     menu_button.set_menu (menu);
 
     grid.show_all ();
+    editing_buttons.hide ();
   }
 }
