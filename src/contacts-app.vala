@@ -299,7 +299,7 @@ public class Contacts.App : Window {
     if (!im_keys.is_empty) {
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  add_string_label (protocol, id, out row);
+	  add_string_label (_("Chat"), contact.format_im_name (protocol, id), out row);
 	  Button? button = null;
 	  var presence = contact.create_presence_widget (protocol, id);
 	  if (presence != null) {
@@ -307,24 +307,20 @@ public class Contacts.App : Window {
 	    button.add (presence);
 	  }
 
-	  var im_persona = contact.find_im_persona (protocol, id);
-
-	  if (button != null && im_persona != null) {
+	  if (button != null) {
 	    button.clicked.connect ( () => {
-		try {
-		  var account = (im_persona.store as Tpf.PersonaStore).account;
-		  var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
-		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE, TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
-		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE, (int) TelepathyGLib.HandleType.CONTACT);
-		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, id);
+		var im_persona = contact.find_im_persona (protocol, id);
+		var account = (im_persona.store as Tpf.PersonaStore).account;
+		var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
+		request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE, TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
+		request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE, (int) TelepathyGLib.HandleType.CONTACT);
+		request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, id);
 
-		  // TODO: Should really use the event time like:
-		  // tp_user_action_time_from_x11(gtk_get_current_event_time())
-		  var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
-		  request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
-		} catch {
-		}
-		});
+		// TODO: Should really use the event time like:
+		// tp_user_action_time_from_x11(gtk_get_current_event_time())
+		var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
+		request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
+	      });
 	  }
 	}
       }

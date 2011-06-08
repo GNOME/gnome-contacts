@@ -182,15 +182,19 @@ public class Contacts.Contact : GLib.Object  {
     return lines;
   }
 
-  public Persona? find_im_persona (string protocol, string im_address) {
+  public Tpf.Persona? find_im_persona (string protocol, string im_address) {
     foreach (var p in individual.personas) {
       var iid = protocol + ":" + im_address;
       var tp = p as Tpf.Persona;
       if (tp != null && tp.iid == iid) {
-	return p;
+	return tp;
       }
     }
     return null;
+  }
+
+  public string format_im_name (string protocol, string id) {
+    return id + " (" + protocol + ")";
   }
 
   private void update_presence_widgets (Image image, Label label) {
@@ -247,19 +251,15 @@ public class Contacts.Contact : GLib.Object  {
     if (tp == null)
       return null;
 
-    var presence_details = tp as PresenceDetails;
-    if (presence_details == null)
-      return null;
-
     var i = new Image ();
-    i.set_from_icon_name (presence_to_icon_full (presence_details.presence_type), IconSize.MENU);
-    i.set_tooltip_text (presence_details.presence_message);
+    i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
+    i.set_tooltip_text (tp.presence_message);
 
     var id1 = tp.notify["presence-type"].connect ((pspec) => {
-      i.set_from_icon_name (presence_to_icon_full (presence_details.presence_type), IconSize.MENU);
+      i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
      });
     var id2 = tp.notify["presence-message"].connect ( (pspec) => {
-	i.set_tooltip_text (presence_details.presence_message);
+	i.set_tooltip_text (tp.presence_message);
       });
     i.destroy.connect (() => {
 	tp.disconnect(id1);
