@@ -204,6 +204,10 @@ public class Contacts.App : Window {
 
   private void display_contact (Contact contact) {
 
+    var card_grid = new Grid ();
+    fields_grid.attach (card_grid, 0, 0, 1, 1);
+    card_grid.set_row_spacing (8);
+
     var image_frame = new Frame (null);
     label_size_group.add_widget (image_frame);
     image_frame.get_style_context ().add_class ("contact-frame");
@@ -231,30 +235,36 @@ public class Contacts.App : Window {
 	image.set_from_pixbuf (pixbuf);
     }
 
-    var card_grid = new Grid ();
-    card_grid.set_row_spacing (8);
-
-    fields_grid.attach (card_grid, 0, 0, 1, 1);
-
     card_grid.attach (image_frame, 0, 0, 1, 1);
-
-    var g = new Grid ();
+    card_grid.set_vexpand (false);
+    var g = new Grid();
     card_grid.attach (g, 1, 0, 1, 1);
 
     var l = new Label (null);
     l.set_markup ("<big><b>" + contact.display_name + "</b></big>");
     l.set_hexpand (true);
     l.set_halign (Align.START);
-    g.attach (l,  1, 0, 1, 1);
+    l.set_valign (Align.START);
+    g.attach (l,  0, 0, 1, 1);
     var nick = contact.individual.nickname;
     if (nick != null && nick.length > 0) {
       l = new Label ("\xE2\x80\x9C" + nick + "\xE2\x80\x9D");
       l.set_halign (Align.START);
-      g.attach (l,  1, 1, 1, 1);
+      l.set_valign (Align.START);
+      g.attach (l,  0, 1, 1, 1);
     }
+
     l = new Label ("<title>, <Company>");
     l.set_halign (Align.START);
-    g.attach (l,  1, 2, 1, 1);
+    l.set_valign (Align.START);
+    g.attach (l,  0, 2, 1, 1);
+
+    var merged_presence = contact.create_merged_presence_widget ();
+    merged_presence.set_halign (Align.START);
+    merged_presence.set_valign (Align.END);
+    merged_presence.set_vexpand (true);
+    g.attach (merged_presence,  0, 3, 1, 1);
+
 
     DetailsRow row;
     var emails = contact.individual.email_addresses;

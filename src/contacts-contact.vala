@@ -85,6 +85,30 @@ public class Contacts.Contact : GLib.Object  {
     return true;
   }
 
+  public static string presence_to_string (PresenceType presence) {
+    switch (presence) {
+    default:
+    case PresenceType.UNKNOWN:
+      return _("Unknown status");
+    case PresenceType.OFFLINE:
+      return _("Offline");
+    case PresenceType.UNSET:
+      return "";
+    case PresenceType.ERROR:
+      return _("Error");
+    case PresenceType.AVAILABLE:
+      return _("Availible");
+    case PresenceType.AWAY:
+      return _("Away");
+    case PresenceType.EXTENDED_AWAY:
+      return _("Extended away");
+    case PresenceType.BUSY:
+      return _("Busy");
+    case PresenceType.HIDDEN:
+      return _("Hidden");
+    }
+  }
+
   public static string presence_to_icon (PresenceType presence) {
     string? iconname = null;
     switch (presence) {
@@ -167,6 +191,55 @@ public class Contacts.Contact : GLib.Object  {
       }
     }
     return null;
+  }
+
+  private void update_presence_widgets (Image image, Label label) {
+    if (individual.presence_type == PresenceType.UNSET) {
+      image.clear ();
+      image.hide ();
+      label.hide ();
+      label.set_text ("");
+      return;
+    }
+
+    image.set_from_icon_name (presence_to_icon_full (individual.presence_type), IconSize.MENU);
+    image.show ();
+    label.show ();
+    if (individual.presence_message == null ||
+	individual.presence_message.length == 0) {
+      label.set_text (presence_to_string (individual.presence_type));
+    } else {
+      label.set_text (individual.presence_message);
+    }
+  }
+
+  public Widget? create_merged_presence_widget () {
+    var grid = new Grid ();
+    grid.set_row_spacing (4);
+    var image = new Image ();
+    image.set_no_show_all (true);
+    grid.add (image);
+    var label = new Label ("");
+    label.set_no_show_all (true);
+    grid.add (label);
+
+
+    update_presence_widgets (image, label);
+
+    var id1 = individual.notify["presence-type"].connect ((pspec) => {
+	update_presence_widgets (image, label);
+     });
+
+    var id2 = individual.notify["presence-message"].connect ( (pspec) => {
+	update_presence_widgets (image, label);
+      });
+
+    grid.destroy.connect (() => {
+	individual.disconnect(id1);
+	individual.disconnect(id2);
+      });
+
+    return grid;
   }
 
   public Widget? create_presence_widget (string protocol, string im_address) {
