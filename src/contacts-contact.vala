@@ -183,8 +183,8 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Tpf.Persona? find_im_persona (string protocol, string im_address) {
+    var iid = protocol + ":" + im_address;
     foreach (var p in individual.personas) {
-      var iid = protocol + ":" + im_address;
       var tp = p as Tpf.Persona;
       if (tp != null && tp.iid == iid) {
 	return tp;
@@ -194,6 +194,14 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public string format_im_name (string protocol, string id) {
+    string? service = null;
+    var persona = find_im_persona (protocol, id);
+    if (persona != null) {
+      var account = (persona.store as Tpf.PersonaStore).account;
+      service = account.service;
+    }
+    if (service != null)
+      return id + " (" + service + ")";
     return id + " (" + protocol + ")";
   }
 
