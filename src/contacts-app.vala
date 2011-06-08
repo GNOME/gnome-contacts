@@ -123,15 +123,7 @@ public class Contacts.App : Window {
 
   private struct DetailsRow {
     Grid grid;
-    Label label;
-  }
-
-  private void add_label_spacer () {
-    if (fields_grid.get_children () != null) {
-      var grid = new Grid ();
-      grid.set_size_request (8, 8);
-      fields_grid.add (grid);
-    }
+    Widget label;
   }
 
   private void add_label (string label, out DetailsRow row) {
@@ -159,6 +151,20 @@ public class Contacts.App : Window {
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
     row.grid.add (v);
+  }
+
+  private void add_link (string uri, string text, ref DetailsRow row) {
+    var v = new LinkButton.with_label (uri, text);
+    v.set_valign (Align.CENTER);
+    v.set_halign (Align.START);
+    v.show ();
+
+    if (row.label != null)
+      row.grid.attach_next_to (v, row.label, PositionType.BOTTOM, 1, 1);
+    else
+      row.grid.add (v);
+
+    row.label = v;
   }
 
   private void add_extra_row (string val, ref DetailsRow row) {
@@ -358,7 +364,10 @@ public class Contacts.App : Window {
     }
 
     add_string_property_label (_("Alias"), contact, "alias", out row);
-    add_string_label (_("Twitter"), "mytwittername", out row);
+
+    add_label ("Links", out row);
+    add_link ("http://www.twitter.com", _("Twitter"), ref row);
+    add_link ("http://www.facebook.com", _("Facebook"), ref row);
 
     fields_grid.show_all ();
   }
