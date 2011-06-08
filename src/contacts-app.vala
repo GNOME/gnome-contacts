@@ -286,10 +286,7 @@ public class Contacts.App : Window {
 	add_string_label (type, p.value, out row);
 	var button = add_button ("mail-unread-symbolic", ref row);
 	button.clicked.connect ( () => {
-	    try {
-	      Gtk.show_uri (null, "mailto:" + Uri.escape_string (p.value, "@" , false), 0);
-	    } catch {
-	    }
+	    Utils.compose_mail (p.value);
 	  });
       }
     }
@@ -309,17 +306,7 @@ public class Contacts.App : Window {
 
 	  if (button != null) {
 	    button.clicked.connect ( () => {
-		var im_persona = contact.find_im_persona (protocol, id);
-		var account = (im_persona.store as Tpf.PersonaStore).account;
-		var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
-		request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE, TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
-		request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE, (int) TelepathyGLib.HandleType.CONTACT);
-		request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, id);
-
-		// TODO: Should really use the event time like:
-		// tp_user_action_time_from_x11(gtk_get_current_event_time())
-		var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
-		request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
+		Utils.start_chat (contact, protocol, id);
 	      });
 	  }
 	}
