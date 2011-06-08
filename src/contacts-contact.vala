@@ -111,6 +111,13 @@ public class Contacts.Contact : GLib.Object  {
     return iconname;
   }
 
+  public static string presence_to_icon_full (PresenceType presence) {
+    string? iconname = presence_to_icon (presence);
+    if (iconname != null)
+      return iconname;
+    return "user-offline-symbolic";
+  }
+
 
   public static string[] format_address (PostalAddress addr) {
     string[] lines = {};
@@ -172,11 +179,11 @@ public class Contacts.Contact : GLib.Object  {
       return null;
 
     var i = new Image ();
-    i.set_from_icon_name (presence_to_icon (presence_details.presence_type), IconSize.BUTTON);
+    i.set_from_icon_name (presence_to_icon_full (presence_details.presence_type), IconSize.MENU);
     i.set_tooltip_text (presence_details.presence_message);
 
     var id1 = tp.notify["presence-type"].connect ((pspec) => {
-      i.set_from_icon_name (presence_to_icon (presence_details.presence_type), IconSize.BUTTON);
+      i.set_from_icon_name (presence_to_icon_full (presence_details.presence_type), IconSize.MENU);
      });
     var id2 = tp.notify["presence-message"].connect ( (pspec) => {
 	i.set_tooltip_text (presence_details.presence_message);

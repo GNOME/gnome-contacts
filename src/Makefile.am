@@ -19,9 +19,7 @@ gnome_contacts_SOURCES = \
 	contacts-app.vala \
 	contacts-contact.vala \
 	contacts-menu-button.vala \
-	contacts-hover-image.vala \
 	contacts-store.vala \
-	contacts-clickable.vala \
 	main.vala \
 	$(NULL)
 

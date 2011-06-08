@@ -122,7 +122,6 @@ public class Contacts.App : Window {
   }
 
   private struct DetailsRow {
-    Clickable? clickable;
     Grid grid;
     Label label;
   }
@@ -135,52 +134,27 @@ public class Contacts.App : Window {
     }
   }
 
-  private void add_label (string label, bool is_header, string? icon_name, out DetailsRow row) {
+  private void add_label (string label, out DetailsRow row) {
     var grid = new Grid ();
     row.grid = grid;
-    row.clickable = null;
 
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
     var l = new Label (label);
     Widget w = l;
-    if (!is_header)
-      l.get_style_context ().add_class ("dim-label");
+    l.get_style_context ().add_class ("dim-label");
     l.set_alignment (1, 0.5f);
-
-    if (icon_name != null) {
-      var grid2 = new Grid ();
-      grid2.set_orientation (Orientation.HORIZONTAL);
-      var image = new HoverImage();
-      image.set_from_icon_name (icon_name, IconSize.BUTTON);
-      grid2.add (image);
-      l.set_hexpand (true);
-      grid2.set_hexpand (false);
-      grid2.add (l);
-      w = grid2;
-    }
 
     label_size_group.add_widget (w);
     grid.add (w);
 
-    if (!is_header) {
-      var clickable = new Contacts.Clickable ();
-      row.clickable = clickable;
-      clickable.set_hexpand (true);
-      clickable.add (grid);
-      fields_grid.add (clickable);
-    } else {
-      fields_grid.add (grid);
-    }
+    fields_grid.add (grid);
   }
 
-  private void add_header (string label) {
-    add_label (label, true, null, null);
-  }
-
-  private void add_string_label (string label, string val, string? icon_name, out DetailsRow row) {
-    add_label (label, false, icon_name, out row);
+  private void add_string_label (string label, string val, out DetailsRow row) {
+    add_label (label, out row);
     var v = new Label (val);
+    v.set_selectable (true);
     row.label = v;
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
@@ -189,6 +163,7 @@ public class Contacts.App : Window {
 
   private void add_extra_row (string val, ref DetailsRow row) {
     var more_label = new Label (val);
+    more_label.set_selectable (true);
     more_label.set_valign (Align.CENTER);
     more_label.set_halign (Align.START);
     row.grid.attach_next_to (more_label, row.label, PositionType.BOTTOM, 1, 1);
@@ -196,7 +171,25 @@ public class Contacts.App : Window {
     row.label = more_label;
   }
 
-  private bool add_string_property_label (string label, Contact contact, string pname, string? icon_name, out DetailsRow row) {
+  private Button add_button (string? icon, ref DetailsRow row) {
+    var button = new Button ();
+    button.set_valign (Align.CENTER);
+    button.set_halign (Align.END);
+    button.set_hexpand (true);
+
+    if (icon != null) {
+      var image = new Image();
+      image.set_from_icon_name (icon, IconSize.MENU);
+      button.add (image);
+      image.show ();
+    }
+
+    row.grid.add (button);
+
+    return button;
+  }
+
+  private bool add_string_property_label (string label, Contact contact, string pname, out DetailsRow row) {
     Value prop_value;
     prop_value = Value (typeof (string));
     contact.individual.get_property (pname, ref prop_value);
@@ -205,7 +198,7 @@ public class Contacts.App : Window {
     if (val == null || val.length == 0)
       return false;
 
-    add_string_label (label, val, icon_name, out row);
+    add_string_label (label, val, out row);
     return true;
   }
 
@@ -266,8 +259,6 @@ public class Contacts.App : Window {
     DetailsRow row;
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
-      add_label_spacer ();
-      add_header (_("Email"));
       foreach (var p in emails) {
 	var type = "";
 	var types = p.parameters["type"];
@@ -276,8 +267,9 @@ public class Contacts.App : Window {
 	  if (i.next())
 	    type = i.get();
 	}
-	add_string_label (type, p.value, "mail-unread-symbolic", out row);
-	row.clickable.clicked.connect ( () => {
+	add_string_label (type, p.value, out row);
+	var button = add_button ("mail-unread-symbolic", ref row);
+	button.clicked.connect ( () => {
 	    try {
 	      Gtk.show_uri (null, "mailto:" + Uri.escape_string (p.value, "@" , false), 0);
 	    } catch {
@@ -289,26 +281,23 @@ public class Contacts.App : Window {
     var ims = contact.individual.im_addresses;
     var im_keys = ims.get_keys ();
     if (!im_keys.is_empty) {
-      add_label_spacer ();
-      add_header (_("Chat"));
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  add_string_label (protocol, id, "user-available-symbolic", out row);
+	  add_string_label (protocol, id, out row);
+	  Button? button = null;
 	  var presence = contact.create_presence_widget (protocol, id);
 	  if (presence != null) {
-	    presence.set_valign (Align.CENTER);
-	    presence.set_halign (Align.END);
-	    presence.set_hexpand (true);
-	    row.grid.add (presence);
+	    button = add_button (null, ref row);
+	    button.add (presence);
 	  }
 
 	  var im_persona = contact.find_im_persona (protocol, id);
 
-	  if (im_persona != null) {
-	    row.clickable.clicked.connect ( () => {
+	  if (button != null && im_persona != null) {
+	    button.clicked.connect ( () => {
 		try {
 		  var account = (im_persona.store as Tpf.PersonaStore).account;
-		  var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal); 
+		  var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
 		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE, TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
 		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE, (int) TelepathyGLib.HandleType.CONTACT);
 		  request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, id);
@@ -319,7 +308,7 @@ public class Contacts.App : Window {
 		  request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
 		} catch {
 		}
-	      });
+		});
 	  }
 	}
       }
@@ -327,8 +316,6 @@ public class Contacts.App : Window {
 
     var phone_numbers = contact.individual.phone_numbers;
     if (!phone_numbers.is_empty) {
-      add_label_spacer ();
-      add_header (_("Phone"));
       foreach (var p in phone_numbers) {
 	var type = "";
 	var types = p.parameters["type"];
@@ -337,20 +324,12 @@ public class Contacts.App : Window {
 	  if (i.next())
 	    type = i.get();
 	}
-	add_string_label (type, p.value, null, out row);
-	row.clickable.clicked.connect ( () => {
-	    try {
-	      // How to call?
-	    } catch {
-	    }
-	  });
+	add_string_label (type, p.value, out row);
       }
     }
 
     var postals = contact.individual.postal_addresses;
     if (!postals.is_empty) {
-      add_label_spacer ();
-      add_header (_("Addresses"));
       foreach (var addr in postals) {
 	var type = "";
 	var types = addr.types;
@@ -361,24 +340,15 @@ public class Contacts.App : Window {
 	}
 	string[] strs = Contact.format_address (addr);
 	if (strs.length > 0) {
-	  add_string_label (type, strs[0], null, out row);
+	  add_string_label (type, strs[0], out row);
 	  foreach (var s in strs[1:strs.length])
 	    add_extra_row (s, ref row);
-
-	  row.clickable.clicked.connect ( () => {
-	      try {
-		// How to call?
-	      } catch {
-	      }
-	    });
 	}
       }
     }
 
-    add_label_spacer ();
-    add_string_property_label (_("Alias"), contact, "alias", null, out row);
-    add_label_spacer ();
-    add_string_label (_("Twitter"), "mytwittername", null, out row);
+    add_string_property_label (_("Alias"), contact, "alias", out row);
+    add_string_label (_("Twitter"), "mytwittername", out row);
 
     fields_grid.show_all ();
   }
@@ -469,8 +439,8 @@ public class Contacts.App : Window {
     toolbar.add (add_button);
 
     var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_min_content_width (340);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    scrolled.set_min_content_width (400);
+    scrolled.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
@@ -502,6 +472,7 @@ public class Contacts.App : Window {
     fields_scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
     fields_grid = new Grid ();
+    fields_grid.set_column_spacing (3);
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_scrolled.add_with_viewport (fields_grid);
     fields_scrolled.get_child().get_style_context ().add_class ("contact-pane");
