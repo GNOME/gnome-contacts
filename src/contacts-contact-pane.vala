@@ -383,6 +383,7 @@ public class Contacts.ContactPane : EventBox {
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     normal_buttons = bbox;
     bbox.set_spacing (5);
+    bbox.set_margin_top (8);
     bbox.set_layout (ButtonBoxStyle.START);
     grid.attach (bbox, 0, 2, 1, 1);
 
@@ -431,6 +432,7 @@ public class Contacts.ContactPane : EventBox {
     bbox = new ButtonBox (Orientation.HORIZONTAL);
     editing_buttons = bbox;
     bbox.set_spacing (5);
+    bbox.set_margin_top (8);
     bbox.set_layout (ButtonBoxStyle.END);
     grid.attach (bbox, 0, 3, 1, 1);
 
