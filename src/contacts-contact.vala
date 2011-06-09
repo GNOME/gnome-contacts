@@ -193,6 +193,17 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
+  private enum ImDisplay {
+    DEFAULT,           /* $id ($service) */
+    ALIAS_SERVICE      /* $alias ($service) */
+  }
+
+  private struct ImData { 
+    unowned string service;
+    unowned string display_name;
+    ImDisplay display;
+  }
+
   public string format_im_name (string protocol, string id) {
     string? service = null;
     var persona = find_im_persona (protocol, id);
@@ -200,8 +211,49 @@ public class Contacts.Contact : GLib.Object  {
       var account = (persona.store as Tpf.PersonaStore).account;
       service = account.service;
     }
-    if (service != null)
-      return id + " (" + service + ")";
+    if (service == null || service == "")
+      service = protocol;
+
+    const ImData[] data = {  
+      { "google-talk", N_("Google Talk") },
+      { "ovi-chat", N_("Ovi Chat") },
+      { "facebook", N_("Facebook"), ImDisplay.ALIAS_SERVICE },
+      { "lj-talk", N_("Livejournal") },
+      { "aim", N_("AOL Instant Messenger") },
+      { "gadugadu", N_("Gadu-Gadu") },
+      { "groupwise", N_("Novell Groupwise") },
+      { "icq", N_("ICQ")},
+      { "irc", N_("IRC")},
+      { "jabber", N_("Jabber")},
+      { "localxmpp", N_("Local network")},
+      { "msn", N_("Windows Live Messenger")},
+      { "myspace", N_("MySpace")},
+      { "mxit", N_("MXit")},
+      { "napster", N_("Napster")},
+      { "qq", N_("Tencent QQ")},
+      { "sametime", N_("IBM Lotus Sametime")},
+      { "silc", N_("SILC")},
+      { "sip", N_("sip")},
+      { "skype", N_("Skype")},
+      { "tel", N_("Telephony")},
+      { "trepia", N_("Trepia")},
+      { "yahoo", N_("Yahoo! Messenger")},
+      { "yahoojp", N_("Yahoo! Messenger")},
+      { "zephyr", N_("Zephyr")}
+    };
+
+    foreach (var d in data) {
+      if (d.service == service) {
+	switch (d.display) {
+	default:
+	case ImDisplay.DEFAULT:
+	  return id + " (" + dgettext (Config.GETTEXT_PACKAGE, d.display_name) + ")";
+	case ImDisplay.ALIAS_SERVICE:
+	  return persona.alias + " (" + dgettext (Config.GETTEXT_PACKAGE, d.display_name) + ")";
+	}
+      }
+    }
+
     return id + " (" + protocol + ")";
   }
 
