@@ -18,9 +18,10 @@ bin_PROGRAMS = gnome-contacts
 gnome_contacts_SOURCES = \
 	contacts-app.vala \
 	contacts-contact.vala \
+	contacts-contact-pane.vala \
+	contacts-list-pane.vala \
 	contacts-menu-button.vala \
 	contacts-store.vala \
-	contacts-list-pane.vala \
 	contacts-utils.vala \
 	main.vala \
 	$(NULL)
