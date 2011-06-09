@@ -20,80 +20,89 @@
 using Gtk;
 using Folks;
 
-public class Contacts.ContactPane : EventBox {
-  private enum DisplayMode {
-    INITIAL,
-    EMPTY,
-    DETAILS,
-    NOTES,
-    EDIT
-  }
-  private Contact? selected_contact;
-  private DisplayMode display_mode;
-  private Grid fields_grid;
-  private SizeGroup label_size_group;
-  private bool has_notes;
-  private Widget notes_dot;
-  private ButtonBox normal_buttons;
-  private ButtonBox editing_buttons;
-
-  private struct DetailsRow {
-    Grid grid;
-    Widget label;
+class DetailsLayout : Object {
+  public DetailsLayout (Grid fields_grid) {
+    this.fields_grid = fields_grid;
+    label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
   }
 
-  private void add_label (string label, out DetailsRow row) {
+  Grid fields_grid;
+  SizeGroup label_size_group;
+
+  public Grid current_row;
+  Widget last_label;
+
+  void new_row () {
     var grid = new Grid ();
-    row.grid = grid;
-
+    current_row = grid;
+    last_label = null;
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
-    var l = new Label (label);
-    Widget w = l;
-    l.get_style_context ().add_class ("dim-label");
-    l.set_alignment (1, 0.5f);
-
-    label_size_group.add_widget (w);
-    grid.add (w);
-
     fields_grid.add (grid);
   }
 
-  private void add_string_label (string label, string val, out DetailsRow row) {
-    add_label (label, out row);
-    var v = new Label (val);
-    v.set_selectable (true);
-    row.label = v;
-    v.set_valign (Align.CENTER);
-    v.set_halign (Align.START);
-    row.grid.add (v);
+  public void add_widget_label (Widget w) {
+    new_row ();
+
+    label_size_group.add_widget (w);
+    current_row.add (w);
   }
 
-  private void add_link (string uri, string text, ref DetailsRow row) {
+  public void add_label (string label) {
+    var l = new Label (label);
+    l.get_style_context ().add_class ("dim-label");
+    l.set_alignment (1, 0.5f);
+
+    add_widget_label (l);
+  }
+
+  public void add_detail (string val) {
+    var label = new Label (val);
+    label.set_selectable (true);
+    label.set_valign (Align.CENTER);
+    label.set_halign (Align.START);
+    if (last_label != null)
+      current_row.attach_next_to (label, last_label, PositionType.BOTTOM, 1, 1);
+    else 
+      current_row.add (label);
+
+    label.show ();
+    last_label = label;
+  }
+
+  public void add_label_detail (string label, string val) {
+    add_label (label);
+    add_detail (val);
+  }
+
+  public bool add_string_property (string label, Object object, string pname) {
+    Value prop_value;
+    prop_value = Value (typeof (string));
+    object.get_property (pname, ref prop_value);
+    string val = prop_value.get_string ();
+
+    if (val == null || val.length == 0)
+      return false;
+
+    add_label_detail (label, val);
+    return true;
+  }
+
+  public void add_link (string uri, string text) {
     var v = new LinkButton.with_label (uri, text);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
     v.show ();
 
-    if (row.label != null)
-      row.grid.attach_next_to (v, row.label, PositionType.BOTTOM, 1, 1);
+    if (last_label != null)
+      current_row.attach_next_to (v, last_label, PositionType.BOTTOM, 1, 1);
     else
-      row.grid.add (v);
+      current_row.add (v);
 
-    row.label = v;
+    last_label = v;
   }
 
-  private void add_extra_row (string val, ref DetailsRow row) {
-    var more_label = new Label (val);
-    more_label.set_selectable (true);
-    more_label.set_valign (Align.CENTER);
-    more_label.set_halign (Align.START);
-    row.grid.attach_next_to (more_label, row.label, PositionType.BOTTOM, 1, 1);
-    more_label.show ();
-    row.label = more_label;
-  }
-
-  private Button add_button (string? icon, ref DetailsRow row) {
+  public Button add_button (string? icon) {
     var button = new Button ();
     button.set_valign (Align.CENTER);
     button.set_halign (Align.END);
@@ -106,31 +115,33 @@ public class Contacts.ContactPane : EventBox {
       image.show ();
     }
 
-    row.grid.add (button);
+    current_row.add (button);
 
     return button;
   }
+}
 
-  private bool add_string_property_label (string label, Contact contact, string pname, out DetailsRow row) {
-    Value prop_value;
-    prop_value = Value (typeof (string));
-    contact.individual.get_property (pname, ref prop_value);
-    string val = prop_value.get_string ();
-
-    if (val == null || val.length == 0)
-      return false;
-
-    add_string_label (label, val, out row);
-    return true;
+public class Contacts.ContactPane : EventBox {
+  private enum DisplayMode {
+    INITIAL,
+    EMPTY,
+    DETAILS,
+    NOTES,
+    EDIT
   }
+  private Contact? selected_contact;
+  private DisplayMode display_mode;
+  private Grid fields_grid;
+  private bool has_notes;
+  private Widget notes_dot;
+  private ButtonBox normal_buttons;
+  private ButtonBox editing_buttons;
 
-  private void display_card (Contact contact) {
-    var card_grid = new Grid ();
-    fields_grid.attach (card_grid, 0, 0, 1, 1);
-    card_grid.set_row_spacing (8);
 
+  private void display_card (DetailsLayout layout, Contact contact) {
     var image_frame = new Frame (null);
-    label_size_group.add_widget (image_frame);
+    layout.add_widget_label (image_frame);
+
     image_frame.get_style_context ().add_class ("contact-frame");
     image_frame.set_shadow_type (ShadowType.OUT);
     var image = new Image ();
@@ -156,10 +167,9 @@ public class Contacts.ContactPane : EventBox {
 	image.set_from_pixbuf (pixbuf);
     }
 
-    card_grid.attach (image_frame, 0, 0, 1, 1);
-    card_grid.set_vexpand (false);
+    layout.current_row.set_vexpand (false);
     var g = new Grid();
-    card_grid.attach (g, 1, 0, 1, 1);
+    layout.current_row.add (g);
 
     var l = new Label (null);
     l.set_markup ("<big><b>" + contact.display_name + "</b></big>");
@@ -185,25 +195,18 @@ public class Contacts.ContactPane : EventBox {
     merged_presence.set_valign (Align.END);
     merged_presence.set_vexpand (true);
     g.attach (merged_presence,  0, 3, 1, 1);
-
-    card_grid.show_all ();
-  }
-
-  public override bool delete_event (Gdk.Event event) {
-    set_display_mode (DisplayMode.EMPTY);
-    return false;
   }
 
   private void display_notes () {
     set_display_mode (DisplayMode.NOTES);
-    display_card (selected_contact);
+    var layout = new DetailsLayout (fields_grid);
+    display_card (layout, selected_contact);
     var scrolled = new ScrolledWindow (null, null);
     scrolled.set_shadow_type (ShadowType.OUT);
     var text = new TextView ();
     text.set_hexpand (true);
     text.set_vexpand (true);
     scrolled.add_with_viewport (text);
-    scrolled.show_all ();
     fields_grid.attach (scrolled, 0, 1, 1, 1);
     
     // This is kinda weird, but there might be multiple notes. We let
@@ -222,14 +225,16 @@ public class Contacts.ContactPane : EventBox {
 	fields_grid.attach (label, 0, i++, 1, 1);
       }
     }
+    fields_grid.show_all ();
   }
 
   private void display_contact (Contact contact) {
+    var layout = new DetailsLayout (fields_grid);
+
     set_display_mode (DisplayMode.DETAILS);
     set_has_notes (!contact.individual.notes.is_empty);
-    display_card (contact);
+    display_card (layout, contact);
 
-    DetailsRow row;
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
       foreach (var p in emails) {
@@ -240,8 +245,8 @@ public class Contacts.ContactPane : EventBox {
 	  if (i.next())
 	    type = i.get();
 	}
-	add_string_label (type, p.value, out row);
-	var button = add_button ("mail-unread-symbolic", ref row);
+	layout.add_label_detail (type, p.value);
+	var button = layout.add_button ("mail-unread-symbolic");
 	button.clicked.connect ( () => {
 	    Utils.compose_mail (p.value);
 	  });
@@ -253,11 +258,11 @@ public class Contacts.ContactPane : EventBox {
     if (!im_keys.is_empty) {
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  add_string_label (_("Chat"), contact.format_im_name (protocol, id), out row);
+	  layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id));
 	  Button? button = null;
 	  var presence = contact.create_presence_widget (protocol, id);
 	  if (presence != null) {
-	    button = add_button (null, ref row);
+	    button = layout.add_button (null);
 	    button.add (presence);
 	  }
 
@@ -280,7 +285,7 @@ public class Contacts.ContactPane : EventBox {
 	  if (i.next())
 	    type = i.get();
 	}
-	add_string_label (type, p.value, out row);
+	layout.add_label_detail (type, p.value);
       }
     }
 
@@ -296,26 +301,20 @@ public class Contacts.ContactPane : EventBox {
 	}
 	string[] strs = Contact.format_address (addr);
 	if (strs.length > 0) {
-	  add_string_label (type, strs[0], out row);
-	  foreach (var s in strs[1:strs.length])
-	    add_extra_row (s, ref row);
+	  layout.add_label (type);
+	  foreach (var s in strs)
+	    layout.add_detail (s);
 	}
       }
     }
 
-    add_string_property_label (_("Alias"), contact, "alias", out row);
+    layout.add_string_property (_("Alias"), contact.individual, "alias");
 
-    add_label ("Links", out row);
-    add_link ("http://www.twitter.com", _("Twitter"), ref row);
-    add_link ("http://www.facebook.com", _("Facebook"), ref row);
+    layout.add_label ("Links");
+    layout.add_link ("http://www.twitter.com", _("Twitter"));
+    layout.add_link ("http://www.facebook.com", _("Facebook"));
 
     fields_grid.show_all ();
-  }
-
-  private void clear_display () {
-    foreach (var w in fields_grid.get_children ()) {
-      w.destroy ();
-    }
   }
 
   private void set_has_notes (bool has_notes) {
@@ -342,7 +341,9 @@ public class Contacts.ContactPane : EventBox {
       normal_buttons.hide ();
       editing_buttons.show ();
     }
-    clear_display ();
+    foreach (var w in fields_grid.get_children ()) {
+      w.destroy ();
+    }
   }
 
   public void show_contact (Contact? new_contact) {
@@ -378,8 +379,6 @@ public class Contacts.ContactPane : EventBox {
     fields_scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
     grid.attach (fields_scrolled, 0, 1, 1, 1);
-
-    label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     normal_buttons = bbox;
@@ -426,6 +425,9 @@ public class Contacts.ContactPane : EventBox {
     MenuButton menu_button = new MenuButton (_("More"));
     bbox.pack_start (menu_button, false, false, 0);
 
+    bbox.show_all ();
+    bbox.set_no_show_all (true);
+
     bbox = new ButtonBox (Orientation.HORIZONTAL);
     editing_buttons = bbox;
     bbox.set_spacing (5);
@@ -452,9 +454,12 @@ public class Contacts.ContactPane : EventBox {
 
     menu_button.set_menu (menu);
 
-    set_display_mode (DisplayMode.EMPTY);
-    set_has_notes (false);
+    bbox.show_all ();
+    bbox.set_no_show_all (true);
 
     grid.show_all ();
+
+    set_display_mode (DisplayMode.EMPTY);
+    set_has_notes (false);
   }
 }
