@@ -21,16 +21,23 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
+  private enum DisplayMode {
+    INITIAL,
+    EMPTY,
+    DETAILS,
+    NOTES,
+    EDIT
+  }
   private Store contacts_store;
-  private Entry filter_entry;
-  private Contact selected_contact;
-  TreeView contacts_tree_view;
-  Grid fields_grid;
-  SizeGroup label_size_group;
-  bool has_notes;
-  Widget notes_dot;
-  ButtonBox normal_buttons;
-  ButtonBox editing_buttons;
+  private Contact? selected_contact;
+  private DisplayMode display_mode;
+  private TreeView contacts_tree_view;
+  private Grid fields_grid;
+  private SizeGroup label_size_group;
+  private bool has_notes;
+  private Widget notes_dot;
+  private ButtonBox normal_buttons;
+  private ButtonBox editing_buttons;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -113,7 +120,7 @@ public class Contacts.App : Window {
 
   private void filter_entry_changed (Editable editable) {
     string []? values;
-    string str = filter_entry.get_text ();
+    string str = (editable as Entry).get_text ();
 
     if (str.length == 0)
       values = null;
@@ -273,9 +280,47 @@ public class Contacts.App : Window {
     merged_presence.set_valign (Align.END);
     merged_presence.set_vexpand (true);
     g.attach (merged_presence,  0, 3, 1, 1);
+
+    card_grid.show_all ();
+  }
+
+  public override bool delete_event (Gdk.Event event) {
+    set_display_mode (DisplayMode.EMPTY);
+    return false;
+  }
+
+  private void display_notes () {
+    set_display_mode (DisplayMode.NOTES);
+    display_card (selected_contact);
+    var scrolled = new ScrolledWindow (null, null);
+    scrolled.set_shadow_type (ShadowType.OUT);
+    var text = new TextView ();
+    text.set_hexpand (true);
+    text.set_vexpand (true);
+    scrolled.add_with_viewport (text);
+    scrolled.show_all ();
+    fields_grid.attach (scrolled, 0, 1, 1, 1);
+    
+    // This is kinda weird, but there might be multiple notes. We let
+    // you edit the first and just display the rest. This isn't quite
+    // right, we should really ensure its the editable/primary one first.
+    bool first = true;
+    int i = 2;
+    foreach (var note in selected_contact.individual.notes) {
+      if (first) {
+	text.get_buffer ().set_text (note.content);
+	first = false;
+      } else {
+	var label = new Label (note.content);
+	label.show ();
+	label.set_halign (Align.START);
+	fields_grid.attach (label, 0, i++, 1, 1);
+      }
+    }
   }
 
   private void display_contact (Contact contact) {
+    set_display_mode (DisplayMode.DETAILS);
     set_has_notes (!contact.individual.notes.is_empty);
     display_card (contact);
 
@@ -374,8 +419,25 @@ public class Contacts.App : Window {
   }
 
   private void selected_contact_changed () {
+    if (display_mode == DisplayMode.DETAILS) {
+      display_contact (selected_contact);
+    }
+  }
+
+  private void set_display_mode (DisplayMode mode) {
+    if (display_mode == mode)
+      return;
+
+    display_mode = mode;
+    if (mode == DisplayMode.EMPTY || mode == DisplayMode.DETAILS) {
+      normal_buttons.show ();
+      editing_buttons.hide ();
+      normal_buttons.set_sensitive (mode != DisplayMode.EMPTY);
+    } else {
+      normal_buttons.hide ();
+      editing_buttons.show ();
+    }
     clear_display ();
-    display_contact (selected_contact);
   }
 
   private void contacts_selection_changed (TreeSelection selection) {
@@ -384,8 +446,10 @@ public class Contacts.App : Window {
 
     if (selected_contact != null)
       selected_contact.changed.disconnect (selected_contact_changed);
-    clear_display ();
+
     selected_contact = null;
+    set_display_mode (DisplayMode.EMPTY);
+    set_has_notes (false);
 
     if (selection.get_selected (out model, out iter)) {
       model.get (iter, 0, out selected_contact);
@@ -427,7 +491,7 @@ public class Contacts.App : Window {
     separator.set_draw (false);
     toolbar.add (separator);
 
-    filter_entry = new Entry ();
+    var filter_entry = new Entry ();
     filter_entry.set ("placeholder-text", _("Type here to filter"));
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
@@ -529,6 +593,10 @@ public class Contacts.App : Window {
     notes_grid.add (notes_dot);
     notes_button.add (notes_grid);
 
+    notes_button.clicked.connect ( (button) => {
+	display_notes ();
+      });
+    
     bbox.pack_start (notes_button, false, false, 0);
 
     var button = new Button.with_label(_("Edit"));
@@ -546,6 +614,10 @@ public class Contacts.App : Window {
     button = new Button.with_label(_("Close"));
     bbox.pack_start (button, false, false, 0);
 
+    button.clicked.connect ( (button) => {
+	display_contact (selected_contact);
+      });
+
     var menu = new Menu ();
     var mi = new MenuItem.with_label (_("Add/Remove linked contacts..."));
     menu.append (mi);
@@ -560,6 +632,8 @@ public class Contacts.App : Window {
     menu_button.set_menu (menu);
 
     grid.show_all ();
-    editing_buttons.hide ();
+
+    set_display_mode (DisplayMode.EMPTY);
+    set_has_notes (false);
   }
 }
