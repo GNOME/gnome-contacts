@@ -185,10 +185,12 @@ public class Contacts.ContactPane : EventBox {
       g.attach (l,  0, 1, 1, 1);
     }
 
+    /* TODO:
     l = new Label ("<title>, <Company>");
     l.set_halign (Align.START);
     l.set_valign (Align.START);
     g.attach (l,  0, 2, 1, 1);
+    */
 
     var merged_presence = contact.create_merged_presence_widget ();
     merged_presence.set_halign (Align.START);
