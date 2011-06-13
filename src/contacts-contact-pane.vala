@@ -210,7 +210,7 @@ public class Contacts.ContactPane : EventBox {
     text.set_vexpand (true);
     scrolled.add_with_viewport (text);
     fields_grid.attach (scrolled, 0, 1, 1, 1);
-    
+
     // This is kinda weird, but there might be multiple notes. We let
     // you edit the first and just display the rest. This isn't quite
     // right, we should really ensure its the editable/primary one first.
@@ -240,13 +240,7 @@ public class Contacts.ContactPane : EventBox {
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
       foreach (var email in Contact.sort_fields (emails)) {
-	var type = "";
-	var types = email.parameters["type"];
-	if (types != null) {
-	  var i = types.iterator();
-	  if (i.next())
-	    type = type + i.get();
-	}
+	var type = contact.format_email_type (email);
 	layout.add_label_detail (type, email.value);
 	var button = layout.add_button ("mail-unread-symbolic");
 	var email_addr = email.value;
@@ -281,13 +275,7 @@ public class Contacts.ContactPane : EventBox {
     var phone_numbers = contact.individual.phone_numbers;
     if (!phone_numbers.is_empty) {
       foreach (var p in Contact.sort_fields (phone_numbers)) {
-	var type = "";
-	var types = p.parameters["type"];
-	if (types != null) {
-	  var i = types.iterator();
-	  if (i.next())
-	    type = type + i.get();
-	}
+	var type = contact.format_phone_type (p);
 	layout.add_label_detail (type, p.value);
       }
     }

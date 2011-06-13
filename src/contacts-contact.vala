@@ -157,6 +157,152 @@ public class Contacts.Contact : GLib.Object  {
     return int.parse (s);
   }
 
+  private struct PhoneData {
+    unowned string display_name;
+    unowned string types[2];
+  }
+
+  private static HashTable<unowned string, GLib.List> phone_types_hash;
+  public static string format_phone_type (FieldDetails detail) {
+    // List most specific first, always in upper case
+    const PhoneData[] data = {
+      { N_("Assistant"), { "X-EVOLUTION-ASSISTANT" } },
+      { N_("Work"), { "WORK", "VOICE" } },
+      // { N_("Business Phone 2"), { "WORK", "VOICE"},  1
+      { N_("Work Fax"), { "WORK", "FAX" } },
+      { N_("Callback"),   { "X-EVOLUTION-CALLBACK" } },
+      { N_("Car"),        { "CAR" } },
+      { N_("Company"),    { "X-EVOLUTION-COMPANY" } },
+      { N_("Home"),       { "HOME", "VOICE" } },
+      //{ N_("Home 2"),     { "HOME", "VOICE" } },  1),
+      { N_("Home Fax"),         { "HOME", "FAX" } },
+      { N_("ISDN"),             { "ISDN" } },
+      { N_("Mobile"),     { "CELL" } },
+      { N_("Other"),      { "VOICE" } },
+      { N_("Fax"),        { "FAX" } },
+      { N_("Pager"),            { "PAGER" } },
+      { N_("Radio"),            { "X-EVOLUTION-RADIO" } },
+      { N_("Telex"),            { "X-EVOLUTION-TELEX" } },
+      /* To translators: TTY is Teletypewriter */
+      { N_("TTY"),              { "X-EVOLUTION-TTYTDD" } },
+      { N_("Home"), { "HOME" } },
+      { N_("Work"), { "WORK" } }
+    };
+    if (detail.parameters.contains ("x-google-label")) {
+      return get_first_string (detail.parameters.get ("x-google-label"));
+    }
+    if (phone_types_hash == null) {
+      phone_types_hash = new HashTable<unowned string, GLib.List<unowned PhoneData*> > (str_hash, str_equal);
+      for (int i = 0; i < data.length; i++) {
+	unowned PhoneData *d = &data[i];
+	unowned GLib.List<unowned PhoneData *> l = phone_types_hash.lookup (d.types[0]);
+	if (l != null) {
+	  l.append (d);
+	} else {
+	  GLib.List<unowned PhoneData *> l2 = null;
+	  l2.append (d);
+	  phone_types_hash.insert (d.types[0], (owned) l2);
+	}
+      }
+    }
+
+    var i = detail.get_parameter_values ("type");
+    if (i == null || i.is_empty)
+      return _("Other");
+
+    var list = new Gee.ArrayList<string> ();
+    foreach (var s in detail.get_parameter_values ("type")) {
+      if (s.ascii_casecmp ("OTHER") == 0 ||
+	  s.ascii_casecmp ("PREF") == 0)
+	continue;
+      list.add (s.up ());
+    }
+
+    if (list.is_empty)
+      return _("Other");
+
+    list.sort ();
+
+    unowned GLib.List<unowned PhoneData *>? l = phone_types_hash.lookup (list[0]);
+    foreach (var d in l) {
+      bool all_found = true;
+      for (int j = 0; j < 2 && d.types[j] != null; j++) {
+	if (!list.contains (d.types[j])) {
+	  all_found = false;
+	  break;
+	}
+      }
+      if (all_found)
+	return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
+    }
+
+    return _("Other");
+  }
+
+  private struct EmailData {
+    unowned string display_name;
+    unowned string types[2];
+  }
+
+  private static HashTable<unowned string, GLib.List> email_types_hash;
+  public static string format_email_type (FieldDetails detail) {
+    // List most specific first, always in upper case
+    const EmailData[] data = {
+      { N_("Home"), { "HOME" } },
+      { N_("Work"), { "WORK" } }
+    };
+    if (detail.parameters.contains ("x-google-label")) {
+      return get_first_string (detail.parameters.get ("x-google-label"));
+    }
+    if (email_types_hash == null) {
+      email_types_hash = new HashTable<unowned string, GLib.List<unowned EmailData*> > (str_hash, str_equal);
+      for (int i = 0; i < data.length; i++) {
+	unowned EmailData *d = &data[i];
+	unowned GLib.List<unowned EmailData *> l = email_types_hash.lookup (d.types[0]);
+	if (l != null) {
+	  l.append (d);
+	} else {
+	  GLib.List<unowned EmailData *> l2 = null;
+	  l2.append (d);
+	  email_types_hash.insert (d.types[0], (owned) l2);
+	}
+      }
+    }
+
+    var i = detail.get_parameter_values ("type");
+    if (i == null || i.is_empty)
+      return _("Other");
+
+    var list = new Gee.ArrayList<string> ();
+    foreach (var s in detail.get_parameter_values ("type")) {
+      if (s.ascii_casecmp ("OTHER") == 0 ||
+	  s.ascii_casecmp ("INTERNET") == 0 ||
+	  s.ascii_casecmp ("PREF") == 0)
+	continue;
+      list.add (s.up ());
+    }
+
+    if (list.is_empty)
+      return _("Other");
+
+    list.sort ();
+
+    unowned GLib.List<unowned EmailData *>? l = email_types_hash.lookup (list[0]);
+    foreach (var d in l) {
+      bool all_found = true;
+      for (int j = 0; j < 2 && d.types[j] != null; j++) {
+	if (!list.contains (d.types[j])) {
+	  all_found = false;
+	  break;
+	}
+      }
+      if (all_found)
+	return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
+    }
+
+    return _("Other");
+  }
+
   public static GLib.List<FieldDetails> sort_fields (Set<FieldDetails> details) {
     GLib.List<FieldDetails> sorted = null;
     GLib.List<FieldDetails> pref = null;
@@ -245,7 +391,7 @@ public class Contacts.Contact : GLib.Object  {
     ALIAS_SERVICE      /* $alias ($service) */
   }
 
-  private struct ImData { 
+  private struct ImData {
     unowned string service;
     unowned string display_name;
     ImDisplay display;
@@ -261,7 +407,7 @@ public class Contacts.Contact : GLib.Object  {
     if (service == null || service == "")
       service = protocol;
 
-    const ImData[] data = {  
+    const ImData[] data = {
       { "google-talk", N_("Google Talk") },
       { "ovi-chat", N_("Ovi Chat") },
       { "facebook", N_("Facebook"), ImDisplay.ALIAS_SERVICE },
