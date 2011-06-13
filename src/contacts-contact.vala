@@ -19,6 +19,7 @@
 
 using Gtk;
 using Folks;
+using Gee;
 
 public class Contacts.Contact : GLib.Object  {
   static Gdk.Pixbuf fallback_avatar;
@@ -142,6 +143,52 @@ public class Contacts.Contact : GLib.Object  {
     return "user-offline-symbolic";
   }
 
+  static string? get_first_string (Collection<string> collection) {
+    var i = collection.iterator();
+    if (i.next())
+      return i.get();
+    return null;
+  }
+
+  static int get_first_string_as_int (Collection<string> collection) {
+    var s = get_first_string (collection);
+    if (s == null)
+      return int.MAX;
+    return int.parse (s);
+  }
+
+  public static GLib.List<FieldDetails> sort_fields (Set<FieldDetails> details) {
+    GLib.List<FieldDetails> sorted = null;
+    GLib.List<FieldDetails> pref = null;
+    GLib.List<FieldDetails> rest = null;
+    foreach (var detail in details) {
+      if (detail.parameters.contains ("x-evolution-ui-slot")) {
+	sorted.prepend (detail);
+      } else {
+	bool found = false;
+	foreach (var param in detail.parameters.get ("type")) {
+	  if (param.ascii_casecmp ("PREF") == 0) {
+	    found = true;
+	    break;
+	  }
+	}
+	if (found)
+	  pref.prepend (detail);
+	else
+	  rest.prepend (detail);
+      }
+    }
+    pref.reverse();
+    rest.reverse();
+    sorted.sort ( (a, b) => {
+	var aa = get_first_string_as_int (a.parameters.get ("x-evolution-ui-slot"));
+	var bb = get_first_string_as_int (b.parameters.get ("x-evolution-ui-slot"));
+	return aa - bb;
+      });
+    sorted.concat ((owned)pref);
+    sorted.concat ((owned)rest);
+    return sorted;
+  }
 
   public static string[] format_address (PostalAddress addr) {
     string[] lines = {};

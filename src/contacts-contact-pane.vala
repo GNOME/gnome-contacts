@@ -239,18 +239,19 @@ public class Contacts.ContactPane : EventBox {
 
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
-      foreach (var p in emails) {
+      foreach (var email in Contact.sort_fields (emails)) {
 	var type = "";
-	var types = p.parameters["type"];
+	var types = email.parameters["type"];
 	if (types != null) {
 	  var i = types.iterator();
 	  if (i.next())
-	    type = i.get();
+	    type = type + i.get();
 	}
-	layout.add_label_detail (type, p.value);
+	layout.add_label_detail (type, email.value);
 	var button = layout.add_button ("mail-unread-symbolic");
+	var email_addr = email.value;
 	button.clicked.connect ( () => {
-	    Utils.compose_mail (p.value);
+	    Utils.compose_mail (email_addr);
 	  });
       }
     }
@@ -279,13 +280,13 @@ public class Contacts.ContactPane : EventBox {
 
     var phone_numbers = contact.individual.phone_numbers;
     if (!phone_numbers.is_empty) {
-      foreach (var p in phone_numbers) {
+      foreach (var p in Contact.sort_fields (phone_numbers)) {
 	var type = "";
 	var types = p.parameters["type"];
 	if (types != null) {
 	  var i = types.iterator();
 	  if (i.next())
-	    type = i.get();
+	    type = type + i.get();
 	}
 	layout.add_label_detail (type, p.value);
       }
@@ -299,7 +300,7 @@ public class Contacts.ContactPane : EventBox {
 	if (types != null) {
 	  var i = types.iterator();
 	  if (i.next())
-	    type = i.get();
+	    type = type + i.get();
 	}
 	string[] strs = Contact.format_address (addr);
 	if (strs.length > 0) {
