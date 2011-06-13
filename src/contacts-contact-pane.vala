@@ -312,9 +312,15 @@ public class Contacts.ContactPane : EventBox {
 
     layout.add_string_property (_("Alias"), contact.individual, "alias");
 
-    layout.add_label ("Links");
-    layout.add_link ("http://www.twitter.com", _("Twitter"));
-    layout.add_link ("http://www.facebook.com", _("Facebook"));
+    var urls = contact.individual.urls;
+    if (!urls.is_empty) {
+      layout.add_label ("Links");
+      foreach (var url_details in urls) {
+	var url = url_details.value;
+	// TODO: Detect link type, possibly using types parameter (to be standardized)
+	layout.add_link (url, url);
+      }
+    }
 
     fields_grid.show_all ();
   }
