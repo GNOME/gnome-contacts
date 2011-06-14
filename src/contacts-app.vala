@@ -24,13 +24,13 @@ public class Contacts.App : Window {
   private ListPane list_pane;
   private ContactPane contacts_pane;
 
-  public override bool delete_event (Gdk.Event event) {
+  public override bool delete_event (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
     contacts_pane.show_contact (null);
     return false;
   }
 
-  public override bool map_event (Gdk.Event event) {
+  public override bool map_event (Gdk.EventAny event) {
     list_pane.filter_entry.grab_focus ();
     return true;
   }
