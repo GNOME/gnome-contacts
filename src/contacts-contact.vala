@@ -192,14 +192,14 @@ public class Contacts.Contact : GLib.Object  {
       return get_first_string (detail.parameters.get ("x-google-label"));
     }
     if (phone_types_hash == null) {
-      phone_types_hash = new HashTable<unowned string, GLib.List<unowned PhoneData*> > (str_hash, str_equal);
+      phone_types_hash = new HashTable<unowned string, GLib.List<PhoneData*> > (str_hash, str_equal);
       for (int i = 0; i < data.length; i++) {
-	unowned PhoneData *d = &data[i];
-	unowned GLib.List<unowned PhoneData *> l = phone_types_hash.lookup (d.types[0]);
+	PhoneData *d = &data[i];
+	unowned GLib.List<PhoneData *> l = phone_types_hash.lookup (d.types[0]);
 	if (l != null) {
 	  l.append (d);
 	} else {
-	  GLib.List<unowned PhoneData *> l2 = null;
+	  GLib.List<PhoneData *> l2 = null;
 	  l2.append (d);
 	  phone_types_hash.insert (d.types[0], (owned) l2);
 	}
@@ -223,7 +223,7 @@ public class Contacts.Contact : GLib.Object  {
 
     list.sort ();
 
-    unowned GLib.List<unowned PhoneData *>? l = phone_types_hash.lookup (list[0]);
+    unowned GLib.List<PhoneData *>? l = phone_types_hash.lookup (list[0]);
     foreach (var d in l) {
       bool all_found = true;
       for (int j = 0; j < 2 && d.types[j] != null; j++) {
@@ -255,14 +255,14 @@ public class Contacts.Contact : GLib.Object  {
       return get_first_string (detail.parameters.get ("x-google-label"));
     }
     if (email_types_hash == null) {
-      email_types_hash = new HashTable<unowned string, GLib.List<unowned EmailData*> > (str_hash, str_equal);
+      email_types_hash = new HashTable<unowned string, GLib.List<EmailData*> > (str_hash, str_equal);
       for (int i = 0; i < data.length; i++) {
-	unowned EmailData *d = &data[i];
-	unowned GLib.List<unowned EmailData *> l = email_types_hash.lookup (d.types[0]);
+	EmailData *d = &data[i];
+	unowned GLib.List<EmailData *> l = email_types_hash.lookup (d.types[0]);
 	if (l != null) {
 	  l.append (d);
 	} else {
-	  GLib.List<unowned EmailData *> l2 = null;
+	  GLib.List<EmailData *> l2 = null;
 	  l2.append (d);
 	  email_types_hash.insert (d.types[0], (owned) l2);
 	}
@@ -287,7 +287,7 @@ public class Contacts.Contact : GLib.Object  {
 
     list.sort ();
 
-    unowned GLib.List<unowned EmailData *>? l = email_types_hash.lookup (list[0]);
+    unowned GLib.List<EmailData *>? l = email_types_hash.lookup (list[0]);
     foreach (var d in l) {
       bool all_found = true;
       for (int j = 0; j < 2 && d.types[j] != null; j++) {
