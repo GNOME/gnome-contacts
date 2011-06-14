@@ -441,7 +441,7 @@ public class Contacts.ContactPane : EventBox {
       });
 
     var menu = new Menu ();
-    var mi = new MenuItem.with_label (_("Add/Remove linked contacts..."));
+    var mi = new MenuItem.with_label (_("Add/Remove Linked Contacts..."));
     menu.append (mi);
     mi.show ();
     mi = new MenuItem.with_label (_("Send..."));

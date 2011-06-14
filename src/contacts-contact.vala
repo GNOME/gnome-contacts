@@ -98,7 +98,7 @@ public class Contacts.Contact : GLib.Object  {
     case PresenceType.ERROR:
       return _("Error");
     case PresenceType.AVAILABLE:
-      return _("Availible");
+      return _("Available");
     case PresenceType.AWAY:
       return _("Away");
     case PresenceType.EXTENDED_AWAY:
