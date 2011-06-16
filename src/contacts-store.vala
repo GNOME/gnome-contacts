@@ -48,6 +48,17 @@ public class Contacts.Store  {
 	public TreeModel model { get { return list_store; } }
 
 	private bool apply_filter (Contact contact) {
+		// Filter out pure key-file persona individuals as these are
+		// not very interesting
+		var personas = contact.individual.personas;
+		var i = personas.iterator();
+		if (i.next()) {
+		  var persona = i.get();
+		  if (!i.has_next () &&
+		      persona.store.type_id == "key-file")
+		    return false;
+		}
+
 		if (filter_values == null || filter_values.length == 0)
 			return true;
 
