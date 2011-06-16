@@ -157,7 +157,7 @@ public class Contacts.ListPane : Frame {
     toolbar.add (separator);
 
     filter_entry = new Entry ();
-    filter_entry.set ("placeholder-text", _("Type here to filter"));
+    filter_entry.set ("placeholder-text", _("Type to search..."));
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
 
