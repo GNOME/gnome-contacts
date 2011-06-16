@@ -52,14 +52,21 @@ public class Contacts.Store  {
 		if (contact.individual.is_user)
 		  return false;
 
-		// Filter out pure key-file persona individuals as these are
-		// not very interesting
 		var personas = contact.individual.personas;
 		var i = personas.iterator();
-		if (i.next()) {
+		// Look for single-persona individuals
+		if (i.next() && !i.has_next ()) {
 		  var persona = i.get();
-		  if (!i.has_next () &&
-		      persona.store.type_id == "key-file")
+		  var store = persona.store;
+
+		  // Filter out pure key-file persona individuals as these are
+		  // not very interesting
+		  if (store.type_id == "key-file")
+		    return false;
+
+		  // Filter out uncertain things like link-local xmpp
+		  if (store.type_id == "telepathy" &&
+		      store.trust_level == PersonaStoreTrust.NONE)
 		    return false;
 		}
 
