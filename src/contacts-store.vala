@@ -48,6 +48,10 @@ public class Contacts.Store  {
 	public TreeModel model { get { return list_store; } }
 
 	private bool apply_filter (Contact contact) {
+	  	// Don't show the user itself
+		if (contact.individual.is_user)
+		  return false;
+
 		// Filter out pure key-file persona individuals as these are
 		// not very interesting
 		var personas = contact.individual.personas;
