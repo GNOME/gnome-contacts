@@ -76,6 +76,7 @@ public class Contacts.ContactPresence : Grid {
     }
 
     image.set_from_icon_name (Contact.presence_to_icon_full (type), IconSize.MENU);
+    image.get_style_context ().add_class (Contact.presence_to_class (type));
     image.show ();
     label.show ();
     if (message.length == 0)
@@ -260,6 +261,31 @@ public class Contacts.Contact : GLib.Object  {
     if (iconname != null)
       return iconname;
     return "user-offline-symbolic";
+  }
+
+  public static string presence_to_class (PresenceType presence) {
+    string? classname = null;
+    switch (presence) {
+    default:
+    case PresenceType.HIDDEN:
+    case PresenceType.OFFLINE:
+    case PresenceType.UNSET:
+    case PresenceType.ERROR:
+      classname = "presence-icon-offline";
+      break;
+    case PresenceType.AVAILABLE:
+    case PresenceType.UNKNOWN:
+      classname = "presence-icon-available";
+      break;
+    case PresenceType.AWAY:
+    case PresenceType.EXTENDED_AWAY:
+      classname = "presence-icon-away";
+      break;
+    case PresenceType.BUSY:
+      classname = "presence-icon-busy";
+      break;
+    }
+    return classname;
   }
 
   static string? get_first_string (Collection<string> collection) {
