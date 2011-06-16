@@ -21,6 +21,125 @@ using Gtk;
 using Folks;
 using Gee;
 
+public class Contacts.ContactPresence : Grid {
+  Individual individual;
+  Image image;
+  Label label;
+
+  private bool get_is_phone (Persona persona) {
+    var tp = persona as Tpf.Persona;
+    if (tp == null)
+      return false;
+
+    var types = tp.contact.get_client_types ();
+    return types[0] == "phone";
+  }
+
+  private void get_presence (out PresenceType type, out string message, out bool is_phone) {
+    message = null;
+    type = Folks.PresenceType.UNSET;
+    is_phone = false;
+
+    /* Choose the most available presence from our personas */
+    foreach (var p in individual.personas) {
+      if (p is PresenceDetails) {
+	unowned PresenceDetails presence = (PresenceDetails) p;
+	var p_is_phone = get_is_phone (p);
+	if (PresenceDetails.typecmp (presence.presence_type,
+				     type) > 0 ||
+	    (presence.presence_type == type &&
+	     is_phone && !p_is_phone)) {
+	  type = presence.presence_type;
+	  message = presence.presence_message;
+	  is_phone = p_is_phone;
+	}
+      }
+    }
+
+    if (message == null)
+      message = "";
+  }
+
+  private void update_presence_widgets (Image image, Label label) {
+    PresenceType type;
+    string message;
+    bool is_phone;
+
+    get_presence (out type, out message, out is_phone);
+    
+    if (type == PresenceType.UNSET) {
+      image.clear ();
+      image.hide ();
+      label.hide ();
+      label.set_text ("");
+      return;
+    }
+
+    image.set_from_icon_name (Contact.presence_to_icon_full (type), IconSize.MENU);
+    image.show ();
+    label.show ();
+    if (message.length == 0)
+      message = Contact.presence_to_string (type);
+
+    if (is_phone) {
+      label.set_markup (GLib.Markup.escape_text (message) + " <span color='#8e9192'>(via phone)</span>");
+    } else
+      label.set_text (message);
+  }
+
+  private void notify_cb (ParamSpec pspec) {
+    update_presence_widgets (image, label);
+  }
+
+  private void connect_persona (Persona p) {
+    p.notify["presence-type"].connect (notify_cb);
+    p.notify["presence-message"].connect (notify_cb);
+    var tp = p as Tpf.Persona;
+    if (tp != null)
+      tp.contact.notify["client-types"].connect (notify_cb);
+  }
+
+  private void disconnect_persona (Persona p) {
+    SignalHandler.disconnect_by_func (individual, (void *)notify_cb, this);
+    var tp = p as Tpf.Persona;
+    if (tp != null)
+      SignalHandler.disconnect_by_func (tp.contact, (void *)notify_cb, this);
+  }
+
+  public ContactPresence (Individual individual) {
+    this.individual = individual;
+
+    this.set_row_spacing (4);
+    image = new Image ();
+    image.set_no_show_all (true);
+    this.add (image);
+    label = new Label ("");
+    label.set_no_show_all (true);
+    this.add (label);
+
+    update_presence_widgets (image, label);
+    
+    foreach (var p in individual.personas)
+      connect_persona (p);
+
+    individual.personas_changed.connect ( (added, removed) => {
+	foreach (var p in added)
+	  connect_persona (p);
+	foreach (var p in removed)
+	  disconnect_persona (p);
+      });
+
+    individual.notify["presence-type"].connect (notify_cb);
+    individual.notify["presence-message"].connect (notify_cb);
+
+    this.destroy.connect (() => {
+	foreach (var p in individual.personas)
+	  disconnect_persona (p);
+      });
+  }
+}
+
+
 public class Contacts.Contact : GLib.Object  {
   static Gdk.Pixbuf fallback_avatar;
 
@@ -449,54 +568,9 @@ public class Contacts.Contact : GLib.Object  {
 
     return id + " (" + protocol + ")";
   }
-
-  private void update_presence_widgets (Image image, Label label) {
-    if (individual.presence_type == PresenceType.UNSET) {
-      image.clear ();
-      image.hide ();
-      label.hide ();
-      label.set_text ("");
-      return;
-    }
-
-    image.set_from_icon_name (presence_to_icon_full (individual.presence_type), IconSize.MENU);
-    image.show ();
-    label.show ();
-    if (individual.presence_message == null ||
-	individual.presence_message.length == 0) {
-      label.set_text (presence_to_string (individual.presence_type));
-    } else {
-      label.set_text (individual.presence_message);
-    }
-  }
-
+  
   public Widget? create_merged_presence_widget () {
-    var grid = new Grid ();
-    grid.set_row_spacing (4);
-    var image = new Image ();
-    image.set_no_show_all (true);
-    grid.add (image);
-    var label = new Label ("");
-    label.set_no_show_all (true);
-    grid.add (label);
-
-
-    update_presence_widgets (image, label);
-
-    var id1 = individual.notify["presence-type"].connect ((pspec) => {
-	update_presence_widgets (image, label);
-     });
-
-    var id2 = individual.notify["presence-message"].connect ( (pspec) => {
-	update_presence_widgets (image, label);
-      });
-
-    grid.destroy.connect (() => {
-	individual.disconnect(id1);
-	individual.disconnect(id2);
-      });
-
-    return grid;
+    return new ContactPresence (individual);
   }
 
   public Widget? create_presence_widget (string protocol, string im_address) {
