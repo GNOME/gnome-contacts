@@ -326,6 +326,10 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void set_display_mode (DisplayMode mode) {
+    foreach (var w in fields_grid.get_children ()) {
+      w.destroy ();
+    }
+
     if (display_mode == mode)
       return;
 
@@ -337,9 +341,6 @@ public class Contacts.ContactPane : EventBox {
     } else {
       normal_buttons.hide ();
       editing_buttons.show ();
-    }
-    foreach (var w in fields_grid.get_children ()) {
-      w.destroy ();
     }
   }
 
