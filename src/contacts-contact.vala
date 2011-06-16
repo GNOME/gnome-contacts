@@ -418,7 +418,7 @@ public class Contacts.Contact : GLib.Object  {
       { "icq", N_("ICQ")},
       { "irc", N_("IRC")},
       { "jabber", N_("Jabber")},
-      { "localxmpp", N_("Local network")},
+      { "local-xmpp", N_("Local network")},
       { "msn", N_("Windows Live Messenger")},
       { "myspace", N_("MySpace")},
       { "mxit", N_("MXit")},
