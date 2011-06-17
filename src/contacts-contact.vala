@@ -22,50 +22,18 @@ using Folks;
 using Gee;
 
 public class Contacts.ContactPresence : Grid {
-  Individual individual;
+  Contact contact;
   Image image;
   Label label;
-
-  private bool get_is_phone (Persona persona) {
-    var tp = persona as Tpf.Persona;
-    if (tp == null)
-      return false;
-
-    var types = tp.contact.get_client_types ();
-    return types[0] == "phone";
-  }
-
-  private void get_presence (out PresenceType type, out string message, out bool is_phone) {
-    message = null;
-    type = Folks.PresenceType.UNSET;
-    is_phone = false;
-
-    /* Choose the most available presence from our personas */
-    foreach (var p in individual.personas) {
-      if (p is PresenceDetails) {
-	unowned PresenceDetails presence = (PresenceDetails) p;
-	var p_is_phone = get_is_phone (p);
-	if (PresenceDetails.typecmp (presence.presence_type,
-				     type) > 0 ||
-	    (presence.presence_type == type &&
-	     is_phone && !p_is_phone)) {
-	  type = presence.presence_type;
-	  message = presence.presence_message;
-	  is_phone = p_is_phone;
-	}
-      }
-    }
-
-    if (message == null)
-      message = "";
-  }
 
   private void update_presence_widgets (Image image, Label label) {
     PresenceType type;
     string message;
     bool is_phone;
 
-    get_presence (out type, out message, out is_phone);
+    type = contact.presence_type;
+    message = contact.presence_message;
+    is_phone = contact.is_phone;
     
     if (type == PresenceType.UNSET) {
       image.clear ();
@@ -88,27 +56,8 @@ public class Contacts.ContactPresence : Grid {
       label.set_text (message);
   }
 
-  private void notify_cb (ParamSpec pspec) {
-    update_presence_widgets (image, label);
-  }
-
-  private void connect_persona (Persona p) {
-    p.notify["presence-type"].connect (notify_cb);
-    p.notify["presence-message"].connect (notify_cb);
-    var tp = p as Tpf.Persona;
-    if (tp != null)
-      tp.contact.notify["client-types"].connect (notify_cb);
-  }
-
-  private void disconnect_persona (Persona p) {
-    SignalHandler.disconnect_by_func (individual, (void *)notify_cb, this);
-    var tp = p as Tpf.Persona;
-    if (tp != null)
-      SignalHandler.disconnect_by_func (tp.contact, (void *)notify_cb, this);
-  }
-
-  public ContactPresence (Individual individual) {
-    this.individual = individual;
+  public ContactPresence (Contact contact) {
+    this.contact = contact;
 
     this.set_row_spacing (4);
     image = new Image ();
@@ -120,28 +69,22 @@ public class Contacts.ContactPresence : Grid {
 
     update_presence_widgets (image, label);
     
-    foreach (var p in individual.personas)
-      connect_persona (p);
-
-    individual.personas_changed.connect ( (added, removed) => {
-	foreach (var p in added)
-	  connect_persona (p);
-	foreach (var p in removed)
-	  disconnect_persona (p);
+    var id = contact.changed.connect ( () => {
+	update_presence_widgets (image, label);
       });
 
-    individual.notify["presence-type"].connect (notify_cb);
-    individual.notify["presence-message"].connect (notify_cb);
-
     this.destroy.connect (() => {
-	foreach (var p in individual.personas)
-	  disconnect_persona (p);
+	contact.disconnect (id);
       });
   }
 }
 
 
 public class Contacts.Contact : GLib.Object  {
+  public PresenceType presence_type;
+  public string presence_message;
+  public bool is_phone;
+
   static Gdk.Pixbuf fallback_avatar;
 
   public Individual individual;
@@ -185,9 +128,39 @@ public class Contacts.Contact : GLib.Object  {
     fallback_avatar = draw_fallback_avatar ();
   }
 
+  private void persona_notify_cb (ParamSpec pspec) {
+    queue_changed ();
+  }
+
+  private void connect_persona (Persona p) {
+    p.notify["presence-type"].connect (persona_notify_cb);
+    p.notify["presence-message"].connect (persona_notify_cb);
+    var tp = p as Tpf.Persona;
+    if (tp != null)
+      tp.contact.notify["client-types"].connect (persona_notify_cb);
+  }
+
+  private void disconnect_persona (Persona p) {
+    SignalHandler.disconnect_by_func (individual, (void *)persona_notify_cb, this);
+    var tp = p as Tpf.Persona;
+    if (tp != null)
+      SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
+  }
+
   public Contact(Individual i) {
     individual = i;
     individual.set_data ("contact", this);
+
+    foreach (var p in individual.personas)
+      connect_persona (p);
+
+    individual.personas_changed.connect ( (added, removed) => {
+	foreach (var p in added)
+	  connect_persona (p);
+	foreach (var p in removed)
+	  disconnect_persona (p);
+      });
+
     update ();
 
     individual.notify.connect(notify_cb);
@@ -195,6 +168,9 @@ public class Contacts.Contact : GLib.Object  {
 
   public void remove () {
     unqueue_changed ();
+    foreach (var p in individual.personas) {
+      disconnect_persona (p);
+    }
     individual.notify.disconnect(notify_cb);
   }
 
@@ -596,7 +572,7 @@ public class Contacts.Contact : GLib.Object  {
   }
   
   public Widget? create_merged_presence_widget () {
-    return new ContactPresence (individual);
+    return new ContactPresence (this);
   }
 
   public Widget? create_presence_widget (string protocol, string im_address) {
@@ -648,7 +624,41 @@ public class Contacts.Contact : GLib.Object  {
     queue_changed ();
   }
 
-  private void update () {
+  private static bool get_is_phone (Persona persona) {
+    var tp = persona as Tpf.Persona;
+    if (tp == null)
+      return false;
+
+    var types = tp.contact.get_client_types ();
+    return types[0] == "phone";
+  }
+
+  private void update_presence () {
+    presence_message = null;
+    presence_type = Folks.PresenceType.UNSET;
+    is_phone = false;
+
+    /* Choose the most available presence from our personas */
+    foreach (var p in individual.personas) {
+      if (p is PresenceDetails) {
+	unowned PresenceDetails presence = (PresenceDetails) p;
+	var p_is_phone = get_is_phone (p);
+	if (PresenceDetails.typecmp (presence.presence_type,
+				     presence_type) > 0 ||
+	    (presence.presence_type == presence_type &&
+	     is_phone && !p_is_phone)) {
+	  presence_type = presence.presence_type;
+	  presence_message = presence.presence_message;
+	  is_phone = p_is_phone;
+	}
+      }
+    }
+
+    if (presence_message == null)
+      presence_message = "";
+  }
+
+  private void update_filter_data () {
     var builder = new StringBuilder ();
     if (individual.alias != null) {
       builder.append (individual.alias.casefold ());
@@ -673,6 +683,11 @@ public class Contacts.Contact : GLib.Object  {
       builder.append_unichar (' ');
     }
     filter_data = builder.str;
+  }
+
+  private void update () {
+    update_presence ();
+    update_filter_data ();
   }
 
   // TODO: This should be async, but the vala bindings are broken (bug #649875)
