@@ -283,6 +283,31 @@ public class Contacts.ContactPane : EventBox {
 	  foreach (var s in strs)
 	    layout.add_detail (s);
 	}
+	var button = layout.add_button ("edit-copy-symbolic");
+	button.clicked.connect ( () => {
+	    string addr_s = "";
+	    foreach (var s in Contact.format_address (addr)) {
+	      addr_s += s + "\n";
+	    }
+	    Clipboard.get_for_display (button.get_screen().get_display(), Gdk.SELECTION_CLIPBOARD).set_text (addr_s, -1);
+	    var notification = new Notify.Notification (_("Address copied to clipboard"), null, "edit-copy");
+	    notification.set_timeout (3000);
+	    notification.set_urgency (Notify.Urgency.CRITICAL);
+	    try {
+	      notification.show ();
+	      Timeout.add (3000, () => {
+		  try {
+		    notification.close ();
+		  }
+		  catch (Error e) {
+		  }
+		  return false;
+		});
+	    } 
+	    catch (Error e) {
+	    }
+	  });
+	
       }
     }
 

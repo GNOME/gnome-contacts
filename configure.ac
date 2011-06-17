@@ -28,9 +28,10 @@ AM_GLIB_GNU_GETTEXT
 pkg_modules="gtk+-3.0
 	     folks >= 0.5.2
 	     folks-telepathy
+	     libnotify
 	     "
 PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
-CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg folks --pkg folks-telepathy"
+CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg folks --pkg folks-telepathy --pkg libnotify"
 AC_SUBST(CONTACTS_CFLAGS)
 AC_SUBST(CONTACTS_LIBS)
 AC_SUBST(CONTACTS_PACKAGES)
