@@ -132,6 +132,15 @@ public class Contacts.ListPane : Frame {
       Source.remove (filter_entry_changed_id);
 
     filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
+    
+    if (filter_entry.get_text () == "")
+      filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
+    else
+      filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-clear-symbolic");
+  }
+
+  private void filter_entry_clear (EntryIconPosition position) {
+    filter_entry.set_text ("");
   }
 
   private void contacts_selection_changed (TreeSelection selection) {
@@ -174,6 +183,7 @@ public class Contacts.ListPane : Frame {
     filter_entry.set ("placeholder-text", _("Type to search..."));
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
+    filter_entry.icon_press.connect (filter_entry_clear);
 
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
