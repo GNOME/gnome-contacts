@@ -75,19 +75,6 @@ class DetailsLayout : Object {
     add_detail (val);
   }
 
-  public bool add_string_property (string label, Object object, string pname) {
-    Value prop_value;
-    prop_value = Value (typeof (string));
-    object.get_property (pname, ref prop_value);
-    string val = prop_value.get_string ();
-
-    if (val == null || val.length == 0)
-      return false;
-
-    add_label_detail (label, val);
-    return true;
-  }
-
   public void add_link (string uri, string text) {
     var v = new LinkButton.with_label (uri, text);
     v.set_valign (Align.CENTER);
@@ -298,8 +285,6 @@ public class Contacts.ContactPane : EventBox {
 	}
       }
     }
-
-    layout.add_string_property (_("Alias"), contact.individual, "alias");
 
     var urls = contact.individual.urls;
     if (!urls.is_empty) {
