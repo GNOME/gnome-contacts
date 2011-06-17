@@ -24,6 +24,7 @@ public class Contacts.ListPane : Frame {
   private Store contacts_store;
   private TreeView contacts_tree_view;
   public Entry filter_entry;
+  private uint filter_entry_changed_id;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -106,9 +107,9 @@ public class Contacts.ListPane : Frame {
     tree_view.append_column (column);
   }
 
-  private void filter_entry_changed (Editable editable) {
+  private void refilter () {
     string []? values;
-    string str = (editable as Entry).get_text ();
+    string str = filter_entry.get_text ();
 
     if (str.length == 0)
       values = null;
@@ -118,6 +119,19 @@ public class Contacts.ListPane : Frame {
     }
 
     contacts_store.set_filter_values (values);
+  }
+
+  private bool filter_entry_changed_timeout () {
+    filter_entry_changed_id = 0;
+    refilter ();
+    return false;
+  }
+
+  private void filter_entry_changed (Editable editable) {
+    if (filter_entry_changed_id != 0)
+      Source.remove (filter_entry_changed_id);
+
+    filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
   }
 
   private void contacts_selection_changed (TreeSelection selection) {
