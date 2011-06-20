@@ -278,8 +278,8 @@ public class Contacts.ContactPane : EventBox {
 	    type = type + i.get();
 	}
 	string[] strs = Contact.format_address (addr);
+	layout.add_label (type);
 	if (strs.length > 0) {
-	  layout.add_label (type);
 	  foreach (var s in strs)
 	    layout.add_detail (s);
 	}
@@ -303,11 +303,10 @@ public class Contacts.ContactPane : EventBox {
 		  }
 		  return false;
 		});
-	    } 
+	    }
 	    catch (Error e) {
 	    }
 	  });
-	
       }
     }
 
