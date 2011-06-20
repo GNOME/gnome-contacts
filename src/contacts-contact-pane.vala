@@ -29,8 +29,21 @@ class DetailsLayout : Object {
   Grid fields_grid;
   SizeGroup label_size_group;
 
-  public Grid current_row;
-  Widget last_label;
+  public Grid? current_row;
+  Widget? last_label;
+
+  public void reset (bool full) {
+    foreach (var w in fields_grid.get_children ()) {
+      if (full || !w.get_data<bool> ("contacts-stable"))
+	w.destroy ();
+    }
+    current_row = null;
+    last_label = null;
+  }
+
+  public void mark_row_stable () {
+    current_row.set_data<bool> ("contacts-stable", true);
+  }
 
   void new_row () {
     var grid = new Grid ();
@@ -63,7 +76,7 @@ class DetailsLayout : Object {
     label.set_halign (Align.START);
     if (last_label != null)
       current_row.attach_next_to (label, last_label, PositionType.BOTTOM, 1, 1);
-    else 
+    else
       current_row.add (label);
 
     label.show ();
@@ -117,30 +130,25 @@ public class Contacts.ContactPane : EventBox {
     EDIT
   }
   private Contact? selected_contact;
+  private Persona? editing_persona;
   private DisplayMode display_mode;
   private Grid fields_grid;
   private bool has_notes;
   private Widget notes_dot;
   private ButtonBox normal_buttons;
   private ButtonBox editing_buttons;
+  private DetailsLayout layout;
 
-
-  private void display_card (DetailsLayout layout, Contact contact) {
-    var image_frame = new Frame (null);
-    layout.add_widget_label (image_frame);
-
-    image_frame.get_style_context ().add_class ("contact-frame");
-    image_frame.set_shadow_type (ShadowType.OUT);
+  private Widget create_image (AvatarDetails? details, int size) {
     var image = new Image ();
-    image.set_size_request (100, 100);
-    image_frame.add (image);
+    image.set_size_request (size, size);
 
     Gdk.Pixbuf pixbuf = null;
-
-    if (contact.individual.avatar != null &&
-	contact.individual.avatar.get_path () != null) {
+    if (details != null &&
+	details.avatar != null &&
+	details.avatar.get_path () != null) {
       try {
-	pixbuf = new Gdk.Pixbuf.from_file_at_scale (contact.individual.avatar.get_path (), 100, 100, true);
+	pixbuf = new Gdk.Pixbuf.from_file_at_scale (details.avatar.get_path (), size, size, true);
       }
       catch {
       }
@@ -151,8 +159,154 @@ public class Contacts.ContactPane : EventBox {
     }
 
     if (pixbuf != null) {
-	image.set_from_pixbuf (pixbuf);
+      image.set_from_pixbuf (pixbuf);
     }
+    return image;
+  }
+
+  private Frame create_image_frame (Widget ?child) {
+    var image_frame = new Frame (null);
+
+    image_frame.get_style_context ().add_class ("contact-frame");
+    image_frame.set_shadow_type (ShadowType.OUT);
+    if (child != null)
+      image_frame.add (child);
+    return image_frame;
+  }
+
+  private void update_edit_card (Frame image_frame, Persona persona) {
+    layout.reset (false);
+    if (image_frame.get_child () != null)
+      image_frame.get_child ().destroy ();
+    var image = create_image (persona as AvatarDetails, 100);
+    image.show ();
+    image_frame.add (image);
+
+
+    var email_details = persona as EmailDetails;
+    if (email_details != null) {
+      var emails = email_details.email_addresses;
+      if (!emails.is_empty) {
+	foreach (var email in Contact.sort_fields (emails)) {
+	  var type = Contact.format_email_type (email);
+	  layout.add_label_detail (type, email.value);
+	}
+      }
+    }
+
+    var im_details = persona as ImDetails;
+    if (im_details != null) {
+      var ims = im_details.im_addresses;
+      var im_keys = ims.get_keys ();
+      if (!im_keys.is_empty) {
+	foreach (var protocol in im_keys) {
+	  foreach (var id in ims[protocol]) {
+	    layout.add_label_detail (_("Chat"), protocol + "/" + id);
+	  }
+	}
+      }
+    }
+
+
+    var phone_details = persona as PhoneDetails;
+    if (phone_details != null) {
+      var phone_numbers = phone_details.phone_numbers;
+      if (!phone_numbers.is_empty) {
+	foreach (var p in Contact.sort_fields (phone_numbers)) {
+	  var type = Contact.format_phone_type (p);
+	  layout.add_label_detail (type, p.value);
+	}
+      }
+    }
+
+    var postal_details = persona as PostalAddressDetails;
+    if (postal_details != null) {
+      var postals = postal_details.postal_addresses;
+      if (!postals.is_empty) {
+	foreach (var addr in postals) {
+	  var type = "";
+	  var types = addr.types;
+	  if (types != null) {
+	    var i = types.iterator();
+	    if (i.next())
+	      type = type + i.get();
+	  }
+	  string[] strs = Contact.format_address (addr);
+	  layout.add_label (type);
+	  if (strs.length > 0) {
+	    foreach (var s in strs)
+	    layout.add_detail (s);
+	  }
+	}
+      }
+    }
+
+    var urls_details = persona as UrlDetails;
+    if (urls_details != null) {
+      var urls = urls_details.urls;
+      if (!urls.is_empty) {
+	layout.add_label ("Links");
+	foreach (var url_details in urls) {
+	  var url = url_details.value;
+	  layout.add_detail (url);
+	}
+      }
+    }
+
+    fields_grid.show_all ();
+  }
+
+  private void display_edit_card (Contact contact, Persona persona) {
+    var image_frame = create_image_frame (null);
+    layout.add_widget_label (image_frame);
+    layout.mark_row_stable ();
+
+    layout.current_row.set_vexpand (false);
+    var g = new Grid();
+    layout.current_row.add (g);
+
+    var e = new Entry ();
+    e.set_text (contact.display_name);
+    e.set_hexpand (true);
+    e.set_halign (Align.START);
+    e.set_valign (Align.START);
+    g.attach (e,  0, 0, 1, 1);
+
+    var personas = new Grid ();
+    personas.set_row_spacing (4);
+    personas.set_halign (Align.START);
+    personas.set_valign (Align.END);
+    personas.set_vexpand (true);
+
+    RadioButton button = null;
+    foreach (var p in contact.individual.personas) {
+
+      button = new RadioButton.from_widget (button);
+      button.get_style_context ().add_class ("contact-button");
+      button.set_can_default (false);
+      var image = create_image (p as AvatarDetails, 48);
+      button.add (image);
+      button.set_mode (false);
+      personas.add (button);
+
+      if (p == persona) {
+	button.set_active (true);
+      }
+      button.toggled.connect ( (a_button) => {
+	  if (a_button.get_active ())
+	    update_edit_card (image_frame, p);
+	});
+    }
+
+    update_edit_card (image_frame, persona);
+
+    g.attach (personas,  0, 3, 1, 1);
+  }
+
+
+  private void display_card (Contact contact) {
+    var image_frame = create_image_frame (create_image (contact.individual, 100));
+    layout.add_widget_label (image_frame);
 
     layout.current_row.set_vexpand (false);
     var g = new Grid();
@@ -188,8 +342,7 @@ public class Contacts.ContactPane : EventBox {
 
   private void display_notes () {
     set_display_mode (DisplayMode.NOTES);
-    var layout = new DetailsLayout (fields_grid);
-    display_card (layout, selected_contact);
+    display_card (selected_contact);
     var scrolled = new ScrolledWindow (null, null);
     scrolled.set_shadow_type (ShadowType.OUT);
     var text = new TextView ();
@@ -217,12 +370,17 @@ public class Contacts.ContactPane : EventBox {
     fields_grid.show_all ();
   }
 
-  private void display_contact (Contact contact) {
-    var layout = new DetailsLayout (fields_grid);
+  private void display_edit (Contact contact, Persona persona) {
+    set_display_mode (DisplayMode.EDIT);
+    display_edit_card (contact, persona);
 
+    fields_grid.show_all ();
+  }
+
+  private void display_contact (Contact contact) {
     set_display_mode (DisplayMode.DETAILS);
     set_has_notes (!contact.individual.notes.is_empty);
-    display_card (layout, contact);
+    display_card (contact);
 
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
@@ -335,9 +493,7 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void set_display_mode (DisplayMode mode) {
-    foreach (var w in fields_grid.get_children ()) {
-      w.destroy ();
-    }
+    layout.reset (true);
 
     if (display_mode == mode)
       return;
@@ -358,6 +514,7 @@ public class Contacts.ContactPane : EventBox {
       selected_contact.changed.disconnect (selected_contact_changed);
 
     selected_contact = new_contact;
+    editing_persona = null;
     set_display_mode (DisplayMode.EMPTY);
     set_has_notes (false);
 
@@ -384,6 +541,8 @@ public class Contacts.ContactPane : EventBox {
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_scrolled.add_with_viewport (fields_grid);
     fields_scrolled.get_child().get_style_context ().add_class ("contact-pane");
+
+    layout = new DetailsLayout (fields_grid);
 
     grid.attach (fields_scrolled, 0, 1, 1, 1);
 
@@ -424,11 +583,20 @@ public class Contacts.ContactPane : EventBox {
     notes_button.clicked.connect ( (button) => {
 	display_notes ();
       });
-    
+
     bbox.pack_start (notes_button, false, false, 0);
 
     var button = new Button.with_label(_("Edit"));
     bbox.pack_start (button, false, false, 0);
+
+    button.clicked.connect ( (button) => {
+	editing_persona = null;
+	var i = selected_contact.individual.personas.iterator();
+	if (i.next())
+	  editing_persona = i.get();
+
+	display_edit (selected_contact, editing_persona);
+      });
 
     MenuButton menu_button = new MenuButton (_("More"));
     bbox.pack_start (menu_button, false, false, 0);
