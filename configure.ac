@@ -1,4 +1,4 @@
-AC_PREREQ([2.68])
+AC_PREREQ([2.67])
 AC_INIT([gnome-contacts],[0.1.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts])
 AC_CONFIG_SRCDIR([src/main.vala])
 AC_CONFIG_HEADERS([config.h])
