@@ -139,7 +139,10 @@ public class Contacts.ContactPane : EventBox {
   private ButtonBox editing_buttons;
   private DetailsLayout layout;
 
-  private Widget create_image (AvatarDetails? details, int size) {
+  const int PROFILE_SIZE = 100;
+  const int LABEL_HEIGHT = 20;
+
+  private Widget create_image (AvatarDetails? details, int size, string? label) {
     var image = new Image ();
     image.set_size_request (size, size);
 
@@ -161,6 +164,25 @@ public class Contacts.ContactPane : EventBox {
     if (pixbuf != null) {
       image.set_from_pixbuf (pixbuf);
     }
+
+    if (label != null) {
+      var layout = image.create_pango_layout (label);
+      layout.set_width (size);
+      layout.set_height (LABEL_HEIGHT);
+      layout.set_alignment (Pango.Alignment.CENTER);
+      image.draw.connect_after ( (cr) => {
+	  cr.set_source_rgba (0, 0, 0, 0.5);
+	  cr.rectangle (0, size - LABEL_HEIGHT, size, LABEL_HEIGHT);
+	  cr.fill ();
+
+	  cr.set_source_rgb (1.0, 1.0, 1.0);
+	  Gtk.render_layout (image.get_style_context (), cr,
+			     size / 2, size - LABEL_HEIGHT,
+			     layout);
+	  return false;
+	});
+    }
+
     return image;
   }
 
@@ -178,7 +200,7 @@ public class Contacts.ContactPane : EventBox {
     layout.reset (false);
     if (image_frame.get_child () != null)
       image_frame.get_child ().destroy ();
-    var image = create_image (persona as AvatarDetails, 100);
+    var image = create_image (persona as AvatarDetails, PROFILE_SIZE, persona.store.display_name);
     image.show ();
     image_frame.add (image);
 
@@ -284,7 +306,7 @@ public class Contacts.ContactPane : EventBox {
       button = new RadioButton.from_widget (button);
       button.get_style_context ().add_class ("contact-button");
       button.set_can_default (false);
-      var image = create_image (p as AvatarDetails, 48);
+      var image = create_image (p as AvatarDetails, 48, null);
       button.add (image);
       button.set_mode (false);
       personas.add (button);
@@ -305,7 +327,7 @@ public class Contacts.ContactPane : EventBox {
 
 
   private void display_card (Contact contact) {
-    var image_frame = create_image_frame (create_image (contact.individual, 100));
+    var image_frame = create_image_frame (create_image (contact.individual, PROFILE_SIZE, null));
     layout.add_widget_label (image_frame);
 
     layout.current_row.set_vexpand (false);
