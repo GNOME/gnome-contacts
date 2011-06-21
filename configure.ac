@@ -11,7 +11,9 @@ AC_CONFIG_FILES([Makefile
 		vapi/Makefile
 		src/Makefile
 		data/Makefile
-		po/Makefile.in])
+		po/Makefile.in
+		data/gnome-contacts.desktop.in
+		])
 
 LT_INIT
 AC_PROG_CC
