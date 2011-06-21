@@ -196,7 +196,7 @@ public class Contacts.ContactPane : EventBox {
     return image_frame;
   }
 
-  private void update_edit_card (Frame image_frame, Persona persona) {
+  private void update_edit_details (Frame image_frame, Persona persona) {
     layout.reset (false);
     if (image_frame.get_child () != null)
       image_frame.get_child ().destroy ();
@@ -278,54 +278,6 @@ public class Contacts.ContactPane : EventBox {
     fields_grid.show_all ();
   }
 
-  private void display_edit_card (Contact contact, Persona persona) {
-    var image_frame = create_image_frame (null);
-    layout.add_widget_label (image_frame);
-    layout.mark_row_stable ();
-
-    layout.current_row.set_vexpand (false);
-    var g = new Grid();
-    layout.current_row.add (g);
-
-    var e = new Entry ();
-    e.set_text (contact.display_name);
-    e.set_hexpand (true);
-    e.set_halign (Align.START);
-    e.set_valign (Align.START);
-    g.attach (e,  0, 0, 1, 1);
-
-    var personas = new Grid ();
-    personas.set_row_spacing (4);
-    personas.set_halign (Align.START);
-    personas.set_valign (Align.END);
-    personas.set_vexpand (true);
-
-    RadioButton button = null;
-    foreach (var p in contact.individual.personas) {
-
-      button = new RadioButton.from_widget (button);
-      button.get_style_context ().add_class ("contact-button");
-      button.set_can_default (false);
-      var image = create_image (p as AvatarDetails, 48, null);
-      button.add (image);
-      button.set_mode (false);
-      personas.add (button);
-
-      if (p == persona) {
-	button.set_active (true);
-      }
-      button.toggled.connect ( (a_button) => {
-	  if (a_button.get_active ())
-	    update_edit_card (image_frame, p);
-	});
-    }
-
-    update_edit_card (image_frame, persona);
-
-    g.attach (personas,  0, 3, 1, 1);
-  }
-
-
   private void display_card (Contact contact) {
     var image_frame = create_image_frame (create_image (contact.individual, PROFILE_SIZE, null));
     layout.add_widget_label (image_frame);
@@ -394,8 +346,51 @@ public class Contacts.ContactPane : EventBox {
 
   private void display_edit (Contact contact, Persona persona) {
     set_display_mode (DisplayMode.EDIT);
-    display_edit_card (contact, persona);
 
+    var image_frame = create_image_frame (null);
+    layout.add_widget_label (image_frame);
+    layout.mark_row_stable ();
+
+    layout.current_row.set_vexpand (false);
+    var g = new Grid();
+    layout.current_row.add (g);
+
+    var e = new Entry ();
+    e.set_text (contact.display_name);
+    e.set_hexpand (true);
+    e.set_halign (Align.START);
+    e.set_valign (Align.START);
+    g.attach (e,  0, 0, 1, 1);
+
+    var personas = new Grid ();
+    personas.set_row_spacing (4);
+    personas.set_halign (Align.START);
+    personas.set_valign (Align.END);
+    personas.set_vexpand (true);
+
+    RadioButton button = null;
+    foreach (var p in contact.individual.personas) {
+
+      button = new RadioButton.from_widget (button);
+      button.get_style_context ().add_class ("contact-button");
+      button.set_can_default (false);
+      var image = create_image (p as AvatarDetails, 48, null);
+      button.add (image);
+      button.set_mode (false);
+      personas.add (button);
+
+      if (p == persona) {
+	button.set_active (true);
+      }
+      button.toggled.connect ( (a_button) => {
+	  if (a_button.get_active ())
+	    update_edit_details (image_frame, p);
+	});
+    }
+
+    update_edit_details (image_frame, persona);
+
+    g.attach (personas,  0, 3, 1, 1);
     fields_grid.show_all ();
   }
 
