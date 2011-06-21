@@ -123,14 +123,10 @@ public class Contacts.TypeSet : Object  {
     return int.parse (s);
   }
 
-  public string format_type (FieldDetails detail) {
-    if (detail.parameters.contains ("x-google-label")) {
-      return get_first_string (detail.parameters.get ("x-google-label"));
-    }
-
+  public InitData *lookup_data (FieldDetails detail) {
     var i = detail.get_parameter_values ("type");
     if (i == null || i.is_empty)
-      return _("Other");
+      return null;
 
     var list = new Gee.ArrayList<string> ();
     foreach (var s in detail.get_parameter_values ("type")) {
@@ -142,7 +138,7 @@ public class Contacts.TypeSet : Object  {
     }
 
     if (list.is_empty)
-      return _("Other");
+      return null;
 
     list.sort ();
 
@@ -156,7 +152,20 @@ public class Contacts.TypeSet : Object  {
 	}
       }
       if (all_found)
-	return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
+	return d;
+    }
+
+    return null;
+  }
+
+  public string format_type (FieldDetails detail) {
+    if (detail.parameters.contains ("x-google-label")) {
+      return get_first_string (detail.parameters.get ("x-google-label"));
+    }
+
+    var d = lookup_data (detail);
+    if (d != null) {
+      return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
     }
 
     return _("Other");
