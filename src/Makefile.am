@@ -19,6 +19,7 @@ gnome_contacts_SOURCES = \
 	contacts-app.vala \
 	contacts-contact.vala \
 	contacts-contact-pane.vala \
+	contacts-types.vala \
 	contacts-list-pane.vala \
 	contacts-menu-button.vala \
 	contacts-store.vala \

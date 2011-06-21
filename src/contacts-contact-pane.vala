@@ -210,7 +210,7 @@ public class Contacts.ContactPane : EventBox {
       var emails = email_details.email_addresses;
       if (!emails.is_empty) {
 	foreach (var email in Contact.sort_fields (emails)) {
-	  var type = Contact.format_email_type (email);
+	  var type = TypeSet.general.format_type (email);
 	  layout.add_label_detail (type, email.value);
 	}
       }
@@ -235,7 +235,7 @@ public class Contacts.ContactPane : EventBox {
       var phone_numbers = phone_details.phone_numbers;
       if (!phone_numbers.is_empty) {
 	foreach (var p in Contact.sort_fields (phone_numbers)) {
-	  var type = Contact.format_phone_type (p);
+	  var type = TypeSet.phone.format_type (p);
 	  layout.add_label_detail (type, p.value);
 	}
       }
@@ -402,7 +402,7 @@ public class Contacts.ContactPane : EventBox {
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
       foreach (var email in Contact.sort_fields (emails)) {
-	var type = contact.format_email_type (email);
+	var type = TypeSet.general.format_type (email);
 	layout.add_label_detail (type, email.value);
 	var button = layout.add_button ("mail-unread-symbolic");
 	var email_addr = email.value;
@@ -437,7 +437,7 @@ public class Contacts.ContactPane : EventBox {
     var phone_numbers = contact.individual.phone_numbers;
     if (!phone_numbers.is_empty) {
       foreach (var p in Contact.sort_fields (phone_numbers)) {
-	var type = contact.format_phone_type (p);
+	var type = TypeSet.phone.format_type (p);
 	layout.add_label_detail (type, p.value);
       }
     }
