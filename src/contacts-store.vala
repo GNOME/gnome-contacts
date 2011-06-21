@@ -49,7 +49,7 @@ public class Contacts.Store  {
 
 	private bool apply_filter (Contact contact) {
 	  	// Don't show the user itself
-		if (false&&contact.individual.is_user)
+		if (contact.individual.is_user)
 		  return false;
 
 		var personas = contact.individual.personas;
