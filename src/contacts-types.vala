@@ -222,13 +222,6 @@ public class Contacts.TypeSet : Object  {
     return null;
   }
 
-  private static int get_first_string_as_int (Collection<string> collection) {
-    var s = get_first_string (collection);
-    if (s == null)
-      return int.MAX;
-    return int.parse (s);
-  }
-
   private unowned Data? lookup_data (FieldDetails detail) {
     var i = detail.get_parameter_values ("type");
     if (i == null || i.is_empty)
