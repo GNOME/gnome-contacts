@@ -271,20 +271,17 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
-  static int get_first_string_as_int (Collection<string> collection) {
-    var s = get_first_string (collection);
-    if (s == null)
-      return int.MAX;
-    return int.parse (s);
+  private static int sort_fields_helper (FieldDetails a, FieldDetails b) {
+    // TODO: This should sort firt by type and then by value
+    return GLib.strcmp (a.value, b.value);
   }
 
   public static GLib.List<FieldDetails> sort_fields (Set<FieldDetails> details) {
-    GLib.List<FieldDetails> sorted = null;
     GLib.List<FieldDetails> pref = null;
     GLib.List<FieldDetails> rest = null;
     foreach (var detail in details) {
-      if (detail.parameters.contains ("x-evolution-ui-slot")) {
-	sorted.prepend (detail);
+      if (get_first_string (detail.parameters.get ("x-evolution-ui-slot")) == "1") {
+	pref.prepend (detail);
       } else {
 	bool found = false;
 	foreach (var param in detail.parameters.get ("type")) {
@@ -299,16 +296,11 @@ public class Contacts.Contact : GLib.Object  {
 	  rest.prepend (detail);
       }
     }
-    pref.reverse();
-    rest.reverse();
-    sorted.sort ( (a, b) => {
-	var aa = get_first_string_as_int (a.parameters.get ("x-evolution-ui-slot"));
-	var bb = get_first_string_as_int (b.parameters.get ("x-evolution-ui-slot"));
-	return aa - bb;
-      });
-    sorted.concat ((owned)pref);
-    sorted.concat ((owned)rest);
-    return sorted;
+    // First all pref items, then the rest, each list sorted
+    pref.sort (sort_fields_helper);
+    rest.sort (sort_fields_helper);
+    pref.concat ((owned)rest);
+    return pref;
   }
 
   public static string[] format_address (PostalAddress addr) {
