@@ -300,4 +300,11 @@ public class Contacts.TypeSet : Object  {
     store.set (iter, 0, label, 1, null);
     custom_hash.insert (label, iter);
   }
+
+  public void type_seen (FieldDetails detail) {
+    if (detail.parameters.contains ("x-google-label")) {
+      var label = get_first_string (detail.parameters.get ("x-google-label"));
+      add_custom_label (label, null);
+    }
+  }
 }

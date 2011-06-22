@@ -532,6 +532,14 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void update () {
+    foreach (var email in individual.email_addresses) {
+      TypeSet.general.type_seen (email);
+    }
+
+    foreach (var phone in individual.phone_numbers) {
+      TypeSet.phone.type_seen (phone);
+    }
+
     update_presence ();
     update_filter_data ();
   }
