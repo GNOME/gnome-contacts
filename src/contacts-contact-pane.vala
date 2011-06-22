@@ -29,6 +29,7 @@ class DetailsLayout : Object {
   Grid fields_grid;
   SizeGroup label_size_group;
 
+  private bool expands;
   public Grid? current_row;
   Widget? last_label;
 
@@ -48,6 +49,7 @@ class DetailsLayout : Object {
   void new_row () {
     var grid = new Grid ();
     current_row = grid;
+    expands = false;
     last_label = null;
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
@@ -69,18 +71,34 @@ class DetailsLayout : Object {
     add_widget_label (l);
   }
 
+  public void attach_detail (Widget widget) {
+    if (last_label != null)
+      current_row.attach_next_to (widget, last_label, PositionType.BOTTOM, 1, 1);
+    else
+      current_row.add (widget);
+
+    widget.show ();
+    last_label = widget;
+  }
+
   public void add_detail (string val) {
     var label = new Label (val);
     label.set_selectable (true);
     label.set_valign (Align.CENTER);
     label.set_halign (Align.START);
-    if (last_label != null)
-      current_row.attach_next_to (label, last_label, PositionType.BOTTOM, 1, 1);
-    else
-      current_row.add (label);
 
-    label.show ();
-    last_label = label;
+    attach_detail (label);
+  }
+
+  public void add_entry (string val) {
+    var entry = new Entry ();
+    entry.set_text (val);
+    entry.set_valign (Align.CENTER);
+    entry.set_halign (Align.FILL);
+    entry.set_hexpand (true);
+    expands = true;
+
+    attach_detail (entry);
   }
 
   public void add_label_detail (string label, string val) {
@@ -92,21 +110,16 @@ class DetailsLayout : Object {
     var v = new LinkButton.with_label (uri, text);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
-    v.show ();
 
-    if (last_label != null)
-      current_row.attach_next_to (v, last_label, PositionType.BOTTOM, 1, 1);
-    else
-      current_row.add (v);
-
-    last_label = v;
+    attach_detail (v);
   }
 
-  public Button add_button (string? icon) {
+  public Button add_button (string? icon, bool at_top = true) {
     var button = new Button ();
     button.set_valign (Align.CENTER);
     button.set_halign (Align.END);
-    button.set_hexpand (true);
+    if (!expands)
+      button.set_hexpand (true);
 
     if (icon != null) {
       var image = new Image();
@@ -115,8 +128,18 @@ class DetailsLayout : Object {
       image.show ();
     }
 
-    current_row.add (button);
+    if (at_top || last_label == null)
+      current_row.add (button);
+    else
+      current_row.attach_next_to (button, last_label, PositionType.RIGHT, 1, 1);
 
+    return button;
+  }
+
+
+  public Button add_remove (bool at_top = true) {
+    var button = add_button ("edit-delete-symbolic", at_top);
+    button.set_relief (ReliefStyle.NONE);
     return button;
   }
 }
@@ -213,7 +236,8 @@ public class Contacts.ContactPane : EventBox {
 	  var combo = new TypeCombo (TypeSet.general);
 	  combo.set_active (email);
 	  layout.add_widget_label (combo);
-	  layout.add_detail (email.value);
+	  layout.add_entry (email.value);
+	  layout.add_remove ();
 	}
       }
     }
@@ -226,6 +250,7 @@ public class Contacts.ContactPane : EventBox {
 	foreach (var protocol in im_keys) {
 	  foreach (var id in ims[protocol]) {
 	    layout.add_label_detail (_("Chat"), protocol + "/" + id);
+	    layout.add_remove ();
 	  }
 	}
       }
@@ -240,7 +265,8 @@ public class Contacts.ContactPane : EventBox {
 	  var combo = new TypeCombo (TypeSet.phone);
 	  combo.set_active (p);
 	  layout.add_widget_label (combo);
-	  layout.add_detail (p.value);
+	  layout.add_entry (p.value);
+	  layout.add_remove ();
 	}
       }
     }
@@ -259,10 +285,10 @@ public class Contacts.ContactPane : EventBox {
 	  }
 	  string[] strs = Contact.format_address (addr);
 	  layout.add_label (type);
-	  if (strs.length > 0) {
-	    foreach (var s in strs)
+	  foreach (var s in strs) {
 	    layout.add_detail (s);
 	  }
+	  layout.add_remove ();
 	}
       }
     }
@@ -274,7 +300,8 @@ public class Contacts.ContactPane : EventBox {
 	layout.add_label ("Links");
 	foreach (var url_details in urls) {
 	  var url = url_details.value;
-	  layout.add_detail (url);
+	  layout.add_entry (url);
+	  layout.add_remove (false);
 	}
       }
     }
