@@ -210,8 +210,10 @@ public class Contacts.ContactPane : EventBox {
       var emails = email_details.email_addresses;
       if (!emails.is_empty) {
 	foreach (var email in Contact.sort_fields (emails)) {
-	  var type = TypeSet.general.format_type (email);
-	  layout.add_label_detail (type, email.value);
+	  var combo = new TypeCombo (TypeSet.general);
+	  combo.set_active (email);
+	  layout.add_widget_label (combo);
+	  layout.add_detail (email.value);
 	}
       }
     }
@@ -235,8 +237,10 @@ public class Contacts.ContactPane : EventBox {
       var phone_numbers = phone_details.phone_numbers;
       if (!phone_numbers.is_empty) {
 	foreach (var p in Contact.sort_fields (phone_numbers)) {
-	  var type = TypeSet.phone.format_type (p);
-	  layout.add_label_detail (type, p.value);
+	  var combo = new TypeCombo (TypeSet.phone);
+	  combo.set_active (p);
+	  layout.add_widget_label (combo);
+	  layout.add_detail (p.value);
 	}
       }
     }
