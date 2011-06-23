@@ -342,6 +342,8 @@ public class Contacts.TypeCombo : Grid  {
     this.type_set = type_set;
 
     combo = new ComboBox.with_model (type_set.store);
+    combo.set_halign (Align.FILL);
+    combo.set_hexpand (true);
     this.add (combo);
 
     var renderer = new CellRendererText ();
@@ -355,6 +357,8 @@ public class Contacts.TypeCombo : Grid  {
       });
 
     entry = new Entry ();
+    entry.set_halign (Align.FILL);
+    entry.set_hexpand (true);
     entry.width_chars = 10;
 
     this.add (entry);

@@ -276,6 +276,8 @@ public class Contacts.ContactPane : EventBox {
 				  FieldDetails detail,
 				  string property_name) {
     var combo = new TypeCombo (type_set);
+    combo.set_halign (Align.FILL);
+    combo.set_hexpand (false);
     combo.set_active (detail);
     layout.add_widget_label (combo);
     var entry = layout.add_entry (detail.value);
