@@ -19,6 +19,7 @@
 
 using Gtk;
 using Folks;
+using Gee;
 
 class DetailsLayout : Object {
   public DetailsLayout (Grid fields_grid) {
@@ -90,7 +91,7 @@ class DetailsLayout : Object {
     attach_detail (label);
   }
 
-  public void add_entry (string val) {
+  public Entry add_entry (string val) {
     var entry = new Entry ();
     entry.set_text (val);
     entry.set_valign (Align.CENTER);
@@ -99,6 +100,7 @@ class DetailsLayout : Object {
     expands = true;
 
     attach_detail (entry);
+    return entry;
   }
 
   public void add_label_detail (string label, string val) {
@@ -162,6 +164,9 @@ public class Contacts.ContactPane : EventBox {
   private ButtonBox editing_buttons;
   private DetailsLayout layout;
 
+  HashSet<FieldDetails> editing_emails;
+  HashSet<FieldDetails> editing_phones;
+
   const int PROFILE_SIZE = 100;
   const int LABEL_HEIGHT = 20;
 
@@ -219,6 +224,48 @@ public class Contacts.ContactPane : EventBox {
     return image_frame;
   }
 
+  private void update_edit_detail_value (Set<FieldDetails> detail_set, 
+					 Entry entry,
+					 string property_name) {
+    FieldDetails? old_detail = null;
+    foreach (var detail in detail_set) {
+      if (detail.get_data<Entry> ("entry") == entry) {
+	old_detail = detail;
+	break;
+      }
+    }
+    assert (old_detail != null);
+
+    if (old_detail.value != entry.get_text ()) {
+      var new_detail = new FieldDetails (entry.get_text ());
+      new_detail.parameters = old_detail.parameters;
+      new_detail.set_data ("entry", old_detail.get_data<Entry> ("entry"));
+      new_detail.set_data ("combo", old_detail.get_data<TypeCombo> ("combo"));
+
+      detail_set.remove (old_detail);
+      detail_set.add (new_detail);
+      
+      editing_persona.set (property_name, detail_set);
+    }
+  }
+
+  private void add_detail_editor (TypeSet type_set,
+				  Set<FieldDetails> detail_set, 
+				  FieldDetails detail,
+				  string property_name) {
+    var combo = new TypeCombo (type_set);
+    combo.set_active (detail);
+    layout.add_widget_label (combo);
+    var entry = layout.add_entry (detail.value);
+    detail.set_data ("entry", entry);
+    detail.set_data ("combo", combo);
+    detail_set.add (detail);
+
+    entry.focus_out_event.connect ( (ev) => {
+	update_edit_detail_value (detail_set, entry, property_name);
+	return false;
+      });
+  }
   private void update_edit_details (Frame image_frame, Persona persona) {
     layout.reset (false);
     if (image_frame.get_child () != null)
@@ -227,16 +274,17 @@ public class Contacts.ContactPane : EventBox {
     image.show ();
     image_frame.add (image);
 
+    editing_emails = new HashSet<FieldDetails>();
+    editing_phones = new HashSet<FieldDetails>();
 
     var email_details = persona as EmailDetails;
     if (email_details != null) {
       var emails = email_details.email_addresses;
       if (!emails.is_empty) {
 	foreach (var email in Contact.sort_fields (emails)) {
-	  var combo = new TypeCombo (TypeSet.general);
-	  combo.set_active (email);
-	  layout.add_widget_label (combo);
-	  layout.add_entry (email.value);
+	  add_detail_editor (TypeSet.general, 
+			     editing_emails, email,
+			     "email_addresses");
 	  layout.add_remove ();
 	}
       }
@@ -262,10 +310,9 @@ public class Contacts.ContactPane : EventBox {
       var phone_numbers = phone_details.phone_numbers;
       if (!phone_numbers.is_empty) {
 	foreach (var p in Contact.sort_fields (phone_numbers)) {
-	  var combo = new TypeCombo (TypeSet.phone);
-	  combo.set_active (p);
-	  layout.add_widget_label (combo);
-	  layout.add_entry (p.value);
+	  add_detail_editor (TypeSet.phone, 
+			     editing_phones, p,
+			     "phone_numbers");
 	  layout.add_remove ();
 	}
       }
