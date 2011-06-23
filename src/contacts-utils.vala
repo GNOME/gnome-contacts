@@ -19,6 +19,7 @@
 
 using Gtk;
 using Folks;
+using Gee;
 
 public class Contacts.Utils : Object {
   public static void compose_mail (string email) {
@@ -40,5 +41,12 @@ public class Contacts.Utils : Object {
     // tp_user_action_time_from_x11(gtk_get_current_event_time())
     var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
     request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
+  }
+
+  public static T? get_first<T> (Collection<T> collection) {
+    var i = collection.iterator();
+    if (i.next())
+      return i.get();
+    return null;
   }
 }
