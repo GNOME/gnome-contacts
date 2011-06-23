@@ -359,7 +359,9 @@ public class Contacts.TypeCombo : Grid  {
     entry = new Entry ();
     entry.set_halign (Align.FILL);
     entry.set_hexpand (true);
-    entry.width_chars = 10;
+    // Make the default entry small so we don't unnecessarily
+    // expand the labels (it'll be expanded a bit anyway)
+    entry.width_chars = 4;
 
     this.add (entry);
 
