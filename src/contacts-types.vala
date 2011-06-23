@@ -38,13 +38,15 @@ public class Contacts.TypeSet : Object  {
   
   // Dummy Data to mark the "Custom..." store entry
   private static Data custom_dummy = new Data ();
+  // Dummy Data to mark the "Other..." store entry
+  private static Data other_dummy = new Data ();
 
   // Map from translated display name to Data for all "standard" types
   private HashTable<unowned string, Data> display_name_hash;
   // Map from all type strings in to list of InitData with the data in it
   private HashTable<unowned string, GLib.List<InitData*> > vcard_lookup_hash;
   // Map from display name to TreeIter for all custom types
-  private HashTable<unowned string, TreeIter?> custom_hash;
+  private HashTable<string, TreeIter?> custom_hash;
 
   public ListStore store;
   private TreeIter other_iter;
@@ -109,7 +111,7 @@ public class Contacts.TypeSet : Object  {
     }
 
     store.append (out other_iter);
-    store.set (other_iter, 0, _("Other"), 1, null);
+    store.set (other_iter, 0, _("Other"), 1, other_dummy);
 
     TreeIter iter;
     // Separator
@@ -126,6 +128,11 @@ public class Contacts.TypeSet : Object  {
     if (data != null) {
       add_data_to_store (data, true);
       iter = data.iter;
+      return;
+    }
+
+    if (label == _("Other")) {
+      iter = other_iter;
       return;
     }
 
@@ -233,9 +240,13 @@ public class Contacts.TypeSet : Object  {
       details.parameters.set ("type", "OTHER");
       details.parameters.set (X_GOOGLE_LABEL, display_name);
     } else {
-      InitData *init_data = data.init_data.data;
-      for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
-	details.parameters.set ("type", init_data.types[j]);
+      if (data == other_dummy) {
+	  details.parameters.set ("type", "OTHER");
+      } else {
+	InitData *init_data = data.init_data.data;
+	for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
+	  details.parameters.set ("type", init_data.types[j]);
+	}
       }
     }
 
