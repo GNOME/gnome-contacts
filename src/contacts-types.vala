@@ -22,6 +22,7 @@ using Gee;
 using Folks;
 
 public class Contacts.TypeSet : Object  {
+  const string X_GOOGLE_LABEL = "x-google-label";
   const int MAX_TYPES = 3;
   private struct InitData {
     unowned string display_name_u;
@@ -172,8 +173,8 @@ public class Contacts.TypeSet : Object  {
 
   // Looks up (and creates if necessary) the type in the store
   public void lookup_type (FieldDetails detail, out TreeIter iter) {
-    if (detail.parameters.contains ("x-google-label")) {
-      var label = Utils.get_first<string> (detail.parameters.get ("x-google-label"));
+    if (detail.parameters.contains (X_GOOGLE_LABEL)) {
+      var label = Utils.get_first<string> (detail.parameters.get (X_GOOGLE_LABEL));
       add_custom_label (label, out iter);
       return;
     }
@@ -192,8 +193,8 @@ public class Contacts.TypeSet : Object  {
   }
 
   public string format_type (FieldDetails detail) {
-    if (detail.parameters.contains ("x-google-label")) {
-      return Utils.get_first<string> (detail.parameters.get ("x-google-label"));
+    if (detail.parameters.contains (X_GOOGLE_LABEL)) {
+      return Utils.get_first<string> (detail.parameters.get (X_GOOGLE_LABEL));
     }
 
     unowned Data? d = lookup_data (detail);
@@ -204,8 +205,48 @@ public class Contacts.TypeSet : Object  {
     return _("Other");
   }
 
+  public FieldDetails update_details (FieldDetails old_details, TreeIter iter) {
+    FieldDetails details = new FieldDetails(old_details.value);
+    bool has_pref = false;
+    foreach (var value in old_details.parameters.get ("type")) {
+      if (value.ascii_casecmp ("PREF") == 0) {
+	has_pref = true;
+	break;
+      }
+    }
+    foreach (var param in old_details.parameters.get_keys()) {
+      if (param != "type" && param != X_GOOGLE_LABEL) {
+	foreach (var value in old_details.parameters.get (param)) {
+	  details.parameters.set (param, value);
+	}
+      }
+    }
+    
+    Data data;
+    string display_name;
+    store.get (iter, 0, out display_name, 1, out data);
+    
+    assert (display_name != null); // Not separator
+    assert (data != custom_dummy); // Not custom...
+    
+    if (data == null) { // A custom label
+      details.parameters.set ("type", "OTHER");
+      details.parameters.set (X_GOOGLE_LABEL, display_name);
+    } else {
+      InitData *init_data = data.init_data.data;
+      for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
+	details.parameters.set ("type", init_data.types[j]);
+      }
+    }
+
+    if (has_pref)
+      details.parameters.set ("type", "PREF");
+    
+    return details;
+  }
+
   public bool is_custom (TreeIter iter) {
-    InitData *data;
+    Data data;
     store.get (iter, 1, out data);
     return data == custom_dummy;
   }
@@ -282,6 +323,9 @@ public class Contacts.TypeCombo : Grid  {
   ComboBox combo;
   Entry entry;
   bool custom_mode;
+  bool in_manual_change;
+
+  public signal void changed ();
 
   public TypeCombo (TypeSet type_set) {
     this.type_set = type_set;
@@ -340,19 +384,33 @@ public class Contacts.TypeCombo : Grid  {
   }
 
   private void combo_changed (ComboBox combo) {
+    if (in_manual_change)
+      return;
+
     TreeIter iter;
-    if (combo.get_active_iter (out iter) &&
-	type_set.is_custom (iter)) {
-      custom_mode = true;
-      combo.hide ();
-      entry.show ();
-      entry.grab_focus ();
+    if (combo.get_active_iter (out iter)) {
+      if (type_set.is_custom (iter)) {
+	custom_mode = true;
+	combo.hide ();
+	entry.show ();
+	entry.grab_focus ();
+      } else {
+	this.changed ();
+      }
     }
   }
 
   public void set_active (FieldDetails details) {
     TreeIter iter;
     type_set.lookup_type (details, out iter);
+    in_manual_change = true;
     combo.set_active_iter (iter);
+    in_manual_change = false;
+  }
+
+  public FieldDetails update_details (FieldDetails old_details) {
+    TreeIter iter;
+    combo.get_active_iter (out iter);
+    return type_set.update_details (old_details, iter);
   }
 }

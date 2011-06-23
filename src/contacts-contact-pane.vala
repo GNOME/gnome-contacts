@@ -224,7 +224,29 @@ public class Contacts.ContactPane : EventBox {
     return image_frame;
   }
 
-  private void update_edit_detail_value (Set<FieldDetails> detail_set, 
+  private void update_edit_detail_type (Set<FieldDetails> detail_set,
+					TypeCombo combo,
+					string property_name) {
+    FieldDetails? old_detail = null;
+    foreach (var detail in detail_set) {
+      if (detail.get_data<TypeCombo> ("combo") == combo) {
+	old_detail = detail;
+	break;
+      }
+    }
+    assert (old_detail != null);
+
+    var new_detail = combo.update_details (old_detail);
+    new_detail.set_data ("entry", old_detail.get_data<Entry> ("entry"));
+    new_detail.set_data ("combo", old_detail.get_data<TypeCombo> ("combo"));
+
+    detail_set.remove (old_detail);
+    detail_set.add (new_detail);
+      
+    editing_persona.set (property_name, detail_set);
+  }
+
+  private void update_edit_detail_value (Set<FieldDetails> detail_set,
 					 Entry entry,
 					 string property_name) {
     FieldDetails? old_detail = null;
@@ -264,6 +286,10 @@ public class Contacts.ContactPane : EventBox {
     entry.focus_out_event.connect ( (ev) => {
 	update_edit_detail_value (detail_set, entry, property_name);
 	return false;
+      });
+
+    combo.changed.connect ( () => {
+	update_edit_detail_type (detail_set, combo, property_name);
       });
   }
   private void update_edit_details (Frame image_frame, Persona persona) {
