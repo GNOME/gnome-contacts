@@ -291,21 +291,21 @@ public class Contacts.TypeSet : Object  {
   }
 
   private static TypeSet _general;
+  private const InitData[] general_data = {
+    // List most specific first, always in upper case
+    { N_("Home"), { "HOME" } },
+    { N_("Work"), { "WORK" } }
+  };
   public static TypeSet general {
     get {
-      const InitData[] data = {
-	// List most specific first, always in upper case
-	{ N_("Home"), { "HOME" } },
-	{ N_("Work"), { "WORK" } }
-      };
       string[] standard = {
 	"Work", "Home"
       };
 
       if (_general == null) {
 	_general = new TypeSet ();
-	for (int i = 0; i < data.length; i++)
-	  _general.add_init_data (&data[i]);
+	for (int i = 0; i < general_data.length; i++)
+	  _general.add_init_data (&general_data[i]);
 	_general.add_init_data_done (standard);
       }
 
@@ -334,9 +334,8 @@ public class Contacts.TypeSet : Object  {
 	{ N_("Radio"),            { "X-EVOLUTION-RADIO" } },
 	{ N_("Telex"),            { "X-EVOLUTION-TELEX" } },
 	/* To translators: TTY is Teletypewriter */
-	{ N_("TTY"),              { "X-EVOLUTION-TTYTDD" } },
-	{ N_("Home"), { "HOME" } },
-	{ N_("Work"), { "WORK" } }
+	{ N_("TTY"),              { "X-EVOLUTION-TTYTDD" } }
+	// Also we add the general ones here
       };
 
       // Make sure these strings are the same as the above
@@ -348,6 +347,8 @@ public class Contacts.TypeSet : Object  {
 	_phone = new TypeSet ();
 	for (int i = 0; i < data.length; i++)
 	  _phone.add_init_data (&data[i]);
+	for (int i = 0; i < general_data.length; i++)
+	  _phone.add_init_data (&general_data[i]);
 	_phone.add_init_data_done (standard);
       }
 
