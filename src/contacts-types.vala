@@ -21,86 +21,6 @@ using Gtk;
 using Gee;
 using Folks;
 
-public class Contacts.TypeCombo : Grid  {
-  TypeSet type_set;
-  ComboBox combo;
-  Entry entry;
-  bool custom_mode;
-
-  public TypeCombo (TypeSet type_set) {
-    this.type_set = type_set;
-
-    combo = new ComboBox.with_model (type_set.store);
-    this.add (combo);
-
-    var renderer = new CellRendererText ();
-    combo.pack_start (renderer, true);
-    combo.set_attributes (renderer,
-			  "text", 0);
-    combo.set_row_separator_func ( (model, iter) => {
-	string? s;
-	model.get (iter, 0, out s);
-	return s == null;
-      });
-
-    entry = new Entry ();
-    entry.width_chars = 10;
-
-    this.add (entry);
-
-    combo.set_no_show_all (true);
-    entry.set_no_show_all (true);
-
-    combo.show ();
-
-    combo.changed.connect (combo_changed);
-    entry.focus_out_event.connect (entry_focus_out_event);
-    entry.activate.connect (entry_activate);
-  }
-
-  private void finish_custom () {
-    if (!custom_mode)
-      return;
-
-    custom_mode = false;
-    var text = entry.get_text ();
-
-    TreeIter iter;
-    type_set.add_custom_label (text, out iter);
-
-    combo.set_active_iter (iter);
-
-    combo.show ();
-    entry.hide ();
-  }
-
-  private void entry_activate () {
-    finish_custom ();
-  }
-
-  private bool entry_focus_out_event (Gdk.EventFocus event) {
-    finish_custom ();
-    return false;
-  }
-
-  private void combo_changed (ComboBox combo) {
-    TreeIter iter;
-    if (combo.get_active_iter (out iter) &&
-	type_set.is_custom (iter)) {
-      custom_mode = true;
-      combo.hide ();
-      entry.show ();
-      entry.grab_focus ();
-    }
-  }
-
-  public void set_active (FieldDetails details) {
-    TreeIter iter;
-    type_set.lookup_type (details, out iter);
-    combo.set_active_iter (iter);
-  }
-}
-
 public class Contacts.TypeSet : Object  {
   const int MAX_TYPES = 3;
   private struct InitData {
@@ -354,5 +274,85 @@ public class Contacts.TypeSet : Object  {
 
       return _phone;
     }
+  }
+}
+
+public class Contacts.TypeCombo : Grid  {
+  TypeSet type_set;
+  ComboBox combo;
+  Entry entry;
+  bool custom_mode;
+
+  public TypeCombo (TypeSet type_set) {
+    this.type_set = type_set;
+
+    combo = new ComboBox.with_model (type_set.store);
+    this.add (combo);
+
+    var renderer = new CellRendererText ();
+    combo.pack_start (renderer, true);
+    combo.set_attributes (renderer,
+			  "text", 0);
+    combo.set_row_separator_func ( (model, iter) => {
+	string? s;
+	model.get (iter, 0, out s);
+	return s == null;
+      });
+
+    entry = new Entry ();
+    entry.width_chars = 10;
+
+    this.add (entry);
+
+    combo.set_no_show_all (true);
+    entry.set_no_show_all (true);
+
+    combo.show ();
+
+    combo.changed.connect (combo_changed);
+    entry.focus_out_event.connect (entry_focus_out_event);
+    entry.activate.connect (entry_activate);
+  }
+
+  private void finish_custom () {
+    if (!custom_mode)
+      return;
+
+    custom_mode = false;
+    var text = entry.get_text ();
+
+    TreeIter iter;
+    type_set.add_custom_label (text, out iter);
+
+    combo.set_active_iter (iter);
+
+    combo.show ();
+    entry.hide ();
+  }
+
+  private void entry_activate () {
+    finish_custom ();
+  }
+
+  private bool entry_focus_out_event (Gdk.EventFocus event) {
+    finish_custom ();
+    return false;
+  }
+
+  private void combo_changed (ComboBox combo) {
+    TreeIter iter;
+    if (combo.get_active_iter (out iter) &&
+	type_set.is_custom (iter)) {
+      custom_mode = true;
+      combo.hide ();
+      entry.show ();
+      entry.grab_focus ();
+    }
+  }
+
+  public void set_active (FieldDetails details) {
+    TreeIter iter;
+    type_set.lookup_type (details, out iter);
+    combo.set_active_iter (iter);
   }
 }
