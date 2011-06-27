@@ -44,7 +44,7 @@ public class Contacts.ListPane : Frame {
     var text = new CellRendererText ();
     text.set_alignment (0, 0);
     column.pack_start (text, true);
-    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 32);
+    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	Contact contact;
 
