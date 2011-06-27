@@ -65,10 +65,13 @@ public class Contacts.ContactPresence : Grid {
     this.add (image);
     label = new Label ("");
     label.set_no_show_all (true);
+    label.set_ellipsize (Pango.EllipsizeMode.END);
+    label.xalign = 0.0f;
+
     this.add (label);
 
     update_presence_widgets (image, label);
-    
+
     var id = contact.changed.connect ( () => {
 	update_presence_widgets (image, label);
       });

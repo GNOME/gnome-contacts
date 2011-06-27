@@ -403,12 +403,17 @@ public class Contacts.ContactPane : EventBox {
     l.set_hexpand (true);
     l.set_halign (Align.START);
     l.set_valign (Align.START);
+    l.set_ellipsize (Pango.EllipsizeMode.END);
+    l.xalign = 0.0f;
     g.attach (l,  0, 0, 1, 1);
+
     var nick = contact.individual.nickname;
     if (nick != null && nick.length > 0) {
       l = new Label ("\xE2\x80\x9C" + nick + "\xE2\x80\x9D");
       l.set_halign (Align.START);
       l.set_valign (Align.START);
+      l.set_ellipsize (Pango.EllipsizeMode.END);
+      l.xalign = 0.0f;
       g.attach (l,  0, 1, 1, 1);
     }
 
@@ -416,6 +421,8 @@ public class Contacts.ContactPane : EventBox {
     l = new Label ("<title>, <Company>");
     l.set_halign (Align.START);
     l.set_valign (Align.START);
+    l.set_ellipsize (Pango.EllipsizeMode.END);
+    l.xalign = 0.0f;
     g.attach (l,  0, 2, 1, 1);
     */
 
