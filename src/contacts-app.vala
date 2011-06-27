@@ -41,7 +41,7 @@ public class Contacts.App : Window {
 
   public App () {
     set_title (_("Contacts"));
-    set_default_size (800, 500);
+    set_size_request (700, 510);
     this.destroy.connect (Gtk.main_quit);
 
     var grid = new Grid();

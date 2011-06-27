@@ -87,6 +87,8 @@ class DetailsLayout : Object {
     label.set_selectable (true);
     label.set_valign (Align.CENTER);
     label.set_halign (Align.START);
+    label.set_ellipsize (Pango.EllipsizeMode.END);
+    label.xalign = 0.0f;
 
     attach_detail (label);
   }
@@ -112,6 +114,10 @@ class DetailsLayout : Object {
     var v = new LinkButton.with_label (uri, text);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
+    Label l = v.get_child () as Label;
+    l.set_ellipsize (Pango.EllipsizeMode.END);
+    l.xalign = 0.0f;
+
 
     attach_detail (v);
   }
