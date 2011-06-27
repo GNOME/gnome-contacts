@@ -399,7 +399,7 @@ public class Contacts.ContactPane : EventBox {
     layout.current_row.add (g);
 
     var l = new Label (null);
-    l.set_markup ("<big><b>" + contact.display_name + "</b></big>");
+    l.set_markup ("<span font='22'><b>" + contact.display_name + "</b></span>");
     l.set_hexpand (true);
     l.set_halign (Align.START);
     l.set_valign (Align.START);
