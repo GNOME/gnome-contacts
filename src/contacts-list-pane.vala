@@ -40,12 +40,11 @@ public class Contacts.ListPane : Frame {
     selection.changed.connect (contacts_selection_changed);
 
     var column = new TreeViewColumn ();
-    column.set_spacing (10);
 
     var text = new CellRendererText ();
     text.set_alignment (0, 0);
     column.pack_start (text, true);
-    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28);
+    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 32);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	Contact contact;
 
@@ -76,7 +75,7 @@ public class Contacts.ListPane : Frame {
 
     text = new CellRendererText ();
     column.pack_start (text, false);
-    text.set ("weight", Pango.Weight.BOLD);
+    text.set ("weight", Pango.Weight.BOLD, "wrap-width", 230);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	Contact contact;
 
@@ -205,8 +204,8 @@ public class Contacts.ListPane : Frame {
       });
 
     var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_min_content_width (400);
-    scrolled.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
+    scrolled.set_min_content_width (310);
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
