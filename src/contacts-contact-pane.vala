@@ -263,7 +263,7 @@ public class Contacts.ContactPane : EventBox {
     }
 
     if (pixbuf == null) {
-      /* TODO: Set fallback image */
+      pixbuf = Contact.draw_fallback_avatar (size);
     }
 
     if (pixbuf != null) {
