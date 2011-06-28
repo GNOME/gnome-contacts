@@ -144,11 +144,82 @@ class DetailsLayout : Object {
     return button;
   }
 
-
   public Button add_remove (bool at_top = true) {
     var button = add_button ("edit-delete-symbolic", at_top);
     button.set_relief (ReliefStyle.NONE);
     return button;
+  }
+}
+
+public class Contacts.ContactFrame : Frame {
+  private int size;
+  private string? text;
+  private Gdk.Pixbuf? pixbuf;
+  private Pango.Layout? layout;
+  private int text_height;
+
+  public ContactFrame (int size) {
+    this.size = size;
+
+    var image = new Image ();
+    image.set_size_request (size, size);
+    this.add (image);
+
+    get_style_context ().add_class ("contact-frame");
+    set_shadow_type (ShadowType.OUT);
+  }
+
+  public void set_image (AvatarDetails? details) {
+    pixbuf = null;
+    if (details != null &&
+	details.avatar != null &&
+	details.avatar.get_path () != null) {
+      try {
+	pixbuf = new Gdk.Pixbuf.from_file_at_scale (details.avatar.get_path (), size, size, true);
+      }
+      catch {
+      }
+    }
+
+    if (pixbuf == null) {
+      /* TODO: Set fallback image */
+    }
+  }
+
+  public void set_text (string? text_, int text_height_) {
+    text = text_;
+    text_height = text_height_;
+    layout = null;
+    if (text != null) {
+      layout = create_pango_layout (text);
+      layout.set_width (size);
+      layout.set_height (text_height);
+      layout.set_alignment (Pango.Alignment.CENTER);
+    }
+  }
+
+  public override bool draw (Cairo.Context cr) {
+    cr.save ();
+
+    if (pixbuf != null) {
+      Gdk.cairo_set_source_pixbuf (cr, pixbuf, 2, 2);
+      cr.paint();
+    }
+
+    if (layout != null) {
+      cr.set_source_rgba (0, 0, 0, 0.5);
+      cr.rectangle (2, 2 + size - text_height, size, text_height);
+      cr.fill ();
+
+      cr.set_source_rgb (1.0, 1.0, 1.0);
+      Gtk.render_layout (get_style_context (), cr,
+			 size / 2, size - text_height,
+			 layout);
+    }
+    cr.restore ();
+
+    base.draw (cr);
+    return true;
   }
 }
 
@@ -173,10 +244,10 @@ public class Contacts.ContactPane : EventBox {
   HashSet<FieldDetails> editing_emails;
   HashSet<FieldDetails> editing_phones;
 
-  const int PROFILE_SIZE = 100;
+  const int PROFILE_SIZE = 96;
   const int LABEL_HEIGHT = 20;
 
-  private Widget create_image (AvatarDetails? details, int size, string? label) {
+  private Widget create_image (AvatarDetails? details, int size) {
     var image = new Image ();
     image.set_size_request (size, size);
 
@@ -199,35 +270,7 @@ public class Contacts.ContactPane : EventBox {
       image.set_from_pixbuf (pixbuf);
     }
 
-    if (label != null) {
-      var layout = image.create_pango_layout (label);
-      layout.set_width (size);
-      layout.set_height (LABEL_HEIGHT);
-      layout.set_alignment (Pango.Alignment.CENTER);
-      image.draw.connect_after ( (cr) => {
-	  cr.set_source_rgba (0, 0, 0, 0.5);
-	  cr.rectangle (0, size - LABEL_HEIGHT, size, LABEL_HEIGHT);
-	  cr.fill ();
-
-	  cr.set_source_rgb (1.0, 1.0, 1.0);
-	  Gtk.render_layout (image.get_style_context (), cr,
-			     size / 2, size - LABEL_HEIGHT,
-			     layout);
-	  return false;
-	});
-    }
-
     return image;
-  }
-
-  private Frame create_image_frame (Widget ?child) {
-    var image_frame = new Frame (null);
-
-    image_frame.get_style_context ().add_class ("contact-frame");
-    image_frame.set_shadow_type (ShadowType.OUT);
-    if (child != null)
-      image_frame.add (child);
-    return image_frame;
   }
 
   private void update_edit_detail_type (Set<FieldDetails> detail_set,
@@ -248,7 +291,7 @@ public class Contacts.ContactPane : EventBox {
 
     detail_set.remove (old_detail);
     detail_set.add (new_detail);
-      
+
     editing_persona.set (property_name, detail_set);
   }
 
@@ -300,13 +343,10 @@ public class Contacts.ContactPane : EventBox {
 	update_edit_detail_type (detail_set, combo, property_name);
       });
   }
-  private void update_edit_details (Frame image_frame, Persona persona) {
+  private void update_edit_details (ContactFrame image_frame, Persona persona) {
     layout.reset (false);
-    if (image_frame.get_child () != null)
-      image_frame.get_child ().destroy ();
-    var image = create_image (persona as AvatarDetails, PROFILE_SIZE, persona.store.display_name);
-    image.show ();
-    image_frame.add (image);
+    image_frame.set_image (persona as AvatarDetails);
+    image_frame.set_text (persona.store.display_name, LABEL_HEIGHT);
 
     editing_emails = new HashSet<FieldDetails>();
     editing_phones = new HashSet<FieldDetails>();
@@ -391,7 +431,8 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void display_card (Contact contact) {
-    var image_frame = create_image_frame (create_image (contact.individual, PROFILE_SIZE, null));
+    var image_frame = new ContactFrame (PROFILE_SIZE);
+    image_frame.set_image (contact.individual);
     layout.add_widget_label (image_frame);
 
     layout.current_row.set_vexpand (false);
@@ -466,7 +507,7 @@ public class Contacts.ContactPane : EventBox {
   private void display_edit (Contact contact, Persona persona) {
     set_display_mode (DisplayMode.EDIT);
 
-    var image_frame = create_image_frame (null);
+    var image_frame = new ContactFrame (PROFILE_SIZE);
     layout.add_widget_label (image_frame);
     layout.mark_row_stable ();
 
@@ -493,7 +534,7 @@ public class Contacts.ContactPane : EventBox {
       button = new RadioButton.from_widget (button);
       button.get_style_context ().add_class ("contact-button");
       button.set_can_default (false);
-      var image = create_image (p as AvatarDetails, 48, null);
+      var image = create_image (p as AvatarDetails, 48);
       button.add (image);
       button.set_mode (false);
       personas.add (button);
