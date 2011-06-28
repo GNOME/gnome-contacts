@@ -128,7 +128,7 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   static construct {
-    fallback_avatar = draw_fallback_avatar ();
+    fallback_avatar = draw_fallback_avatar (48);
   }
 
   private void persona_notify_cb (ParamSpec pspec) {
@@ -634,12 +634,12 @@ public class Contacts.Contact : GLib.Object  {
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, 52, 52);
   }
 
-  private static Gdk.Pixbuf draw_fallback_avatar () {
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
+  public static Gdk.Pixbuf draw_fallback_avatar (int size) {
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
     var cr = new Cairo.Context (cst);
 
     try {
-      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", 48, IconLookupFlags.GENERIC_FALLBACK);
+      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", size, IconLookupFlags.GENERIC_FALLBACK);
       var image = icon_info.load_icon ();
       if (image != null) {
 	Gdk.cairo_set_source_pixbuf (cr, image, 0, 0);
@@ -648,6 +648,6 @@ public class Contacts.Contact : GLib.Object  {
     } catch {
     }
 
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 48, 48);
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
   }
 }

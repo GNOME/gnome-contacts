@@ -182,7 +182,7 @@ public class Contacts.ContactFrame : Frame {
     }
 
     if (pixbuf == null) {
-      /* TODO: Set fallback image */
+      pixbuf = Contact.draw_fallback_avatar (size);
     }
   }
 
