@@ -20,11 +20,257 @@
 using Gtk;
 using Folks;
 
+public class Contacts.CellRendererShape : Gtk.CellRenderer {
+  public const int IMAGE_SIZE = 14;
+
+  private Widget current_widget;
+
+  public string name { get;  set; }
+  public PresenceType presence { get;  set; }
+  public int wrap_width { get;  set; default=-1;}
+
+  Gdk.Pixbuf? create_symbolic_pixbuf (Widget widget, string icon_name, int size) {
+    var screen = widget. get_screen ();
+    var icon_theme = Gtk.IconTheme.get_for_screen (screen);
+
+    var info = icon_theme.lookup_icon (icon_name, size, Gtk.IconLookupFlags.USE_BUILTIN);
+    if (info == null)
+      return null;
+
+    var context = widget.get_style_context ();
+
+    context.save ();
+    bool is_symbolic;
+    var pixbuf = info.load_symbolic_for_context (context,
+						 out is_symbolic);
+    context.restore ();
+
+    if (!is_symbolic)
+      pixbuf = null;
+
+    return pixbuf;
+  }
+
+
+  private Pango.Layout get_layout (Widget           widget,
+				   Gdk.Rectangle? cell_area,
+				   CellRendererState flags) {
+    Pango.Layout layout;
+    int xpad;
+
+    string str = name;
+    var attr_list = new Pango.AttrList();
+    var a = Pango.attr_weight_new (Pango.Weight.BOLD);
+    a.start_index = 0;
+    a.end_index = a.start_index + str.length;
+    attr_list.insert ((owned) a);
+
+    string? iconname = Contact.presence_to_icon (presence);
+    if (iconname != null) {
+      str += "\xE2\x80\xA8* " + Contact.presence_to_string (presence);
+      Pango.Rectangle r = { 0, -CellRendererShape.IMAGE_SIZE*1024*9/10,
+			    CellRendererShape.IMAGE_SIZE*1024, CellRendererShape.IMAGE_SIZE*1024 };
+      a = new Pango.AttrShape<string>.with_data (r, r, iconname, string.dup);
+      a.start_index = name.length + 3;
+      a.end_index = a.start_index + 1;
+      attr_list.insert ((owned) a);
+    }
+
+    layout = widget.create_pango_layout (str);
+
+    get_padding (out xpad, null);
+
+    /* Now apply the attributes as they will effect the outcome
+     * of pango_layout_get_extents() */
+    layout.set_attributes (attr_list);
+
+    layout.set_ellipsize (Pango.EllipsizeMode.END);
+
+    if (wrap_width != -1) {
+      Pango.Rectangle rect;
+      int width, text_width;
+
+      layout.get_extents (null, out rect);
+      text_width = rect.width;
+
+      if (cell_area != null)
+	width = (cell_area.width - xpad * 2) * Pango.SCALE;
+      else
+	width = wrap_width * Pango.SCALE;
+
+      width = int.min (width, text_width);
+
+      layout.set_width (width);
+    } else {
+      layout.set_width (-1);
+    }
+
+    layout.set_wrap (Pango.WrapMode.CHAR);
+
+    layout.set_height (-2);
+
+    Pango.Alignment align;
+    if (widget.get_direction () == TextDirection.RTL)
+	align = Pango.Alignment.RIGHT;
+      else
+	align = Pango.Alignment.LEFT;
+    layout.set_alignment (align);
+
+    return layout;
+  }
+
+  public override void get_size (Widget        widget,
+				 Gdk.Rectangle? cell_area,
+				 out int       x_offset,
+				 out int       y_offset,
+				 out int       width,
+				 out int       height) {
+  }
+
+  private void do_get_size (Widget        widget,
+			    Gdk.Rectangle? cell_area,
+			    Pango.Layout? _layout,
+			    out int       x_offset,
+			    out int       y_offset,
+			    out int       width,
+			    out int       height) {
+    Pango.Rectangle rect;
+    int xpad, ypad;
+
+    get_padding (out xpad, out ypad);
+
+    Pango.Layout layout;
+    if (_layout == null)
+      layout = get_layout (widget, null, 0);
+    else
+      layout = _layout;
+
+    layout.get_pixel_extents (null, out rect);
+
+    if (cell_area != null) {
+      rect.height = int.min (rect.height, cell_area.height - 2 * ypad);
+      rect.width  = int.min (rect.width, cell_area.width - 2 * xpad);
+
+      if (widget.get_direction () == TextDirection.RTL)
+	x_offset = cell_area.width - (rect.width + (2 * xpad));
+      else
+	x_offset = 0;
+
+      x_offset = int.max (x_offset, 0);
+
+      y_offset = 0;
+    } else {
+      x_offset = 0;
+      y_offset = 0;
+    }
+
+    height = ypad * 2 + rect.height;
+    width = xpad * 2 + rect.width;
+  }
+
+  public override void render (Cairo.Context   cr,
+			       Widget          widget,
+			       Gdk.Rectangle   background_area,
+			       Gdk.Rectangle   cell_area,
+			       CellRendererState flags) {
+    StyleContext context;
+    Pango.Layout layout;
+    int x_offset = 0;
+    int y_offset = 0;
+    int xpad, ypad;
+    Pango.Rectangle rect;
+
+    current_widget = widget;
+
+    layout = get_layout (widget, cell_area, flags);
+    do_get_size (widget, cell_area, layout, out x_offset, out y_offset, null, null);
+    context = widget.get_style_context ();
+
+    get_padding (out xpad, out ypad);
+
+    layout.set_width ((cell_area.width - x_offset - 2 * xpad) * Pango.SCALE);
+
+    layout.get_pixel_extents (null, out rect);
+    x_offset = x_offset - rect.x;
+
+    cr.save ();
+
+    Gdk.cairo_rectangle (cr, cell_area);
+    cr.clip ();
+
+    Gtk.render_layout (context, cr,
+		       cell_area.x + x_offset + xpad,
+		       cell_area.y + y_offset + ypad,
+		       layout);
+
+    cr.restore ();
+  }
+
+  public override void get_preferred_width (Widget       widget,
+					    out int      min_width,
+					    out int      nat_width) {
+    Pango.Rectangle  rect;
+    int text_width, xpad;
+
+    get_padding (out xpad, null);
+
+    var layout = get_layout (widget, null, 0);
+
+    /* Fetch the length of the complete unwrapped text */
+    layout.set_width (-1);
+    layout.get_extents (null, out rect);
+    text_width = rect.width;
+
+    min_width = xpad * 2 + rect.x + int.min (text_width / Pango.SCALE, wrap_width);
+    nat_width = xpad * 2 + text_width / Pango.SCALE;
+    nat_width = int.max (nat_width, min_width);
+  }
+
+  public override void get_preferred_height_for_width (Widget       widget,
+						       int          width,
+						       out int      minimum_height,
+						       out int      natural_height) {
+    Pango.Layout  layout;
+    int text_height, xpad, ypad;
+
+    get_padding (out xpad, out ypad);
+
+    layout = get_layout (widget, null, 0);
+    layout.set_width ((width - xpad * 2) * Pango.SCALE);
+    layout.get_pixel_size (null, out text_height);
+
+    minimum_height = text_height + ypad * 2;
+    natural_height = text_height + ypad * 2;
+  }
+
+  public override void get_preferred_height (Widget       widget,
+					     out int      minimum_size,
+					     out int      natural_size) {
+    int min_width;
+
+    get_preferred_width (widget, out min_width, null);
+    get_preferred_height_for_width (widget, min_width,
+				    out minimum_size, out natural_size);
+  }
+
+  public void render_shape (Cairo.Context cr, Pango.AttrShape attr, bool do_path) {
+    unowned Pango.AttrShape<string> sattr = (Pango.AttrShape<string>)attr;
+    var pixbuf = create_symbolic_pixbuf (current_widget, sattr.data, IMAGE_SIZE);
+    if (pixbuf != null) {
+      double x, y;
+      cr.get_current_point (out x, out y);
+      Gdk.cairo_set_source_pixbuf (cr, pixbuf, x, y-IMAGE_SIZE*0.9);
+      cr.paint();
+    }
+  }
+}
+
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
   private TreeView contacts_tree_view;
   public Entry filter_entry;
   private uint filter_entry_changed_id;
+  private CellRendererShape shape;
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -70,37 +316,19 @@ public class Contacts.ListPane : Frame {
 
     column = new TreeViewColumn ();
 
-    var area = (CellAreaBox)column.get_area ();
-    area.set_orientation (Orientation.VERTICAL);
+    shape = new CellRendererShape ();
 
-    text = new CellRendererText ();
-    column.pack_start (text, false);
-    text.set ("weight", Pango.Weight.BOLD, "wrap-width", 230);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
+    Pango.cairo_context_set_shape_renderer (tree_view.get_pango_context (), shape.render_shape);
+
+    column.pack_start (shape, false);
+    column.set_cell_data_func (shape, (column, cell, model, iter) => {
 	Contact contact;
 
 	model.get (iter, 0, out contact);
 
-	string name = contact.display_name;
-	cell.set ("text", name);
-      });
-
-    icon = new CellRendererPixbuf ();
-
-    icon.set_alignment (0, 0.5f);
-    column.pack_start (icon, false);
-    column.set_cell_data_func (icon, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-	Individual individual = contact.individual;
-
-	string? iconname = Contact.presence_to_icon (individual.presence_type);
-	if (icon != null)
-	  cell.set ("icon-name", iconname);
-	else
-	  cell.set ("icon-name", null);
-
+	cell.set ("wrap_width", 230,
+		  "name", contact.display_name,
+		  "presence", contact.individual.presence_type);
       });
 
     tree_view.append_column (column);
