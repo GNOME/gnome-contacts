@@ -198,6 +198,9 @@ public class Contacts.ListPane : Frame {
     add_button.set_icon_name ("list-add-symbolic");
     add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     add_button.is_important = false;
+    // We make the button slightly wider to look better since it
+    // becomes taller when added to the toolbar
+    add_button.set_size_request (34, -1);
     toolbar.add (add_button);
     add_button.clicked.connect ( (button) => {
 	create_new ();
