@@ -479,7 +479,8 @@ public class Contacts.Contact : GLib.Object  {
       return false;
 
     var types = tp.contact.get_client_types ();
-    return types[0] == "phone";
+
+    return (types != null && types[0] == "phone");
   }
 
   private void update_presence () {
