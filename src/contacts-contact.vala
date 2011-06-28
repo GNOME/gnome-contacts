@@ -139,14 +139,14 @@ public class Contacts.Contact : GLib.Object  {
     p.notify["presence-type"].connect (persona_notify_cb);
     p.notify["presence-message"].connect (persona_notify_cb);
     var tp = p as Tpf.Persona;
-    if (tp != null)
+    if (tp != null && tp.contact != null)
       tp.contact.notify["client-types"].connect (persona_notify_cb);
   }
 
   private void disconnect_persona (Persona p) {
     SignalHandler.disconnect_by_func (individual, (void *)persona_notify_cb, this);
     var tp = p as Tpf.Persona;
-    if (tp != null)
+    if (tp != null && tp.contact != null)
       SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
   }
 
@@ -475,7 +475,7 @@ public class Contacts.Contact : GLib.Object  {
 
   private static bool get_is_phone (Persona persona) {
     var tp = persona as Tpf.Persona;
-    if (tp == null)
+    if (tp == null || tp.contact == null)
       return false;
 
     var types = tp.contact.get_client_types ();
