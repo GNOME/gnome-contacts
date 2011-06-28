@@ -561,16 +561,52 @@ public class Contacts.Contact : GLib.Object  {
     return res;
   }
 
-  private static void round_rect (Cairo.Context cr, int x, int y, int w, int h, int r) {
-    cr.move_to(x+r,y);
-    cr.line_to(x+w-r,y);
-    cr.curve_to(x+w,y,x+w,y,x+w,y+r);
-    cr.line_to(x+w,y+h-r);
-    cr.curve_to(x+w,y+h,x+w,y+h,x+w-r,y+h);
-    cr.line_to(x+r,y+h);
-    cr.curve_to(x,y+h,x,y+h,x,y+h-r);
-    cr.line_to(x,y+r);
-    cr.curve_to(x,y,x,y,x+r,y);
+  private static void cairo_ellipsis (Cairo.Context cr,
+				      double xc, double yc,
+				      double xradius, double yradius,
+				      double angle1 ,double angle2) {
+    if (xradius <= 0.0 || yradius <= 0.0) {
+      cr.line_to (xc, yc);
+      return;
+    }
+
+    cr.save ();
+    cr.translate (xc, yc);
+    cr.scale (xradius, yradius);
+    cr.arc (0, 0, 1.0, angle1, angle2);
+    cr.restore ();
+  }
+
+  private static void rounded_box_path (Cairo.Context cr,
+					int x, int y,
+					int width, int height,
+					int radius) {
+    cr.new_sub_path ();
+
+    cairo_ellipsis (cr,
+		    x + radius,
+		    y + radius,
+		    radius,
+		    radius,
+		    Math.PI, 3 * Math.PI / 2);
+    cairo_ellipsis (cr,
+		    x + width - radius,
+		    y + radius,
+		    radius,
+		    radius,
+		    - Math.PI / 2, 0);
+    cairo_ellipsis (cr,
+		    x + width - radius,
+		    y + height - radius,
+		    radius,
+		    radius,
+		    0, Math.PI / 2);
+    cairo_ellipsis (cr,
+		    x + radius,
+		    y + height - radius,
+		    radius,
+		    radius,
+		    Math.PI / 2, Math.PI);
   }
 
   private static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
@@ -581,16 +617,19 @@ public class Contacts.Contact : GLib.Object  {
     cr.rectangle (0, 0, 52, 52);
     cr.fill ();
 
-    round_rect (cr, 0, 0, 52, 52, 5);
-    cr.set_source_rgb (0.74117, 0.74117, 0.74117);
-    cr.fill ();
-
-    round_rect (cr, 1, 1, 50, 50, 5);
-    cr.set_source_rgb (1, 1, 1);
-    cr.fill ();
-
     Gdk.cairo_set_source_pixbuf (cr, icon, 2, 2);
     cr.paint();
+
+    rounded_box_path (cr,
+		      0, 0,
+		      52, 52, 5);
+    rounded_box_path (cr,
+		      2, 2,
+		      48, 48, 3);
+    cr.set_source_rgb (0.533333, 0.541176, 0.521568);
+    cr.set_fill_rule (Cairo.FillRule.EVEN_ODD);
+
+    cr.fill ();
 
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, 52, 52);
   }
