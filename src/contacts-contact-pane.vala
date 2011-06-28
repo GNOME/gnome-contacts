@@ -433,7 +433,10 @@ public class Contacts.ContactPane : EventBox {
   private void display_card (Contact contact) {
     var image_frame = new ContactFrame (PROFILE_SIZE);
     image_frame.set_image (contact.individual);
-    layout.add_widget_label (image_frame);
+    // Put the frame in a grid so its not expanded by the size-group
+    var ig = new Grid ();
+    ig.add (image_frame);
+    layout.add_widget_label (ig);
 
     layout.current_row.set_vexpand (false);
     var g = new Grid();
@@ -508,7 +511,10 @@ public class Contacts.ContactPane : EventBox {
     set_display_mode (DisplayMode.EDIT);
 
     var image_frame = new ContactFrame (PROFILE_SIZE);
-    layout.add_widget_label (image_frame);
+    // Put the frame in a grid so its not expanded by the size-group
+    var ig = new Grid ();
+    ig.add (image_frame);
+    layout.add_widget_label (ig);
     layout.mark_row_stable ();
 
     layout.current_row.set_vexpand (false);
