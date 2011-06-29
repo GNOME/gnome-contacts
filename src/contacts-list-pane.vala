@@ -84,7 +84,10 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 	  m = Contact.presence_to_string (presence);
 	str += " " + m;
 	if (is_phone) {
-	  a = Pango.attr_foreground_new (0x8e8e, 0x9191, 0x9292);
+	  if ((flags & CellRendererState.SELECTED) != 0)
+	    a = Pango.attr_foreground_new (0xffff-0x8e8e, 0xffff-0x9191, 0xffff-0x9292);
+	  else
+	    a = Pango.attr_foreground_new (0x8e8e, 0x9191, 0x9292);
 	  a.start_index = str.length;
 	  str += " (via phone)";
 	  a.end_index = str.length;
