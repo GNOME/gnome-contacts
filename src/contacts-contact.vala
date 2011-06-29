@@ -34,7 +34,7 @@ public class Contacts.ContactPresence : Grid {
     type = contact.presence_type;
     message = contact.presence_message;
     is_phone = contact.is_phone;
-    
+
     if (type == PresenceType.UNSET) {
       image.clear ();
       image.hide ();
@@ -419,7 +419,7 @@ public class Contacts.Contact : GLib.Object  {
 
     return id + " (" + protocol + ")";
   }
-  
+
   public Widget? create_merged_presence_widget () {
     return new ContactPresence (this);
   }
@@ -431,10 +431,12 @@ public class Contacts.Contact : GLib.Object  {
 
     var i = new Image ();
     i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
+    i.get_style_context ().add_class (Contact.presence_to_class (tp.presence_type));
     i.set_tooltip_text (tp.presence_message);
 
     var id1 = tp.notify["presence-type"].connect ((pspec) => {
       i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
+      i.get_style_context ().add_class (Contact.presence_to_class (tp.presence_type));
      });
     var id2 = tp.notify["presence-message"].connect ( (pspec) => {
 	i.set_tooltip_text (tp.presence_message);
