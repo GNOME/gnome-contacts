@@ -655,9 +655,7 @@ public class Contacts.ContactPane : EventBox {
     if (!urls.is_empty) {
       layout.add_label ("Links");
       foreach (var url_details in urls) {
-	var url = url_details.value;
-	// TODO: Detect link type, possibly using types parameter (to be standardized)
-	layout.add_link (url, url);
+	layout.add_link (url_details.value, contact.format_uri_link_text (url_details));
       }
     }
 

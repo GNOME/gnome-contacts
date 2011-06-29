@@ -660,4 +660,21 @@ public class Contacts.Contact : GLib.Object  {
 
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
   }
+
+  public static string format_uri_link_text (FieldDetails detail) {
+    // TODO: Detect link type, possibly using types parameter (to be standardized bz#653623)
+    // TODO: Add more custom url matches
+
+    string uri = detail.value;
+
+    if (/https?:\/\/www.facebook.com\/profile\.php\?id=[0-9]+$/.match(uri) ||
+	/https?:\/\/www.facebook.com\/[a-zA-Z0-9]+$/.match(uri))
+      return _("Facebook");
+
+    if (/https?:\/\/twitter.com\/#!\/[a-zA-Z0-9]+$/.match(uri))
+      return _("Twitter");
+
+    return uri;
+  }
+
 }
