@@ -292,9 +292,6 @@ public class Contacts.ListPane : Frame {
   private uint filter_entry_changed_id;
   private CellRendererShape shape;
 
-  public IndividualAggregator aggregator { get; private set; }
-  public BackendStore backend_store { get; private set; }
-
   public signal void selection_changed (Contact? contact);
   public signal void create_new ();
 
@@ -406,18 +403,6 @@ public class Contacts.ListPane : Frame {
 
   public ListPane () {
     contacts_store = new Store ();
-
-    aggregator = new IndividualAggregator ();
-    aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
-	foreach (Individual i in removed) {
-	  contacts_store.remove (Contact.from_individual (i));
-	}
-	foreach (Individual i in added) {
-	  var c = new Contact (i);
-	  contacts_store.add (c);
-	}
-      });
-    aggregator.prepare ();
 
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);

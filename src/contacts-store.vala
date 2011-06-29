@@ -29,6 +29,7 @@ public class Contacts.Store  {
   }
 
   ListStore list_store;
+  public IndividualAggregator aggregator { get; private set; }
   Gee.ArrayList<ContactData> contacts;
   string []? filter_values;
 
@@ -43,6 +44,18 @@ public class Contacts.Store  {
 	return a.display_name.collate (b.display_name);
       });
     list_store.set_sort_column_id (0, SortType.ASCENDING);
+
+    aggregator = new IndividualAggregator ();
+    aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
+	foreach (Individual i in removed) {
+	  this.remove (Contact.from_individual (i));
+	}
+	foreach (Individual i in added) {
+	  var c = new Contact (i);
+	  this.add (c);
+	}
+      });
+    aggregator.prepare ();
   }
 
   public TreeModel model { get { return list_store; } }
