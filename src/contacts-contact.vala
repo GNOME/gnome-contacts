@@ -25,6 +25,7 @@ public class Contacts.ContactPresence : Grid {
   Contact contact;
   Image image;
   Label label;
+  string last_class;
 
   private void update_presence_widgets (Image image, Label label) {
     PresenceType type;
@@ -44,7 +45,10 @@ public class Contacts.ContactPresence : Grid {
     }
 
     image.set_from_icon_name (Contact.presence_to_icon_full (type), IconSize.MENU);
-    image.get_style_context ().add_class (Contact.presence_to_class (type));
+    if (last_class != null)
+      image.get_style_context ().remove_class (last_class);
+    last_class = Contact.presence_to_class (type);
+    image.get_style_context ().add_class (last_class);
     image.show ();
     label.show ();
     if (message.length == 0)
@@ -431,12 +435,15 @@ public class Contacts.Contact : GLib.Object  {
 
     var i = new Image ();
     i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
-    i.get_style_context ().add_class (Contact.presence_to_class (tp.presence_type));
+    string last_class = Contact.presence_to_class (tp.presence_type);
+    i.get_style_context ().add_class (last_class);
     i.set_tooltip_text (tp.presence_message);
 
     var id1 = tp.notify["presence-type"].connect ((pspec) => {
       i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
-      i.get_style_context ().add_class (Contact.presence_to_class (tp.presence_type));
+      i.get_style_context ().remove_class (last_class);
+      last_class = Contact.presence_to_class (tp.presence_type);
+      i.get_style_context ().add_class (last_class);
      });
     var id2 = tp.notify["presence-message"].connect ( (pspec) => {
 	i.set_tooltip_text (tp.presence_message);
