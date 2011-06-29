@@ -27,6 +27,8 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
   public string name { get;  set; }
   public PresenceType presence { get;  set; }
+  public string message { get;  set; }
+  public bool is_phone  { get;  set; }
   public int wrap_width { get;  set; default=-1;}
 
   Gdk.Pixbuf? create_symbolic_pixbuf (Widget widget, string icon_name, int size) {
@@ -41,6 +43,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     context.save ();
     bool is_symbolic;
+    context.add_class (Contact.presence_to_class (presence));
     var pixbuf = info.load_symbolic_for_context (context,
 						 out is_symbolic);
     context.restore ();
@@ -67,13 +70,27 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     string? iconname = Contact.presence_to_icon (presence);
     if (iconname != null) {
-      str += "\xE2\x80\xA8* " + Contact.presence_to_string (presence);
+      // This is 'LINE SEPARATOR' (U+2028) which gives us a new line but not a new paragraph
+      str += "\xE2\x80\xA8*";
       Pango.Rectangle r = { 0, -CellRendererShape.IMAGE_SIZE*1024*9/10,
 			    CellRendererShape.IMAGE_SIZE*1024, CellRendererShape.IMAGE_SIZE*1024 };
       a = new Pango.AttrShape<string>.with_data (r, r, iconname, string.dup);
-      a.start_index = name.length + 3;
+      a.start_index = str.length - 1;
       a.end_index = a.start_index + 1;
       attr_list.insert ((owned) a);
+      if (message != null) {
+	string m = message;
+	if (m.length == 0)
+	  m = Contact.presence_to_string (presence);
+	str += " " + m;
+	if (is_phone) {
+	  a = Pango.attr_foreground_new (0x8e8e, 0x9191, 0x9292);
+	  a.start_index = str.length;
+	  str += " (via phone)";
+	  a.end_index = str.length;
+	  attr_list.insert ((owned) a);
+	}
+      }
     }
 
     layout = widget.create_pango_layout (str);
@@ -328,7 +345,9 @@ public class Contacts.ListPane : Frame {
 
 	cell.set ("wrap_width", 230,
 		  "name", contact.display_name,
-		  "presence", contact.individual.presence_type);
+		  "presence", contact.presence_type,
+		  "message", contact.presence_message,
+		  "is_phone", contact.is_phone);
       });
 
     tree_view.append_column (column);
@@ -359,7 +378,7 @@ public class Contacts.ListPane : Frame {
       Source.remove (filter_entry_changed_id);
 
     filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
-    
+
     if (filter_entry.get_text () == "")
       filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     else
