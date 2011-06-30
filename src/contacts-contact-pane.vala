@@ -333,6 +333,8 @@ public class Contacts.ContactPane : EventBox {
     combo.set_active (detail);
     layout.add_widget_label (combo);
     var entry = layout.add_entry (detail.value);
+    var remove_button = layout.add_remove ();
+    var row = layout.current_row;
     detail.set_data ("entry", entry);
     detail.set_data ("combo", combo);
     detail_set.add (detail);
@@ -345,6 +347,13 @@ public class Contacts.ContactPane : EventBox {
     combo.changed.connect ( () => {
 	update_edit_detail_type (detail_set, combo, property_name);
       });
+
+    remove_button.clicked.connect ( () => {
+	detail_set.remove (detail);
+	editing_persona.set (property_name, detail_set);
+	row.destroy ();
+      });
+
   }
   private void update_edit_details (ContactFrame image_frame, Persona persona) {
     layout.reset (false);
@@ -362,7 +371,6 @@ public class Contacts.ContactPane : EventBox {
 	  add_detail_editor (TypeSet.general,
 			     editing_emails, email,
 			     "email_addresses");
-	  layout.add_remove ();
 	}
       }
     }
@@ -390,7 +398,6 @@ public class Contacts.ContactPane : EventBox {
 	  add_detail_editor (TypeSet.phone,
 			     editing_phones, p,
 			     "phone_numbers");
-	  layout.add_remove ();
 	}
       }
     }
