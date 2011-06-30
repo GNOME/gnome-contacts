@@ -51,7 +51,7 @@ public class Contacts.Store  {
 	  this.remove (Contact.from_individual (i));
 	}
 	foreach (Individual i in added) {
-	  var c = new Contact (i);
+	  var c = new Contact (this, i);
 	  this.add (c);
 	}
       });

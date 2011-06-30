@@ -88,6 +88,7 @@ public class Contacts.ContactPresence : Grid {
 
 
 public class Contacts.Contact : GLib.Object  {
+  public Store store;
   public PresenceType presence_type;
   public string presence_message;
   public bool is_phone;
@@ -154,7 +155,8 @@ public class Contacts.Contact : GLib.Object  {
       SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
   }
 
-  public Contact(Individual i) {
+  public Contact (Store store, Individual i) {
+    this.store = store;
     individual = i;
     individual.set_data ("contact", this);
 
