@@ -21,6 +21,10 @@ using Gtk;
 using Folks;
 using Gee;
 
+public errordomain ContactError {
+  NOT_IMPLEMENTED
+}
+
 public class Contacts.ContactPresence : Grid {
   Contact contact;
   Image image;
@@ -679,4 +683,28 @@ public class Contacts.Contact : GLib.Object  {
     return uri;
   }
 
+  public async Persona ensure_writable_persona () throws GLib.Error {
+    Persona? p = find_writable_persona ();
+    if (p != null)
+      return p;
+    print ("new writable persona: %p\n", p);
+    throw new ContactError.NOT_IMPLEMENTED ("Not implemented yet");
+  }
+
+
+  public Persona? find_writable_persona () {
+    var primary_store = store.aggregator.primary_store;
+
+    foreach (var persona in individual.personas) {
+      if (persona.store == primary_store)
+	return persona;
+    }
+
+    foreach (var persona in individual.personas) {
+      if (persona.store.is_writeable)
+	return persona;
+    }
+
+    return null;
+  }
 }

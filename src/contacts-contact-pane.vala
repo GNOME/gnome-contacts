@@ -248,6 +248,8 @@ public class Contacts.ContactPane : EventBox {
   const int PROFILE_SIZE = 96;
   const int LABEL_HEIGHT = 20;
 
+  private signal void save_data ();
+
   private Widget create_image (AvatarDetails? details, int size) {
     var image = new Image ();
     image.set_size_request (size, size);
@@ -316,13 +318,13 @@ public class Contacts.ContactPane : EventBox {
 
       detail_set.remove (old_detail);
       detail_set.add (new_detail);
-      
+
       editing_persona.set (property_name, detail_set);
     }
   }
 
   private void add_detail_editor (TypeSet type_set,
-				  Set<FieldDetails> detail_set, 
+				  Set<FieldDetails> detail_set,
 				  FieldDetails detail,
 				  string property_name) {
     var combo = new TypeCombo (type_set);
@@ -357,7 +359,7 @@ public class Contacts.ContactPane : EventBox {
       var emails = email_details.email_addresses;
       if (!emails.is_empty) {
 	foreach (var email in Contact.sort_fields (emails)) {
-	  add_detail_editor (TypeSet.general, 
+	  add_detail_editor (TypeSet.general,
 			     editing_emails, email,
 			     "email_addresses");
 	  layout.add_remove ();
@@ -385,7 +387,7 @@ public class Contacts.ContactPane : EventBox {
       var phone_numbers = phone_details.phone_numbers;
       if (!phone_numbers.is_empty) {
 	foreach (var p in Contact.sort_fields (phone_numbers)) {
-	  add_detail_editor (TypeSet.phone, 
+	  add_detail_editor (TypeSet.phone,
 			     editing_phones, p,
 			     "phone_numbers");
 	  layout.add_remove ();
@@ -478,34 +480,104 @@ public class Contacts.ContactPane : EventBox {
     g.attach (merged_presence,  0, 3, 1, 1);
   }
 
-  private void display_notes () {
-    set_display_mode (DisplayMode.NOTES);
-    display_card (selected_contact);
-    var scrolled = new ScrolledWindow (null, null);
-    scrolled.set_shadow_type (ShadowType.OUT);
+  private void save_notes (Gee.HashMultiMap<Persona?,TextView> widgets) {
+    // Update notes on all personas if one of the textviews for that persona changed
+    // Also note that the individual might not have a persona on the main store, so
+    // it would need to add one and link the individual into it
+
+    foreach (var persona in widgets.get_keys ()) {
+      bool modified = false;
+
+      var notes = new HashSet<Note> ();
+      foreach (var view in widgets.get (persona)) {
+	if (view.get_buffer ().get_modified ())
+	  modified = true;
+	string? uid = view.get_data<string?> ("uid");
+	TextIter start, end;
+	view.get_buffer ().get_start_iter (out start);
+	view.get_buffer ().get_end_iter (out end);
+	var text = view.get_buffer ().get_text (start, end, true);
+	if (text.length > 0) {
+	  var note = new Note (text, uid);
+	  notes.add (note);
+	}
+      }
+
+      if (modified) {
+	if (persona == null) {
+	  selected_contact.ensure_writable_persona.begin ( (obj, result) => {
+	      var p = selected_contact.ensure_writable_persona.end (result);
+	      if (p is NoteDetails)
+		(p as NoteDetails).notes = notes;
+	      else
+		warning ("Writable store doesn't support notes");
+	    });
+	} else {
+	  (persona as NoteDetails).notes = notes;
+	}
+      }
+    }
+  }
+
+  private TextView add_note () {
     var text = new TextView ();
     text.set_hexpand (true);
     text.set_vexpand (true);
+    var scrolled = new ScrolledWindow (null, null);
+    scrolled.set_shadow_type (ShadowType.OUT);
     scrolled.add_with_viewport (text);
-    fields_grid.attach (scrolled, 0, 1, 1, 1);
+    fields_grid.add (scrolled);
+    return text;
+  }
 
-    // This is kinda weird, but there might be multiple notes. We let
-    // you edit the first and just display the rest. This isn't quite
-    // right, we should really ensure its the editable/primary one first.
-    bool first = true;
-    int i = 2;
-    foreach (var note in selected_contact.individual.notes) {
-      if (first) {
-	text.get_buffer ().set_text (note.content);
-	first = false;
-      } else {
-	var label = new Label (note.content);
-	label.show ();
-	label.set_halign (Align.START);
-	fields_grid.attach (label, 0, i++, 1, 1);
+  private void update_note (TextView text, Note note) {
+    text.get_buffer ().set_text (note.content);
+    text.get_buffer ().set_modified (false);
+    text.set_data<string?> ("uid", note.uid);
+  }
+
+  private void display_notes () {
+    set_display_mode (DisplayMode.NOTES);
+    display_card (selected_contact);
+
+    var widgets = new HashMultiMap<Persona?, TextView>();
+    var main_text = add_note ();
+
+    Persona? writable_persona = selected_contact.find_writable_persona ();
+    if (writable_persona == null || writable_persona is NoteDetails)
+      widgets.set (writable_persona, main_text);
+    else
+      warning ("Writable store doesn't support notes");
+
+    bool primary_note_seen = false;
+
+    foreach (var persona in selected_contact.individual.personas) {
+      var notes = persona as NoteDetails;
+      if (notes == null)
+	continue;
+      foreach (var note in notes.notes) {
+	if (persona == writable_persona && !primary_note_seen) {
+	  primary_note_seen = true;
+	  update_note (main_text, note);
+	} else if (persona.store.is_writeable) {
+	  var text = add_note ();
+	  update_note (text, note);
+	  widgets.set (persona, text);
+	} else {
+	  var label = new Label (note.content);
+	  label.set_halign (Align.START);
+	  fields_grid.add (label);
+	}
       }
     }
+
     fields_grid.show_all ();
+
+    ulong id = 0;
+    id = this.save_data.connect ( () => {
+	save_notes (widgets);
+	this.disconnect (id);
+      });
   }
 
   private void display_edit (Contact contact, Persona persona) {
@@ -692,6 +764,8 @@ public class Contacts.ContactPane : EventBox {
   }
 
   public void show_contact (Contact? new_contact) {
+    this.save_data (); // Ensure all edit data saved
+
     if (selected_contact != null)
       selected_contact.changed.disconnect (selected_contact_changed);
 
@@ -795,10 +869,11 @@ public class Contacts.ContactPane : EventBox {
     bbox.set_layout (ButtonBoxStyle.END);
     grid.attach (bbox, 0, 3, 1, 1);
 
-    button = new Button.with_label(_("Close"));
+    button = new Button.from_stock(Stock.CLOSE);
     bbox.pack_start (button, false, false, 0);
 
     button.clicked.connect ( (button) => {
+	this.save_data (); // Ensure all edit data saved
 	display_contact (selected_contact);
       });
 
