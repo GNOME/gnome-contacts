@@ -21,6 +21,7 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
+  private Store contacts_store;
   private ListPane list_pane;
   private ContactPane contacts_pane;
 
@@ -47,12 +48,13 @@ public class Contacts.App : Window {
     var grid = new Grid();
     add (grid);
 
-    list_pane = new ListPane ();
+    contacts_store = new Store ();
+    list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
 
     grid.attach (list_pane, 0, 0, 1, 2);
 
-    contacts_pane = new ContactPane ();
+    contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
     grid.attach (contacts_pane, 1, 0, 1, 2);
 

@@ -231,6 +231,7 @@ public class Contacts.ContactPane : EventBox {
     NOTES,
     EDIT
   }
+  private Store contacts_store;
   private Contact? selected_contact;
   private Persona? editing_persona;
   private DisplayMode display_mode;
@@ -705,7 +706,9 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  public ContactPane () {
+  public ContactPane (Store contacts_store) {
+    this.contacts_store = contacts_store;
+
     get_style_context ().add_class ("contact-pane");
 
     var grid = new Grid ();

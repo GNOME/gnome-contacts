@@ -401,9 +401,8 @@ public class Contacts.ListPane : Frame {
     selection_changed (contact);
   }
 
-  public ListPane () {
-    contacts_store = new Store ();
-
+  public ListPane (Store contacts_store) {
+    this.contacts_store = contacts_store;
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
