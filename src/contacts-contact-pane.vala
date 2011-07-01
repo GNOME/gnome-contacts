@@ -914,15 +914,9 @@ public class Contacts.ContactPane : EventBox {
       });
 
     var menu = new Menu ();
-    var mi = new MenuItem.with_label (_("Add/Remove Linked Contacts..."));
-    menu.append (mi);
-    mi.show ();
-    mi = new MenuItem.with_label (_("Send..."));
-    menu.append (mi);
-    mi.show ();
-    mi = new MenuItem.with_label (_("Delete"));
-    menu.append (mi);
-    mi.show ();
+    Utils.add_menu_item (menu,_("Add/Remove Linked Contacts..."));
+    Utils.add_menu_item (menu,_("Send..."));
+    Utils.add_menu_item (menu,_("Delete"));
 
     menu_button.set_menu (menu);
 
