@@ -21,7 +21,13 @@ using Gtk;
 using Folks;
 using Gee;
 
-class DetailsLayout : Object {
+class Contacts.DetailsLayout : Object {
+  public struct State {
+    private bool expands;
+    public Grid? current_row;
+    Widget? last_label;
+  }
+
   public DetailsLayout (Grid fields_grid) {
     this.fields_grid = fields_grid;
     label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
@@ -49,12 +55,16 @@ class DetailsLayout : Object {
 
   void new_row () {
     var grid = new Grid ();
-    current_row = grid;
     expands = false;
     last_label = null;
     grid.set_row_spacing (8);
     grid.set_orientation (Orientation.HORIZONTAL);
-    fields_grid.add (grid);
+    if (current_row != null) {
+      Utils.grid_insert_row_after (fields_grid, current_row, true);
+      fields_grid.attach_next_to (grid, current_row, PositionType.BOTTOM, 1, 1);
+    } else
+      fields_grid.add (grid);
+    current_row = grid;
   }
 
   public void add_widget_label (Widget w) {
@@ -148,6 +158,20 @@ class DetailsLayout : Object {
     var button = add_button ("edit-delete-symbolic", at_top);
     button.set_relief (ReliefStyle.NONE);
     return button;
+  }
+
+  public State? save_state () {
+    State? state = State();
+    state.expands = expands;
+    state.current_row = current_row;
+    state.last_label = last_label;
+    return state;
+  }
+
+  public void load_state (State? state) {
+    expands = state.expands;
+    current_row = state.current_row;
+    last_label = state.last_label;
   }
 }
 
