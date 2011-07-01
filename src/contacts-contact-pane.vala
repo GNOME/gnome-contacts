@@ -364,16 +364,20 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  private void add_detail_entry (Set<FieldDetails> detail_set,
-				 FieldDetails detail,
-				 string property_name) {
+  private Entry add_detail_entry (Set<FieldDetails> detail_set,
+				  FieldDetails detail,
+				  string property_name,
+				  string? placeholder_text) {
     var entry = layout.add_entry (detail.value);
     detail.set_data ("entry", entry);
+    if (placeholder_text != null)
+      entry.set ("placeholder-text", placeholder_text);
 
     entry.focus_out_event.connect ( (ev) => {
 	update_edit_detail_value (detail_set, entry, property_name);
 	return false;
       });
+    return entry;
   }
 
   private void add_detail_remove (Set<FieldDetails> detail_set,
@@ -393,11 +397,21 @@ public class Contacts.ContactPane : EventBox {
   private void add_detail_editor (TypeSet type_set,
 				  Set<FieldDetails> detail_set,
 				  FieldDetails detail,
-				  string property_name) {
+				  string property_name,
+				  string? placeholder_text) {
     detail_set.add (detail);
     add_detail_combo (type_set, detail_set, detail, property_name);
-    add_detail_entry (detail_set, detail, property_name);
+    add_detail_entry (detail_set, detail, property_name, placeholder_text);
     add_detail_remove (detail_set, detail, property_name);
+  }
+
+  private void add_detail_editor_no_type (Set<FieldDetails> detail_set,
+					   FieldDetails detail,
+					   string property_name,
+					   string? placeholder_text) {
+    detail_set.add (detail);
+    add_detail_entry (detail_set, detail, property_name, placeholder_text);
+    add_detail_remove (detail_set, detail, property_name, false);
   }
 
   private void update_edit_details (ContactFrame image_frame, Persona persona) {
@@ -416,7 +430,8 @@ public class Contacts.ContactPane : EventBox {
 	foreach (var email in Contact.sort_fields (emails)) {
 	  add_detail_editor (TypeSet.general,
 			     editing_emails, email,
-			     "email_addresses");
+			     "email_addresses",
+			     _("Enter email address..."));
 	}
       }
     }
@@ -444,7 +459,8 @@ public class Contacts.ContactPane : EventBox {
 	foreach (var p in Contact.sort_fields (phone_numbers)) {
 	  add_detail_editor (TypeSet.phone,
 			     editing_phones, p,
-			     "phone_numbers");
+			     "phone_numbers",
+			     _("Enter phone number..."));
 	}
       }
     }
@@ -472,23 +488,71 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
+    DetailsLayout.State? url_row = null;
     var urls_details = persona as UrlDetails;
     if (urls_details != null) {
       var urls = urls_details.urls;
       if (!urls.is_empty) {
 	layout.add_label ("Links");
 	foreach (var url_details in urls) {
-	  editing_urls.add (url_details);
-	  add_detail_entry (editing_urls,
-			    url_details,
-			    "urls");
-	  add_detail_remove (editing_urls,
-			     url_details,
-			     "urls",
-			     false);
+	  add_detail_editor_no_type (editing_urls,
+				     url_details,
+				     "urls",
+				     _("Enter phone number..."));
 	}
+	url_row = layout.save_state ();
       }
     }
+
+    var end_row = layout.save_state ();
+
+    if (persona.store.is_writeable) {
+      layout.add_label ("");
+      var menu_button = new MenuButton (_("Add detail"));
+      menu_button.set_hexpand (false);
+      menu_button.set_margin_top (12);
+
+      var menu = new Menu ();
+      Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
+	  layout.load_state (end_row);
+	  var email = new FieldDetails ("");
+	  add_detail_editor (TypeSet.general,
+			     editing_emails, email,
+			     "email_addresses",
+			     _("Enter email address..."));
+	  fields_grid.show_all ();
+	  end_row = layout.save_state ();
+	});
+      Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
+	  layout.load_state (end_row);
+	  var p = new FieldDetails ("");
+	  add_detail_editor (TypeSet.phone,
+			     editing_phones, p,
+			     "phone_numbers",
+			     _("Enter phone number..."));
+	  fields_grid.show_all ();
+	  end_row = layout.save_state ();
+	});
+      Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
+	  var url_details = new FieldDetails ("");
+	  if (url_row != null) {
+	    layout.load_state (url_row);
+	  } else {
+	    layout.add_label ("Links");
+	  }
+	  add_detail_editor_no_type (editing_urls,
+				     url_details,
+				     "urls",
+				     _("Enter link..."));
+	  url_row = layout.save_state ();
+	  fields_grid.show_all ();
+	  });
+
+      menu_button.set_menu (menu);
+
+      layout.attach_detail (menu_button);
+    }
+
 
     fields_grid.show_all ();
   }
