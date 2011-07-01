@@ -218,6 +218,14 @@ public class Contacts.Store  {
     return c.get_data ("contact-data");
   }
 
+  public Contact? find_contact_with_persona (Persona persona) {
+    foreach (var data in contacts) {
+      if (data.contact.individual.personas.contains (persona))
+	return data.contact;
+    }
+    return null;
+  }
+
   public void add (Contact c) {
     ContactData data =  new ContactData();
     data.contact = c;

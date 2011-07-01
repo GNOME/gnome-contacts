@@ -53,6 +53,7 @@ public class Contacts.App : Window {
     contacts_store = new Store ();
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
+    list_pane.create_new.connect ( () => { contacts_pane.new_contact ();  });
 
     grid.attach (list_pane, 0, 0, 1, 2);
 

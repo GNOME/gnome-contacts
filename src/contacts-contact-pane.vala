@@ -396,9 +396,10 @@ public class Contacts.ContactPane : EventBox {
 
   private void add_detail_editor (TypeSet type_set,
 				  Set<FieldDetails> detail_set,
-				  FieldDetails detail,
+				  FieldDetails? detail_in,
 				  string property_name,
 				  string? placeholder_text) {
+    var detail = detail_in ?? new FieldDetails ("");
     detail_set.add (detail);
     add_detail_combo (type_set, detail_set, detail, property_name);
     add_detail_entry (detail_set, detail, property_name, placeholder_text);
@@ -406,15 +407,16 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void add_detail_editor_no_type (Set<FieldDetails> detail_set,
-					   FieldDetails detail,
+					   FieldDetails? detail_in,
 					   string property_name,
 					   string? placeholder_text) {
+    var detail = detail_in ?? new FieldDetails ("");
     detail_set.add (detail);
     add_detail_entry (detail_set, detail, property_name, placeholder_text);
     add_detail_remove (detail_set, detail, property_name, false);
   }
 
-  private void update_edit_details (ContactFrame image_frame, Persona persona) {
+  private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
     layout.reset (false);
     image_frame.set_image (persona as AvatarDetails);
     image_frame.set_text (persona.store.display_name, LABEL_HEIGHT);
@@ -431,10 +433,16 @@ public class Contacts.ContactPane : EventBox {
 	  add_detail_editor (TypeSet.general,
 			     editing_emails, email,
 			     "email_addresses",
-			     _("Enter email address..."));
+			     _("Enter email address"));
 	}
       }
     }
+
+    if (new_contact)
+      add_detail_editor (TypeSet.general,
+			 editing_emails, null,
+			 "email_addresses",
+			 _("Enter email address"));
 
     var im_details = persona as ImDetails;
     if (im_details != null) {
@@ -451,7 +459,6 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
-
     var phone_details = persona as PhoneDetails;
     if (phone_details != null) {
       var phone_numbers = phone_details.phone_numbers;
@@ -460,10 +467,16 @@ public class Contacts.ContactPane : EventBox {
 	  add_detail_editor (TypeSet.phone,
 			     editing_phones, p,
 			     "phone_numbers",
-			     _("Enter phone number..."));
+			     _("Enter phone number"));
 	}
       }
     }
+
+    if (new_contact)
+      add_detail_editor (TypeSet.phone,
+			 editing_phones, null,
+			 "phone_numbers",
+			 _("Enter phone number"));
 
     var postal_details = persona as PostalAddressDetails;
     if (postal_details != null) {
@@ -498,7 +511,7 @@ public class Contacts.ContactPane : EventBox {
 	  add_detail_editor_no_type (editing_urls,
 				     url_details,
 				     "urls",
-				     _("Enter phone number..."));
+				     _("Enter phone number"));
 	}
 	url_row = layout.save_state ();
       }
@@ -515,35 +528,32 @@ public class Contacts.ContactPane : EventBox {
       var menu = new Menu ();
       Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
 	  layout.load_state (end_row);
-	  var email = new FieldDetails ("");
 	  add_detail_editor (TypeSet.general,
-			     editing_emails, email,
+			     editing_emails, null,
 			     "email_addresses",
-			     _("Enter email address..."));
+			     _("Enter email address"));
 	  fields_grid.show_all ();
 	  end_row = layout.save_state ();
 	});
       Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
 	  layout.load_state (end_row);
-	  var p = new FieldDetails ("");
 	  add_detail_editor (TypeSet.phone,
-			     editing_phones, p,
+			     editing_phones, null,
 			     "phone_numbers",
-			     _("Enter phone number..."));
+			     _("Enter phone number"));
 	  fields_grid.show_all ();
 	  end_row = layout.save_state ();
 	});
       Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
-	  var url_details = new FieldDetails ("");
 	  if (url_row != null) {
 	    layout.load_state (url_row);
 	  } else {
 	    layout.add_label ("Links");
 	  }
 	  add_detail_editor_no_type (editing_urls,
-				     url_details,
+				     null,
 				     "urls",
-				     _("Enter link..."));
+				     _("Enter link"));
 	  url_row = layout.save_state ();
 	  fields_grid.show_all ();
 	  });
@@ -708,7 +718,8 @@ public class Contacts.ContactPane : EventBox {
       });
   }
 
-  private void display_edit (Contact contact, Persona persona) {
+  private void display_edit (Contact contact, Persona persona, bool new_contact = false) {
+    editing_persona = persona;
     set_display_mode (DisplayMode.EDIT);
 
     var image_frame = new ContactFrame (PROFILE_SIZE);
@@ -723,6 +734,7 @@ public class Contacts.ContactPane : EventBox {
     layout.current_row.add (g);
 
     var e = new Entry ();
+    e.set ("placeholder-text", _("Enter name"));
     e.set_text (contact.display_name);
     e.set_hexpand (true);
     e.set_halign (Align.START);
@@ -751,11 +763,11 @@ public class Contacts.ContactPane : EventBox {
       }
       button.toggled.connect ( (a_button) => {
 	  if (a_button.get_active ())
-	    update_edit_details (image_frame, p);
+	    update_edit_details (image_frame, p, false);
 	});
     }
 
-    update_edit_details (image_frame, persona);
+    update_edit_details (image_frame, persona, new_contact);
 
     g.attach (personas,  0, 3, 1, 1);
     fields_grid.show_all ();
@@ -891,7 +903,41 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  public void show_contact (Contact? new_contact) {
+  public void new_contact () {
+    var details = new HashTable<string, Value?> (str_hash, str_equal);
+    contacts_store.aggregator.primary_store.add_persona_from_details.begin (details, (obj, res) => {
+	var store = obj as PersonaStore;
+	Persona? persona = null;
+	try {
+	  persona = store.add_persona_from_details.end (res);
+	} catch (Error e) {
+	  var dialog = new MessageDialog (this.get_toplevel () as Window,
+					  DialogFlags.DESTROY_WITH_PARENT,
+					  MessageType.ERROR,
+					  ButtonsType.OK,
+					  _("Unable to create new contacts: %s\n"), e.message);
+	  dialog.show ();
+	  return;
+	}
+
+	var contact = contacts_store.find_contact_with_persona (persona);
+	if (contact == null) {
+	  var dialog = new MessageDialog (this.get_toplevel () as Window,
+					  DialogFlags.DESTROY_WITH_PARENT,
+					  MessageType.ERROR,
+					  ButtonsType.OK,
+					  _("Unable to find newly created contact\n"));
+	  dialog.show ();
+	  return;
+	}
+
+	show_contact (contact);
+	display_edit (contact, persona, true);
+      });
+
+  }
+
+  public void show_contact (Contact? new_contact, bool edit=false) {
     this.save_data (); // Ensure all edit data saved
 
     if (selected_contact != null)
@@ -976,12 +1022,12 @@ public class Contacts.ContactPane : EventBox {
     bbox.pack_start (button, false, false, 0);
 
     button.clicked.connect ( (button) => {
-	editing_persona = null;
+	Persona? persona = null;
 	var i = selected_contact.individual.personas.iterator();
 	if (i.next())
-	  editing_persona = i.get();
+	  persona = i.get();
 
-	display_edit (selected_contact, editing_persona);
+	display_edit (selected_contact, persona);
       });
 
     MenuButton menu_button = new MenuButton (_("More"));
