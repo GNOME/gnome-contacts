@@ -56,4 +56,24 @@ public class Contacts.Utils : Object {
     mi.show ();
     return mi;
   }
+
+  public static void grid_insert_row_after (Grid grid, Widget widget, bool expand_intersecting) {
+    int y, h;
+    grid.child_get (widget,
+		    "top-attach", out y,
+		    "height", out h);
+    int start = y + h;
+    foreach (var child in grid.get_children ()) {
+      grid.child_get (child,
+		      "top-attach", out y,
+		      "height", out h);
+      if (y >= start) {
+	grid.child_set (child,
+			"top-attach", y + 1);
+      } else if (y + h > start && expand_intersecting) {
+	grid.child_set (child,
+			"height", h + 1);
+      }
+    }
+  }
 }
