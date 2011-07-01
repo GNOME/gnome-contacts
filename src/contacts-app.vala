@@ -21,6 +21,7 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Window {
+  public static App app;
   private Store contacts_store;
   private ListPane list_pane;
   private ContactPane contacts_pane;
@@ -41,6 +42,7 @@ public class Contacts.App : Window {
   }
 
   public App () {
+    this.app = this;
     set_title (_("Contacts"));
     set_size_request (700, 510);
     this.destroy.connect (Gtk.main_quit);
