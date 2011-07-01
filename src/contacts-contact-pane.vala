@@ -244,6 +244,7 @@ public class Contacts.ContactPane : EventBox {
 
   HashSet<FieldDetails> editing_emails;
   HashSet<FieldDetails> editing_phones;
+  HashSet<FieldDetails> editing_urls;
 
   const int PROFILE_SIZE = 96;
   const int LABEL_HEIGHT = 20;
@@ -298,6 +299,22 @@ public class Contacts.ContactPane : EventBox {
     editing_persona.set (property_name, detail_set);
   }
 
+  private void add_detail_combo (TypeSet type_set,
+				 Set<FieldDetails> detail_set,
+				 FieldDetails detail,
+				 string property_name) {
+    var combo = new TypeCombo (type_set);
+    combo.set_halign (Align.FILL);
+    combo.set_hexpand (false);
+    combo.set_active (detail);
+    layout.add_widget_label (combo);
+    detail.set_data ("combo", combo);
+
+    combo.changed.connect ( () => {
+	update_edit_detail_type (detail_set, combo, property_name);
+      });
+  }
+
   private void update_edit_detail_value (Set<FieldDetails> detail_set,
 					 Entry entry,
 					 string property_name) {
@@ -323,38 +340,42 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  private void add_detail_editor (TypeSet type_set,
-				  Set<FieldDetails> detail_set,
-				  FieldDetails detail,
-				  string property_name) {
-    var combo = new TypeCombo (type_set);
-    combo.set_halign (Align.FILL);
-    combo.set_hexpand (false);
-    combo.set_active (detail);
-    layout.add_widget_label (combo);
+  private void add_detail_entry (Set<FieldDetails> detail_set,
+				 FieldDetails detail,
+				 string property_name) {
     var entry = layout.add_entry (detail.value);
-    var remove_button = layout.add_remove ();
-    var row = layout.current_row;
     detail.set_data ("entry", entry);
-    detail.set_data ("combo", combo);
-    detail_set.add (detail);
 
     entry.focus_out_event.connect ( (ev) => {
 	update_edit_detail_value (detail_set, entry, property_name);
 	return false;
       });
+  }
 
-    combo.changed.connect ( () => {
-	update_edit_detail_type (detail_set, combo, property_name);
-      });
+  private void add_detail_remove (Set<FieldDetails> detail_set,
+				  FieldDetails detail,
+				  string property_name,
+				  bool at_top = true) {
+    var remove_button = layout.add_remove (at_top);
+    var row = layout.current_row;
 
     remove_button.clicked.connect ( () => {
 	detail_set.remove (detail);
 	editing_persona.set (property_name, detail_set);
 	row.destroy ();
       });
-
   }
+
+  private void add_detail_editor (TypeSet type_set,
+				  Set<FieldDetails> detail_set,
+				  FieldDetails detail,
+				  string property_name) {
+    detail_set.add (detail);
+    add_detail_combo (type_set, detail_set, detail, property_name);
+    add_detail_entry (detail_set, detail, property_name);
+    add_detail_remove (detail_set, detail, property_name);
+  }
+
   private void update_edit_details (ContactFrame image_frame, Persona persona) {
     layout.reset (false);
     image_frame.set_image (persona as AvatarDetails);
@@ -362,6 +383,7 @@ public class Contacts.ContactPane : EventBox {
 
     editing_emails = new HashSet<FieldDetails>();
     editing_phones = new HashSet<FieldDetails>();
+    editing_urls = new HashSet<FieldDetails>();
 
     var email_details = persona as EmailDetails;
     if (email_details != null) {
@@ -430,9 +452,14 @@ public class Contacts.ContactPane : EventBox {
       if (!urls.is_empty) {
 	layout.add_label ("Links");
 	foreach (var url_details in urls) {
-	  var url = url_details.value;
-	  layout.add_entry (url);
-	  layout.add_remove (false);
+	  editing_urls.add (url_details);
+	  add_detail_entry (editing_urls,
+			    url_details,
+			    "urls");
+	  add_detail_remove (editing_urls,
+			     url_details,
+			     "urls",
+			     false);
 	}
       }
     }
