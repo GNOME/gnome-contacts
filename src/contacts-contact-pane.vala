@@ -735,11 +735,32 @@ public class Contacts.ContactPane : EventBox {
 
     var e = new Entry ();
     e.set ("placeholder-text", _("Enter name"));
+    e.set_data ("original-text", contact.display_name);
     e.set_text (contact.display_name);
     e.set_hexpand (true);
     e.set_halign (Align.START);
     e.set_valign (Align.START);
     g.attach (e,  0, 0, 1, 1);
+
+    e.focus_out_event.connect ( (ev) => {
+	name = e.get_text ();
+	bool name_set = false;
+	if (name != e.get_data<string?> ("original-text")) {
+	  foreach (var p in contact.individual.personas) {
+	    if (p is NameDetails &&
+		p.store.is_writeable) {
+	      (p as NameDetails).full_name = name;
+	      name_set = true;
+	    }
+	  }
+
+	  if (!name_set) {
+	    // TODO: Create a writable persona so we can set the name
+	    warning ("Didn't find a writable persona to store the name");
+	  }
+	}
+	return false;
+      });
 
     var personas = new Grid ();
     personas.set_row_spacing (4);
