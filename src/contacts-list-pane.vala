@@ -44,8 +44,12 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     context.save ();
     bool is_symbolic;
     context.add_class (Contact.presence_to_class (presence));
-    var pixbuf = info.load_symbolic_for_context (context,
-						 out is_symbolic);
+    Gdk.Pixbuf? pixbuf = null;
+    try {
+      pixbuf = info.load_symbolic_for_context (context,
+					       out is_symbolic);
+    } catch (Error e) {
+    }
     context.restore ();
 
     if (!is_symbolic)

@@ -630,11 +630,15 @@ public class Contacts.ContactPane : EventBox {
       if (modified) {
 	if (persona == null) {
 	  selected_contact.ensure_writable_persona.begin ( (obj, result) => {
-	      var p = selected_contact.ensure_writable_persona.end (result);
-	      if (p is NoteDetails)
-		(p as NoteDetails).notes = notes;
-	      else
-		warning ("Writable store doesn't support notes");
+	      try {
+		var p = selected_contact.ensure_writable_persona.end (result);
+		if (p is NoteDetails)
+		  (p as NoteDetails).notes = notes;
+		else
+		  warning ("Writable store doesn't support notes");
+	      } catch (Error e) {
+		warning ("Unable to create writable persona: %s", e.message);
+	      }
 	    });
 	} else {
 	  (persona as NoteDetails).notes = notes;
