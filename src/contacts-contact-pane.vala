@@ -405,7 +405,8 @@ public class Contacts.ContactPane : EventBox {
 	foreach (var protocol in im_keys) {
 	  foreach (var id in ims[protocol]) {
 	    layout.add_label_detail (_("Chat"), protocol + "/" + id);
-	    layout.add_remove ();
+	    var button = layout.add_remove ();
+	    button.set_sensitive (false);
 	  }
 	}
       }
@@ -441,7 +442,8 @@ public class Contacts.ContactPane : EventBox {
 	  foreach (var s in strs) {
 	    layout.add_detail (s);
 	  }
-	  layout.add_remove ();
+	  var button = layout.add_remove ();
+	  button.set_sensitive (false);
 	}
       }
     }
