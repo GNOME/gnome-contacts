@@ -741,6 +741,8 @@ public class Contacts.ContactPane : EventBox {
     e.set_halign (Align.START);
     e.set_valign (Align.START);
     g.attach (e,  0, 0, 1, 1);
+    if (new_contact)
+      e.grab_focus ();
 
     e.focus_out_event.connect ( (ev) => {
 	name = e.get_text ();
