@@ -196,10 +196,10 @@ public class Contacts.ContactFrame : Frame {
   public void set_image (AvatarDetails? details) {
     pixbuf = null;
     if (details != null &&
-	details.avatar != null &&
-	details.avatar.get_path () != null) {
+	details.avatar != null) {
       try {
-	pixbuf = new Gdk.Pixbuf.from_file_at_scale (details.avatar.get_path (), size, size, true);
+        var stream = details.avatar.load (size, null);
+        pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
       }
       catch {
       }
@@ -281,10 +281,10 @@ public class Contacts.ContactPane : EventBox {
 
     Gdk.Pixbuf pixbuf = null;
     if (details != null &&
-	details.avatar != null &&
-	details.avatar.get_path () != null) {
+	details.avatar != null) {
       try {
-	pixbuf = new Gdk.Pixbuf.from_file_at_scale (details.avatar.get_path (), size, size, true);
+        var stream = details.avatar.load (size, null);
+        pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
       }
       catch {
       }

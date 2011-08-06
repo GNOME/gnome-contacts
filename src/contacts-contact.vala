@@ -564,12 +564,12 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   // TODO: This should be async, but the vala bindings are broken (bug #649875)
-  private Gdk.Pixbuf load_icon (File ?file) {
+  private Gdk.Pixbuf load_icon (LoadableIcon ?file) {
     Gdk.Pixbuf? res = fallback_avatar;
     if (file != null) {
       try {
-	var stream = file.read ();
 	Cancellable c = new Cancellable ();
+	var stream = file.load (48, null, c);
 	res = new Gdk.Pixbuf.from_stream_at_scale (stream, 48, 48, true, c);
       } catch (Error e) {
       }
