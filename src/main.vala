@@ -22,9 +22,12 @@ using Contacts;
 
 
 private static string individual_id = null;
+private static string email_address = null;
 private static const OptionEntry[] options = {
     { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
       N_("Show contact with this individual id"), null },
+    { "email", 'e', 0, OptionArg.STRING, ref email_address,
+      N_("Show contact with this email address"), null },
     { null }
   };
 
@@ -48,6 +51,8 @@ main (string[] args) {
   var app = new App ();
   if (individual_id != null)
     app.show_individual (individual_id);
+  if (email_address != null)
+    app.show_by_email (email_address);
   app.show ();
 
   Gtk.main ();

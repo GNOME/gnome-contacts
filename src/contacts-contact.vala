@@ -187,6 +187,15 @@ public class Contacts.Contact : GLib.Object  {
     individual.notify.disconnect(notify_cb);
   }
 
+  public bool has_email (string email_address) {
+    var addrs = individual.email_addresses;
+    foreach (var detail in addrs) {
+      if (detail.value == email_address)
+	return true;
+    }
+    return false;
+  }
+
   public bool contains_strings (string [] strings) {
     foreach (string i in strings) {
       if (! (i in filter_data))

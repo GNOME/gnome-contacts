@@ -238,6 +238,14 @@ public class Contacts.Store  {
     return null;
   }
 
+  public Contact? find_contact_with_email (string email_address) {
+    foreach (var data in contacts) {
+      if (data.contact.has_email (email_address))
+	return data.contact;
+    }
+    return null;
+  }
+
   public Contact? find_contact_with_persona (Persona persona) {
     foreach (var data in contacts) {
       if (data.contact.individual.personas.contains (persona))

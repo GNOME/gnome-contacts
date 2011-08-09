@@ -69,6 +69,34 @@ public class Contacts.App : Window {
     }
   }
 
+  private string show_email = null;
+  private void show_email_cb (Contact contact) {
+    if (contact.has_email (show_email)) {
+      show_email = null;
+      contacts_store.changed.disconnect (show_email_cb);
+      contacts_store.added.disconnect (show_email_cb);
+
+      list_pane.select_contact (contact);
+      contacts_pane.show_contact (contact);
+    }
+  }
+
+  public void show_by_email (string email) {
+    var contact = contacts_store.find_contact_with_email (email);
+    if (contact != null) {
+      list_pane.select_contact (contact);
+      contacts_pane.show_contact (contact);
+    } else {
+      if (show_email == null) {
+	contacts_store.changed.connect (show_email_cb);
+	contacts_store.added.connect (show_email_cb);
+
+	// TODO: Wait for quiescent state to detect no such contact
+      }
+      show_email = email;
+    }
+  }
+
   public App () {
     this.app = this;
     set_title (_("Contacts"));
