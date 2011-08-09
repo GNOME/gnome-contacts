@@ -28,6 +28,10 @@ public class Contacts.Store  {
     public bool is_first;
   }
 
+  public signal void changed (Contact c);
+  public signal void added (Contact c);
+  public signal void removed (Contact c);
+
   ListStore list_store;
   public IndividualAggregator aggregator { get; private set; }
   Gee.ArrayList<ContactData> contacts;
@@ -187,7 +191,7 @@ public class Contacts.Store  {
     refilter ();
   }
 
-  private void contact_changed (Contact c) {
+  private void contact_changed_cb (Contact c) {
     ContactData data = lookup_data (c);
 
     bool was_visible = data.visible;
@@ -212,6 +216,8 @@ public class Contacts.Store  {
       if (next != null)
 	update_is_first (next, data);
     }
+
+    changed (c);
   }
 
   private ContactData lookup_data (Contact c) {
@@ -236,13 +242,15 @@ public class Contacts.Store  {
 
     contacts.add (data);
 
-    c.changed.connect (contact_changed);
+    c.changed.connect (contact_changed_cb);
 
     update_visible (data);
+
+    added (c);
   }
 
   public void remove (Contact c) {
-    c.changed.disconnect (contact_changed);
+    c.changed.disconnect (contact_changed_cb);
     var data = lookup_data (c);
 
     if (data.visible)
@@ -254,5 +262,7 @@ public class Contacts.Store  {
     contacts.remove_at (contacts.size - 1);
 
     c.set_data ("contact-data", null);
+
+    removed (c);
   }
 }
