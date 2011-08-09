@@ -224,6 +224,20 @@ public class Contacts.Store  {
     return c.get_data ("contact-data");
   }
 
+  public bool lookup_iter (Contact c, out TreeIter iter) {
+    var data = lookup_data (c);
+    iter = data.iter;
+    return data.visible;
+  }
+
+  public Contact? find_contact_with_id (string individual_id) {
+    foreach (var data in contacts) {
+      if (data.contact.individual.id == individual_id)
+	return data.contact;
+    }
+    return null;
+  }
+
   public Contact? find_contact_with_persona (Persona persona) {
     foreach (var data in contacts) {
       if (data.contact.individual.personas.contains (persona))

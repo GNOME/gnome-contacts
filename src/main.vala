@@ -20,6 +20,14 @@
 using Gtk;
 using Contacts;
 
+
+private static string individual_id = null;
+private static const OptionEntry[] options = {
+    { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
+      N_("Show contact with this individual id"), null },
+    { null }
+  };
+
 public static int
 main (string[] args) {
   Notify.init (_("Contacts"));
@@ -27,7 +35,7 @@ main (string[] args) {
   Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
-  Gtk.init (ref args);
+  Gtk.init_with_args (ref args, "— contact management", options, Config.GETTEXT_PACKAGE);
 
   try {
     var provider = new CssProvider ();
@@ -38,6 +46,8 @@ main (string[] args) {
   }
 
   var app = new App ();
+  if (individual_id != null)
+    app.show_individual (individual_id);
   app.show ();
 
   Gtk.main ();

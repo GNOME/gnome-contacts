@@ -41,6 +41,34 @@ public class Contacts.App : Window {
     contacts_pane.show_contact (new_selection);
   }
 
+  private string show_individual_id = null;
+  private void show_individual_cb (Contact contact) {
+    if (contact.individual.id == show_individual_id) {
+      show_individual_id = null;
+      contacts_store.changed.disconnect (show_individual_cb);
+      contacts_store.added.disconnect (show_individual_cb);
+
+      list_pane.select_contact (contact);
+      contacts_pane.show_contact (contact);
+    }
+  }
+
+  public void show_individual (string id) {
+    var contact = contacts_store.find_contact_with_id (id);
+    if (contact != null) {
+      list_pane.select_contact (contact);
+      contacts_pane.show_contact (contact);
+    } else {
+      if (show_individual_id == null) {
+	contacts_store.changed.connect (show_individual_cb);
+	contacts_store.added.connect (show_individual_cb);
+
+	// TODO: Wait for quiescent state to detect no such contact
+      }
+      show_individual_id = id;
+    }
+  }
+
   public App () {
     this.app = this;
     set_title (_("Contacts"));

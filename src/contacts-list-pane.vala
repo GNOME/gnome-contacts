@@ -462,4 +462,13 @@ public class Contacts.ListPane : Frame {
 
     this.show_all ();
   }
+
+  public void select_contact (Contact contact) {
+    TreeIter iter;
+    if (contacts_store.lookup_iter (contact, out iter)) {
+      contacts_tree_view.get_selection ().select_iter (iter);
+      contacts_tree_view.scroll_to_cell (contacts_store.model.get_path (iter),
+					 null, true, 0.0f, 0.0f);
+    }
+  }
 }
