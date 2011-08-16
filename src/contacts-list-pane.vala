@@ -318,8 +318,9 @@ public class Contacts.ListPane : Frame {
 	model.get (iter, 0, out contact);
 
 	string letter = "";
-	if (contacts_store.is_first (iter))
-	  letter = contact.display_name.get_char ().totitle ().to_string ();
+	if (contacts_store.is_first (iter)) {
+	  letter = contact.initial_letter.to_string ();
+	}
 	cell.set ("text", letter);
       });
 

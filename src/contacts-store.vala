@@ -130,8 +130,8 @@ public class Contacts.Store  {
     bool old_is_first = data.is_first;
 
     if (previous != null) {
-      unichar previous_initial = previous.contact.display_name.get_char ().totitle ();
-      unichar initial = data.contact.display_name.get_char ().totitle ();
+      unichar previous_initial = previous.contact.initial_letter;
+      unichar initial = data.contact.initial_letter;
       data.is_first = previous_initial != initial;
     } else {
       data.is_first = true;

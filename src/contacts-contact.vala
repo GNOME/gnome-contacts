@@ -128,6 +128,15 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
+  public unichar initial_letter {
+    get {
+      string name = display_name;
+      if (name.length == 0)
+	return 0;
+      return name.get_char ().totitle ();
+    }
+  }
+
   private string filter_data;
 
   public signal void changed ();
