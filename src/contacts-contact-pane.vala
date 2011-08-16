@@ -351,6 +351,30 @@ public class Contacts.ContactPane : EventBox {
     return entry;
   }
 
+  private void update_edit_detail_postal_value (Set<PostalAddressFieldDetails> detail_set,
+						PostalAddressFieldDetails detail,
+						Entry entry,
+						string subproperty_name,
+						string property_name) {
+    string old_value;
+    detail.value.get (subproperty_name, out old_value);
+    if (old_value != entry.get_text ()) {
+      var new_value = new PostalAddress (detail.value.po_box,
+					 detail.value.extension,
+					 detail.value.street,
+					 detail.value.locality,
+					 detail.value.region,
+					 detail.value.postal_code,
+					 detail.value.country,
+					 detail.value.address_format,
+					 detail.value.uid);
+      new_value.set (subproperty_name, entry.get_text ());
+      detail.value = new_value;
+
+      editing_persona.set (property_name, detail_set);
+    }
+  }
+
   private Entry add_detail_postal_entry (Set<PostalAddressFieldDetails> detail_set,
 					 PostalAddressFieldDetails detail,
 					 string subproperty_name,
@@ -362,12 +386,11 @@ public class Contacts.ContactPane : EventBox {
     if (placeholder_text != null)
       entry.set ("placeholder-text", placeholder_text);
 
-    /*
     entry.focus_out_event.connect ( (ev) => {
-	update_edit_detail_string_value (detail_set, entry, subproperty_name, property_name);
+	update_edit_detail_postal_value (detail_set, detail, entry, subproperty_name, property_name);
 	return false;
 	});
-    */
+
     return entry;
   }
 
