@@ -269,6 +269,7 @@ public class Contacts.ContactPane : EventBox {
   HashSet<EmailFieldDetails> editing_emails;
   HashSet<PhoneFieldDetails> editing_phones;
   HashSet<UrlFieldDetails> editing_urls;
+  HashSet<PostalAddressFieldDetails> editing_postals;
 
   const int PROFILE_SIZE = 96;
   const int LABEL_HEIGHT = 20;
@@ -308,6 +309,9 @@ public class Contacts.ContactPane : EventBox {
       return new PhoneFieldDetails ((detail as PhoneFieldDetails).value);
     if (detail is UrlFieldDetails)
       return new UrlFieldDetails ((detail as UrlFieldDetails).value);
+    if (detail is PostalAddressFieldDetails)
+      return new PostalAddressFieldDetails ((detail as PostalAddressFieldDetails).value);
+    error ("Unsupported AbstractFieldDetails type\n");
     return null;
   }
 
@@ -392,6 +396,27 @@ public class Contacts.ContactPane : EventBox {
     return entry;
   }
 
+  private Entry add_detail_postal_entry (Set<PostalAddressFieldDetails> detail_set,
+					 PostalAddressFieldDetails detail,
+					 string subproperty_name,
+					 string property_name,
+					 string? placeholder_text) {
+    string postal_part;
+    detail.value.get (subproperty_name, out postal_part);
+    var entry = layout.add_entry (postal_part);
+    detail.set_data ("entry_"+subproperty_name, entry);
+    if (placeholder_text != null)
+      entry.set ("placeholder-text", placeholder_text);
+
+    /*
+    entry.focus_out_event.connect ( (ev) => {
+	update_edit_detail_string_value (detail_set, entry, subproperty_name, property_name);
+	return false;
+	});
+    */
+    return entry;
+  }
+
   private void add_detail_remove (Set<AbstractFieldDetails> detail_set,
 				  AbstractFieldDetails detail,
 				  string property_name,
@@ -434,6 +459,7 @@ public class Contacts.ContactPane : EventBox {
     editing_emails = new HashSet<EmailFieldDetails>();
     editing_phones = new HashSet<PhoneFieldDetails>();
     editing_urls = new HashSet<UrlFieldDetails>();
+    editing_postals = new HashSet<PostalAddressFieldDetails>();
 
     var email_details = persona as EmailDetails;
     if (email_details != null) {
@@ -491,23 +517,20 @@ public class Contacts.ContactPane : EventBox {
     var postal_details = persona as PostalAddressDetails;
     if (postal_details != null) {
       var postals = postal_details.postal_addresses;
-      if (!postals.is_empty) {
-	foreach (var addr in postals) {
-	  var type = "";
-	  var types = addr.parameters.get ("type");
-	  if (types != null) {
-	    var i = types.iterator();
-	    if (i.next())
-	      type = type + i.get();
-	  }
-	  string[] strs = Contact.format_address (addr.value);
-	  layout.add_label (type);
-	  foreach (var s in strs) {
-	    layout.add_detail (s);
-	  }
-	  var button = layout.add_remove ();
-	  button.set_sensitive (false);
+      foreach (var addr in postals) {
+	editing_postals.add (addr);
+	add_detail_combo (TypeSet.general, editing_postals, addr, "postal_addresses");
+
+	string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
+	string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
+	for (int i = 0; i < props.length; i++) {
+	  add_detail_postal_entry (editing_postals,
+				   addr,
+				   props[i],
+				   "postal_addresses",
+				   nice[i]);
 	}
+	add_detail_remove (editing_postals, addr, "postal_addresses");
       }
     }
 
@@ -859,13 +882,7 @@ public class Contacts.ContactPane : EventBox {
     var postals = contact.individual.postal_addresses;
     if (!postals.is_empty) {
       foreach (var addr in postals) {
-	var type = "";
-	var types = addr.parameters.get ("type");
-	if (types != null) {
-	  var i = types.iterator();
-	  if (i.next())
-	    type = type + i.get();
-	}
+	var type = TypeSet.general.format_type (addr);
 	string[] strs = Contact.format_address (addr.value);
 	layout.add_label (type);
 	if (strs.length > 0) {
