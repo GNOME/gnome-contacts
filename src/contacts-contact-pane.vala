@@ -428,6 +428,24 @@ public class Contacts.ContactPane : EventBox {
     add_detail_remove (detail_set, detail, property_name, false);
   }
 
+  private void add_postal_editor (Set<PostalAddressFieldDetails> detail_set,
+				  PostalAddressFieldDetails detail) {
+    string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
+    string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
+
+    detail_set.add (detail);
+    add_detail_combo (TypeSet.general, detail_set, detail, "postal_addresses");
+
+    for (int i = 0; i < props.length; i++) {
+      add_detail_postal_entry (detail_set,
+			       detail,
+			       props[i],
+			       "postal_addresses",
+			       nice[i]);
+    }
+    add_detail_remove (detail_set, detail, "postal_addresses");
+  }
+
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
     layout.reset (false);
     image_frame.set_image (persona as AvatarDetails);
@@ -491,20 +509,8 @@ public class Contacts.ContactPane : EventBox {
     if (postal_details != null) {
       var postals = postal_details.postal_addresses;
       foreach (var _addr in postals) {
-	var addr = new PostalAddressFieldDetails(_addr.value, _addr.parameters);
-	editing_postals.add (addr);
-	add_detail_combo (TypeSet.general, editing_postals, addr, "postal_addresses");
-
-	string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
-	string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
-	for (int i = 0; i < props.length; i++) {
-	  add_detail_postal_entry (editing_postals,
-				   addr,
-				   props[i],
-				   "postal_addresses",
-				   nice[i]);
-	}
-	add_detail_remove (editing_postals, addr, "postal_addresses");
+	add_postal_editor (editing_postals,
+			   new PostalAddressFieldDetails(_addr.value, _addr.parameters));
       }
     }
 
@@ -548,6 +554,13 @@ public class Contacts.ContactPane : EventBox {
 			     editing_phones, new PhoneFieldDetails(""),
 			     "phone_numbers",
 			     _("Enter phone number"));
+	  fields_grid.show_all ();
+	  end_row = layout.save_state ();
+	});
+      Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
+	  layout.load_state (end_row);
+	  add_postal_editor (editing_postals,
+			     new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
 	  fields_grid.show_all ();
 	  end_row = layout.save_state ();
 	});
