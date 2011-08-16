@@ -212,17 +212,19 @@ public class Contacts.TypeSet : Object  {
     return _("Other");
   }
 
-  public void update_details (AbstractFieldDetails details, AbstractFieldDetails old_details, TreeIter iter) {
+  public void update_details (AbstractFieldDetails details, TreeIter iter) {
+    var old_parameters = details.parameters;
+    details.parameters = new HashMultiMap<string, string> ();
     bool has_pref = false;
-    foreach (var value in old_details.parameters.get ("type")) {
+    foreach (var value in old_parameters.get ("type")) {
       if (value.ascii_casecmp ("PREF") == 0) {
 	has_pref = true;
 	break;
       }
     }
-    foreach (var param in old_details.parameters.get_keys()) {
+    foreach (var param in old_parameters.get_keys()) {
       if (param != "type" && param != X_GOOGLE_LABEL) {
-	foreach (var value in old_details.parameters.get (param)) {
+	foreach (var value in old_parameters.get (param)) {
 	  details.parameters.set (param, value);
 	}
       }
@@ -422,9 +424,9 @@ public class Contacts.TypeCombo : Grid  {
     in_manual_change = false;
   }
 
-  public void update_details (AbstractFieldDetails details, AbstractFieldDetails old_details) {
+  public void update_details (AbstractFieldDetails details) {
     TreeIter iter;
     combo.get_active_iter (out iter);
-    type_set.update_details (details, old_details, iter);
+    type_set.update_details (details, iter);
   }
 }

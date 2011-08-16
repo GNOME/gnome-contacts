@@ -302,39 +302,11 @@ public class Contacts.ContactPane : EventBox {
     return image;
   }
 
-  private AbstractFieldDetails? clone_field_detail (AbstractFieldDetails detail) {
-    if (detail is EmailFieldDetails)
-      return new EmailFieldDetails ((detail as EmailFieldDetails).value);
-    if (detail is PhoneFieldDetails)
-      return new PhoneFieldDetails ((detail as PhoneFieldDetails).value);
-    if (detail is UrlFieldDetails)
-      return new UrlFieldDetails ((detail as UrlFieldDetails).value);
-    if (detail is PostalAddressFieldDetails)
-      return new PostalAddressFieldDetails ((detail as PostalAddressFieldDetails).value);
-    error ("Unsupported AbstractFieldDetails type\n");
-    return null;
-  }
-
   private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
+					AbstractFieldDetails detail,
 					TypeCombo combo,
 					string property_name) {
-    AbstractFieldDetails? old_detail = null;
-    foreach (var detail in detail_set) {
-      if (detail.get_data<TypeCombo> ("combo") == combo) {
-	old_detail = detail;
-	break;
-      }
-    }
-    assert (old_detail != null);
-
-    var new_detail = clone_field_detail (old_detail);
-    combo.update_details (new_detail, old_detail);
-    new_detail.set_data ("entry", old_detail.get_data<Entry> ("entry"));
-    new_detail.set_data ("combo", old_detail.get_data<TypeCombo> ("combo"));
-
-    detail_set.remove (old_detail);
-    detail_set.add (new_detail);
-
+    combo.update_details (detail);
     editing_persona.set (property_name, detail_set);
   }
 
@@ -347,34 +319,18 @@ public class Contacts.ContactPane : EventBox {
     combo.set_hexpand (false);
     combo.set_active (detail);
     layout.add_widget_label (combo);
-    detail.set_data ("combo", combo);
 
     combo.changed.connect ( () => {
-	update_edit_detail_type (detail_set, combo, property_name);
+	update_edit_detail_type (detail_set, detail, combo, property_name);
       });
   }
 
   private void update_edit_detail_string_value (Set<AbstractFieldDetails<string>> detail_set,
+						AbstractFieldDetails<string> detail,
 						Entry entry,
 						string property_name) {
-    AbstractFieldDetails<string>? old_detail = null;
-    foreach (var detail in detail_set) {
-      if (detail.get_data<Entry> ("entry") == entry) {
-	old_detail = detail;
-	break;
-      }
-    }
-    assert (old_detail != null);
-
-    if (old_detail.value != entry.get_text ()) {
-      var new_detail = clone_field_detail (old_detail);
-      (new_detail as AbstractFieldDetails<string>).value = entry.get_text ();
-      new_detail.parameters = old_detail.parameters;
-      new_detail.set_data ("entry", old_detail.get_data<Entry> ("entry"));
-      new_detail.set_data ("combo", old_detail.get_data<TypeCombo> ("combo"));
-
-      detail_set.remove (old_detail);
-      detail_set.add (new_detail);
+    if (detail.value != entry.get_text ()) {
+      detail.value = entry.get_text ();
 
       editing_persona.set (property_name, detail_set);
     }
@@ -385,12 +341,11 @@ public class Contacts.ContactPane : EventBox {
 				  string property_name,
 				  string? placeholder_text) {
     var entry = layout.add_entry (detail.value);
-    detail.set_data ("entry", entry);
     if (placeholder_text != null)
       entry.set ("placeholder-text", placeholder_text);
 
     entry.focus_out_event.connect ( (ev) => {
-	update_edit_detail_string_value (detail_set, entry, property_name);
+	update_edit_detail_string_value (detail_set, detail, entry, property_name);
 	return false;
       });
     return entry;
@@ -404,7 +359,6 @@ public class Contacts.ContactPane : EventBox {
     string postal_part;
     detail.value.get (subproperty_name, out postal_part);
     var entry = layout.add_entry (postal_part);
-    detail.set_data ("entry_"+subproperty_name, entry);
     if (placeholder_text != null)
       entry.set ("placeholder-text", placeholder_text);
 
@@ -463,14 +417,12 @@ public class Contacts.ContactPane : EventBox {
 
     var email_details = persona as EmailDetails;
     if (email_details != null) {
-      var emails = email_details.email_addresses;
-      if (!emails.is_empty) {
-	foreach (var email in Contact.sort_fields (emails)) {
-	  add_detail_editor (TypeSet.general,
-			     editing_emails, email,
-			     "email_addresses",
-			     _("Enter email address"));
-	}
+      var emails = Contact.sort_fields<EmailFieldDetails>(email_details.email_addresses);
+      foreach (var email in emails) {
+	add_detail_editor (TypeSet.general,
+			   editing_emails, new EmailFieldDetails (email.value, email.parameters),
+			   "email_addresses",
+			   _("Enter email address"));
       }
     }
 
@@ -497,14 +449,12 @@ public class Contacts.ContactPane : EventBox {
 
     var phone_details = persona as PhoneDetails;
     if (phone_details != null) {
-      var phone_numbers = phone_details.phone_numbers;
-      if (!phone_numbers.is_empty) {
-	foreach (var p in Contact.sort_fields (phone_numbers)) {
-	  add_detail_editor (TypeSet.phone,
-			     editing_phones, p,
-			     "phone_numbers",
-			     _("Enter phone number"));
-	}
+      var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+      foreach (var p in phone_numbers) {
+	add_detail_editor (TypeSet.phone,
+			   editing_phones, new PhoneFieldDetails (p.value, p.parameters),
+			   "phone_numbers",
+			   _("Enter phone number"));
       }
     }
 
@@ -517,7 +467,8 @@ public class Contacts.ContactPane : EventBox {
     var postal_details = persona as PostalAddressDetails;
     if (postal_details != null) {
       var postals = postal_details.postal_addresses;
-      foreach (var addr in postals) {
+      foreach (var _addr in postals) {
+	var addr = new PostalAddressFieldDetails(_addr.value, _addr.parameters);
 	editing_postals.add (addr);
 	add_detail_combo (TypeSet.general, editing_postals, addr, "postal_addresses");
 
@@ -542,7 +493,7 @@ public class Contacts.ContactPane : EventBox {
 	layout.add_label ("Links");
 	foreach (var url_details in urls) {
 	  add_detail_editor_no_type (editing_urls,
-				     url_details,
+				     new UrlFieldDetails (url_details.value, url_details.parameters),
 				     "urls",
 				     _("Enter phone number"));
 	}
@@ -834,18 +785,15 @@ public class Contacts.ContactPane : EventBox {
     set_has_notes (!contact.individual.notes.is_empty);
     display_card (contact);
 
-    var emails = contact.individual.email_addresses;
-    if (!emails.is_empty) {
-      foreach (var email_ in Contact.sort_fields (emails)) {
-	var email = email_ as EmailFieldDetails;
-	var type = TypeSet.general.format_type (email);
-	layout.add_label_detail (type, email.value);
-	var button = layout.add_button ("mail-unread-symbolic");
-	var email_addr = email.value;
-	button.clicked.connect ( () => {
-	    Utils.compose_mail (email_addr);
-	  });
-      }
+    var emails = Contact.sort_fields<EmailFieldDetails>(contact.individual.email_addresses);
+    foreach (var email in emails) {
+      var type = TypeSet.general.format_type (email);
+      layout.add_label_detail (type, email.value);
+      var button = layout.add_button ("mail-unread-symbolic");
+      var email_addr = email.value;
+      button.clicked.connect ( () => {
+	  Utils.compose_mail (email_addr);
+	});
     }
 
     var ims = contact.individual.im_addresses;
@@ -870,13 +818,11 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
-    var phone_numbers = contact.individual.phone_numbers;
-    if (!phone_numbers.is_empty) {
-      foreach (var p in Contact.sort_fields (phone_numbers)) {
-	var phone = p as PhoneFieldDetails;
-	var type = TypeSet.phone.format_type (phone);
-	layout.add_label_detail (type, phone.value);
-      }
+    var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(contact.individual.phone_numbers);
+    foreach (var p in phone_numbers) {
+      var phone = p as PhoneFieldDetails;
+      var type = TypeSet.phone.format_type (phone);
+      layout.add_label_detail (type, phone.value);
     }
 
     var postals = contact.individual.postal_addresses;

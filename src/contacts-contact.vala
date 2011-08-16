@@ -295,47 +295,44 @@ public class Contacts.Contact : GLib.Object  {
     return classname;
   }
 
-  static string? get_first_string (Collection<string> collection) {
-    var i = collection.iterator();
-    if (i.next())
-      return i.get();
+  static string? get_first_string (Collection<string>? collection) {
+    if (collection != null) {
+      var i = collection.iterator();
+      if (i.next())
+	return i.get();
+    }
     return null;
   }
 
-  private static int sort_fields_helper (AbstractFieldDetails a, AbstractFieldDetails b) {
-    // TODO: This should sort first by type and then by value
-    if (&a == &b)
+  private static bool has_pref (AbstractFieldDetails details) {
+    if (get_first_string (details.get_parameter_values ("x-evolution-ui-slot")) == "1")
+      return true;
+    foreach (var param in details.parameters.get ("type")) {
+      if (param.ascii_casecmp ("PREF") == 0)
+	return true;
+    }
+    return false;
+  }
+
+  public static int compare_fields (void *a, void *b) {
+    AbstractFieldDetails *details_a = (AbstractFieldDetails *)a;
+    AbstractFieldDetails *details_b = (AbstractFieldDetails *)b;
+    bool first_a = has_pref (details_a);
+    bool first_b = has_pref (details_b);
+
+    if (first_a == first_b)
       return 0;
-    if (&a < &b)
+    if (first_a)
       return -1;
     return 1;
   }
 
-  public static GLib.List<AbstractFieldDetails> sort_fields (Set<AbstractFieldDetails> details) {
-    GLib.List<AbstractFieldDetails> pref = null;
-    GLib.List<AbstractFieldDetails> rest = null;
-    foreach (var detail in details) {
-      if (get_first_string (detail.parameters.get ("x-evolution-ui-slot")) == "1") {
-	pref.prepend (detail);
-      } else {
-	bool found = false;
-	foreach (var param in detail.parameters.get ("type")) {
-	  if (param.ascii_casecmp ("PREF") == 0) {
-	    found = true;
-	    break;
-	  }
-	}
-	if (found)
-	  pref.prepend (detail);
-	else
-	  rest.prepend (detail);
-      }
-    }
-    // First all pref items, then the rest, each list sorted
-    pref.sort (sort_fields_helper);
-    rest.sort (sort_fields_helper);
-    pref.concat ((owned)rest);
-    return pref;
+  public static ArrayList<T> sort_fields<T> (Collection<T> fields) {
+    // TODO: This should take an extra delegate arg to compare by value for T
+    var res = new ArrayList<T>();
+    res.add_all (fields);
+    res.sort (Contact.compare_fields);
+    return res;
   }
 
   public static string[] format_address (PostalAddress addr) {
