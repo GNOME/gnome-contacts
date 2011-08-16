@@ -33,9 +33,10 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
   private struct IconShape {
     string icon;
+    bool colorize;
   }
 
-  Gdk.Pixbuf? create_symbolic_pixbuf (Widget widget, string icon_name, int size) {
+  Gdk.Pixbuf? create_symbolic_pixbuf (Widget widget, string icon_name, bool colorize, int size) {
     var screen = widget. get_screen ();
     var icon_theme = Gtk.IconTheme.get_for_screen (screen);
 
@@ -47,7 +48,8 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     context.save ();
     bool is_symbolic;
-    context.add_class (Contact.presence_to_class (presence));
+    if (colorize)
+      context.add_class (Contact.presence_to_class (presence));
     Gdk.Pixbuf? pixbuf = null;
     try {
       pixbuf = info.load_symbolic_for_context (context,
@@ -84,6 +86,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 			    CellRendererShape.IMAGE_SIZE*1024, CellRendererShape.IMAGE_SIZE*1024 };
       IconShape icon_shape = IconShape();
       icon_shape.icon = iconname;
+      icon_shape.colorize = true;
       a = new Pango.AttrShape<IconShape?>.with_data (r, r, icon_shape, (s) => { return s;} );
       a.start_index = str.length - 1;
       a.end_index = a.start_index + 1;
@@ -94,15 +97,14 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 	  m = Contact.presence_to_string (presence);
 	str += " " + m;
 	if (is_phone) {
-	  if ((flags & CellRendererState.SELECTED) != 0)
-	    a = Pango.attr_foreground_new (0xffff-0x8e8e, 0xffff-0x9191, 0xffff-0x9292);
-	  else
-	    a = Pango.attr_foreground_new (0x8e8e, 0x9191, 0x9292);
+	  icon_shape = IconShape();
+	  icon_shape.icon = "phone-symbolic";
+	  a = new Pango.AttrShape<IconShape?>.with_data (r, r, icon_shape, (s) => { return s;});
 	  a.start_index = str.length;
-	  str += " (via phone)";
+	  str += "*";
 	  a.end_index = str.length;
 	  attr_list.insert ((owned) a);
-	}
+	  }
       }
     }
 
@@ -285,7 +287,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
   public void render_shape (Cairo.Context cr, Pango.AttrShape attr, bool do_path) {
     unowned Pango.AttrShape<IconShape?> sattr = (Pango.AttrShape<IconShape?>)attr;
-    var pixbuf = create_symbolic_pixbuf (current_widget, sattr.data.icon, IMAGE_SIZE);
+    var pixbuf = create_symbolic_pixbuf (current_widget, sattr.data.icon, sattr.data.colorize, IMAGE_SIZE);
     if (pixbuf != null) {
       double x, y;
       cr.get_current_point (out x, out y);

@@ -28,10 +28,11 @@ public errordomain ContactError {
 public class Contacts.ContactPresence : Grid {
   Contact contact;
   Image image;
+  Image phone_image;
   Label label;
   string last_class;
 
-  private void update_presence_widgets (Image image, Label label) {
+  private void update_presence_widgets () {
     PresenceType type;
     string message;
     bool is_phone;
@@ -45,6 +46,7 @@ public class Contacts.ContactPresence : Grid {
       image.hide ();
       label.hide ();
       label.set_text ("");
+      phone_image.hide ();
       return;
     }
 
@@ -55,13 +57,16 @@ public class Contacts.ContactPresence : Grid {
     image.get_style_context ().add_class (last_class);
     image.show ();
     label.show ();
+    phone_image.show ();
     if (message.length == 0)
       message = Contact.presence_to_string (type);
 
-    if (is_phone) {
-      label.set_markup (GLib.Markup.escape_text (message) + " <span color='#8e9192'>(via phone)</span>");
-    } else
-      label.set_text (message);
+    label.set_text (message);
+
+    if (is_phone)
+      phone_image.show ();
+    else
+      phone_image.hide ();
   }
 
   public ContactPresence (Contact contact) {
@@ -78,10 +83,15 @@ public class Contacts.ContactPresence : Grid {
 
     this.add (label);
 
-    update_presence_widgets (image, label);
+    phone_image = new Image ();
+    phone_image.set_no_show_all (true);
+    phone_image.set_from_icon_name ("phone-symbolic", IconSize.MENU);
+    this.add (phone_image);
+
+    update_presence_widgets ();
 
     var id = contact.changed.connect ( () => {
-	update_presence_widgets (image, label);
+	update_presence_widgets ();
       });
 
     this.destroy.connect (() => {
