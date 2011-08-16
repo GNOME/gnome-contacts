@@ -28,7 +28,7 @@ AM_GNU_GETTEXT_VERSION([1.11])
 AM_GLIB_GNU_GETTEXT
 
 pkg_modules="gtk+-3.0
-	     folks >= 0.5.2
+	     folks >= 0.6.0
 	     folks-telepathy
 	     libnotify
 	     "
