@@ -266,9 +266,9 @@ public class Contacts.ContactPane : EventBox {
   private ButtonBox editing_buttons;
   private DetailsLayout layout;
 
-  HashSet<FieldDetails> editing_emails;
-  HashSet<FieldDetails> editing_phones;
-  HashSet<FieldDetails> editing_urls;
+  HashSet<EmailFieldDetails> editing_emails;
+  HashSet<PhoneFieldDetails> editing_phones;
+  HashSet<UrlFieldDetails> editing_urls;
 
   const int PROFILE_SIZE = 96;
   const int LABEL_HEIGHT = 20;
@@ -301,10 +301,20 @@ public class Contacts.ContactPane : EventBox {
     return image;
   }
 
-  private void update_edit_detail_type (Set<FieldDetails> detail_set,
+  private AbstractFieldDetails? clone_field_detail (AbstractFieldDetails detail) {
+    if (detail is EmailFieldDetails)
+      return new EmailFieldDetails ((detail as EmailFieldDetails).value);
+    if (detail is PhoneFieldDetails)
+      return new PhoneFieldDetails ((detail as PhoneFieldDetails).value);
+    if (detail is UrlFieldDetails)
+      return new UrlFieldDetails ((detail as UrlFieldDetails).value);
+    return null;
+  }
+
+  private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
 					TypeCombo combo,
 					string property_name) {
-    FieldDetails? old_detail = null;
+    AbstractFieldDetails? old_detail = null;
     foreach (var detail in detail_set) {
       if (detail.get_data<TypeCombo> ("combo") == combo) {
 	old_detail = detail;
@@ -313,7 +323,8 @@ public class Contacts.ContactPane : EventBox {
     }
     assert (old_detail != null);
 
-    var new_detail = combo.update_details (old_detail);
+    var new_detail = clone_field_detail (old_detail);
+    combo.update_details (new_detail, old_detail);
     new_detail.set_data ("entry", old_detail.get_data<Entry> ("entry"));
     new_detail.set_data ("combo", old_detail.get_data<TypeCombo> ("combo"));
 
@@ -324,8 +335,8 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void add_detail_combo (TypeSet type_set,
-				 Set<FieldDetails> detail_set,
-				 FieldDetails detail,
+				 Set<AbstractFieldDetails> detail_set,
+				 AbstractFieldDetails detail,
 				 string property_name) {
     var combo = new TypeCombo (type_set);
     combo.set_halign (Align.FILL);
@@ -339,10 +350,10 @@ public class Contacts.ContactPane : EventBox {
       });
   }
 
-  private void update_edit_detail_value (Set<FieldDetails> detail_set,
-					 Entry entry,
-					 string property_name) {
-    FieldDetails? old_detail = null;
+  private void update_edit_detail_string_value (Set<AbstractFieldDetails<string>> detail_set,
+						Entry entry,
+						string property_name) {
+    AbstractFieldDetails<string>? old_detail = null;
     foreach (var detail in detail_set) {
       if (detail.get_data<Entry> ("entry") == entry) {
 	old_detail = detail;
@@ -352,7 +363,8 @@ public class Contacts.ContactPane : EventBox {
     assert (old_detail != null);
 
     if (old_detail.value != entry.get_text ()) {
-      var new_detail = new FieldDetails (entry.get_text ());
+      var new_detail = clone_field_detail (old_detail);
+      (new_detail as AbstractFieldDetails<string>).value = entry.get_text ();
       new_detail.parameters = old_detail.parameters;
       new_detail.set_data ("entry", old_detail.get_data<Entry> ("entry"));
       new_detail.set_data ("combo", old_detail.get_data<TypeCombo> ("combo"));
@@ -364,8 +376,8 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  private Entry add_detail_entry (Set<FieldDetails> detail_set,
-				  FieldDetails detail,
+  private Entry add_detail_entry (Set<AbstractFieldDetails> detail_set,
+				  AbstractFieldDetails<string> detail,
 				  string property_name,
 				  string? placeholder_text) {
     var entry = layout.add_entry (detail.value);
@@ -374,14 +386,14 @@ public class Contacts.ContactPane : EventBox {
       entry.set ("placeholder-text", placeholder_text);
 
     entry.focus_out_event.connect ( (ev) => {
-	update_edit_detail_value (detail_set, entry, property_name);
+	update_edit_detail_string_value (detail_set, entry, property_name);
 	return false;
       });
     return entry;
   }
 
-  private void add_detail_remove (Set<FieldDetails> detail_set,
-				  FieldDetails detail,
+  private void add_detail_remove (Set<AbstractFieldDetails> detail_set,
+				  AbstractFieldDetails detail,
 				  string property_name,
 				  bool at_top = true) {
     var remove_button = layout.add_remove (at_top);
@@ -395,22 +407,20 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void add_detail_editor (TypeSet type_set,
-				  Set<FieldDetails> detail_set,
-				  FieldDetails? detail_in,
+				  Set<AbstractFieldDetails> detail_set,
+				  AbstractFieldDetails<string> detail,
 				  string property_name,
 				  string? placeholder_text) {
-    var detail = detail_in ?? new FieldDetails ("");
     detail_set.add (detail);
     add_detail_combo (type_set, detail_set, detail, property_name);
     add_detail_entry (detail_set, detail, property_name, placeholder_text);
     add_detail_remove (detail_set, detail, property_name);
   }
 
-  private void add_detail_editor_no_type (Set<FieldDetails> detail_set,
-					   FieldDetails? detail_in,
+  private void add_detail_editor_no_type (Set<AbstractFieldDetails> detail_set,
+					   AbstractFieldDetails<string> detail,
 					   string property_name,
 					   string? placeholder_text) {
-    var detail = detail_in ?? new FieldDetails ("");
     detail_set.add (detail);
     add_detail_entry (detail_set, detail, property_name, placeholder_text);
     add_detail_remove (detail_set, detail, property_name, false);
@@ -421,9 +431,9 @@ public class Contacts.ContactPane : EventBox {
     image_frame.set_image (persona as AvatarDetails);
     image_frame.set_text (persona.store.display_name, LABEL_HEIGHT);
 
-    editing_emails = new HashSet<FieldDetails>();
-    editing_phones = new HashSet<FieldDetails>();
-    editing_urls = new HashSet<FieldDetails>();
+    editing_emails = new HashSet<EmailFieldDetails>();
+    editing_phones = new HashSet<PhoneFieldDetails>();
+    editing_urls = new HashSet<UrlFieldDetails>();
 
     var email_details = persona as EmailDetails;
     if (email_details != null) {
@@ -440,7 +450,7 @@ public class Contacts.ContactPane : EventBox {
 
     if (new_contact)
       add_detail_editor (TypeSet.general,
-			 editing_emails, null,
+			 editing_emails, new EmailFieldDetails(""),
 			 "email_addresses",
 			 _("Enter email address"));
 
@@ -451,7 +461,7 @@ public class Contacts.ContactPane : EventBox {
       if (!im_keys.is_empty) {
 	foreach (var protocol in im_keys) {
 	  foreach (var id in ims[protocol]) {
-	    layout.add_label_detail (_("Chat"), protocol + "/" + id);
+	    layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
 	    var button = layout.add_remove ();
 	    button.set_sensitive (false);
 	  }
@@ -474,7 +484,7 @@ public class Contacts.ContactPane : EventBox {
 
     if (new_contact)
       add_detail_editor (TypeSet.phone,
-			 editing_phones, null,
+			 editing_phones, new PhoneFieldDetails(""),
 			 "phone_numbers",
 			 _("Enter phone number"));
 
@@ -484,13 +494,13 @@ public class Contacts.ContactPane : EventBox {
       if (!postals.is_empty) {
 	foreach (var addr in postals) {
 	  var type = "";
-	  var types = addr.types;
+	  var types = addr.parameters.get ("type");
 	  if (types != null) {
 	    var i = types.iterator();
 	    if (i.next())
 	      type = type + i.get();
 	  }
-	  string[] strs = Contact.format_address (addr);
+	  string[] strs = Contact.format_address (addr.value);
 	  layout.add_label (type);
 	  foreach (var s in strs) {
 	    layout.add_detail (s);
@@ -529,7 +539,7 @@ public class Contacts.ContactPane : EventBox {
       Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
 	  layout.load_state (end_row);
 	  add_detail_editor (TypeSet.general,
-			     editing_emails, null,
+			     editing_emails, new EmailFieldDetails(""),
 			     "email_addresses",
 			     _("Enter email address"));
 	  fields_grid.show_all ();
@@ -538,7 +548,7 @@ public class Contacts.ContactPane : EventBox {
       Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
 	  layout.load_state (end_row);
 	  add_detail_editor (TypeSet.phone,
-			     editing_phones, null,
+			     editing_phones, new PhoneFieldDetails(""),
 			     "phone_numbers",
 			     _("Enter phone number"));
 	  fields_grid.show_all ();
@@ -551,7 +561,7 @@ public class Contacts.ContactPane : EventBox {
 	    layout.add_label ("Links");
 	  }
 	  add_detail_editor_no_type (editing_urls,
-				     null,
+				     new UrlFieldDetails(""),
 				     "urls",
 				     _("Enter link"));
 	  url_row = layout.save_state ();
@@ -622,7 +632,7 @@ public class Contacts.ContactPane : EventBox {
     foreach (var persona in widgets.get_keys ()) {
       bool modified = false;
 
-      var notes = new HashSet<Note> ();
+      var notes = new HashSet<NoteFieldDetails> ();
       foreach (var view in widgets.get (persona)) {
 	if (view.get_buffer ().get_modified ())
 	  modified = true;
@@ -632,7 +642,7 @@ public class Contacts.ContactPane : EventBox {
 	view.get_buffer ().get_end_iter (out end);
 	var text = view.get_buffer ().get_text (start, end, true);
 	if (text.length > 0) {
-	  var note = new Note (text, uid);
+	  var note = new NoteFieldDetails (text, null, uid);
 	  notes.add (note);
 	}
       }
@@ -668,8 +678,8 @@ public class Contacts.ContactPane : EventBox {
     return text;
   }
 
-  private void update_note (TextView text, Note note) {
-    text.get_buffer ().set_text (note.content);
+  private void update_note (TextView text, NoteFieldDetails note) {
+    text.get_buffer ().set_text (note.value);
     text.get_buffer ().set_modified (false);
     text.set_data<string?> ("uid", note.uid);
   }
@@ -702,7 +712,7 @@ public class Contacts.ContactPane : EventBox {
 	  update_note (text, note);
 	  widgets.set (persona, text);
 	} else {
-	  var label = new Label (note.content);
+	  var label = new Label (note.value);
 	  label.set_halign (Align.START);
 	  fields_grid.add (label);
 	}
@@ -803,7 +813,8 @@ public class Contacts.ContactPane : EventBox {
 
     var emails = contact.individual.email_addresses;
     if (!emails.is_empty) {
-      foreach (var email in Contact.sort_fields (emails)) {
+      foreach (var email_ in Contact.sort_fields (emails)) {
+	var email = email_ as EmailFieldDetails;
 	var type = TypeSet.general.format_type (email);
 	layout.add_label_detail (type, email.value);
 	var button = layout.add_button ("mail-unread-symbolic");
@@ -819,9 +830,9 @@ public class Contacts.ContactPane : EventBox {
     if (!im_keys.is_empty) {
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id));
+	  layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id.value));
 	  Button? button = null;
-	  var presence = contact.create_presence_widget (protocol, id);
+	  var presence = contact.create_presence_widget (protocol, id.value);
 	  if (presence != null) {
 	    button = layout.add_button (null);
 	    button.add (presence);
@@ -829,7 +840,7 @@ public class Contacts.ContactPane : EventBox {
 
 	  if (button != null) {
 	    button.clicked.connect ( () => {
-		Utils.start_chat (contact, protocol, id);
+		Utils.start_chat (contact, protocol, id.value);
 	      });
 	  }
 	}
@@ -839,8 +850,9 @@ public class Contacts.ContactPane : EventBox {
     var phone_numbers = contact.individual.phone_numbers;
     if (!phone_numbers.is_empty) {
       foreach (var p in Contact.sort_fields (phone_numbers)) {
-	var type = TypeSet.phone.format_type (p);
-	layout.add_label_detail (type, p.value);
+	var phone = p as PhoneFieldDetails;
+	var type = TypeSet.phone.format_type (phone);
+	layout.add_label_detail (type, phone.value);
       }
     }
 
@@ -848,13 +860,13 @@ public class Contacts.ContactPane : EventBox {
     if (!postals.is_empty) {
       foreach (var addr in postals) {
 	var type = "";
-	var types = addr.types;
+	var types = addr.parameters.get ("type");
 	if (types != null) {
 	  var i = types.iterator();
 	  if (i.next())
 	    type = type + i.get();
 	}
-	string[] strs = Contact.format_address (addr);
+	string[] strs = Contact.format_address (addr.value);
 	layout.add_label (type);
 	if (strs.length > 0) {
 	  foreach (var s in strs)
@@ -863,7 +875,7 @@ public class Contacts.ContactPane : EventBox {
 	var button = layout.add_button ("edit-copy-symbolic");
 	button.clicked.connect ( () => {
 	    string addr_s = "";
-	    foreach (var s in Contact.format_address (addr)) {
+	    foreach (var s in Contact.format_address (addr.value)) {
 	      addr_s += s + "\n";
 	    }
 	    Clipboard.get_for_display (button.get_screen().get_display(), Gdk.SELECTION_CLIPBOARD).set_text (addr_s, -1);

@@ -147,7 +147,7 @@ public class Contacts.TypeSet : Object  {
     custom_hash.insert (label, iter);
   }
 
-  private unowned Data? lookup_data (FieldDetails detail) {
+  private unowned Data? lookup_data (AbstractFieldDetails detail) {
     var i = detail.get_parameter_values ("type");
     if (i == null || i.is_empty)
       return null;
@@ -179,7 +179,7 @@ public class Contacts.TypeSet : Object  {
   }
 
   // Looks up (and creates if necessary) the type in the store
-  public void lookup_type (FieldDetails detail, out TreeIter iter) {
+  public void lookup_type (AbstractFieldDetails detail, out TreeIter iter) {
     if (detail.parameters.contains (X_GOOGLE_LABEL)) {
       var label = Utils.get_first<string> (detail.parameters.get (X_GOOGLE_LABEL));
       add_custom_label (label, out iter);
@@ -195,11 +195,11 @@ public class Contacts.TypeSet : Object  {
     }
   }
 
-  public void type_seen (FieldDetails detail) {
+  public void type_seen (AbstractFieldDetails detail) {
     lookup_type (detail, null);
   }
 
-  public string format_type (FieldDetails detail) {
+  public string format_type (AbstractFieldDetails detail) {
     if (detail.parameters.contains (X_GOOGLE_LABEL)) {
       return Utils.get_first<string> (detail.parameters.get (X_GOOGLE_LABEL));
     }
@@ -212,8 +212,7 @@ public class Contacts.TypeSet : Object  {
     return _("Other");
   }
 
-  public FieldDetails update_details (FieldDetails old_details, TreeIter iter) {
-    FieldDetails details = new FieldDetails(old_details.value);
+  public void update_details (AbstractFieldDetails details, AbstractFieldDetails old_details, TreeIter iter) {
     bool has_pref = false;
     foreach (var value in old_details.parameters.get ("type")) {
       if (value.ascii_casecmp ("PREF") == 0) {
@@ -228,14 +227,14 @@ public class Contacts.TypeSet : Object  {
 	}
       }
     }
-    
+
     Data data;
     string display_name;
     store.get (iter, 0, out display_name, 1, out data);
-    
+
     assert (display_name != null); // Not separator
     assert (data != custom_dummy); // Not custom...
-    
+
     if (data == null) { // A custom label
       details.parameters.set ("type", "OTHER");
       details.parameters.set (X_GOOGLE_LABEL, display_name);
@@ -252,8 +251,6 @@ public class Contacts.TypeSet : Object  {
 
     if (has_pref)
       details.parameters.set ("type", "PREF");
-    
-    return details;
   }
 
   public bool is_custom (TreeIter iter) {
@@ -417,7 +414,7 @@ public class Contacts.TypeCombo : Grid  {
     }
   }
 
-  public void set_active (FieldDetails details) {
+  public void set_active (AbstractFieldDetails details) {
     TreeIter iter;
     type_set.lookup_type (details, out iter);
     in_manual_change = true;
@@ -425,9 +422,9 @@ public class Contacts.TypeCombo : Grid  {
     in_manual_change = false;
   }
 
-  public FieldDetails update_details (FieldDetails old_details) {
+  public void update_details (AbstractFieldDetails details, AbstractFieldDetails old_details) {
     TreeIter iter;
     combo.get_active_iter (out iter);
-    return type_set.update_details (old_details, iter);
+    type_set.update_details (details, old_details, iter);
   }
 }

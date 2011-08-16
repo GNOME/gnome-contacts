@@ -293,14 +293,18 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
-  private static int sort_fields_helper (FieldDetails a, FieldDetails b) {
-    // TODO: This should sort firt by type and then by value
-    return GLib.strcmp (a.value, b.value);
+  private static int sort_fields_helper (AbstractFieldDetails a, AbstractFieldDetails b) {
+    // TODO: This should sort first by type and then by value
+    if (&a == &b)
+      return 0;
+    if (&a < &b)
+      return -1;
+    return 1;
   }
 
-  public static GLib.List<FieldDetails> sort_fields (Set<FieldDetails> details) {
-    GLib.List<FieldDetails> pref = null;
-    GLib.List<FieldDetails> rest = null;
+  public static GLib.List<AbstractFieldDetails> sort_fields (Set<AbstractFieldDetails> details) {
+    GLib.List<AbstractFieldDetails> pref = null;
+    GLib.List<AbstractFieldDetails> rest = null;
     foreach (var detail in details) {
       if (get_first_string (detail.parameters.get ("x-evolution-ui-slot")) == "1") {
 	pref.prepend (detail);
@@ -502,7 +506,7 @@ public class Contacts.Contact : GLib.Object  {
     if (tp == null || tp.contact == null)
       return false;
 
-    var types = tp.contact.get_client_types ();
+    var types = tp.contact.client_types;
 
     return (types != null && types[0] == "phone");
   }
@@ -547,7 +551,8 @@ public class Contacts.Contact : GLib.Object  {
       builder.append_unichar (' ');
     }
     var im_addresses = individual.im_addresses;
-    foreach (string addr in im_addresses.get_values ()) {
+    foreach (var detail in im_addresses.get_values ()) {
+      var addr = detail.value;
       builder.append (addr.casefold ());
       builder.append_unichar (' ');
     }
@@ -676,7 +681,7 @@ public class Contacts.Contact : GLib.Object  {
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
   }
 
-  public static string format_uri_link_text (FieldDetails detail) {
+  public static string format_uri_link_text (UrlFieldDetails detail) {
     // TODO: Detect link type, possibly using types parameter (to be standardized bz#653623)
     // TODO: Add more custom url matches
 
