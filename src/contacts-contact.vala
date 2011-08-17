@@ -133,7 +133,10 @@ public class Contacts.Contact : GLib.Object  {
 	return name;
       unowned string? alias = individual.alias;
       if (alias != null && alias.length > 0)
-	return individual.alias;
+	return alias;
+      unowned string? nickname = individual.nickname;
+      if (nickname != null && nickname.length > 0)
+	return nickname;
       foreach (var email in individual.email_addresses) {
 	string? e = email.value;
 	if (e != null && e.length > 0)
@@ -141,6 +144,36 @@ public class Contacts.Contact : GLib.Object  {
       }
       return "";
     }
+  }
+
+  public static string get_display_name_for_persona (Persona persona) {
+    var name_details = persona as NameDetails;
+    var alias_details = persona as AliasDetails;
+    var email_details = persona as EmailDetails;
+
+    if (name_details != null) {
+      unowned string? name = name_details.full_name;
+      if (name != null && name.length > 0)
+	return name;
+    }
+    if (alias_details != null) {
+      unowned string? alias = alias_details.alias;
+      if (alias != null && alias.length > 0)
+	return alias;
+    }
+    if (name_details != null) {
+      unowned string? nickname = name_details.nickname;
+      if (nickname != null && nickname.length > 0)
+	return nickname;
+    }
+    if (email_details != null) {
+      foreach (var email in email_details.email_addresses) {
+	string e = email.value;
+	if (e != null && e.length > 0)
+	  return e;
+      }
+    }
+    return "";
   }
 
   public unichar initial_letter {
