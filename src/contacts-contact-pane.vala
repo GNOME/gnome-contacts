@@ -1086,7 +1086,7 @@ public class Contacts.ContactPane : EventBox {
       });
 
     var menu = new Menu ();
-    Utils.add_menu_item (menu,_("Add/Remove Linked Contacts..."));
+    Utils.add_menu_item (menu,_("Add/Remove Linked Contacts...")).activate.connect (link_contact);
     Utils.add_menu_item (menu,_("Send..."));
     Utils.add_menu_item (menu,_("Delete"));
 
@@ -1099,5 +1099,10 @@ public class Contacts.ContactPane : EventBox {
 
     set_display_mode (DisplayMode.EMPTY);
     set_has_notes (false);
+  }
+
+  void link_contact () {
+    var dialog = new LinkDialog (selected_contact);
+    dialog.show_all ();
   }
 }
