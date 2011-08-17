@@ -106,6 +106,11 @@ public class Contacts.Contact : GLib.Object  {
   public PresenceType presence_type;
   public string presence_message;
   public bool is_phone;
+  struct ContactDataRef {
+    void *key;
+    void *data;
+  }
+  private ContactDataRef[] refs;
 
   static Gdk.Pixbuf fallback_avatar;
 
@@ -178,10 +183,40 @@ public class Contacts.Contact : GLib.Object  {
       SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
   }
 
+  public void *lookup (void *key) {
+    foreach (var data_ref in refs) {
+      if (data_ref.key == key)
+	return data_ref.data;
+    }
+    return null;
+  }
+
+  public void set_lookup (void *key, void *data) {
+    int i = refs.length;
+    refs.resize(i+1);
+    refs[i].key = key;
+    refs[i].data = data;
+  }
+
+  public void remove_lookup (void *key) {
+    int i;
+
+    for (i = 0; i < refs.length; i++) {
+      if (refs[i].key == key) {
+	for (int j = i + 1; j < refs.length; j++) {
+	  refs[j-1] = refs[j];
+	}
+	refs.resize(refs.length-1);
+	return;
+      }
+    }
+  }
+
   public Contact (Store store, Individual i) {
     this.store = store;
     individual = i;
     individual.set_data ("contact", this);
+    this.refs = new ContactDataRef[0];
 
     foreach (var p in individual.personas)
       connect_persona (p);

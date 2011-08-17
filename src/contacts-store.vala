@@ -221,7 +221,7 @@ public class Contacts.Store  {
   }
 
   private ContactData lookup_data (Contact c) {
-    return c.get_data ("contact-data");
+    return (ContactData *)c.lookup (this);
   }
 
   public bool lookup_iter (Contact c, out TreeIter iter) {
@@ -259,8 +259,7 @@ public class Contacts.Store  {
     data.contact = c;
     data.visible = false;
 
-    // TODO: Make this a separate hashtable to support multiple stores?
-    c.set_data ("contact-data", data);
+    c.set_lookup (this, data);
 
     contacts.add (data);
 
@@ -283,7 +282,7 @@ public class Contacts.Store  {
       contacts.set (i, contacts.get (contacts.size - 1));
     contacts.remove_at (contacts.size - 1);
 
-    c.set_data ("contact-data", null);
+    c.remove_lookup (this);
 
     removed (c);
   }
