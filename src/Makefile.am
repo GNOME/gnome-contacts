@@ -17,6 +17,7 @@ bin_PROGRAMS = gnome-contacts
 
 gnome_contacts_SOURCES = \
 	contacts-app.vala \
+	contacts-cell-renderer-shape.vala \
 	contacts-contact.vala \
 	contacts-contact-pane.vala \
 	contacts-types.vala \
