@@ -183,26 +183,27 @@ public class Contacts.Contact : GLib.Object  {
       SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
   }
 
-  public void *lookup (void *key) {
-    foreach (var data_ref in refs) {
+  public unowned T lookup<T> (void *key) {
+    foreach (unowned ContactDataRef? data_ref in refs) {
       if (data_ref.key == key)
-	return data_ref.data;
+	return (T*)data_ref.data;
     }
     return null;
   }
 
-  public void set_lookup (void *key, void *data) {
+  public void set_lookup<T> (void *key, owned T data) {
     int i = refs.length;
     refs.resize(i+1);
     refs[i].key = key;
-    refs[i].data = data;
+    refs[i].data = (void *)(owned)data;
   }
 
-  public void remove_lookup (void *key) {
+  public void remove_lookup<T> (void *key) {
     int i;
 
     for (i = 0; i < refs.length; i++) {
       if (refs[i].key == key) {
+	T old_val = (owned)refs[i].data;
 	for (int j = i + 1; j < refs.length; j++) {
 	  refs[j-1] = refs[j];
 	}

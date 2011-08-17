@@ -23,6 +23,7 @@ gnome_contacts_SOURCES = \
 	contacts-list-pane.vala \
 	contacts-menu-button.vala \
 	contacts-store.vala \
+	contacts-view.vala \
 	contacts-utils.vala \
 	main.vala \
 	$(NULL)

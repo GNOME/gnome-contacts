@@ -299,6 +299,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
+  private View contacts_view;
   private TreeView contacts_tree_view;
   public Entry filter_entry;
   private uint filter_entry_changed_id;
@@ -326,7 +327,7 @@ public class Contacts.ListPane : Frame {
 	model.get (iter, 0, out contact);
 
 	string letter = "";
-	if (contacts_store.is_first (iter)) {
+	if (contacts_view.is_first (iter)) {
 	  letter = contact.initial_letter.to_string ();
 	}
 	cell.set ("text", letter);
@@ -377,7 +378,7 @@ public class Contacts.ListPane : Frame {
       values = str.split(" ");
     }
 
-    contacts_store.set_filter_values (values);
+    contacts_view.set_filter_values (values);
   }
 
   private bool filter_entry_changed_timeout () {
@@ -416,6 +417,7 @@ public class Contacts.ListPane : Frame {
 
   public ListPane (Store contacts_store) {
     this.contacts_store = contacts_store;
+    this.contacts_view = new View (contacts_store);
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
@@ -465,7 +467,7 @@ public class Contacts.ListPane : Frame {
     grid.attach (toolbar, 0, 0, 1, 1);
     grid.attach (scrolled, 0, 1, 1, 1);
 
-    contacts_tree_view = new TreeView.with_model (contacts_store.model);
+    contacts_tree_view = new TreeView.with_model (contacts_view.model);
     setup_contacts_view (contacts_tree_view);
     scrolled.add (contacts_tree_view);
 
@@ -474,9 +476,9 @@ public class Contacts.ListPane : Frame {
 
   public void select_contact (Contact contact) {
     TreeIter iter;
-    if (contacts_store.lookup_iter (contact, out iter)) {
+    if (contacts_view.lookup_iter (contact, out iter)) {
       contacts_tree_view.get_selection ().select_iter (iter);
-      contacts_tree_view.scroll_to_cell (contacts_store.model.get_path (iter),
+      contacts_tree_view.scroll_to_cell (contacts_view.model.get_path (iter),
 					 null, true, 0.0f, 0.0f);
     }
   }
