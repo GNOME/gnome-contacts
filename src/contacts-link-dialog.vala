@@ -21,83 +21,75 @@ using Gtk;
 using Folks;
 
 public class Contacts.LinkDialog : Dialog {
+  private Contact contact;
+  private Contact? selected_contact;
   private Entry filter_entry;
   private View view;
+  private ViewWidget list;
+  private Grid persona_grid;
   private uint filter_entry_changed_id;
 
-  const int PROFILE_SIZE = 96;
+  private void update_personas () {
+    // Remove previous personas
+    foreach (var w in persona_grid.get_children ())
+      w.destroy ();
 
-  private Widget display_card (Contact contact) {
-    var grid = new Grid ();
-    grid.set_vexpand (false);
-    grid.set_valign (Align.START);
-    grid.set_column_spacing (3);
-    grid.set_row_spacing (8);
+    // Add all current personas
+    foreach (var p in contact.individual.personas) {
+      var image_frame = new ContactFrame (48);
+      image_frame.set_image (p as AvatarDetails);
+      persona_grid.add (image_frame);
 
-    var image_frame = new ContactFrame (PROFILE_SIZE);
-    image_frame.set_image (contact.individual);
-    // Put the frame in a grid so its not expanded
-    var ig = new Grid ();
-    ig.add (image_frame);
-    grid.attach (ig, 0, 0, 1, 4);
+      var label = new Label (Contact.get_display_name_for_persona (p));
+      label.set_valign (Align.START);
+      label.set_halign (Align.START);
+      label.set_hexpand (true);
+      label.xalign = 0.0f;
+      label.set_ellipsize (Pango.EllipsizeMode.END);
+      persona_grid.attach_next_to (label, image_frame, PositionType.RIGHT, 1, 1);
 
-    var l = new Label (null);
-    l.set_markup ("<span font='22'><b>" + contact.display_name + "</b></span>");
-    l.set_hexpand (true);
-    l.set_halign (Align.START);
-    l.set_valign (Align.START);
-    l.set_ellipsize (Pango.EllipsizeMode.END);
-    l.xalign = 0.0f;
-    grid.attach (l, 1, 0, 1, 1);
+      var button = new Button ();
+      var image = new Image.from_icon_name ("list-remove-symbolic", IconSize.MENU);
+      button.add (image);
+      button.set_valign (Align.CENTER);
+      button.set_halign (Align.END);
+      persona_grid.attach_next_to (button, label, PositionType.RIGHT, 1, 1);
+      button.clicked.connect ( (button) => {
+	  // TODO: Unlink persona p from contact.individual
+	  update_personas ();
+	});
 
-    var nick = contact.individual.nickname;
-    if (nick != null && nick.length > 0) {
-      l = new Label ("\xE2\x80\x9C" + nick + "\xE2\x80\x9D");
-      l.set_halign (Align.START);
-      l.set_valign (Align.START);
-      l.set_ellipsize (Pango.EllipsizeMode.END);
-      l.xalign = 0.0f;
-      grid.attach (l, 1, 1, 1, 1);
+      persona_grid.show_all ();
     }
-
-    var merged_presence = contact.create_merged_presence_widget ();
-    merged_presence.set_halign (Align.START);
-    merged_presence.set_valign (Align.END);
-    merged_presence.set_vexpand (true);
-    grid.attach (merged_presence, 1, 3, 1, 1);
-
-    return grid;
   }
 
   public LinkDialog (Contact contact) {
+    this.contact = contact;
     set_title (_("Link Contact"));
     set_transient_for (App.app);
     set_modal (true);
     add_buttons (Stock.CLOSE,  null);
 
     view = new View (contact.store);
-    var list = new ViewWidget (view);
+    list = new ViewWidget (view);
 
     var grid = new Grid ();
-    (get_content_area () as Container).add (grid);
-
-    var left_grid = new Grid ();
-    left_grid.set_orientation (Orientation.VERTICAL);
-    left_grid.set_border_width (10);
-    left_grid.set_column_spacing (8);
-    grid.attach (left_grid, 0, 0, 1, 1);
-
-    var card = display_card (contact);
-    left_grid.add (card);
-
-    var label = new Label (null);
-    label.set_markup ("<span font='14'>" + _("Linked contacts") + "</span>");
-    left_grid.add (label);
-    label.xalign = 0.0f;
+    var container = (get_content_area () as Container);
+    grid.set_border_width (8);
+    grid.set_row_spacing (12);
+    container.add (grid);
 
     var list_grid = new Grid ();
-    grid.attach (list_grid, 1, 0, 1, 1);
+    grid.attach (list_grid, 0, 0, 1, 1);
     list_grid.set_orientation (Orientation.VERTICAL);
+
+    var label = new Label (_("Select contacts to link to %s").printf (contact.display_name));
+    label.set_valign (Align.CENTER);
+    label.set_halign (Align.START);
+    //label.set_hexpand (false);
+    label.xalign = 0.0f;
+    label.set_ellipsize (Pango.EllipsizeMode.END);
+    list_grid.add (label);
 
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
@@ -123,6 +115,53 @@ public class Contacts.LinkDialog : Dialog {
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.add (list);
     list_grid.add (scrolled);
+
+    toolbar = new Toolbar ();
+    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+    toolbar.set_icon_size (IconSize.MENU);
+    toolbar.set_vexpand (false);
+    list_grid.add (toolbar);
+
+    var link_button = new ToolButton (null, _("Link"));
+    link_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    link_button.is_important = true;
+    link_button.sensitive = false;
+    toolbar.add (link_button);
+    link_button.clicked.connect ( (button) => {
+	// TODO: Link selected_contact.individual into contact.individual
+	// ensure we get the same individual so that the Contact is the same
+	update_personas ();
+      });
+
+    list.selection_changed.connect ( (contact) => {
+	selected_contact = contact;
+	link_button.sensitive = contact != null;
+      });
+
+    var right_grid = new Grid ();
+    right_grid.set_orientation (Orientation.VERTICAL);
+    right_grid.set_border_width (10);
+    right_grid.set_column_spacing (8);
+    grid.attach (right_grid, 1, 0, 1, 1);
+
+    label = new Label (_("Currently linked:"));
+    label.set_valign (Align.CENTER);
+    label.set_halign (Align.START);
+    label.xalign = 0.0f;
+    label.set_ellipsize (Pango.EllipsizeMode.END);
+    right_grid.add (label);
+
+
+    persona_grid = new Grid ();
+    persona_grid.set_orientation (Orientation.VERTICAL);
+    persona_grid.set_row_spacing (8);
+    right_grid.add (persona_grid);
+
+    update_personas ();
+
+    var size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
+    size_group.add_widget (right_grid);
+    size_group.add_widget (list_grid);
 
     response.connect ( (response_id) => {
 	this.destroy ();
