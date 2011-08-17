@@ -237,3 +237,94 @@ public class Contacts.View : GLib.Object {
     return data.visible;
   }
 }
+
+
+public class Contacts.ViewWidget : TreeView {
+  public View view;
+  private CellRendererShape shape;
+
+  public signal void selection_changed (Contact? contact);
+
+  public ViewWidget (View view) {
+    this.view = view;
+
+    set_model (view.model);
+    set_headers_visible (false);
+
+    var selection = get_selection ();
+    selection.set_mode (SelectionMode.BROWSE);
+    selection.changed.connect (contacts_selection_changed);
+
+    var column = new TreeViewColumn ();
+
+    var text = new CellRendererText ();
+    text.set_alignment (0, 0);
+    column.pack_start (text, true);
+    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
+    column.set_cell_data_func (text, (column, cell, model, iter) => {
+	Contact contact;
+
+	view.model.get (iter, 0, out contact);
+
+	string letter = "";
+	if (view.is_first (iter)) {
+	  letter = contact.initial_letter.to_string ();
+	}
+	cell.set ("text", letter);
+      });
+
+    var icon = new CellRendererPixbuf ();
+    column.pack_start (icon, false);
+    column.set_cell_data_func (icon, (column, cell, model, iter) => {
+	Contact contact;
+
+	model.get (iter, 0, out contact);
+
+	cell.set ("pixbuf", contact.avatar);
+      });
+
+    append_column (column);
+
+    column = new TreeViewColumn ();
+
+    shape = new CellRendererShape ();
+
+    Pango.cairo_context_set_shape_renderer (get_pango_context (), shape.render_shape);
+
+    column.pack_start (shape, false);
+    column.set_cell_data_func (shape, (column, cell, model, iter) => {
+	Contact contact;
+
+	model.get (iter, 0, out contact);
+
+	cell.set ("wrap_width", 230,
+		  "name", contact.display_name,
+		  "presence", contact.presence_type,
+		  "message", contact.presence_message,
+		  "is_phone", contact.is_phone);
+      });
+
+    append_column (column);
+  }
+
+  private void contacts_selection_changed (TreeSelection selection) {
+    TreeIter iter;
+    TreeModel model;
+
+    Contact? contact = null;
+    if (selection.get_selected (out model, out iter)) {
+      model.get (iter, 0, out contact);
+    }
+
+    selection_changed (contact);
+  }
+
+  public void select_contact (Contact contact) {
+    TreeIter iter;
+    if (view.lookup_iter (contact, out iter)) {
+      get_selection ().select_iter (iter);
+      scroll_to_cell (view.model.get_path (iter),
+		      null, true, 0.0f, 0.0f);
+    }
+  }
+}

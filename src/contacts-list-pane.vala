@@ -23,72 +23,12 @@ using Folks;
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
   private View contacts_view;
-  private TreeView contacts_tree_view;
+  private ViewWidget list;
   public Entry filter_entry;
   private uint filter_entry_changed_id;
-  private CellRendererShape shape;
 
   public signal void selection_changed (Contact? contact);
   public signal void create_new ();
-
-  private void setup_contacts_view (TreeView tree_view) {
-    tree_view.set_headers_visible (false);
-
-    var selection = tree_view.get_selection ();
-    selection.set_mode (SelectionMode.BROWSE);
-    selection.changed.connect (contacts_selection_changed);
-
-    var column = new TreeViewColumn ();
-
-    var text = new CellRendererText ();
-    text.set_alignment (0, 0);
-    column.pack_start (text, true);
-    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-
-	string letter = "";
-	if (contacts_view.is_first (iter)) {
-	  letter = contact.initial_letter.to_string ();
-	}
-	cell.set ("text", letter);
-      });
-
-    var icon = new CellRendererPixbuf ();
-    column.pack_start (icon, false);
-    column.set_cell_data_func (icon, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-
-	cell.set ("pixbuf", contact.avatar);
-      });
-
-    tree_view.append_column (column);
-
-    column = new TreeViewColumn ();
-
-    shape = new CellRendererShape ();
-
-    Pango.cairo_context_set_shape_renderer (tree_view.get_pango_context (), shape.render_shape);
-
-    column.pack_start (shape, false);
-    column.set_cell_data_func (shape, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-
-	cell.set ("wrap_width", 230,
-		  "name", contact.display_name,
-		  "presence", contact.presence_type,
-		  "message", contact.presence_message,
-		  "is_phone", contact.is_phone);
-      });
-
-    tree_view.append_column (column);
-  }
 
   private void refilter () {
     string []? values;
@@ -124,18 +64,6 @@ public class Contacts.ListPane : Frame {
 
   private void filter_entry_clear (EntryIconPosition position) {
     filter_entry.set_text ("");
-  }
-
-  private void contacts_selection_changed (TreeSelection selection) {
-    TreeIter iter;
-    TreeModel model;
-
-    Contact? contact = null;
-    if (selection.get_selected (out model, out iter)) {
-      model.get (iter, 0, out contact);
-    }
-
-    selection_changed (contact);
   }
 
   public ListPane (Store contacts_store) {
@@ -190,19 +118,17 @@ public class Contacts.ListPane : Frame {
     grid.attach (toolbar, 0, 0, 1, 1);
     grid.attach (scrolled, 0, 1, 1, 1);
 
-    contacts_tree_view = new TreeView.with_model (contacts_view.model);
-    setup_contacts_view (contacts_tree_view);
-    scrolled.add (contacts_tree_view);
+    list = new ViewWidget (contacts_view);
+    list.selection_changed.connect( (l, contact) => {
+	selection_changed (contact);
+      });
+
+    scrolled.add (list);
 
     this.show_all ();
   }
 
   public void select_contact (Contact contact) {
-    TreeIter iter;
-    if (contacts_view.lookup_iter (contact, out iter)) {
-      contacts_tree_view.get_selection ().select_iter (iter);
-      contacts_tree_view.scroll_to_cell (contacts_view.model.get_path (iter),
-					 null, true, 0.0f, 0.0f);
-    }
+    list.select_contact (contact);
   }
 }
