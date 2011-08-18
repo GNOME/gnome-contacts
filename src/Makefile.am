@@ -9,7 +9,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=$(srcdir)/../vapi --pkg config \
+	--vapidir=$(srcdir)/../vapi --pkg config --pkg librobohash \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 

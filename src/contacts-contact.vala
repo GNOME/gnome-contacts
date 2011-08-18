@@ -112,17 +112,19 @@ public class Contacts.Contact : GLib.Object  {
   }
   private ContactDataRef[] refs;
 
-  static Gdk.Pixbuf fallback_avatar;
-
   public Individual individual;
   uint changed_id;
 
-  private Gdk.Pixbuf? _avatar;
-  public Gdk.Pixbuf avatar {
+  private Gdk.Pixbuf? _small_avatar;
+  public Gdk.Pixbuf small_avatar {
     get {
-      if (_avatar == null)
-	_avatar = frame_icon (load_icon (individual.avatar));
-      return _avatar;
+      if (_small_avatar == null) {
+	var pixbuf = load_icon (individual.avatar, 48);
+	if (pixbuf == null)
+	  pixbuf = draw_fallback_avatar (48, this);
+	_small_avatar = frame_icon (pixbuf);
+      }
+      return _small_avatar;
     }
   }
 
@@ -191,10 +193,6 @@ public class Contacts.Contact : GLib.Object  {
 
   public static Contact from_individual (Individual i) {
     return i.get_data ("contact");
-  }
-
-  static construct {
-    fallback_avatar = draw_fallback_avatar (48);
   }
 
   private void persona_notify_cb (ParamSpec pspec) {
@@ -582,7 +580,7 @@ public class Contacts.Contact : GLib.Object  {
 
   private void notify_cb (ParamSpec pspec) {
     if (pspec.get_name () == "avatar")
-      _avatar = null;
+      _small_avatar = null;
     queue_changed ();
   }
 
@@ -663,16 +661,17 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   // TODO: This should be async, but the vala bindings are broken (bug #649875)
-  private Gdk.Pixbuf load_icon (LoadableIcon ?file) {
-    Gdk.Pixbuf? res = fallback_avatar;
+  private Gdk.Pixbuf load_icon (LoadableIcon ?file, int size) {
+    Gdk.Pixbuf? res = null;
     if (file != null) {
       try {
 	Cancellable c = new Cancellable ();
-	var stream = file.load (48, null, c);
-	res = new Gdk.Pixbuf.from_stream_at_scale (stream, 48, 48, true, c);
+	var stream = file.load (size, null, c);
+	res = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true, c);
       } catch (Error e) {
       }
     }
+
     return res;
   }
 
@@ -749,20 +748,25 @@ public class Contacts.Contact : GLib.Object  {
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, 52, 52);
   }
 
-  public static Gdk.Pixbuf draw_fallback_avatar (int size) {
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
-    var cr = new Cairo.Context (cst);
+  private static Gdk.Pixbuf? fallback_pixbuf_48;
+  public static Gdk.Pixbuf draw_fallback_avatar (int size, Contact? contact) {
+    if (size == 48 && fallback_pixbuf_48 != null)
+      return fallback_pixbuf_48;
 
+    Gdk.Pixbuf pixbuf = null;
     try {
       var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", size, IconLookupFlags.GENERIC_FALLBACK);
-      var image = icon_info.load_icon ();
-      if (image != null) {
-	Gdk.cairo_set_source_pixbuf (cr, image, 0, 0);
-	cr.paint();
-      }
+      pixbuf = icon_info.load_icon ();
     } catch {
     }
 
+    if (size == 48)
+      fallback_pixbuf_48 = pixbuf;
+
+    if (pixbuf != null)
+      return pixbuf;
+
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
   }
 

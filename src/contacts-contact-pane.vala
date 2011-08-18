@@ -193,7 +193,7 @@ public class Contacts.ContactFrame : Frame {
     set_shadow_type (ShadowType.OUT);
   }
 
-  public void set_image (AvatarDetails? details) {
+  public void set_image (AvatarDetails? details, Contact? contact = null) {
     pixbuf = null;
     if (details != null &&
 	details.avatar != null) {
@@ -206,7 +206,7 @@ public class Contacts.ContactFrame : Frame {
     }
 
     if (pixbuf == null) {
-      pixbuf = Contact.draw_fallback_avatar (size);
+      pixbuf = Contact.draw_fallback_avatar (size, contact);
     }
   }
 
@@ -276,7 +276,7 @@ public class Contacts.ContactPane : EventBox {
 
   private signal void save_data ();
 
-  private Widget create_image (AvatarDetails? details, int size) {
+  private Widget create_image (AvatarDetails? details, Contact? contact, int size) {
     var image = new Image ();
     image.set_size_request (size, size);
 
@@ -292,7 +292,7 @@ public class Contacts.ContactPane : EventBox {
     }
 
     if (pixbuf == null) {
-      pixbuf = Contact.draw_fallback_avatar (size);
+      pixbuf = Contact.draw_fallback_avatar (size, contact);
     }
 
     if (pixbuf != null) {
@@ -589,7 +589,7 @@ public class Contacts.ContactPane : EventBox {
 
   private void display_card (Contact contact) {
     var image_frame = new ContactFrame (PROFILE_SIZE);
-    image_frame.set_image (contact.individual);
+    image_frame.set_image (contact.individual, contact);
     // Put the frame in a grid so its not expanded by the size-group
     var ig = new Grid ();
     ig.add (image_frame);
@@ -796,7 +796,7 @@ public class Contacts.ContactPane : EventBox {
       button = new RadioButton.from_widget (button);
       button.get_style_context ().add_class ("contact-button");
       button.set_can_default (false);
-      var image = create_image (p as AvatarDetails, 48);
+      var image = create_image (p as AvatarDetails, null, 48);
       button.add (image);
       button.set_mode (false);
       personas.add (button);

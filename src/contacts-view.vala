@@ -280,7 +280,7 @@ public class Contacts.ViewWidget : TreeView {
 
 	model.get (iter, 0, out contact);
 
-	cell.set ("pixbuf", contact.avatar);
+	cell.set ("pixbuf", contact.small_avatar);
       });
 
     append_column (column);
