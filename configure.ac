@@ -31,7 +31,6 @@ pkg_modules="gtk+-3.0
 	     folks >= 0.6.0
 	     folks-telepathy
 	     libnotify
-	     librobohash
 	     "
 PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg folks --pkg folks-telepathy --pkg libnotify"
