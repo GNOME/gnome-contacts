@@ -76,6 +76,7 @@ class Contacts.DetailsLayout : Object {
 
   public void add_label (string label) {
     var l = new Label (label);
+    l.set_markup ("<b>" + label + "</b>");
     l.get_style_context ().add_class ("dim-label");
     l.set_alignment (1, 0.5f);
 
