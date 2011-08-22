@@ -26,6 +26,8 @@ public class Contacts.ListPane : Frame {
   private ViewWidget list;
   public Entry filter_entry;
   private uint filter_entry_changed_id;
+  private ulong non_empty_id;
+  private EventBox empty_box;
 
   public signal void selection_changed (Contact? contact);
   public signal void create_new ();
@@ -73,6 +75,7 @@ public class Contacts.ListPane : Frame {
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.set_vexpand (false);
+    toolbar.set_hexpand (true);
 
     var separator = new SeparatorToolItem ();
     separator.set_draw (false);
@@ -105,18 +108,20 @@ public class Contacts.ListPane : Frame {
 	create_new ();
       });
 
+    this.set_size_request (380, -1);
+    this.set_hexpand (false);
+
     var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_min_content_width (310);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
+    scrolled.set_hexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
 
     var grid = new Grid ();
+    grid.set_orientation (Orientation.VERTICAL);
     this.add (grid);
 
-    grid.attach (toolbar, 0, 0, 1, 1);
-    grid.attach (scrolled, 0, 1, 1, 1);
 
     list = new ViewWidget (contacts_view);
     list.selection_changed.connect( (l, contact) => {
@@ -124,8 +129,65 @@ public class Contacts.ListPane : Frame {
       });
 
     scrolled.add (list);
+    list.show_all ();
+    scrolled.set_no_show_all (true);
+
+    empty_box = new EventBox ();
+    empty_box.set_hexpand (false);
+    empty_box.set_vexpand (true);
+    empty_box.set_halign (Align.FILL);
+    Gdk.RGBA white = {1, 1, 1, 1};
+    empty_box.override_background_color (StateFlags.NORMAL, white);
+
+    var empty_grid = new Grid ();
+    empty_grid.set_column_spacing (8);
+    empty_grid.set_orientation (Orientation.VERTICAL);
+    empty_grid.set_valign (Align.CENTER);
+
+    var image = new Image.from_icon_name ("avatar-default-symbolic", IconSize.DIALOG);
+    image.get_style_context ().add_class ("dim-label");
+    empty_grid.add (image);
+
+    var label = new Label (_("Connect to an account,\nimport or add contacts"));
+    label.xalign = 0.5f;
+    label.set_hexpand (true);
+    label.set_halign (Align.CENTER);
+    empty_grid.add (label);
+
+    var button = new Button.with_label (_("Online Accounts"));
+    button.set_halign (Align.CENTER);
+    empty_grid.add (button);
+    button.clicked.connect ( (button) => {
+	try {
+	  Process.spawn_command_line_async ("gnome-control-center online-accounts");
+	}
+	catch (Error e) {
+	  // TODO: Show error dialog
+	}
+      });
+
+    empty_box.add (empty_grid);
+    empty_box.show_all ();
+    empty_box.set_no_show_all (true);
+
+    grid.add (toolbar);
+    grid.add (scrolled);
+    grid.add (empty_box);
 
     this.show_all ();
+
+    if (contacts_store.is_empty ()) {
+      empty_box.show ();
+      non_empty_id = contacts_store.added.connect ( (c) => {
+	  empty_box.hide ();
+	  scrolled.show ();
+	  contacts_store.disconnect (non_empty_id);
+	  non_empty_id = 0;
+	});
+    } else {
+      scrolled.show ();
+    }
+
   }
 
   public void select_contact (Contact contact) {
