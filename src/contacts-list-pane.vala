@@ -77,10 +77,6 @@ public class Contacts.ListPane : Frame {
     toolbar.set_vexpand (false);
     toolbar.set_hexpand (true);
 
-    var separator = new SeparatorToolItem ();
-    separator.set_draw (false);
-    toolbar.add (separator);
-
     filter_entry = new Entry ();
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
@@ -92,7 +88,7 @@ public class Contacts.ListPane : Frame {
     search_entry_item.add (filter_entry);
     toolbar.add (search_entry_item);
 
-    separator = new SeparatorToolItem ();
+    var separator = new SeparatorToolItem ();
     separator.set_draw (false);
     toolbar.add (separator);
 
