@@ -64,38 +64,97 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     return pixbuf;
   }
 
-
-  private Pango.Layout get_layout (Widget           widget,
-				   Gdk.Rectangle? cell_area,
-				   CellRendererState flags) {
+  private Pango.Layout get_name_layout (Widget           widget,
+					Gdk.Rectangle? cell_area,
+					CellRendererState flags) {
     Pango.Layout layout;
     int xpad;
 
-    string str = name;
-    var attr_list = new Pango.AttrList();
-    var a = Pango.attr_weight_new (Pango.Weight.BOLD);
-    a.start_index = 0;
-    a.end_index = a.start_index + str.length;
-    attr_list.insert ((owned) a);
+    var attr_list = new Pango.AttrList ();
 
+    layout = widget.create_pango_layout (name);
+
+    var attr = new Pango.AttrSize (13 * Pango.SCALE);
+    attr.absolute = 1;
+    attr.start_index = 0;
+    attr.end_index = attr.start_index + name.length;
+    attr_list.insert ((owned) attr);
+
+    /* Now apply the attributes as they will effect the outcome
+     * of pango_layout_get_extents() */
+    layout.set_attributes (attr_list);
+
+    // We only look at xpad, and only use it for the left side...
+    get_padding (out xpad, null);
+
+    layout.set_ellipsize (Pango.EllipsizeMode.END);
+
+    if (wrap_width != -1) {
+      Pango.Rectangle rect;
+      int width, text_width;
+
+      layout.get_extents (null, out rect);
+      text_width = rect.width;
+
+      if (cell_area != null)
+	width = (cell_area.width - xpad) * Pango.SCALE;
+      else
+	width = wrap_width * Pango.SCALE;
+
+      width = int.min (width, text_width);
+
+      layout.set_width (width);
+    } else {
+      layout.set_width (-1);
+    }
+
+    layout.set_wrap (Pango.WrapMode.CHAR);
+    layout.set_height (-2);
+
+    Pango.Alignment align;
+    if (widget.get_direction () == TextDirection.RTL)
+	align = Pango.Alignment.RIGHT;
+      else
+	align = Pango.Alignment.LEFT;
+    layout.set_alignment (align);
+
+    return layout;
+  }
+
+  private Pango.Layout get_presence_layout (Widget           widget,
+					    Gdk.Rectangle? cell_area,
+					    CellRendererState flags) {
+    Pango.Layout layout;
+    int xpad;
+
+    var attr_list = new Pango.AttrList ();
+
+    string? str = null;
     string? iconname = Contact.presence_to_icon (presence);
     if (iconname != null) {
-      // This is 'LINE SEPARATOR' (U+2028) which gives us a new line but not a new paragraph
-      str += "\xE2\x80\xA8*";
-      Pango.Rectangle r = { 0, -CellRendererShape.IMAGE_SIZE*1024*9/10,
+      str = "*";
+      Pango.Rectangle r = { 0, -CellRendererShape.IMAGE_SIZE*1024*7/10,
 			    CellRendererShape.IMAGE_SIZE*1024, CellRendererShape.IMAGE_SIZE*1024 };
       IconShape icon_shape = IconShape();
       icon_shape.icon = iconname;
       icon_shape.colorize = true;
-      a = new Pango.AttrShape<IconShape?>.with_data (r, r, icon_shape, (s) => { return s;} );
-      a.start_index = str.length - 1;
-      a.end_index = a.start_index + 1;
+      var a = new Pango.AttrShape<IconShape?>.with_data (r, r, icon_shape, (s) => { return s;} );
+      a.start_index = 0;
+      a.end_index = 1;
       attr_list.insert ((owned) a);
       if (message != null) {
 	string m = message;
 	if (m.length == 0)
 	  m = Contact.presence_to_string (presence);
-	str += " " + m;
+	str += " ";
+
+	var attr = new Pango.AttrSize (9 * Pango.SCALE);
+	attr.absolute = 1;
+	attr.start_index = str.length;
+	attr.end_index = attr.start_index + m.length;
+	attr_list.insert ((owned) attr);
+	str += m;
+
 	if (is_phone) {
 	  icon_shape = IconShape();
 	  icon_shape.icon = "phone-symbolic";
@@ -104,7 +163,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 	  str += "*";
 	  a.end_index = str.length;
 	  attr_list.insert ((owned) a);
-	  }
+	}
       }
     }
 
@@ -126,7 +185,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
       text_width = rect.width;
 
       if (cell_area != null)
-	width = (cell_area.width - xpad * 2) * Pango.SCALE;
+	width = (cell_area.width - xpad) * Pango.SCALE;
       else
 	width = wrap_width * Pango.SCALE;
 
@@ -139,7 +198,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     layout.set_wrap (Pango.WrapMode.CHAR);
 
-    layout.set_height (-2);
+    layout.set_height (-1);
 
     Pango.Alignment align;
     if (widget.get_direction () == TextDirection.RTL)
@@ -157,47 +216,32 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 				 out int       y_offset,
 				 out int       width,
 				 out int       height) {
+    // Not used
   }
 
   private void do_get_size (Widget        widget,
 			    Gdk.Rectangle? cell_area,
-			    Pango.Layout? _layout,
-			    out int       x_offset,
-			    out int       y_offset,
-			    out int       width,
-			    out int       height) {
+			    Pango.Layout? layout,
+			    out int       x_offset) {
     Pango.Rectangle rect;
-    int xpad, ypad;
+    int xpad;
 
-    get_padding (out xpad, out ypad);
-
-    Pango.Layout layout;
-    if (_layout == null)
-      layout = get_layout (widget, null, 0);
-    else
-      layout = _layout;
+    get_padding (out xpad, null);
 
     layout.get_pixel_extents (null, out rect);
 
     if (cell_area != null) {
-      rect.height = int.min (rect.height, cell_area.height - 2 * ypad);
-      rect.width  = int.min (rect.width, cell_area.width - 2 * xpad);
+      rect.width  = int.min (rect.width, cell_area.width - xpad);
 
       if (widget.get_direction () == TextDirection.RTL)
-	x_offset = cell_area.width - (rect.width + (2 * xpad));
+	x_offset = cell_area.width - (rect.width + xpad);
       else
 	x_offset = 0;
 
       x_offset = int.max (x_offset, 0);
-
-      y_offset = 0;
     } else {
       x_offset = 0;
-      y_offset = 0;
     }
-
-    height = ypad * 2 + rect.height;
-    width = xpad * 2 + rect.width;
   }
 
   public override void render (Cairo.Context   cr,
@@ -206,24 +250,30 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 			       Gdk.Rectangle   cell_area,
 			       CellRendererState flags) {
     StyleContext context;
-    Pango.Layout layout;
-    int x_offset = 0;
-    int y_offset = 0;
-    int xpad, ypad;
-    Pango.Rectangle rect;
+    Pango.Layout name_layout, presence_layout;
+    int name_x_offset = 0;
+    int presence_x_offset = 0;
+    int xpad;
+    Pango.Rectangle name_rect;
+    Pango.Rectangle presence_rect;
 
     current_widget = widget;
 
-    layout = get_layout (widget, cell_area, flags);
-    do_get_size (widget, cell_area, layout, out x_offset, out y_offset, null, null);
     context = widget.get_style_context ();
+    get_padding (out xpad, null);
 
-    get_padding (out xpad, out ypad);
+    name_layout = get_name_layout (widget, cell_area, flags);
+    do_get_size (widget, cell_area, name_layout, out name_x_offset);
+    name_layout.get_pixel_extents (null, out name_rect);
+    name_x_offset = name_x_offset - name_rect.x;
 
-    layout.set_width ((cell_area.width - x_offset - 2 * xpad) * Pango.SCALE);
-
-    layout.get_pixel_extents (null, out rect);
-    x_offset = x_offset - rect.x;
+    presence_layout = null;
+    if (name_layout.get_lines_readonly ().length () == 1) {
+      presence_layout = get_presence_layout (widget, cell_area, flags);
+      do_get_size (widget, cell_area, presence_layout, out presence_x_offset);
+      presence_layout.get_pixel_extents (null, out presence_rect);
+      presence_x_offset = presence_x_offset - presence_rect.x;
+    }
 
     cr.save ();
 
@@ -231,9 +281,15 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     cr.clip ();
 
     Gtk.render_layout (context, cr,
-		       cell_area.x + x_offset + xpad,
-		       cell_area.y + y_offset + ypad,
-		       layout);
+		       cell_area.x + name_x_offset + xpad,
+		       cell_area.y + 0,
+		       name_layout);
+
+    if (presence_layout != null)
+      Gtk.render_layout (context, cr,
+			 cell_area.x + presence_x_offset + xpad,
+			 cell_area.y + 48 - 11 - presence_layout.get_baseline () / Pango.SCALE,
+			 presence_layout);
 
     cr.restore ();
   }
@@ -241,38 +297,19 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
   public override void get_preferred_width (Widget       widget,
 					    out int      min_width,
 					    out int      nat_width) {
-    Pango.Rectangle  rect;
-    int text_width, xpad;
+    int xpad;
 
     get_padding (out xpad, null);
 
-    var layout = get_layout (widget, null, 0);
-
-    /* Fetch the length of the complete unwrapped text */
-    layout.set_width (-1);
-    layout.get_extents (null, out rect);
-    text_width = rect.width;
-
-    min_width = xpad * 2 + rect.x + int.min (text_width / Pango.SCALE, wrap_width);
-    nat_width = xpad * 2 + text_width / Pango.SCALE;
-    nat_width = int.max (nat_width, min_width);
+    nat_width = min_width = xpad + wrap_width;
   }
 
   public override void get_preferred_height_for_width (Widget       widget,
 						       int          width,
 						       out int      minimum_height,
 						       out int      natural_height) {
-    Pango.Layout  layout;
-    int text_height, xpad, ypad;
-
-    get_padding (out xpad, out ypad);
-
-    layout = get_layout (widget, null, 0);
-    layout.set_width ((width - xpad * 2) * Pango.SCALE);
-    layout.get_pixel_size (null, out text_height);
-
-    minimum_height = text_height + ypad * 2;
-    natural_height = text_height + ypad * 2;
+    minimum_height = 48;
+    natural_height = 48;
   }
 
   public override void get_preferred_height (Widget       widget,
@@ -291,7 +328,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     if (pixbuf != null) {
       double x, y;
       cr.get_current_point (out x, out y);
-      Gdk.cairo_set_source_pixbuf (cr, pixbuf, x, y-IMAGE_SIZE*0.9);
+      Gdk.cairo_set_source_pixbuf (cr, pixbuf, x, y-IMAGE_SIZE*0.7);
       cr.paint();
     }
   }

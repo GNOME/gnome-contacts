@@ -269,7 +269,7 @@ public class Contacts.ViewWidget : TreeView {
     column = new TreeViewColumn ();
 
     shape = new CellRendererShape ();
-    shape.set_padding (2, 0);
+    shape.set_padding (4, 0);
 
     Pango.cairo_context_set_shape_renderer (get_pango_context (), shape.render_shape);
 
