@@ -751,28 +751,20 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 52, 52);
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
     var cr = new Cairo.Context (cst);
 
     cr.set_source_rgba (0, 0, 0, 0);
-    cr.rectangle (0, 0, 52, 52);
+    cr.rectangle (0, 0, 48, 48);
     cr.fill ();
 
-    Gdk.cairo_set_source_pixbuf (cr, icon, 2, 2);
-    cr.paint();
-
+    Gdk.cairo_set_source_pixbuf (cr, icon, 0, 0);
     rounded_box_path (cr,
 		      0, 0,
-		      52, 52, 5);
-    rounded_box_path (cr,
-		      2, 2,
-		      48, 48, 3);
-    cr.set_source_rgb (0.533333, 0.541176, 0.521568);
-    cr.set_fill_rule (Cairo.FillRule.EVEN_ODD);
-
+		      48, 48, 4);
     cr.fill ();
 
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 52, 52);
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 48, 48);
   }
 
   private static Gdk.Pixbuf? fallback_pixbuf_48;
@@ -782,7 +774,7 @@ public class Contacts.Contact : GLib.Object  {
 
     Gdk.Pixbuf pixbuf = null;
     try {
-      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default", size, IconLookupFlags.GENERIC_FALLBACK);
+      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default-symbolic", size, IconLookupFlags.GENERIC_FALLBACK);
       pixbuf = icon_info.load_icon ();
     } catch {
     }
