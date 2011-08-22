@@ -191,6 +191,31 @@ public class Contacts.Contact : GLib.Object  {
 
   public signal void changed ();
 
+  public bool is_hidden () {
+    // Don't show the user itself
+    if (individual.is_user)
+      return true;
+
+    var personas = individual.personas;
+    var i = personas.iterator();
+    // Look for single-persona individuals
+    if (i.next() && !i.has_next ()) {
+      var persona = i.get();
+      var store = persona.store;
+
+      // Filter out pure key-file persona individuals as these are
+      // not very interesting
+      if (store.type_id == "key-file")
+	return true;
+
+      // Filter out uncertain things like link-local xmpp
+      if (store.type_id == "telepathy" &&
+	  store.trust_level == PersonaStoreTrust.NONE)
+	return true;
+    }
+    return false;
+  }
+
   public static Contact from_individual (Individual i) {
     return i.get_data ("contact");
   }

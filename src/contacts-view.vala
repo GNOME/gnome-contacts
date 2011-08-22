@@ -55,27 +55,8 @@ public class Contacts.View : GLib.Object {
   public TreeModel model { get { return list_store; } }
 
   private bool apply_filter (Contact contact) {
-    // Don't show the user itself
-    if (contact.individual.is_user)
+    if (contact.is_hidden ())
       return false;
-
-    var personas = contact.individual.personas;
-    var i = personas.iterator();
-    // Look for single-persona individuals
-    if (i.next() && !i.has_next ()) {
-      var persona = i.get();
-      var store = persona.store;
-
-      // Filter out pure key-file persona individuals as these are
-      // not very interesting
-      if (store.type_id == "key-file")
-	return false;
-
-      // Filter out uncertain things like link-local xmpp
-      if (store.type_id == "telepathy" &&
-	  store.trust_level == PersonaStoreTrust.NONE)
-	return false;
-    }
 
     if (filter_values == null || filter_values.length == 0)
       return true;
