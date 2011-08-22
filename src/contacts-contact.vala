@@ -41,7 +41,9 @@ public class Contacts.ContactPresence : Grid {
     message = contact.presence_message;
     is_phone = contact.is_phone;
 
-    if (type == PresenceType.UNSET) {
+    if (type == PresenceType.UNSET ||
+        type == PresenceType.ERROR ||
+        type == PresenceType.OFFLINE) {
       image.clear ();
       image.hide ();
       label.hide ();
