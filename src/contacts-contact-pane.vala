@@ -57,7 +57,7 @@ class Contacts.DetailsLayout : Object {
     var grid = new Grid ();
     expands = false;
     last_label = null;
-    grid.set_row_spacing (8);
+    grid.set_row_spacing (9);
     grid.set_orientation (Orientation.HORIZONTAL);
     if (current_row != null) {
       Utils.grid_insert_row_after (fields_grid, current_row, true);
@@ -190,8 +190,8 @@ public class Contacts.ContactFrame : Frame {
     image.set_size_request (size, size);
     this.add (image);
 
-    get_style_context ().add_class ("contact-frame");
-    set_shadow_type (ShadowType.OUT);
+    //get_style_context ().add_class ("contact-frame");
+    set_shadow_type (ShadowType.NONE);
   }
 
   public void set_image (AvatarDetails? details, Contact? contact = null) {
@@ -209,6 +209,7 @@ public class Contacts.ContactFrame : Frame {
     if (pixbuf == null) {
       pixbuf = Contact.draw_fallback_avatar (size, contact);
     }
+    pixbuf = Contact.frame_icon (pixbuf);
   }
 
   public void set_text (string? text_, int text_height_) {

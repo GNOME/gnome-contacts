@@ -750,21 +750,23 @@ public class Contacts.Contact : GLib.Object  {
 		    Math.PI / 2, Math.PI);
   }
 
-  private static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
+  public static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
+    int w = icon.get_width ();
+    int h = icon.get_height ();
+    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, w, h);
     var cr = new Cairo.Context (cst);
 
     cr.set_source_rgba (0, 0, 0, 0);
-    cr.rectangle (0, 0, 48, 48);
+    cr.rectangle (0, 0, w, h);
     cr.fill ();
 
     Gdk.cairo_set_source_pixbuf (cr, icon, 0, 0);
     rounded_box_path (cr,
 		      0, 0,
-		      48, 48, 4);
+		      w, h, 4);
     cr.fill ();
 
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, 48, 48);
+    return Gdk.pixbuf_get_from_surface (cst, 0, 0, w, h);
   }
 
   private static Gdk.Pixbuf? fallback_pixbuf_48;
