@@ -53,10 +53,14 @@ main (string[] args) {
     app.show_individual (individual_id);
   if (email_address != null)
     app.show_by_email (email_address);
-  app.show ();
+
+  // We delay the initial show a tiny bit so most contacts are loaded when we show
+  Timeout.add (100, () => {
+      app.show ();
+      return false;
+    });
 
   Gtk.main ();
 
   return 0;
 }
-
