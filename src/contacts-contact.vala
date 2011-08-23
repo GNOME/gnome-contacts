@@ -702,54 +702,6 @@ public class Contacts.Contact : GLib.Object  {
     return res;
   }
 
-  private static void cairo_ellipsis (Cairo.Context cr,
-				      double xc, double yc,
-				      double xradius, double yradius,
-				      double angle1 ,double angle2) {
-    if (xradius <= 0.0 || yradius <= 0.0) {
-      cr.line_to (xc, yc);
-      return;
-    }
-
-    cr.save ();
-    cr.translate (xc, yc);
-    cr.scale (xradius, yradius);
-    cr.arc (0, 0, 1.0, angle1, angle2);
-    cr.restore ();
-  }
-
-  private static void rounded_box_path (Cairo.Context cr,
-					int x, int y,
-					int width, int height,
-					int radius) {
-    cr.new_sub_path ();
-
-    cairo_ellipsis (cr,
-		    x + radius,
-		    y + radius,
-		    radius,
-		    radius,
-		    Math.PI, 3 * Math.PI / 2);
-    cairo_ellipsis (cr,
-		    x + width - radius,
-		    y + radius,
-		    radius,
-		    radius,
-		    - Math.PI / 2, 0);
-    cairo_ellipsis (cr,
-		    x + width - radius,
-		    y + height - radius,
-		    radius,
-		    radius,
-		    0, Math.PI / 2);
-    cairo_ellipsis (cr,
-		    x + radius,
-		    y + height - radius,
-		    radius,
-		    radius,
-		    Math.PI / 2, Math.PI);
-  }
-
   public static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
     int w = icon.get_width ();
     int h = icon.get_height ();
@@ -761,9 +713,9 @@ public class Contacts.Contact : GLib.Object  {
     cr.fill ();
 
     Gdk.cairo_set_source_pixbuf (cr, icon, 0, 0);
-    rounded_box_path (cr,
-		      0, 0,
-		      w, h, 4);
+    Utils.cairo_rounded_box (cr,
+			     0, 0,
+			     w, h, 4);
     cr.fill ();
 
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, w, h);
