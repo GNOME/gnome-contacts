@@ -341,6 +341,7 @@ public class Contacts.TypeCombo : Grid  {
     this.type_set = type_set;
 
     combo = new ComboBox.with_model (type_set.store);
+    combo.get_style_context ().add_class ("contact-combo");
     combo.set_halign (Align.FILL);
     combo.set_hexpand (true);
     this.add (combo);
@@ -356,6 +357,7 @@ public class Contacts.TypeCombo : Grid  {
       });
 
     entry = new Entry ();
+    entry.get_style_context ().add_class ("contact-entry");
     entry.set_halign (Align.FILL);
     entry.set_hexpand (true);
     // Make the default entry small so we don't unnecessarily

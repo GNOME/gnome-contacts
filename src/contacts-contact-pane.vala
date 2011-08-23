@@ -106,6 +106,7 @@ class Contacts.DetailsLayout : Object {
 
   public Entry add_entry (string val) {
     var entry = new Entry ();
+    entry.get_style_context ().add_class ("contact-entry");
     entry.set_text (val);
     entry.set_valign (Align.CENTER);
     entry.set_halign (Align.FILL);
@@ -796,6 +797,7 @@ public class Contacts.ContactPane : EventBox {
     layout.current_row.add (g);
 
     var e = new Entry ();
+    e.get_style_context ().add_class ("contact-entry");
     e.set ("placeholder-text", _("Enter name"));
     e.set_data ("original-text", contact.display_name);
     e.set_text (contact.display_name);
