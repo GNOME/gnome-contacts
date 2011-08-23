@@ -489,7 +489,7 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
-  private enum ImDisplay {
+  public enum ImDisplay {
     DEFAULT,           /* $id ($service) */
     ALIAS_SERVICE      /* $alias ($service) */
   }
@@ -500,16 +500,7 @@ public class Contacts.Contact : GLib.Object  {
     ImDisplay display;
   }
 
-  public string format_im_name (string protocol, string id) {
-    string? service = null;
-    var persona = find_im_persona (protocol, id);
-    if (persona != null) {
-      var account = (persona.store as Tpf.PersonaStore).account;
-      service = account.service;
-    }
-    if (service == null || service == "")
-      service = protocol;
-
+  public static string format_im_service (string service, out ImDisplay display) {
     const ImData[] data = {
       { "google-talk", N_("Google Talk") },
       { "ovi-chat", N_("Ovi Chat") },
@@ -540,17 +531,35 @@ public class Contacts.Contact : GLib.Object  {
 
     foreach (var d in data) {
       if (d.service == service) {
-	switch (d.display) {
-	default:
-	case ImDisplay.DEFAULT:
-	  return id + " (" + dgettext (Config.GETTEXT_PACKAGE, d.display_name) + ")";
-	case ImDisplay.ALIAS_SERVICE:
-	  return persona.alias + " (" + dgettext (Config.GETTEXT_PACKAGE, d.display_name) + ")";
-	}
+	display = d.display;
+	return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
       }
     }
 
-    return id + " (" + protocol + ")";
+    display = ImDisplay.DEFAULT;
+    return service;
+  }
+
+  public string format_im_name (string protocol, string id) {
+    string? service = null;
+    var persona = find_im_persona (protocol, id);
+    if (persona != null) {
+      var account = (persona.store as Tpf.PersonaStore).account;
+      service = account.service;
+    }
+    if (service == null || service == "")
+      service = protocol;
+
+    ImDisplay display;
+    var display_name = format_im_service (service, out display);
+
+    switch (display) {
+    default:
+    case ImDisplay.DEFAULT:
+      return id + " (" + display_name + ")";
+    case ImDisplay.ALIAS_SERVICE:
+      return persona.alias + " (" + display_name + ")";
+    }
   }
 
   public Widget? create_merged_presence_widget () {
