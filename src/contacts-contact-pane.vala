@@ -39,6 +39,7 @@ class Contacts.DetailsLayout : Object {
   private bool expands;
   public Grid? current_row;
   Widget? last_label;
+  Box? detail_box;
 
   public void reset (bool full) {
     foreach (var w in fields_grid.get_children ()) {
@@ -83,8 +84,20 @@ class Contacts.DetailsLayout : Object {
     add_widget_label (l);
   }
 
+  public void begin_detail_box () {
+    var box = new Box (Orientation.VERTICAL, 0);
+    attach_detail (box);
+    detail_box = box;
+  }
+
+  public void end_detail_box () {
+    detail_box = null;
+  }
+
   public void attach_detail (Widget widget) {
-    if (last_label != null)
+    if (detail_box != null)
+      detail_box.add (widget);
+    else if (last_label != null)
       current_row.attach_next_to (widget, last_label, PositionType.BOTTOM, 1, 1);
     else
       current_row.add (widget);
@@ -426,6 +439,7 @@ public class Contacts.ContactPane : EventBox {
     string postal_part;
     detail.value.get (subproperty_name, out postal_part);
     var entry = layout.add_entry (postal_part);
+    entry.get_style_context ().add_class ("contact-postal-entry");
     if (placeholder_text != null)
       entry.set ("placeholder-text", placeholder_text);
 
@@ -437,7 +451,7 @@ public class Contacts.ContactPane : EventBox {
     return entry;
   }
 
-  private void add_detail_remove (Set<AbstractFieldDetails> detail_set,
+  private Button add_detail_remove (Set<AbstractFieldDetails> detail_set,
 				  AbstractFieldDetails detail,
 				  string property_name,
 				  bool at_top = true) {
@@ -449,6 +463,7 @@ public class Contacts.ContactPane : EventBox {
 	editing_persona.set (property_name, detail_set);
 	row.destroy ();
       });
+    return remove_button;
   }
 
   private void add_detail_editor (TypeSet type_set,
@@ -479,6 +494,7 @@ public class Contacts.ContactPane : EventBox {
     detail_set.add (detail);
     add_detail_combo (TypeSet.general, detail_set, detail, "postal_addresses");
 
+    layout.begin_detail_box ();
     for (int i = 0; i < props.length; i++) {
       add_detail_postal_entry (detail_set,
 			       detail,
@@ -486,7 +502,9 @@ public class Contacts.ContactPane : EventBox {
 			       "postal_addresses",
 			       nice[i]);
     }
-    add_detail_remove (detail_set, detail, "postal_addresses");
+    layout.end_detail_box ();
+    var button = add_detail_remove (detail_set, detail, "postal_addresses");
+    button.set_valign (Align.START);
   }
 
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {

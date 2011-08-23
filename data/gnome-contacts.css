@@ -20,9 +20,24 @@ ContactsListPane GtkTreeView {
 .contact-entry {
     border-image: none;
     border-width: 1;
+    border-radius: 3;
     border-style: solid;
     border-color: #bbbeb7;
     background-image: none;
+}
+
+.contact-entry.contact-postal-entry {
+    border-radius: 0 0 0 0;
+    border-width: 1 1 0 1;
+}
+
+.contact-entry.contact-postal-entry:nth-child(first) {
+    border-radius: 3 3 0 0;
+}
+
+.contact-entry.contact-postal-entry:nth-child(last) {
+    border-radius: 0 0 3 3;
+    border-width: 1 1 1 1;
 }
 
 .contact-combo .button {
