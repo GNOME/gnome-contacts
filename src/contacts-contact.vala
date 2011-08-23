@@ -807,4 +807,21 @@ public class Contacts.Contact : GLib.Object  {
 
     return null;
   }
+
+  public static string format_persona_store_name (PersonaStore store) {
+    if (store.type_id == "eds") {
+      if (store.id == "system") {
+	return _("Local Contact");
+      }
+      if (store.id.has_suffix ("@gmail.com")) {
+	return _("Google");
+      }
+    }
+    if (store.type_id == "telepathy") {
+      var account = (store as Tpf.PersonaStore).account;
+      return format_im_service (account.service, null);
+    }
+
+    return store.display_name;
+  }
 }

@@ -463,7 +463,7 @@ public class Contacts.ContactPane : EventBox {
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
     layout.reset (false);
     image_frame.set_image (persona as AvatarDetails);
-    image_frame.set_text (persona.store.display_name, LABEL_HEIGHT);
+    image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
 
     editing_emails = new HashSet<EmailFieldDetails>();
     editing_phones = new HashSet<PhoneFieldDetails>();
