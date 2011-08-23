@@ -189,8 +189,6 @@ public class Contacts.ContactFrame : Frame {
     var image = new Image ();
     image.set_size_request (size, size);
     this.add (image);
-
-    //get_style_context ().add_class ("contact-frame");
     set_shadow_type (ShadowType.NONE);
   }
 
@@ -199,8 +197,8 @@ public class Contacts.ContactFrame : Frame {
     if (details != null &&
 	details.avatar != null) {
       try {
-        var stream = details.avatar.load (size, null);
-        pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
+	var stream = details.avatar.load (size, null);
+	pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
       }
       catch {
       }
