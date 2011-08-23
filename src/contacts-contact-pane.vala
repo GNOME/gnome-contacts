@@ -59,6 +59,7 @@ class Contacts.DetailsLayout : Object {
     expands = false;
     last_label = null;
     grid.set_row_spacing (9);
+    grid.set_column_spacing (3);
     grid.set_orientation (Orientation.HORIZONTAL);
     if (current_row != null) {
       Utils.grid_insert_row_after (fields_grid, current_row, true);
