@@ -216,9 +216,16 @@ public class Contacts.ContactFrame : Frame {
     layout = null;
     if (text != null) {
       layout = create_pango_layout (text);
-      layout.set_width (size);
-      layout.set_height (text_height);
-      layout.set_alignment (Pango.Alignment.CENTER);
+      Pango.Rectangle rect = {0 };
+      int font_size = text_height - /* Y PADDING */ 4 +  /* Removed below */ 1;
+
+      do {
+	font_size = font_size - 1;
+	var fd = new Pango.FontDescription();
+	fd.set_absolute_size (font_size*Pango.SCALE);
+	layout.set_font_description (fd);
+	layout.get_extents (null, out rect);
+      } while (rect.width > size * Pango.SCALE);
     }
   }
 
@@ -226,19 +233,26 @@ public class Contacts.ContactFrame : Frame {
     cr.save ();
 
     if (pixbuf != null) {
-      Gdk.cairo_set_source_pixbuf (cr, pixbuf, 2, 2);
+      Gdk.cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
       cr.paint();
     }
 
     if (layout != null) {
+      Utils.cairo_rounded_box (cr, 0, 0, size, size, 4);
+      cr.clip ();
+
       cr.set_source_rgba (0, 0, 0, 0.5);
-      cr.rectangle (2, 2 + size - text_height, size, text_height);
+      cr.rectangle (0, size - text_height, size, text_height);
       cr.fill ();
 
       cr.set_source_rgb (1.0, 1.0, 1.0);
-      Gtk.render_layout (get_style_context (), cr,
-			 size / 2, size - text_height,
-			 layout);
+      Pango.Rectangle rect;
+      layout.get_extents (null, out rect);
+      double label_width = rect.width/(double)Pango.SCALE;
+      double label_height = rect.height / (double)Pango.SCALE;
+      cr.move_to (Math.round ((size - label_width) / 2.0),
+		  size - text_height + Math.floor ((text_height - label_height) / 2.0));
+      Pango.cairo_show_layout (cr, layout);
     }
     cr.restore ();
 
