@@ -261,6 +261,60 @@ public class Contacts.ContactFrame : Frame {
   }
 }
 
+public class Contacts.PersonaButton : RadioButton {
+  private Widget create_image (AvatarDetails? details, int size) {
+    var image = new Image ();
+    image.set_padding (2, 2);
+
+    Gdk.Pixbuf pixbuf = null;
+    if (details != null &&
+	details.avatar != null) {
+      try {
+	var stream = details.avatar.load (size, null);
+	pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
+      }
+      catch {
+      }
+    }
+
+    if (pixbuf == null) {
+      pixbuf = Contact.draw_fallback_avatar (size, null);
+    }
+
+    if (pixbuf != null) {
+      image.set_from_pixbuf (Contact.frame_icon (pixbuf));
+    }
+
+    image.draw.connect ( (cr) => {
+	if (this.get_active ()) {
+	  cr.save ();
+	  cr.set_source_rgba (0x74/255.0, 0xa0/255.0, 0xd0/255.0, 0.5);
+	  Utils.cairo_rounded_box (cr, 0, 0, size+4, size+4, 4+2);
+	  Utils.cairo_rounded_box (cr, 2, 2, size, size, 4);
+	  cr.set_fill_rule (Cairo.FillRule.EVEN_ODD);
+	  cr.fill ();
+	  cr.restore ();
+	}
+	return false;
+      });
+
+    return image;
+  }
+
+
+  public PersonaButton (RadioButton? group, AvatarDetails? avatar, int size) {
+    if (group != null)
+      join_group (group);
+
+    get_style_context ().add_class ("contact-button");
+    set_can_default (false);
+    var image = create_image (avatar, size);
+    add (image);
+    set_mode (false);
+  }
+}
+
+
 public class Contacts.ContactPane : EventBox {
   private enum DisplayMode {
     INITIAL,
@@ -289,32 +343,6 @@ public class Contacts.ContactPane : EventBox {
   const int LABEL_HEIGHT = 20;
 
   private signal void save_data ();
-
-  private Widget create_image (AvatarDetails? details, Contact? contact, int size) {
-    var image = new Image ();
-    image.set_size_request (size, size);
-
-    Gdk.Pixbuf pixbuf = null;
-    if (details != null &&
-	details.avatar != null) {
-      try {
-        var stream = details.avatar.load (size, null);
-        pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
-      }
-      catch {
-      }
-    }
-
-    if (pixbuf == null) {
-      pixbuf = Contact.draw_fallback_avatar (size, contact);
-    }
-
-    if (pixbuf != null) {
-      image.set_from_pixbuf (pixbuf);
-    }
-
-    return image;
-  }
 
   private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
 					AbstractFieldDetails detail,
@@ -799,20 +827,15 @@ public class Contacts.ContactPane : EventBox {
       });
 
     var personas = new Grid ();
-    personas.set_row_spacing (4);
+    personas.set_row_spacing (0);
     personas.set_halign (Align.START);
     personas.set_valign (Align.END);
     personas.set_vexpand (true);
 
-    RadioButton button = null;
+    PersonaButton button = null;
     foreach (var p in contact.individual.personas) {
 
-      button = new RadioButton.from_widget (button);
-      button.get_style_context ().add_class ("contact-button");
-      button.set_can_default (false);
-      var image = create_image (p as AvatarDetails, null, 48);
-      button.add (image);
-      button.set_mode (false);
+      button = new PersonaButton (button, p as AvatarDetails, 48);
       personas.add (button);
 
       if (p == persona) {
