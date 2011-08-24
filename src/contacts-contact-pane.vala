@@ -888,7 +888,7 @@ public class Contacts.ContactPane : EventBox {
     var fake_persona = FakePersona.maybe_create_for (contact);
     if (fake_persona != null)
       persona_list.add (fake_persona);
-    // TODO Sort these personas in a stable way
+    persona_list.sort (Contact.compare_persona_by_store);
 
     PersonaButton button = null;
     foreach (var p in persona_list) {

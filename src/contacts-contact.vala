@@ -445,6 +445,32 @@ public class Contacts.Contact : GLib.Object  {
     return 1;
   }
 
+  public static int compare_persona_by_store (void *a, void *b) {
+    Persona persona_a = (Persona *)a;
+    Persona persona_b = (Persona *)b;
+    var store_a = persona_a.store;
+    var store_b = persona_b.store;
+
+    if (store_a == store_b)
+      return 0;
+
+    if (store_a.is_writeable && store_b.is_writeable)
+      return 0;
+    if (store_a.is_writeable)
+      return -1;
+    if (store_b.is_writeable)
+      return 1;
+
+    if (store_a.type_id == "eds" && store_b.type_id == "eds")
+      return strcmp (store_a.id, store_b.id);
+    if (store_a.type_id == "eds")
+      return -1;
+    if (store_b.type_id == "eds")
+      return 1;
+
+    return strcmp (store_a.id, store_b.id);
+  }
+
   public static ArrayList<T> sort_fields<T> (Collection<T> fields) {
     // TODO: This should take an extra delegate arg to compare by value for T
     var res = new ArrayList<T>();
