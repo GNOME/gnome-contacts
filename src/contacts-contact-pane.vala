@@ -361,7 +361,31 @@ public class Contacts.ContactPane : EventBox {
 
   private void update_detail_property (string property_name,
 				       Set<AbstractFieldDetails> detail_set) {
-    editing_persona.set (property_name, detail_set);
+    var editing_backup = editing_persona;
+    if (editing_persona is FakePersona) {
+      var c = selected_contact;
+      c.ensure_primary_persona.begin ( (obj, result) => {
+	  try {
+	    var p = c.ensure_primary_persona.end (result);
+	    p.set (property_name, detail_set);
+	    /* HACK: We don't seem to get any callbacks from folks when the actual
+	     * new property value is availibile, so we add a small timeout here...
+	     * I'm very sorry...
+	     */
+	    Timeout.add (100, () => {
+		if (c == selected_contact && display_mode == DisplayMode.EDIT &&
+		    editing_persona == editing_backup) {
+		  display_edit (selected_contact, p, false);
+		}
+		return false;
+	      });
+	  } catch (Error e) {
+	    warning ("Unable to create writable persona: %s", e.message);
+	  }
+	});
+    } else {
+      editing_persona.set (property_name, detail_set);
+    }
   }
 
   private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
@@ -859,8 +883,15 @@ public class Contacts.ContactPane : EventBox {
     personas.set_valign (Align.END);
     personas.set_vexpand (true);
 
+    var persona_list = new ArrayList<Persona>();
+    persona_list.add_all (contact.individual.personas);
+    var fake_persona = FakePersona.maybe_create_for (contact);
+    if (fake_persona != null)
+      persona_list.add (fake_persona);
+    // TODO Sort these personas in a stable way
+
     PersonaButton button = null;
-    foreach (var p in contact.individual.personas) {
+    foreach (var p in persona_list) {
 
       button = new PersonaButton (button, p as AvatarDetails, 48);
       personas.add (button);

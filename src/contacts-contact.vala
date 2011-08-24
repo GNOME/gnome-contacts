@@ -854,3 +854,34 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 }
+
+public class Contacts.FakePersona : Persona {
+  public static FakePersona? maybe_create_for (Contact contact) {
+    var primary_persona = contact.find_primary_persona ();
+
+    if (primary_persona != null)
+      return null;
+
+    return new FakePersona (contact, contact.store.aggregator.primary_store);
+  }
+
+  private const string[] _linkable_properties = {};
+  private const string[] _writeable_properties = {};
+  public override string[] linkable_properties
+    {
+      get { return this._linkable_properties; }
+    }
+
+  public override string[] writeable_properties
+    {
+      get { return this._writeable_properties; }
+    }
+
+  public FakePersona (Contact contact, PersonaStore store) {
+    Object (display_id: "display_id",
+	    uid: "uid",
+	    iid: "iid",
+	    store: store,
+	    is_user: false);
+  }
+}
