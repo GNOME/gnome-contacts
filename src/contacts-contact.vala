@@ -285,6 +285,7 @@ public class Contacts.Contact : GLib.Object  {
 	  connect_persona (p);
 	foreach (var p in removed)
 	  disconnect_persona (p);
+	queue_changed ();
       });
 
     update ();
