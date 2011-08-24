@@ -279,8 +279,7 @@ public class Contacts.ViewWidget : TreeView {
 
 	model.get (iter, 0, out contact);
 
-	cell.set ("wrap_width", 230,
-		  "name", contact.display_name,
+	cell.set ("name", contact.display_name,
 		  "presence", contact.presence_type,
 		  "message", contact.presence_message,
 		  "is_phone", contact.is_phone);

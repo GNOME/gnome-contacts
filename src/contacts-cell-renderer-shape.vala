@@ -29,7 +29,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
   public PresenceType presence { get;  set; }
   public string message { get;  set; }
   public bool is_phone  { get;  set; }
-  public int wrap_width { get;  set; default=-1;}
+  const int default_width = 60;
 
   private struct IconShape {
     string icon;
@@ -89,24 +89,20 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     layout.set_ellipsize (Pango.EllipsizeMode.END);
 
-    if (wrap_width != -1) {
-      Pango.Rectangle rect;
-      int width, text_width;
+    Pango.Rectangle rect;
+    int width, text_width;
 
-      layout.get_extents (null, out rect);
-      text_width = rect.width;
+    layout.get_extents (null, out rect);
+    text_width = rect.width;
 
-      if (cell_area != null)
-	width = (cell_area.width - xpad) * Pango.SCALE;
-      else
-	width = wrap_width * Pango.SCALE;
+    if (cell_area != null)
+      width = (cell_area.width - xpad) * Pango.SCALE;
+    else
+      width = default_width * Pango.SCALE;
 
-      width = int.min (width, text_width);
+    width = int.min (width, text_width);
 
-      layout.set_width (width);
-    } else {
-      layout.set_width (-1);
-    }
+    layout.set_width (width);
 
     layout.set_wrap (Pango.WrapMode.CHAR);
     layout.set_height (-2);
@@ -177,24 +173,20 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     layout.set_ellipsize (Pango.EllipsizeMode.END);
 
-    if (wrap_width != -1) {
-      Pango.Rectangle rect;
-      int width, text_width;
+    Pango.Rectangle rect;
+    int width, text_width;
 
-      layout.get_extents (null, out rect);
-      text_width = rect.width;
+    layout.get_extents (null, out rect);
+    text_width = rect.width;
 
-      if (cell_area != null)
-	width = (cell_area.width - xpad) * Pango.SCALE;
-      else
-	width = wrap_width * Pango.SCALE;
+    if (cell_area != null)
+      width = (cell_area.width - xpad) * Pango.SCALE;
+    else
+      width = default_width * Pango.SCALE;
 
-      width = int.min (width, text_width);
+    width = int.min (width, text_width);
 
-      layout.set_width (width);
-    } else {
-      layout.set_width (-1);
-    }
+    layout.set_width (width);
 
     layout.set_wrap (Pango.WrapMode.CHAR);
 
@@ -301,7 +293,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     get_padding (out xpad, null);
 
-    nat_width = min_width = xpad + wrap_width;
+    nat_width = min_width = xpad + default_width;
   }
 
   public override void get_preferred_height_for_width (Widget       widget,
