@@ -100,7 +100,7 @@ public class Contacts.App : Window {
   public App () {
     this.app = this;
     set_title (_("Contacts"));
-    set_size_request (700, 510);
+    set_size_request (745, 510);
     this.destroy.connect (Gtk.main_quit);
 
     var grid = new Grid();
