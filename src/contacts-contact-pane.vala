@@ -727,9 +727,10 @@ public class Contacts.ContactPane : EventBox {
 
       if (modified) {
 	if (persona == null) {
-	  selected_contact.ensure_writable_persona.begin ( (obj, result) => {
+	  var c = selected_contact;
+	  c.ensure_primary_persona.begin ( (obj, result) => {
 	      try {
-		var p = selected_contact.ensure_writable_persona.end (result);
+		var p = c.ensure_primary_persona.end (result);
 		if (p is NoteDetails)
 		  (p as NoteDetails).notes = notes;
 		else

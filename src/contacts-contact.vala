@@ -22,7 +22,8 @@ using Folks;
 using Gee;
 
 public errordomain ContactError {
-  NOT_IMPLEMENTED
+  NOT_IMPLEMENTED,
+  NO_PRIMARY
 }
 
 public class Contacts.ContactPresence : Grid {
@@ -796,12 +797,31 @@ public class Contacts.Contact : GLib.Object  {
     return uri;
   }
 
-  public async Persona ensure_writable_persona () throws GLib.Error {
+  public async Persona ensure_primary_persona () throws GLib.Error {
     Persona? p = find_primary_persona ();
     if (p != null)
       return p;
-    print ("new writable persona: %p\n", p);
-    throw new ContactError.NOT_IMPLEMENTED ("Not implemented yet");
+
+    // There is no primary persona, so we link all the current personas
+    // together. This will create a new persona in the primary store
+    // that links all the personas together
+
+    // HACK-ATTACK:
+    // We need to create a fake persona since link_personas is a no-op
+    // for single-persona sets
+    var persona_set = new HashSet<Persona>();
+    persona_set.add_all (individual.personas);
+    var fake_persona = FakePersona.maybe_create_for (this);
+    if (fake_persona != null)
+      persona_set.add (fake_persona);
+
+    yield store.aggregator.link_personas (persona_set);
+
+    p = find_primary_persona ();
+    if (p == null)
+      throw new ContactError.NO_PRIMARY (_("Unexpected internal error: created contact was not found"));
+
+    return p;
   }
 
 
