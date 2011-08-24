@@ -293,6 +293,18 @@ public class Contacts.Contact : GLib.Object  {
     individual.notify.connect(notify_cb);
   }
 
+  public void replace_individual (Individual new_individual) {
+    foreach (var p in individual.personas) {
+      disconnect_persona (p);
+    }
+    individual = new_individual;
+    individual.set_data ("contact", this);
+    foreach (var p in individual.personas) {
+      connect_persona (p);
+    }
+    queue_changed ();
+  }
+
   public void remove () {
     unqueue_changed ();
     foreach (var p in individual.personas) {

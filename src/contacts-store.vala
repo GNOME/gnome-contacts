@@ -34,12 +34,46 @@ public class Contacts.Store : GLib.Object {
 
     aggregator = new IndividualAggregator ();
     aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
+	var old_individuals = new HashMap<Persona, Individual>();
+	var replaced_individuals = new HashSet<Individual>();
+
+	/* Try to reverse engineer which added individuals just replaces
+	   old individuals */
+
 	foreach (Individual i in removed) {
-	  this.remove (Contact.from_individual (i));
+	  foreach (var p in i.personas)  {
+	    old_individuals.set (p, i);
+	  }
 	}
+
 	foreach (Individual i in added) {
-	  var c = new Contact (this, i);
-	  this.add (c);
+	  Individual? old_individual = null;
+	  foreach (var p in i.personas)  {
+	    var o_i = old_individuals.get (p);
+	    if (o_i != null) {
+	      if (old_individual == null)
+		old_individual = o_i;
+	      else if (o_i != old_individual) {
+		old_individual = null;
+		break;
+	      }
+	    }
+	  }
+	  if (old_individual != null &&
+	      !replaced_individuals.contains (old_individual)) {
+	    replaced_individuals.add (old_individual);
+	    var c = Contact.from_individual (old_individual);
+	    c.replace_individual (i);
+	  } else {
+	    var c = new Contact (this, i);
+	    this.add (c);
+	  }
+	}
+
+	foreach (Individual i in removed) {
+	  if (!replaced_individuals.contains (i)) {
+	    this.remove (Contact.from_individual (i));
+	  }
 	}
       });
     aggregator.prepare ();
