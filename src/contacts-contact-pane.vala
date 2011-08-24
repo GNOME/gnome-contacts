@@ -831,7 +831,8 @@ public class Contacts.ContactPane : EventBox {
       });
   }
 
-  private void display_edit (Contact contact, Persona persona, bool new_contact = false) {
+  private void display_edit (Contact contact, Persona? _persona, bool new_contact = false) {
+    Persona? persona = _persona;
     set_display_mode (DisplayMode.EDIT);
 
     var image_frame = new ContactFrame (PROFILE_SIZE);
@@ -884,25 +885,37 @@ public class Contacts.ContactPane : EventBox {
     personas.set_vexpand (true);
 
     var persona_list = new ArrayList<Persona>();
+    int i = 0;
+    while (i < persona_list.size) {
+      if (persona_list[i].store.type_id == "key-file")
+	persona_list.remove_at (i);
+      else
+	i++;
+    }
     persona_list.add_all (contact.individual.personas);
     var fake_persona = FakePersona.maybe_create_for (contact);
     if (fake_persona != null)
       persona_list.add (fake_persona);
     persona_list.sort (Contact.compare_persona_by_store);
 
+    if (persona == null)
+      persona = persona_list[0];
+
     PersonaButton button = null;
-    foreach (var p in persona_list) {
+    if (persona_list.size > 1) {
+      foreach (var p in persona_list) {
 
-      button = new PersonaButton (button, p as AvatarDetails, 48);
-      personas.add (button);
+	button = new PersonaButton (button, p as AvatarDetails, 48);
+	personas.add (button);
 
-      if (p == persona) {
-	button.set_active (true);
+	if (p == persona)
+	  button.set_active (true);
+
+	button.toggled.connect ( (a_button) => {
+	    if (a_button.get_active ())
+	      update_edit_details (image_frame, p, false);
+	  });
       }
-      button.toggled.connect ( (a_button) => {
-	  if (a_button.get_active ())
-	    update_edit_details (image_frame, p, false);
-	});
     }
 
     update_edit_details (image_frame, persona, new_contact);
@@ -1151,12 +1164,7 @@ public class Contacts.ContactPane : EventBox {
     bbox.pack_start (button, false, false, 0);
 
     button.clicked.connect ( (button) => {
-	Persona? persona = null;
-	var i = selected_contact.individual.personas.iterator();
-	if (i.next())
-	  persona = i.get();
-
-	display_edit (selected_contact, persona);
+	display_edit (selected_contact, null);
       });
 
     MenuButton menu_button = new MenuButton (_("More"));
