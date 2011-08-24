@@ -514,6 +514,7 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
+    editing_persona = persona;
     layout.reset (false);
     image_frame.set_image (persona as AvatarDetails);
     image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
@@ -806,7 +807,6 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void display_edit (Contact contact, Persona persona, bool new_contact = false) {
-    editing_persona = persona;
     set_display_mode (DisplayMode.EDIT);
 
     var image_frame = new ContactFrame (PROFILE_SIZE);
