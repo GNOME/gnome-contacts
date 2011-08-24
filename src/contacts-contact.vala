@@ -784,7 +784,7 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public async Persona ensure_writable_persona () throws GLib.Error {
-    Persona? p = find_writable_persona ();
+    Persona? p = find_primary_persona ();
     if (p != null)
       return p;
     print ("new writable persona: %p\n", p);
@@ -792,20 +792,16 @@ public class Contacts.Contact : GLib.Object  {
   }
 
 
-  public Persona? find_writable_persona () {
-    var primary_store = store.aggregator.primary_store;
-
-    foreach (var persona in individual.personas) {
-      if (persona.store == primary_store)
-	return persona;
+  public Persona? find_persona_from_store (PersonaStore store) {
+    foreach (var p in individual.personas) {
+      if (p.store == store)
+	return p;
     }
-
-    foreach (var persona in individual.personas) {
-      if (persona.store.is_writeable)
-	return persona;
-    }
-
     return null;
+  }
+
+  public Persona? find_primary_persona () {
+    return find_persona_from_store (store.aggregator.primary_store);
   }
 
   public static string format_persona_store_name (PersonaStore store) {

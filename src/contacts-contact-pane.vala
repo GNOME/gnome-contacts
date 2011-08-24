@@ -763,9 +763,9 @@ public class Contacts.ContactPane : EventBox {
     var widgets = new HashMultiMap<Persona?, TextView>();
     var main_text = add_note ();
 
-    Persona? writable_persona = selected_contact.find_writable_persona ();
-    if (writable_persona == null || writable_persona is NoteDetails)
-      widgets.set (writable_persona, main_text);
+    Persona? primary_persona = selected_contact.find_primary_persona ();
+    if (primary_persona == null || primary_persona is NoteDetails)
+      widgets.set (primary_persona, main_text);
     else
       warning ("Writable store doesn't support notes");
 
@@ -776,7 +776,7 @@ public class Contacts.ContactPane : EventBox {
       if (notes == null)
 	continue;
       foreach (var note in notes.notes) {
-	if (persona == writable_persona && !primary_note_seen) {
+	if (persona == primary_persona && !primary_note_seen) {
 	  primary_note_seen = true;
 	  update_note (main_text, note);
 	} else if (persona.store.is_writeable) {
