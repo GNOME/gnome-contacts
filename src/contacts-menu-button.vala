@@ -174,6 +174,7 @@ public class Contacts.MenuButton : ToggleButton  {
       context.add_class (STYLE_CLASS_MENUBAR);
       context.add_class (STYLE_CLASS_MENUITEM);
     }
+    reset_style ();
     base.draw (cr);
     context.restore ();
     return false;
