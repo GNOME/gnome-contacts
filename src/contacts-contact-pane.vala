@@ -359,12 +359,17 @@ public class Contacts.ContactPane : EventBox {
 
   private signal void save_data ();
 
+  private void update_detail_property (string property_name,
+				       Set<AbstractFieldDetails> detail_set) {
+    editing_persona.set (property_name, detail_set);
+  }
+
   private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
 					AbstractFieldDetails detail,
 					TypeCombo combo,
 					string property_name) {
     combo.update_details (detail);
-    editing_persona.set (property_name, detail_set);
+    update_detail_property (property_name, detail_set);
   }
 
   private void add_detail_combo (TypeSet type_set,
@@ -389,7 +394,7 @@ public class Contacts.ContactPane : EventBox {
     if (detail.value != entry.get_text ()) {
       detail.value = entry.get_text ();
 
-      editing_persona.set (property_name, detail_set);
+      update_detail_property (property_name, detail_set);
     }
   }
 
@@ -428,7 +433,7 @@ public class Contacts.ContactPane : EventBox {
       new_value.set (subproperty_name, entry.get_text ());
       detail.value = new_value;
 
-      editing_persona.set (property_name, detail_set);
+      update_detail_property (property_name, detail_set);
     }
   }
 
@@ -461,7 +466,7 @@ public class Contacts.ContactPane : EventBox {
 
     remove_button.clicked.connect ( () => {
 	detail_set.remove (detail);
-	editing_persona.set (property_name, detail_set);
+	update_detail_property (property_name, detail_set);
 	row.destroy ();
       });
     return remove_button;
