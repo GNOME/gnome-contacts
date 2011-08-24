@@ -104,7 +104,7 @@ public class Contacts.ListPane : Frame {
 	create_new ();
       });
 
-    this.set_size_request (380, -1);
+    this.set_size_request (315, -1);
     this.set_hexpand (false);
 
     var scrolled = new ScrolledWindow(null, null);
