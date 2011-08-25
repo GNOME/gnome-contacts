@@ -603,13 +603,14 @@ public class Contacts.ContactPane : EventBox {
     if (im_details != null) {
       var ims = im_details.im_addresses;
       var im_keys = ims.get_keys ();
-      if (!im_keys.is_empty) {
-	foreach (var protocol in im_keys) {
-	  foreach (var id in ims[protocol]) {
-	    im_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
-	    var button = im_layout.add_remove ();
-	    button.set_sensitive (false);
-	  }
+      foreach (var protocol in im_keys) {
+	foreach (var id in ims[protocol]) {
+	  var im_persona = selected_contact.find_im_persona (protocol, id.value);
+	  if (im_persona != null && im_persona != persona)
+	    continue;
+	  im_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
+	  var button = im_layout.add_remove ();
+	  button.set_sensitive (false);
 	}
       }
     }
