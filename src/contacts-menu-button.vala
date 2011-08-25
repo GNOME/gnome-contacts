@@ -98,12 +98,18 @@ public class Contacts.MenuButton : ToggleButton  {
   }
 
   public override void toggled () {
+    var context = get_style_context ();
     if (get_active ()) {
       if (!popup_in_progress)
 	menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
+      context.add_class (STYLE_CLASS_MENUBAR);
+      context.add_class (STYLE_CLASS_MENUITEM);
     } else {
+      context.remove_class (STYLE_CLASS_MENUBAR);
+      context.remove_class (STYLE_CLASS_MENUITEM);
       menu.popdown ();
     }
+    reset_style ();
   }
 
   public override bool button_press_event (Gdk.EventButton event) {
@@ -168,15 +174,7 @@ public class Contacts.MenuButton : ToggleButton  {
   }
 
   public override bool draw (Cairo.Context cr) {
-    var context = get_style_context ();
-    context.save ();
-    if (get_active ()) {
-      context.add_class (STYLE_CLASS_MENUBAR);
-      context.add_class (STYLE_CLASS_MENUITEM);
-    }
-    reset_style ();
     base.draw (cr);
-    context.restore ();
     return false;
   }
 
