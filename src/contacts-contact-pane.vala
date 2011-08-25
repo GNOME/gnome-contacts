@@ -50,17 +50,12 @@ class Contacts.DetailsLayout : Object {
   Widget? last_label;
   Box? detail_box;
 
-  public void reset (bool full) {
+  public void reset () {
     foreach (var w in fields_grid.get_children ()) {
-      if (full || !w.get_data<bool> ("contacts-stable"))
-	w.destroy ();
+      w.destroy ();
     }
     current_row = null;
     last_label = null;
-  }
-
-  public void mark_row_stable () {
-    current_row.set_data<bool> ("contacts-stable", true);
   }
 
   void new_row () {
@@ -354,6 +349,7 @@ public class Contacts.ContactPane : EventBox {
   private Persona? editing_persona;
   private DisplayMode display_mode;
   private Grid top_grid;
+  private Grid card_grid;
   private Grid fields_grid;
   private Grid button_grid;
   private bool has_notes;
@@ -361,6 +357,7 @@ public class Contacts.ContactPane : EventBox {
   private ButtonBox normal_buttons;
   private ButtonBox editing_buttons;
   private DetailsLayout.SharedState layout_state;
+  private DetailsLayout card_layout;
   private DetailsLayout layout;
   private DetailsLayout button_layout;
 
@@ -554,8 +551,8 @@ public class Contacts.ContactPane : EventBox {
 
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
     editing_persona = persona;
-    layout.reset (false);
-    button_layout.reset (false);
+    layout.reset ();
+    button_layout.reset ();
     image_frame.set_image (persona as AvatarDetails);
     image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
 
@@ -691,6 +688,7 @@ public class Contacts.ContactPane : EventBox {
       button_layout.attach_detail (menu_button);
     }
 
+    card_grid.show_all ();
     fields_grid.show_all ();
     button_grid.show_all ();
   }
@@ -701,11 +699,11 @@ public class Contacts.ContactPane : EventBox {
     // Put the frame in a grid so its not expanded by the size-group
     var ig = new Grid ();
     ig.add (image_frame);
-    layout.add_widget_label (ig);
+    card_layout.add_widget_label (ig);
 
-    layout.current_row.set_vexpand (false);
+    card_layout.current_row.set_vexpand (false);
     var g = new Grid();
-    layout.current_row.add (g);
+    card_layout.current_row.add (g);
 
     var l = new Label (null);
     l.set_markup ("<span font='22'><b>" + contact.display_name + "</b></span>");
@@ -855,12 +853,11 @@ public class Contacts.ContactPane : EventBox {
     // Put the frame in a grid so its not expanded by the size-group
     var ig = new Grid ();
     ig.add (image_frame);
-    layout.add_widget_label (ig);
-    layout.mark_row_stable ();
+    card_layout.add_widget_label (ig);
 
-    layout.current_row.set_vexpand (false);
+    card_layout.current_row.set_vexpand (false);
     var g = new Grid();
-    layout.current_row.add (g);
+    card_layout.current_row.add (g);
 
     var e = new Entry ();
     e.get_style_context ().add_class ("contact-entry");
@@ -937,6 +934,7 @@ public class Contacts.ContactPane : EventBox {
     update_edit_details (image_frame, persona, new_contact);
 
     g.attach (personas,  0, 3, 1, 1);
+    card_grid.show_all ();
     fields_grid.show_all ();
     button_grid.show_all ();
   }
@@ -1031,6 +1029,7 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
+    card_grid.show_all ();
     fields_grid.show_all ();
     button_grid.show_all ();
   }
@@ -1047,8 +1046,9 @@ public class Contacts.ContactPane : EventBox {
   }
 
   private void set_display_mode (DisplayMode mode) {
-    layout.reset (true);
-    button_layout.reset (true);
+    card_layout.reset ();
+    layout.reset ();
+    button_layout.reset ();
 
     if (display_mode == mode)
       return;
@@ -1135,6 +1135,11 @@ public class Contacts.ContactPane : EventBox {
     scrolled.add_with_viewport (top_grid);
     scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
+    card_grid = new Grid ();
+    card_grid.set_orientation (Orientation.VERTICAL);
+    card_grid.set_column_spacing (3);
+    top_grid.add (card_grid);
+
     fields_grid = new Grid ();
     fields_grid.set_orientation (Orientation.VERTICAL);
     fields_grid.set_column_spacing (3);
@@ -1146,6 +1151,7 @@ public class Contacts.ContactPane : EventBox {
     top_grid.add (button_grid);
 
     layout_state = new DetailsLayout.SharedState ();
+    card_layout = new DetailsLayout (card_grid, layout_state);
     layout = new DetailsLayout (fields_grid, layout_state);
     button_layout = new DetailsLayout (button_grid, layout_state);
 
