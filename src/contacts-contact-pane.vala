@@ -973,22 +973,20 @@ public class Contacts.ContactPane : EventBox {
 
     var ims = contact.individual.im_addresses;
     var im_keys = ims.get_keys ();
-    if (!im_keys.is_empty) {
-      foreach (var protocol in im_keys) {
-	foreach (var id in ims[protocol]) {
-	  fields_layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id.value));
-	  Button? button = null;
-	  var presence = contact.create_presence_widget (protocol, id.value);
-	  if (presence != null) {
-	    button = fields_layout.add_button (null);
-	    button.add (presence);
-	  }
+    foreach (var protocol in im_keys) {
+      foreach (var id in ims[protocol]) {
+	fields_layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id.value));
+	Button? button = null;
+	var presence = contact.create_presence_widget (protocol, id.value);
+	if (presence != null) {
+	  button = fields_layout.add_button (null);
+	  button.add (presence);
+	}
 
-	  if (button != null) {
-	    button.clicked.connect ( () => {
-		Utils.start_chat (contact, protocol, id.value);
-	      });
-	  }
+	if (button != null) {
+	  button.clicked.connect ( () => {
+	      Utils.start_chat (contact, protocol, id.value);
+	    });
 	}
       }
     }
