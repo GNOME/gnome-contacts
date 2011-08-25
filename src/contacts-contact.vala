@@ -920,6 +920,7 @@ public class Contacts.FakePersona : Persona {
       prop_vals = new ArrayList<PropVal> ();
       prop_vals.add (v);
       Persona p = yield contact.ensure_primary_persona ();
+      p.set ("full-name", contact.display_name);
       foreach (var pv in prop_vals) {
 	p.set (pv.property, pv.value);
       }
