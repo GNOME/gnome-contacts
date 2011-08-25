@@ -511,6 +511,41 @@ public class Contacts.ContactPane : EventBox {
     add_detail_remove (layout, detail_set, detail, property_name, false);
   }
 
+  private void add_email_editor (DetailsLayout layout,
+				 Set<AbstractFieldDetails> detail_set,
+				 EmailFieldDetails? email) {
+    add_detail_editor (layout,
+		       TypeSet.general,
+		       detail_set,
+		       email != null ? new EmailFieldDetails (email.value, email.parameters) : new EmailFieldDetails(""),
+		       "email_addresses",
+		       _("Enter email address"));
+  }
+
+  private void add_phone_editor (DetailsLayout layout,
+				 Set<AbstractFieldDetails> detail_set,
+				 PhoneFieldDetails? p) {
+    add_detail_editor (layout,
+		       TypeSet.phone,
+		       detail_set,
+		       p != null ? new PhoneFieldDetails (p.value, p.parameters) : new PhoneFieldDetails(""),
+		       "phone_numbers",
+		       _("Enter phone number"));
+  }
+
+  private void add_url_editor (DetailsLayout layout,
+			       Set<AbstractFieldDetails> detail_set,
+			       UrlFieldDetails url) {
+    if (layout.grid.get_children ().length () == 0)
+      layout.add_label ("Links");
+
+    add_detail_editor_no_type (layout,
+			       detail_set,
+			       url != null ? new UrlFieldDetails (url.value, url.parameters) : new UrlFieldDetails (""),
+			       "urls",
+			       _("Enter link"));
+  }
+
   private void add_postal_editor (DetailsLayout layout,
 				  Set<PostalAddressFieldDetails> detail_set,
 				  PostalAddressFieldDetails detail) {
@@ -547,24 +582,24 @@ public class Contacts.ContactPane : EventBox {
     editing_urls = new HashSet<UrlFieldDetails>();
     editing_postals = new HashSet<PostalAddressFieldDetails>();
 
+    var email_layout = new DetailsLayout (layout_state);
+    fields_grid.add (email_layout.grid);
+
     var email_details = persona as EmailDetails;
     if (email_details != null) {
       var emails = Contact.sort_fields<EmailFieldDetails>(email_details.email_addresses);
       foreach (var email in emails) {
-	add_detail_editor (fields_layout,
-			   TypeSet.general,
-			   editing_emails, new EmailFieldDetails (email.value, email.parameters),
-			   "email_addresses",
-			   _("Enter email address"));
+	add_email_editor (email_layout,
+			  editing_emails, email);
       }
     }
 
     if (new_contact)
-      add_detail_editor (fields_layout,
-			 TypeSet.general,
-			 editing_emails, new EmailFieldDetails(""),
-			 "email_addresses",
-			 _("Enter email address"));
+      add_email_editor (email_layout,
+			editing_emails, null);
+
+    var im_layout = new DetailsLayout (layout_state);
+    fields_grid.add (im_layout.grid);
 
     var im_details = persona as ImDetails;
     if (im_details != null) {
@@ -573,55 +608,53 @@ public class Contacts.ContactPane : EventBox {
       if (!im_keys.is_empty) {
 	foreach (var protocol in im_keys) {
 	  foreach (var id in ims[protocol]) {
-	    fields_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
-	    var button = fields_layout.add_remove ();
+	    im_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
+	    var button = im_layout.add_remove ();
 	    button.set_sensitive (false);
 	  }
 	}
       }
     }
 
+    var phone_layout = new DetailsLayout (layout_state);
+    fields_grid.add (phone_layout.grid);
+
     var phone_details = persona as PhoneDetails;
     if (phone_details != null) {
       var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
       foreach (var p in phone_numbers) {
-	add_detail_editor (fields_layout,
-			   TypeSet.phone,
-			   editing_phones, new PhoneFieldDetails (p.value, p.parameters),
-			   "phone_numbers",
-			   _("Enter phone number"));
+	add_phone_editor (phone_layout,
+			  editing_phones, p);
       }
     }
 
     if (new_contact)
-      add_detail_editor (fields_layout,
-			 TypeSet.phone,
-			 editing_phones, new PhoneFieldDetails(""),
-			 "phone_numbers",
-			 _("Enter phone number"));
+      add_phone_editor (phone_layout,
+			editing_phones, null);
+
+    var postal_layout = new DetailsLayout (layout_state);
+    fields_grid.add (postal_layout.grid);
 
     var postal_details = persona as PostalAddressDetails;
     if (postal_details != null) {
       var postals = postal_details.postal_addresses;
       foreach (var _addr in postals) {
-	add_postal_editor (fields_layout,
+	add_postal_editor (postal_layout,
 			   editing_postals,
 			   new PostalAddressFieldDetails(_addr.value, _addr.parameters));
       }
     }
 
+    var url_layout = new DetailsLayout (layout_state);
+    fields_grid.add (url_layout.grid);
+
     var urls_details = persona as UrlDetails;
     if (urls_details != null) {
       var urls = urls_details.urls;
-      if (!urls.is_empty) {
-	fields_layout.add_label ("Links");
-	foreach (var url_details in urls) {
-	  add_detail_editor_no_type (fields_layout,
-				     editing_urls,
-				     new UrlFieldDetails (url_details.value, url_details.parameters),
-				     "urls",
-				     _("Enter phone number"));
-	}
+      foreach (var url_details in urls) {
+	add_url_editor (url_layout,
+			editing_urls,
+			url_details);
       }
     }
 
@@ -633,35 +666,26 @@ public class Contacts.ContactPane : EventBox {
 
       var menu = new Menu ();
       Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
-	  add_detail_editor (fields_layout,
-			     TypeSet.general,
-			     editing_emails, new EmailFieldDetails(""),
-			     "email_addresses",
-			     _("Enter email address"));
-	  fields_grid.show_all ();
+	  add_email_editor (email_layout,
+			    editing_emails, null);
+	  email_layout.grid.show_all ();
 	});
       Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
-	  add_detail_editor (fields_layout,
-			     TypeSet.phone,
-			     editing_phones, new PhoneFieldDetails(""),
-			     "phone_numbers",
-			     _("Enter phone number"));
-	  fields_grid.show_all ();
+	  add_phone_editor (phone_layout,
+			    editing_phones, null);
+	  phone_layout.grid.show_all ();
 	});
       Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
-	  add_postal_editor (fields_layout,
+	  add_postal_editor (postal_layout,
 			     editing_postals,
 			     new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
-	  fields_grid.show_all ();
+	  postal_layout.grid.show_all ();
 	});
       Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
-	  fields_layout.add_label ("Links");
-	  add_detail_editor_no_type (fields_layout,
-				     editing_urls,
-				     new UrlFieldDetails(""),
-				     "urls",
-				     _("Enter link"));
-	  fields_grid.show_all ();
+	  add_url_editor (url_layout,
+			  editing_urls,
+			  null);
+	  url_layout.grid.show_all ();
 	  });
 
       menu_button.set_menu (menu);
