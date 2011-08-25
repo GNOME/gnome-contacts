@@ -356,22 +356,15 @@ public class Contacts.ContactPane : EventBox {
 				       Set<AbstractFieldDetails> detail_set) {
     var editing_backup = editing_persona;
     if (editing_persona is FakePersona) {
-      var c = selected_contact;
-      c.ensure_primary_persona.begin ( (obj, result) => {
+      var fake = editing_persona as FakePersona;
+      fake.make_real_and_set.begin (property_name, detail_set, (obj, result) => {
 	  try {
-	    var p = c.ensure_primary_persona.end (result);
-	    p.set (property_name, detail_set);
-	    /* HACK: We don't seem to get any callbacks from folks when the actual
-	     * new property value is availibile, so we add a small timeout here...
-	     * I'm very sorry...
-	     */
-	    Timeout.add (100, () => {
-		if (c == selected_contact && display_mode == DisplayMode.EDIT &&
-		    editing_persona == editing_backup) {
-		  display_edit (selected_contact, p, false);
-		}
-		return false;
-	      });
+	    var p = fake.make_real_and_set.end (result);
+	    if (display_mode == DisplayMode.EDIT &&
+		editing_persona == editing_backup) {
+	      update_persona_buttons (fake.contact, p);
+	      editing_persona = p;
+	    }
 	  } catch (Error e) {
 	    warning ("Unable to create writable persona: %s", e.message);
 	  }

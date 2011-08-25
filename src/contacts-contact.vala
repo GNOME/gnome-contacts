@@ -882,6 +882,8 @@ public class Contacts.Contact : GLib.Object  {
 }
 
 public class Contacts.FakePersona : Persona {
+  public Contact contact;
+
   public static FakePersona? maybe_create_for (Contact contact) {
     var primary_persona = contact.find_primary_persona ();
 
@@ -903,11 +905,20 @@ public class Contacts.FakePersona : Persona {
       get { return this._writeable_properties; }
     }
 
+  public async Persona make_real_and_set (string property_name,
+					  void *value) throws GLib.Error {
+    Persona p;
+    p = yield contact.ensure_primary_persona ();
+    p.set (property_name, value);
+    return p;
+  }
+
   public FakePersona (Contact contact, PersonaStore store) {
     Object (display_id: "display_id",
 	    uid: "uid",
 	    iid: "iid",
 	    store: store,
 	    is_user: false);
+    this.contact = contact;
   }
 }
