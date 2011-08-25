@@ -323,11 +323,16 @@ public class Contacts.ContactPane : EventBox {
   }
   private Store contacts_store;
   private Contact? selected_contact;
-  private Persona? editing_persona;
   private DisplayMode display_mode;
   private Grid card_grid;
   private Grid fields_grid;
   private Grid button_grid;
+
+  /* Stuff used only in edit mode */
+  private ContactFrame edit_image_frame;
+  private Grid edit_persona_grid;
+  private Persona? editing_persona;
+
   private bool has_notes;
   private Widget notes_dot;
   private ButtonBox normal_buttons;
@@ -568,13 +573,13 @@ public class Contacts.ContactPane : EventBox {
     button.set_valign (Align.START);
   }
 
-  private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
+  private void update_edit_details (Persona persona, bool new_contact) {
     editing_persona = persona;
     fields_layout.reset ();
     button_layout.reset ();
 
-    image_frame.set_image (persona as AvatarDetails);
-    image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
+    edit_image_frame.set_image (persona as AvatarDetails);
+    edit_image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
 
     editing_emails = new HashSet<EmailFieldDetails>();
     editing_phones = new HashSet<PhoneFieldDetails>();
@@ -849,14 +854,60 @@ public class Contacts.ContactPane : EventBox {
       });
   }
 
+  private Persona update_persona_buttons (Contact contact,
+					  Persona? _persona) {
+    Persona? persona = _persona;
+
+    foreach (var w in edit_persona_grid.get_children ()) {
+      w.destroy ();
+    }
+
+    var persona_list = new ArrayList<Persona>();
+    int i = 0;
+    persona_list.add_all (contact.individual.personas);
+    while (i < persona_list.size) {
+      if (persona_list[i].store.type_id == "key-file")
+	persona_list.remove_at (i);
+      else
+	i++;
+    }
+    var fake_persona = FakePersona.maybe_create_for (contact);
+    if (fake_persona != null)
+      persona_list.add (fake_persona);
+    persona_list.sort (Contact.compare_persona_by_store);
+
+    if (persona == null)
+      persona = persona_list[0];
+
+    PersonaButton button = null;
+    if (persona_list.size > 1) {
+      foreach (var p in persona_list) {
+
+	button = new PersonaButton (button, p as AvatarDetails, 48);
+	edit_persona_grid.add (button);
+
+	if (p == persona)
+	  button.set_active (true);
+
+	button.toggled.connect ( (a_button) => {
+	    if (a_button.get_active ())
+	      update_edit_details (p, false);
+	  });
+      }
+    }
+
+    edit_persona_grid.show_all ();
+    return persona;
+  }
+
   private void display_edit (Contact contact, Persona? _persona, bool new_contact = false) {
     Persona? persona = _persona;
     set_display_mode (DisplayMode.EDIT);
 
-    var image_frame = new ContactFrame (PROFILE_SIZE);
+    edit_image_frame = new ContactFrame (PROFILE_SIZE);
     // Put the frame in a grid so its not expanded by the size-group
     var ig = new Grid ();
-    ig.add (image_frame);
+    ig.add (edit_image_frame);
     card_layout.add_widget_label (ig);
 
     card_layout.current_row.set_vexpand (false);
@@ -895,49 +946,16 @@ public class Contacts.ContactPane : EventBox {
 	return false;
       });
 
-    var personas = new Grid ();
-    personas.set_row_spacing (0);
-    personas.set_halign (Align.START);
-    personas.set_valign (Align.END);
-    personas.set_vexpand (true);
+    edit_persona_grid = new Grid ();
+    edit_persona_grid.set_row_spacing (0);
+    edit_persona_grid.set_halign (Align.START);
+    edit_persona_grid.set_valign (Align.END);
+    edit_persona_grid.set_vexpand (true);
 
-    var persona_list = new ArrayList<Persona>();
-    int i = 0;
-    persona_list.add_all (contact.individual.personas);
-    while (i < persona_list.size) {
-      if (persona_list[i].store.type_id == "key-file")
-	persona_list.remove_at (i);
-      else
-	i++;
-    }
-    var fake_persona = FakePersona.maybe_create_for (contact);
-    if (fake_persona != null)
-      persona_list.add (fake_persona);
-    persona_list.sort (Contact.compare_persona_by_store);
+    persona = update_persona_buttons (contact, persona);
+    update_edit_details (persona, new_contact);
 
-    if (persona == null)
-      persona = persona_list[0];
-
-    PersonaButton button = null;
-    if (persona_list.size > 1) {
-      foreach (var p in persona_list) {
-
-	button = new PersonaButton (button, p as AvatarDetails, 48);
-	personas.add (button);
-
-	if (p == persona)
-	  button.set_active (true);
-
-	button.toggled.connect ( (a_button) => {
-	    if (a_button.get_active ())
-	      update_edit_details (image_frame, p, false);
-	  });
-      }
-    }
-
-    update_edit_details (image_frame, persona, new_contact);
-
-    g.attach (personas,  0, 3, 1, 1);
+    g.attach (edit_persona_grid,  0, 3, 1, 1);
     card_grid.show_all ();
     fields_grid.show_all ();
     button_grid.show_all ();
@@ -1054,6 +1072,10 @@ public class Contacts.ContactPane : EventBox {
     fields_layout.reset ();
     button_layout.reset ();
 
+    edit_image_frame = null;
+    edit_persona_grid = null;
+    editing_persona = null;
+
     if (display_mode == mode)
       return;
 
@@ -1109,7 +1131,6 @@ public class Contacts.ContactPane : EventBox {
       selected_contact.changed.disconnect (selected_contact_changed);
 
     selected_contact = new_contact;
-    editing_persona = null;
     set_display_mode (DisplayMode.EMPTY);
     set_has_notes (false);
 
