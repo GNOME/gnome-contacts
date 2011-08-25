@@ -335,7 +335,7 @@ public class Contacts.ContactPane : EventBox {
   private ButtonBox editing_buttons;
   private DetailsLayout.SharedState layout_state;
   private DetailsLayout card_layout;
-  private DetailsLayout layout;
+  private DetailsLayout fields_layout;
   private DetailsLayout button_layout;
 
   HashSet<EmailFieldDetails> editing_emails;
@@ -385,7 +385,8 @@ public class Contacts.ContactPane : EventBox {
     update_detail_property (property_name, detail_set);
   }
 
-  private void add_detail_combo (TypeSet type_set,
+  private void add_detail_combo (DetailsLayout layout,
+				 TypeSet type_set,
 				 Set<AbstractFieldDetails> detail_set,
 				 AbstractFieldDetails detail,
 				 string property_name) {
@@ -411,7 +412,8 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  private Entry add_detail_entry (Set<AbstractFieldDetails> detail_set,
+  private Entry add_detail_entry (DetailsLayout layout,
+				  Set<AbstractFieldDetails> detail_set,
 				  AbstractFieldDetails<string> detail,
 				  string property_name,
 				  string? placeholder_text) {
@@ -450,7 +452,8 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  private Entry add_detail_postal_entry (Set<PostalAddressFieldDetails> detail_set,
+  private Entry add_detail_postal_entry (DetailsLayout layout,
+					 Set<PostalAddressFieldDetails> detail_set,
 					 PostalAddressFieldDetails detail,
 					 string subproperty_name,
 					 string property_name,
@@ -470,10 +473,11 @@ public class Contacts.ContactPane : EventBox {
     return entry;
   }
 
-  private Button add_detail_remove (Set<AbstractFieldDetails> detail_set,
-				  AbstractFieldDetails detail,
-				  string property_name,
-				  bool at_top = true) {
+  private Button add_detail_remove (DetailsLayout layout,
+				    Set<AbstractFieldDetails> detail_set,
+				    AbstractFieldDetails detail,
+				    string property_name,
+				    bool at_top = true) {
     var remove_button = layout.add_remove (at_top);
     var row = layout.current_row;
 
@@ -485,51 +489,56 @@ public class Contacts.ContactPane : EventBox {
     return remove_button;
   }
 
-  private void add_detail_editor (TypeSet type_set,
+  private void add_detail_editor (DetailsLayout layout,
+				  TypeSet type_set,
 				  Set<AbstractFieldDetails> detail_set,
 				  AbstractFieldDetails<string> detail,
 				  string property_name,
 				  string? placeholder_text) {
     detail_set.add (detail);
-    add_detail_combo (type_set, detail_set, detail, property_name);
-    add_detail_entry (detail_set, detail, property_name, placeholder_text);
-    add_detail_remove (detail_set, detail, property_name);
+    add_detail_combo (layout, type_set, detail_set, detail, property_name);
+    add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
+    add_detail_remove (layout, detail_set, detail, property_name);
   }
 
-  private void add_detail_editor_no_type (Set<AbstractFieldDetails> detail_set,
+  private void add_detail_editor_no_type (DetailsLayout layout,
+					  Set<AbstractFieldDetails> detail_set,
 					   AbstractFieldDetails<string> detail,
 					   string property_name,
 					   string? placeholder_text) {
     detail_set.add (detail);
-    add_detail_entry (detail_set, detail, property_name, placeholder_text);
-    add_detail_remove (detail_set, detail, property_name, false);
+    add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
+    add_detail_remove (layout, detail_set, detail, property_name, false);
   }
 
-  private void add_postal_editor (Set<PostalAddressFieldDetails> detail_set,
+  private void add_postal_editor (DetailsLayout layout,
+				  Set<PostalAddressFieldDetails> detail_set,
 				  PostalAddressFieldDetails detail) {
     string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
     string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
 
     detail_set.add (detail);
-    add_detail_combo (TypeSet.general, detail_set, detail, "postal_addresses");
+    add_detail_combo (layout, TypeSet.general, detail_set, detail, "postal_addresses");
 
     layout.begin_detail_box ();
     for (int i = 0; i < props.length; i++) {
-      add_detail_postal_entry (detail_set,
+      add_detail_postal_entry (layout,
+			       detail_set,
 			       detail,
 			       props[i],
 			       "postal_addresses",
 			       nice[i]);
     }
     layout.end_detail_box ();
-    var button = add_detail_remove (detail_set, detail, "postal_addresses");
+    var button = add_detail_remove (layout, detail_set, detail, "postal_addresses");
     button.set_valign (Align.START);
   }
 
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
     editing_persona = persona;
-    layout.reset ();
+    fields_layout.reset ();
     button_layout.reset ();
+
     image_frame.set_image (persona as AvatarDetails);
     image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
 
@@ -542,7 +551,8 @@ public class Contacts.ContactPane : EventBox {
     if (email_details != null) {
       var emails = Contact.sort_fields<EmailFieldDetails>(email_details.email_addresses);
       foreach (var email in emails) {
-	add_detail_editor (TypeSet.general,
+	add_detail_editor (fields_layout,
+			   TypeSet.general,
 			   editing_emails, new EmailFieldDetails (email.value, email.parameters),
 			   "email_addresses",
 			   _("Enter email address"));
@@ -550,7 +560,8 @@ public class Contacts.ContactPane : EventBox {
     }
 
     if (new_contact)
-      add_detail_editor (TypeSet.general,
+      add_detail_editor (fields_layout,
+			 TypeSet.general,
 			 editing_emails, new EmailFieldDetails(""),
 			 "email_addresses",
 			 _("Enter email address"));
@@ -562,8 +573,8 @@ public class Contacts.ContactPane : EventBox {
       if (!im_keys.is_empty) {
 	foreach (var protocol in im_keys) {
 	  foreach (var id in ims[protocol]) {
-	    layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
-	    var button = layout.add_remove ();
+	    fields_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
+	    var button = fields_layout.add_remove ();
 	    button.set_sensitive (false);
 	  }
 	}
@@ -574,7 +585,8 @@ public class Contacts.ContactPane : EventBox {
     if (phone_details != null) {
       var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
       foreach (var p in phone_numbers) {
-	add_detail_editor (TypeSet.phone,
+	add_detail_editor (fields_layout,
+			   TypeSet.phone,
 			   editing_phones, new PhoneFieldDetails (p.value, p.parameters),
 			   "phone_numbers",
 			   _("Enter phone number"));
@@ -582,7 +594,8 @@ public class Contacts.ContactPane : EventBox {
     }
 
     if (new_contact)
-      add_detail_editor (TypeSet.phone,
+      add_detail_editor (fields_layout,
+			 TypeSet.phone,
 			 editing_phones, new PhoneFieldDetails(""),
 			 "phone_numbers",
 			 _("Enter phone number"));
@@ -591,7 +604,8 @@ public class Contacts.ContactPane : EventBox {
     if (postal_details != null) {
       var postals = postal_details.postal_addresses;
       foreach (var _addr in postals) {
-	add_postal_editor (editing_postals,
+	add_postal_editor (fields_layout,
+			   editing_postals,
 			   new PostalAddressFieldDetails(_addr.value, _addr.parameters));
       }
     }
@@ -600,9 +614,10 @@ public class Contacts.ContactPane : EventBox {
     if (urls_details != null) {
       var urls = urls_details.urls;
       if (!urls.is_empty) {
-	layout.add_label ("Links");
+	fields_layout.add_label ("Links");
 	foreach (var url_details in urls) {
-	  add_detail_editor_no_type (editing_urls,
+	  add_detail_editor_no_type (fields_layout,
+				     editing_urls,
 				     new UrlFieldDetails (url_details.value, url_details.parameters),
 				     "urls",
 				     _("Enter phone number"));
@@ -618,27 +633,31 @@ public class Contacts.ContactPane : EventBox {
 
       var menu = new Menu ();
       Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
-	  add_detail_editor (TypeSet.general,
+	  add_detail_editor (fields_layout,
+			     TypeSet.general,
 			     editing_emails, new EmailFieldDetails(""),
 			     "email_addresses",
 			     _("Enter email address"));
 	  fields_grid.show_all ();
 	});
       Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
-	  add_detail_editor (TypeSet.phone,
+	  add_detail_editor (fields_layout,
+			     TypeSet.phone,
 			     editing_phones, new PhoneFieldDetails(""),
 			     "phone_numbers",
 			     _("Enter phone number"));
 	  fields_grid.show_all ();
 	});
       Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
-	  add_postal_editor (editing_postals,
+	  add_postal_editor (fields_layout,
+			     editing_postals,
 			     new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
 	  fields_grid.show_all ();
 	});
       Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
-	  layout.add_label ("Links");
-	  add_detail_editor_no_type (editing_urls,
+	  fields_layout.add_label ("Links");
+	  add_detail_editor_no_type (fields_layout,
+				     editing_urls,
 				     new UrlFieldDetails(""),
 				     "urls",
 				     _("Enter link"));
@@ -909,8 +928,8 @@ public class Contacts.ContactPane : EventBox {
     var emails = Contact.sort_fields<EmailFieldDetails>(contact.individual.email_addresses);
     foreach (var email in emails) {
       var type = TypeSet.general.format_type (email);
-      layout.add_label_detail (type, email.value);
-      var button = layout.add_button ("mail-unread-symbolic");
+      fields_layout.add_label_detail (type, email.value);
+      var button = fields_layout.add_button ("mail-unread-symbolic");
       var email_addr = email.value;
       button.clicked.connect ( () => {
 	  Utils.compose_mail (email_addr);
@@ -922,11 +941,11 @@ public class Contacts.ContactPane : EventBox {
     if (!im_keys.is_empty) {
       foreach (var protocol in im_keys) {
 	foreach (var id in ims[protocol]) {
-	  layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id.value));
+	  fields_layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id.value));
 	  Button? button = null;
 	  var presence = contact.create_presence_widget (protocol, id.value);
 	  if (presence != null) {
-	    button = layout.add_button (null);
+	    button = fields_layout.add_button (null);
 	    button.add (presence);
 	  }
 
@@ -943,7 +962,7 @@ public class Contacts.ContactPane : EventBox {
     foreach (var p in phone_numbers) {
       var phone = p as PhoneFieldDetails;
       var type = TypeSet.phone.format_type (phone);
-      layout.add_label_detail (type, phone.value);
+      fields_layout.add_label_detail (type, phone.value);
     }
 
     var postals = contact.individual.postal_addresses;
@@ -951,12 +970,12 @@ public class Contacts.ContactPane : EventBox {
       foreach (var addr in postals) {
 	var type = TypeSet.general.format_type (addr);
 	string[] strs = Contact.format_address (addr.value);
-	layout.add_label (type);
+	fields_layout.add_label (type);
 	if (strs.length > 0) {
 	  foreach (var s in strs)
-	    layout.add_detail (s);
+	    fields_layout.add_detail (s);
 	}
-	var button = layout.add_button ("edit-copy-symbolic");
+	var button = fields_layout.add_button ("edit-copy-symbolic");
 	button.clicked.connect ( () => {
 	    string addr_s = "";
 	    foreach (var s in Contact.format_address (addr.value)) {
@@ -985,9 +1004,9 @@ public class Contacts.ContactPane : EventBox {
 
     var urls = contact.individual.urls;
     if (!urls.is_empty) {
-      layout.add_label ("Links");
+      fields_layout.add_label ("Links");
       foreach (var url_details in urls) {
-	layout.add_link (url_details.value, contact.format_uri_link_text (url_details));
+	fields_layout.add_link (url_details.value, contact.format_uri_link_text (url_details));
       }
     }
 
@@ -1009,7 +1028,7 @@ public class Contacts.ContactPane : EventBox {
 
   private void set_display_mode (DisplayMode mode) {
     card_layout.reset ();
-    layout.reset ();
+    fields_layout.reset ();
     button_layout.reset ();
 
     if (display_mode == mode)
@@ -1099,13 +1118,13 @@ public class Contacts.ContactPane : EventBox {
 
     layout_state = new DetailsLayout.SharedState ();
     card_layout = new DetailsLayout (layout_state);
-    layout = new DetailsLayout (layout_state);
+    fields_layout = new DetailsLayout (layout_state);
     button_layout = new DetailsLayout (layout_state);
 
     card_grid = card_layout.grid;
     top_grid.add (card_grid);
 
-    fields_grid = layout.grid;
+    fields_grid = fields_layout.grid;
     top_grid.add (fields_grid);
 
     button_grid = button_layout.grid;
