@@ -29,21 +29,15 @@ class Contacts.DetailsLayout : Object {
     }
   }
 
-  public struct State {
-    private bool expands;
-    public Grid? current_row;
-    Widget? last_label;
-  }
-
-  public DetailsLayout (Grid fields_grid, SharedState s) {
-    this.fields_grid = fields_grid;
+  public DetailsLayout (SharedState s) {
     shared_state = s;
-    label_size_group = s.label_size_group;
+    grid = new Grid ();
+    grid.set_orientation (Orientation.VERTICAL);
+    grid.set_column_spacing (3);
   }
 
   SharedState shared_state;
-  Grid fields_grid;
-  SizeGroup label_size_group;
+  public Grid grid;
 
   private bool expands;
   public Grid? current_row;
@@ -51,32 +45,29 @@ class Contacts.DetailsLayout : Object {
   Box? detail_box;
 
   public void reset () {
-    foreach (var w in fields_grid.get_children ()) {
+    foreach (var w in grid.get_children ()) {
       w.destroy ();
     }
     current_row = null;
     last_label = null;
+    detail_box = null;
   }
 
   void new_row () {
-    var grid = new Grid ();
+    var row = new Grid ();
     expands = false;
     last_label = null;
-    grid.set_row_spacing (9);
-    grid.set_column_spacing (3);
-    grid.set_orientation (Orientation.HORIZONTAL);
-    if (current_row != null) {
-      Utils.grid_insert_row_after (fields_grid, current_row, true);
-      fields_grid.attach_next_to (grid, current_row, PositionType.BOTTOM, 1, 1);
-    } else
-      fields_grid.add (grid);
-    current_row = grid;
+    row.set_row_spacing (9);
+    row.set_column_spacing (3);
+    row.set_orientation (Orientation.HORIZONTAL);
+    current_row = row;
+    grid.add (row);
   }
 
   public void add_widget_label (Widget w) {
     new_row ();
 
-    label_size_group.add_widget (w);
+    shared_state.label_size_group.add_widget (w);
     current_row.add (w);
   }
 
@@ -178,20 +169,6 @@ class Contacts.DetailsLayout : Object {
     var button = add_button ("edit-delete-symbolic", at_top);
     button.set_relief (ReliefStyle.NONE);
     return button;
-  }
-
-  public State? save_state () {
-    State? state = State();
-    state.expands = expands;
-    state.current_row = current_row;
-    state.last_label = last_label;
-    return state;
-  }
-
-  public void load_state (State? state) {
-    expands = state.expands;
-    current_row = state.current_row;
-    last_label = state.last_label;
   }
 }
 
@@ -619,7 +596,6 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
-    DetailsLayout.State? url_row = null;
     var urls_details = persona as UrlDetails;
     if (urls_details != null) {
       var urls = urls_details.urls;
@@ -631,11 +607,8 @@ public class Contacts.ContactPane : EventBox {
 				     "urls",
 				     _("Enter phone number"));
 	}
-	url_row = layout.save_state ();
       }
     }
-
-    var end_row = layout.save_state ();
 
     if (persona.store.is_writeable) {
       button_layout.add_label ("");
@@ -645,41 +618,30 @@ public class Contacts.ContactPane : EventBox {
 
       var menu = new Menu ();
       Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
-	  layout.load_state (end_row);
 	  add_detail_editor (TypeSet.general,
 			     editing_emails, new EmailFieldDetails(""),
 			     "email_addresses",
 			     _("Enter email address"));
 	  fields_grid.show_all ();
-	  end_row = layout.save_state ();
 	});
       Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
-	  layout.load_state (end_row);
 	  add_detail_editor (TypeSet.phone,
 			     editing_phones, new PhoneFieldDetails(""),
 			     "phone_numbers",
 			     _("Enter phone number"));
 	  fields_grid.show_all ();
-	  end_row = layout.save_state ();
 	});
       Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
-	  layout.load_state (end_row);
 	  add_postal_editor (editing_postals,
 			     new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
 	  fields_grid.show_all ();
-	  end_row = layout.save_state ();
 	});
       Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
-	  if (url_row != null) {
-	    layout.load_state (url_row);
-	  } else {
-	    layout.add_label ("Links");
-	  }
+	  layout.add_label ("Links");
 	  add_detail_editor_no_type (editing_urls,
 				     new UrlFieldDetails(""),
 				     "urls",
 				     _("Enter link"));
-	  url_row = layout.save_state ();
 	  fields_grid.show_all ();
 	  });
 
@@ -1135,25 +1097,19 @@ public class Contacts.ContactPane : EventBox {
     scrolled.add_with_viewport (top_grid);
     scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
-    card_grid = new Grid ();
-    card_grid.set_orientation (Orientation.VERTICAL);
-    card_grid.set_column_spacing (3);
+    layout_state = new DetailsLayout.SharedState ();
+    card_layout = new DetailsLayout (layout_state);
+    layout = new DetailsLayout (layout_state);
+    button_layout = new DetailsLayout (layout_state);
+
+    card_grid = card_layout.grid;
     top_grid.add (card_grid);
 
-    fields_grid = new Grid ();
-    fields_grid.set_orientation (Orientation.VERTICAL);
-    fields_grid.set_column_spacing (3);
+    fields_grid = layout.grid;
     top_grid.add (fields_grid);
 
-    button_grid = new Grid ();
-    button_grid.set_orientation (Orientation.VERTICAL);
-    button_grid.set_column_spacing (3);
+    button_grid = button_layout.grid;
     top_grid.add (button_grid);
-
-    layout_state = new DetailsLayout.SharedState ();
-    card_layout = new DetailsLayout (card_grid, layout_state);
-    layout = new DetailsLayout (fields_grid, layout_state);
-    button_layout = new DetailsLayout (button_grid, layout_state);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     normal_buttons = bbox;
