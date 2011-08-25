@@ -223,6 +223,7 @@ public class Contacts.ContactFrame : Frame {
       pixbuf = Contact.draw_fallback_avatar (size, contact);
     }
     pixbuf = Contact.frame_icon (pixbuf);
+    queue_draw ();
   }
 
   public void set_text (string? text_, int text_height_) {
@@ -242,6 +243,7 @@ public class Contacts.ContactFrame : Frame {
 	layout.get_extents (null, out rect);
       } while (rect.width > size * Pango.SCALE);
     }
+    queue_draw ();
   }
 
   public override bool draw (Cairo.Context cr) {
