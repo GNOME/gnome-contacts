@@ -360,7 +360,8 @@ public class Contacts.ContactPane : EventBox {
       fake.make_real_and_set.begin (property_name, detail_set, (obj, result) => {
 	  try {
 	    var p = fake.make_real_and_set.end (result);
-	    if (display_mode == DisplayMode.EDIT &&
+	    if (p != null &&
+		display_mode == DisplayMode.EDIT &&
 		editing_persona == editing_backup) {
 	      update_persona_buttons (fake.contact, p);
 	      editing_persona = p;
