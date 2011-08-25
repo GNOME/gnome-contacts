@@ -518,7 +518,7 @@ public class Contacts.ContactPane : EventBox {
 		       TypeSet.general,
 		       detail_set,
 		       email != null ? new EmailFieldDetails (email.value, email.parameters) : new EmailFieldDetails(""),
-		       "email_addresses",
+		       "email-addresses",
 		       _("Enter email address"));
   }
 
@@ -529,7 +529,7 @@ public class Contacts.ContactPane : EventBox {
 		       TypeSet.phone,
 		       detail_set,
 		       p != null ? new PhoneFieldDetails (p.value, p.parameters) : new PhoneFieldDetails(""),
-		       "phone_numbers",
+		       "phone-numbers",
 		       _("Enter phone number"));
   }
 
@@ -561,11 +561,11 @@ public class Contacts.ContactPane : EventBox {
 			       detail_set,
 			       detail,
 			       props[i],
-			       "postal_addresses",
+			       "postal-addresses",
 			       nice[i]);
     }
     layout.end_detail_box ();
-    var button = add_detail_remove (layout, detail_set, detail, "postal_addresses");
+    var button = add_detail_remove (layout, detail_set, detail, "postal-addresses");
     button.set_valign (Align.START);
   }
 
