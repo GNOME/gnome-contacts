@@ -886,13 +886,13 @@ public class Contacts.ContactPane : EventBox {
 
     var persona_list = new ArrayList<Persona>();
     int i = 0;
+    persona_list.add_all (contact.individual.personas);
     while (i < persona_list.size) {
       if (persona_list[i].store.type_id == "key-file")
 	persona_list.remove_at (i);
       else
 	i++;
     }
-    persona_list.add_all (contact.individual.personas);
     var fake_persona = FakePersona.maybe_create_for (contact);
     if (fake_persona != null)
       persona_list.add (fake_persona);
