@@ -22,17 +22,26 @@ using Folks;
 using Gee;
 
 class Contacts.DetailsLayout : Object {
+  public class SharedState {
+    public SizeGroup label_size_group;
+    public SharedState () {
+      label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
+    }
+  }
+
   public struct State {
     private bool expands;
     public Grid? current_row;
     Widget? last_label;
   }
 
-  public DetailsLayout (Grid fields_grid) {
+  public DetailsLayout (Grid fields_grid, SharedState s) {
     this.fields_grid = fields_grid;
-    label_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
+    shared_state = s;
+    label_size_group = s.label_size_group;
   }
 
+  SharedState shared_state;
   Grid fields_grid;
   SizeGroup label_size_group;
 
@@ -344,12 +353,16 @@ public class Contacts.ContactPane : EventBox {
   private Contact? selected_contact;
   private Persona? editing_persona;
   private DisplayMode display_mode;
+  private Grid top_grid;
   private Grid fields_grid;
+  private Grid button_grid;
   private bool has_notes;
   private Widget notes_dot;
   private ButtonBox normal_buttons;
   private ButtonBox editing_buttons;
+  private DetailsLayout.SharedState layout_state;
   private DetailsLayout layout;
+  private DetailsLayout button_layout;
 
   HashSet<EmailFieldDetails> editing_emails;
   HashSet<PhoneFieldDetails> editing_phones;
@@ -542,6 +555,7 @@ public class Contacts.ContactPane : EventBox {
   private void update_edit_details (ContactFrame image_frame, Persona persona, bool new_contact) {
     editing_persona = persona;
     layout.reset (false);
+    button_layout.reset (false);
     image_frame.set_image (persona as AvatarDetails);
     image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
 
@@ -627,7 +641,7 @@ public class Contacts.ContactPane : EventBox {
     var end_row = layout.save_state ();
 
     if (persona.store.is_writeable) {
-      layout.add_label ("");
+      button_layout.add_label ("");
       var menu_button = new MenuButton (_("Add detail"));
       menu_button.set_hexpand (false);
       menu_button.set_margin_top (12);
@@ -674,11 +688,11 @@ public class Contacts.ContactPane : EventBox {
 
       menu_button.set_menu (menu);
 
-      layout.attach_detail (menu_button);
+      button_layout.attach_detail (menu_button);
     }
 
-
     fields_grid.show_all ();
+    button_grid.show_all ();
   }
 
   private void display_card (Contact contact) {
@@ -924,6 +938,7 @@ public class Contacts.ContactPane : EventBox {
 
     g.attach (personas,  0, 3, 1, 1);
     fields_grid.show_all ();
+    button_grid.show_all ();
   }
 
   private void display_contact (Contact contact) {
@@ -1017,6 +1032,7 @@ public class Contacts.ContactPane : EventBox {
     }
 
     fields_grid.show_all ();
+    button_grid.show_all ();
   }
 
   private void set_has_notes (bool has_notes) {
@@ -1032,6 +1048,7 @@ public class Contacts.ContactPane : EventBox {
 
   private void set_display_mode (DisplayMode mode) {
     layout.reset (true);
+    button_layout.reset (true);
 
     if (display_mode == mode)
       return;
@@ -1107,20 +1124,30 @@ public class Contacts.ContactPane : EventBox {
     grid.set_border_width (10);
     this.add (grid);
 
-    var fields_scrolled = new ScrolledWindow (null, null);
-    fields_scrolled.set_hexpand (true);
-    fields_scrolled.set_vexpand (true);
-    fields_scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    var scrolled = new ScrolledWindow (null, null);
+    scrolled.set_hexpand (true);
+    scrolled.set_vexpand (true);
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    grid.attach (scrolled, 0, 1, 1, 1);
+
+    top_grid = new Grid ();
+    top_grid.set_orientation (Orientation.VERTICAL);
+    scrolled.add_with_viewport (top_grid);
+    scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
     fields_grid = new Grid ();
-    fields_grid.set_column_spacing (3);
     fields_grid.set_orientation (Orientation.VERTICAL);
-    fields_scrolled.add_with_viewport (fields_grid);
-    fields_scrolled.get_child().get_style_context ().add_class ("contact-pane");
+    fields_grid.set_column_spacing (3);
+    top_grid.add (fields_grid);
 
-    layout = new DetailsLayout (fields_grid);
+    button_grid = new Grid ();
+    button_grid.set_orientation (Orientation.VERTICAL);
+    button_grid.set_column_spacing (3);
+    top_grid.add (button_grid);
 
-    grid.attach (fields_scrolled, 0, 1, 1, 1);
+    layout_state = new DetailsLayout.SharedState ();
+    layout = new DetailsLayout (fields_grid, layout_state);
+    button_layout = new DetailsLayout (button_grid, layout_state);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     normal_buttons = bbox;
