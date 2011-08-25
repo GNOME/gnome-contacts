@@ -80,6 +80,8 @@ public class Contacts.LinkDialog : Dialog {
     container.add (grid);
 
     var list_grid = new Grid ();
+    list_grid.set_size_request (315, -1);
+    list_grid.set_hexpand (false);
     grid.attach (list_grid, 0, 0, 1, 1);
     list_grid.set_orientation (Orientation.VERTICAL);
 
@@ -112,6 +114,7 @@ public class Contacts.LinkDialog : Dialog {
     scrolled.set_min_content_width (310);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
+    scrolled.set_hexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.add (list);
     list_grid.add (scrolled);
