@@ -325,7 +325,6 @@ public class Contacts.ContactPane : EventBox {
   private Contact? selected_contact;
   private Persona? editing_persona;
   private DisplayMode display_mode;
-  private Grid top_grid;
   private Grid card_grid;
   private Grid fields_grid;
   private Grid button_grid;
@@ -1135,7 +1134,7 @@ public class Contacts.ContactPane : EventBox {
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     grid.attach (scrolled, 0, 1, 1, 1);
 
-    top_grid = new Grid ();
+    var top_grid = new Grid ();
     top_grid.set_orientation (Orientation.VERTICAL);
     scrolled.add_with_viewport (top_grid);
     scrolled.get_child().get_style_context ().add_class ("contact-pane");
