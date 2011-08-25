@@ -535,7 +535,7 @@ public class Contacts.ContactPane : EventBox {
 
   private void add_url_editor (DetailsLayout layout,
 			       Set<AbstractFieldDetails> detail_set,
-			       UrlFieldDetails url) {
+			       UrlFieldDetails? url) {
     if (layout.grid.get_children ().length () == 0)
       layout.add_label ("Links");
 
