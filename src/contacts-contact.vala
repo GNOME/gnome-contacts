@@ -899,7 +899,7 @@ public class Contacts.FakePersona : Persona {
   public Contact contact;
   private class PropVal {
     public string property;
-    public Object value;
+    public Value value;
   }
   private ArrayList<PropVal> prop_vals;
   private bool now_real;
@@ -926,7 +926,7 @@ public class Contacts.FakePersona : Persona {
     }
 
   public async Persona? make_real_and_set (string property,
-					   Object value) throws GLib.Error {
+					   Value value) throws GLib.Error {
     var v = new PropVal ();
     v.property = property;
     v.value = value;
@@ -936,7 +936,7 @@ public class Contacts.FakePersona : Persona {
       Persona p = yield contact.ensure_primary_persona ();
       p.set ("full-name", contact.display_name);
       foreach (var pv in prop_vals) {
-	p.set (pv.property, pv.value);
+	p.set_property (pv.property, pv.value);
       }
       now_real = true;
       return p;

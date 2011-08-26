@@ -352,45 +352,37 @@ public class Contacts.ContactPane : EventBox {
 
   private signal void save_data ();
 
-  private void set_persona_property (Persona persona,
-				     string property_name,
-				     Object value) {
+  private async Persona? set_persona_property (Persona persona,
+					       string property_name,
+					       Value value) throws GLib.Error {
     if (persona is FakePersona) {
       var fake = persona as FakePersona;
-      fake.make_real_and_set.begin (property_name, value, (obj, result) => {
-	  try {
-	    fake.make_real_and_set.end (result);
-	  } catch (Error e) {
-	    warning ("Unable to create writeable persona: %s", e.message);
-	  }
-	});
+      return yield fake.make_real_and_set (property_name, value);
     } else {
-      persona.set (property_name, value);
+      persona.set_property (property_name, value);
+      return null;
     }
   }
 
   private void update_detail_property (string property_name,
 				       Set<AbstractFieldDetails> detail_set) {
     var editing_backup = editing_persona;
-    if (editing_persona is FakePersona) {
-      var fake = editing_persona as FakePersona;
-      fake.make_real_and_set.begin (property_name, detail_set, (obj, result) => {
+    var value = Value (detail_set.get_type ());
+    value.set_object (detail_set);
+    set_persona_property.begin (editing_persona, property_name, value, (obj, result) => {
 	  try {
-	    var p = fake.make_real_and_set.end (result);
+	    var p = set_persona_property.end (result);
 	    if (p != null &&
 		display_mode == DisplayMode.EDIT &&
 		editing_persona == editing_backup) {
-	      update_persona_buttons (fake.contact, p);
+	      update_persona_buttons (selected_contact, p);
 	      editing_persona = p;
+	      editing_persona_primary = p;
 	    }
 	  } catch (Error e) {
 	    warning ("Unable to create writeable persona: %s", e.message);
 	  }
-	});
-    } else {
-      editing_persona.set_data ("contacts-unedited", null);
-      editing_persona.set (property_name, detail_set);
-    }
+      });
   }
 
   private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
@@ -789,7 +781,9 @@ public class Contacts.ContactPane : EventBox {
       }
 
       if (modified) {
-	set_persona_property (persona, "notes", notes);
+	var value = Value(notes.get_type ());
+	value.set_object (notes);
+	set_persona_property.begin (persona, "notes", value);
       }
     }
   }
