@@ -889,7 +889,7 @@ public class Contacts.ContactPane : EventBox {
 
 	button.toggled.connect ( (a_button) => {
 	    if (a_button.get_active ())
-	      update_edit_details (p, false);
+	      update_edit_details (p, p is FakePersona);
 	  });
       }
     }
@@ -951,7 +951,7 @@ public class Contacts.ContactPane : EventBox {
     edit_persona_grid.set_vexpand (true);
 
     persona = update_persona_buttons (contact, persona);
-    update_edit_details (persona, new_contact);
+    update_edit_details (persona, new_contact || persona is FakePersona);
 
     g.attach (edit_persona_grid,  0, 3, 1, 1);
     card_grid.show_all ();
