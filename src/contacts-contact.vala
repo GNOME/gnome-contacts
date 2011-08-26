@@ -153,6 +153,11 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public static bool persona_has_writable_property (Persona persona, string property) {
+    // TODO: This should check the writibility on the FakePersona store,
+    // but that is not availible in folks yet
+    if (persona is FakePersona)
+      return true;
+
     foreach (unowned string p in persona.writeable_properties) {
       if (p == property)
 	return true;

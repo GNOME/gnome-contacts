@@ -668,35 +668,46 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
-    if (persona.store.is_writeable) {
+    if (Contact.persona_has_writable_property (persona, "email-addresses") ||
+	Contact.persona_has_writable_property (persona, "phone-numbers") ||
+	Contact.persona_has_writable_property (persona, "postal-addresses") ||
+	Contact.persona_has_writable_property (persona, "urls")) {
       button_layout.add_label ("");
       var menu_button = new MenuButton (_("Add detail"));
       menu_button.set_hexpand (false);
       menu_button.set_margin_top (12);
 
       var menu = new Menu ();
-      Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
-	  add_email_editor (email_layout,
-			    editing_emails, null);
-	  email_layout.grid.show_all ();
-	});
-      Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
-	  add_phone_editor (phone_layout,
-			    editing_phones, null);
-	  phone_layout.grid.show_all ();
-	});
-      Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
-	  add_postal_editor (postal_layout,
-			     editing_postals,
-			     new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
-	  postal_layout.grid.show_all ();
-	});
-      Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
-	  add_url_editor (url_layout,
-			  editing_urls,
-			  null);
-	  url_layout.grid.show_all ();
+      if (Contact.persona_has_writable_property (persona, "email-addresses")) {
+	Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
+	    add_email_editor (email_layout,
+			      editing_emails, null);
+	    email_layout.grid.show_all ();
 	  });
+      }
+      if (Contact.persona_has_writable_property (persona, "phone-numbers")) {
+	Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
+	    add_phone_editor (phone_layout,
+			      editing_phones, null);
+	    phone_layout.grid.show_all ();
+	  });
+      }
+      if (Contact.persona_has_writable_property (persona, "postal-addresses")) {
+	Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
+	    add_postal_editor (postal_layout,
+			       editing_postals,
+			       new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
+	    postal_layout.grid.show_all ();
+	  });
+      }
+      if (Contact.persona_has_writable_property (persona, "urls")) {
+	Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
+	    add_url_editor (url_layout,
+			    editing_urls,
+			    null);
+	    url_layout.grid.show_all ();
+	  });
+      }
 
       menu_button.set_menu (menu);
 
