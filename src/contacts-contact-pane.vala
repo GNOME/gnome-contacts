@@ -332,6 +332,7 @@ public class Contacts.ContactPane : EventBox {
   private ContactFrame edit_image_frame;
   private Grid edit_persona_grid;
   private Persona? editing_persona;
+  private Persona? editing_persona_primary;
 
   private bool has_notes;
   private Widget notes_dot;
@@ -872,6 +873,12 @@ public class Contacts.ContactPane : EventBox {
       persona_list.add (fake_persona);
     persona_list.sort (Contact.compare_persona_by_store);
 
+    foreach (var p in persona_list) {
+      if (p.store.is_writeable) {
+	editing_persona_primary = p;
+      }
+    }
+
     if (persona == null)
       persona = persona_list[0];
 
@@ -922,26 +929,6 @@ public class Contacts.ContactPane : EventBox {
     if (new_contact)
       e.grab_focus ();
 
-    e.focus_out_event.connect ( (ev) => {
-	name = e.get_text ();
-	bool name_set = false;
-	if (name != e.get_data<string?> ("original-text")) {
-	  foreach (var p in contact.individual.personas) {
-	    if (p is NameDetails &&
-		p.store.is_writeable) {
-	      (p as NameDetails).full_name = name;
-	      name_set = true;
-	    }
-	  }
-
-	  if (!name_set) {
-	    // TODO: Create a writable persona so we can set the name
-	    warning ("Didn't find a writable persona to store the name");
-	  }
-	}
-	return false;
-      });
-
     edit_persona_grid = new Grid ();
     edit_persona_grid.set_row_spacing (0);
     edit_persona_grid.set_halign (Align.START);
@@ -950,6 +937,18 @@ public class Contacts.ContactPane : EventBox {
 
     persona = update_persona_buttons (contact, persona);
     update_edit_details (persona, new_contact || persona is FakePersona);
+
+    e.focus_out_event.connect ( (ev) => {
+	name = e.get_text ();
+	if (name != e.get_data<string?> ("original-text")) {
+	  Value v = Value (typeof (string));
+	  v.set_string (name);
+	  set_persona_property.begin (editing_persona_primary,
+				      "full-name", v, () => {
+				      });
+	}
+	return false;
+      });
 
     g.attach (edit_persona_grid,  0, 3, 1, 1);
     card_grid.show_all ();
@@ -1069,6 +1068,7 @@ public class Contacts.ContactPane : EventBox {
     edit_image_frame = null;
     edit_persona_grid = null;
     editing_persona = null;
+    editing_persona_primary = null;
 
     if (display_mode == mode)
       return;
