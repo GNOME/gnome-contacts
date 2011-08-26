@@ -902,7 +902,7 @@ public class Contacts.FakePersona : Persona {
     if (primary_persona != null)
       return null;
 
-    return new FakePersona (contact, contact.store.aggregator.primary_store);
+    return new FakePersona (contact);
   }
 
   private const string[] _linkable_properties = {};
@@ -939,11 +939,11 @@ public class Contacts.FakePersona : Persona {
     }
   }
 
-  public FakePersona (Contact contact, PersonaStore store) {
+  public FakePersona (Contact contact) {
     Object (display_id: "display_id",
 	    uid: "uid",
 	    iid: "iid",
-	    store: store,
+	    store: contact.store.aggregator.primary_store,
 	    is_user: false);
     this.contact = contact;
   }
