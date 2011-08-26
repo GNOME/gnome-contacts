@@ -371,6 +371,7 @@ public class Contacts.ContactPane : EventBox {
 	  }
 	});
     } else {
+      editing_persona.set_data ("contacts-unedited", null);
       editing_persona.set (property_name, detail_set);
     }
   }
@@ -1116,7 +1117,17 @@ public class Contacts.ContactPane : EventBox {
 	}
 
 	show_contact (contact);
+	persona.set_data ("contacts-unedited", true);
 	display_edit (contact, persona, true);
+
+	ulong id = 0;
+	id = this.save_data.connect ( () => {
+	    if (persona.get_data<bool> ("contacts-unedited") != false) {
+	      editing_persona.store.remove_persona.begin (editing_persona, () => {
+		});
+	    }
+	    this.disconnect (id);
+	  });
       });
 
   }
