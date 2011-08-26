@@ -352,6 +352,23 @@ public class Contacts.ContactPane : EventBox {
 
   private signal void save_data ();
 
+  private void set_persona_property (Persona persona,
+				     string property_name,
+				     Object value) {
+    if (persona is FakePersona) {
+      var fake = persona as FakePersona;
+      fake.make_real_and_set.begin (property_name, value, (obj, result) => {
+	  try {
+	    fake.make_real_and_set.end (result);
+	  } catch (Error e) {
+	    warning ("Unable to create writeable persona: %s", e.message);
+	  }
+	});
+    } else {
+      persona.set (property_name, value);
+    }
+  }
+
   private void update_detail_property (string property_name,
 				       Set<AbstractFieldDetails> detail_set) {
     var editing_backup = editing_persona;
@@ -367,7 +384,7 @@ public class Contacts.ContactPane : EventBox {
 	      editing_persona = p;
 	    }
 	  } catch (Error e) {
-	    warning ("Unable to create writable persona: %s", e.message);
+	    warning ("Unable to create writeable persona: %s", e.message);
 	  }
 	});
     } else {
@@ -772,22 +789,7 @@ public class Contacts.ContactPane : EventBox {
       }
 
       if (modified) {
-	if (persona == null) {
-	  var c = selected_contact;
-	  c.ensure_primary_persona.begin ( (obj, result) => {
-	      try {
-		var p = c.ensure_primary_persona.end (result);
-		if (p is NoteDetails)
-		  (p as NoteDetails).notes = notes;
-		else
-		  warning ("Writable store doesn't support notes");
-	      } catch (Error e) {
-		warning ("Unable to create writable persona: %s", e.message);
-	      }
-	    });
-	} else {
-	  (persona as NoteDetails).notes = notes;
-	}
+	set_persona_property (persona, "notes", notes);
       }
     }
   }
@@ -817,10 +819,10 @@ public class Contacts.ContactPane : EventBox {
     var main_text = add_note ();
 
     Persona? primary_persona = selected_contact.find_primary_persona ();
-    if (primary_persona == null || primary_persona is NoteDetails)
-      widgets.set (primary_persona, main_text);
-    else
-      warning ("Writable store doesn't support notes");
+    if (primary_persona == null)
+      primary_persona = new FakePersona (selected_contact);
+
+    widgets.set (primary_persona, main_text);
 
     bool primary_note_seen = false;
 
@@ -832,7 +834,7 @@ public class Contacts.ContactPane : EventBox {
 	if (persona == primary_persona && !primary_note_seen) {
 	  primary_note_seen = true;
 	  update_note (main_text, note);
-	} else if (persona.store.is_writeable) {
+	} else if (Contact.persona_has_writable_property (persona, "notes")) {
 	  var text = add_note ();
 	  update_note (text, note);
 	  widgets.set (persona, text);
