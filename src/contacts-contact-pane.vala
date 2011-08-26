@@ -710,17 +710,19 @@ public class Contacts.ContactPane : EventBox {
     card_layout.current_row.add (g);
 
     var l = new Label (null);
-    l.set_markup ("<span font='22'><b>" + contact.display_name + "</b></span>");
+    l.set_markup ("<span font='24px'>" + contact.display_name + "</span>");
     l.set_hexpand (true);
     l.set_halign (Align.START);
     l.set_valign (Align.START);
+    l.set_margin_top (4);
     l.set_ellipsize (Pango.EllipsizeMode.END);
     l.xalign = 0.0f;
     g.attach (l,  0, 0, 1, 1);
 
     var nick = contact.individual.nickname;
     if (nick != null && nick.length > 0) {
-      l = new Label ("\xE2\x80\x9C" + nick + "\xE2\x80\x9D");
+      l = new Label (null);
+      l.set_markup ("<span font='12px' rise='1000'>\xE2\x80\x9C" + nick + "\xE2\x80\x9D</span>");
       l.set_halign (Align.START);
       l.set_valign (Align.START);
       l.set_ellipsize (Pango.EllipsizeMode.END);
@@ -741,6 +743,7 @@ public class Contacts.ContactPane : EventBox {
     merged_presence.set_halign (Align.START);
     merged_presence.set_valign (Align.END);
     merged_presence.set_vexpand (true);
+    merged_presence.set_margin_bottom (18);
     g.attach (merged_presence,  0, 3, 1, 1);
   }
 
