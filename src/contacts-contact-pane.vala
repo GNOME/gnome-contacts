@@ -178,13 +178,137 @@ public class Contacts.ContactFrame : Frame {
   private Gdk.Pixbuf? pixbuf;
   private Pango.Layout? layout;
   private int text_height;
+  private bool popup_in_progress;
+  private Menu? menu;
 
-  public ContactFrame (int size) {
+  private void menu_position (Menu menu, out int x, out int y, out bool push_in) {
+    Allocation allocation;
+    get_allocation (out allocation);
+
+    int sx = 0;
+    int sy = 0;
+
+    if (!get_has_window ()) {
+      sx += allocation.x;
+      sy += allocation.y;
+    }
+
+    get_window ().get_root_coords (sx, sy, out sx, out sy);
+
+    Requisition menu_req;
+    Gdk.Rectangle monitor;
+
+    menu.get_preferred_size (null, out menu_req);
+
+    if (get_direction () == TextDirection.LTR)
+      x = sx + 2;
+    else
+      x = sx + allocation.width - menu_req.width - 2;
+    y = sy - 2;
+
+    var window = get_window ();
+    var screen = get_screen ();
+    var monitor_num = screen.get_monitor_at_window (window);
+    if (monitor_num < 0)
+      monitor_num = 0;
+    screen.get_monitor_geometry (monitor_num, out monitor);
+
+    if (x < monitor.x)
+      x = monitor.x;
+    else if (x + menu_req.width > monitor.x + monitor.width)
+      x = monitor.x + monitor.width - menu_req.width;
+
+    if (monitor.y + monitor.height - y - allocation.height >= menu_req.height)
+      y += allocation.height;
+    else if (y - monitor.y >= menu_req.height)
+      y -= menu_req.height;
+    else if (monitor.y + monitor.height - y - allocation.height > y - monitor.y)
+      y += allocation.height;
+    else
+      y -= menu_req.height;
+
+    menu.set_monitor (monitor_num);
+
+    Window? toplevel = menu.get_parent() as Window;
+    if (toplevel != null && !toplevel.get_visible())
+      toplevel.set_type_hint (Gdk.WindowTypeHint.DROPDOWN_MENU);
+
+    push_in = false;
+  }
+
+  public ContactFrame (int size, Menu? menu = null) {
     this.size = size;
 
     var image = new Image ();
     image.set_size_request (size, size);
-    this.add (image);
+
+    this.menu = menu;
+    if (menu != null) {
+      var button = new ToggleButton ();
+      button.set_focus_on_click (false);
+      button.get_style_context ().add_class ("contact-frame-button");
+      button.add (image);
+      button.set_mode (false);
+      this.add (button);
+
+      button.toggled.connect ( () => {
+	  if (button.get_active ()) {
+	    if (!popup_in_progress) {
+	      menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
+	    }
+	  } else {
+	    menu.popdown ();
+	  }
+	});
+
+      button.button_press_event.connect ( (event) => {
+	  var ewidget = Gtk.get_event_widget ((Gdk.Event)(&event));
+
+	  if (ewidget != button ||
+	      button.get_active ())
+	    return false;
+
+	  menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
+	  button.set_active (true);
+	  popup_in_progress = true;
+	  return true;
+	});
+      button.button_release_event.connect ( (event) => {
+	  bool popup_in_progress_saved = popup_in_progress;
+	  popup_in_progress = false;
+
+	  var ewidget = Gtk.get_event_widget ((Gdk.Event)(&event));
+
+	  if (ewidget == button &&
+	      !popup_in_progress_saved &&
+	      button.get_active ()) {
+	    menu.popdown ();
+	    return true;
+	  }
+	  if (ewidget != button)    {
+	    menu.popdown ();
+	    return true;
+	  }
+	  return false;
+	});
+
+      menu.show.connect ( (menu) => {
+	  popup_in_progress = true;
+	  button.set_active (true);
+	  popup_in_progress = false;
+	});
+      menu.hide.connect ( (menu) => {
+	  button.set_active (false);
+	});
+      menu.attach_to_widget (button, (menu) => {
+	});
+    } else {
+      this.add (image);
+    }
+
+    image.show ();
+    image.draw.connect (draw_image);
+
     set_shadow_type (ShadowType.NONE);
   }
 
@@ -227,7 +351,7 @@ public class Contacts.ContactFrame : Frame {
     queue_draw ();
   }
 
-  public override bool draw (Cairo.Context cr) {
+  public bool draw_image (Cairo.Context cr) {
     cr.save ();
 
     if (pixbuf != null) {
@@ -254,7 +378,6 @@ public class Contacts.ContactFrame : Frame {
     }
     cr.restore ();
 
-    base.draw (cr);
     return true;
   }
 }
@@ -719,8 +842,100 @@ public class Contacts.ContactPane : EventBox {
     button_grid.show_all ();
   }
 
+  private Widget? menu_item_for_pixbuf (Gdk.Pixbuf? pixbuf) {
+    if (pixbuf == null)
+      return null;
+
+    var image = new Image.from_pixbuf (Contact.frame_icon (pixbuf));
+    var menuitem = new MenuItem ();
+    menuitem.add (image);
+    menuitem.show_all ();
+
+    return menuitem;
+  }
+
+  private Widget? menu_item_for_persona (Persona persona) {
+    var details = persona as AvatarDetails;
+    if (details == null || details.avatar == null)
+      return null;
+
+    try {
+      var stream = details.avatar.load (48, null);
+      var pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, 48, 48, true);
+      return menu_item_for_pixbuf (pixbuf);
+    }
+    catch {
+    }
+    return null;
+  }
+
+  private Widget? menu_item_for_filename (string filename) {
+    try {
+      var pixbuf = new Gdk.Pixbuf.from_file (filename);
+      pixbuf = pixbuf.scale_simple (48, 48, Gdk.InterpType.HYPER);
+      return menu_item_for_pixbuf (pixbuf);
+    } catch {
+    }
+    return null;
+  }
+
+  private Menu avatar_menu (Contact contact) {
+    var menu = new Menu ();
+
+    menu.get_style_context ().add_class ("contact-frame-menu");
+
+    int x = 0;
+    int y = 0;
+    const int COLUMNS = 5;
+
+    foreach (var p in contact.individual.personas) {
+      var menuitem = menu_item_for_persona (p);
+      if (menuitem != null) {
+	menu.attach (menuitem,
+		     x, x + 1, y, y + 1);
+	menuitem.show ();
+	x++;
+	if (x >= COLUMNS) {
+	  y++;
+	  x = 0;
+	}
+      }
+    }
+
+    var system_data_dirs = Environment.get_system_data_dirs ();
+    foreach (var data_dir in system_data_dirs) {
+      var path = Path.build_filename (data_dir, "pixmaps", "faces");
+      var dir = Dir.open (path);
+      if (dir != null) {
+	string? face;
+	while ((face = dir.read_name ()) != null) {
+	  try {
+	    var filename = Path.build_filename (path, face);
+	    var menuitem = menu_item_for_filename (filename);
+	    menu.attach (menuitem,
+			 x, x + 1, y, y + 1);
+	    menuitem.show ();
+	    x++;
+	    if (x >= COLUMNS) {
+	      y++;
+	      x = 0;
+	    }
+	  }
+	  catch {
+	  }
+	}
+      }
+    };
+
+    Utils.add_menu_item (menu,_("Browse for more pictures..."));
+
+    return menu;
+  }
+
   private void display_card (Contact contact) {
-    var image_frame = new ContactFrame (PROFILE_SIZE);
+    var menu = avatar_menu (contact);
+
+    var image_frame = new ContactFrame (PROFILE_SIZE, menu);
     image_frame.set_image (contact.individual, contact);
     // Put the frame in a grid so its not expanded by the size-group
     var ig = new Grid ();
