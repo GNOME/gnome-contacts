@@ -254,6 +254,7 @@ public class Contacts.Contact : GLib.Object  {
     int i = refs.length;
     refs.resize(i+1);
     refs[i].key = key;
+    // Transfer ownership to the array
     refs[i].data = (void *)(owned)data;
   }
 
@@ -262,7 +263,11 @@ public class Contacts.Contact : GLib.Object  {
 
     for (i = 0; i < refs.length; i++) {
       if (refs[i].key == key) {
+	// We need to unref the data so we take a local
+	// owned copy and let it go out of scope
 	T old_val = (owned)refs[i].data;
+	// Reference the variable to avoid warning
+	(void)old_val;
 	for (int j = i + 1; j < refs.length; j++) {
 	  refs[j-1] = refs[j];
 	}
