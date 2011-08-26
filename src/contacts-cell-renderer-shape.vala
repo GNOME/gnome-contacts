@@ -208,6 +208,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 				 out int       y_offset,
 				 out int       width,
 				 out int       height) {
+    x_offset = y_offset = width = height = 0;
     // Not used
   }
 
