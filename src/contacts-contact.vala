@@ -903,6 +903,7 @@ public class Contacts.FakePersona : Persona {
   }
   private ArrayList<PropVal> prop_vals;
   private bool now_real;
+  private bool has_full_name;
 
   public static FakePersona? maybe_create_for (Contact contact) {
     var primary_persona = contact.find_primary_persona ();
@@ -930,11 +931,15 @@ public class Contacts.FakePersona : Persona {
     var v = new PropVal ();
     v.property = property;
     v.value = value;
+    if (property == "full-name")
+      has_full_name = true;
+
     if (prop_vals == null) {
       prop_vals = new ArrayList<PropVal> ();
       prop_vals.add (v);
       Persona p = yield contact.ensure_primary_persona ();
-      p.set ("full-name", contact.display_name);
+      if (!has_full_name)
+	p.set ("full-name", contact.display_name);
       foreach (var pv in prop_vals) {
 	p.set_property (pv.property, pv.value);
       }
