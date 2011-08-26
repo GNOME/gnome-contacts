@@ -843,6 +843,7 @@ public class Contacts.ContactPane : EventBox {
       }
     }
 
+    card_grid.show_all ();
     fields_grid.show_all ();
 
     ulong id = 0;
