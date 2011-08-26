@@ -842,7 +842,7 @@ public class Contacts.ContactPane : EventBox {
     button_grid.show_all ();
   }
 
-  private Widget? menu_item_for_pixbuf (Gdk.Pixbuf? pixbuf) {
+  private MenuItem? menu_item_for_pixbuf (Gdk.Pixbuf? pixbuf, Icon icon) {
     if (pixbuf == null)
       return null;
 
@@ -850,11 +850,12 @@ public class Contacts.ContactPane : EventBox {
     var menuitem = new MenuItem ();
     menuitem.add (image);
     menuitem.show_all ();
+    menuitem.set_data ("source-icon", icon);
 
     return menuitem;
   }
 
-  private Widget? menu_item_for_persona (Persona persona) {
+  private MenuItem? menu_item_for_persona (Persona persona) {
     var details = persona as AvatarDetails;
     if (details == null || details.avatar == null)
       return null;
@@ -862,21 +863,34 @@ public class Contacts.ContactPane : EventBox {
     try {
       var stream = details.avatar.load (48, null);
       var pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, 48, 48, true);
-      return menu_item_for_pixbuf (pixbuf);
+      return menu_item_for_pixbuf (pixbuf, details.avatar);
     }
     catch {
     }
     return null;
   }
 
-  private Widget? menu_item_for_filename (string filename) {
+  private MenuItem? menu_item_for_filename (string filename) {
     try {
       var pixbuf = new Gdk.Pixbuf.from_file (filename);
       pixbuf = pixbuf.scale_simple (48, 48, Gdk.InterpType.HYPER);
-      return menu_item_for_pixbuf (pixbuf);
+      return menu_item_for_pixbuf (pixbuf, new FileIcon (File.new_for_path (filename)));
     } catch {
     }
     return null;
+  }
+
+  private void pick_avatar_cb (MenuItem menu) {
+    Icon icon = menu.get_data<Icon> ("source-icon");
+    Value v = Value (icon.get_type ());
+    v.set_object (icon);
+    Persona? primary_persona = selected_contact.find_primary_persona ();
+    if (primary_persona == null)
+      primary_persona = new FakePersona (selected_contact);
+
+    set_persona_property.begin (primary_persona,
+				"avatar", v, () => {
+				});
   }
 
   private Menu avatar_menu (Contact contact) {
@@ -894,6 +908,7 @@ public class Contacts.ContactPane : EventBox {
 	menu.attach (menuitem,
 		     x, x + 1, y, y + 1);
 	menuitem.show ();
+	menuitem.activate.connect (pick_avatar_cb);
 	x++;
 	if (x >= COLUMNS) {
 	  y++;
@@ -915,6 +930,7 @@ public class Contacts.ContactPane : EventBox {
 	    menu.attach (menuitem,
 			 x, x + 1, y, y + 1);
 	    menuitem.show ();
+	    menuitem.activate.connect (pick_avatar_cb);
 	    x++;
 	    if (x >= COLUMNS) {
 	      y++;
