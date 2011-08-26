@@ -38,7 +38,12 @@ main (string[] args) {
   Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
-  Gtk.init_with_args (ref args, "— contact management", options, Config.GETTEXT_PACKAGE);
+  try {
+    Gtk.init_with_args (ref args, "— contact management", options, Config.GETTEXT_PACKAGE);
+  } catch (Error e) {
+    printerr ("Unable to initialize: %s\n", e.message);
+    return 1;
+  }
 
   try {
     var provider = new CssProvider ();
