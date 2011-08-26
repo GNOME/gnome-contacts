@@ -152,6 +152,14 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
+  public static bool persona_has_writable_property (Persona persona, string property) {
+    foreach (unowned string p in persona.writeable_properties) {
+      if (p == property)
+	return true;
+    }
+    return false;
+  }
+
   public static string get_display_name_for_persona (Persona persona) {
     var name_details = persona as NameDetails;
     var alias_details = persona as AliasDetails;
