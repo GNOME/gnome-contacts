@@ -1231,6 +1231,20 @@ public class Contacts.ContactPane : EventBox {
 	      Utils.start_chat (contact, protocol, id.value);
 	    });
 	}
+
+	var callable_account = contact.is_callable (protocol, id.value);
+	if (callable_account != null) {
+	  Button? button_call = fields_layout.add_button (null);
+	  var phone_image = new Image ();
+	  phone_image.set_no_show_all (true);
+	  phone_image.set_from_icon_name ("audio-input-microphone-symbolic",
+	      IconSize.MENU);
+	  phone_image.show ();
+	  button_call.add (phone_image);
+	  button_call.clicked.connect ( () => {
+		Utils.start_call_with_account (id.value, callable_account);
+	      });
+	}
       }
     }
 
