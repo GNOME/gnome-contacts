@@ -1239,6 +1239,17 @@ public class Contacts.ContactPane : EventBox {
       var phone = p as PhoneFieldDetails;
       var type = TypeSet.phone.format_type (phone);
       fields_layout.add_label_detail (type, phone.value);
+      if (this.contacts_store.can_call) {
+	  Button? button = fields_layout.add_button (null);
+	  var phone_image = new Image ();
+	  phone_image.set_no_show_all (true);
+	  phone_image.set_from_icon_name ("phone-symbolic", IconSize.MENU);
+	  phone_image.show ();
+	  button.add (phone_image);
+	  button.clicked.connect ( () => {
+		Utils.start_call (phone.value, this.contacts_store.calling_accounts);
+	      });
+	}
     }
 
     var postals = contact.individual.postal_addresses;

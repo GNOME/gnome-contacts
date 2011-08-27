@@ -20,6 +20,7 @@
 using Gtk;
 using Folks;
 using Gee;
+using TelepathyGLib;
 
 public class Contacts.Utils : Object {
   public static void compose_mail (string email) {
@@ -41,6 +42,33 @@ public class Contacts.Utils : Object {
     // tp_user_action_time_from_x11(gtk_get_current_event_time())
     var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
     request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
+  }
+
+  public static void start_call (string contact_id,
+      Gee.HashMap<string, Account> accounts) {
+    // TODO: prompt for which account to use
+    var account = accounts.values.to_array ()[0];
+    Utils.start_call_with_account (contact_id, account);
+  }
+
+  public static void start_call_with_account (string contact_id,
+      Account account) {
+    var request_dict = new HashTable<weak string,GLib.Value?>(str_hash,
+	str_equal);
+
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
+	TelepathyGLib.IFACE_CHANNEL_TYPE_STREAMED_MEDIA);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
+	(int) TelepathyGLib.HandleType.CONTACT);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, contact_id);
+    request_dict.insert (
+	TelepathyGLib.PROP_CHANNEL_TYPE_STREAMED_MEDIA_INITIAL_AUDIO,
+	true);
+
+    var request = new TelepathyGLib.AccountChannelRequest(account,
+	request_dict, int64.MAX);
+    request.ensure_channel_async.begin (
+	"org.freedesktop.Telepathy.Client.Empathy.Call", null);
   }
 
   public static T? get_first<T> (Collection<T> collection) {
