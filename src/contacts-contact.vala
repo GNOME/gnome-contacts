@@ -20,6 +20,7 @@
 using Gtk;
 using Folks;
 using Gee;
+using TelepathyGLib;
 
 public errordomain ContactError {
   NOT_IMPLEMENTED,
@@ -766,7 +767,7 @@ public class Contacts.Contact : GLib.Object  {
 	Cancellable c = new Cancellable ();
 	var stream = file.load (size, null, c);
 	res = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true, c);
-      } catch (Error e) {
+      } catch (GLib.Error e) {
 	warning ("error loading avatar %s\n", e.message);
       }
     }
@@ -901,6 +902,48 @@ public class Contacts.Contact : GLib.Object  {
     }
 
     return store.display_name;
+  }
+
+  public Account? is_callable (string proto, string id) {
+    Tpf.Persona? t_persona = this.find_im_persona (proto, id);
+    if (t_persona != null && t_persona.contact != null) {
+      unowned TelepathyGLib.Capabilities caps =
+      t_persona.contact.get_capabilities ();
+      unowned GLib.GenericArray<ValueArray> classes =
+        (GLib.GenericArray<ValueArray>) caps.get_channel_classes ();
+      for (var i=0; i < classes.length; i++) {
+	unowned ValueArray clazz = classes.get (i);
+	if (clazz.n_values != 2)
+	  continue;
+
+	unowned Value fixed_prop_val = clazz.get_nth (0);
+	unowned HashTable<string, Value?>? fixed_prop =
+	  (HashTable<string, Value?>) fixed_prop_val.get_boxed ();
+	unowned Value allowed_prop_val = clazz.get_nth (1);
+	unowned string[]? allowed_prop = (string[]) allowed_prop_val.get_boxed ();
+
+	if (fixed_prop == null || allowed_prop == null)
+	  continue;
+
+	var chan_type = fixed_prop.get (
+	    TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE).get_string ();
+	var handle_type = fixed_prop.get (
+	    TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE).get_uint ();
+	if (handle_type != (int) TelepathyGLib.HandleType.CONTACT)
+	  continue;
+
+	if (chan_type == TelepathyGLib.IFACE_CHANNEL_TYPE_STREAMED_MEDIA) {
+	  for (uint j=0; allowed_prop[j] != null; j++) {
+	    var prop = allowed_prop[j];
+	    if (prop ==
+		TelepathyGLib.PROP_CHANNEL_TYPE_STREAMED_MEDIA_INITIAL_AUDIO)
+	      return (t_persona.store as Tpf.PersonaStore).account;
+	  }
+	}
+      }
+    }
+
+    return null;
   }
 }
 
