@@ -436,7 +436,7 @@ public class Contacts.PersonaButton : RadioButton {
 }
 
 
-public class Contacts.ContactPane : EventBox {
+public class Contacts.ContactPane : Grid {
   private enum DisplayMode {
     INITIAL,
     EMPTY,
@@ -459,6 +459,8 @@ public class Contacts.ContactPane : EventBox {
 
   private bool has_notes;
   private Widget notes_dot;
+  private Widget empty_widget;
+  private EventBox pane;
   private ButtonBox normal_buttons;
   private ButtonBox editing_buttons;
   private DetailsLayout.SharedState layout_state;
@@ -1349,11 +1351,20 @@ public class Contacts.ContactPane : EventBox {
       return;
 
     display_mode = mode;
-    if (mode == DisplayMode.EMPTY || mode == DisplayMode.DETAILS) {
+    if (mode == DisplayMode.EMPTY) {
+      empty_widget.show ();
+      pane.hide ();
+      normal_buttons.hide ();
+      editing_buttons.hide ();
+    } else if (mode == DisplayMode.DETAILS) {
+      pane.show ();
+      empty_widget.hide ();
       normal_buttons.show ();
       editing_buttons.hide ();
       normal_buttons.set_sensitive (mode != DisplayMode.EMPTY);
     } else {
+      pane.show ();
+      empty_widget.hide ();
       normal_buttons.hide ();
       editing_buttons.show ();
     }
@@ -1426,11 +1437,25 @@ public class Contacts.ContactPane : EventBox {
   public ContactPane (Store contacts_store) {
     this.contacts_store = contacts_store;
 
-    get_style_context ().add_class ("contact-pane");
+    this.set_orientation (Orientation.VERTICAL);
+
+    pane = new EventBox ();
+    pane.set_no_show_all (true);
+    pane.get_style_context ().add_class ("contact-pane");
+    this.add (pane);
+
+    var image = new Image.from_icon_name ("avatar-default-symbolic", IconSize.MENU);
+    image.set_sensitive (false);
+    image.set_pixel_size (80);
+    image.set_no_show_all (true);
+    image.set_hexpand (true);
+    image.set_vexpand (true);
+    this.add (image);
+    empty_widget = image;
 
     var grid = new Grid ();
     grid.set_border_width (10);
-    this.add (grid);
+    pane.add (grid);
 
     var scrolled = new ScrolledWindow (null, null);
     scrolled.set_hexpand (true);
