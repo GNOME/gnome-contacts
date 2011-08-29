@@ -483,6 +483,7 @@ public class Contacts.ContactPane : EventBox {
       var fake = persona as FakePersona;
       return yield fake.make_real_and_set (property_name, value);
     } else {
+      persona.set_data ("contacts-unedited", true);
       persona.set_property (property_name, value);
       return null;
     }
