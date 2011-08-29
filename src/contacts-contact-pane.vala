@@ -1515,8 +1515,8 @@ public class Contacts.ContactPane : EventBox {
 
     var menu = new Menu ();
     Utils.add_menu_item (menu,_("Add/Remove Linked Contacts...")).activate.connect (link_contact);
-    Utils.add_menu_item (menu,_("Send..."));
-    Utils.add_menu_item (menu,_("Delete"));
+    //Utils.add_menu_item (menu,_("Send..."));
+    Utils.add_menu_item (menu,_("Delete")).set_sensitive (false);
 
     menu_button.set_menu (menu);
 
