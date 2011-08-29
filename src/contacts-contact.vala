@@ -317,11 +317,14 @@ public class Contacts.Contact : GLib.Object  {
     foreach (var p in individual.personas) {
       disconnect_persona (p);
     }
+    individual.notify.disconnect(notify_cb);
     individual = new_individual;
     individual.set_data ("contact", this);
     foreach (var p in individual.personas) {
       connect_persona (p);
     }
+    _small_avatar = null;
+    individual.notify.connect(notify_cb);
     queue_changed ();
   }
 
