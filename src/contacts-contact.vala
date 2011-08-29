@@ -767,6 +767,7 @@ public class Contacts.Contact : GLib.Object  {
 	var stream = file.load (size, null, c);
 	res = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true, c);
       } catch (Error e) {
+	warning ("error loading avatar %s\n", e.message);
       }
     }
 
