@@ -79,19 +79,22 @@ public class Contacts.LinkDialog : Dialog {
     grid.set_row_spacing (12);
     container.add (grid);
 
-    var list_grid = new Grid ();
-    list_grid.set_size_request (315, -1);
-    list_grid.set_hexpand (false);
-    grid.attach (list_grid, 0, 0, 1, 1);
-    list_grid.set_orientation (Orientation.VERTICAL);
-
     var label = new Label (_("Select contacts to link to %s").printf (contact.display_name));
     label.set_valign (Align.CENTER);
     label.set_halign (Align.START);
-    //label.set_hexpand (false);
     label.xalign = 0.0f;
     label.set_ellipsize (Pango.EllipsizeMode.END);
-    list_grid.add (label);
+    grid.attach (label, 0, 0, 1, 1);
+
+    var list_frame = new Frame (null);
+    list_frame.get_style_context ().add_class ("contact-list-frame");
+    grid.attach (list_frame, 0, 1, 1, 1);
+
+    var list_grid = new Grid ();
+    list_grid.set_size_request (315, -1);
+    list_grid.set_hexpand (false);
+    list_frame.add (list_grid);
+    list_grid.set_orientation (Orientation.VERTICAL);
 
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
@@ -141,19 +144,18 @@ public class Contacts.LinkDialog : Dialog {
 	link_button.sensitive = contact != null;
       });
 
-    var right_grid = new Grid ();
-    right_grid.set_orientation (Orientation.VERTICAL);
-    right_grid.set_border_width (10);
-    right_grid.set_column_spacing (8);
-    grid.attach (right_grid, 1, 0, 1, 1);
-
     label = new Label (_("Currently linked:"));
     label.set_valign (Align.CENTER);
     label.set_halign (Align.START);
     label.xalign = 0.0f;
     label.set_ellipsize (Pango.EllipsizeMode.END);
-    right_grid.add (label);
+    grid.attach (label, 1, 0, 1, 1);
 
+    var right_grid = new Grid ();
+    right_grid.set_orientation (Orientation.VERTICAL);
+    right_grid.set_border_width (10);
+    right_grid.set_column_spacing (8);
+    grid.attach (right_grid, 1, 1, 1, 1);
 
     persona_grid = new Grid ();
     persona_grid.set_orientation (Orientation.VERTICAL);
