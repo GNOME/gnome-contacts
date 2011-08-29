@@ -920,24 +920,24 @@ public class Contacts.ContactPane : EventBox {
     var system_data_dirs = Environment.get_system_data_dirs ();
     foreach (var data_dir in system_data_dirs) {
       var path = Path.build_filename (data_dir, "pixmaps", "faces");
-      var dir = Dir.open (path);
+      Dir? dir = null;
+      try {
+	dir = Dir.open (path);
+      }	catch {
+      }
       if (dir != null) {
 	string? face;
 	while ((face = dir.read_name ()) != null) {
-	  try {
-	    var filename = Path.build_filename (path, face);
-	    var menuitem = menu_item_for_filename (filename);
-	    menu.attach (menuitem,
-			 x, x + 1, y, y + 1);
-	    menuitem.show ();
-	    menuitem.activate.connect (pick_avatar_cb);
-	    x++;
-	    if (x >= COLUMNS) {
-	      y++;
-	      x = 0;
-	    }
-	  }
-	  catch {
+	  var filename = Path.build_filename (path, face);
+	  var menuitem = menu_item_for_filename (filename);
+	  menu.attach (menuitem,
+		       x, x + 1, y, y + 1);
+	  menuitem.show ();
+	  menuitem.activate.connect (pick_avatar_cb);
+	  x++;
+	  if (x >= COLUMNS) {
+	    y++;
+	    x = 0;
 	  }
 	}
       }
