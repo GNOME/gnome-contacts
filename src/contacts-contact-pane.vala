@@ -1166,11 +1166,18 @@ public class Contacts.ContactPane : EventBox {
     e.set_data ("original-text", contact.display_name);
     e.set_text (contact.display_name);
     e.set_hexpand (true);
-    e.set_halign (Align.START);
+    e.set_halign (Align.FILL);
     e.set_valign (Align.START);
     g.attach (e,  0, 0, 1, 1);
     if (new_contact)
       e.grab_focus ();
+
+    if (new_contact) {
+      var l = new Label ("");
+      l.set_markup ("<span font='12px'>" + _("Contact Name") + "</span>");
+      l.xalign = 0.0f;
+      g.attach (l,  0, 1, 1, 1);
+    }
 
     edit_persona_grid = new Grid ();
     edit_persona_grid.set_row_spacing (0);
