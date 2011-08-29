@@ -30,6 +30,6 @@ gnome_contacts_SOURCES = \
 	main.vala \
 	$(NULL)
 
-gnome_contacts_LDADD = $(CONTACTS_LIBS)
+gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
 CLEANFILES = *.h *.c *.vapi *.stamp
