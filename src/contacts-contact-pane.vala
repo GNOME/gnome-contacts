@@ -1359,7 +1359,7 @@ public class Contacts.ContactPane : EventBox {
     }
   }
 
-  public void new_contact () {
+  public void new_contact (ListPane list_pane) {
     var details = new HashTable<string, Value?> (str_hash, str_equal);
     contacts_store.aggregator.primary_store.add_persona_from_details.begin (details, (obj, res) => {
 	var store = obj as PersonaStore;
@@ -1390,6 +1390,7 @@ public class Contacts.ContactPane : EventBox {
 	show_contact (contact);
 	persona.set_data ("contacts-unedited", true);
 	display_edit (contact, persona, true);
+	list_pane.select_contact (contact, true);
 
 	ulong id = 0;
 	id = this.save_data.connect ( () => {
