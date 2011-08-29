@@ -1388,6 +1388,7 @@ public class Contacts.ContactPane : EventBox {
 	}
 
 	show_contact (contact);
+	contact.is_new = true;
 	persona.set_data ("contacts-unedited", true);
 	display_edit (contact, persona, true);
 	list_pane.select_contact (contact, true);
@@ -1405,6 +1406,8 @@ public class Contacts.ContactPane : EventBox {
   }
 
   public void show_contact (Contact? new_contact, bool edit=false) {
+    if (new_contact != null)
+      new_contact.is_new = false;
     this.save_data (); // Ensure all edit data saved
 
     if (selected_contact != null)

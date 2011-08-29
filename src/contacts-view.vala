@@ -279,7 +279,10 @@ public class Contacts.ViewWidget : TreeView {
 
 	model.get (iter, 0, out contact);
 
-	cell.set ("name", contact.display_name,
+	var name = contact.display_name;
+	if (name == "" && contact.is_new)
+	  name = _("New contact");
+	cell.set ("name", name,
 		  "presence", contact.presence_type,
 		  "message", contact.presence_message,
 		  "is_phone", contact.is_phone);
