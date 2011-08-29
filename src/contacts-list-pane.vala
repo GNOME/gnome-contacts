@@ -28,6 +28,7 @@ public class Contacts.ListPane : Frame {
   private uint filter_entry_changed_id;
   private ulong non_empty_id;
   private EventBox empty_box;
+  private bool ignore_selection_change;
 
   public signal void selection_changed (Contact? contact);
   public signal void create_new ();
@@ -121,7 +122,8 @@ public class Contacts.ListPane : Frame {
 
     list = new ViewWidget (contacts_view);
     list.selection_changed.connect( (l, contact) => {
-	selection_changed (contact);
+	if (!ignore_selection_change)
+	  selection_changed (contact);
       });
 
     scrolled.add (list);
@@ -186,7 +188,10 @@ public class Contacts.ListPane : Frame {
 
   }
 
-  public void select_contact (Contact contact) {
+  public void select_contact (Contact contact, bool ignore_change = false) {
+    if (ignore_change)
+      ignore_selection_change = true;
     list.select_contact (contact);
+    ignore_selection_change = false;
   }
 }
