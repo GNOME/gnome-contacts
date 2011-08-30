@@ -61,7 +61,7 @@ main (string[] args) {
 
   // We delay the initial show a tiny bit so most contacts are loaded when we show
   Timeout.add (100, () => {
-      app.show ();
+      app.window.show ();
       return false;
     });
 

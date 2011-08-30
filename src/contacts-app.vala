@@ -20,19 +20,20 @@
 using Gtk;
 using Folks;
 
-public class Contacts.App : Window {
+public class Contacts.App : Object {
+  public Window window;
   public static App app;
   private Store contacts_store;
   private ListPane list_pane;
   private ContactPane contacts_pane;
 
-  public override bool delete_event (Gdk.EventAny event) {
+  private bool window_delete_event (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
     contacts_pane.show_contact (null);
     return false;
   }
 
-  public override bool map_event (Gdk.EventAny event) {
+  private bool window_map_event (Gdk.EventAny event) {
     list_pane.filter_entry.grab_focus ();
     return true;
   }
@@ -99,12 +100,15 @@ public class Contacts.App : Window {
 
   public App () {
     this.app = this;
-    set_title (_("Contacts"));
-    set_size_request (745, 510);
-    this.destroy.connect (Gtk.main_quit);
+    window = new Window ();
+    window.set_title (_("Contacts"));
+    window.set_size_request (745, 510);
+    window.destroy.connect (Gtk.main_quit);
+    window.delete_event.connect (window_delete_event);
+    window.map_event.connect (window_map_event);
 
     var grid = new Grid();
-    add (grid);
+    window.add (grid);
 
     contacts_store = new Store ();
     list_pane = new ListPane (contacts_store);

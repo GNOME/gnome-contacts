@@ -66,7 +66,7 @@ public class Contacts.LinkDialog : Dialog {
   public LinkDialog (Contact contact) {
     this.contact = contact;
     set_title (_("Link Contact"));
-    set_transient_for (App.app);
+    set_transient_for (App.app.window);
     set_modal (true);
     add_buttons (Stock.CLOSE,  null);
 
