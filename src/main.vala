@@ -38,34 +38,11 @@ main (string[] args) {
   Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
-  try {
-    Gtk.init_with_args (ref args, "— contact management", options, Config.GETTEXT_PACKAGE);
-  } catch (Error e) {
-    printerr ("Unable to initialize: %s\n", e.message);
-    return 1;
-  }
-
-  try {
-    var provider = new CssProvider ();
-    provider.load_from_path (Config.PKGDATADIR + "/" + "gnome-contacts.css");
-    StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider,
-					  STYLE_PROVIDER_PRIORITY_APPLICATION);
-  } catch {
-  }
+  Gtk.init (ref args);
 
   var app = new App ();
-  if (individual_id != null)
-    app.show_individual (individual_id);
-  if (email_address != null)
-    app.show_by_email (email_address);
-
-  // We delay the initial show a tiny bit so most contacts are loaded when we show
-  Timeout.add (100, () => {
-      app.window.show ();
-      return false;
-    });
-
-  Gtk.main ();
+  app.run (args);
+  app = null;
 
   return 0;
 }

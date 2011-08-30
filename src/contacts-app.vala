@@ -20,7 +20,7 @@
 using Gtk;
 using Folks;
 
-public class Contacts.App : Object {
+public class Contacts.App : Gtk.Application {
   public Window window;
   public static App app;
   private Store contacts_store;
@@ -98,19 +98,27 @@ public class Contacts.App : Object {
     }
   }
 
-  public App () {
+  private void create_window () {
+    try {
+      var provider = new CssProvider ();
+      provider.load_from_path (Config.PKGDATADIR + "/" + "gnome-contacts.css");
+      StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider,
+					    STYLE_PROVIDER_PRIORITY_APPLICATION);
+    } catch {
+      warning ("Failed to load custom CSS");
+    }
+
     this.app = this;
     window = new Window ();
+    window.set_application (this);
     window.set_title (_("Contacts"));
     window.set_size_request (745, 510);
-    window.destroy.connect (Gtk.main_quit);
     window.delete_event.connect (window_delete_event);
     window.map_event.connect (window_map_event);
 
     var grid = new Grid();
     window.add (grid);
 
-    contacts_store = new Store ();
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
     list_pane.create_new.connect ( () => {
@@ -124,5 +132,65 @@ public class Contacts.App : Object {
     grid.attach (contacts_pane, 1, 0, 1, 2);
 
     grid.show_all ();
+  }
+
+  public override void startup () {
+    contacts_store = new Store ();
+  }
+
+  public override void activate () {
+    if (window == null) {
+      create_window ();
+
+      // We delay the initial show a tiny bit so most contacts are loaded when we show
+      Timeout.add (100, () => {
+	  app.window.show ();
+	  return false;
+	});
+    } else {
+      window.present ();
+    }
+  }
+
+  private static string individual_id = null;
+  private static string email_address = null;
+  private static const OptionEntry[] options = {
+    { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
+      N_("Show contact with this individual id"), null },
+    { "email", 'e', 0, OptionArg.STRING, ref email_address,
+      N_("Show contact with this email address"), null },
+    { null }
+  };
+
+  public override int command_line (ApplicationCommandLine command_line) {
+    var args = command_line.get_arguments ();
+    unowned string[] _args = args;
+    var context = new OptionContext (N_("— contact management"));
+    context.add_main_entries (options, Config.GETTEXT_PACKAGE);
+    context.set_translation_domain (Config.GETTEXT_PACKAGE);
+    context.add_group (Gtk.get_option_group (true));
+
+    individual_id = null;
+    email_address = null;
+
+    try {
+      context.parse (ref _args);
+    } catch (Error e) {
+      printerr ("Unable to parse: %s\n", e.message);
+      return 1;
+    }
+
+    activate ();
+
+    if (individual_id != null)
+      app.show_individual (individual_id);
+    if (email_address != null)
+      app.show_by_email (email_address);
+
+    return 0;
+  }
+
+  public App () {
+    Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
   }
 }
