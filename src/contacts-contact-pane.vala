@@ -492,6 +492,29 @@ public class Contacts.ContactPane : Grid {
     }
   }
 
+  /* Tries to set the property on all persons that have it writeable, and
+   * if none, creates a new persona and writes to it, returning the new
+   * persona.
+   */
+  private async Persona? set_individual_property (Contact contact,
+						  string property_name,
+						  Value value) throws GLib.Error {
+    selected_contact.is_unedited = false;
+    bool did_set = false;
+    foreach (var p in contact.individual.personas) {
+      if (property_name in p.writeable_properties) {
+	did_set = true;
+	p.set_property (property_name, value);
+      }
+    }
+
+    if (!did_set) {
+      var fake = new FakePersona (contact);
+      return yield fake.make_real_and_set (property_name, value);
+    }
+    return null;
+  }
+
   private void update_detail_property (string property_name,
 				       Set<AbstractFieldDetails> detail_set) {
     var editing_backup = editing_persona;
@@ -1196,9 +1219,23 @@ public class Contacts.ContactPane : Grid {
 	if (name != e.get_data<string?> ("original-text")) {
 	  Value v = Value (typeof (string));
 	  v.set_string (name);
-	  set_persona_property.begin (editing_persona_primary,
-				      "full-name", v, () => {
-				      });
+	  set_individual_property.begin (selected_contact,
+					 "full-name", v,
+					 (obj, result) => {
+	  try {
+	    var p = set_individual_property.end (result);
+	    if (p != null &&
+		selected_contact == contact &&
+		display_mode == DisplayMode.EDIT) {
+	      if (editing_persona is FakePersona)
+		editing_persona = p;
+	      editing_persona_primary = p;
+	      update_persona_buttons (selected_contact, editing_persona);
+	    }
+	  } catch (Error e) {
+	    warning ("Unable to create writeable persona: %s", e.message);
+	  }
+					 });
 	}
 	return false;
       });
