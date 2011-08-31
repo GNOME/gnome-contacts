@@ -31,36 +31,49 @@ public class Contacts.LinkDialog : Dialog {
 
   private void update_personas () {
     // Remove previous personas
-    foreach (var w in persona_grid.get_children ())
+    foreach (var w in persona_grid.get_children ()) {
       w.destroy ();
+    }
 
     // Add all current personas
+    int i = 0;
     foreach (var p in contact.individual.personas) {
       var image_frame = new ContactFrame (48);
       image_frame.set_image (p as AvatarDetails);
-      persona_grid.add (image_frame);
+      persona_grid.attach (image_frame, 0, i, 1, 2);
 
-      var label = new Label (Contact.get_display_name_for_persona (p));
+      var label = new Label ("");
+      label.set_markup ("<span font='13'>" + Contact.get_display_name_for_persona (p) + "</span>");
       label.set_valign (Align.START);
       label.set_halign (Align.START);
       label.set_hexpand (true);
       label.xalign = 0.0f;
       label.set_ellipsize (Pango.EllipsizeMode.END);
-      persona_grid.attach_next_to (label, image_frame, PositionType.RIGHT, 1, 1);
+      persona_grid.attach (label, 1, i, 1, 1);
+
+      label = new Label ("");
+      label.set_markup ("<span font='9'>" + Contact.format_persona_store_name (p.store) + "</span>");
+      label.set_valign (Align.START);
+      label.set_halign (Align.START);
+      label.set_hexpand (true);
+      label.xalign = 0.0f;
+      label.set_ellipsize (Pango.EllipsizeMode.END);
+      persona_grid.attach (label, 1, i+1, 1, 1);
 
       var button = new Button ();
       var image = new Image.from_icon_name ("list-remove-symbolic", IconSize.MENU);
       button.add (image);
       button.set_valign (Align.CENTER);
       button.set_halign (Align.END);
-      persona_grid.attach_next_to (button, label, PositionType.RIGHT, 1, 1);
+      persona_grid.attach (button, 1, i, 1, 2);
       button.clicked.connect ( (button) => {
 	  // TODO: Unlink persona p from contact.individual
 	  update_personas ();
 	});
 
-      persona_grid.show_all ();
+      i += 2;
     }
+    persona_grid.show_all ();
   }
 
   public LinkDialog (Contact contact) {
