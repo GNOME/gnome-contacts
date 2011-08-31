@@ -375,6 +375,7 @@ public class Contacts.TypeCombo : Grid  {
     combo.changed.connect (combo_changed);
     entry.focus_out_event.connect (entry_focus_out_event);
     entry.activate.connect (entry_activate);
+    entry.key_release_event.connect (entry_key_release);
   }
 
   private void finish_custom () {
@@ -400,6 +401,14 @@ public class Contacts.TypeCombo : Grid  {
 
   private void entry_activate () {
     finish_custom ();
+  }
+
+  private bool entry_key_release (Gdk.EventKey event) {
+    if (event.keyval == Gdk.keyval_from_name ("Escape")) {
+      entry.set_text ("");
+      finish_custom ();
+    }
+    return true;
   }
 
   private bool entry_focus_out_event (Gdk.EventFocus event) {
