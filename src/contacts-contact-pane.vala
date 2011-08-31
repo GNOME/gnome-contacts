@@ -450,7 +450,7 @@ public class Contacts.ContactPane : Grid {
   private Grid card_grid;
   private Grid fields_grid;
   private Grid button_grid;
-
+  private Gnome.DesktopThumbnailFactory thumbnail_factory;
   /* Stuff used only in edit mode */
   private ContactFrame edit_image_frame;
   private Grid edit_persona_grid;
@@ -907,13 +907,80 @@ public class Contacts.ContactPane : Grid {
     return null;
   }
 
-  private void pick_avatar_cb (MenuItem menu) {
-    Icon icon = menu.get_data<Icon> ("source-icon");
+  private void set_avatar_from_icon (Icon icon) {
     Value v = Value (icon.get_type ());
     v.set_object (icon);
     set_individual_property.begin (selected_contact,
 				   "avatar", v, () => {
 				   });
+  }
+
+  private void pick_avatar_cb (MenuItem menu) {
+    Icon icon = menu.get_data<Icon> ("source-icon");
+    set_avatar_from_icon (icon);
+  }
+
+  public void update_preview (FileChooser chooser) {
+    var uri = chooser.get_preview_uri ();
+    if (uri != null) {
+      Gdk.Pixbuf? pixbuf = null;
+
+      var preview = chooser.get_preview_widget () as Image;
+
+      var file = File.new_for_uri (uri);
+      var file_info = file.query_info (GLib.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+				       FileQueryInfoFlags.NONE, null);
+      if (file_info != null) {
+	var mime_type = file_info.get_content_type ();
+
+	if (mime_type != null)
+	  pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
+      }
+
+      (chooser as Dialog).set_response_sensitive (ResponseType.ACCEPT,
+						  (pixbuf != null));
+
+      if (pixbuf != null)
+	preview.set_from_pixbuf (pixbuf);
+      else
+	preview.set_from_stock (Stock.DIALOG_QUESTION,
+				IconSize.DIALOG);
+    }
+
+    chooser.set_preview_widget_active (true);
+  }
+
+  private void select_avatar_file_cb (MenuItem menu) {
+    var chooser = new FileChooserDialog (_("Browse for more pictures"),
+					 (Window)this.get_toplevel (),
+					 FileChooserAction.OPEN,
+					 Stock.CANCEL, ResponseType.CANCEL,
+					 Stock.OPEN, ResponseType.ACCEPT);
+    chooser.set_modal (true);
+    chooser.set_local_only (false);
+    var preview = new Image ();
+    preview.set_size_request (128, -1);
+    chooser.set_preview_widget (preview);
+    chooser.set_use_preview_label (false);
+    preview.show ();
+
+    chooser.update_preview.connect (update_preview);
+
+    var folder = Environment.get_user_special_dir (UserDirectory.PICTURES);
+    if (folder != null)
+      chooser.set_current_folder (folder);
+
+    chooser.response.connect ( (response) => {
+	if (response != ResponseType.ACCEPT) {
+	  chooser.destroy ();
+	  return;
+	}
+	var icon = new FileIcon (File.new_for_uri (chooser.get_uri ()));
+	set_avatar_from_icon (icon);
+	chooser.destroy ();
+      });
+
+    chooser.present ();
   }
 
   private Menu avatar_menu (Contact contact) {
@@ -966,7 +1033,7 @@ public class Contacts.ContactPane : Grid {
       }
     };
 
-    Utils.add_menu_item (menu,_("Browse for more pictures..."));
+    Utils.add_menu_item (menu,_("Browse for more pictures...")).activate.connect (select_avatar_file_cb);
 
     return menu;
   }
@@ -1469,6 +1536,7 @@ public class Contacts.ContactPane : Grid {
   }
 
   public ContactPane (Store contacts_store) {
+    thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
     this.contacts_store = contacts_store;
 
     this.set_orientation (Orientation.VERTICAL);
