@@ -1580,6 +1580,7 @@ public class Contacts.ContactPane : Grid {
     grid.attach (scrolled, 0, 1, 1, 1);
 
     var top_grid = new Grid ();
+    top_grid.set_focus_vadjustment (main_scrolled.get_vadjustment ());
     top_grid.set_orientation (Orientation.VERTICAL);
     scrolled.add_with_viewport (top_grid);
     scrolled.get_child().get_style_context ().add_class ("contact-pane");
