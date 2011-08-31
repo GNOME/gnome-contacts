@@ -911,13 +911,9 @@ public class Contacts.ContactPane : Grid {
     Icon icon = menu.get_data<Icon> ("source-icon");
     Value v = Value (icon.get_type ());
     v.set_object (icon);
-    Persona? primary_persona = selected_contact.find_primary_persona ();
-    if (primary_persona == null)
-      primary_persona = new FakePersona (selected_contact);
-
-    set_persona_property.begin (primary_persona,
-				"avatar", v, () => {
-				});
+    set_individual_property.begin (selected_contact,
+				   "avatar", v, () => {
+				   });
   }
 
   private Menu avatar_menu (Contact contact) {
