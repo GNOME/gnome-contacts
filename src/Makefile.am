@@ -6,10 +6,11 @@ AM_CPPFLAGS = \
 	-DLOCALEDIR=\""$(localedir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\" \
+	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=$(srcdir)/../vapi --pkg config \
+	--vapidir=$(srcdir)/../vapi --pkg config --pkg custom \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 
