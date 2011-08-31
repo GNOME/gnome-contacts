@@ -648,7 +648,7 @@ public class Contacts.ContactPane : Grid {
     return remove_button;
   }
 
-  private void add_detail_editor (DetailsLayout layout,
+  private Widget add_detail_editor (DetailsLayout layout,
 				  TypeSet type_set,
 				  Set<AbstractFieldDetails> detail_set,
 				  AbstractFieldDetails<string> detail,
@@ -656,76 +656,85 @@ public class Contacts.ContactPane : Grid {
 				  string? placeholder_text) {
     detail_set.add (detail);
     add_detail_combo (layout, type_set, detail_set, detail, property_name);
-    add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
+    var main = add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
     add_detail_remove (layout, detail_set, detail, property_name);
+
+    return main;
   }
 
-  private void add_detail_editor_no_type (DetailsLayout layout,
-					  Set<AbstractFieldDetails> detail_set,
-					   AbstractFieldDetails<string> detail,
-					   string property_name,
-					   string? placeholder_text) {
+  private Widget add_detail_editor_no_type (DetailsLayout layout,
+					    Set<AbstractFieldDetails> detail_set,
+					    AbstractFieldDetails<string> detail,
+					    string property_name,
+					    string? placeholder_text) {
     detail_set.add (detail);
-    add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
+    var main = add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
     add_detail_remove (layout, detail_set, detail, property_name, false);
+
+    return main;
   }
 
-  private void add_email_editor (DetailsLayout layout,
+  private Widget add_email_editor (DetailsLayout layout,
+				   Set<AbstractFieldDetails> detail_set,
+				   EmailFieldDetails? email) {
+    return add_detail_editor (layout,
+			      TypeSet.general,
+			      detail_set,
+			      email != null ? new EmailFieldDetails (email.value, email.parameters) : new EmailFieldDetails(""),
+			      "email-addresses",
+			      _("Enter email address"));
+  }
+
+  private Widget add_phone_editor (DetailsLayout layout,
+				   Set<AbstractFieldDetails> detail_set,
+				   PhoneFieldDetails? p) {
+    return add_detail_editor (layout,
+			      TypeSet.phone,
+			      detail_set,
+			      p != null ? new PhoneFieldDetails (p.value, p.parameters) : new PhoneFieldDetails(""),
+			      "phone-numbers",
+			      _("Enter phone number"));
+  }
+
+  private Widget add_url_editor (DetailsLayout layout,
 				 Set<AbstractFieldDetails> detail_set,
-				 EmailFieldDetails? email) {
-    add_detail_editor (layout,
-		       TypeSet.general,
-		       detail_set,
-		       email != null ? new EmailFieldDetails (email.value, email.parameters) : new EmailFieldDetails(""),
-		       "email-addresses",
-		       _("Enter email address"));
-  }
-
-  private void add_phone_editor (DetailsLayout layout,
-				 Set<AbstractFieldDetails> detail_set,
-				 PhoneFieldDetails? p) {
-    add_detail_editor (layout,
-		       TypeSet.phone,
-		       detail_set,
-		       p != null ? new PhoneFieldDetails (p.value, p.parameters) : new PhoneFieldDetails(""),
-		       "phone-numbers",
-		       _("Enter phone number"));
-  }
-
-  private void add_url_editor (DetailsLayout layout,
-			       Set<AbstractFieldDetails> detail_set,
-			       UrlFieldDetails? url) {
+				 UrlFieldDetails? url) {
     if (layout.grid.get_children ().length () == 0)
       layout.add_label ("Links");
 
-    add_detail_editor_no_type (layout,
-			       detail_set,
-			       url != null ? new UrlFieldDetails (url.value, url.parameters) : new UrlFieldDetails (""),
-			       "urls",
-			       _("Enter link"));
+    return add_detail_editor_no_type (layout,
+				      detail_set,
+				      url != null ? new UrlFieldDetails (url.value, url.parameters) : new UrlFieldDetails (""),
+				      "urls",
+				      _("Enter link"));
   }
 
-  private void add_postal_editor (DetailsLayout layout,
-				  Set<PostalAddressFieldDetails> detail_set,
-				  PostalAddressFieldDetails detail) {
+  private Widget add_postal_editor (DetailsLayout layout,
+				    Set<PostalAddressFieldDetails> detail_set,
+				    PostalAddressFieldDetails detail) {
     string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
     string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
 
     detail_set.add (detail);
     add_detail_combo (layout, TypeSet.general, detail_set, detail, "postal_addresses");
 
+    Widget main = null;
     layout.begin_detail_box ();
     for (int i = 0; i < props.length; i++) {
-      add_detail_postal_entry (layout,
-			       detail_set,
-			       detail,
-			       props[i],
-			       "postal-addresses",
-			       nice[i]);
+      var e = add_detail_postal_entry (layout,
+				       detail_set,
+				       detail,
+				       props[i],
+				       "postal-addresses",
+				       nice[i]);
+      if (i == 0)
+	main = e;
     }
     layout.end_detail_box ();
     var button = add_detail_remove (layout, detail_set, detail, "postal-addresses");
     button.set_valign (Align.START);
+
+    return main;
   }
 
   private void update_edit_details (Persona persona, bool new_contact) {
@@ -830,31 +839,36 @@ public class Contacts.ContactPane : Grid {
       var menu = new Menu ();
       if (Contact.persona_has_writable_property (persona, "email-addresses")) {
 	Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
-	    add_email_editor (email_layout,
-			      editing_emails, null);
+	    var widget = add_email_editor (email_layout,
+					   editing_emails, null);
+	    widget.grab_focus ();
 	    email_layout.grid.show_all ();
 	  });
       }
       if (Contact.persona_has_writable_property (persona, "phone-numbers")) {
 	Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
-	    add_phone_editor (phone_layout,
-			      editing_phones, null);
+	    var widget = add_phone_editor (phone_layout,
+					   editing_phones, null);
+	    widget.grab_focus ();
 	    phone_layout.grid.show_all ();
 	  });
       }
       if (Contact.persona_has_writable_property (persona, "postal-addresses")) {
 	Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
-	    add_postal_editor (postal_layout,
-			       editing_postals,
-			       new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null), null));
+	    var widget = add_postal_editor (postal_layout,
+					    editing_postals,
+					    new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null),
+									  null));
+	    widget.grab_focus ();
 	    postal_layout.grid.show_all ();
 	  });
       }
       if (Contact.persona_has_writable_property (persona, "urls")) {
 	Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
-	    add_url_editor (url_layout,
-			    editing_urls,
-			    null);
+	    var widget = add_url_editor (url_layout,
+					 editing_urls,
+					 null);
+	    widget.grab_focus ();
 	    url_layout.grid.show_all ();
 	  });
       }
