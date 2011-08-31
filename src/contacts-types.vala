@@ -332,6 +332,7 @@ public class Contacts.TypeCombo : Grid  {
   TypeSet type_set;
   ComboBox combo;
   Entry entry;
+  TreeIter last_active;
   bool custom_mode;
   bool in_manual_change;
 
@@ -383,10 +384,15 @@ public class Contacts.TypeCombo : Grid  {
     custom_mode = false;
     var text = entry.get_text ();
 
-    TreeIter iter;
-    type_set.add_custom_label (text, out iter);
+    if (text != "") {
+      TreeIter iter;
+      type_set.add_custom_label (text, out iter);
 
-    combo.set_active_iter (iter);
+      last_active = iter;
+      combo.set_active_iter (iter);
+    } else {
+      combo.set_active_iter (last_active);
+    }
 
     combo.show ();
     entry.hide ();
@@ -413,6 +419,7 @@ public class Contacts.TypeCombo : Grid  {
 	entry.show ();
 	entry.grab_focus ();
       } else {
+	last_active = iter;
 	this.changed ();
       }
     }
@@ -422,6 +429,7 @@ public class Contacts.TypeCombo : Grid  {
     TreeIter iter;
     type_set.lookup_type (details, out iter);
     in_manual_change = true;
+    last_active = iter;
     combo.set_active_iter (iter);
     in_manual_change = false;
   }
