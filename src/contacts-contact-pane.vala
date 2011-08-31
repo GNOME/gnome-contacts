@@ -456,6 +456,7 @@ public class Contacts.ContactPane : Grid {
   private Grid edit_persona_grid;
   private Persona? editing_persona;
   private Persona? editing_persona_primary;
+  private MenuItem delete_menu_item;
 
   private bool has_notes;
   private Widget notes_dot;
@@ -1328,6 +1329,20 @@ public class Contacts.ContactPane : Grid {
     set_has_notes (!contact.individual.notes.is_empty);
     display_card (contact);
 
+    bool can_remove = false;
+    bool can_remove_all = true;
+    foreach (var p in contact.individual.personas) {
+      if (p.store.can_remove_personas == MaybeBool.TRUE &&
+	  !(p is Tpf.Persona)) {
+	can_remove = true;
+      } else {
+	can_remove_all = false;
+      }
+    }
+    can_remove_all = can_remove && can_remove_all;
+
+    delete_menu_item.set_sensitive (can_remove_all);
+
     var emails = Contact.sort_fields<EmailFieldDetails>(contact.individual.email_addresses);
     foreach (var email in emails) {
       var type = TypeSet.general.format_type (email);
@@ -1543,6 +1558,8 @@ public class Contacts.ContactPane : Grid {
     set_display_mode (DisplayMode.EMPTY);
     set_has_notes (false);
 
+    delete_menu_item.set_sensitive (false);
+
     if (selected_contact != null) {
 	display_contact (selected_contact);
 	selected_contact.changed.connect (selected_contact_changed);
@@ -1670,7 +1687,8 @@ public class Contacts.ContactPane : Grid {
     var menu = new Menu ();
     Utils.add_menu_item (menu,_("Add/Remove Linked Contacts...")).activate.connect (link_contact);
     //Utils.add_menu_item (menu,_("Send..."));
-    Utils.add_menu_item (menu,_("Delete")).set_sensitive (false);
+    delete_menu_item = Utils.add_menu_item (menu,_("Delete"));
+    delete_menu_item.activate.connect (delete_contact);
 
     menu_button.set_menu (menu);
 
@@ -1687,4 +1705,9 @@ public class Contacts.ContactPane : Grid {
     var dialog = new LinkDialog (selected_contact);
     dialog.show_all ();
   }
+
+  void delete_contact () {
+    contacts_store.aggregator.remove_individual (selected_contact.individual);
+  }
+
 }
