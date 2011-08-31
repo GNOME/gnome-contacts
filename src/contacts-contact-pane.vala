@@ -481,6 +481,7 @@ public class Contacts.ContactPane : Grid {
   private async Persona? set_persona_property (Persona persona,
 					       string property_name,
 					       Value value) throws GLib.Error {
+    selected_contact.is_unedited = false;
     if (persona is FakePersona) {
       var fake = persona as FakePersona;
       return yield fake.make_real_and_set (property_name, value);
@@ -1400,13 +1401,13 @@ public class Contacts.ContactPane : Grid {
 
 	show_contact (contact);
 	contact.is_new = true;
-	persona.set_data ("contacts-unedited", true);
+	contact.is_unedited = true;
 	display_edit (contact, persona, true);
 	list_pane.select_contact (contact, true);
 
 	ulong id = 0;
 	id = this.save_data.connect ( () => {
-	    if (persona.get_data<bool> ("contacts-unedited") != false) {
+	    if (contact.is_unedited) {
 	      editing_persona.store.remove_persona.begin (editing_persona, () => {
 		});
 	    }
