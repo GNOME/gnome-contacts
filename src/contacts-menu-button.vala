@@ -42,6 +42,8 @@ public class Contacts.MenuButton : ToggleButton  {
     set_menu (null);
   }
 
+  public signal void popup ();
+
   private void menu_position (Menu menu, out int x, out int y, out bool push_in) {
     Allocation allocation;
     get_allocation (out allocation);
@@ -100,8 +102,10 @@ public class Contacts.MenuButton : ToggleButton  {
   public override void toggled () {
     var context = get_style_context ();
     if (get_active ()) {
-      if (!popup_in_progress)
+      if (!popup_in_progress) {
+	this.popup ();
 	menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
+      }
       context.add_class (STYLE_CLASS_MENUBAR);
       context.add_class (STYLE_CLASS_MENUITEM);
     } else {
@@ -119,6 +123,7 @@ public class Contacts.MenuButton : ToggleButton  {
 	get_active ())
       return false;
 
+    this.popup ();
     menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
     set_active (true);
     popup_in_progress = true;
