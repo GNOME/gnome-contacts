@@ -1183,6 +1183,11 @@ public class Contacts.ContactPane : Grid {
 
     delete_menu_item.set_sensitive (can_remove_all);
 
+    var nickname = contact.individual.nickname;
+    if (nickname != null && nickname != "" &&
+	contact.get_secondary_string_source () != "nickname")
+      fields_layout.add_label_detail (_("Nickname"), nickname);
+
     var emails = Contact.sort_fields<EmailFieldDetails>(contact.individual.email_addresses);
     foreach (var email in emails) {
       var type = TypeSet.general.format_type (email);
