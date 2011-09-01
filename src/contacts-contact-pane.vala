@@ -365,11 +365,9 @@ public class Contacts.ContactPane : Grid {
     return null;
   }
 
-  private void update_detail_property (string property_name,
-				       Set<AbstractFieldDetails> detail_set) {
+  private void update_property (string property_name,
+				Value value) {
     var editing_backup = editing_persona;
-    var value = Value (detail_set.get_type ());
-    value.set_object (detail_set);
     set_persona_property.begin (editing_persona, property_name, value, (obj, result) => {
 	  try {
 	    var p = set_persona_property.end (result);
@@ -384,6 +382,20 @@ public class Contacts.ContactPane : Grid {
 	    warning ("Unable to create writeable persona: %s", e.message);
 	  }
       });
+  }
+
+  private void update_string_property (string property_name,
+				       string string_value) {
+    var value = Value (typeof (string));
+    value.set_string (string_value);
+    update_property (property_name, value);
+  }
+
+  private void update_detail_property (string property_name,
+				       Set<AbstractFieldDetails> detail_set) {
+    var value = Value (detail_set.get_type ());
+    value.set_object (detail_set);
+    update_property (property_name, value);
   }
 
   private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
@@ -499,11 +511,11 @@ public class Contacts.ContactPane : Grid {
   }
 
   private Widget add_detail_editor (DetailsLayout layout,
-				  TypeSet type_set,
-				  Set<AbstractFieldDetails> detail_set,
-				  AbstractFieldDetails<string> detail,
-				  string property_name,
-				  string? placeholder_text) {
+				    TypeSet type_set,
+				    Set<AbstractFieldDetails> detail_set,
+				    AbstractFieldDetails<string> detail,
+				    string property_name,
+				    string? placeholder_text) {
     detail_set.add (detail);
     add_detail_combo (layout, type_set, detail_set, detail, property_name);
     var main = add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
@@ -522,6 +534,61 @@ public class Contacts.ContactPane : Grid {
     add_detail_remove (layout, detail_set, detail, property_name, false);
 
     return main;
+  }
+
+  private Entry add_string_entry (DetailsLayout layout,
+				  string property_name,
+				  string value,
+				  string? placeholder_text) {
+    var entry = layout.add_entry (value);
+    entry.set_data ("original-text", value);
+    if (placeholder_text != null)
+      entry.set ("placeholder-text", placeholder_text);
+
+    entry.focus_out_event.connect ( (ev) => {
+	if (entry.get_data<string?> ("original-text") !=
+	    entry.get_text ()) {
+	  var s = entry.get_text ();
+	  entry.set_data ("original-text", s);
+	  update_string_property (property_name, s);
+	}
+	return false;
+      });
+    return entry;
+  }
+
+  private Button add_string_remove (DetailsLayout layout,
+				    string property_name,
+				    bool at_top = true) {
+    var remove_button = layout.add_remove (at_top);
+    var row = layout.current_row;
+
+    remove_button.clicked.connect ( () => {
+	update_string_property (property_name, "");
+	row.destroy ();
+      });
+    return remove_button;
+  }
+
+  private Widget add_string_editor (DetailsLayout layout,
+				    string label,
+				    string property_name,
+				    string value,
+				    string? placeholder_text) {
+    layout.add_label (label);
+    var main = add_string_entry (layout, property_name, value, placeholder_text);
+    add_string_remove (layout, property_name);
+
+    return main;
+  }
+
+  private Widget add_nickname_editor (DetailsLayout layout,
+				      string nickname) {
+    return add_string_editor (layout,
+			      _("Nickname"),
+			      "nickname",
+			      nickname,
+			      _("Enter nickname"));
   }
 
   private Widget add_email_editor (DetailsLayout layout,
@@ -599,6 +666,17 @@ public class Contacts.ContactPane : Grid {
     editing_phones = new HashSet<PhoneFieldDetails>();
     editing_urls = new HashSet<UrlFieldDetails>();
     editing_postals = new HashSet<PostalAddressFieldDetails>();
+
+    var nick_layout = new DetailsLayout (layout_state);
+    fields_grid.add (nick_layout.grid);
+
+    var name_details = persona as NameDetails;
+    if (name_details != null) {
+      var nick = name_details.nickname;
+      if (nick != null && nick != "") {
+	add_nickname_editor (nick_layout, nick);
+      }
+    }
 
     var email_layout = new DetailsLayout (layout_state);
     fields_grid.add (email_layout.grid);
@@ -722,6 +800,26 @@ public class Contacts.ContactPane : Grid {
 	    url_layout.grid.show_all ();
 	  });
       }
+      MenuItem nick_menu_item = null;
+      if (name_details != null &&
+	  Contact.persona_has_writable_property (persona, "nickname")) {
+	nick_menu_item = Utils.add_menu_item (menu, _("Nickname"));
+	nick_menu_item.activate.connect ( () => {
+	    var widget = add_nickname_editor (nick_layout, "");
+	    widget.grab_focus ();
+	    nick_layout.grid.show_all ();
+	  });
+      }
+
+      menu_button.popup.connect ( () => {
+	  if (nick_menu_item != null) {
+	    if (name_details.nickname != null &&
+		name_details.nickname != "")
+	      nick_menu_item.hide ();
+	    else
+	      nick_menu_item.show ();
+	  }
+	});
 
       menu_button.set_menu (menu);
 
