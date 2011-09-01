@@ -476,17 +476,29 @@ public class Contacts.Contact : GLib.Object  {
     return false;
   }
 
-  public static int compare_fields (void *a, void *b) {
-    AbstractFieldDetails *details_a = (AbstractFieldDetails *)a;
-    AbstractFieldDetails *details_b = (AbstractFieldDetails *)b;
-    bool first_a = has_pref (details_a);
-    bool first_b = has_pref (details_b);
+  public static int compare_fields (void *_a, void *_b) {
+    AbstractFieldDetails *a = (AbstractFieldDetails *)_a;
+    AbstractFieldDetails *b = (AbstractFieldDetails *)_b;
 
-    if (first_a == first_b)
-      return 0;
-    if (first_a)
-      return -1;
-    return 1;
+    /* Compare by pref */
+    bool first_a = has_pref (a);
+    bool first_b = has_pref (b);
+    if (first_a != first_b) {
+      if (first_a)
+	return -1;
+      else
+	return 1;
+    }
+
+    if (a is EmailFieldDetails || a is PhoneFieldDetails) {
+      var aa = a as AbstractFieldDetails<string>;
+      var bb = b as AbstractFieldDetails<string>;
+      return strcmp (aa.value, bb.value);
+    }
+
+    warning ("Unsupported AbstractFieldDetails value type");
+
+    return 0;
   }
 
   public static int compare_persona_by_store (void *a, void *b) {
@@ -516,7 +528,6 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public static ArrayList<T> sort_fields<T> (Collection<T> fields) {
-    // TODO: This should take an extra delegate arg to compare by value for T
     var res = new ArrayList<T>();
     res.add_all (fields);
     res.sort (Contact.compare_fields);
