@@ -330,14 +330,14 @@ public class Contacts.ContactPane : Grid {
 
   private async Persona? set_persona_property (Persona persona,
 					       string property_name,
-					       Value value) throws GLib.Error {
+					       Value value) throws GLib.Error, PropertyError {
     selected_contact.is_unedited = false;
     if (persona is FakePersona) {
       var fake = persona as FakePersona;
       return yield fake.make_real_and_set (property_name, value);
     } else {
       persona.set_data ("contacts-unedited", true);
-      persona.set_property (property_name, value);
+      yield Contact.set_persona_property (persona, property_name, value);
       return null;
     }
   }
@@ -348,13 +348,13 @@ public class Contacts.ContactPane : Grid {
    */
   private async Persona? set_individual_property (Contact contact,
 						  string property_name,
-						  Value value) throws GLib.Error {
+						  Value value) throws GLib.Error, PropertyError {
     selected_contact.is_unedited = false;
     bool did_set = false;
     foreach (var p in contact.individual.personas) {
       if (property_name in p.writeable_properties) {
 	did_set = true;
-	p.set_property (property_name, value);
+        yield Contact.set_persona_property (p, property_name, value);
       }
     }
 
@@ -378,8 +378,10 @@ public class Contacts.ContactPane : Grid {
 	      editing_persona = p;
 	      editing_persona_primary = p;
 	    }
-	  } catch (Error e) {
-	    warning ("Unable to create writeable persona: %s", e.message);
+          } catch (PropertyError e1) {
+            warning ("Unable to edit property '%s': %s", property_name, e1.message);
+          } catch (Error e2) {
+            warning ("Unable to create writeable persona: %s", e2.message);
 	  }
       });
   }
@@ -645,7 +647,7 @@ public class Contacts.ContactPane : Grid {
     string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
 
     detail_set.add (detail);
-    add_detail_combo (layout, TypeSet.general, detail_set, detail, "postal_addresses");
+    add_detail_combo (layout, TypeSet.general, detail_set, detail, "postal-addresses");
 
     Widget main = null;
     layout.begin_detail_box ();

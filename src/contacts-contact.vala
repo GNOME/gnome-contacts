@@ -977,6 +977,74 @@ public class Contacts.Contact : GLib.Object  {
 
     return null;
   }
+
+  internal static async void set_persona_property (Persona persona,
+                                                   string property_name, Value new_value) throws PropertyError {
+    /* FIXME: It should be possible to move these all to being delegates which are
+     * passed to the functions which currently call this one; but only once bgo#604827 is fixed. */
+    switch (property_name) {
+      case "alias":
+        yield (persona as AliasDetails).change_alias ((string) new_value);
+        return;
+      case "avatar":
+        yield (persona as AvatarDetails).change_avatar ((LoadableIcon?) new_value);
+        return;
+      case "birthday":
+        yield (persona as BirthdayDetails).change_birthday ((DateTime?) new_value);
+        return;
+      case "calendar-event-id":
+        yield (persona as BirthdayDetails).change_calendar_event_id ((string?) new_value);
+        return;
+      case "email-addresses":
+        yield (persona as EmailDetails).change_email_addresses ((Set<EmailFieldDetails>) new_value);
+        return;
+      case "is-favourite":
+        yield (persona as FavouriteDetails).change_is_favourite ((bool) new_value);
+        return;
+      case "gender":
+        yield (persona as GenderDetails).change_gender ((Gender) new_value);
+        return;
+      case "groups":
+        yield (persona as GroupDetails).change_groups ((Set<string>) new_value);
+        return;
+      case "im-addresses":
+        yield (persona as ImDetails).change_im_addresses ((MultiMap<string, ImFieldDetails>) new_value);
+        return;
+      case "local-ids":
+        yield (persona as LocalIdDetails).change_local_ids ((Set<string>) new_value);
+        return;
+      case "structured-name":
+        yield (persona as NameDetails).change_structured_name ((StructuredName?) new_value);
+        return;
+      case "full-name":
+        yield (persona as NameDetails).change_full_name ((string) new_value);
+        return;
+      case "nickname":
+        yield (persona as NameDetails).change_nickname ((string) new_value);
+        return;
+      case "notes":
+        yield (persona as NoteDetails).change_notes ((Set<NoteFieldDetails>) new_value);
+        return;
+      case "phone-numbers":
+        yield (persona as PhoneDetails).change_phone_numbers ((Set<PhoneFieldDetails>) new_value);
+        return;
+      case "postal-addresses":
+        yield (persona as PostalAddressDetails).change_postal_addresses ((Set<PostalAddressFieldDetails>) new_value);
+        return;
+      case "roles":
+        yield (persona as RoleDetails).change_roles ((Set<RoleFieldDetails>) new_value);
+        return;
+      case "urls":
+        yield (persona as UrlDetails).change_urls ((Set<UrlFieldDetails>) new_value);
+        return;
+      case "web-service-addresses":
+        yield (persona as WebServiceDetails).change_web_service_addresses ((MultiMap<string, WebServiceFieldDetails>) new_value);
+        return;
+      default:
+        critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);
+        return;
+    }
+  }
 }
 
 public class Contacts.FakePersona : Persona {
@@ -1025,7 +1093,7 @@ public class Contacts.FakePersona : Persona {
       if (!has_full_name)
 	p.set ("full-name", contact.display_name);
       foreach (var pv in prop_vals) {
-	p.set_property (pv.property, pv.value);
+        yield Contact.set_persona_property (p, pv.property, pv.value);
       }
       now_real = true;
       return p;
