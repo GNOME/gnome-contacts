@@ -617,7 +617,7 @@ public class Contacts.ContactPane : Grid {
 				 Set<AbstractFieldDetails> detail_set,
 				 UrlFieldDetails? url) {
     if (layout.grid.get_children ().length () == 0)
-      layout.add_label ("Links");
+      layout.add_label (_("Links"));
 
     return add_detail_editor_no_type (layout,
 				      detail_set,
