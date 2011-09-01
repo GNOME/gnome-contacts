@@ -1233,6 +1233,7 @@ public class Contacts.ContactPane : Grid {
     e.focus_out_event.connect ( (ev) => {
 	name = e.get_text ();
 	if (name != e.get_data<string?> ("original-text")) {
+	  e.set_data ("original-text", name);
 	  Value v = Value (typeof (string));
 	  v.set_string (name);
 	  set_individual_property.begin (selected_contact,
