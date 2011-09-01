@@ -155,6 +155,25 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
+  // Synchronize with get_secondary_string ()
+  public string? get_secondary_string_source () {
+    var nick = individual.nickname;
+    if (nick != null && nick.length > 0)
+      return "nickname";
+    return null;
+  }
+
+  // Synchronize with get_secondary_string_source ()
+  public string? get_secondary_string () {
+    var nick = individual.nickname;
+    if (nick != null && nick.length > 0)
+      return "\xE2\x80\x9C" + nick + "\xE2\x80\x9D";
+
+    /* TODO: "<title>, <Company>" */
+
+    return null;
+  }
+
   public static bool persona_has_writable_property (Persona persona, string property) {
     // TODO: This should check the writibility on the FakePersona store,
     // but that is not availible in folks yet

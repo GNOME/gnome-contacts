@@ -1077,25 +1077,16 @@ public class Contacts.ContactPane : Grid {
     l.xalign = 0.0f;
     g.attach (l,  0, 0, 1, 1);
 
-    var nick = contact.individual.nickname;
-    if (nick != null && nick.length > 0) {
+    var secondary = contact.get_secondary_string ();
+    if (secondary != null) {
       l = new Label (null);
-      l.set_markup ("<span font='12px' rise='1000'>\xE2\x80\x9C" + nick + "\xE2\x80\x9D</span>");
+      l.set_markup ("<span font='12px' rise='1000'>"+secondary+"</span>");
       l.set_halign (Align.START);
       l.set_valign (Align.START);
       l.set_ellipsize (Pango.EllipsizeMode.END);
       l.xalign = 0.0f;
       g.attach (l,  0, 1, 1, 1);
     }
-
-    /* TODO:
-    l = new Label ("<title>, <Company>");
-    l.set_halign (Align.START);
-    l.set_valign (Align.START);
-    l.set_ellipsize (Pango.EllipsizeMode.END);
-    l.xalign = 0.0f;
-    g.attach (l,  0, 2, 1, 1);
-    */
 
     var merged_presence = contact.create_merged_presence_widget ();
     merged_presence.set_halign (Align.START);
