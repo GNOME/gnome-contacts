@@ -574,10 +574,12 @@ public class Contacts.ContactPane : Grid {
 				    string label,
 				    string property_name,
 				    string value,
-				    string? placeholder_text) {
+				    string? placeholder_text,
+				    bool add_remove = true) {
     layout.add_label (label);
     var main = add_string_entry (layout, property_name, value, placeholder_text);
-    add_string_remove (layout, property_name);
+    if (add_remove)
+      add_string_remove (layout, property_name);
 
     return main;
   }
@@ -589,6 +591,16 @@ public class Contacts.ContactPane : Grid {
 			      "nickname",
 			      nickname,
 			      _("Enter nickname"));
+  }
+
+  private Widget add_alias_editor (DetailsLayout layout,
+				   string alias) {
+    return add_string_editor (layout,
+			      _("Alias"),
+			      "alias",
+			      alias,
+			      _("Enter alias"),
+			      false);
   }
 
   private Widget add_email_editor (DetailsLayout layout,
@@ -694,6 +706,17 @@ public class Contacts.ContactPane : Grid {
       add_email_editor (email_layout,
 			editing_emails, null);
 
+    var alias_layout = new DetailsLayout (layout_state);
+    fields_grid.add (alias_layout.grid);
+
+    var alias_details = persona as AliasDetails;
+    if (alias_details != null) {
+      var alias = alias_details.alias;
+      if (alias != null && alias != "") {
+	add_alias_editor (alias_layout, alias);
+      }
+    }
+
     var im_layout = new DetailsLayout (layout_state);
     fields_grid.add (im_layout.grid);
 
@@ -707,8 +730,6 @@ public class Contacts.ContactPane : Grid {
 	  if (im_persona != null && im_persona != persona)
 	    continue;
 	  im_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
-	  var button = im_layout.add_remove ();
-	  button.set_sensitive (false);
 	}
       }
     }
