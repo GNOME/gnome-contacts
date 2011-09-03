@@ -151,13 +151,18 @@ public class Contacts.Store : GLib.Object {
   private async void check_call_capabilities () {
     this.calling_accounts = new Gee.HashMap<string, Account> ();
     var account_manager = AccountManager.dup ();
-    yield account_manager.prepare_async (null);
 
-    account_manager.account_enabled.connect (this.check_account_caps);
-    account_manager.account_disabled.connect (this.check_account_caps);
+    try {
+      yield account_manager.prepare_async (null);
 
-    foreach (var account in account_manager.get_valid_accounts ()) {
-      yield this.check_account_caps (account);
+      account_manager.account_enabled.connect (this.check_account_caps);
+      account_manager.account_disabled.connect (this.check_account_caps);
+
+      foreach (var account in account_manager.get_valid_accounts ()) {
+	yield this.check_account_caps (account);
+      }
+    } catch (GLib.Error e) {
+      warning ("Unable to check accounts caps %s", e.message);
     }
   }
 
@@ -165,15 +170,21 @@ public class Contacts.Store : GLib.Object {
     GLib.Quark addressing = Account.get_feature_quark_addressing ();
     if (!account.is_prepared (addressing)) {
       GLib.Quark[] features = { addressing };
-      yield account.prepare_async (features);
+      try {
+	yield account.prepare_async (features);
+      } catch (GLib.Error e) {
+	warning ("Unable to prepare account %s", e.message);
+      }
     }
 
-    var k = account.get_object_path ();
-    if (account.is_enabled () &&
-	account.associated_with_uri_scheme ("tel")) {
-      this.calling_accounts.set (k, account);
-    } else {
-      this.calling_accounts.unset (k);
+    if (account.is_prepared (addressing)) {
+      var k = account.get_object_path ();
+      if (account.is_enabled () &&
+	  account.associated_with_uri_scheme ("tel")) {
+	this.calling_accounts.set (k, account);
+      } else {
+	this.calling_accounts.unset (k);
+      }
     }
   }
 }
