@@ -720,7 +720,7 @@ public class Contacts.Contact : GLib.Object  {
     if (tp == null || tp.contact == null)
       return false;
 
-    var types = tp.contact.client_types;
+    unowned string[] types = tp.contact.client_types;
 
     return (types != null && types[0] == "phone");
   }
