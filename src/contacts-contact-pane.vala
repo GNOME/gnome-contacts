@@ -1413,7 +1413,7 @@ public class Contacts.ContactPane : Grid {
 
     var urls = contact.individual.urls;
     if (!urls.is_empty) {
-      fields_layout.add_label ("Links");
+      fields_layout.add_label (_("Links"));
       foreach (var url_details in urls) {
 	fields_layout.add_link (url_details.value, contact.format_uri_link_text (url_details));
       }
