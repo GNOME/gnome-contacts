@@ -67,6 +67,8 @@ public class Contacts.LinkDialog : Dialog {
       button.set_valign (Align.CENTER);
       button.set_halign (Align.END);
       persona_grid.attach (button, 1, i, 1, 2);
+      // TODO: Not supported yet
+      button.sensitive = false;
       button.clicked.connect ( (button) => {
 	  // TODO: Unlink persona p from contact.individual
 	  update_personas ();
@@ -156,6 +158,8 @@ public class Contacts.LinkDialog : Dialog {
     list.selection_changed.connect ( (contact) => {
 	selected_contact = contact;
 	link_button.sensitive = contact != null;
+	// TODO: Not supported yet
+	link_button.sensitive = false;
       });
 
     label = new Label (_("Currently linked:"));
