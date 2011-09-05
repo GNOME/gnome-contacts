@@ -122,9 +122,8 @@ public class Contacts.App : Gtk.Application {
       create_window ();
 
       // We delay the initial show a tiny bit so most contacts are loaded when we show
-      Timeout.add (100, () => {
+      contacts_store.quiescent.connect (() => {
 	  app.window.show ();
-	  return false;
 	});
     } else {
       window.present ();
