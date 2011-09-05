@@ -4,15 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 # 
-# Jorge González <jorgegonz@svn.gnome.org>, 2011., 2011.
 # 
+# Jorge González <jorgegonz@svn.gnome.org>, 2011., 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-05 11:52+0000\n"
-"PO-Revision-Date: 2011-09-05 13:57Centra\n"
+"POT-Creation-Date: 2011-09-05 12:25+0000\n"
+"PO-Revision-Date: 2011-09-05 20:34+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +78,7 @@ msgid "Enter phone number"
 msgstr "Introducir número de teléfono"
 
 #: ../src/contacts-contact-pane.vala:634
-#: ../src/contacts-contact-pane.vala:1441
+#: ../src/contacts-contact-pane.vala:1485
 msgid "Links"
 msgstr "Enlaces"
 
@@ -163,33 +164,60 @@ msgstr "Dirección copiada al portapapeles"
 msgid "Birthday"
 msgstr "Cumpleaños"
 
-#: ../src/contacts-contact-pane.vala:1508
+#: ../src/contacts-contact-pane.vala:1444 ../src/contacts-types.vala:296
+msgid "Company"
+msgstr "Empresa"
+
+#: ../src/contacts-contact-pane.vala:1451
+msgid "Department"
+msgstr "Departamento"
+
+#: ../src/contacts-contact-pane.vala:1457
+msgid "Profession"
+msgstr "Profesión"
+
+#: ../src/contacts-contact-pane.vala:1462
+#| msgid "Twitter"
+msgid "Title"
+msgstr "Título"
+
+#: ../src/contacts-contact-pane.vala:1469
+#| msgid "Pager"
+msgid "Manager"
+msgstr "Jefe"
+
+#. List most specific first, always in upper case
+#: ../src/contacts-contact-pane.vala:1477 ../src/contacts-types.vala:291
+msgid "Assistant"
+msgstr "Secretario/a"
+
+#: ../src/contacts-contact-pane.vala:1552
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "No se pudieron crear los contactos nuevos: %s\n"
 
-#: ../src/contacts-contact-pane.vala:1519
+#: ../src/contacts-contact-pane.vala:1563
 msgid "Unable to find newly created contact\n"
 msgstr "No se pudo encontrar el contacto nuevo creado\n"
 
-#: ../src/contacts-contact-pane.vala:1621
+#: ../src/contacts-contact-pane.vala:1665
 msgid "Notes"
 msgstr "Notas"
 
-#: ../src/contacts-contact-pane.vala:1652
+#: ../src/contacts-contact-pane.vala:1696
 msgid "Edit"
 msgstr "Editar"
 
-#: ../src/contacts-contact-pane.vala:1659
+#: ../src/contacts-contact-pane.vala:1703
 msgid "More"
 msgstr "Más"
 
-#: ../src/contacts-contact-pane.vala:1681
+#: ../src/contacts-contact-pane.vala:1725
 msgid "Add/Remove Linked Contacts..."
 msgstr "Añadir/quitar contactos enlazados…"
 
 #. Utils.add_menu_item (menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:1683
+#: ../src/contacts-contact-pane.vala:1727
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -386,11 +414,6 @@ msgstr "Casa"
 msgid "Work"
 msgstr "Trabajo"
 
-#. List most specific first, always in upper case
-#: ../src/contacts-types.vala:291
-msgid "Assistant"
-msgstr "Secretario/a"
-
 #: ../src/contacts-types.vala:293
 msgid "Work Fax"
 msgstr "Fax del trabajo"
@@ -402,10 +425,6 @@ msgstr "Retorno de llamada"
 #: ../src/contacts-types.vala:295
 msgid "Car"
 msgstr "Coche"
-
-#: ../src/contacts-types.vala:296
-msgid "Company"
-msgstr "Empresa"
 
 #: ../src/contacts-types.vala:298
 msgid "Home Fax"
