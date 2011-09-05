@@ -692,6 +692,17 @@ public class Contacts.ContactPane : Grid {
       }
     }
 
+    var alias_layout = new DetailsLayout (layout_state);
+    fields_grid.add (alias_layout.grid);
+
+    var alias_details = persona as AliasDetails;
+    if (alias_details != null) {
+      var alias = alias_details.alias;
+      if (alias != null && alias != "") {
+	add_alias_editor (alias_layout, alias);
+      }
+    }
+
     var email_layout = new DetailsLayout (layout_state);
     fields_grid.add (email_layout.grid);
 
@@ -707,17 +718,6 @@ public class Contacts.ContactPane : Grid {
     if (new_contact)
       add_email_editor (email_layout,
 			editing_emails, null);
-
-    var alias_layout = new DetailsLayout (layout_state);
-    fields_grid.add (alias_layout.grid);
-
-    var alias_details = persona as AliasDetails;
-    if (alias_details != null) {
-      var alias = alias_details.alias;
-      if (alias != null && alias != "") {
-	add_alias_editor (alias_layout, alias);
-      }
-    }
 
     var im_layout = new DetailsLayout (layout_state);
     fields_grid.add (im_layout.grid);
