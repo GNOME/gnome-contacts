@@ -1436,6 +1436,26 @@ public class Contacts.ContactPane : Grid {
       fields_layout.add_detail (bday.format ("%x"));
     }
 
+    var roles_details = contact.individual.roles;
+    foreach (var role_detail in roles_details) {
+      var role = role_detail.value;
+      if (role.organisation_name != null &&
+	  role.organisation_name != "") {
+	fields_layout.add_label (_("Company"));
+	fields_layout.add_detail (role.organisation_name);
+      }
+      if (role.role != null &&
+	  role.role != "") {
+	fields_layout.add_label (_("Profession"));
+	fields_layout.add_detail (role.role);
+      }
+      if (role.title != null &&
+	  role.title != "") {
+	fields_layout.add_label (_("Title"));
+	fields_layout.add_detail (role.title);
+      }
+    }
+
     var urls = contact.individual.urls;
     if (!urls.is_empty) {
       fields_layout.add_label (_("Links"));
