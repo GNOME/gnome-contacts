@@ -20,6 +20,7 @@
 using Gtk;
 using Folks;
 using Gee;
+using LocalGLib; // For C_
 
 public class Contacts.ContactFrame : Frame {
   private int size;
@@ -815,7 +816,7 @@ public class Contacts.ContactPane : Grid {
 	  });
       }
       if (Contact.persona_has_writable_property (persona, "urls")) {
-	Utils.add_menu_item (menu,_("Link")).activate.connect ( () => {
+	Utils.add_menu_item (menu, C_ ("url-link", "Link")).activate.connect ( () => {
 	    var widget = add_url_editor (url_layout,
 					 editing_urls,
 					 null);

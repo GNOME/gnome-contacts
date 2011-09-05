@@ -19,6 +19,7 @@
 
 using Gtk;
 using Folks;
+using LocalGLib; // For C_
 
 public class Contacts.LinkDialog : Dialog {
   private Contact contact;
@@ -141,7 +142,7 @@ public class Contacts.LinkDialog : Dialog {
     toolbar.set_vexpand (false);
     list_grid.add (toolbar);
 
-    var link_button = new ToolButton (null, _("Link"));
+    var link_button = new ToolButton (null, C_("link-button", "Link"));
     link_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     link_button.is_important = true;
     link_button.sensitive = false;
