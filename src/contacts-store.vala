@@ -55,13 +55,19 @@ public class Contacts.Store : GLib.Object {
 	  });
       });
     aggregator.individuals_changed_detailed.connect ( (changes) =>   {
+	var new_seen = new HashSet<Individual> ();
 	foreach (var old_individual in changes.get_keys ()) {
 	  var replacements = changes.get (old_individual);
 	  if (replacements.is_empty) {
 	    this.remove (Contact.from_individual (old_individual));
 	  } else {
 	    bool found_one_replacement = false;
+	    // Note: Apparently the current implementation doesn't necessarily pick
+	    // up unlinked individual as replacements.
 	    foreach (var replacement in replacements) {
+	      if (new_seen.contains (replacement))
+		continue;
+	      new_seen.add (replacement);
 	      if (old_individual != null &&
 		  !found_one_replacement
 		  /* TODO: && !has-unlinked-persona */) {
