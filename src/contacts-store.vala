@@ -74,7 +74,7 @@ public class Contacts.Store : GLib.Object {
 		found_one_replacement = true;
 		var c = Contact.from_individual (old_individual);
 		if (c != null) {
-		  c.replace_individual (old_individual);
+		  c.replace_individual (replacement);
 		} else {
 		  // TODO: This should not really happen, but seems to do anyway
 		  this.add (new Contact (this, replacement));
