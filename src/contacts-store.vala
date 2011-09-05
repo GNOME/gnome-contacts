@@ -54,46 +54,29 @@ public class Contacts.Store : GLib.Object {
 	    return false;
 	  });
       });
-    aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
-	var old_individuals = new HashMap<Persona, Individual>();
-	var replaced_individuals = new HashSet<Individual>();
-
-	/* Try to reverse engineer which added individuals just replaces
-	   old individuals */
-
-	foreach (Individual i in removed) {
-	  foreach (var p in i.personas)  {
-	    old_individuals.set (p, i);
-	  }
-	}
-
-	foreach (Individual i in added) {
-	  Individual? old_individual = null;
-	  foreach (var p in i.personas)  {
-	    var o_i = old_individuals.get (p);
-	    if (o_i != null) {
-	      if (old_individual == null)
-		old_individual = o_i;
-	      else if (o_i != old_individual) {
-		old_individual = null;
-		break;
+    aggregator.individuals_changed_detailed.connect ( (changes) =>   {
+	foreach (var old_individual in changes.get_keys ()) {
+	  var replacements = changes.get (old_individual);
+	  if (replacements.is_empty) {
+	    this.remove (Contact.from_individual (old_individual));
+	  } else {
+	    bool found_one_replacement = false;
+	    foreach (var replacement in replacements) {
+	      if (old_individual != null &&
+		  !found_one_replacement
+		  /* TODO: && !has-unlinked-persona */) {
+		found_one_replacement = true;
+		var c = Contact.from_individual (old_individual);
+		if (c != null) {
+		  c.replace_individual (old_individual);
+		} else {
+		  // TODO: This should not really happen, but seems to do anyway
+		  this.add (new Contact (this, replacement));
+		}
+	      } else {
+		this.add (new Contact (this, replacement));
 	      }
 	    }
-	  }
-	  if (old_individual != null &&
-	      !replaced_individuals.contains (old_individual)) {
-	    replaced_individuals.add (old_individual);
-	    var c = Contact.from_individual (old_individual);
-	    c.replace_individual (i);
-	  } else {
-	    var c = new Contact (this, i);
-	    this.add (c);
-	  }
-	}
-
-	foreach (Individual i in removed) {
-	  if (!replaced_individuals.contains (i)) {
-	    this.remove (Contact.from_individual (i));
 	  }
 	}
       });
