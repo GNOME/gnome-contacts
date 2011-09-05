@@ -59,31 +59,21 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
-  private string show_email = null;
-  private void show_email_cb (Contact contact) {
-    if (contact.has_email (show_email)) {
-      show_email = null;
-      contacts_store.changed.disconnect (show_email_cb);
-      contacts_store.added.disconnect (show_email_cb);
-
-      list_pane.select_contact (contact);
-      contacts_pane.show_contact (contact);
-    }
-  }
-
-  public void show_by_email (string email) {
-    var contact = contacts_store.find_contact_with_email (email);
+  public async void show_by_email (string email_address) {
+    var contact = yield contacts_store.find_contact ( (c) => {
+	return c.has_email (email_address);
+      });
     if (contact != null) {
       list_pane.select_contact (contact);
       contacts_pane.show_contact (contact);
     } else {
-      if (show_email == null) {
-	contacts_store.changed.connect (show_email_cb);
-	contacts_store.added.connect (show_email_cb);
-
-	// TODO: Wait for quiescent state to detect no such contact
-      }
-      show_email = email;
+      var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
+				      _("No contact with email address %s found").printf (email_address));
+      dialog.set_title(_("Contact not found"));
+      dialog.show ();
+      dialog.response.connect ( (id) => {
+	  dialog.destroy ();
+	});
     }
   }
 
@@ -174,7 +164,7 @@ public class Contacts.App : Gtk.Application {
     if (individual_id != null)
       app.show_individual.begin (individual_id);
     if (email_address != null)
-      app.show_by_email (email_address);
+      app.show_by_email.begin (email_address);
 
     return 0;
   }

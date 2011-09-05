@@ -140,14 +140,6 @@ public class Contacts.Store : GLib.Object {
     return matched;
   }
 
-  public Contact? find_contact_with_email (string email_address) {
-    foreach (var contact in contacts) {
-      if (contact.has_email (email_address))
-	return contact;
-    }
-    return null;
-  }
-
   public Contact? find_contact_with_persona (Persona persona) {
     foreach (var contact in contacts) {
       if (contact.individual.personas.contains (persona))
