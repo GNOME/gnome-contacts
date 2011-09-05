@@ -125,7 +125,6 @@ public class Contacts.App : Gtk.Application {
       contacts_store.quiescent.connect (() => {
 	  app.window.show ();
 	});
-	  app.window.show ();
     } else {
       window.present ();
     }
