@@ -55,33 +55,43 @@ public class Contacts.Store : GLib.Object {
 	  });
       });
     aggregator.individuals_changed_detailed.connect ( (changes) =>   {
-	var new_seen = new HashSet<Individual> ();
+	// Note: Apparently the current implementation doesn't necessarily pick
+	// up unlinked individual as replacements.
+
+	// Keep track of which individuals we've replaced, as the same individual
+	// can appear multiple times in the values (when linking multiple individuals
+	// into one).
+	var replaced_individuals = new HashSet<Individual> ();
+
 	foreach (var old_individual in changes.get_keys ()) {
-	  var replacements = changes.get (old_individual);
-	  if (replacements.is_empty) {
-	    this.remove (Contact.from_individual (old_individual));
-	  } else {
-	    bool found_one_replacement = false;
-	    // Note: Apparently the current implementation doesn't necessarily pick
-	    // up unlinked individual as replacements.
-	    foreach (var replacement in replacements) {
-	      if (new_seen.contains (replacement))
-		continue;
-	      new_seen.add (replacement);
-	      if (old_individual != null &&
-		  !found_one_replacement
-		  /* TODO: && !has-unlinked-persona */) {
-		found_one_replacement = true;
+	  bool found_one_replacement = false;
+	  foreach (var new_individual in changes.get (old_individual)) {
+	    if (old_individual != null && new_individual != null &&
+		!(new_individual in replaced_individuals)) {
+	      replaced_individuals.add (new_individual);
+	      if (!found_one_replacement) {
+		/* Replacing an individual. */
 		var c = Contact.from_individual (old_individual);
-		if (c != null) {
-		  c.replace_individual (replacement);
-		} else {
-		  // TODO: This should not really happen, but seems to do anyway
-		  this.add (new Contact (this, replacement));
+		if (c != null)
+		  c.replace_individual (new_individual);
+		else {
+		  print ("WTF?\n");
+		  /* This shouldn't happen */
+		  this.add (new Contact (this, new_individual));
 		}
+		found_one_replacement = true;
 	      } else {
-		this.add (new Contact (this, replacement));
+		/* Already replaced this old_individual, i.e. we're splitting
+		   old_individual. We just make this a new one. */
+		this.add (new Contact (this, new_individual));
 	      }
+	    } else if (old_individual != null) {
+	      /* Removing an old individual. */
+	      var c = Contact.from_individual (old_individual);
+	      this.remove (c);
+	    } else if (new_individual != null) {
+	      /* Adding a new individual. */
+	      this.add (new Contact (this, new_individual));
 	    }
 	  }
 	}
