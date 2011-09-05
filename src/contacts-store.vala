@@ -25,6 +25,7 @@ public class Contacts.Store : GLib.Object {
   public signal void changed (Contact c);
   public signal void added (Contact c);
   public signal void removed (Contact c);
+  public signal void quiescent ();
 
   public IndividualAggregator aggregator { get; private set; }
   Gee.ArrayList<Contact> contacts;
@@ -37,10 +38,22 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
+  public bool is_quiescent
+    {
+      get { return this.aggregator.is_quiescent; }
+    }
+
   public Store () {
     contacts = new Gee.ArrayList<Contact>();
 
     aggregator = new IndividualAggregator ();
+    aggregator.notify["is-quiescent"].connect ( (obj, pspec) => {
+	// We seem to get this before individuals_changed, so hack around it
+	Idle.add( () => {
+	    this.quiescent ();
+	    return false;
+	  });
+      });
     aggregator.individuals_changed.connect ((added, removed, m, a, r) =>   {
 	var old_individuals = new HashMap<Persona, Individual>();
 	var replaced_individuals = new HashSet<Individual>();
