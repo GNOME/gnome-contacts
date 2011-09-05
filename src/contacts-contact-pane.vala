@@ -1122,21 +1122,32 @@ public class Contacts.ContactPane : Grid {
     var widgets = new HashMultiMap<Persona?, TextView>();
     var main_text = add_note ();
 
-    Persona? primary_persona = selected_contact.find_primary_persona ();
-    if (primary_persona == null)
-      primary_persona = new FakePersona (selected_contact);
+    // We store the main note on the primay persona if any, otherwise
+    // on the first persona with a writable notes, falling back to
+    // a FakePersona that creates a primary persona as needed
+    Persona? notes_persona = selected_contact.find_primary_persona ();
+    if (notes_persona == null) {
+      foreach (var persona in selected_contact.individual.personas) {
+	if (Contact.persona_has_writable_property (persona, "notes")) {
+	  notes_persona = persona;
+	  break;
+	}
+      }
+      if (notes_persona == null)
+	notes_persona = new FakePersona (selected_contact);
+    }
 
-    widgets.set (primary_persona, main_text);
+    widgets.set (notes_persona, main_text);
 
-    bool primary_note_seen = false;
+    bool notes_persona_note_seen = false;
 
     foreach (var persona in selected_contact.individual.personas) {
       var notes = persona as NoteDetails;
       if (notes == null)
 	continue;
       foreach (var note in notes.notes) {
-	if (persona == primary_persona && !primary_note_seen) {
-	  primary_note_seen = true;
+	if (persona == notes_persona && !notes_persona_note_seen) {
+	  notes_persona_note_seen = true;
 	  update_note (main_text, note);
 	} else if (Contact.persona_has_writable_property (persona, "notes")) {
 	  var text = add_note ();
