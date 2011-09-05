@@ -765,6 +765,15 @@ public class Contacts.ContactPane : Grid {
       }
     }
 
+    var birthdate_layout = new DetailsLayout (layout_state);
+    fields_grid.add (birthdate_layout.grid);
+
+    var birthdate_details = persona as BirthdayDetails;
+    if (birthdate_details != null) {
+      DateTime? bday = birthdate_details.birthday;
+      /* TODO: Implement GUI for this, needs a date picker widget (#657972)*/
+    }
+
     var url_layout = new DetailsLayout (layout_state);
     fields_grid.add (url_layout.grid);
 
@@ -1419,6 +1428,12 @@ public class Contacts.ContactPane : Grid {
 	    }
 	  });
       }
+    }
+
+    DateTime? bday = contact.individual.birthday;
+    if (bday != null) {
+      fields_layout.add_label (_("Birthday"));
+      fields_layout.add_detail (bday.format ("%x"));
     }
 
     var urls = contact.individual.urls;
