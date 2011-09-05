@@ -106,12 +106,38 @@ public class Contacts.Store : GLib.Object {
     changed (c);
   }
 
-  public Contact? find_contact_with_id (string individual_id) {
-    foreach (var contact in contacts) {
-      if (contact.individual.id == individual_id)
-	return contact;
+  public delegate bool ContactMatcher (Contact c);
+  public async Contact? find_contact (ContactMatcher matcher) {
+    foreach (var c in contacts) {
+      if (matcher (c))
+	return c;
     }
-    return null;
+    if (is_quiescent)
+      return null;
+
+    Contact? matched = null;
+    ulong id1, id2, id3;
+    SourceFunc callback = find_contact.callback;
+    id1 = this.changed.connect ( (c) => {
+	if (matcher (c)) {
+	  matched = c;
+	  callback ();
+	}
+      });
+    id2 = this.added.connect ( (c) => {
+	if (matcher (c)) {
+	  matched = c;
+	  callback ();
+	}
+      });
+    id3 = this.quiescent.connect ( () => {
+	callback();
+      });
+    yield;
+    this.disconnect (id1);
+    this.disconnect (id2);
+    this.disconnect (id3);
+    return matched;
   }
 
   public Contact? find_contact_with_email (string email_address) {

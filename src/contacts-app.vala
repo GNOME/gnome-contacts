@@ -41,31 +41,21 @@ public class Contacts.App : Gtk.Application {
     contacts_pane.show_contact (new_selection);
   }
 
-  private string show_individual_id = null;
-  private void show_individual_cb (Contact contact) {
-    if (contact.individual.id == show_individual_id) {
-      show_individual_id = null;
-      contacts_store.changed.disconnect (show_individual_cb);
-      contacts_store.added.disconnect (show_individual_cb);
-
-      list_pane.select_contact (contact);
-      contacts_pane.show_contact (contact);
-    }
-  }
-
-  public void show_individual (string id) {
-    var contact = contacts_store.find_contact_with_id (id);
+  public async void show_individual (string id) {
+    var contact = yield contacts_store.find_contact ( (c) => {
+	return c.individual.id == id;
+      });
     if (contact != null) {
       list_pane.select_contact (contact);
       contacts_pane.show_contact (contact);
     } else {
-      if (show_individual_id == null) {
-	contacts_store.changed.connect (show_individual_cb);
-	contacts_store.added.connect (show_individual_cb);
-
-	// TODO: Wait for quiescent state to detect no such contact
-      }
-      show_individual_id = id;
+      var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
+				      _("No contact with id %s found").printf (id));
+      dialog.set_title(_("Contact not found"));
+      dialog.show ();
+      dialog.response.connect ( (id) => {
+	  dialog.destroy ();
+	});
     }
   }
 
@@ -182,7 +172,7 @@ public class Contacts.App : Gtk.Application {
     activate ();
 
     if (individual_id != null)
-      app.show_individual (individual_id);
+      app.show_individual.begin (individual_id);
     if (email_address != null)
       app.show_by_email (email_address);
 
