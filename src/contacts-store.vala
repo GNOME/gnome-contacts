@@ -67,6 +67,7 @@ public class Contacts.Store : GLib.Object {
 	  bool found_one_replacement = false;
 	  foreach (var new_individual in changes.get (old_individual)) {
 	    if (old_individual != null && new_individual != null &&
+		!old_individual.get_data<bool> ("contacts-not-replaced") &&
 		!(new_individual in replaced_individuals)) {
 	      replaced_individuals.add (new_individual);
 	      if (!found_one_replacement) {

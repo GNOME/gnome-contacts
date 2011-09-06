@@ -152,14 +152,15 @@ public class Contacts.LinkDialog : Dialog {
     link_button.clicked.connect ( (button) => {
 	// TODO: Link selected_contact.individual into contact.individual
 	// ensure we get the same individual so that the Contact is the same
-	update_personas ();
+	this.contact.link_contact.begin (selected_contact, (obj, result) => {
+	    this.contact.link_contact.end (result);
+	    update_personas ();
+	  });
       });
 
     list.selection_changed.connect ( (contact) => {
 	selected_contact = contact;
 	link_button.sensitive = contact != null;
-	// TODO: Not supported yet
-	link_button.sensitive = false;
       });
 
     label = new Label (_("Currently linked:"));
