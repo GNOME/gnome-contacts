@@ -28,6 +28,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
   public PresenceType presence { get;  set; }
   public string message { get;  set; }
   public bool is_phone  { get;  set; }
+  public bool show_presence  { get;  set; }
   const int default_width = 60;
 
   private struct IconShape {
@@ -121,15 +122,15 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 					    CellRendererState flags) {
     Pango.Layout layout;
     int xpad;
+    Pango.Rectangle r = { 0, -CellRendererShape.IMAGE_SIZE*1024*7/10,
+			  CellRendererShape.IMAGE_SIZE*1024, CellRendererShape.IMAGE_SIZE*1024 };
 
     var attr_list = new Pango.AttrList ();
 
-    string? str = null;
+    string? str = "";
     string? iconname = Contact.presence_to_icon (presence);
-    if (iconname != null) {
-      str = "*";
-      Pango.Rectangle r = { 0, -CellRendererShape.IMAGE_SIZE*1024*7/10,
-			    CellRendererShape.IMAGE_SIZE*1024, CellRendererShape.IMAGE_SIZE*1024 };
+    if (iconname != null && show_presence) {
+      str += "*";
       IconShape icon_shape = IconShape();
       icon_shape.icon = iconname;
       icon_shape.colorize = true;
@@ -137,28 +138,28 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
       a.start_index = 0;
       a.end_index = 1;
       attr_list.insert ((owned) a);
-      if (message != null) {
-	string m = message;
-	if (m.length == 0)
-	  m = Contact.presence_to_string (presence);
-	str += " ";
+      str += " ";
+    }
+    if (message != null && (!show_presence || iconname != null)) {
+      string m = message;
+      if (m.length == 0)
+	m = Contact.presence_to_string (presence);
 
-	var attr = new Pango.AttrSize (9 * Pango.SCALE);
-	attr.absolute = 1;
-	attr.start_index = str.length;
-	attr.end_index = attr.start_index + m.length;
-	attr_list.insert ((owned) attr);
-	str += m;
+      var attr = new Pango.AttrSize (9 * Pango.SCALE);
+      attr.absolute = 1;
+      attr.start_index = str.length;
+      attr.end_index = attr.start_index + m.length;
+      attr_list.insert ((owned) attr);
+      str += m;
 
-	if (is_phone) {
-	  icon_shape = IconShape();
-	  icon_shape.icon = "phone-symbolic";
-	  a = new Pango.AttrShape<IconShape?>.with_data (r, r, icon_shape, (s) => { return s;});
-	  a.start_index = str.length;
-	  str += "*";
-	  a.end_index = str.length;
-	  attr_list.insert ((owned) a);
-	}
+      if (is_phone && show_presence) {
+	var icon_shape = IconShape();
+	icon_shape.icon = "phone-symbolic";
+	var a = new Pango.AttrShape<IconShape?>.with_data (r, r, icon_shape, (s) => { return s;});
+	a.start_index = str.length;
+	str += "*";
+	a.end_index = str.length;
+	attr_list.insert ((owned) a);
       }
     }
 

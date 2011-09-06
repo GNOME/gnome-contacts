@@ -233,11 +233,18 @@ public class Contacts.View : GLib.Object {
 public class Contacts.ViewWidget : TreeView {
   public View view;
   private CellRendererShape shape;
+  public enum TextDisplay {
+    NONE,
+    PRESENCE,
+    STORES
+  }
+  private TextDisplay text_display;
 
   public signal void selection_changed (Contact? contact);
 
-  public ViewWidget (View view) {
+  public ViewWidget (View view, TextDisplay text_display = TextDisplay.PRESENCE) {
     this.view = view;
+    this.text_display = text_display;
 
     set_model (view.model);
     set_headers_visible (false);
@@ -292,10 +299,34 @@ public class Contacts.ViewWidget : TreeView {
 	var name = contact.display_name;
 	if (name == "" && contact.is_new)
 	  name = _("New contact");
-	cell.set ("name", name,
-		  "presence", contact.presence_type,
-		  "message", contact.presence_message,
-		  "is_phone", contact.is_phone);
+	switch (text_display) {
+	default:
+	case TextDisplay.NONE:
+	  cell.set ("name", name,
+		    "show_presence", false,
+		    "message", "");
+	  break;
+	case TextDisplay.PRESENCE:
+	  cell.set ("name", name,
+		    "show_presence", true,
+		    "presence", contact.presence_type,
+		    "message", contact.presence_message,
+		    "is_phone", contact.is_phone);
+	  break;
+	case TextDisplay.STORES:
+	  string stores = "";
+	  bool first = true;
+	  foreach (var p in contact.individual.personas) {
+	    if (!first)
+	      stores += ", ";
+	    stores += Contact.format_persona_store_name (p.store);
+	    first = false;
+	  }
+	  cell.set ("name", name,
+		    "show_presence", false,
+		    "message", stores);
+	  break;
+	}
       });
 
     append_column (column);
