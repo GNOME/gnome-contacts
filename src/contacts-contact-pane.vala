@@ -1451,11 +1451,13 @@ public class Contacts.ContactPane : Grid {
 	fields_layout.add_detail (role.organisation_name);
       }
       var org_units = role_detail.get_parameter_values ("org_unit");
-      foreach (var org_unit in org_units) {
-	if (org_unit != null &&
-	    org_unit != "") {
-	  fields_layout.add_label (_("Department"));
-	  fields_layout.add_detail (org_unit);
+      if (org_units != null) {
+	foreach (var org_unit in org_units) {
+	  if (org_unit != null &&
+	      org_unit != "") {
+	    fields_layout.add_label (_("Department"));
+	    fields_layout.add_detail (org_unit);
+	  }
 	}
       }
       if (role.role != null &&
@@ -1469,19 +1471,23 @@ public class Contacts.ContactPane : Grid {
 	fields_layout.add_detail (role.title);
       }
       var managers = role_detail.get_parameter_values ("manager");
-      foreach (var manager in managers) {
-	if (manager != null &&
-	    manager != "") {
-	  fields_layout.add_label (_("Manager"));
-	  fields_layout.add_detail (manager);
+      if (managers != null) {
+	foreach (var manager in managers) {
+	  if (manager != null &&
+	      manager != "") {
+	    fields_layout.add_label (_("Manager"));
+	    fields_layout.add_detail (manager);
+	  }
 	}
       }
       var assistants = role_detail.get_parameter_values ("assistant");
-      foreach (var assistant in assistants) {
-	if (assistant != null &&
-	    assistant != "") {
-	  fields_layout.add_label (_("Assistant"));
-	  fields_layout.add_detail (assistant);
+      if (assistants != null) {
+	foreach (var assistant in assistants) {
+	  if (assistant != null &&
+	      assistant != "") {
+	    fields_layout.add_label (_("Assistant"));
+	    fields_layout.add_detail (assistant);
+	  }
 	}
       }
     }
