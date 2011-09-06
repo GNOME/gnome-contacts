@@ -922,13 +922,16 @@ public class Contacts.ContactPane : Grid {
       var preview = chooser.get_preview_widget () as Image;
 
       var file = File.new_for_uri (uri);
-      var file_info = file.query_info (GLib.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-				       FileQueryInfoFlags.NONE, null);
-      if (file_info != null) {
-	var mime_type = file_info.get_content_type ();
+      try {
+	var file_info = file.query_info (GLib.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+					 FileQueryInfoFlags.NONE, null);
+	if (file_info != null) {
+	  var mime_type = file_info.get_content_type ();
 
-	if (mime_type != null)
-	  pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
+	  if (mime_type != null)
+	    pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
+	}
+      } catch (GLib.Error e) {
       }
 
       (chooser as Dialog).set_response_sensitive (ResponseType.ACCEPT,
