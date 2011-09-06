@@ -18,6 +18,7 @@
 
 using Gtk;
 using Folks;
+using Gee;
 
 public class Contacts.View : GLib.Object {
   private class ContactData {
@@ -29,10 +30,12 @@ public class Contacts.View : GLib.Object {
 
   Store contacts_store;
   ListStore list_store;
+  HashSet<Contact> hidden_contacts;
   string []? filter_values;
 
   public View (Store store) {
     contacts_store = store;
+    hidden_contacts = new HashSet<Contact>();
 
     list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
 
@@ -55,6 +58,9 @@ public class Contacts.View : GLib.Object {
 
   private bool apply_filter (Contact contact) {
     if (contact.is_hidden ())
+      return false;
+
+    if (contact in hidden_contacts)
       return false;
 
     if (filter_values == null || filter_values.length == 0)
@@ -154,6 +160,11 @@ public class Contacts.View : GLib.Object {
     foreach (var c in contacts_store.get_contacts ()) {
       update_visible (lookup_data (c));
     }
+  }
+
+  public void hide_contact (Contact contact) {
+    hidden_contacts.add (contact);
+    refilter ();
   }
 
   public void set_filter_values (string []? values) {

@@ -86,6 +86,7 @@ public class Contacts.LinkDialog : Dialog {
     add_buttons (Stock.CLOSE,  null);
 
     view = new View (contact.store);
+    view.hide_contact (contact);
     list = new ViewWidget (view);
 
     var grid = new Grid ();
