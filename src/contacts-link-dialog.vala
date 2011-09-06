@@ -148,7 +148,7 @@ public class Contacts.LinkDialog : Dialog {
     toolbar.set_vexpand (false);
     list_grid.add (toolbar);
 
-    var link_button = new ToolButton (null, C_("link-button", "Link"));
+    var link_button = new ToolButton (null, C_("link-contacts-button", "Link"));
     link_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     link_button.is_important = true;
     link_button.sensitive = false;
