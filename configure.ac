@@ -29,7 +29,7 @@ AM_GLIB_GNU_GETTEXT
 
 pkg_modules="gtk+-3.0
 	     gnome-desktop-3.0
-	     folks >= 0.6.1
+	     folks >= 0.6.1.1
 	     folks-telepathy
 	     libnotify
 	     "
