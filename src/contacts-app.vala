@@ -125,6 +125,11 @@ public class Contacts.App : Gtk.Application {
       contacts_store.quiescent.connect (() => {
 	  app.window.show ();
 	});
+      // Wait at most 0.5 seconds to show the window
+      Timeout.add (500, () => {
+	  app.window.show ();
+	  return false;
+	});
     } else {
       window.present ();
     }
