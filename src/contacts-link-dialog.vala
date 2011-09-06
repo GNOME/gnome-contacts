@@ -18,9 +18,13 @@
 
 using Gtk;
 using Folks;
-using LocalGLib; // For C_
 
 public class Contacts.LinkDialog : Dialog {
+  // TODO: Remove later when bound in vala
+  private static unowned string C_(string context, string msgid) {
+    return GLib.dpgettext2 (Config.GETTEXT_PACKAGE, context, msgid);
+  }
+
   private Contact contact;
   private Contact? selected_contact;
   private Entry filter_entry;

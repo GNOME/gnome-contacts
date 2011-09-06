@@ -16,9 +16,3 @@ namespace Gnome {
 		LARGE
 	}
 }
-
-[CCode (cprefix = "G", lower_case_cprefix = "g_", cheader_filename = "glib.h", gir_namespace = "GLib", gir_version = "2.0")]
-namespace LocalGLib {
-	[CCode (cname = "C_", cheader_filename = "glib.h,glib/gi18n-lib.h")]
-	public static unowned string C_ (string contect, string str);
-}

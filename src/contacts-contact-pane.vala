@@ -19,7 +19,6 @@
 using Gtk;
 using Folks;
 using Gee;
-using LocalGLib; // For C_
 
 public class Contacts.ContactFrame : Frame {
   private int size;
@@ -286,6 +285,10 @@ public class Contacts.PersonaButton : RadioButton {
 
 
 public class Contacts.ContactPane : Grid {
+  // TODO: Remove later when bound in vala
+  private static unowned string C_(string context, string msgid) {
+    return GLib.dpgettext2 (Config.GETTEXT_PACKAGE, context, msgid);
+  }
   private enum DisplayMode {
     INITIAL,
     EMPTY,
