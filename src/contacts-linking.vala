@@ -715,7 +715,9 @@ namespace Contacts {
 	other_personas.add (p3);
     }
 
-    if (main_persona == null) {
+    // If we didn't find a main persona, and we need one because there are
+    // other personas that we need to ensure linking in, then create one
+    if (main_persona == null && other_personas.size > 1) {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
 	main_persona = yield contact.store.aggregator.primary_store.add_persona_from_details (details);
@@ -729,9 +731,8 @@ namespace Contacts {
 
     // First apply all additions on the primary persona so that we avoid temporarily being
     // unlinked and then relinked
-    // Note, this may cause a new persona to be added to the individual if
-    // main_persona is null
-    yield persona_apply_attributes (main_persona, main_persona_additions, other_personas_removals);
+    if (main_persona != null)
+      yield persona_apply_attributes (main_persona, main_persona_additions, other_personas_removals);
     foreach (var p in other_personas) {
       yield persona_apply_attributes (p, null, other_personas_removals);
     }
