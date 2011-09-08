@@ -106,8 +106,10 @@ public class Contacts.Store : GLib.Object {
 	      }
 	    }
 
-	    var c = Contact.from_individual (old_individual);
-	    c.replace_individual (main_individual);
+	    if (main_individual != null) {
+	      var c = Contact.from_individual (old_individual);
+	      c.replace_individual (main_individual);
+	    }
 	    foreach (var i in replacements) {
 	      if (i != main_individual) {
 		/* Already replaced this old_individual, i.e. we're splitting
