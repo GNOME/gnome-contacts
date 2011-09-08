@@ -64,28 +64,15 @@ public class Contacts.Store : GLib.Object {
 	var replaced_individuals = new HashSet<Individual> ();
 
 	foreach (var old_individual in changes.get_keys ()) {
-	  bool found_one_replacement = false;
+	  HashSet<Individual>? replacements = null;
 	  foreach (var new_individual in changes.get (old_individual)) {
 	    if (old_individual != null && new_individual != null &&
 		!old_individual.get_data<bool> ("contacts-not-replaced") &&
 		!(new_individual in replaced_individuals)) {
 	      replaced_individuals.add (new_individual);
-	      if (!found_one_replacement) {
-		/* Replacing an individual. */
-		var c = Contact.from_individual (old_individual);
-		if (c != null)
-		  c.replace_individual (new_individual);
-		else {
-		  print ("WTF?\n");
-		  /* This shouldn't happen */
-		  this.add (new Contact (this, new_individual));
-		}
-		found_one_replacement = true;
-	      } else {
-		/* Already replaced this old_individual, i.e. we're splitting
-		   old_individual. We just make this a new one. */
-		this.add (new Contact (this, new_individual));
-	      }
+	      if (replacements == null)
+		replacements = new HashSet<Individual> ();
+	      replacements.add (new_individual);
 	    } else if (old_individual != null) {
 	      /* Removing an old individual. */
 	      var c = Contact.from_individual (old_individual);
@@ -93,6 +80,40 @@ public class Contacts.Store : GLib.Object {
 	    } else if (new_individual != null) {
 	      /* Adding a new individual. */
 	      this.add (new Contact (this, new_individual));
+	    }
+	  }
+
+	  // This old_individual was split up into one or more new ones
+	  // We have to pick one to be the one that we keep around
+	  // in the old Contact, the rest gets new Contacts
+	  // This is important to get right, as we might be displaying
+	  // the contact and unlink a specific persona from the contact
+	  if (replacements != null) {
+	    Individual? main_individual = null;
+	    foreach (var i in replacements) {
+	      bool new_contact = false;
+	      foreach (var p in i.personas) {
+		if (p.get_data<bool> ("contacts-new-contact")) {
+		  p.set_data ("contacts-new-contact", false);
+		  new_contact = true;
+		  break;
+		}
+	      }
+
+	      if (!new_contact) {
+		main_individual = i;
+		break;
+	      }
+	    }
+
+	    var c = Contact.from_individual (old_individual);
+	    c.replace_individual (main_individual);
+	    foreach (var i in replacements) {
+	      if (i != main_individual) {
+		/* Already replaced this old_individual, i.e. we're splitting
+		   old_individual. We just make this a new one. */
+		this.add (new Contact (this, i));
+	      }
 	    }
 	  }
 	}
