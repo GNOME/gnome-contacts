@@ -25,6 +25,7 @@ gnome_contacts_SOURCES = \
 	contacts-types.vala \
 	contacts-list-pane.vala \
 	contacts-link-dialog.vala \
+	contacts-linking.vala \
 	contacts-menu-button.vala \
 	contacts-store.vala \
 	contacts-view.vala \

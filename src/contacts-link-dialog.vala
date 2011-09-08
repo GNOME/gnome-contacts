@@ -156,8 +156,8 @@ public class Contacts.LinkDialog : Dialog {
     link_button.clicked.connect ( (button) => {
 	// TODO: Link selected_contact.individual into contact.individual
 	// ensure we get the same individual so that the Contact is the same
-	this.contact.link_contact.begin (selected_contact, (obj, result) => {
-	    this.contact.link_contact.end (result);
+	link_contacts.begin (contact, selected_contact, (obj, result) => {
+	    link_contacts.end (result);
 	    update_personas ();
 	  });
       });
