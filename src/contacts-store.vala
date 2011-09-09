@@ -38,10 +38,25 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
-  public bool is_quiescent
-    {
-      get { return this.aggregator.is_quiescent; }
+  public bool is_quiescent {
+    get { return this.aggregator.is_quiescent; }
+  }
+
+  private bool individual_can_replace_at_split (Individual new_individual) {
+    foreach (var p in new_individual.personas) {
+      if (p.get_data<bool> ("contacts-new-contact"))
+	return false;
     }
+    return true;
+  }
+
+  private bool individual_should_replace_at_join (Individual new_individual) {
+    foreach (var p in new_individual.personas) {
+      if (p.get_data<bool> ("contacts-master-at-join"))
+	return true;
+    }
+    return false;
+  }
 
   public Store () {
     contacts = new Gee.ArrayList<Contact>();
@@ -58,18 +73,27 @@ public class Contacts.Store : GLib.Object {
 	// Note: Apparently the current implementation doesn't necessarily pick
 	// up unlinked individual as replacements.
 
-	// Keep track of which individuals we've replaced, as the same individual
-	// can appear multiple times in the values (when linking multiple individuals
-	// into one).
-	var replaced_individuals = new HashSet<Individual> ();
+	var replaced_individuals = new HashMap<Individual?, Individual?> ();
+
+	// Pick best replacements at joins
+	foreach (var old_individual in changes.get_keys ()) {
+	  if (old_individual == null)
+	    continue;
+	  foreach (var new_individual in changes.get (old_individual)) {
+	    if (new_individual == null)
+	      continue;
+	    if (!replaced_individuals.has_key (new_individual) ||
+		individual_should_replace_at_join (old_individual)) {
+	      replaced_individuals.set (new_individual, old_individual);
+	    }
+	  }
+	}
 
 	foreach (var old_individual in changes.get_keys ()) {
 	  HashSet<Individual>? replacements = null;
 	  foreach (var new_individual in changes.get (old_individual)) {
 	    if (old_individual != null && new_individual != null &&
-		!old_individual.get_data<bool> ("contacts-not-replaced") &&
-		!(new_individual in replaced_individuals)) {
-	      replaced_individuals.add (new_individual);
+		replaced_individuals.get (new_individual) == old_individual) {
 	      if (replacements == null)
 		replacements = new HashSet<Individual> ();
 	      replacements.add (new_individual);
