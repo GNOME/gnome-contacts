@@ -447,6 +447,7 @@ namespace Contacts {
 	write_persona = yield main.store.aggregator.primary_store.add_persona_from_details (details);
 	linkables = main_linkables;
 	linkables.add_all (other_linkables);
+	yield (write_persona as NameDetails).change_full_name (main.display_name);
       } catch (GLib.Error e) {
 	warning ("Unable to create new persona when linking: %s\n", e.message);
 	return;
@@ -538,6 +539,7 @@ namespace Contacts {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
 	main_persona = yield contact.store.aggregator.primary_store.add_persona_from_details (details);
+	yield (main_persona as NameDetails).change_full_name (contact.display_name);
       } catch (GLib.Error e) {
 	warning ("Unable to create new persona when unlinking: %s\n", e.message);
 	return;
