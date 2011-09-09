@@ -91,24 +91,24 @@ public class Contacts.Store : GLib.Object {
 	  if (replacements != null) {
 	    Individual? main_individual = null;
 	    foreach (var i in replacements) {
-	      bool new_contact = false;
+	      bool new_contact_if_split = false;
 	      foreach (var p in i.personas) {
 		if (p.get_data<bool> ("contacts-new-contact")) {
-		  new_contact = true;
+		  new_contact_if_split = true;
 		  break;
 		}
 	      }
 
-	      if (!new_contact) {
-		main_individual = i;
+	      main_individual = i;
+	      // If this was marked new_contact_if_split then we
+	      // need to look for other possible replacements
+	      // that we should reuse, otherwise bail immediately
+	      if (!new_contact_if_split)
 		break;
-	      }
 	    }
 
-	    if (main_individual != null) {
-	      var c = Contact.from_individual (old_individual);
-	      c.replace_individual (main_individual);
-	    }
+	    var c = Contact.from_individual (old_individual);
+	    c.replace_individual (main_individual);
 	    foreach (var i in replacements) {
 	      if (i != main_individual) {
 		/* Already replaced this old_individual, i.e. we're splitting
