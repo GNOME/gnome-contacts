@@ -50,12 +50,9 @@ public class Contacts.Store : GLib.Object {
     return true;
   }
 
-  private bool individual_should_replace_at_join (Individual new_individual) {
-    foreach (var p in new_individual.personas) {
-      if (p.get_data<bool> ("contacts-master-at-join"))
-	return true;
-    }
-    return false;
+  private bool individual_should_replace_at_join (Individual old_individual) {
+    var c = Contact.from_individual (old_individual);
+    return c.get_data<bool> ("contacts-master-at-join");
   }
 
   public Store () {

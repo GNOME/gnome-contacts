@@ -406,8 +406,7 @@ namespace Contacts {
   public async void link_contacts (Contact main, Contact other) {
     // This should not be used as being replaced with the new individual
     // instead we should always pick this contact to keep around
-    var contact_persona = main.individual.personas.to_array()[0];
-    contact_persona.set_data ("contacts-master-at-join", true);
+    main.set_data ("contacts-master-at-join", true);
 
     var main_linkables = get_linkable_attributes_for_individual (main.individual);
     var other_linkables = get_linkable_attributes_for_individual (other.individual);
@@ -449,7 +448,7 @@ namespace Contacts {
 	linkables.add_all (other_linkables);
 	yield (write_persona as NameDetails).change_full_name (main.display_name);
       } catch (GLib.Error e) {
-	contact_persona.set_data ("contacts-master-at-join", false);
+	main.set_data ("contacts-master-at-join", false);
 	warning ("Unable to create new persona when linking: %s\n", e.message);
 	return;
       }
@@ -457,7 +456,7 @@ namespace Contacts {
 
     yield persona_apply_attributes (write_persona, linkables, null);
 
-    contact_persona.set_data ("contacts-master-at-join", false);
+    main.set_data ("contacts-master-at-join", false);
   }
 
   public async void unlink_persona (Contact contact, Persona persona_to_unlink) {
