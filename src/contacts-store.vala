@@ -94,7 +94,6 @@ public class Contacts.Store : GLib.Object {
 	      bool new_contact = false;
 	      foreach (var p in i.personas) {
 		if (p.get_data<bool> ("contacts-new-contact")) {
-		  p.set_data ("contacts-new-contact", false);
 		  new_contact = true;
 		  break;
 		}

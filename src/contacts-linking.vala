@@ -555,5 +555,7 @@ namespace Contacts {
     }
     // Last we do the removals on the persona_to_unlink
     yield persona_apply_attributes (persona_to_unlink, null, persona_to_unlink_removals);
+
+    persona_to_unlink.set_data ("contacts-new-contact", false);
   }
 }
