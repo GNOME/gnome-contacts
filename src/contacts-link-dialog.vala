@@ -70,6 +70,7 @@ public class Contacts.LinkDialog : Dialog {
       button.set_valign (Align.CENTER);
       button.set_halign (Align.END);
       persona_grid.attach (button, 1, i, 1, 2);
+      button.sensitive = contact.individual.personas.size > 1;
       button.clicked.connect ( (button) => {
 	  unlink_persona.begin (contact, p, (obj, result) => {
 	      unlink_persona.end (result);
