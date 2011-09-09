@@ -6,7 +6,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
 # Enable silent rules is available
 AM_SILENT_RULES([yes])
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 AC_CONFIG_FILES([Makefile
 		vapi/Makefile
 		src/Makefile
