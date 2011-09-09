@@ -112,19 +112,12 @@ public class Contacts.Store : GLib.Object {
 	  if (replacements != null) {
 	    Individual? main_individual = null;
 	    foreach (var i in replacements) {
-	      bool new_contact_if_split = false;
-	      foreach (var p in i.personas) {
-		if (p.get_data<bool> ("contacts-new-contact")) {
-		  new_contact_if_split = true;
-		  break;
-		}
-	      }
-
 	      main_individual = i;
-	      // If this was marked new_contact_if_split then we
-	      // need to look for other possible replacements
-	      // that we should reuse, otherwise bail immediately
-	      if (!new_contact_if_split)
+	      // If this was marked as being possible to replace the
+	      // contact on split then we can otherwise bail immediately
+	      // Otherwise need to look for other possible better
+	      // replacements that we should reuse
+	      if (individual_can_replace_at_split (i))
 		break;
 	    }
 
