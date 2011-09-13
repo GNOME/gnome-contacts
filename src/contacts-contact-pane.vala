@@ -1331,9 +1331,12 @@ public class Contacts.ContactPane : Grid {
 
     delete_menu_item.set_sensitive (can_remove_all);
 
+    string [] secondary_sources;
+    contact.get_secondary_string (out secondary_sources);
+
     var nickname = contact.individual.nickname;
     if (nickname != null && nickname != "" &&
-	contact.get_secondary_string_source () != "nickname")
+	!("nickname" in secondary_sources))
       fields_layout.add_label_detail (_("Nickname"), nickname);
 
     var emails = Contact.sort_fields<EmailFieldDetails>(contact.individual.email_addresses);
@@ -1446,7 +1449,8 @@ public class Contacts.ContactPane : Grid {
     foreach (var role_detail in roles_details) {
       var role = role_detail.value;
       if (role.organisation_name != null &&
-	  role.organisation_name != "") {
+	  role.organisation_name != "" &&
+	  !("organisation-name" in secondary_sources)) {
 	fields_layout.add_label (_("Company"));
 	fields_layout.add_detail (role.organisation_name);
       }
@@ -1461,12 +1465,14 @@ public class Contacts.ContactPane : Grid {
 	}
       }
       if (role.role != null &&
-	  role.role != "") {
+	  role.role != "" &&
+	  !("role" in secondary_sources)) {
 	fields_layout.add_label (_("Profession"));
 	fields_layout.add_detail (role.role);
       }
       if (role.title != null &&
-	  role.title != "") {
+	  role.title != "" &&
+	  !("title" in secondary_sources)) {
 	fields_layout.add_label (_("Title"));
 	fields_layout.add_detail (role.title);
       }

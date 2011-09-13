@@ -154,21 +154,48 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  // Synchronize with get_secondary_string ()
-  public string? get_secondary_string_source () {
-    var nick = individual.nickname;
-    if (nick != null && nick.length > 0)
-      return "nickname";
-    return null;
+  private static bool is_set (string? str) {
+    return str != null && str != "";
   }
 
   // Synchronize with get_secondary_string_source ()
-  public string? get_secondary_string () {
+  public string? get_secondary_string (out string [] sources = null) {
     var nick = individual.nickname;
-    if (nick != null && nick.length > 0)
+    if (is_set (nick)) {
+      sources = new string[1];
+      sources[0] = "nickname";
       return "\xE2\x80\x9C" + nick + "\xE2\x80\x9D";
+    }
 
-    /* TODO: "<title>, <Company>" */
+    foreach (var role_detail in individual.roles) {
+      var role = role_detail.value;
+
+      if (is_set (role.organisation_name)) {
+	if (is_set (role.title)) {
+	  sources = new string[2];
+	  sources[0] = "title";
+	  sources[1] = "organisation-name";
+	  return "%s, %s".printf (role.title, role.organisation_name);
+	} else if (is_set (role.role)) {
+	  sources = new string[2];
+	  sources[0] = "role";
+	  sources[1] = "organisation-name";
+	  return "%s, %s".printf (role.role, role.organisation_name);
+	} else {
+	  sources = new string[0];
+	  sources[0] = "organisation-name";
+	  return role.organisation_name;
+	}
+      } else if (is_set (role.title)) {
+	sources = new string[0];
+	sources[0] = "title";
+	return role.title;
+      } else if (is_set (role.role)) {
+	sources = new string[0];
+	sources[0] = "role";
+	return role.role;
+      }
+    }
 
     return null;
   }
