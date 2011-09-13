@@ -181,7 +181,7 @@ public class Contacts.Utils : Object {
     for (s = str; s[0] != 0; s = s.next_char ()) {
       var c = strip_char (s.get_char ());
       if (c != 0) {
-	var size = LocalGLib.fully_decompose (c, true, buf);
+	var size = LocalGLib.fully_decompose (c, false, buf);
 	if (size > 0)
 	  res.append_unichar (buf[0]);
       }
