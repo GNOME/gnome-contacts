@@ -39,7 +39,7 @@ public class Contacts.ListPane : Frame {
     if (str.length == 0)
       values = null;
     else {
-      str = str.casefold();
+      str = Utils.canonicalize_for_search (str);
       values = str.split(" ");
     }
 

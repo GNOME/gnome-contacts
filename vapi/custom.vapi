@@ -16,3 +16,9 @@ namespace Gnome {
 		LARGE
 	}
 }
+
+[CCode (cprefix = "G", lower_case_cprefix = "g_", cheader_filename = "glib.h", gir_namespace = "GLib", gir_version = "2.0")]
+namespace LocalGLib {
+	[CCode (cname = "g_unichar_fully_decompose", cheader_filename = "glib.h")]
+	public static unowned size_t fully_decompose (unichar ch, bool compat, unichar[] result);
+}

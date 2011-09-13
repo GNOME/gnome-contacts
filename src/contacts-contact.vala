@@ -766,15 +766,15 @@ public class Contacts.Contact : GLib.Object  {
   private void update_filter_data () {
     var builder = new StringBuilder ();
     if (individual.alias != null) {
-      builder.append (individual.alias.casefold ());
+      builder.append (Utils.canonicalize_for_search (individual.alias));
       builder.append_unichar (' ');
     }
     if (individual.full_name != null) {
-      builder.append (individual.full_name.casefold ());
+      builder.append (Utils.canonicalize_for_search (individual.full_name));
       builder.append_unichar (' ');
     }
     if (individual.nickname != null) {
-      builder.append (individual.nickname.casefold ());
+      builder.append (Utils.canonicalize_for_search (individual.nickname));
       builder.append_unichar (' ');
     }
     var im_addresses = individual.im_addresses;
