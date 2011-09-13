@@ -690,7 +690,7 @@ public class Contacts.ContactPane : Grid {
     var name_details = persona as NameDetails;
     if (name_details != null) {
       var nick = name_details.nickname;
-      if (nick != null && nick != "") {
+      if (is_set (nick)) {
 	add_nickname_editor (nick_layout, nick);
       }
     }
@@ -701,7 +701,7 @@ public class Contacts.ContactPane : Grid {
     var alias_details = persona as AliasDetails;
     if (alias_details != null) {
       var alias = alias_details.alias;
-      if (alias != null && alias != "") {
+      if (is_set (alias)) {
 	add_alias_editor (alias_layout, alias);
       }
     }
@@ -848,8 +848,7 @@ public class Contacts.ContactPane : Grid {
 
       menu_button.popup.connect ( () => {
 	  if (nick_menu_item != null) {
-	    if (name_details.nickname != null &&
-		name_details.nickname != "")
+	    if (is_set (name_details.nickname))
 	      nick_menu_item.hide ();
 	    else
 	      nick_menu_item.show ();
@@ -1098,7 +1097,7 @@ public class Contacts.ContactPane : Grid {
 	view.get_buffer ().get_start_iter (out start);
 	view.get_buffer ().get_end_iter (out end);
 	var text = view.get_buffer ().get_text (start, end, true);
-	if (text.length > 0) {
+	if (is_set (text)) {
 	  var note = new NoteFieldDetails (text, null, uid);
 	  notes.add (note);
 	}
@@ -1335,7 +1334,7 @@ public class Contacts.ContactPane : Grid {
     contact.get_secondary_string (out secondary_sources);
 
     var nickname = contact.individual.nickname;
-    if (nickname != null && nickname != "" &&
+    if (is_set (nickname) &&
 	!("nickname" in secondary_sources))
       fields_layout.add_label_detail (_("Nickname"), nickname);
 
@@ -1448,8 +1447,7 @@ public class Contacts.ContactPane : Grid {
     var roles_details = contact.individual.roles;
     foreach (var role_detail in roles_details) {
       var role = role_detail.value;
-      if (role.organisation_name != null &&
-	  role.organisation_name != "" &&
+      if (is_set (role.organisation_name) &&
 	  !("organisation-name" in secondary_sources)) {
 	fields_layout.add_label (_("Company"));
 	fields_layout.add_detail (role.organisation_name);
@@ -1457,21 +1455,18 @@ public class Contacts.ContactPane : Grid {
       var org_units = role_detail.get_parameter_values ("org_unit");
       if (org_units != null) {
 	foreach (var org_unit in org_units) {
-	  if (org_unit != null &&
-	      org_unit != "") {
+	  if (is_set (org_unit)) {
 	    fields_layout.add_label (_("Department"));
 	    fields_layout.add_detail (org_unit);
 	  }
 	}
       }
-      if (role.role != null &&
-	  role.role != "" &&
+      if (is_set (role.role) &&
 	  !("role" in secondary_sources)) {
 	fields_layout.add_label (_("Profession"));
 	fields_layout.add_detail (role.role);
       }
-      if (role.title != null &&
-	  role.title != "" &&
+      if (is_set (role.title) &&
 	  !("title" in secondary_sources)) {
 	fields_layout.add_label (_("Title"));
 	fields_layout.add_detail (role.title);
@@ -1479,8 +1474,7 @@ public class Contacts.ContactPane : Grid {
       var managers = role_detail.get_parameter_values ("manager");
       if (managers != null) {
 	foreach (var manager in managers) {
-	  if (manager != null &&
-	      manager != "") {
+	  if (is_set (manager)) {
 	    fields_layout.add_label (_("Manager"));
 	    fields_layout.add_detail (manager);
 	  }
@@ -1489,8 +1483,7 @@ public class Contacts.ContactPane : Grid {
       var assistants = role_detail.get_parameter_values ("assistant");
       if (assistants != null) {
 	foreach (var assistant in assistants) {
-	  if (assistant != null &&
-	      assistant != "") {
+	  if (is_set (assistant)) {
 	    fields_layout.add_label (_("Assistant"));
 	    fields_layout.add_detail (assistant);
 	  }

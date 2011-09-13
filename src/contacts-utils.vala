@@ -21,6 +21,13 @@ using Folks;
 using Gee;
 using TelepathyGLib;
 
+namespace Contacts {
+  private static bool is_set (string? str) {
+    return str != null && str != "";
+  }
+}
+
+
 public class Contacts.Utils : Object {
   public static void compose_mail (string email) {
     try {

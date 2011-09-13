@@ -137,25 +137,21 @@ public class Contacts.Contact : GLib.Object  {
   public string display_name {
     get {
       unowned string? name = individual.full_name;
-      if (name != null && name.length > 0)
+      if (is_set (name))
 	return name;
       unowned string? alias = individual.alias;
-      if (alias != null && alias.length > 0)
+      if (is_set (alias))
 	return alias;
       unowned string? nickname = individual.nickname;
-      if (nickname != null && nickname.length > 0)
+      if (is_set (nickname))
 	return nickname;
       foreach (var email in individual.email_addresses) {
 	string? e = email.value;
-	if (e != null && e.length > 0)
+	if (is_set (e))
 	  return email.value;
       }
       return "";
     }
-  }
-
-  private static bool is_set (string? str) {
-    return str != null && str != "";
   }
 
   // Synchronize with get_secondary_string_source ()
@@ -220,23 +216,23 @@ public class Contacts.Contact : GLib.Object  {
 
     if (name_details != null) {
       unowned string? name = name_details.full_name;
-      if (name != null && name.length > 0)
+      if (is_set (name))
 	return name;
     }
     if (alias_details != null) {
       unowned string? alias = alias_details.alias;
-      if (alias != null && alias.length > 0)
+      if (is_set (alias))
 	return alias;
     }
     if (name_details != null) {
       unowned string? nickname = name_details.nickname;
-      if (nickname != null && nickname.length > 0)
+      if (is_set (nickname))
 	return nickname;
     }
     if (email_details != null) {
       foreach (var email in email_details.email_addresses) {
 	string e = email.value;
-	if (e != null && e.length > 0)
+	if (is_set (e))
 	  return e;
       }
     }
@@ -562,39 +558,30 @@ public class Contacts.Contact : GLib.Object  {
 
   public static string[] format_address (PostalAddress addr) {
     string[] lines = {};
-    string str;
 
-    str = addr.street;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.street))
+      lines += addr.street;
 
-    str = addr.extension;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.extension))
+      lines += addr.extension;
 
-    str = addr.locality;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.locality))
+      lines += addr.locality;
 
-    str = addr.region;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.region))
+      lines += addr.region;
 
-    str = addr.postal_code;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.postal_code))
+      lines += addr.postal_code;
 
-    str = addr.po_box;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.po_box))
+      lines += addr.po_box;
 
-    str = addr.country;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.country))
+      lines += addr.country;
 
-    str = addr.address_format;
-    if (str != null && str.length > 0)
-      lines += str;
+    if (is_set (addr.address_format))
+      lines += addr.address_format;
 
     return lines;
   }
