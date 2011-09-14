@@ -236,6 +236,8 @@ online_accounts_google_sync_contacts (GoaObject *goa_object,
 
 	g_object_unref (source_group);
 	g_object_unref (goa_account);
+
+	g_object_unref (source_list);
 }
 
 static void
