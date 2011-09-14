@@ -1075,6 +1075,15 @@ public class Contacts.FakePersona : Persona {
     if (primary_persona != null)
       return null;
 
+    foreach (var p in contact.individual.personas) {
+      // Don't fake a primary persona if we have an eds
+      // persona on a non-readonly store
+      if (p.store.type_id == "eds" &&
+	  p.store.can_add_personas == MaybeBool.TRUE &&
+	  p.store.can_remove_personas == MaybeBool.TRUE)
+	return null;
+    }
+
     return new FakePersona (contact);
   }
 
