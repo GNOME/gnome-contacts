@@ -22,3 +22,9 @@ namespace LocalGLib {
 	[CCode (cname = "g_unichar_fully_decompose", cheader_filename = "glib.h")]
 	public static unowned size_t fully_decompose (unichar ch, bool compat, unichar[] result);
 }
+
+[CCode (cprefix = "Contacts", lower_case_cprefix = "contacts_", cheader_filename = "contacts-esd-setup.h")]
+namespace Contacts {
+	[CCode (cname = "contacts_ensure_eds_accounts")]
+	public static void ensure_eds_accounts ();
+}

@@ -17,6 +17,7 @@ AM_VALAFLAGS = \
 bin_PROGRAMS = gnome-contacts
 
 gnome_contacts_SOURCES = \
+	contacts-esd-setup.c \
 	contacts-app.vala \
 	contacts-cell-renderer-shape.vala \
 	contacts-details-layout.vala \
