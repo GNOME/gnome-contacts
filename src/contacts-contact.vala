@@ -906,9 +906,8 @@ public class Contacts.Contact : GLib.Object  {
     // for single-persona sets
     var persona_set = new HashSet<Persona>();
     persona_set.add_all (individual.personas);
-    var fake_persona = FakePersona.maybe_create_for (this);
-    if (fake_persona != null)
-      persona_set.add (fake_persona);
+    if (persona_set.size == 1)
+      persona_set.add (new FakePersona (this));
 
     yield store.aggregator.link_personas (persona_set);
 
