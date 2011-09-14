@@ -43,65 +43,123 @@ static GHashTable *accounts;
 
 // This was copied from book_shell_backend_ensure_sources
 
+static ESource *
+search_known_sources (ESourceList *sources,
+                      gboolean (*check_func) (ESource *source,
+                                              gpointer user_data),
+                      gpointer user_data)
+{
+	ESource *res = NULL;
+	GSList *g;
+
+	g_return_val_if_fail (check_func != NULL, NULL);
+	g_return_val_if_fail (sources != NULL, NULL);
+
+	for (g = e_source_list_peek_groups (sources); g; g = g->next) {
+		ESourceGroup *group = E_SOURCE_GROUP (g->data);
+		GSList *s;
+
+		for (s = e_source_group_peek_sources (group); s; s = s->next) {
+			ESource *source = E_SOURCE (s->data);
+
+			if (check_func (source, user_data)) {
+				res = g_object_ref (source);
+				break;
+			}
+		}
+
+		if (res)
+			break;
+	}
+
+	return res;
+}
+
+static gboolean
+check_uri (ESource *source,
+           gpointer uri)
+{
+	const gchar *suri;
+	gchar *suri2;
+	gboolean res;
+
+	g_return_val_if_fail (source != NULL, FALSE);
+	g_return_val_if_fail (uri != NULL, FALSE);
+
+	suri = e_source_peek_absolute_uri (source);
+
+	if (suri)
+		return g_ascii_strcasecmp (suri, uri) == 0;
+
+	suri2 = e_source_get_uri (source);
+	res = suri2 && g_ascii_strcasecmp (suri2, uri) == 0;
+	g_free (suri2);
+
+	return res;
+}
+
+struct check_system_data
+{
+	const gchar *uri;
+	ESource *uri_source;
+};
+
+static gboolean
+check_system (ESource *source,
+              gpointer data)
+{
+	struct check_system_data *csd = data;
+
+	g_return_val_if_fail (source != NULL, FALSE);
+	g_return_val_if_fail (data != NULL, FALSE);
+
+	if (e_source_get_property (source, "system")) {
+		return TRUE;
+	}
+
+	if (check_uri (source, (gpointer) csd->uri)) {
+		if (csd->uri_source)
+			g_object_unref (csd->uri_source);
+		csd->uri_source = g_object_ref (source);
+	}
+
+	return FALSE;
+}
+
+
 static gboolean
 ensure_local_addressbook (void)
 {
-	/* XXX This is basically the same algorithm across all backends.
-	 *     Maybe we could somehow integrate this into EShellBackend? */
-	ESourceList *source_list;
-	ESourceGroup *on_this_computer;
-	ESource *personal;
-	GSList *sources, *iter;
-	const gchar *name;
-	GError *error = NULL;
+  EBookClient *client;
+  struct check_system_data csd;
+  ESourceList *source_list = NULL;
+  ESource *system_source = NULL;
 
-	on_this_computer = NULL;
-	personal = NULL;
+  if (!e_book_client_get_sources (&source_list, NULL))
+    return FALSE;
 
-	e_book_client_get_sources (&source_list, &error);
+  csd.uri = "local:system";
+  csd.uri_source = NULL;
+  system_source = search_known_sources (source_list, check_system, &csd);
 
-	if (error != NULL) {
-		g_warning (
-			"Could not get addressbook sources: %s",
-			error->message);
-		g_error_free (error);
-		return FALSE;
-	}
+  if (system_source)
+    g_object_unref (system_source);
+  if (csd.uri_source)
+    g_object_unref (csd.uri_source);
 
-	on_this_computer = e_source_list_ensure_group (
-		source_list, evo_gettext("On This Computer"), "local:", TRUE);
+  if (system_source != NULL ||
+      csd.uri_source != NULL) {
+    g_object_unref (source_list);
+    return FALSE;
+  }
 
-	g_return_if_fail (on_this_computer != NULL);
-
-	sources = e_source_group_peek_sources (on_this_computer);
-
-	/* Make sure this group includes a "Personal" source. */
-	for (iter = sources; iter != NULL; iter = iter->next) {
-		ESource *source = iter->data;
-		const gchar *relative_uri;
-
-		relative_uri = e_source_peek_relative_uri (source);
-		if (g_strcmp0 (relative_uri, "system") == 0) {
-			personal = source;
-			break;
-		}
-	}
-
-	if (personal == NULL) {
-		ESource *source;
-
-		/* Create the default Personal address book. */
-		source = e_source_new (evo_gettext("Personal"), "system");
-		e_source_group_add_source (on_this_computer, source, -1);
-		e_source_set_property (source, "completion", "true");
-		g_object_unref (source);
-	}
-
-	g_object_unref (on_this_computer);
-
-	return personal == NULL;
+  client = e_book_client_new_system (NULL);
+  if (client != NULL) {
+    g_object_unref (client);
+    return TRUE;
+  }
+  return FALSE;
 }
-
 
 /* This is the property name or URL parameter under which we
  * embed the GoaAccount ID into an EAccount or ESource object. */
