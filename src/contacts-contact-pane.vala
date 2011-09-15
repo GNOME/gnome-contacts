@@ -1724,7 +1724,7 @@ public class Contacts.ContactPane : Grid {
     bbox.set_layout (ButtonBoxStyle.END);
     grid.attach (bbox, 0, 3, 1, 1);
 
-    button = new Button.from_stock(Stock.CLOSE);
+    button = new Button.with_label(_("Back to Contact"));
     bbox.pack_start (button, false, false, 0);
 
     button.clicked.connect ( (button) => {
