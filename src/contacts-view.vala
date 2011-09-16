@@ -26,12 +26,14 @@ public class Contacts.View : GLib.Object {
     public TreeIter iter;
     public bool visible;
     public bool is_first;
+    public int sort_prio;
   }
 
   Store contacts_store;
   ListStore list_store;
   HashSet<Contact> hidden_contacts;
   string []? filter_values;
+  ContactData? last_custom;
 
   public View (Store store) {
     contacts_store = store;
@@ -40,10 +42,28 @@ public class Contacts.View : GLib.Object {
     list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
 
     list_store.set_sort_func (0, (model, iter_a, iter_b) => {
-	Contact a, b;
-	model.get (iter_a, 0, out a);
-	model.get (iter_b, 0, out b);
-	return a.display_name.collate (b.display_name);
+	ContactData *aa, bb;
+	model.get (iter_a, 1, out aa);
+	model.get (iter_b, 1, out bb);
+
+	if (aa->sort_prio > bb->sort_prio)
+	    return -1;
+	if (aa->sort_prio < bb->sort_prio)
+	    return 1;
+
+	var a = aa->contact;
+	var b = bb->contact;
+
+	if (is_set (a.display_name) && is_set (b.display_name))
+	  return a.display_name.collate (b.display_name);
+
+	// Sort empty names last
+	if (is_set (a.display_name))
+	  return -1;
+	if (is_set (b.display_name))
+	  return 1;
+
+	return 0;
       });
     list_store.set_sort_column_id (0, SortType.ASCENDING);
 
@@ -52,6 +72,12 @@ public class Contacts.View : GLib.Object {
     contacts_store.changed.connect (contact_changed_cb);
     foreach (var c in store.get_contacts ())
       contact_added_cb (store, c);
+  }
+
+  public void add_custom_sort (Contact c, int prio) {
+    var data = lookup_data (c);
+    data.sort_prio = prio;
+    contact_changed_cb (contacts_store, c);
   }
 
   public TreeModel model { get { return list_store; } }
@@ -75,6 +101,12 @@ public class Contacts.View : GLib.Object {
     if (data != null)
       return data->is_first;
     return false;
+  }
+
+  public bool is_last_custom (TreeIter iter) {
+    ContactData *data;
+    list_store.get (iter, 1, out data);
+    return data == last_custom;
   }
 
   private ContactData? get_previous (ContactData data) {
@@ -105,7 +137,12 @@ public class Contacts.View : GLib.Object {
   private bool update_is_first (ContactData data, ContactData? previous) {
     bool old_is_first = data.is_first;
 
-    if (previous != null) {
+    bool is_custom = data.sort_prio > 0;
+    bool previous_is_custom = previous != null && previous.sort_prio > 0;
+
+    if (is_custom) {
+      data.is_first = false;
+    } else if (previous != null && !previous_is_custom) {
       unichar previous_initial = previous.contact.initial_letter;
       unichar initial = data.contact.initial_letter;
       data.is_first = previous_initial != initial;
@@ -113,12 +150,22 @@ public class Contacts.View : GLib.Object {
       data.is_first = true;
     }
 
-    if (old_is_first != data.is_first) {
-      row_changed_no_resort (data);
-      return true;
+    bool res = false;
+    if (previous_is_custom && !is_custom &&
+	last_custom != previous) {
+      if (last_custom != null)
+	row_changed_no_resort (last_custom);
+      last_custom = previous;
+      row_changed_no_resort (last_custom);
+      res = true;
     }
 
-    return false;
+    if (old_is_first != data.is_first) {
+      row_changed_no_resort (data);
+      res = true;
+    }
+
+    return res;
   }
 
   private void add_to_model (ContactData data) {
@@ -134,6 +181,9 @@ public class Contacts.View : GLib.Object {
   }
 
   private void remove_from_model (ContactData data) {
+    if (data == last_custom)
+      last_custom = null;
+
     ContactData? next = null;
     if (data.is_first)
       next = get_next (data);
@@ -278,7 +328,13 @@ public class Contacts.ViewWidget : TreeView {
 
 	model.get (iter, 0, out contact);
 
+	cell.yalign = 0.0f;
 	cell.set ("pixbuf", contact.small_avatar);
+
+	if (view.is_last_custom (iter))
+	  cell.height = 48 + 16;
+	else
+	  cell.height = -1;
       });
 
     append_column (column);

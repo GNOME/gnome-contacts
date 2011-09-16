@@ -92,6 +92,16 @@ public class Contacts.LinkDialog : Dialog {
 
     view = new View (contact.store);
     view.hide_contact (contact);
+
+    var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
+    foreach (var ind in matches.keys) {
+      var c = Contact.from_individual (ind);
+      if (c != null) {
+	var result = matches.get (ind);
+	view.add_custom_sort (c, (int) result);
+      }
+    }
+
     list = new ViewWidget (view, ViewWidget.TextDisplay.STORES);
 
     var grid = new Grid ();
