@@ -16,8 +16,7 @@ AM_VALAFLAGS = \
 
 bin_PROGRAMS = gnome-contacts
 
-gnome_contacts_SOURCES = \
-	contacts-esd-setup.c \
+vala_sources = \
 	contacts-app.vala \
 	contacts-cell-renderer-shape.vala \
 	contacts-details-layout.vala \
@@ -34,6 +33,11 @@ gnome_contacts_SOURCES = \
 	main.vala \
 	$(NULL)
 
+gnome_contacts_SOURCES = \
+	contacts-esd-setup.c \
+	$(vala_sources) \
+	$(NULL)
+
 gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
-CLEANFILES = *.h *.c *.vapi *.stamp
+CLEANFILES = $(vala_sources:.vala=.c) *.vapi *.stamp
