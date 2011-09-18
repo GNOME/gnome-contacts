@@ -773,7 +773,7 @@ public class Contacts.ContactPane : Grid {
 
     var birthdate_details = persona as BirthdayDetails;
     if (birthdate_details != null) {
-      DateTime? bday = birthdate_details.birthday;
+      /*DateTime? bday = birthdate_details.birthday;*/
       /* TODO: Implement GUI for this, needs a date picker widget (#657972)*/
     }
 
