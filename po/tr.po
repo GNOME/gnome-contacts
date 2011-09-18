@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-01 13:31+0000\n"
-"PO-Revision-Date: 2011-07-07 23:55+0300\n"
+"POT-Creation-Date: 2011-09-15 17:58+0000\n"
+"PO-Revision-Date: 2011-09-18 16:21+0300\n"
 "Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,290 +19,465 @@ msgstr ""
 "Language: tr\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:46
-#: ../src/main.vala:25
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:93
+#: ../src/main.vala:35
 msgid "Contacts"
 msgstr "Kişiler"
 
-#: ../src/contacts-contact-pane.vala:436 ../src/contacts-contact-pane.vala:445
-#: ../src/contacts-contact-pane.vala:534
+#: ../src/contacts-app.vala:53
+#, c-format
+msgid "No contact with id %s found"
+msgstr "%s adlı kişi bulunamadı"
+
+#: ../src/contacts-app.vala:54 ../src/contacts-app.vala:72
+msgid "Contact not found"
+msgstr "Kişi bulanamadı"
+
+#: ../src/contacts-app.vala:71
+#, c-format
+msgid "No contact with email address %s found"
+msgstr "E-posta adresi %s olan kişi bulunamadı"
+
+#: ../src/contacts-app.vala:143 ../src/main.vala:27
+msgid "Show contact with this individual id"
+msgstr "Bu bireysel kimliğe sahip kişiyi göster"
+
+#: ../src/contacts-app.vala:145 ../src/main.vala:29
+msgid "Show contact with this email address"
+msgstr "Bu e-posta adresine sahip kişiyi göster"
+
+#: ../src/contacts-app.vala:152
+msgid "— contact management"
+msgstr "— kişi yönetimi"
+
+#: ../src/contacts-contact-pane.vala:595 ../src/contacts-contact-pane.vala:841
+#: ../src/contacts-contact-pane.vala:1339
+msgid "Nickname"
+msgstr "Takma ad"
+
+#: ../src/contacts-contact-pane.vala:598
+#| msgid "Enter name"
+msgid "Enter nickname"
+msgstr "Takma ad girin"
+
+#: ../src/contacts-contact-pane.vala:604
+msgid "Alias"
+msgstr "Rumuz"
+
+#: ../src/contacts-contact-pane.vala:607
+#| msgid "Enter link"
+msgid "Enter alias"
+msgstr "Rumuz girin"
+
+#: ../src/contacts-contact-pane.vala:619
 msgid "Enter email address"
 msgstr "E-posta adresini girin"
 
-#: ../src/contacts-contact-pane.vala:454 ../src/contacts-contact-pane.vala:822
-msgid "Chat"
-msgstr "Sohbet"
-
-#: ../src/contacts-contact-pane.vala:470 ../src/contacts-contact-pane.vala:479
-#: ../src/contacts-contact-pane.vala:514 ../src/contacts-contact-pane.vala:543
+#: ../src/contacts-contact-pane.vala:630
 msgid "Enter phone number"
 msgstr "Telefon numarasını girin"
 
-#: ../src/contacts-contact-pane.vala:524
-msgid "Add detail"
-msgstr "Ayrıntı ekleyin"
+#: ../src/contacts-contact-pane.vala:637
+#: ../src/contacts-contact-pane.vala:1496
+#| msgid "Link"
+msgid "Links"
+msgstr "Bağlantılar"
 
-#: ../src/contacts-contact-pane.vala:529
-msgid "Email"
-msgstr "E-posta"
-
-#: ../src/contacts-contact-pane.vala:538
-msgid "Phone number"
-msgstr "Telefon numarası"
-
-#: ../src/contacts-contact-pane.vala:547
-msgid "Link"
-msgstr "Bağlantı"
-
-#: ../src/contacts-contact-pane.vala:556
+#: ../src/contacts-contact-pane.vala:643
 msgid "Enter link"
 msgstr "Bağlantı girin"
 
+#: ../src/contacts-contact-pane.vala:650
+msgid "Street"
+msgstr "Sokak"
+
+#: ../src/contacts-contact-pane.vala:650
+msgid "Extension"
+msgstr "Uzantı"
+
+#: ../src/contacts-contact-pane.vala:650
+msgid "City"
+msgstr "Şehir"
+
+#: ../src/contacts-contact-pane.vala:650
+msgid "State/Province"
+msgstr "Eyalet/Bölge"
+
+#: ../src/contacts-contact-pane.vala:650
+msgid "Zip/Postal Code"
+msgstr "Posta Kodu"
+
+#: ../src/contacts-contact-pane.vala:650
+msgid "PO box"
+msgstr "Posta kutusu"
+
+#: ../src/contacts-contact-pane.vala:650
+msgid "Country"
+msgstr "Ülke"
+
 #: ../src/contacts-contact-pane.vala:737
+#: ../src/contacts-contact-pane.vala:1356
+msgid "Chat"
+msgstr "Sohbet"
+
+#: ../src/contacts-contact-pane.vala:798
+msgid "Add detail"
+msgstr "Ayrıntı ekleyin"
+
+#: ../src/contacts-contact-pane.vala:804
+msgid "Email"
+msgstr "E-posta"
+
+#: ../src/contacts-contact-pane.vala:812
+msgid "Phone number"
+msgstr "Telefon numarası"
+
+#: ../src/contacts-contact-pane.vala:820
+#| msgid "Enter email address"
+msgid "Postal Address"
+msgstr "Posta Adresi"
+
+#: ../src/contacts-contact-pane.vala:830
+#| msgid "Link"
+msgctxt "url-link"
+msgid "Link"
+msgstr "Bağlantı"
+
+#: ../src/contacts-contact-pane.vala:953
+msgid "Browse for more pictures"
+msgstr "Daha fazla resim için göz at"
+
+#: ../src/contacts-contact-pane.vala:1035
+msgid "Browse for more pictures..."
+msgstr "Başka resimlere göz at..."
+
+#: ../src/contacts-contact-pane.vala:1255
 msgid "Enter name"
 msgstr "İsim girin"
 
-#: ../src/contacts-contact-pane.vala:870
+#: ../src/contacts-contact-pane.vala:1267
+#| msgid "Contacts"
+msgid "Contact Name"
+msgstr "Kişi Adı"
+
+#: ../src/contacts-contact-pane.vala:1421
 msgid "Address copied to clipboard"
 msgstr "Adres panoya kopyalandı"
 
-#: ../src/contacts-contact-pane.vala:941
+#: ../src/contacts-contact-pane.vala:1443
+msgid "Birthday"
+msgstr "Doğum Günü"
+
+#: ../src/contacts-contact-pane.vala:1452 ../src/contacts-types.vala:296
+msgid "Company"
+msgstr "Şirket"
+
+#: ../src/contacts-contact-pane.vala:1459
+msgid "Department"
+msgstr "Bölüm"
+
+#: ../src/contacts-contact-pane.vala:1466
+msgid "Profession"
+msgstr "Meslek"
+
+#: ../src/contacts-contact-pane.vala:1471
+#| msgid "Twitter"
+msgid "Title"
+msgstr "Başlık"
+
+#: ../src/contacts-contact-pane.vala:1478
+#| msgid "Pager"
+msgid "Manager"
+msgstr "Yönetici"
+
+#. List most specific first, always in upper case
+#: ../src/contacts-contact-pane.vala:1487 ../src/contacts-types.vala:291
+msgid "Assistant"
+msgstr "Asistan"
+
+#: ../src/contacts-contact-pane.vala:1563
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "Yeni kişiler oluşturulamadı: %s\n"
 
-#: ../src/contacts-contact-pane.vala:952
+#: ../src/contacts-contact-pane.vala:1574
 msgid "Unable to find newly created contact\n"
 msgstr "Yeni oluşturulan kişi bulunamadı\n"
 
-#: ../src/contacts-contact-pane.vala:1013
+#: ../src/contacts-contact-pane.vala:1676
 msgid "Notes"
 msgstr "Notlar"
 
-#: ../src/contacts-contact-pane.vala:1044
+#: ../src/contacts-contact-pane.vala:1707
 msgid "Edit"
 msgstr "Düzenle"
 
-#: ../src/contacts-contact-pane.vala:1056
+#: ../src/contacts-contact-pane.vala:1714
 msgid "More"
 msgstr "Daha"
 
-#: ../src/contacts-contact-pane.vala:1078
+#: ../src/contacts-contact-pane.vala:1727
+#| msgid "Contacts"
+msgid "Back to Contact"
+msgstr "Kişiye Geri Git"
+
+#: ../src/contacts-contact-pane.vala:1736
 msgid "Add/Remove Linked Contacts..."
 msgstr "Bağlantılı Kişileri Ekle/Kaldır..."
 
-#: ../src/contacts-contact-pane.vala:1079
-msgid "Send..."
-msgstr "Gönder..."
-
-#: ../src/contacts-contact-pane.vala:1080
+#. Utils.add_menu_item (menu,_("Send..."));
+#: ../src/contacts-contact-pane.vala:1738
 msgid "Delete"
 msgstr "Sil"
 
-#: ../src/contacts-contact.vala:202
+#: ../src/contacts-contact.vala:404
 msgid "Unknown status"
 msgstr "Bilinmeyen durum"
 
-#: ../src/contacts-contact.vala:204
+#: ../src/contacts-contact.vala:406
 msgid "Offline"
 msgstr "Çevrimdışı"
 
-#: ../src/contacts-contact.vala:208
+#: ../src/contacts-contact.vala:410
 msgid "Error"
 msgstr "Hata"
 
-#: ../src/contacts-contact.vala:210
+#: ../src/contacts-contact.vala:412
 msgid "Available"
 msgstr "Uygun"
 
-#: ../src/contacts-contact.vala:212
+#: ../src/contacts-contact.vala:414
 msgid "Away"
 msgstr "Uzakta"
 
-#: ../src/contacts-contact.vala:214
+#: ../src/contacts-contact.vala:416
 msgid "Extended away"
 msgstr "Uzun süredir uzakta"
 
-#: ../src/contacts-contact.vala:216
+#: ../src/contacts-contact.vala:418
 msgid "Busy"
 msgstr "Meşgul"
 
-#: ../src/contacts-contact.vala:218
+#: ../src/contacts-contact.vala:420
 msgid "Hidden"
 msgstr "Gizli"
 
-#: ../src/contacts-contact.vala:391
+#: ../src/contacts-contact.vala:613
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:392
+#: ../src/contacts-contact.vala:614
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:393 ../src/contacts-contact.vala:678
+#: ../src/contacts-contact.vala:615 ../src/contacts-contact.vala:887
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:394
+#: ../src/contacts-contact.vala:616
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:395
+#: ../src/contacts-contact.vala:617
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:396
+#: ../src/contacts-contact.vala:618
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:397
+#: ../src/contacts-contact.vala:619
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:398
+#: ../src/contacts-contact.vala:620
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:399
+#: ../src/contacts-contact.vala:621
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:400
+#: ../src/contacts-contact.vala:622
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:401
+#: ../src/contacts-contact.vala:623
 msgid "Local network"
 msgstr "Yerel ağ"
 
-#: ../src/contacts-contact.vala:402
+#: ../src/contacts-contact.vala:624
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:403
+#: ../src/contacts-contact.vala:625
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:404
+#: ../src/contacts-contact.vala:626
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:405
+#: ../src/contacts-contact.vala:627
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:406
+#: ../src/contacts-contact.vala:628
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:407
+#: ../src/contacts-contact.vala:629
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:408
+#: ../src/contacts-contact.vala:630
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:409
+#: ../src/contacts-contact.vala:631
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:410
+#: ../src/contacts-contact.vala:632
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:411
+#: ../src/contacts-contact.vala:633
 msgid "Telephony"
 msgstr "Telephony"
 
-#: ../src/contacts-contact.vala:412
+#: ../src/contacts-contact.vala:634
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:413 ../src/contacts-contact.vala:414
+#: ../src/contacts-contact.vala:635 ../src/contacts-contact.vala:636
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:415
+#: ../src/contacts-contact.vala:637
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:681
+#: ../src/contacts-contact.vala:890
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-types.vala:114 ../src/contacts-types.vala:134
-#: ../src/contacts-types.vala:212 ../src/contacts-types.vala:303
+#: ../src/contacts-contact.vala:916
+msgid "Unexpected internal error: created contact was not found"
+msgstr "Beklenmeyen iç hata: oluşturulan kişi bulunamadı"
+
+#: ../src/contacts-contact.vala:937
+#| msgid "Contacts"
+msgid "Local Contact"
+msgstr "Yerel Kişi"
+
+#: ../src/contacts-contact.vala:940
+#| msgid "Google Talk"
+msgid "Google"
+msgstr "Google"
+
+#: ../src/contacts-link-dialog.vala:88
+#| msgid "Contacts"
+msgid "Link Contact"
+msgstr "Kişi Bağla"
+
+#: ../src/contacts-link-dialog.vala:103
+#, c-format
+msgid "Select contacts to link to %s"
+msgstr "%s'e bağlanacak kişileri seçin"
+
+#: ../src/contacts-link-dialog.vala:152
+#| msgid "Link"
+msgctxt "link-contacts-button"
+msgid "Link"
+msgstr "Bağlantı"
+
+#: ../src/contacts-link-dialog.vala:171
+msgid "Currently linked:"
+msgstr "Şu anda bağlantılı:"
+
+#: ../src/contacts-list-pane.vala:148
+msgid ""
+"Connect to an account,\n"
+"import or add contacts"
+msgstr ""
+"Bir hesaba bağlanın,\n"
+"kişileri içe aktarın ya da ekleyin"
+
+#: ../src/contacts-list-pane.vala:154
+msgid "Online Accounts"
+msgstr "Çevrimiçi Hesaplar"
+
+#: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
+#: ../src/contacts-types.vala:211 ../src/contacts-types.vala:301
 msgid "Other"
 msgstr "Diğer"
 
-#: ../src/contacts-types.vala:122
+#: ../src/contacts-types.vala:121
 msgid "Custom..."
 msgstr "Özel..."
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:268 ../src/contacts-types.vala:299
+#: ../src/contacts-types.vala:266 ../src/contacts-types.vala:297
 msgid "Home"
 msgstr "Ev"
 
-#: ../src/contacts-types.vala:269 ../src/contacts-types.vala:294
+#: ../src/contacts-types.vala:267 ../src/contacts-types.vala:292
 msgid "Work"
 msgstr "İş"
 
-#. List most specific first, always in upper case
 #: ../src/contacts-types.vala:293
-msgid "Assistant"
-msgstr "Asistan"
-
-#: ../src/contacts-types.vala:295
 msgid "Work Fax"
 msgstr "İş Belgegeçeri"
 
-#: ../src/contacts-types.vala:296
+#: ../src/contacts-types.vala:294
 msgid "Callback"
 msgstr "Geriçağrı"
 
-#: ../src/contacts-types.vala:297
+#: ../src/contacts-types.vala:295
 msgid "Car"
 msgstr "Araç"
 
 #: ../src/contacts-types.vala:298
-msgid "Company"
-msgstr "Şirket"
-
-#: ../src/contacts-types.vala:300
 msgid "Home Fax"
 msgstr "Ev Belgegeçeri"
 
-#: ../src/contacts-types.vala:301
+#: ../src/contacts-types.vala:299
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:302
-#| msgid "More"
+#: ../src/contacts-types.vala:300
 msgid "Mobile"
 msgstr "Cep Telefonu"
 
-#: ../src/contacts-types.vala:304
+#: ../src/contacts-types.vala:302
 msgid "Fax"
 msgstr "Belgegeçer"
 
-#: ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:303
 msgid "Pager"
 msgstr "Çağrı Cihazı"
 
-#: ../src/contacts-types.vala:306
+#: ../src/contacts-types.vala:304
 msgid "Radio"
 msgstr "Telsiz"
 
-#: ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:305
 msgid "Telex"
 msgstr "Teleks"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:309
+#: ../src/contacts-types.vala:307
 msgid "TTY"
 msgstr "TTY"
+
+#: ../src/contacts-view.vala:301
+#| msgid "Contacts"
+msgid "New contact"
+msgstr "Yeni kişi"
+
+#~ msgid "Send..."
+#~ msgstr "Gönder..."
 
 #~ msgid "Close"
 #~ msgstr "Kapat"
