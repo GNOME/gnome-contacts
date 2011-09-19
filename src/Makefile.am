@@ -34,6 +34,7 @@ vala_sources = \
 	$(NULL)
 
 gnome_contacts_SOURCES = \
+	contacts-esd-setup.h \
 	contacts-esd-setup.c \
 	$(vala_sources) \
 	$(NULL)
