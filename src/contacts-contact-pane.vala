@@ -644,9 +644,7 @@ public class Contacts.ContactPane : Grid {
   private Widget add_url_editor (DetailsLayout layout,
 				 Set<AbstractFieldDetails> detail_set,
 				 UrlFieldDetails? url) {
-    if (layout.grid.get_children ().length () == 0)
-      layout.add_label (_("Links"));
-
+    layout.add_label (C_ ("url-link", "Link"));
     return add_detail_editor_no_type (layout,
 				      detail_set,
 				      url != null ? new UrlFieldDetails (url.value, url.parameters) : new UrlFieldDetails (""),
