@@ -38,7 +38,6 @@ class Contacts.DetailsLayout : Object {
   SharedState shared_state;
   public Grid grid;
 
-  private bool expands;
   public Grid? current_row;
   Widget? last_label;
   Box? detail_box;
@@ -54,7 +53,6 @@ class Contacts.DetailsLayout : Object {
 
   void new_row () {
     var row = new Grid ();
-    expands = false;
     last_label = null;
     row.set_row_spacing (9);
     row.set_column_spacing (3);
@@ -108,6 +106,7 @@ class Contacts.DetailsLayout : Object {
     label.set_halign (Align.START);
     label.set_ellipsize (Pango.EllipsizeMode.END);
     label.xalign = 0.0f;
+    label.set_hexpand (true);
 
     attach_detail (label);
   }
@@ -119,7 +118,6 @@ class Contacts.DetailsLayout : Object {
     entry.set_valign (Align.CENTER);
     entry.set_halign (Align.FILL);
     entry.set_hexpand (true);
-    expands = true;
 
     attach_detail (entry);
     return entry;
@@ -134,6 +132,7 @@ class Contacts.DetailsLayout : Object {
     var v = new LinkButton.with_label (uri, text);
     v.set_valign (Align.CENTER);
     v.set_halign (Align.START);
+    v.set_hexpand (true);
     Label l = v.get_child () as Label;
     l.set_ellipsize (Pango.EllipsizeMode.END);
     l.xalign = 0.0f;
@@ -146,8 +145,6 @@ class Contacts.DetailsLayout : Object {
     var button = new Button ();
     button.set_valign (Align.CENTER);
     button.set_halign (Align.END);
-    if (!expands)
-      button.set_hexpand (true);
 
     if (icon != null) {
       var image = new Image();
