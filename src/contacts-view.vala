@@ -33,13 +33,16 @@ public class Contacts.View : GLib.Object {
   ListStore list_store;
   HashSet<Contact> hidden_contacts;
   string []? filter_values;
-  ContactData? last_custom;
+  int custom_visible_count;
+  ContactData padding_data;
 
   public View (Store store) {
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
 
     list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
+    padding_data = new ContactData ();
+    padding_data.sort_prio = 1;
 
     list_store.set_sort_func (0, (model, iter_a, iter_b) => {
 	ContactData *aa, bb;
@@ -74,10 +77,29 @@ public class Contacts.View : GLib.Object {
       contact_added_cb (store, c);
   }
 
+  public string get_header_text (TreeIter iter) {
+    ContactData *data;
+    model.get (iter, 1, out data);
+    return "";
+  }
+
   public void add_custom_sort (Contact c, int prio) {
     var data = lookup_data (c);
+    // We insert a priority between 0 and 1 for the padding
+    if (prio > 0)
+      prio += 1;
     data.sort_prio = prio;
     contact_changed_cb (contacts_store, c);
+
+    if (data.visible) {
+      if (prio > 0) {
+	if (custom_visible_count++ == 0)
+	  add_custom_headers ();
+      } else {
+	if (custom_visible_count-- == 1)
+	  remove_custom_headers ();
+      }
+    }
   }
 
   public TreeModel model { get { return list_store; } }
@@ -101,12 +123,6 @@ public class Contacts.View : GLib.Object {
     if (data != null)
       return data->is_first;
     return false;
-  }
-
-  public bool is_last_custom (TreeIter iter) {
-    ContactData *data;
-    list_store.get (iter, 1, out data);
-    return data == last_custom;
   }
 
   private ContactData? get_previous (ContactData data) {
@@ -150,27 +166,33 @@ public class Contacts.View : GLib.Object {
       data.is_first = true;
     }
 
-    bool res = false;
-    if (previous_is_custom && !is_custom &&
-	last_custom != previous) {
-      if (last_custom != null)
-	row_changed_no_resort (last_custom);
-      last_custom = previous;
-      row_changed_no_resort (last_custom);
-      res = true;
-    }
-
     if (old_is_first != data.is_first) {
       row_changed_no_resort (data);
-      res = true;
+      return true;
     }
 
-    return res;
+    return false;
+  }
+
+  private void add_custom_headers () {
+    padding_data.visible = true;
+    list_store.append (out padding_data.iter);
+    list_store.set (padding_data.iter, 1, padding_data);
+  }
+
+  private void remove_custom_headers () {
+    padding_data.visible = false;
+    list_store.remove (padding_data.iter);
   }
 
   private void add_to_model (ContactData data) {
     list_store.append (out data.iter);
     list_store.set (data.iter, 0, data.contact, 1, data);
+
+    if  (data.sort_prio > 0) {
+      if (custom_visible_count++ == 0)
+	add_custom_headers ();
+    }
 
     if (update_is_first (data, get_previous (data)) && data.is_first) {
       /* The newly added row is first, the next one might not be anymore */
@@ -181,8 +203,10 @@ public class Contacts.View : GLib.Object {
   }
 
   private void remove_from_model (ContactData data) {
-    if (data == last_custom)
-      last_custom = null;
+    if( data.sort_prio > 0) {
+      if (custom_visible_count-- == 1)
+	remove_custom_headers ();
+    }
 
     ContactData? next = null;
     if (data.is_first)
@@ -301,6 +325,13 @@ public class Contacts.ViewWidget : TreeView {
 
     var selection = get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
+    selection.set_select_function ( (selection, model, path, path_currently_selected) => {
+	Contact contact;
+	TreeIter iter;
+	model.get_iter (out iter, path);
+	view.model.get (iter, 0, out contact);
+	return contact != null;
+      });
     selection.changed.connect (contacts_selection_changed);
 
     var column = new TreeViewColumn ();
@@ -310,15 +341,19 @@ public class Contacts.ViewWidget : TreeView {
     column.pack_start (text, false);
     text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
-	Contact contact;
-
-	view.model.get (iter, 0, out contact);
-
 	string letter = "";
 	if (view.is_first (iter)) {
+	  Contact contact;
+	  view.model.get (iter, 0, out contact);
 	  letter = contact.initial_letter.to_string ();
 	}
+
 	cell.set ("text", letter);
+	if (letter != "") {
+	  cell.height = -1;
+	} else {
+	  cell.height = 1;
+	}
       });
 
     var icon = new CellRendererPixbuf ();
@@ -331,12 +366,16 @@ public class Contacts.ViewWidget : TreeView {
 
 	model.get (iter, 0, out contact);
 
-	cell.set ("pixbuf", contact.small_avatar);
+	if (contact == null) {
+	  cell.visible = false;
+	  return;
+	}
+	cell.visible = true;
 
-	if (view.is_last_custom (iter))
-	  cell.height = 48 + 16;
+	if (contact != null)
+	  cell.set ("pixbuf", contact.small_avatar);
 	else
-	  cell.height = -1;
+	  cell.set ("pixbuf", null);
       });
 
     shape = new CellRendererShape ();
@@ -349,6 +388,12 @@ public class Contacts.ViewWidget : TreeView {
 	Contact contact;
 
 	model.get (iter, 0, out contact);
+
+	if (contact == null) {
+	  cell.visible = false;
+	  return;
+	}
+	cell.visible = true;
 
 	var name = contact.display_name;
 	if (name == "" && contact.is_new)
@@ -380,6 +425,26 @@ public class Contacts.ViewWidget : TreeView {
 		    "show_presence", false,
 		    "message", stores);
 	  break;
+	}
+      });
+
+
+    text = new CellRendererText ();
+    text.set_alignment (0, 0);
+    column.pack_start (text, true);
+    text.set ("weight", Pango.Weight.BOLD);
+    column.set_cell_data_func (text, (column, cell, model, iter) => {
+	Contact contact;
+
+	model.get (iter, 0, out contact);
+	cell.visible = contact == null;
+	if (cell.visible) {
+	  string header = view.get_header_text (iter);
+	  cell.set ("text", header);
+	  if (header == "")
+	    cell.height = 6; // PADDING
+	  else
+	    cell.height = -1;
 	}
       });
 
