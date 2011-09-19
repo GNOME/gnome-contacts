@@ -532,11 +532,11 @@ public class Contacts.Contact : GLib.Object  {
     if (store_a == store_b)
       return 0;
 
-    if (store_a.is_writeable && store_b.is_writeable)
+    if (store_a.is_primary_store && store_b.is_primary_store)
       return 0;
-    if (store_a.is_writeable)
+    if (store_a.is_primary_store)
       return -1;
-    if (store_b.is_writeable)
+    if (store_b.is_primary_store)
       return 1;
 
     if (store_a.type_id == "eds" && store_b.type_id == "eds")

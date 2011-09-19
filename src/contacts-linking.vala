@@ -421,19 +421,19 @@ namespace Contacts {
       if (persona_can_link_to (p1, other_linkables)) {
 	write_persona = p1;
 	linkables = other_linkables;
-	if (write_persona.store.is_writeable)
+	if (write_persona.store.is_primary_store)
 	  break; // Exit if we find a primary persona, as we prefer these
       }
     }
 
-    if (write_persona == null || !write_persona.store.is_writeable) {
+    if (write_persona == null || !write_persona.store.is_primary_store) {
       foreach (var p2 in other.individual.personas) {
 	if (persona_can_link_to (p2, main_linkables)) {
 	  // Only override main persona if its a primary store persona
-	  if (write_persona == null || p2.store.is_writeable) {
+	  if (write_persona == null || p2.store.is_primary_store) {
 	    write_persona = p2;
 	    linkables = main_linkables;
-	    if (write_persona.store.is_writeable)
+	    if (write_persona.store.is_primary_store)
 	      break; // Exit if we find a primary persona, as we prefer these
 	  }
 	}
@@ -521,7 +521,7 @@ namespace Contacts {
     foreach (var p2 in individual.personas) {
       if (p2 != persona_to_unlink && persona_can_link_to (p2, main_persona_additions)) {
 	main_persona = p2;
-	if (main_persona.store.is_writeable)
+	if (main_persona.store.is_primary_store)
 	  break; // Exit if we find a primary persona, as we prefer these
       }
     }

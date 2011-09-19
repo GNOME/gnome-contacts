@@ -1216,7 +1216,7 @@ public class Contacts.ContactPane : Grid {
     persona_list.sort (Contact.compare_persona_by_store);
 
     foreach (var p in persona_list) {
-      if (p.store.is_writeable) {
+      if (p.store.is_primary_store) {
 	editing_persona_primary = p;
       }
     }
