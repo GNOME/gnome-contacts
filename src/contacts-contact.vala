@@ -193,6 +193,7 @@ public class Contacts.Contact : GLib.Object  {
       }
     }
 
+    sources = null;
     return null;
   }
 
