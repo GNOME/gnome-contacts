@@ -34,6 +34,7 @@ public class Contacts.View : GLib.Object {
   HashSet<Contact> hidden_contacts;
   string []? filter_values;
   int custom_visible_count;
+  ContactData header_data;
   ContactData padding_data;
 
   public View (Store store) {
@@ -41,6 +42,8 @@ public class Contacts.View : GLib.Object {
     hidden_contacts = new HashSet<Contact>();
 
     list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
+    header_data = new ContactData ();
+    header_data.sort_prio = int.MAX;
     padding_data = new ContactData ();
     padding_data.sort_prio = 1;
 
@@ -80,6 +83,11 @@ public class Contacts.View : GLib.Object {
   public string get_header_text (TreeIter iter) {
     ContactData *data;
     model.get (iter, 1, out data);
+    if (data == header_data) {
+      /* Translators: This is the header for the list of suggested contacts to
+	 link to the current contact */
+      return ngettext ("Suggestion", "Suggestions", custom_visible_count);
+    }
     return "";
   }
 
@@ -175,12 +183,17 @@ public class Contacts.View : GLib.Object {
   }
 
   private void add_custom_headers () {
+    header_data.visible = true;
+    list_store.append (out header_data.iter);
+    list_store.set (header_data.iter, 1, header_data);
     padding_data.visible = true;
     list_store.append (out padding_data.iter);
     list_store.set (padding_data.iter, 1, padding_data);
   }
 
   private void remove_custom_headers () {
+    header_data.visible = false;
+    list_store.remove (header_data.iter);
     padding_data.visible = false;
     list_store.remove (padding_data.iter);
   }
