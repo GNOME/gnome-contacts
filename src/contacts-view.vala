@@ -307,7 +307,7 @@ public class Contacts.ViewWidget : TreeView {
 
     var text = new CellRendererText ();
     text.set_alignment (0, 0);
-    column.pack_start (text, true);
+    column.pack_start (text, false);
     text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
 	Contact contact;
@@ -322,13 +322,15 @@ public class Contacts.ViewWidget : TreeView {
       });
 
     var icon = new CellRendererPixbuf ();
+    icon.xalign = 0.0f;
+    icon.yalign = 0.0f;
+    icon.width = 48 + 2;
     column.pack_start (icon, false);
     column.set_cell_data_func (icon, (column, cell, model, iter) => {
 	Contact contact;
 
 	model.get (iter, 0, out contact);
 
-	cell.yalign = 0.0f;
 	cell.set ("pixbuf", contact.small_avatar);
 
 	if (view.is_last_custom (iter))
@@ -337,16 +339,12 @@ public class Contacts.ViewWidget : TreeView {
 	  cell.height = -1;
       });
 
-    append_column (column);
-
-    column = new TreeViewColumn ();
-
     shape = new CellRendererShape ();
     shape.set_padding (4, 0);
 
     Pango.cairo_context_set_shape_renderer (get_pango_context (), shape.render_shape);
 
-    column.pack_start (shape, false);
+    column.pack_start (shape, true);
     column.set_cell_data_func (shape, (column, cell, model, iter) => {
 	Contact contact;
 
