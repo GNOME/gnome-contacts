@@ -91,55 +91,68 @@ public class Contacts.ContactFrame : Frame {
     image.set_size_request (size, size);
 
     this.menu = menu;
-    if (menu != null) {
-      var button = new ToggleButton ();
-      button.set_focus_on_click (false);
-      button.get_style_context ().add_class ("contact-frame-button");
-      button.add (image);
-      button.set_mode (false);
-      this.add (button);
 
-      button.toggled.connect ( () => {
-	  if (button.get_active ()) {
-	    if (!popup_in_progress) {
-	      menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
-	    }
-	  } else {
-	    menu.popdown ();
+    var button = new ToggleButton ();
+    button.set_focus_on_click (false);
+    button.get_style_context ().add_class ("contact-frame-button");
+    button.add (image);
+    button.set_mode (false);
+    this.add (button);
+
+    button.toggled.connect ( () => {
+	if (this.menu == null) {
+	  if (button.get_active ())
+	    button.set_active (false);
+	  return;
+	}
+
+	if (button.get_active ()) {
+	  if (!popup_in_progress) {
+	    menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
 	  }
-	});
+	} else {
+	  menu.popdown ();
+	}
+      });
 
-      button.button_press_event.connect ( (event) => {
-	  var ewidget = Gtk.get_event_widget ((Gdk.Event)(&event));
-
-	  if (ewidget != button ||
-	      button.get_active ())
-	    return false;
-
-	  menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
-	  button.set_active (true);
-	  popup_in_progress = true;
+    button.button_press_event.connect ( (event) => {
+	if (this.menu == null)
 	  return true;
-	});
-      button.button_release_event.connect ( (event) => {
-	  bool popup_in_progress_saved = popup_in_progress;
-	  popup_in_progress = false;
+	var ewidget = Gtk.get_event_widget ((Gdk.Event)(&event));
 
-	  var ewidget = Gtk.get_event_widget ((Gdk.Event)(&event));
-
-	  if (ewidget == button &&
-	      !popup_in_progress_saved &&
-	      button.get_active ()) {
-	    menu.popdown ();
-	    return true;
-	  }
-	  if (ewidget != button)    {
-	    menu.popdown ();
-	    return true;
-	  }
+	if (ewidget != button ||
+	    button.get_active ())
 	  return false;
-	});
 
+	menu.popup (null, null, menu_position, 1, Gtk.get_current_event_time ());
+	button.set_active (true);
+	popup_in_progress = true;
+	return true;
+      });
+
+    button.button_release_event.connect ( (event) => {
+	if (this.menu == null)
+	  return false;
+
+	bool popup_in_progress_saved = popup_in_progress;
+	popup_in_progress = false;
+
+	var ewidget = Gtk.get_event_widget ((Gdk.Event)(&event));
+
+	if (ewidget == button &&
+	    !popup_in_progress_saved &&
+	    button.get_active ()) {
+	  menu.popdown ();
+	  return true;
+	}
+	if (ewidget != button)    {
+	  menu.popdown ();
+	  return true;
+	}
+	return false;
+      });
+
+    if (menu != null) {
       menu.show.connect ( (menu) => {
 	  popup_in_progress = true;
 	  button.set_active (true);
@@ -150,8 +163,6 @@ public class Contacts.ContactFrame : Frame {
 	});
       menu.attach_to_widget (button, (menu) => {
 	});
-    } else {
-      this.add (image);
     }
 
     image.show ();
