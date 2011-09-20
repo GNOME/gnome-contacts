@@ -34,7 +34,6 @@ vala_sources = \
 	$(NULL)
 
 gnome_contacts_SOURCES = \
-	contacts-esd-setup.h \
 	contacts-esd-setup.c \
 	$(vala_sources) \
 	$(NULL)
@@ -42,3 +41,7 @@ gnome_contacts_SOURCES = \
 gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
 CLEANFILES = $(vala_sources:.vala=.c) *.vapi *.stamp
+
+EXTRA_DIST = \
+	contacts-esd-setup.h \
+	$(NULL)
