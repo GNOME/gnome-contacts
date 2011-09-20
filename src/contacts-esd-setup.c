@@ -76,6 +76,17 @@ search_known_sources (ESourceList *sources,
 }
 
 static gboolean
+check_default (ESource *source,
+	       gpointer data)
+{
+
+	if (e_source_get_property (source, "default"))
+	  return TRUE;
+
+	return FALSE;
+}
+
+static gboolean
 check_uri (ESource *source,
            gpointer uri)
 {
@@ -233,6 +244,10 @@ online_accounts_google_sync_contacts (GoaObject *goa_object,
 		e_source_group_add_source (source_group, source, -1);
 		g_object_unref (source);
 	}
+
+	/* If there is no current default then we likely want to use the GOA source by default. */
+	if (search_known_sources (source_list, check_default, NULL) == NULL)
+	  e_source_set_property (source, "default", "true");
 
 	g_object_unref (source_group);
 	g_object_unref (goa_account);
