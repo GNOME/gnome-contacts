@@ -43,6 +43,10 @@ public class Contacts.App : Gtk.Application {
       // Clear the contacts so any changed information is stored
       contacts_pane.show_contact (null);
       window.destroy ();
+    } else if (((event.keyval == Gdk.keyval_from_name ("s")) ||
+		(event.keyval == Gdk.keyval_from_name ("f"))) &&
+	       ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
+      list_pane.filter_entry.grab_focus ();
     }
 
     return false;
