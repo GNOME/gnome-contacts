@@ -1565,26 +1565,35 @@ public class Contacts.ContactPane : Grid {
     contacts_store.aggregator.primary_store.add_persona_from_details.begin (details, (obj, res) => {
 	var store = obj as PersonaStore;
 	Persona? persona = null;
+	Dialog dialog = null;
+
 	try {
 	  persona = store.add_persona_from_details.end (res);
 	} catch (Error e) {
-	  var dialog = new MessageDialog (this.get_toplevel () as Window,
-					  DialogFlags.DESTROY_WITH_PARENT,
-					  MessageType.ERROR,
-					  ButtonsType.OK,
-					  _("Unable to create new contacts: %s\n"), e.message);
-	  dialog.show ();
-	  return;
+	  dialog = new MessageDialog (this.get_toplevel () as Window,
+				      DialogFlags.DESTROY_WITH_PARENT |
+				      DialogFlags.MODAL,
+				      MessageType.ERROR,
+				      ButtonsType.OK,
+				      _("Unable to create new contacts: %s\n"), e.message);
 	}
 
 	var contact = contacts_store.find_contact_with_persona (persona);
 	if (contact == null) {
-	  var dialog = new MessageDialog (this.get_toplevel () as Window,
-					  DialogFlags.DESTROY_WITH_PARENT,
-					  MessageType.ERROR,
-					  ButtonsType.OK,
-					  _("Unable to find newly created contact\n"));
+	  dialog = new MessageDialog (this.get_toplevel () as Window,
+				      DialogFlags.DESTROY_WITH_PARENT |
+				      DialogFlags.MODAL,
+				      MessageType.ERROR,
+				      ButtonsType.OK,
+				      _("Unable to find newly created contact\n"));
+	}
+
+	if (dialog != null) {
 	  dialog.show ();
+	  dialog.response.connect ( () => {
+	      dialog.destroy ();
+	    });
+
 	  return;
 	}
 
