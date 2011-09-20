@@ -1559,6 +1559,9 @@ public class Contacts.ContactPane : Grid {
 
   public void new_contact (ListPane list_pane) {
     var details = new HashTable<string, Value?> (str_hash, str_equal);
+    var v = Value (typeof (string));
+    v.set_string (_("Contact Name"));
+    details.set ("full-name", v);
     contacts_store.aggregator.primary_store.add_persona_from_details.begin (details, (obj, res) => {
 	var store = obj as PersonaStore;
 	Persona? persona = null;
