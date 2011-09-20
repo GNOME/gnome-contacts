@@ -37,6 +37,17 @@ public class Contacts.App : Gtk.Application {
     return true;
   }
 
+  private bool window_key_press_event (Gdk.EventKey event) {
+    if ((event.keyval == Gdk.keyval_from_name ("q")) &&
+	((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
+      // Clear the contacts so any changed information is stored
+      contacts_pane.show_contact (null);
+      window.destroy ();
+    }
+
+    return false;
+  }
+
   private void selection_changed (Contact? new_selection) {
     contacts_pane.show_contact (new_selection);
   }
@@ -94,6 +105,7 @@ public class Contacts.App : Gtk.Application {
     window.set_size_request (745, 510);
     window.delete_event.connect (window_delete_event);
     window.map_event.connect (window_map_event);
+    window.key_press_event.connect (window_key_press_event);
 
     var grid = new Grid();
     window.add (grid);
