@@ -31,7 +31,7 @@ public class Contacts.MenuButton : ToggleButton  {
     grid.set_orientation (Orientation.HORIZONTAL);
     grid.add (label_widget);
     grid.add (arrow);
-    grid.set_row_spacing (3);
+    grid.set_column_spacing (3);
     grid.set_hexpand (true);
     grid.set_halign (Align.CENTER);
     this.add (grid);

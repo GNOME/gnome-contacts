@@ -32,7 +32,7 @@ class Contacts.DetailsLayout : Object {
     shared_state = s;
     grid = new Grid ();
     grid.set_orientation (Orientation.VERTICAL);
-    grid.set_column_spacing (3);
+    grid.set_row_spacing (3);
   }
 
   SharedState shared_state;
@@ -54,8 +54,8 @@ class Contacts.DetailsLayout : Object {
   void new_row () {
     var row = new Grid ();
     last_label = null;
-    row.set_row_spacing (9);
-    row.set_column_spacing (3);
+    row.set_column_spacing (9);
+    row.set_row_spacing (3);
     row.set_orientation (Orientation.HORIZONTAL);
     current_row = row;
     grid.add (row);

@@ -107,7 +107,7 @@ public class Contacts.LinkDialog : Dialog {
     var grid = new Grid ();
     var container = (get_content_area () as Container);
     grid.set_border_width (8);
-    grid.set_row_spacing (12);
+    grid.set_column_spacing (12);
     container.add (grid);
 
     var label = new Label (_("Select contacts to link to %s").printf (contact.display_name));
@@ -188,12 +188,12 @@ public class Contacts.LinkDialog : Dialog {
     var right_grid = new Grid ();
     right_grid.set_orientation (Orientation.VERTICAL);
     right_grid.set_border_width (10);
-    right_grid.set_column_spacing (8);
+    right_grid.set_row_spacing (8);
     grid.attach (right_grid, 1, 1, 1, 1);
 
     persona_grid = new Grid ();
     persona_grid.set_orientation (Orientation.VERTICAL);
-    persona_grid.set_row_spacing (8);
+    persona_grid.set_column_spacing (8);
     right_grid.add (persona_grid);
 
     update_personas ();

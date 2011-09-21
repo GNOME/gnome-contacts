@@ -76,7 +76,7 @@ public class Contacts.ContactPresence : Grid {
   public ContactPresence (Contact contact) {
     this.contact = contact;
 
-    this.set_row_spacing (4);
+    this.set_column_spacing (4);
     image = new Image ();
     image.set_no_show_all (true);
     this.add (image);

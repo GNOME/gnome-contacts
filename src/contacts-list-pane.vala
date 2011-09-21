@@ -137,7 +137,7 @@ public class Contacts.ListPane : Frame {
     empty_box.override_background_color (StateFlags.NORMAL, white);
 
     var empty_grid = new Grid ();
-    empty_grid.set_column_spacing (8);
+    empty_grid.set_row_spacing (8);
     empty_grid.set_orientation (Orientation.VERTICAL);
     empty_grid.set_valign (Align.CENTER);
 

@@ -1279,7 +1279,7 @@ public class Contacts.ContactPane : Grid {
     }
 
     edit_persona_grid = new Grid ();
-    edit_persona_grid.set_row_spacing (0);
+    edit_persona_grid.set_column_spacing (0);
     edit_persona_grid.set_halign (Align.START);
     edit_persona_grid.set_valign (Align.END);
     edit_persona_grid.set_vexpand (true);
