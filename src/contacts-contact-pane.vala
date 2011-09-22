@@ -1450,7 +1450,7 @@ public class Contacts.ContactPane : Grid {
     DateTime? bday = contact.individual.birthday;
     if (bday != null) {
       fields_layout.add_label (_("Birthday"));
-      fields_layout.add_detail (bday.format ("%x"));
+      fields_layout.add_detail (bday.to_local ().format ("%x"));
     }
 
     var roles_details = contact.individual.roles;
