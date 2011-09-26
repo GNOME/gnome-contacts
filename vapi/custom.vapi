@@ -27,4 +27,6 @@ namespace LocalGLib {
 namespace Contacts {
 	[CCode (cname = "contacts_ensure_eds_accounts")]
 	public static void ensure_eds_accounts ();
+	[CCode (cname = "contacts_eds_local_store")]
+	public static string? eds_local_store;
 }

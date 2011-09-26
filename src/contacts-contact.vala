@@ -934,7 +934,7 @@ public class Contacts.Contact : GLib.Object  {
 
   public static string format_persona_store_name (PersonaStore store) {
     if (store.type_id == "eds") {
-      if (store.id == "system") {
+      if (store.id == eds_local_store) {
 	return _("Local Contact");
       }
       if (store.id.has_suffix ("@gmail.com")) {

@@ -25,6 +25,7 @@
 #include <libedataserver/e-source-group.h>
 #include <libedataserver/e-uid.h>
 
+char *contacts_eds_local_store = NULL;
 static gboolean created_local = FALSE;
 static GMainLoop *goa_loop;
 static GoaClient *goa_client;
@@ -153,6 +154,11 @@ ensure_local_addressbook (void)
   csd.uri_source = NULL;
   system_source = search_known_sources (source_list, check_system, &csd);
 
+  if (system_source != NULL)
+    contacts_eds_local_store = g_strdup (e_source_peek_uid (system_source));
+  else if (csd.uri_source != NULL)
+    contacts_eds_local_store = g_strdup (e_source_peek_uid (csd.uri_source));
+
   if (system_source)
     g_object_unref (system_source);
   if (csd.uri_source)
@@ -166,6 +172,7 @@ ensure_local_addressbook (void)
 
   client = e_book_client_new_system (NULL);
   if (client != NULL) {
+    contacts_eds_local_store = g_strdup (e_source_peek_uid (e_client_get_source (client)));
     g_object_unref (client);
     return TRUE;
   }
