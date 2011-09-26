@@ -74,7 +74,7 @@ public class Contacts.Utils : Object {
     var request = new TelepathyGLib.AccountChannelRequest(account,
 	request_dict, int64.MAX);
     request.ensure_channel_async.begin (
-	"org.freedesktop.Telepathy.Client.Empathy.Call", null);
+	"org.freedesktop.Telepathy.Client.Empathy.AudioVideo", null);
   }
 
   public static T? get_first<T> (Collection<T> collection) {
