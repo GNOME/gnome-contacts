@@ -65,7 +65,7 @@ public class Contacts.App : Gtk.Application {
       contacts_pane.show_contact (contact);
     } else {
       var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
-				      _("No contact with id %s found").printf (id));
+				      _("No contact with id %s found"), id);
       dialog.set_title(_("Contact not found"));
       dialog.show ();
       dialog.response.connect ( (id) => {
@@ -83,7 +83,7 @@ public class Contacts.App : Gtk.Application {
       contacts_pane.show_contact (contact);
     } else {
       var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
-				      _("No contact with email address %s found").printf (email_address));
+				      _("No contact with email address %s found"), email_address);
       dialog.set_title(_("Contact not found"));
       dialog.show ();
       dialog.response.connect ( (id) => {

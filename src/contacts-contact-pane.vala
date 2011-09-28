@@ -1585,6 +1585,7 @@ public class Contacts.ContactPane : Grid {
 				      DialogFlags.MODAL,
 				      MessageType.ERROR,
 				      ButtonsType.OK,
+				      "%s",
 				      _("Unable to find newly created contact\n"));
 	}
 
