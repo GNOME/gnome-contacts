@@ -1,6 +1,7 @@
 # Esperanto translation for gnome-contacts.
 # Copyright (C) 2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-contacts package.
+# Tiffany ANTOPOLSKI <tiffany.antopolski@gmail.com>, 2011.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011.
 #
 msgid ""
@@ -8,255 +9,465 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-17 14:50+0000\n"
-"PO-Revision-Date: 2011-06-18 16:20+0200\n"
+"POT-Creation-Date: 2011-09-28 00:53+0000\n"
+"PO-Revision-Date: 2011-09-30 18:30+0200\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: eo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
 
-#: ../src/contacts-app.vala:43 ../src/main.vala:25
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:108
+#: ../src/main.vala:35
 msgid "Contacts"
 msgstr "Kontaktaro"
 
-#: ../src/contacts-contact.vala:189
-msgid "Unknown status"
-msgstr "Nekonata stato"
+#: ../src/contacts-app.vala:68
+#, c-format
+msgid "No contact with id %s found"
+msgstr "Neniun kontakton kun identigo %s trovis"
 
-#: ../src/contacts-contact.vala:191
-msgid "Offline"
-msgstr "Nekonektite"
+#: ../src/contacts-app.vala:69 ../src/contacts-app.vala:87
+msgid "Contact not found"
+msgstr "Kontakton ne trovis"
 
-#: ../src/contacts-contact.vala:195
-msgid "Error"
-msgstr "Eraro"
+#: ../src/contacts-app.vala:86
+#, c-format
+msgid "No contact with email address %s found"
+msgstr "Neniun kontakton kun retpoŝta adreso %s trovita"
 
-#: ../src/contacts-contact.vala:197
-msgid "Available"
-msgstr "Disponeble"
+#: ../src/contacts-app.vala:159 ../src/main.vala:27
+msgid "Show contact with this individual id"
+msgstr "Montri kontakton kiu havas ĉi tiun identigon"
 
-#: ../src/contacts-contact.vala:199
-msgid "Away"
-msgstr "Fore"
+#: ../src/contacts-app.vala:161 ../src/main.vala:29
+msgid "Show contact with this email address"
+msgstr "Montri kontakton kiu havas ĉi tiun retpoŝton"
 
-#: ../src/contacts-contact.vala:201
-msgid "Extended away"
-msgstr ""
+#: ../src/contacts-app.vala:168
+msgid "— contact management"
+msgstr "— kontakto mastrumado"
 
-#: ../src/contacts-contact.vala:203
-msgid "Busy"
-msgstr "Okupite"
+#: ../src/contacts-contact-pane.vala:606 ../src/contacts-contact-pane.vala:850
+#: ../src/contacts-contact-pane.vala:1348
+msgid "Nickname"
+msgstr "Kromnomo"
 
-#: ../src/contacts-contact.vala:205
-msgid "Hidden"
-msgstr "Kaŝite"
+#: ../src/contacts-contact-pane.vala:609
+msgid "Enter nickname"
+msgstr "Enigu kromnomon"
 
-#: ../src/contacts-contact.vala:290
-msgid "Assistant"
-msgstr "Asistanto"
+#: ../src/contacts-contact-pane.vala:615
+msgid "Alias"
+msgstr "Alinomo"
 
-#: ../src/contacts-contact.vala:291 ../src/contacts-contact.vala:310
-#: ../src/contacts-contact.vala:373
-msgid "Work"
-msgstr "Laborejo"
+#: ../src/contacts-contact-pane.vala:618
+msgid "Enter alias"
+msgstr "Enigu alinomon"
 
-#. { N_("Business Phone 2"), { "WORK", "VOICE"},  1
-#: ../src/contacts-contact.vala:293
-msgid "Work Fax"
-msgstr "Laboreja faksilo"
+#: ../src/contacts-contact-pane.vala:630
+msgid "Enter email address"
+msgstr "Enigu adreson de retpoŝto"
 
-#: ../src/contacts-contact.vala:294
-msgid "Callback"
-msgstr "Revoko"
+#: ../src/contacts-contact-pane.vala:641
+msgid "Enter phone number"
+msgstr "Enigu numeron de telefono"
 
-#: ../src/contacts-contact.vala:295
-msgid "Car"
-msgstr "Aŭtomobilo"
+#: ../src/contacts-contact-pane.vala:647 ../src/contacts-contact-pane.vala:839
+msgctxt "url-link"
+msgid "Link"
+msgstr "Ligilo"
 
-#: ../src/contacts-contact.vala:296
+#: ../src/contacts-contact-pane.vala:652
+msgid "Enter link"
+msgstr "Enigu ligilo"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "Street"
+msgstr "Strato"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "Extension"
+msgstr "Interna numero"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "City"
+msgstr "Urbo"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "State/Province"
+msgstr "Ŝtato/Provinco"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "Zip/Postal Code"
+msgstr "Poŝtkodo"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "PO box"
+msgstr "Abonkesto"
+
+#: ../src/contacts-contact-pane.vala:659
+msgid "Country"
+msgstr "Lando"
+
+#: ../src/contacts-contact-pane.vala:746
+#: ../src/contacts-contact-pane.vala:1365
+msgid "Chat"
+msgstr "Babilejo"
+
+#: ../src/contacts-contact-pane.vala:807
+msgid "Add detail"
+msgstr "Aldoni detalon"
+
+#: ../src/contacts-contact-pane.vala:813
+msgid "Email"
+msgstr "Retpoŝtadreso"
+
+#: ../src/contacts-contact-pane.vala:821
+msgid "Phone number"
+msgstr "Telefonnumero"
+
+#: ../src/contacts-contact-pane.vala:829
+msgid "Postal Address"
+msgstr "Poŝtadreso"
+
+#: ../src/contacts-contact-pane.vala:962
+msgid "Browse for more pictures"
+msgstr "Foliumi por plu bildoj"
+
+#: ../src/contacts-contact-pane.vala:1044
+msgid "Browse for more pictures..."
+msgstr "Foliumi por plu bildoj..."
+
+#: ../src/contacts-contact-pane.vala:1264
+msgid "Enter name"
+msgstr "Enigu nomon"
+
+#: ../src/contacts-contact-pane.vala:1276
+#: ../src/contacts-contact-pane.vala:1563
+msgid "Contact Name"
+msgstr "Nomo de kontakto"
+
+#: ../src/contacts-contact-pane.vala:1430
+msgid "Address copied to clipboard"
+msgstr "Kopii adreson al la tondujo"
+
+#: ../src/contacts-contact-pane.vala:1452
+msgid "Birthday"
+msgstr "Naskiĝtago"
+
+#: ../src/contacts-contact-pane.vala:1461 ../src/contacts-types.vala:296
 msgid "Company"
 msgstr "Firmao"
 
-#: ../src/contacts-contact.vala:297 ../src/contacts-contact.vala:309
-#: ../src/contacts-contact.vala:372
-msgid "Home"
-msgstr "Hejmo"
+#: ../src/contacts-contact-pane.vala:1468
+msgid "Department"
+msgstr "Departemento"
 
-#. { N_("Home 2"),     { "HOME", "VOICE" } },  1),
-#: ../src/contacts-contact.vala:299
-msgid "Home Fax"
-msgstr "Hejma faksilo"
+#: ../src/contacts-contact-pane.vala:1475
+msgid "Profession"
+msgstr "Profesio"
 
-#: ../src/contacts-contact.vala:300
-msgid "ISDN"
-msgstr "ISDN"
+#: ../src/contacts-contact-pane.vala:1480
+msgid "Title"
+msgstr "Titolo"
 
-#: ../src/contacts-contact.vala:301
-msgid "Mobile"
-msgstr "Poŝtelefono"
+#: ../src/contacts-contact-pane.vala:1487
+msgid "Manager"
+msgstr "Manaĝero"
 
-#: ../src/contacts-contact.vala:302 ../src/contacts-contact.vala:332
-#: ../src/contacts-contact.vala:343 ../src/contacts-contact.vala:360
-#: ../src/contacts-contact.vala:395 ../src/contacts-contact.vala:407
-#: ../src/contacts-contact.vala:424
+#. List most specific first, always in upper case
+#: ../src/contacts-contact-pane.vala:1496 ../src/contacts-types.vala:291
+msgid "Assistant"
+msgstr "Asistanto"
+
+#: ../src/contacts-contact-pane.vala:1505
+msgid "Links"
+msgstr "Ligiloj"
+
+#: ../src/contacts-contact-pane.vala:1578
+#, c-format
+msgid "Unable to create new contacts: %s\n"
+msgstr "Ne eblis krei novajn kontaktojn: %s\n"
+
+#: ../src/contacts-contact-pane.vala:1589
+msgid "Unable to find newly created contact\n"
+msgstr "Ne povas trovi kontakton kreinta nove\n"
+
+#: ../src/contacts-contact-pane.vala:1698
+msgid "Notes"
+msgstr "Notoj"
+
+#: ../src/contacts-contact-pane.vala:1729
+msgid "Edit"
+msgstr "Redakti"
+
+#: ../src/contacts-contact-pane.vala:1736
+msgid "More"
+msgstr "Plu"
+
+#: ../src/contacts-contact-pane.vala:1749
+msgid "Back to Contact"
+msgstr "Reveni al kontakto"
+
+#: ../src/contacts-contact-pane.vala:1758
+msgid "Add/Remove Linked Contacts..."
+msgstr "Aldoni/Forigi binditajn kontaktojn..."
+
+#. Utils.add_menu_item (menu,_("Send..."));
+#: ../src/contacts-contact-pane.vala:1760
+msgid "Delete"
+msgstr "Forigi"
+
+#: ../src/contacts-contact.vala:405
+msgid "Unknown status"
+msgstr "Nekonata stato"
+
+#: ../src/contacts-contact.vala:407
+msgid "Offline"
+msgstr "Nekonektita"
+
+#: ../src/contacts-contact.vala:411
+msgid "Error"
+msgstr "Eraro"
+
+#: ../src/contacts-contact.vala:413
+msgid "Available"
+msgstr "Disponebla"
+
+#: ../src/contacts-contact.vala:415
+msgid "Away"
+msgstr "Fora"
+
+#: ../src/contacts-contact.vala:417
+msgid "Extended away"
+msgstr "Fora dum longa tempo"
+
+#: ../src/contacts-contact.vala:419
+msgid "Busy"
+msgstr "Okupita"
+
+#: ../src/contacts-contact.vala:421
+msgid "Hidden"
+msgstr "Kaŝita"
+
+#: ../src/contacts-contact.vala:614
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: ../src/contacts-contact.vala:615
+msgid "Ovi Chat"
+msgstr "Ovi-babilejo"
+
+#: ../src/contacts-contact.vala:616 ../src/contacts-contact.vala:888
+msgid "Facebook"
+msgstr "Vizaĝlibro"
+
+#: ../src/contacts-contact.vala:617
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: ../src/contacts-contact.vala:618
+msgid "AOL Instant Messenger"
+msgstr "Tujmesaĝilo de AOL"
+
+#: ../src/contacts-contact.vala:619
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: ../src/contacts-contact.vala:620
+msgid "Novell Groupwise"
+msgstr "Novell Groupwise"
+
+#: ../src/contacts-contact.vala:621
+msgid "ICQ"
+msgstr "ICQ"
+
+#: ../src/contacts-contact.vala:622
+msgid "IRC"
+msgstr "IRC"
+
+#: ../src/contacts-contact.vala:623
+msgid "Jabber"
+msgstr "Jabero"
+
+#: ../src/contacts-contact.vala:624
+msgid "Local network"
+msgstr "Loka reto"
+
+#: ../src/contacts-contact.vala:625
+msgid "Windows Live Messenger"
+msgstr "Tujmesaĝilo de Windows Live"
+
+#: ../src/contacts-contact.vala:626
+msgid "MySpace"
+msgstr "MySpace"
+
+#: ../src/contacts-contact.vala:627
+msgid "MXit"
+msgstr "MXit"
+
+#: ../src/contacts-contact.vala:628
+msgid "Napster"
+msgstr "Napster"
+
+#: ../src/contacts-contact.vala:629
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: ../src/contacts-contact.vala:630
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: ../src/contacts-contact.vala:631
+msgid "SILC"
+msgstr "SILC"
+
+#: ../src/contacts-contact.vala:632
+msgid "sip"
+msgstr "sip"
+
+#: ../src/contacts-contact.vala:633
+msgid "Skype"
+msgstr "Skajpo"
+
+#: ../src/contacts-contact.vala:634
+msgid "Telephony"
+msgstr "Telefonado"
+
+#: ../src/contacts-contact.vala:635
+msgid "Trepia"
+msgstr "Trepia"
+
+#: ../src/contacts-contact.vala:636 ../src/contacts-contact.vala:637
+msgid "Yahoo! Messenger"
+msgstr "Tujmesaĝilo de Yahoo!"
+
+#: ../src/contacts-contact.vala:638
+msgid "Zephyr"
+msgstr "Zephyr"
+
+#: ../src/contacts-contact.vala:891
+msgid "Twitter"
+msgstr "Twitter"
+
+#: ../src/contacts-contact.vala:917
+msgid "Unexpected internal error: created contact was not found"
+msgstr "Neatendita interna eraro: kreita kontakto ne trovita"
+
+#: ../src/contacts-contact.vala:938
+msgid "Local Contact"
+msgstr "Loka kontakto"
+
+#: ../src/contacts-contact.vala:941
+msgid "Google"
+msgstr "Google"
+
+#: ../src/contacts-link-dialog.vala:88
+msgid "Link Contact"
+msgstr "Bindi kontakton"
+
+#: ../src/contacts-link-dialog.vala:113
+#, c-format
+msgid "Select contacts to link to %s"
+msgstr "Elekti kontaktojn por bindi al %s"
+
+#: ../src/contacts-link-dialog.vala:162
+msgctxt "link-contacts-button"
+msgid "Link"
+msgstr "Bindi"
+
+#: ../src/contacts-link-dialog.vala:181
+msgid "Currently linked:"
+msgstr "Nuna bindita:"
+
+#: ../src/contacts-list-pane.vala:148
+msgid ""
+"Connect to an account,\n"
+"import or add contacts"
+msgstr ""
+"Konekti al konto, enporti\n"
+"aŭ aldoni kontaktojn"
+
+#: ../src/contacts-list-pane.vala:154
+msgid "Online Accounts"
+msgstr "Retaj kontoj"
+
+#: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
+#: ../src/contacts-types.vala:211 ../src/contacts-types.vala:301
 msgid "Other"
 msgstr "Alia"
 
-#: ../src/contacts-contact.vala:303
+#: ../src/contacts-types.vala:121
+msgid "Custom..."
+msgstr "Propra..."
+
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:266 ../src/contacts-types.vala:297
+msgid "Home"
+msgstr "Hejmo"
+
+#: ../src/contacts-types.vala:267 ../src/contacts-types.vala:292
+msgid "Work"
+msgstr "Laborejo"
+
+#: ../src/contacts-types.vala:293
+msgid "Work Fax"
+msgstr "Laboreja faksilo"
+
+#: ../src/contacts-types.vala:294
+msgid "Callback"
+msgstr "Revoko"
+
+#: ../src/contacts-types.vala:295
+msgid "Car"
+msgstr "Aŭtomobilo"
+
+#: ../src/contacts-types.vala:298
+msgid "Home Fax"
+msgstr "Hejma faksilo"
+
+#: ../src/contacts-types.vala:299
+msgid "ISDN"
+msgstr "ISDN"
+
+#: ../src/contacts-types.vala:300
+msgid "Mobile"
+msgstr "Poŝtelefono"
+
+#: ../src/contacts-types.vala:302
 msgid "Fax"
 msgstr "Faksilo"
 
-#: ../src/contacts-contact.vala:304
+#: ../src/contacts-types.vala:303
 msgid "Pager"
 msgstr "Televokilo"
 
-#: ../src/contacts-contact.vala:305
+#: ../src/contacts-types.vala:304
 msgid "Radio"
 msgstr "Radio"
 
-#: ../src/contacts-contact.vala:306
+#: ../src/contacts-types.vala:305
 msgid "Telex"
 msgstr "Telekso"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-contact.vala:308
+#: ../src/contacts-types.vala:307
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-contact.vala:532
-msgid "Google Talk"
-msgstr "Google Talk"
+#. Translators: This is the header for the list of suggested contacts to
+#. link to the current contact
+#: ../src/contacts-view.vala:89
+msgid "Suggestion"
+msgid_plural "Suggestions"
+msgstr[0] "Sugestita"
+msgstr[1] "Sugestitaj"
 
-#: ../src/contacts-contact.vala:533
-msgid "Ovi Chat"
-msgstr "Ovi-babilejo"
-
-#: ../src/contacts-contact.vala:534
-msgid "Facebook"
-msgstr "Vizaĝlibro"
-
-#: ../src/contacts-contact.vala:535
-msgid "Livejournal"
-msgstr "Livejournal"
-
-#: ../src/contacts-contact.vala:536
-msgid "AOL Instant Messenger"
-msgstr "Tujmesaĝilo de AOL"
-
-#: ../src/contacts-contact.vala:537
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
-
-#: ../src/contacts-contact.vala:538
-msgid "Novell Groupwise"
-msgstr "Novell Groupwise"
-
-#: ../src/contacts-contact.vala:539
-msgid "ICQ"
-msgstr "ICQ"
-
-#: ../src/contacts-contact.vala:540
-msgid "IRC"
-msgstr "IRC"
-
-#: ../src/contacts-contact.vala:541
-msgid "Jabber"
-msgstr "Jabero"
-
-#: ../src/contacts-contact.vala:542
-msgid "Local network"
-msgstr "Loka reto"
-
-#: ../src/contacts-contact.vala:543
-msgid "Windows Live Messenger"
-msgstr "Tujmesaĝilo de Windows Live"
-
-#: ../src/contacts-contact.vala:544
-msgid "MySpace"
-msgstr "MySpace"
-
-#: ../src/contacts-contact.vala:545
-msgid "MXit"
-msgstr "MXit"
-
-#: ../src/contacts-contact.vala:546
-msgid "Napster"
-msgstr "Napster"
-
-#: ../src/contacts-contact.vala:547
-msgid "Tencent QQ"
-msgstr "Tencent QQ"
-
-#: ../src/contacts-contact.vala:548
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
-
-#: ../src/contacts-contact.vala:549
-msgid "SILC"
-msgstr "SILC"
-
-#: ../src/contacts-contact.vala:550
-msgid "sip"
-msgstr "sip"
-
-#: ../src/contacts-contact.vala:551
-msgid "Skype"
-msgstr "Skajpo"
-
-#: ../src/contacts-contact.vala:552
-msgid "Telephony"
-msgstr "Telefonado"
-
-#: ../src/contacts-contact.vala:553
-msgid "Trepia"
-msgstr "Trepia"
-
-#: ../src/contacts-contact.vala:554 ../src/contacts-contact.vala:555
-msgid "Yahoo! Messenger"
-msgstr "Tujmesaĝilo de Yahoo!"
-
-#: ../src/contacts-contact.vala:556
-msgid "Zephyr"
-msgstr "Zephyr"
-
-#: ../src/contacts-contact-pane.vala:245
-msgid "Chat"
-msgstr "Babilejo"
-
-#: ../src/contacts-contact-pane.vala:293
-msgid "Address copied to clipboard"
-msgstr "Kopiis adreson al la tondujo"
-
-#: ../src/contacts-contact-pane.vala:400
-msgid "Notes"
-msgstr "Notoj"
-
-#: ../src/contacts-contact-pane.vala:431
-msgid "Edit"
-msgstr "Redakti"
-
-#: ../src/contacts-contact-pane.vala:434
-msgid "More"
-msgstr "Plu"
-
-#: ../src/contacts-contact-pane.vala:447
-msgid "Close"
-msgstr "Fermi"
-
-#: ../src/contacts-contact-pane.vala:455
-msgid "Add/Remove Linked Contacts..."
-msgstr "Aldoni/Forigi ligitajn kontaktojn..."
-
-#: ../src/contacts-contact-pane.vala:458
-msgid "Send..."
-msgstr "Sendi..."
-
-#: ../src/contacts-contact-pane.vala:461
-msgid "Delete"
-msgstr "Forigi"
-
-#: ../src/contacts-list-pane.vala:183
-msgid "Type to search..."
-msgstr "Tajpi por serĉi…"
+#: ../src/contacts-view.vala:413
+msgid "New contact"
+msgstr "Nova kontakto"
