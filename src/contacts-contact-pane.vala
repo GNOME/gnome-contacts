@@ -1117,7 +1117,15 @@ public class Contacts.ContactPane : Grid {
       if (modified) {
 	var value = Value(notes.get_type ());
 	value.set_object (notes);
-	set_persona_property.begin (persona, "notes", value);
+	set_persona_property.begin (persona, "notes", value, (obj, result) => {
+	    try {
+	      set_persona_property.end (result);
+	    } catch (PropertyError e1) {
+	      warning ("Unable to save note: %s", e1.message);
+	    } catch (Error e2) {
+	      warning ("Unable to save note: %s", e2.message);
+	    }
+	  });
       }
     }
   }
