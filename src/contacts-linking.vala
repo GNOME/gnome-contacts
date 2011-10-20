@@ -454,7 +454,9 @@ namespace Contacts {
 	write_persona = yield main.store.aggregator.primary_store.add_persona_from_details (details);
 	linkables = main_linkables;
 	linkables.add_all (other_linkables);
-	yield (write_persona as NameDetails).change_full_name (main.display_name);
+	var name_details = write_persona as NameDetails;
+	if (name_details != null)
+	  yield name_details.change_full_name (main.display_name);
       } catch (GLib.Error e) {
 	main.set_data ("contacts-master-at-join", false);
 	warning ("Unable to create new persona when linking: %s\n", e.message);
