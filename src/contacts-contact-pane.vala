@@ -322,6 +322,7 @@ public class Contacts.ContactPane : Grid {
   private MenuItem delete_menu_item;
 
   private bool has_notes;
+  private bool keep_has_notes_once;
   private Widget notes_dot;
   private Widget empty_widget;
   private EventBox pane;
@@ -1098,6 +1099,7 @@ public class Contacts.ContactPane : Grid {
 
     foreach (var persona in widgets.get_keys ()) {
       bool modified = false;
+      bool empty = true;
 
       var notes = new HashSet<NoteFieldDetails> ();
       foreach (var view in widgets.get (persona)) {
@@ -1111,6 +1113,7 @@ public class Contacts.ContactPane : Grid {
 	if (is_set (text)) {
 	  var note = new NoteFieldDetails (text, null, uid);
 	  notes.add (note);
+	  empty = false;
 	}
       }
 
@@ -1126,6 +1129,10 @@ public class Contacts.ContactPane : Grid {
 	      warning ("Unable to save note: %s", e2.message);
 	    }
 	  });
+	// We fake has_notes content for this display_contact() run, to avoid
+	// the wait for the async property setter
+	keep_has_notes_once = true;
+	has_notes = !empty;
       }
     }
   }
@@ -1524,7 +1531,9 @@ public class Contacts.ContactPane : Grid {
   }
 
   private void set_has_notes (bool has_notes) {
-    this.has_notes = has_notes;
+    if (!keep_has_notes_once)
+      this.has_notes = has_notes;
+    keep_has_notes_once = false;
     notes_dot.queue_draw ();
   }
 
