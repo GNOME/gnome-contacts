@@ -365,10 +365,12 @@ public class Contacts.ContactPane : Grid {
 						  Value value) throws GLib.Error, PropertyError {
     selected_contact.is_unedited = false;
     bool did_set = false;
-    foreach (var p in contact.individual.personas) {
+    // Need to make a copy here as it could change during the yields
+    var personas_copy = contact.individual.personas.to_array ();
+    foreach (var p in personas_copy) {
       if (property_name in p.writeable_properties) {
 	did_set = true;
-        yield Contact.set_persona_property (p, property_name, value);
+	yield Contact.set_persona_property (p, property_name, value);
       }
     }
 
