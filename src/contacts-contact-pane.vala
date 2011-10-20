@@ -1667,7 +1667,9 @@ public class Contacts.ContactPane : Grid {
     empty_widget = image;
 
     var grid = new Grid ();
-    grid.set_border_width (10);
+    grid.set_margin_left (10);
+    grid.set_margin_top (10);
+    grid.set_margin_bottom (10);
     pane.add (grid);
 
     var scrolled = new ScrolledWindow (null, null);
@@ -1679,6 +1681,7 @@ public class Contacts.ContactPane : Grid {
     var top_grid = new Grid ();
     top_grid.set_focus_vadjustment (scrolled.get_vadjustment ());
     top_grid.set_orientation (Orientation.VERTICAL);
+    top_grid.set_margin_right (10);
     scrolled.add_with_viewport (top_grid);
     scrolled.get_child().get_style_context ().add_class ("contact-pane");
 
@@ -1697,6 +1700,7 @@ public class Contacts.ContactPane : Grid {
     top_grid.add (button_grid);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
+    bbox.set_margin_right (10);
     normal_buttons = bbox;
     bbox.set_spacing (5);
     bbox.set_margin_top (8);
@@ -1750,6 +1754,7 @@ public class Contacts.ContactPane : Grid {
     bbox.set_no_show_all (true);
 
     bbox = new ButtonBox (Orientation.HORIZONTAL);
+    bbox.set_margin_right (10);
     editing_buttons = bbox;
     bbox.set_spacing (5);
     bbox.set_margin_top (8);
