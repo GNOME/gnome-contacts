@@ -557,7 +557,6 @@ void contacts_ensure_eds_accounts (void)
 
   created_local = ensure_local_addressbook ();
 
-  g_print ("contacts_eds_local_store: %s\n", contacts_eds_local_store);
   goa_loop = g_main_loop_new (NULL, TRUE);
 
   online_accounts_connect ();
