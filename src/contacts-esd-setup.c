@@ -16,6 +16,7 @@
  *
  */
 
+#include "config.h"
 #define GOA_API_IS_SUBJECT_TO_CHANGE
 #include <goa/goa.h>
 #include <libebook/e-book.h>
@@ -24,12 +25,14 @@
 #include <libedataserver/e-source.h>
 #include <libedataserver/e-source-group.h>
 #include <libedataserver/e-uid.h>
+#include <glib/gi18n-lib.h>
 
 char *contacts_eds_local_store = NULL;
 static gboolean created_local = FALSE;
 static GMainLoop *goa_loop;
 static GoaClient *goa_client;
 static GHashTable *accounts;
+static ESourceList *contacts_source_list;
 
 /* This whole file is a gigantic hack that copies and pastes stuff from
  * evolution to create evolution-data-server addressbooks as needed.
@@ -554,6 +557,7 @@ void contacts_ensure_eds_accounts (void)
 
   created_local = ensure_local_addressbook ();
 
+  g_print ("contacts_eds_local_store: %s\n", contacts_eds_local_store);
   goa_loop = g_main_loop_new (NULL, TRUE);
 
   online_accounts_connect ();
@@ -563,4 +567,27 @@ void contacts_ensure_eds_accounts (void)
 
   g_main_loop_unref (goa_loop);
   goa_loop = NULL;
+
+  contacts_source_list = NULL;
+  e_book_get_addressbooks (&contacts_source_list, NULL);
+}
+
+
+const char *
+contacts_lookup_esource_name_by_uid (const char *uid)
+{
+  if (strcmp (uid, contacts_eds_local_store) == 0)
+    return _("Local Contact");
+
+  if (contacts_source_list) {
+    ESource *source = e_source_list_peek_source_by_uid (contacts_source_list, uid);
+    if (source) {
+      const char *relative_uri = e_source_peek_relative_uri (source);
+      if (relative_uri && g_str_has_suffix (relative_uri, "@gmail.com"))
+	return  _("Google");
+
+      return e_source_peek_name (source);
+    }
+  }
+  return NULL;
 }

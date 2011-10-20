@@ -934,12 +934,9 @@ public class Contacts.Contact : GLib.Object  {
 
   public static string format_persona_store_name (PersonaStore store) {
     if (store.type_id == "eds") {
-      if (store.id == eds_local_store) {
-	return _("Local Contact");
-      }
-      if (store.id.has_suffix ("@gmail.com")) {
-	return _("Google");
-      }
+      unowned string? eds_name = lookup_esource_name_by_uid (store.id);
+      if (eds_name != null)
+	return eds_name;
     }
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;

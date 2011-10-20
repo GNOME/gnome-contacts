@@ -29,4 +29,6 @@ namespace Contacts {
 	public static void ensure_eds_accounts ();
 	[CCode (cname = "contacts_eds_local_store")]
 	public static string? eds_local_store;
+	[CCode (cname = "contacts_lookup_esource_name_by_uid")]
+	public static unowned string? lookup_esource_name_by_uid (string uid);
 }
