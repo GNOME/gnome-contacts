@@ -19,17 +19,6 @@
 using Gtk;
 using Contacts;
 
-
-private static string individual_id = null;
-private static string email_address = null;
-private static const OptionEntry[] options = {
-    { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
-      N_("Show contact with this individual id"), null },
-    { "email", 'e', 0, OptionArg.STRING, ref email_address,
-      N_("Show contact with this email address"), null },
-    { null }
-  };
-
 public static int
 main (string[] args) {
   Notify.init (_("Contacts"));
