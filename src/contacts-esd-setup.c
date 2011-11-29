@@ -25,6 +25,7 @@
 #include <libedataserver/e-source.h>
 #include <libedataserver/e-source-group.h>
 #include <libedataserver/e-uid.h>
+#include <libedataserver/eds-version.h>
 #include <glib/gi18n-lib.h>
 
 char *contacts_eds_local_store = NULL;
@@ -571,6 +572,39 @@ void contacts_ensure_eds_accounts (void)
   e_book_get_addressbooks (&contacts_source_list, NULL);
 }
 
+
+/* This is an enourmous hack to find google eds contacts that are
+   in the "My Contacts" system group. */
+char *
+eds_personal_google_group_name (void)
+{
+  static char *name = NULL;
+  char *domain;
+
+  if (name == NULL) {
+    domain = g_strdup_printf ("evolution-data-server-%d.%d\n",
+			      EDS_MAJOR_VERSION,
+			      EDS_MINOR_VERSION + ((EDS_MINOR_VERSION + 1) % 2));
+    name = dgettext (domain, "Personal");
+    g_free (domain);
+  }
+
+  return name;
+}
+
+gboolean
+contacts_esource_uid_is_google (const char *uid)
+{
+  if (contacts_source_list) {
+    ESource *source = e_source_list_peek_source_by_uid (contacts_source_list, uid);
+    if (source) {
+      const char *relative_uri = e_source_peek_relative_uri (source);
+      if (relative_uri && g_str_has_suffix (relative_uri, "@gmail.com"))
+	return TRUE;
+    }
+  }
+  return FALSE;
+}
 
 const char *
 contacts_lookup_esource_name_by_uid (const char *uid)
