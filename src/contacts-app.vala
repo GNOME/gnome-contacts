@@ -132,6 +132,7 @@ public class Contacts.App : Gtk.Application {
   public override void startup () {
     ensure_eds_accounts ();
     contacts_store = new Store ();
+    base.startup ();
   }
 
   public override void activate () {
