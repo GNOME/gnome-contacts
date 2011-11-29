@@ -190,7 +190,7 @@ public class Contacts.Store : GLib.Object {
 
   public bool is_empty () {
     foreach (var contact in contacts) {
-      if (!contact.is_hidden ())
+      if (!contact.is_hidden)
 	return false;
     }
     return true;

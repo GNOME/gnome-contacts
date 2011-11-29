@@ -113,7 +113,7 @@ public class Contacts.View : GLib.Object {
   public TreeModel model { get { return list_store; } }
 
   private bool apply_filter (Contact contact) {
-    if (contact.is_hidden ())
+    if (contact.is_hidden)
       return false;
 
     if (contact in hidden_contacts)

@@ -253,7 +253,10 @@ public class Contacts.Contact : GLib.Object  {
 
   public signal void changed ();
 
-  public bool is_hidden () {
+  private bool _is_hidden;
+  private bool _is_hidden_uptodate;
+
+  private bool _get_is_hidden () {
     // Don't show the user itself
     if (individual.is_user)
       return true;
@@ -276,6 +279,16 @@ public class Contacts.Contact : GLib.Object  {
 	return true;
     }
     return false;
+  }
+
+  public bool is_hidden {
+    get {
+      if (!_is_hidden_uptodate) {
+	_is_hidden = _get_is_hidden ();
+	_is_hidden_uptodate = true;
+      }
+      return _is_hidden;
+    }
   }
 
   public static Contact from_individual (Individual i) {
@@ -717,6 +730,8 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void queue_changed () {
+    _is_hidden_uptodate = false;
+
     if (changed_id != 0)
       return;
 
