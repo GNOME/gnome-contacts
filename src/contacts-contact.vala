@@ -983,6 +983,8 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Persona? find_primary_persona () {
+    if (store.aggregator.primary_store == null)
+      return null;
     return find_persona_from_store (store.aggregator.primary_store);
   }
 
@@ -1111,6 +1113,45 @@ public class Contacts.Contact : GLib.Object  {
   }
 }
 
+public class Contacts.FakePersonaStore : PersonaStore {
+  public static FakePersonaStore _the_store;
+  public static FakePersonaStore the_store() {
+    if (_the_store == null)
+      _the_store = new FakePersonaStore ();
+    return _the_store;
+  }
+  private HashMap<string, Persona> _personas;
+  private Map<string, Persona> _personas_ro;
+
+  public override string type_id { get { return "fake"; } }
+
+  public FakePersonaStore () {
+    Object (id: "uri", display_name: "fake store");
+    this._personas = new HashMap<string, Persona> ();
+    this._personas_ro = this._personas.read_only_view;
+  }
+
+  public override Map<string, Persona> personas
+    {
+      get { return this._personas_ro; }
+    }
+
+  public override MaybeBool can_add_personas { get { return MaybeBool.FALSE; } }
+  public override MaybeBool can_alias_personas { get { return MaybeBool.FALSE; } }
+  public override MaybeBool can_group_personas { get { return MaybeBool.FALSE; } }
+  public override MaybeBool can_remove_personas { get { return MaybeBool.FALSE; } }
+  public override bool is_prepared  { get { return true; } }
+  public override bool is_quiescent  { get { return true; } }
+  private string[] _always_writeable_properties = {};
+  public override string[] always_writeable_properties { get { return this._always_writeable_properties; } }
+  public override async void prepare () throws GLib.Error { }
+  public override async Persona? add_persona_from_details (HashTable<string, Value?> details) throws Folks.PersonaStoreError {
+    return null;
+  }
+  public override async void remove_persona (Persona persona) throws Folks.PersonaStoreError {
+  }
+}
+
 public class Contacts.FakePersona : Persona {
   public Contact contact;
   private class PropVal {
@@ -1181,7 +1222,7 @@ public class Contacts.FakePersona : Persona {
     Object (display_id: "display_id",
 	    uid: "uid",
 	    iid: "iid",
-	    store: contact.store.aggregator.primary_store,
+	    store: contact.store.aggregator.primary_store ?? FakePersonaStore.the_store(),
 	    is_user: false);
     this.contact = contact;
   }
