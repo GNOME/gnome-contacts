@@ -241,641 +241,8 @@ public class Contacts.ContactFrame : Frame {
   }
 }
 
-public class Contacts.PersonaButton : RadioButton {
-  private Widget create_image (AvatarDetails? details, int size) {
-    var image = new Image ();
-    image.set_padding (2, 2);
-
-    Gdk.Pixbuf pixbuf = null;
-    if (details != null &&
-	details.avatar != null) {
-      try {
-	var stream = details.avatar.load (size, null);
-	pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
-      }
-      catch {
-      }
-    }
-
-    if (pixbuf == null) {
-      pixbuf = Contact.draw_fallback_avatar (size, null);
-    }
-
-    if (pixbuf != null) {
-      image.set_from_pixbuf (Contact.frame_icon (pixbuf));
-    }
-
-    image.draw.connect ( (cr) => {
-	if (this.get_active ()) {
-	  cr.save ();
-	  cr.set_source_rgba (0x74/255.0, 0xa0/255.0, 0xd0/255.0, 0.5);
-	  Utils.cairo_rounded_box (cr, 0, 0, size+4, size+4, 4+2);
-	  Utils.cairo_rounded_box (cr, 2, 2, size, size, 4);
-	  cr.set_fill_rule (Cairo.FillRule.EVEN_ODD);
-	  cr.fill ();
-	  cr.restore ();
-	}
-	return false;
-      });
-
-    return image;
-  }
-
-
-  public PersonaButton (RadioButton? group, AvatarDetails? avatar, int size) {
-    if (group != null)
-      join_group (group);
-
-    get_style_context ().add_class ("contact-button");
-    set_can_default (false);
-    var image = create_image (avatar, size);
-    add (image);
-    set_mode (false);
-  }
-}
-
-
-public class Contacts.ContactPane : Grid {
-  // TODO: Remove later when bound in vala
-  private static unowned string C_(string context, string msgid) {
-    return GLib.dpgettext2 (Config.GETTEXT_PACKAGE, context, msgid);
-  }
-  private enum DisplayMode {
-    INITIAL,
-    EMPTY,
-    DETAILS,
-    NOTES,
-    EDIT
-  }
-  private Store contacts_store;
-  private Contact? selected_contact;
-  private DisplayMode display_mode;
-  private Grid card_grid;
-  private Grid fields_grid;
-  private Grid button_grid;
+public class Contacts.AvatarMenu : Menu {
   private Gnome.DesktopThumbnailFactory thumbnail_factory;
-  /* Stuff used only in edit mode */
-  private ContactFrame edit_image_frame;
-  private Grid edit_persona_grid;
-  private Persona? editing_persona;
-  private Persona? editing_persona_primary;
-  private MenuItem delete_menu_item;
-
-  private bool has_notes;
-  private bool keep_has_notes_once;
-  private Widget notes_dot;
-  private Widget empty_widget;
-  private EventBox pane;
-  private ButtonBox normal_buttons;
-  private ButtonBox editing_buttons;
-  private DetailsLayout.SharedState layout_state;
-  private DetailsLayout card_layout;
-  private DetailsLayout fields_layout;
-  private DetailsLayout button_layout;
-
-  HashSet<EmailFieldDetails> editing_emails;
-  HashSet<PhoneFieldDetails> editing_phones;
-  HashSet<UrlFieldDetails> editing_urls;
-  HashSet<PostalAddressFieldDetails> editing_postals;
-
-  const int PROFILE_SIZE = 96;
-  const int LABEL_HEIGHT = 20;
-
-  private signal void save_data ();
-
-  private async Persona? set_persona_property (Persona persona,
-					       string property_name,
-					       Value value) throws GLib.Error, PropertyError {
-    selected_contact.is_unedited = false;
-    if (persona is FakePersona) {
-      var fake = persona as FakePersona;
-      return yield fake.make_real_and_set (property_name, value);
-    } else {
-      persona.set_data ("contacts-unedited", true);
-      yield Contact.set_persona_property (persona, property_name, value);
-      return null;
-    }
-  }
-
-  /* Tries to set the property on all persons that have it writeable, and
-   * if none, creates a new persona and writes to it, returning the new
-   * persona.
-   */
-  private async Persona? set_individual_property (Contact contact,
-						  string property_name,
-						  Value value) throws GLib.Error, PropertyError {
-    selected_contact.is_unedited = false;
-    bool did_set = false;
-    // Need to make a copy here as it could change during the yields
-    var personas_copy = contact.individual.personas.to_array ();
-    foreach (var p in personas_copy) {
-      if (property_name in p.writeable_properties) {
-	did_set = true;
-	yield Contact.set_persona_property (p, property_name, value);
-      }
-    }
-
-    if (!did_set) {
-      var fake = new FakePersona (contact);
-      return yield fake.make_real_and_set (property_name, value);
-    }
-    return null;
-  }
-
-  private void update_property (string property_name,
-				Value value) {
-    var editing_backup = editing_persona;
-    set_persona_property.begin (editing_persona, property_name, value, (obj, result) => {
-	  try {
-	    var p = set_persona_property.end (result);
-	    if (p != null &&
-		display_mode == DisplayMode.EDIT &&
-		editing_persona == editing_backup) {
-	      update_persona_buttons (selected_contact, p);
-	      editing_persona = p;
-	      editing_persona_primary = p;
-	    }
-          } catch (PropertyError e1) {
-            warning ("Unable to edit property '%s': %s", property_name, e1.message);
-          } catch (Error e2) {
-            warning ("Unable to create writeable persona: %s", e2.message);
-	  }
-      });
-  }
-
-  private void update_string_property (string property_name,
-				       string string_value) {
-    var value = Value (typeof (string));
-    value.set_string (string_value);
-    update_property (property_name, value);
-  }
-
-  private void update_detail_property (string property_name,
-				       Set<AbstractFieldDetails> detail_set) {
-    var value = Value (detail_set.get_type ());
-    value.set_object (detail_set);
-    update_property (property_name, value);
-  }
-
-  private void update_edit_detail_type (Set<AbstractFieldDetails> detail_set,
-					AbstractFieldDetails detail,
-					TypeCombo combo,
-					string property_name) {
-    combo.update_details (detail);
-    update_detail_property (property_name, detail_set);
-  }
-
-  private void add_detail_combo (DetailsLayout layout,
-				 TypeSet type_set,
-				 Set<AbstractFieldDetails> detail_set,
-				 AbstractFieldDetails detail,
-				 string property_name) {
-    var combo = new TypeCombo (type_set);
-    combo.set_halign (Align.FILL);
-    combo.set_hexpand (false);
-    combo.set_active (detail);
-    layout.add_widget_label (combo);
-
-    combo.changed.connect ( () => {
-	update_edit_detail_type (detail_set, detail, combo, property_name);
-      });
-  }
-
-  private void update_edit_detail_string_value (Set<AbstractFieldDetails<string>> detail_set,
-						AbstractFieldDetails<string> detail,
-						Entry entry,
-						string property_name) {
-    if (detail.value != entry.get_text ()) {
-      detail.value = entry.get_text ();
-
-      update_detail_property (property_name, detail_set);
-    }
-  }
-
-  private Entry add_detail_entry (DetailsLayout layout,
-				  Set<AbstractFieldDetails> detail_set,
-				  AbstractFieldDetails<string> detail,
-				  string property_name,
-				  string? placeholder_text) {
-    var entry = layout.add_entry (detail.value);
-    if (placeholder_text != null)
-      entry.set ("placeholder-text", placeholder_text);
-
-    entry.focus_out_event.connect ( (ev) => {
-	update_edit_detail_string_value (detail_set, detail, entry, property_name);
-	return false;
-      });
-    return entry;
-  }
-
-  private void update_edit_detail_postal_value (Set<PostalAddressFieldDetails> detail_set,
-						PostalAddressFieldDetails detail,
-						Entry entry,
-						string subproperty_name,
-						string property_name) {
-    string old_value;
-    detail.value.get (subproperty_name, out old_value);
-    if (old_value != entry.get_text ()) {
-      var new_value = new PostalAddress (detail.value.po_box,
-					 detail.value.extension,
-					 detail.value.street,
-					 detail.value.locality,
-					 detail.value.region,
-					 detail.value.postal_code,
-					 detail.value.country,
-					 detail.value.address_format,
-					 detail.value.uid);
-      new_value.set (subproperty_name, entry.get_text ());
-      detail.value = new_value;
-
-      update_detail_property (property_name, detail_set);
-    }
-  }
-
-  private Entry add_detail_postal_entry (DetailsLayout layout,
-					 Set<PostalAddressFieldDetails> detail_set,
-					 PostalAddressFieldDetails detail,
-					 string subproperty_name,
-					 string property_name,
-					 string? placeholder_text) {
-    string postal_part;
-    detail.value.get (subproperty_name, out postal_part);
-    var entry = layout.add_entry (postal_part);
-    entry.get_style_context ().add_class ("contact-postal-entry");
-    if (placeholder_text != null)
-      entry.set ("placeholder-text", placeholder_text);
-
-    entry.focus_out_event.connect ( (ev) => {
-	update_edit_detail_postal_value (detail_set, detail, entry, subproperty_name, property_name);
-	return false;
-	});
-
-    return entry;
-  }
-
-  private Button add_detail_remove (DetailsLayout layout,
-				    Set<AbstractFieldDetails> detail_set,
-				    AbstractFieldDetails detail,
-				    string property_name,
-				    bool at_top = true) {
-    var remove_button = layout.add_remove (at_top);
-    var row = layout.current_row;
-
-    remove_button.clicked.connect ( () => {
-	detail_set.remove (detail);
-	update_detail_property (property_name, detail_set);
-	row.destroy ();
-      });
-    return remove_button;
-  }
-
-  private Widget add_detail_editor (DetailsLayout layout,
-				    TypeSet type_set,
-				    Set<AbstractFieldDetails> detail_set,
-				    AbstractFieldDetails<string> detail,
-				    string property_name,
-				    string? placeholder_text) {
-    detail_set.add (detail);
-    add_detail_combo (layout, type_set, detail_set, detail, property_name);
-    var main = add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
-    add_detail_remove (layout, detail_set, detail, property_name);
-
-    return main;
-  }
-
-  private Widget add_detail_editor_no_type (DetailsLayout layout,
-					    Set<AbstractFieldDetails> detail_set,
-					    AbstractFieldDetails<string> detail,
-					    string property_name,
-					    string? placeholder_text) {
-    detail_set.add (detail);
-    var main = add_detail_entry (layout, detail_set, detail, property_name, placeholder_text);
-    add_detail_remove (layout, detail_set, detail, property_name, false);
-
-    return main;
-  }
-
-  private Entry add_string_entry (DetailsLayout layout,
-				  string property_name,
-				  string value,
-				  string? placeholder_text) {
-    var entry = layout.add_entry (value);
-    entry.set_data ("original-text", value);
-    if (placeholder_text != null)
-      entry.set ("placeholder-text", placeholder_text);
-
-    entry.focus_out_event.connect ( (ev) => {
-	if (entry.get_data<string?> ("original-text") !=
-	    entry.get_text ()) {
-	  var s = entry.get_text ();
-	  entry.set_data ("original-text", s);
-	  update_string_property (property_name, s);
-	}
-	return false;
-      });
-    return entry;
-  }
-
-  private Button add_string_remove (DetailsLayout layout,
-				    string property_name,
-				    bool at_top = true) {
-    var remove_button = layout.add_remove (at_top);
-    var row = layout.current_row;
-
-    remove_button.clicked.connect ( () => {
-	update_string_property (property_name, "");
-	row.destroy ();
-      });
-    return remove_button;
-  }
-
-  private Widget add_string_editor (DetailsLayout layout,
-				    string label,
-				    string property_name,
-				    string value,
-				    string? placeholder_text,
-				    bool add_remove = true) {
-    layout.add_label (label);
-    var main = add_string_entry (layout, property_name, value, placeholder_text);
-    if (add_remove)
-      add_string_remove (layout, property_name);
-
-    return main;
-  }
-
-  private Widget add_nickname_editor (DetailsLayout layout,
-				      string nickname) {
-    return add_string_editor (layout,
-			      _("Nickname"),
-			      "nickname",
-			      nickname,
-			      _("Enter nickname"));
-  }
-
-  private Widget add_alias_editor (DetailsLayout layout,
-				   string alias) {
-    return add_string_editor (layout,
-			      _("Alias"),
-			      "alias",
-			      alias,
-			      _("Enter alias"),
-			      false);
-  }
-
-  private Widget add_email_editor (DetailsLayout layout,
-				   Set<AbstractFieldDetails> detail_set,
-				   EmailFieldDetails? email) {
-    return add_detail_editor (layout,
-			      TypeSet.general,
-			      detail_set,
-			      email != null ? new EmailFieldDetails (email.value, email.parameters) : new EmailFieldDetails(""),
-			      "email-addresses",
-			      _("Enter email address"));
-  }
-
-  private Widget add_phone_editor (DetailsLayout layout,
-				   Set<AbstractFieldDetails> detail_set,
-				   PhoneFieldDetails? p) {
-    return add_detail_editor (layout,
-			      TypeSet.phone,
-			      detail_set,
-			      p != null ? new PhoneFieldDetails (p.value, p.parameters) : new PhoneFieldDetails(""),
-			      "phone-numbers",
-			      _("Enter phone number"));
-  }
-
-  private Widget add_url_editor (DetailsLayout layout,
-				 Set<AbstractFieldDetails> detail_set,
-				 UrlFieldDetails? url) {
-    layout.add_label (C_ ("url-link", "Link"));
-    return add_detail_editor_no_type (layout,
-				      detail_set,
-				      url != null ? new UrlFieldDetails (url.value, url.parameters) : new UrlFieldDetails (""),
-				      "urls",
-				      _("Enter link"));
-  }
-
-  private Widget add_postal_editor (DetailsLayout layout,
-				    Set<PostalAddressFieldDetails> detail_set,
-				    PostalAddressFieldDetails detail) {
-    string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
-    string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
-
-    detail_set.add (detail);
-    add_detail_combo (layout, TypeSet.general, detail_set, detail, "postal-addresses");
-
-    Widget main = null;
-    layout.begin_detail_box ();
-    for (int i = 0; i < props.length; i++) {
-      var e = add_detail_postal_entry (layout,
-				       detail_set,
-				       detail,
-				       props[i],
-				       "postal-addresses",
-				       nice[i]);
-      if (i == 0)
-	main = e;
-    }
-    layout.end_detail_box ();
-    var button = add_detail_remove (layout, detail_set, detail, "postal-addresses");
-    button.set_valign (Align.START);
-
-    return main;
-  }
-
-  private void update_edit_details (Persona persona, bool new_contact) {
-    editing_persona = persona;
-    fields_layout.reset ();
-    button_layout.reset ();
-
-    edit_image_frame.set_image (persona as AvatarDetails);
-    edit_image_frame.set_text (Contact.format_persona_store_name (persona.store), LABEL_HEIGHT);
-
-    editing_emails = new HashSet<EmailFieldDetails>();
-    editing_phones = new HashSet<PhoneFieldDetails>();
-    editing_urls = new HashSet<UrlFieldDetails>();
-    editing_postals = new HashSet<PostalAddressFieldDetails>();
-
-    var nick_layout = new DetailsLayout (layout_state);
-    fields_grid.add (nick_layout.grid);
-
-    var name_details = persona as NameDetails;
-    if (name_details != null) {
-      var nick = name_details.nickname;
-      if (is_set (nick)) {
-	add_nickname_editor (nick_layout, nick);
-      }
-    }
-
-    var alias_layout = new DetailsLayout (layout_state);
-    fields_grid.add (alias_layout.grid);
-
-    var alias_details = persona as AliasDetails;
-    if (alias_details != null) {
-      var alias = alias_details.alias;
-      if (is_set (alias)) {
-	add_alias_editor (alias_layout, alias);
-      }
-    }
-
-    var email_layout = new DetailsLayout (layout_state);
-    fields_grid.add (email_layout.grid);
-
-    var email_details = persona as EmailDetails;
-    if (email_details != null) {
-      var emails = Contact.sort_fields<EmailFieldDetails>(email_details.email_addresses);
-      foreach (var email in emails) {
-	add_email_editor (email_layout,
-			  editing_emails, email);
-      }
-    }
-
-    if (new_contact)
-      add_email_editor (email_layout,
-			editing_emails, null);
-
-    var im_layout = new DetailsLayout (layout_state);
-    fields_grid.add (im_layout.grid);
-
-    var im_details = persona as ImDetails;
-    if (im_details != null) {
-      var ims = im_details.im_addresses;
-      var im_keys = ims.get_keys ();
-      foreach (var protocol in im_keys) {
-	foreach (var id in ims[protocol]) {
-	  var im_persona = selected_contact.find_im_persona (protocol, id.value);
-	  if (im_persona != null && im_persona != persona)
-	    continue;
-	  im_layout.add_label_detail (_("Chat"), protocol + "/" + id.value);
-	}
-      }
-    }
-
-    var phone_layout = new DetailsLayout (layout_state);
-    fields_grid.add (phone_layout.grid);
-
-    var phone_details = persona as PhoneDetails;
-    if (phone_details != null) {
-      var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
-      foreach (var p in phone_numbers) {
-	add_phone_editor (phone_layout,
-			  editing_phones, p);
-      }
-    }
-
-    if (new_contact)
-      add_phone_editor (phone_layout,
-			editing_phones, null);
-
-    var postal_layout = new DetailsLayout (layout_state);
-    fields_grid.add (postal_layout.grid);
-
-    var postal_details = persona as PostalAddressDetails;
-    if (postal_details != null) {
-      var postals = postal_details.postal_addresses;
-      foreach (var _addr in postals) {
-	add_postal_editor (postal_layout,
-			   editing_postals,
-			   new PostalAddressFieldDetails(_addr.value, _addr.parameters));
-      }
-    }
-
-    var birthdate_layout = new DetailsLayout (layout_state);
-    fields_grid.add (birthdate_layout.grid);
-
-    var birthdate_details = persona as BirthdayDetails;
-    if (birthdate_details != null) {
-      /*DateTime? bday = birthdate_details.birthday;*/
-      /* TODO: Implement GUI for this, needs a date picker widget (#657972)*/
-    }
-
-    var url_layout = new DetailsLayout (layout_state);
-    fields_grid.add (url_layout.grid);
-
-    var urls_details = persona as UrlDetails;
-    if (urls_details != null) {
-      var urls = urls_details.urls;
-      foreach (var url_details in urls) {
-	add_url_editor (url_layout,
-			editing_urls,
-			url_details);
-      }
-    }
-
-    if (Contact.persona_has_writable_property (persona, "email-addresses") ||
-	Contact.persona_has_writable_property (persona, "phone-numbers") ||
-	Contact.persona_has_writable_property (persona, "postal-addresses") ||
-	Contact.persona_has_writable_property (persona, "urls")) {
-      button_layout.add_label ("");
-      var menu_button = new MenuButton (_("Add detail"));
-      menu_button.set_hexpand (false);
-      menu_button.set_margin_top (12);
-
-      var menu = new Menu ();
-      if (Contact.persona_has_writable_property (persona, "email-addresses")) {
-	Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
-	    var widget = add_email_editor (email_layout,
-					   editing_emails, null);
-	    widget.grab_focus ();
-	    email_layout.grid.show_all ();
-	  });
-      }
-      if (Contact.persona_has_writable_property (persona, "phone-numbers")) {
-	Utils.add_menu_item (menu, _("Phone number")).activate.connect ( () => {
-	    var widget = add_phone_editor (phone_layout,
-					   editing_phones, null);
-	    widget.grab_focus ();
-	    phone_layout.grid.show_all ();
-	  });
-      }
-      if (Contact.persona_has_writable_property (persona, "postal-addresses")) {
-	Utils.add_menu_item (menu, _("Postal Address")).activate.connect ( () => {
-	    var widget = add_postal_editor (postal_layout,
-					    editing_postals,
-					    new PostalAddressFieldDetails(new PostalAddress (null, null, null, null, null, null, null, null, null),
-									  null));
-	    widget.grab_focus ();
-	    postal_layout.grid.show_all ();
-	  });
-      }
-      if (Contact.persona_has_writable_property (persona, "urls")) {
-	Utils.add_menu_item (menu, C_ ("url-link", "Link")).activate.connect ( () => {
-	    var widget = add_url_editor (url_layout,
-					 editing_urls,
-					 null);
-	    widget.grab_focus ();
-	    url_layout.grid.show_all ();
-	  });
-      }
-      MenuItem nick_menu_item = null;
-      if (name_details != null &&
-	  Contact.persona_has_writable_property (persona, "nickname")) {
-	nick_menu_item = Utils.add_menu_item (menu, _("Nickname"));
-	nick_menu_item.activate.connect ( () => {
-	    var widget = add_nickname_editor (nick_layout, "");
-	    widget.grab_focus ();
-	    nick_layout.grid.show_all ();
-	  });
-      }
-
-      menu_button.popup.connect ( () => {
-	  if (nick_menu_item != null) {
-	    if (is_set (name_details.nickname))
-	      nick_menu_item.hide ();
-	    else
-	      nick_menu_item.show ();
-	  }
-	});
-
-      menu_button.set_menu (menu);
-
-      button_layout.attach_detail (menu_button);
-    }
-
-    card_grid.show_all ();
-    fields_grid.show_all ();
-    button_grid.show_all ();
-  }
 
   private MenuItem? menu_item_for_pixbuf (Gdk.Pixbuf? pixbuf, Icon icon) {
     if (pixbuf == null)
@@ -915,12 +282,10 @@ public class Contacts.ContactPane : Grid {
     return null;
   }
 
+  public signal void icon_set (Icon icon);
+
   private void set_avatar_from_icon (Icon icon) {
-    Value v = Value (icon.get_type ());
-    v.set_object (icon);
-    set_individual_property.begin (selected_contact,
-				   "avatar", v, () => {
-				   });
+    icon_set (icon);
   }
 
   private void pick_avatar_cb (MenuItem menu) {
@@ -994,10 +359,10 @@ public class Contacts.ContactPane : Grid {
     chooser.present ();
   }
 
-  private Menu avatar_menu (Contact contact) {
-    var menu = new Menu ();
+  public AvatarMenu (Contact contact) {
+    thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
 
-    menu.get_style_context ().add_class ("contact-frame-menu");
+    this.get_style_context ().add_class ("contact-frame-menu");
 
     int x = 0;
     int y = 0;
@@ -1006,7 +371,7 @@ public class Contacts.ContactPane : Grid {
     foreach (var p in contact.individual.personas) {
       var menuitem = menu_item_for_persona (p);
       if (menuitem != null) {
-	menu.attach (menuitem,
+	this.attach (menuitem,
 		     x, x + 1, y, y + 1);
 	menuitem.show ();
 	menuitem.activate.connect (pick_avatar_cb);
@@ -1031,7 +396,7 @@ public class Contacts.ContactPane : Grid {
 	while ((face = dir.read_name ()) != null) {
 	  var filename = Path.build_filename (path, face);
 	  var menuitem = menu_item_for_filename (filename);
-	  menu.attach (menuitem,
+	  this.attach (menuitem,
 		       x, x + 1, y, y + 1);
 	  menuitem.show ();
 	  menuitem.activate.connect (pick_avatar_cb);
@@ -1044,24 +409,422 @@ public class Contacts.ContactPane : Grid {
       }
     };
 
-    Utils.add_menu_item (menu,_("Browse for more pictures...")).activate.connect (select_avatar_file_cb);
+    Utils.add_menu_item (this,_("Browse for more pictures...")).activate.connect (select_avatar_file_cb);
+  }
+}
 
-    return menu;
+public class Contacts.ContactRow : Grid {
+  public Alignment left;
+  public Grid content;
+  public Alignment right;
+  int start;
+
+  public ContactRow (ContactPane pane) {
+    this.set_orientation (Orientation.HORIZONTAL);
+    this.set_column_spacing (8);
+
+    this.set_hexpand (true);
+    this.set_vexpand (false);
+
+    left = new Alignment (1,0,0,0);
+    left.set_hexpand (true);
+    pane.border_size_group.add_widget (left);
+
+    content = new Grid ();
+    content.set_size_request (450, -1);
+
+    right = new Alignment (0,0,0,0);
+    right.set_hexpand (true);
+    pane.border_size_group.add_widget (right);
+
+    this.attach (left, 0, 0, 1, 1);
+    this.attach (content, 1, 0, 1, 1);
+    this.attach (right, 2, 0, 1, 1);
+    this.show_all ();
   }
 
-  private void display_card (Contact contact) {
-    var menu = avatar_menu (contact);
+  public void pack_start (Widget w, Align align = Align.START) {
+    content.attach (w, 0, start++, 1, 1);
+    w.set_hexpand (true);
+    w.set_halign (align);
+  }
+
+  public void pack_end (Widget w) {
+    content.attach (w, 1, 0, 1, 1);
+    w.set_hexpand (false);
+    w.set_halign (Align.END);
+  }
+
+  public void label (string s) {
+    var l = new Label (s);
+    l.get_style_context ().add_class ("dim-label");
+    pack_start (l);
+  }
+
+  public void text (string s, bool wrap = false) {
+    var l = new Label (s);
+    if (wrap) {
+      l.set_line_wrap (true);
+      l.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    } else {
+      l.set_ellipsize (Pango.EllipsizeMode.END);
+    }
+    pack_start (l);
+  }
+
+  public void detail (string s) {
+    var l = new Label (s);
+    l.get_style_context ().add_class ("dim-label");
+    pack_end (l);
+  }
+}
+
+public class Contacts.PersonaSheet : Grid {
+  ContactPane pane;
+  Persona persona;
+  ContactRow header;
+  ContactRow footer;
+
+  abstract class Field : Grid {
+    public class string label_name;
+
+    public PersonaSheet sheet { get; construct; }
+    public int row_nr { get; construct; }
+    public bool added;
+    ContactRow label_row;
+
+    public abstract void populate ();
+
+    construct {
+      this.set_orientation (Orientation.VERTICAL);
+
+      label_row = new ContactRow (sheet.pane);
+      this.add (label_row);
+      label_row.label (label_name);
+    }
+
+    public void add_to_sheet () {
+      sheet.attach (this, 0, row_nr, 1, 1);
+      added = true;
+    }
+
+    public bool is_empty () {
+      return get_children ().length () == 1;
+    }
+
+    public void clear () {
+      foreach (var row in get_children ()) {
+	if (row != label_row)
+	  row.destroy ();
+      }
+    }
+
+    public ContactRow new_row () {
+      var row = new ContactRow (sheet.pane);
+      this.add (row);
+      return row;
+    }
+  }
+
+  class LinkField : Field {
+    class construct {
+      label_name = _("Links");
+    }
+    public override void populate () {
+      var details = sheet.persona as UrlDetails;
+      if (details == null)
+	return;
+
+      var urls = details.urls;
+      foreach (var url_details in urls) {
+	var row = new_row ();
+	row.text (Contact.format_uri_link_text (url_details));
+	//row.detail ("Blog");
+	// Add link to url_details.value
+	var image = new Image.from_icon_name ("web-browser" /* -symbolic */, IconSize.MENU);
+	image.get_style_context ().add_class ("dim-label");
+	var button = new Button();
+	button.set_relief (ReliefStyle.NONE);
+	button.add (image);
+	row.right.add (button);
+      }
+    }
+  }
+
+  class EmailField : Field {
+    class construct {
+      label_name = _("Email");
+    }
+    public override void populate () {
+      var details = sheet.persona as EmailDetails;
+      if (details == null)
+	return;
+      var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+      foreach (var email in emails) {
+	var row = new_row ();
+	row.text (email.value);
+	row.detail (TypeSet.general.format_type (email));
+      }
+    }
+  }
+
+  class PhoneField : Field {
+    class construct {
+      label_name = _("Phone");
+    }
+    public override void populate () {
+      var details = sheet.persona as PhoneDetails;
+      if (details == null)
+	return;
+      var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
+      foreach (var phone in phone_numbers) {
+	var row = new_row ();
+	row.text (phone.value);
+	row.detail (TypeSet.phone.format_type (phone));
+      }
+    }
+  }
+
+  class ChatField : Field {
+    class construct {
+      label_name = _("Chat");
+    }
+    public override void populate () {
+      var details = sheet.persona as ImDetails;
+      if (details == null)
+	return;
+      var ims = details.im_addresses;
+      var im_keys = ims.get_keys ();
+      foreach (var protocol in im_keys) {
+	foreach (var id in ims[protocol]) {
+	  var im_persona = sheet.persona as Tpf.Persona;
+	  if (im_persona == null)
+	    continue;
+	  var row = new_row ();
+	  row.text (Contact.format_im_name (im_persona, protocol, id.value));
+	}
+      }
+    }
+  }
+
+  class BirthdayField : Field {
+    class construct {
+      label_name = _("Birthday");
+    }
+    public override void populate () {
+      var details = sheet.persona as BirthdayDetails;
+      if (details == null)
+	return;
+
+      DateTime? bday = details.birthday;
+      if (bday != null) {
+	var row = new_row ();
+	row.text (bday.to_local ().format ("%x"));
+
+	var image = new Image.from_icon_name ("preferences-system-date-and-time-symbolic", IconSize.MENU);
+	image.get_style_context ().add_class ("dim-label");
+	var button = new Button();
+	button.set_relief (ReliefStyle.NONE);
+	button.add (image);
+	row.right.add (button);
+      }
+    }
+  }
+
+  class NicknameField : Field {
+    class construct {
+      label_name = _("Nickname");
+    }
+    public override void populate () {
+      var details = sheet.persona as NameDetails;
+      if (details == null)
+	return;
+
+      if (is_set (details.nickname)) {
+	var row = new_row ();
+	row.text (details.nickname);
+      }
+    }
+  }
+
+  class NoteField : Field {
+    class construct {
+      label_name = _("Note");
+    }
+    public override void populate () {
+      var details = sheet.persona as NoteDetails;
+      if (details == null)
+	return;
+
+      foreach (var note in details.notes) {
+	var row = new_row ();
+	row.text (note.value, true);
+      }
+    }
+  }
+
+  class AddressField : Field {
+    class construct {
+      label_name = _("Addresses");
+    }
+    public override void populate () {
+      var details = sheet.persona as PostalAddressDetails;
+      if (details == null)
+	return;
+
+      foreach (var addr in details.postal_addresses) {
+	var row = new_row ();
+	row.detail (TypeSet.general.format_type (addr));
+	string[] strs = Contact.format_address (addr.value);
+	foreach (var s in strs) {
+	  row.text (s, true);
+	}
+      }
+    }
+  }
+
+  static Type[] field_types = {
+    typeof(LinkField),
+    typeof(EmailField),
+    typeof(PhoneField),
+    typeof(ChatField),
+    typeof(BirthdayField),
+    typeof(NicknameField),
+    typeof(AddressField),
+    typeof(NoteField)
+    /* More:
+       company/department/profession/title/manager/assistant
+    */
+  };
+
+  Field fields[8]; // This is really the size of field_types enum
+
+  public PersonaSheet(ContactPane pane, Persona persona) {
+    assert (fields.length == field_types.length);
+
+    this.pane = pane;
+    this.persona = persona;
+
+    this.set_orientation (Orientation.VERTICAL);
+    this.set_row_spacing (16);
+
+    int row_nr = 0;
+
+    bool editable =
+      Contact.persona_has_writable_property (persona, "email-addresses") &&
+      Contact.persona_has_writable_property (persona, "phone-numbers") &&
+      Contact.persona_has_writable_property (persona, "postal-addresses");
+
+    if (!persona.store.is_primary_store) {
+      header = new ContactRow (pane);
+      this.attach (header, 0, row_nr++, 1, 1);
+
+      var label = new Label ("");
+      label.set_markup (
+	"<span font='24px'>%s</span>".printf (Contact.format_persona_store_name (persona.store)));
+      header.pack_start (label);
+
+      if (!editable) {
+	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
+
+	image.get_style_context ().add_class ("dim-label");
+	header.left.add (image);
+	header.left.set (1.0f, 0.5f, 0, 1.0f);
+      }
+    }
+
+    for (int i = 0; i < field_types.length; i++) {
+      var field = (Field) Object.new(field_types[i], sheet: this, row_nr: row_nr++);
+
+      field.populate ();
+      if (!field.is_empty ())
+	field.add_to_sheet ();
+    }
+
+    if (editable) {
+      footer = new ContactRow (pane);
+      this.attach (footer, 0, row_nr++, 1, 1);
+      var b = new Button.with_label ("Add detail...");
+      footer.pack_start (b);
+    }
+
+  }
+}
+
+
+public class Contacts.ContactPane : ScrolledWindow {
+  public SizeGroup border_size_group;
+
+  private Store contacts_store;
+  private Grid top_grid;
+  private Grid card_grid;
+  private Grid personas_grid;
+
+  private Contact? contact;
+
+  const int PROFILE_SIZE = 128;
+
+ private async Persona? set_persona_property (Persona persona,
+					       string property_name,
+					       Value value) throws GLib.Error, PropertyError {
+    contact.is_unedited = false;
+    if (persona is FakePersona) {
+      var fake = persona as FakePersona;
+      return yield fake.make_real_and_set (property_name, value);
+    } else {
+      persona.set_data ("contacts-unedited", true);
+      yield Contact.set_persona_property (persona, property_name, value);
+      return null;
+    }
+  }
+
+  /* Tries to set the property on all persons that have it writeable, and
+   * if none, creates a new persona and writes to it, returning the new
+   * persona.
+   */
+  private async Persona? set_individual_property (Contact contact,
+						  string property_name,
+						  Value value) throws GLib.Error, PropertyError {
+    contact.is_unedited = false;
+    bool did_set = false;
+    // Need to make a copy here as it could change during the yields
+    var personas_copy = contact.individual.personas.to_array ();
+    foreach (var p in personas_copy) {
+      if (property_name in p.writeable_properties) {
+	did_set = true;
+	yield Contact.set_persona_property (p, property_name, value);
+      }
+    }
+
+    if (!did_set) {
+      var fake = new FakePersona (contact);
+      return yield fake.make_real_and_set (property_name, value);
+    }
+    return null;
+  }
+
+  public void update_card () {
+    foreach (var w in card_grid.get_children ()) {
+      w.destroy ();
+    }
+
+    if (contact == null)
+      return;
+
+    var menu = new AvatarMenu (contact);
+    menu.icon_set.connect ( (icon) => {
+	Value v = Value (icon.get_type ());
+	v.set_object (icon);
+	set_individual_property.begin (contact,
+				       "avatar", v, () => {
+				       });
+      });
 
     var image_frame = new ContactFrame (PROFILE_SIZE, menu);
     image_frame.set_image (contact.individual, contact);
-    // Put the frame in a grid so its not expanded by the size-group
-    var ig = new Grid ();
-    ig.add (image_frame);
-    card_layout.add_widget_label (ig);
 
-    card_layout.current_row.set_vexpand (false);
-    var g = new Grid();
-    card_layout.current_row.add (g);
+    card_grid.attach (image_frame,  0, 0, 1, 3);
+    card_grid.set_row_spacing (16);
 
     var l = new Label (null);
     l.set_markup ("<span font='24px'>" + contact.display_name + "</span>");
@@ -1071,737 +834,96 @@ public class Contacts.ContactPane : Grid {
     l.set_margin_top (4);
     l.set_ellipsize (Pango.EllipsizeMode.END);
     l.xalign = 0.0f;
-    g.attach (l,  0, 0, 1, 1);
-
-    var secondary = contact.get_secondary_string ();
-    if (secondary != null) {
-      l = new Label (null);
-      l.set_markup ("<span font='12px' rise='1000'>"+secondary+"</span>");
-      l.set_halign (Align.START);
-      l.set_valign (Align.START);
-      l.set_ellipsize (Pango.EllipsizeMode.END);
-      l.xalign = 0.0f;
-      g.attach (l,  0, 1, 1, 1);
-    }
+    card_grid.attach (l,  1, 0, 1, 1);
 
     var merged_presence = contact.create_merged_presence_widget ();
     merged_presence.set_halign (Align.START);
-    merged_presence.set_valign (Align.END);
+    merged_presence.set_valign (Align.START);
     merged_presence.set_vexpand (true);
     merged_presence.set_margin_bottom (18);
-    g.attach (merged_presence,  0, 3, 1, 1);
-  }
+    card_grid.attach (merged_presence,  1, 1, 1, 1);
 
-  private void save_notes (Gee.HashMultiMap<Persona?,TextView> widgets) {
-    // Update notes on all personas if one of the textviews for that persona changed
-    // Also note that the individual might not have a persona on the main store, so
-    // it would need to add one and link the individual into it
+    var box = new Box (Orientation.HORIZONTAL, 0);
 
-    foreach (var persona in widgets.get_keys ()) {
-      bool modified = false;
-      bool empty = true;
+    box.get_style_context ().add_class ("linked");
+    var image = new Image.from_icon_name ("mail-unread-symbolic", IconSize.MENU);
+    var b = new Button ();
+    b.add (image);
+    b.set_hexpand (true);
+    box.pack_start (b, true, true, 0);
 
-      var notes = new HashSet<NoteFieldDetails> ();
-      foreach (var view in widgets.get (persona)) {
-	if (view.get_buffer ().get_modified ())
-	  modified = true;
-	string? uid = view.get_data<string?> ("uid");
-	TextIter start, end;
-	view.get_buffer ().get_start_iter (out start);
-	view.get_buffer ().get_end_iter (out end);
-	var text = view.get_buffer ().get_text (start, end, true);
-	if (is_set (text)) {
-	  var note = new NoteFieldDetails (text, null, uid);
-	  notes.add (note);
-	  empty = false;
-	}
-      }
+    image = new Image.from_icon_name ("user-available-symbolic", IconSize.MENU);
+    b = new Button ();
+    b.add (image);
+    box.pack_start (b, true, true, 0);
 
-      if (modified) {
-	var value = Value(notes.get_type ());
-	value.set_object (notes);
-	set_persona_property.begin (persona, "notes", value, (obj, result) => {
-	    try {
-	      set_persona_property.end (result);
-	    } catch (PropertyError e1) {
-	      warning ("Unable to save note: %s", e1.message);
-	    } catch (Error e2) {
-	      warning ("Unable to save note: %s", e2.message);
-	    }
-	  });
-	// We fake has_notes content for this display_contact() run, to avoid
-	// the wait for the async property setter
-	keep_has_notes_once = true;
-	has_notes = !empty;
-      }
-    }
-  }
+    image = new Image.from_icon_name ("call-start-symbolic", IconSize.MENU);
+    b = new Button ();
+    b.add (image);
+    box.pack_start (b, true, true, 0);
 
-  private TextView add_note () {
-    var text = new TextView ();
-    text.set_hexpand (true);
-    text.set_vexpand (true);
-    var scrolled = new ScrolledWindow (null, null);
-    scrolled.set_shadow_type (ShadowType.OUT);
-    scrolled.add_with_viewport (text);
-    fields_grid.add (scrolled);
-    return text;
-  }
-
-  private void update_note (TextView text, NoteFieldDetails note) {
-    text.get_buffer ().set_text (note.value);
-    text.get_buffer ().set_modified (false);
-    text.set_data<string?> ("uid", note.uid);
-  }
-
-  private void display_notes () {
-    set_display_mode (DisplayMode.NOTES);
-    display_card (selected_contact);
-
-    var widgets = new HashMultiMap<Persona?, TextView>();
-    var main_text = add_note ();
-
-    // We store the main note on the primay persona if any, otherwise
-    // on the first persona with a writable notes, falling back to
-    // a FakePersona that creates a primary persona as needed
-    Persona? notes_persona = selected_contact.find_primary_persona ();
-    if (notes_persona == null) {
-      foreach (var persona in selected_contact.individual.personas) {
-	if (Contact.persona_has_writable_property (persona, "notes")) {
-	  notes_persona = persona;
-	  break;
-	}
-      }
-      if (notes_persona == null)
-	notes_persona = new FakePersona (selected_contact);
-    }
-
-    widgets.set (notes_persona, main_text);
-
-    bool notes_persona_note_seen = false;
-
-    foreach (var persona in selected_contact.individual.personas) {
-      var notes = persona as NoteDetails;
-      if (notes == null)
-	continue;
-      foreach (var note in notes.notes) {
-	if (persona == notes_persona && !notes_persona_note_seen) {
-	  notes_persona_note_seen = true;
-	  update_note (main_text, note);
-	} else if (Contact.persona_has_writable_property (persona, "notes")) {
-	  var text = add_note ();
-	  update_note (text, note);
-	  widgets.set (persona, text);
-	} else {
-	  var label = new Label (note.value);
-	  label.set_halign (Align.START);
-	  fields_grid.add (label);
-	}
-      }
-    }
+    card_grid.attach (box,  1, 2, 1, 1);
 
     card_grid.show_all ();
-    fields_grid.show_all ();
-
-    ulong id = 0;
-    id = this.save_data.connect ( () => {
-	save_notes (widgets);
-	this.disconnect (id);
-      });
   }
 
-  private Persona update_persona_buttons (Contact contact,
-					  Persona? _persona) {
-    Persona? persona = _persona;
-
-    foreach (var w in edit_persona_grid.get_children ()) {
+  public void update_personas () {
+    foreach (var w in personas_grid.get_children ()) {
       w.destroy ();
     }
 
-    var persona_list = new ArrayList<Persona>();
-    int i = 0;
-    persona_list.add_all (contact.individual.personas);
-    while (i < persona_list.size) {
-      if (persona_list[i].store.type_id == "key-file")
-	persona_list.remove_at (i);
-      else
-	i++;
-    }
-    var fake_persona = FakePersona.maybe_create_for (contact);
-    if (fake_persona != null)
-      persona_list.add (fake_persona);
-    persona_list.sort (Contact.compare_persona_by_store);
-
-    foreach (var p in persona_list) {
-      if (p.store.is_primary_store) {
-	editing_persona_primary = p;
-      }
-    }
-
-    if (persona == null)
-      persona = persona_list[0];
-
-    PersonaButton button = null;
-    if (persona_list.size > 1) {
-      foreach (var p in persona_list) {
-
-	button = new PersonaButton (button, p as AvatarDetails, 48);
-	edit_persona_grid.add (button);
-
-	if (p == persona)
-	  button.set_active (true);
-
-	button.toggled.connect ( (a_button) => {
-	    if (a_button.get_active ())
-	      update_edit_details (p, p is FakePersona);
-	  });
-      }
-    }
-
-    edit_persona_grid.show_all ();
-    return persona;
-  }
-
-  private void display_edit (Contact contact, Persona? _persona, bool new_contact = false) {
-    Persona? persona = _persona;
-    set_display_mode (DisplayMode.EDIT);
-
-    edit_image_frame = new ContactFrame (PROFILE_SIZE);
-    // Put the frame in a grid so its not expanded by the size-group
-    var ig = new Grid ();
-    ig.add (edit_image_frame);
-    card_layout.add_widget_label (ig);
-
-    card_layout.current_row.set_vexpand (false);
-    var g = new Grid();
-    card_layout.current_row.add (g);
-
-    var e = new Entry ();
-    e.get_style_context ().add_class ("contact-entry");
-    e.set ("placeholder-text", _("Enter name"));
-    e.set_data ("original-text", contact.display_name);
-    e.set_text (contact.display_name);
-    e.set_hexpand (true);
-    e.set_halign (Align.FILL);
-    e.set_valign (Align.START);
-    g.attach (e,  0, 0, 1, 1);
-    if (new_contact)
-      e.grab_focus ();
-
-    if (new_contact) {
-      var l = new Label ("");
-      l.set_markup ("<span font='12px'>" + _("Contact Name") + "</span>");
-      l.xalign = 0.0f;
-      g.attach (l,  0, 1, 1, 1);
-    }
-
-    edit_persona_grid = new Grid ();
-    edit_persona_grid.set_column_spacing (0);
-    edit_persona_grid.set_halign (Align.START);
-    edit_persona_grid.set_valign (Align.END);
-    edit_persona_grid.set_vexpand (true);
-
-    persona = update_persona_buttons (contact, persona);
-    update_edit_details (persona, new_contact || persona is FakePersona);
-
-    e.focus_out_event.connect ( (ev) => {
-	name = e.get_text ();
-	if (name != e.get_data<string?> ("original-text")) {
-	  e.set_data ("original-text", name);
-	  Value v = Value (typeof (string));
-	  v.set_string (name);
-	  set_individual_property.begin (selected_contact,
-					 "full-name", v,
-					 (obj, result) => {
-	  try {
-	    var p = set_individual_property.end (result);
-	    if (p != null &&
-		selected_contact == contact &&
-		display_mode == DisplayMode.EDIT) {
-	      if (editing_persona is FakePersona)
-		editing_persona = p;
-	      editing_persona_primary = p;
-	      update_persona_buttons (selected_contact, editing_persona);
-	    }
-	  } catch (Error e) {
-	    warning ("Unable to create writeable persona: %s", e.message);
-	  }
-					 });
-	}
-	return false;
-      });
-
-    g.attach (edit_persona_grid,  0, 3, 1, 1);
-    card_grid.show_all ();
-    fields_grid.show_all ();
-    button_grid.show_all ();
-  }
-
-  private void display_contact (Contact contact) {
-    set_display_mode (DisplayMode.DETAILS);
-    set_has_notes (!contact.individual.notes.is_empty);
-    display_card (contact);
-
-    bool can_remove = false;
-    bool can_remove_all = true;
-    foreach (var p in contact.individual.personas) {
-      if (p.store.can_remove_personas == MaybeBool.TRUE &&
-	  !(p is Tpf.Persona)) {
-	can_remove = true;
-      } else {
-	can_remove_all = false;
-      }
-    }
-    can_remove_all = can_remove && can_remove_all;
-
-    delete_menu_item.set_sensitive (can_remove_all);
-
-    string [] secondary_sources;
-    contact.get_secondary_string (out secondary_sources);
-
-    var nickname = contact.individual.nickname;
-    if (is_set (nickname) &&
-	!("nickname" in secondary_sources))
-      fields_layout.add_label_detail (_("Nickname"), nickname);
-
-    var emails = Contact.sort_fields<EmailFieldDetails>(contact.individual.email_addresses);
-    foreach (var email in emails) {
-      var type = TypeSet.general.format_type (email);
-      fields_layout.add_label_detail (type, email.value);
-      var button = fields_layout.add_button ("mail-unread-symbolic");
-      var email_addr = email.value;
-      button.clicked.connect ( () => {
-	  Utils.compose_mail (email_addr);
-	});
-    }
-
-    var ims = contact.individual.im_addresses;
-    var im_keys = ims.get_keys ();
-    foreach (var protocol in im_keys) {
-      foreach (var id in ims[protocol]) {
-	fields_layout.add_label_detail (_("Chat"), contact.format_im_name (protocol, id.value));
-	Button? button = null;
-	var presence = contact.create_presence_widget (protocol, id.value);
-	if (presence != null) {
-	  button = fields_layout.add_button (null);
-	  button.add (presence);
-	}
-
-	if (button != null) {
-	  button.clicked.connect ( () => {
-	      Utils.start_chat (contact, protocol, id.value);
-	    });
-	}
-
-	var callable_account = contact.is_callable (protocol, id.value);
-	if (callable_account != null) {
-	  Button? button_call = fields_layout.add_button (null);
-	  var phone_image = new Image ();
-	  phone_image.set_no_show_all (true);
-	  phone_image.set_from_icon_name ("audio-input-microphone-symbolic",
-	      IconSize.MENU);
-	  phone_image.show ();
-	  button_call.add (phone_image);
-	  button_call.clicked.connect ( () => {
-		Utils.start_call_with_account (id.value, callable_account);
-	      });
-	}
-      }
-    }
-
-    var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(contact.individual.phone_numbers);
-    foreach (var p in phone_numbers) {
-      var phone = p as PhoneFieldDetails;
-      var type = TypeSet.phone.format_type (phone);
-      fields_layout.add_label_detail (type, phone.value);
-      if (this.contacts_store.can_call) {
-	  Button? button = fields_layout.add_button (null);
-	  var phone_image = new Image ();
-	  phone_image.set_no_show_all (true);
-	  phone_image.set_from_icon_name ("phone-symbolic", IconSize.MENU);
-	  phone_image.show ();
-	  button.add (phone_image);
-	  button.clicked.connect ( () => {
-		Utils.start_call (phone.value, this.contacts_store.calling_accounts);
-	      });
-	}
-    }
-
-    var postals = contact.individual.postal_addresses;
-    if (!postals.is_empty) {
-      foreach (var addr in postals) {
-	var type = TypeSet.general.format_type (addr);
-	string[] strs = Contact.format_address (addr.value);
-	fields_layout.add_label (type);
-	if (strs.length > 0) {
-	  foreach (var s in strs)
-	    fields_layout.add_detail (s);
-	}
-	var button = fields_layout.add_button ("edit-copy-symbolic");
-	button.clicked.connect ( () => {
-	    string addr_s = "";
-	    foreach (var s in Contact.format_address (addr.value)) {
-	      addr_s += s + "\n";
-	    }
-	    Clipboard.get_for_display (button.get_screen().get_display(), Gdk.SELECTION_CLIPBOARD).set_text (addr_s, -1);
-	    var notification = new Notify.Notification (_("Address copied to clipboard"), null, "edit-copy");
-	    notification.set_timeout (3000);
-	    notification.set_urgency (Notify.Urgency.CRITICAL);
-	    try {
-	      notification.show ();
-	      Timeout.add (3000, () => {
-		  try {
-		    notification.close ();
-		  }
-		  catch (Error e) {
-		  }
-		  return false;
-		});
-	    }
-	    catch (Error e) {
-	    }
-	  });
-      }
-    }
-
-    DateTime? bday = contact.individual.birthday;
-    if (bday != null) {
-      fields_layout.add_label (_("Birthday"));
-      fields_layout.add_detail (bday.to_local ().format ("%x"));
-    }
-
-    var roles_details = contact.individual.roles;
-    foreach (var role_detail in roles_details) {
-      var role = role_detail.value;
-      if (is_set (role.organisation_name) &&
-	  !("organisation-name" in secondary_sources)) {
-	fields_layout.add_label (_("Company"));
-	fields_layout.add_detail (role.organisation_name);
-      }
-      var org_units = role_detail.get_parameter_values ("org_unit");
-      if (org_units != null) {
-	foreach (var org_unit in org_units) {
-	  if (is_set (org_unit)) {
-	    fields_layout.add_label (_("Department"));
-	    fields_layout.add_detail (org_unit);
-	  }
-	}
-      }
-      if (is_set (role.role) &&
-	  !("role" in secondary_sources)) {
-	fields_layout.add_label (_("Profession"));
-	fields_layout.add_detail (role.role);
-      }
-      if (is_set (role.title) &&
-	  !("title" in secondary_sources)) {
-	fields_layout.add_label (_("Title"));
-	fields_layout.add_detail (role.title);
-      }
-      var managers = role_detail.get_parameter_values ("manager");
-      if (managers != null) {
-	foreach (var manager in managers) {
-	  if (is_set (manager)) {
-	    fields_layout.add_label (_("Manager"));
-	    fields_layout.add_detail (manager);
-	  }
-	}
-      }
-      var assistants = role_detail.get_parameter_values ("assistant");
-      if (assistants != null) {
-	foreach (var assistant in assistants) {
-	  if (is_set (assistant)) {
-	    fields_layout.add_label (_("Assistant"));
-	    fields_layout.add_detail (assistant);
-	  }
-	}
-      }
-    }
-
-    var urls = contact.individual.urls;
-    if (!urls.is_empty) {
-      fields_layout.add_label (_("Links"));
-      foreach (var url_details in urls) {
-	fields_layout.add_link (url_details.value, contact.format_uri_link_text (url_details));
-      }
-    }
-
-    card_grid.show_all ();
-    fields_grid.show_all ();
-    button_grid.show_all ();
-  }
-
-  private void set_has_notes (bool has_notes) {
-    if (!keep_has_notes_once)
-      this.has_notes = has_notes;
-    keep_has_notes_once = false;
-    notes_dot.queue_draw ();
-  }
-
-  private void selected_contact_changed () {
-    if (display_mode == DisplayMode.DETAILS) {
-      display_contact (selected_contact);
-    }
-  }
-
-  private void set_display_mode (DisplayMode mode) {
-    card_layout.reset ();
-    fields_layout.reset ();
-    button_layout.reset ();
-
-    edit_image_frame = null;
-    edit_persona_grid = null;
-    editing_persona = null;
-    editing_persona_primary = null;
-
-    if (display_mode == mode)
+    if (contact == null)
       return;
 
-    display_mode = mode;
-    if (mode == DisplayMode.EMPTY) {
-      empty_widget.show ();
-      pane.hide ();
-      normal_buttons.hide ();
-      editing_buttons.hide ();
-    } else if (mode == DisplayMode.DETAILS) {
-      pane.show ();
-      empty_widget.hide ();
-      normal_buttons.show ();
-      editing_buttons.hide ();
-      normal_buttons.set_sensitive (mode != DisplayMode.EMPTY);
-    } else {
-      pane.show ();
-      empty_widget.hide ();
-      normal_buttons.hide ();
-      editing_buttons.show ();
+    var personas = contact.get_personas_for_display ();
+
+    foreach (var p in personas) {
+      var sheet = new PersonaSheet(this, p);
+      personas_grid.add (sheet);
     }
-  }
 
-  public void new_contact (ListPane list_pane) {
-    var details = new HashTable<string, Value?> (str_hash, str_equal);
-    var v = Value (typeof (string));
-    v.set_string (_("Contact Name"));
-    details.set ("full-name", v);
-    contacts_store.aggregator.primary_store.add_persona_from_details.begin (details, (obj, res) => {
-	var store = obj as PersonaStore;
-	Persona? persona = null;
-	Dialog dialog = null;
-
-	try {
-	  persona = store.add_persona_from_details.end (res);
-	} catch (Error e) {
-	  dialog = new MessageDialog (this.get_toplevel () as Window,
-				      DialogFlags.DESTROY_WITH_PARENT |
-				      DialogFlags.MODAL,
-				      MessageType.ERROR,
-				      ButtonsType.OK,
-				      _("Unable to create new contacts: %s\n"), e.message);
-	}
-
-	var contact = contacts_store.find_contact_with_persona (persona);
-	if (contact == null) {
-	  dialog = new MessageDialog (this.get_toplevel () as Window,
-				      DialogFlags.DESTROY_WITH_PARENT |
-				      DialogFlags.MODAL,
-				      MessageType.ERROR,
-				      ButtonsType.OK,
-				      "%s",
-				      _("Unable to find newly created contact\n"));
-	}
-
-	if (dialog != null) {
-	  dialog.show ();
-	  dialog.response.connect ( () => {
-	      dialog.destroy ();
-	    });
-
-	  return;
-	}
-
-	show_contact (contact);
-	contact.is_new = true;
-	contact.is_unedited = true;
-	display_edit (contact, persona, true);
-	list_pane.select_contact (contact, true);
-
-	ulong id = 0;
-	id = this.save_data.connect ( () => {
-	    if (contact.is_unedited) {
-	      editing_persona.store.remove_persona.begin (editing_persona, () => {
-		});
-	    }
-	    this.disconnect (id);
-	  });
-      });
-
+    personas_grid.show_all ();
   }
 
   public void show_contact (Contact? new_contact, bool edit=false) {
-    if (new_contact != null)
-      new_contact.is_new = false;
-    this.save_data (); // Ensure all edit data saved
+    contact = new_contact;
 
-    if (selected_contact != null)
-      selected_contact.changed.disconnect (selected_contact_changed);
+    update_card ();
+    update_personas ();
+  }
 
-    selected_contact = new_contact;
-    set_display_mode (DisplayMode.EMPTY);
-    set_has_notes (false);
-
-    delete_menu_item.set_sensitive (false);
-
-    if (selected_contact != null) {
-	display_contact (selected_contact);
-	selected_contact.changed.connect (selected_contact_changed);
-    }
+  public void new_contact (ListPane list_pane) {
   }
 
   public ContactPane (Store contacts_store) {
-    thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
     this.contacts_store = contacts_store;
+    border_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
 
-    this.set_orientation (Orientation.VERTICAL);
+    this.set_hexpand (true);
+    this.set_vexpand (true);
+    this.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
-    pane = new EventBox ();
-    pane.set_no_show_all (true);
-    pane.get_style_context ().add_class ("contact-pane");
-    this.add (pane);
-
-    var image = new Image.from_icon_name ("avatar-default-symbolic", IconSize.MENU);
-    image.set_sensitive (false);
-    image.set_pixel_size (80);
-    image.set_no_show_all (true);
-    image.set_hexpand (true);
-    image.set_vexpand (true);
-    this.add (image);
-    empty_widget = image;
-
-    var grid = new Grid ();
-    grid.set_margin_left (10);
-    grid.set_margin_top (10);
-    grid.set_margin_bottom (10);
-    pane.add (grid);
-
-    var scrolled = new ScrolledWindow (null, null);
-    scrolled.set_hexpand (true);
-    scrolled.set_vexpand (true);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    grid.attach (scrolled, 0, 1, 1, 1);
-
-    var top_grid = new Grid ();
-    top_grid.set_focus_vadjustment (scrolled.get_vadjustment ());
+    top_grid = new Grid ();
     top_grid.set_orientation (Orientation.VERTICAL);
-    top_grid.set_margin_right (10);
-    scrolled.add_with_viewport (top_grid);
-    scrolled.get_child().get_style_context ().add_class ("contact-pane");
+    top_grid.set_margin_left (10);
+    top_grid.set_margin_top (10);
+    top_grid.set_margin_bottom (10);
+    top_grid.set_row_spacing (20);
+    this.add_with_viewport (top_grid);
 
-    layout_state = new DetailsLayout.SharedState ();
-    card_layout = new DetailsLayout (layout_state);
-    fields_layout = new DetailsLayout (layout_state);
-    button_layout = new DetailsLayout (layout_state);
+    this.get_child().get_style_context ().add_class ("contact-pane");
 
-    card_grid = card_layout.grid;
-    top_grid.add (card_grid);
+    var top_row = new ContactRow (this);
+    top_row.left.set_size_request (32, -1);
+    top_grid.add (top_row);
+    card_grid = new Grid ();
+    top_row.pack_start (card_grid, Align.FILL);
 
-    fields_grid = fields_layout.grid;
-    top_grid.add (fields_grid);
+    personas_grid = new Grid ();
+    personas_grid.set_orientation (Orientation.VERTICAL);
+    personas_grid.set_row_spacing (40);
+    top_grid.add (personas_grid);
 
-    button_grid = button_layout.grid;
-    top_grid.add (button_grid);
-
-    var bbox = new ButtonBox (Orientation.HORIZONTAL);
-    bbox.set_margin_right (10);
-    normal_buttons = bbox;
-    bbox.set_spacing (5);
-    bbox.set_margin_top (8);
-    bbox.set_layout (ButtonBoxStyle.START);
-    grid.attach (bbox, 0, 2, 1, 1);
-
-    var notes_button = new Button ();
-    var notes_grid = new Grid ();
-    var label = new Label(_("Notes"));
-    label.set_hexpand (true);
-    // We create an empty widget the same size as the dot in order
-    // to make the label center correctly
-    var a = new DrawingArea();
-    a.set_size_request (6, -1);
-    a.set_has_window (false);
-    notes_grid.add (a);
-    notes_grid.add (label);
-    notes_dot = new DrawingArea();
-    notes_dot.set_has_window (false);
-    notes_dot.set_size_request (6, -1);
-    notes_dot.draw.connect ( (widget, cr) => {
-	if (has_notes) {
-	  cr.arc (3, 3 + 2, 3, 0, 2 * Math.PI);
-	  Gdk.RGBA color;
-	  color = widget.get_style_context ().get_color (0);
-	  Gdk.cairo_set_source_rgba (cr, color);
-	  cr.fill ();
-	}
-	return true;
-      });
-    notes_grid.add (notes_dot);
-    notes_button.add (notes_grid);
-
-    notes_button.clicked.connect ( (button) => {
-	display_notes ();
-      });
-
-    bbox.pack_start (notes_button, false, false, 0);
-
-    var button = new Button.with_label(_("Edit"));
-    bbox.pack_start (button, false, false, 0);
-
-    button.clicked.connect ( (button) => {
-	display_edit (selected_contact, null);
-      });
-
-    MenuButton menu_button = new MenuButton (_("More"));
-    bbox.pack_start (menu_button, false, false, 0);
-
-    bbox.show_all ();
-    bbox.set_no_show_all (true);
-
-    bbox = new ButtonBox (Orientation.HORIZONTAL);
-    bbox.set_margin_right (10);
-    editing_buttons = bbox;
-    bbox.set_spacing (5);
-    bbox.set_margin_top (8);
-    bbox.set_layout (ButtonBoxStyle.END);
-    grid.attach (bbox, 0, 3, 1, 1);
-
-    button = new Button.with_label(_("Back to Contact"));
-    bbox.pack_start (button, false, false, 0);
-
-    button.clicked.connect ( (button) => {
-	this.save_data (); // Ensure all edit data saved
-	display_contact (selected_contact);
-      });
-
-    var menu = new Menu ();
-    Utils.add_menu_item (menu,_("Add/Remove Linked Contacts...")).activate.connect (link_contact);
-    //Utils.add_menu_item (menu,_("Send..."));
-    delete_menu_item = Utils.add_menu_item (menu,_("Delete"));
-    delete_menu_item.activate.connect (delete_contact);
-
-    menu_button.set_menu (menu);
-
-    bbox.show_all ();
-    bbox.set_no_show_all (true);
-
-    grid.show_all ();
-
-    set_display_mode (DisplayMode.EMPTY);
-    set_has_notes (false);
+    top_grid.show_all ();
   }
-
-  void link_contact () {
-    var dialog = new LinkDialog (selected_contact);
-    dialog.show_all ();
-  }
-
-  void delete_contact () {
-    contacts_store.aggregator.remove_individual (selected_contact.individual);
-  }
-
 }

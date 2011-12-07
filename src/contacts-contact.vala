@@ -670,9 +670,9 @@ public class Contacts.Contact : GLib.Object  {
     return service;
   }
 
-  public string format_im_name (string protocol, string id) {
+  public static string format_im_name (Tpf.Persona? persona,
+				       string protocol, string id) {
     string? service = null;
-    var persona = find_im_persona (protocol, id);
     if (persona != null) {
       var account = (persona.store as Tpf.PersonaStore).account;
       service = account.service;
