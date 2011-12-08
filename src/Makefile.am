@@ -26,6 +26,7 @@ vala_sources = \
 	contacts-link-dialog.vala \
 	contacts-linking.vala \
 	contacts-menu-button.vala \
+	contacts-row.vala \
 	contacts-store.vala \
 	contacts-view.vala \
 	contacts-utils.vala \
