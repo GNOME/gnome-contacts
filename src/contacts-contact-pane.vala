@@ -416,8 +416,8 @@ public class Contacts.AvatarMenu : Menu {
 public class Contacts.PersonaSheet : Grid {
   ContactPane pane;
   Persona persona;
-  ContactRow header;
-  ContactRow footer;
+  Row header;
+  Row footer;
 
   abstract class Field : Grid {
     public class string label_name;
@@ -425,14 +425,14 @@ public class Contacts.PersonaSheet : Grid {
     public PersonaSheet sheet { get; construct; }
     public int row_nr { get; construct; }
     public bool added;
-    ContactRow label_row;
+    Row label_row;
 
     public abstract void populate ();
 
     construct {
       this.set_orientation (Orientation.VERTICAL);
 
-      label_row = new ContactRow (sheet.pane);
+      label_row = new Row (sheet.pane);
       this.add (label_row);
       label_row.label (label_name);
     }
@@ -453,8 +453,8 @@ public class Contacts.PersonaSheet : Grid {
       }
     }
 
-    public ContactRow new_row () {
-      var row = new ContactRow (sheet.pane);
+    public Row new_row () {
+      var row = new Row (sheet.pane);
       this.add (row);
       return row;
     }
@@ -650,7 +650,7 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!persona.store.is_primary_store) {
-      header = new ContactRow (pane);
+      header = new Row (pane);
       this.attach (header, 0, row_nr++, 1, 1);
 
       var label = new Label ("");
@@ -676,7 +676,7 @@ public class Contacts.PersonaSheet : Grid {
     }
 
     if (editable) {
-      footer = new ContactRow (pane);
+      footer = new Row (pane);
       this.attach (footer, 0, row_nr++, 1, 1);
       var b = new Button.with_label ("Add detail...");
       footer.pack_start (b);
@@ -847,7 +847,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     this.get_child().get_style_context ().add_class ("contact-pane");
 
-    var top_row = new ContactRow (this);
+    var top_row = new Row (this);
     top_row.left.set_size_request (32, -1);
     top_grid.add (top_row);
     card_grid = new Grid ();

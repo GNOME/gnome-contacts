@@ -18,13 +18,13 @@
 
 using Gtk;
 
-public class Contacts.ContactRow : Grid {
+public class Contacts.Row : Grid {
   public Alignment left;
   public Grid content;
   public Alignment right;
   int start;
 
-  public ContactRow (ContactPane pane) {
+  public Row (ContactPane pane) {
     this.set_orientation (Orientation.HORIZONTAL);
     this.set_column_spacing (8);
 
