@@ -413,11 +413,93 @@ public class Contacts.AvatarMenu : Menu {
   }
 }
 
+public class Contacts.FieldRow : Contacts.Row {
+  int start;
+
+  public FieldRow(ContactPane pane) {
+    base (3);
+
+    start = 0;
+
+    set_column_min_width (0, 32);
+    set_column_min_width (1, 400);
+    set_column_max_width (1, 450);
+    set_column_min_width (2, 32);
+    set_column_spacing (0, 8);
+    set_column_spacing (1, 8);
+  }
+
+  public void pack (Widget w) {
+    this.attach (w, 1, start++);
+  }
+
+  public void label (string s) {
+    var l = new Label (s);
+    l.set_halign (Align.START);
+    l.get_style_context ().add_class ("dim-label");
+    pack (l);
+  }
+
+  public void header (string s) {
+    var l = new Label (s);
+    l.set_markup (
+      "<span font='24px'>%s</span>".printf (s));
+    l.set_halign (Align.START);
+    pack (l);
+  }
+
+  public void text (string s, bool wrap = false) {
+    var l = new Label (s);
+    if (wrap) {
+      l.set_line_wrap (true);
+      l.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    } else {
+      l.set_ellipsize (Pango.EllipsizeMode.END);
+    }
+    l.set_halign (Align.START);
+    pack (l);
+  }
+
+  public void text_detail (string text, string detail, bool wrap = false) {
+    var grid = new Grid ();
+
+    var l = new Label (text);
+    l.set_hexpand (true);
+    l.set_halign (Align.START);
+    if (wrap) {
+      l.set_line_wrap (true);
+      l.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    } else {
+      l.set_ellipsize (Pango.EllipsizeMode.END);
+    }
+    grid.add (l);
+
+    l = new Label (detail);
+    l.set_halign (Align.END);
+    l.get_style_context ().add_class ("dim-label");
+
+    grid.set_halign (Align.FILL);
+    grid.add (l);
+
+    pack (grid);
+  }
+
+  public void left_add (Widget widget) {
+    this.attach (widget, 0, 0);
+    widget.set_halign (Align.END);
+  }
+
+  public void right_add (Widget widget) {
+    this.attach (widget, 2, 0);
+    widget.set_halign (Align.START);
+  }
+}
+
 public class Contacts.PersonaSheet : Grid {
   ContactPane pane;
   Persona persona;
-  Row header;
-  Row footer;
+  FieldRow header;
+  FieldRow footer;
 
   abstract class Field : Grid {
     public class string label_name;
@@ -425,14 +507,14 @@ public class Contacts.PersonaSheet : Grid {
     public PersonaSheet sheet { get; construct; }
     public int row_nr { get; construct; }
     public bool added;
-    Row label_row;
+    FieldRow label_row;
 
     public abstract void populate ();
 
     construct {
       this.set_orientation (Orientation.VERTICAL);
 
-      label_row = new Row (sheet.pane);
+      label_row = new FieldRow (sheet.pane);
       this.add (label_row);
       label_row.label (label_name);
     }
@@ -453,8 +535,8 @@ public class Contacts.PersonaSheet : Grid {
       }
     }
 
-    public Row new_row () {
-      var row = new Row (sheet.pane);
+    public FieldRow new_row () {
+      var row = new FieldRow (sheet.pane);
       this.add (row);
       return row;
     }
@@ -480,7 +562,7 @@ public class Contacts.PersonaSheet : Grid {
 	var button = new Button();
 	button.set_relief (ReliefStyle.NONE);
 	button.add (image);
-	row.right.add (button);
+	row.right_add (button);
       }
     }
   }
@@ -496,8 +578,7 @@ public class Contacts.PersonaSheet : Grid {
       var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
       foreach (var email in emails) {
 	var row = new_row ();
-	row.text (email.value);
-	row.detail (TypeSet.general.format_type (email));
+	row.text_detail (email.value, TypeSet.general.format_type (email));
       }
     }
   }
@@ -513,8 +594,7 @@ public class Contacts.PersonaSheet : Grid {
       var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
       foreach (var phone in phone_numbers) {
 	var row = new_row ();
-	row.text (phone.value);
-	row.detail (TypeSet.phone.format_type (phone));
+	row.text_detail (phone.value, TypeSet.phone.format_type (phone));
       }
     }
   }
@@ -560,7 +640,7 @@ public class Contacts.PersonaSheet : Grid {
 	var button = new Button();
 	button.set_relief (ReliefStyle.NONE);
 	button.add (image);
-	row.right.add (button);
+	row.right_add (button);
       }
     }
   }
@@ -608,10 +688,13 @@ public class Contacts.PersonaSheet : Grid {
 
       foreach (var addr in details.postal_addresses) {
 	var row = new_row ();
-	row.detail (TypeSet.general.format_type (addr));
 	string[] strs = Contact.format_address (addr.value);
+	int i = 0;
 	foreach (var s in strs) {
-	  row.text (s, true);
+	  if (i++ == 0)
+	    row.text_detail (s, TypeSet.general.format_type (addr), true);
+	  else
+	    row.text (s, true);
 	}
       }
     }
@@ -650,20 +733,17 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!persona.store.is_primary_store) {
-      header = new Row (pane);
+      header = new FieldRow (pane);
       this.attach (header, 0, row_nr++, 1, 1);
 
-      var label = new Label ("");
-      label.set_markup (
-	"<span font='24px'>%s</span>".printf (Contact.format_persona_store_name (persona.store)));
-      header.pack_start (label);
+      header.header (Contact.format_persona_store_name (persona.store));
 
       if (!editable) {
 	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
 
 	image.get_style_context ().add_class ("dim-label");
-	header.left.add (image);
-	header.left.set (1.0f, 0.5f, 0, 1.0f);
+	image.set_valign (Align.CENTER);
+	header.left_add (image);
       }
     }
 
@@ -676,10 +756,13 @@ public class Contacts.PersonaSheet : Grid {
     }
 
     if (editable) {
-      footer = new Row (pane);
+      footer = new FieldRow (pane);
       this.attach (footer, 0, row_nr++, 1, 1);
+
       var b = new Button.with_label ("Add detail...");
-      footer.pack_start (b);
+      b.set_halign (Align.START);
+
+      footer.pack (b);
     }
 
   }
@@ -847,11 +930,11 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     this.get_child().get_style_context ().add_class ("contact-pane");
 
-    var top_row = new Row (this);
-    top_row.left.set_size_request (32, -1);
+    var top_row = new FieldRow (this);
     top_grid.add (top_row);
     card_grid = new Grid ();
-    top_row.pack_start (card_grid, Align.FILL);
+    card_grid.set_vexpand (false);
+    top_row.pack (card_grid);
 
     personas_grid = new Grid ();
     personas_grid.set_orientation (Orientation.VERTICAL);
