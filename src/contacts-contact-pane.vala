@@ -770,8 +770,6 @@ public class Contacts.PersonaSheet : Grid {
 
 
 public class Contacts.ContactPane : ScrolledWindow {
-  public SizeGroup border_size_group;
-
   private Store contacts_store;
   private Grid top_grid;
   private Grid card_grid;
@@ -914,7 +912,6 @@ public class Contacts.ContactPane : ScrolledWindow {
 
   public ContactPane (Store contacts_store) {
     this.contacts_store = contacts_store;
-    border_size_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
 
     this.set_hexpand (true);
     this.set_vexpand (true);
