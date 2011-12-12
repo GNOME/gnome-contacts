@@ -94,7 +94,7 @@ public class Contacts.ContactPresence : Grid {
 
     update_presence_widgets ();
 
-    var id = contact.changed.connect ( () => {
+    var id = contact.presence_changed.connect ( () => {
 	update_presence_widgets ();
       });
 
@@ -251,6 +251,7 @@ public class Contacts.Contact : GLib.Object  {
 
   private string filter_data;
 
+  public signal void presence_changed ();
   public signal void changed ();
 
   private bool _is_hidden;
@@ -304,6 +305,7 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void persona_notify_cb (ParamSpec pspec) {
+    this.presence_changed ();
     queue_changed ();
   }
 
