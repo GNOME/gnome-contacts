@@ -952,9 +952,19 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   public void show_contact (Contact? new_contact, bool edit=false) {
+    if (contact != null)
+      contact.personas_changed.disconnect (personas_changed_cb);
+
     contact = new_contact;
 
     update_card ();
+    update_personas ();
+
+    if (contact != null)
+      contact.personas_changed.connect (personas_changed_cb);
+  }
+
+  private void personas_changed_cb (Contact contact) {
     update_personas ();
   }
 
