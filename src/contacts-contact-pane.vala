@@ -421,12 +421,11 @@ public class Contacts.FieldRow : Contacts.Row {
     base (group);
 
     clickable = new Clickable (this);
-    clickable.clicked.connect (() => {
-	print ("clicked!\n");
-      });
-
+    clickable.clicked.connect ( () => { this.clicked (); } );
     start = 0;
   }
+
+  public signal void clicked ();
 
   public override void realize () {
     base.realize ();
@@ -557,7 +556,15 @@ public class Contacts.PersonaSheet : Grid {
     public FieldRow new_row () {
       var row = new FieldRow (sheet.pane.row_group);
       this.add (row);
+
+      row.clicked.connect( () => {
+	  this.set_edit_mode (row);
+	});
+
       return row;
+    }
+
+    public virtual void set_edit_mode (FieldRow row) {
     }
   }
 
