@@ -44,13 +44,14 @@ public class Contacts.RowGroup : Object {
       column_info[i].nat_width = -1;
       column_info[i].max_width = -1;
       column_info[i].prio = 0;
+      column_info[i].spacing = 0;
     }
 
     rows = new Gee.ArrayList<Row>();
   }
 
-  public unowned ColumnInfo? get_column_info (int col) {
-    return column_info[col];
+  public ColumnInfo *get_column_info (int col) {
+    return &column_info[col];
   }
 
   public void add (Row row) {
