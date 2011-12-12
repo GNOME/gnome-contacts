@@ -224,7 +224,7 @@ public class Contacts.Row : Container {
   }
 
   struct Child {
-    Widget? widget;
+    Widget[] widgets;
   }
 
   protected Gdk.Window event_window;
@@ -307,11 +307,13 @@ public class Contacts.Row : Container {
     }
 
     Child *child_info = &row_children[attach_col, attach_row];
-    if (child_info.widget != null) {
-      remove (child_info.widget);
+    if (child_info.widgets == null) {
+      child_info.widgets = new Widget[1];
+    } else {
+      child_info.widgets.resize (child_info.widgets.length + 1);
     }
 
-    child_info.widget = widget;
+    child_info.widgets[child_info.widgets.length-1] = widget;
     widget.set_parent (this);
   }
 
@@ -319,7 +321,8 @@ public class Contacts.Row : Container {
     for (int row = 0; row < n_rows; row++) {
       for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
-	if (child_info.widget == null) {
+	if (child_info.widgets == null ||
+	    child_info.widgets.length == 0) {
 	  attach (widget, col, row);
 	  return;
 	}
@@ -332,17 +335,23 @@ public class Contacts.Row : Container {
     for (int row = 0; row < n_rows; row++) {
       for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
-	if (child_info.widget == widget) {
-          bool was_visible = widget.get_visible ();
+	for (int i = 0; child_info.widgets != null && i < child_info.widgets.length; i++) {
+	  if (child_info.widgets[i] == widget) {
+	    bool was_visible = widget.get_visible ();
 
-          widget.unparent ();
+	    widget.unparent ();
 
-	  child_info.widget = null;
+	    int j;
+	    for (j = i; j < child_info.widgets.length - 1; j++)
+	      child_info.widgets[j] = child_info.widgets[j+1];
+	    child_info.widgets[j] = null;
+	    child_info.widgets.resize (child_info.widgets.length - 1);
 
-          if (was_visible && this.get_visible ())
-            this.queue_resize ();
+	    if (was_visible && this.get_visible ())
+	      this.queue_resize ();
 
-          return;
+	    return;
+	  }
 	}
       }
     }
@@ -353,8 +362,8 @@ public class Contacts.Row : Container {
     for (int row = 0; row < n_rows; row++) {
       for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
-	if (child_info.widget != null) {
-	  callback (child_info.widget);
+	for (int i = 0; child_info.widgets != null && i < child_info.widgets.length; i++) {
+	  callback (child_info.widgets[i]);
 	}
       }
     }
@@ -367,8 +376,8 @@ public class Contacts.Row : Container {
     for (int row = 0; row < n_rows; row++) {
       for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
-	if (child_info.widget != null) {
-	  vexpand |= child_info.widget.compute_expand (Orientation.VERTICAL);
+	for (int i = 0; child_info.widgets != null && i < child_info.widgets.length; i++) {
+	  vexpand |= child_info.widgets[i].compute_expand (Orientation.VERTICAL);
 	}
       }
     }
@@ -465,12 +474,17 @@ public class Contacts.Row : Container {
 
       for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
-	if (child_info.widget != null) {
+	for (int i = 0; child_info.widgets != null && i < child_info.widgets.length; i++) {
+	  var widget = child_info.widgets[i];
+
+	  if (!widget.get_visible ())
+	    continue;
+
 	  int child_min, child_nat;
 
-	  child_info.widget.get_preferred_height_for_width (widths[col], out child_min, out child_nat);
+	  widget.get_preferred_height_for_width (widths[col], out child_min, out child_nat);
 
-	  expand |= child_info.widget.compute_expand (Orientation.VERTICAL);
+	  expand |= widget.compute_expand (Orientation.VERTICAL);
 
 	  if (first) {
 	    first = false;
@@ -528,7 +542,8 @@ public class Contacts.Row : Container {
       int x = 0;
       for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
-	if (child_info.widget != null) {
+	for (int i = 0; child_info.widgets != null && i < child_info.widgets.length; i++) {
+	  var widget = child_info.widgets[i];
 	  Allocation child_allocation = { 0, 0, 0, 0};
 
 	  child_allocation.width = widths[col]; // calculate_child_width (child_info.widget, widths[col]);
@@ -539,7 +554,7 @@ public class Contacts.Row : Container {
 	  else
 	    child_allocation.x = allocation.x + x;
 	  child_allocation.y = allocation.y + y;
-	  child_info.widget.size_allocate (child_allocation);
+	  widget.size_allocate (child_allocation);
 	}
 	x += widths[col] + group.get_column_info (col).spacing;
       }
