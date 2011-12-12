@@ -18,48 +18,52 @@
 
 using Gtk;
 
-public class Contacts.Row : Container {
-  struct RowInfo {
-    int min_height;
-    int nat_height;
-    bool expand;
-  }
-
-  struct ColumnInfo {
+public class Contacts.RowGroup : Object {
+  public struct ColumnInfo {
     int min_width;
     int nat_width;
     int max_width;
     int prio;
     int spacing;
   }
-  struct Child {
-    Widget? widget;
-  }
 
-  int n_columns;
-  int n_rows;
-  ColumnInfo[] column_info;
-  Child[,] row_children;
+  public int n_columns;
+  private ColumnInfo[] column_info;
 
   int[] cached_widths;
   int cached_widths_for_width;
 
-  public Row (int n_columns) {
-    int i;
+  Gee.ArrayList<unowned Row> rows;
 
-    set_has_window (false);
-    set_redraw_on_allocate (false);
-    set_hexpand (true);
-
+  public RowGroup (int n_columns) {
     this.n_columns = n_columns;
-    n_rows = 1;
-    row_children = new Child[n_columns, n_rows];
+
     column_info = new ColumnInfo[n_columns];
-    for (i = 0; i < n_columns; i++) {
+    for (int i = 0; i < n_columns; i++) {
       column_info[i].min_width = 0;
       column_info[i].nat_width = -1;
       column_info[i].max_width = -1;
       column_info[i].prio = 0;
+    }
+
+    rows = new Gee.ArrayList<Row>();
+  }
+
+  public unowned ColumnInfo? get_column_info (int col) {
+    return column_info[col];
+  }
+
+  public void add (Row row) {
+    rows.add (row);
+    row.destroy.connect ( (widget) => {
+	rows.remove (row);
+      });
+  }
+
+  private void queue_resize () {
+    foreach (unowned Row row in rows) {
+      if (row.get_visible ())
+	row.queue_resize ();
     }
   }
 
@@ -70,8 +74,7 @@ public class Contacts.Row : Container {
     column_info[column].prio = priority;
 
     cached_widths = null;
-    if (this.get_visible ())
-      this.queue_resize ();
+    queue_resize ();
   }
 
   public void set_column_min_width (int column, int min_width) {
@@ -80,8 +83,7 @@ public class Contacts.Row : Container {
 
     column_info[column].min_width = min_width;
     cached_widths = null;
-    if (this.get_visible ())
-      this.queue_resize ();
+    queue_resize ();
   }
 
   public void set_column_max_width (int column, int max_width) {
@@ -90,8 +92,7 @@ public class Contacts.Row : Container {
 
     column_info[column].max_width = max_width;
     cached_widths = null;
-    if (this.get_visible ())
-      this.queue_resize ();
+    queue_resize ();
   }
 
   public void set_column_spacing (int column, int spacing) {
@@ -100,140 +101,10 @@ public class Contacts.Row : Container {
 
     column_info[column].spacing = spacing;
     cached_widths = null;
-    if (this.get_visible ())
-      this.queue_resize ();
+    queue_resize ();
   }
 
-  public void attach (Widget widget, int attach_col, int attach_row) {
-    if (attach_col >= n_columns || attach_row >= n_rows) {
-      int old_n_columns = n_columns;
-      int old_n_rows = n_rows;
-
-      if (attach_col >= n_columns) {
-	n_columns = attach_col + 1;
-
-	var old_column_info = (owned)column_info;
-	column_info = new ColumnInfo[n_columns];
-
-	for (int i = 0; i < n_columns; i++) {
-	  if (i < old_n_columns)
-	    column_info[i] = old_column_info[i];
-	  else {
-	    column_info[i].min_width = 0;
-	    column_info[i].nat_width = -1;
-	    column_info[i].max_width = -1;
-	    column_info[i].prio = 0;
-	  }
-	}
-      }
-
-      if (attach_row >= n_rows)
-	n_rows = attach_row + 1;
-
-      var old_row_children = (owned)row_children;
-      row_children = new Child[n_columns, n_rows];
-
-      for (int row = 0; row < n_rows; row++) {
-	for (int col = 0; col < n_columns; col++) {
-	  if (row < old_n_rows &&
-	      col < old_n_columns) {
-	    row_children[col, row] = (owned)old_row_children[col, row];
-	  }
-	}
-      }
-    }
-
-    Child *child_info = &row_children[attach_col, attach_row];
-    if (child_info.widget != null) {
-      remove (child_info.widget);
-    }
-
-    child_info.widget = widget;
-    widget.set_parent (this);
-  }
-
-  public override void add (Widget widget) {
-    for (int row = 0; row < n_rows; row++) {
-      for (int col = 0; col < n_columns; col++) {
-	Child *child_info = &row_children[col, row];
-	if (child_info.widget == null) {
-	  attach (widget, col, row);
-	  return;
-	}
-      }
-    }
-    attach (widget, 0, n_rows);
-  }
-
-  public override void remove (Widget widget) {
-    for (int row = 0; row < n_rows; row++) {
-      for (int col = 0; col < n_columns; col++) {
-	Child *child_info = &row_children[col, row];
-	if (child_info.widget == widget) {
-          bool was_visible = widget.get_visible ();
-
-          widget.unparent ();
-
-	  child_info.widget = null;
-
-          if (was_visible && this.get_visible ())
-            this.queue_resize ();
-
-          return;
-	}
-      }
-    }
-  }
-
-  public override void forall_internal (bool include_internals,
-					Gtk.Callback callback) {
-    for (int row = 0; row < n_rows; row++) {
-      for (int col = 0; col < n_columns; col++) {
-	Child *child_info = &row_children[col, row];
-	if (child_info.widget != null) {
-	  callback (child_info.widget);
-	}
-      }
-    }
-  }
-
-  public override void compute_expand_internal (out bool hexpand, out bool vexpand) {
-    hexpand = false;
-    for (int i = 0; i < n_columns; i++) {
-      var info = &column_info[i];
-      if (info.max_width == -1 &&
-	  info.max_width !=  info.min_width) {
-	hexpand = true;
-	break;
-      }
-    }
-
-    vexpand = false;
-    for (int row = 0; row < n_rows; row++) {
-      for (int col = 0; col < n_columns; col++) {
-	Child *child_info = &row_children[col, row];
-	if (child_info.widget != null) {
-	  vexpand |= child_info.widget.compute_expand (Orientation.VERTICAL);
-	}
-      }
-    }
-  }
-
-  public override Type child_type () {
-    return typeof (Widget);
-  }
-
-  public override Gtk.SizeRequestMode get_request_mode () {
-    return SizeRequestMode.HEIGHT_FOR_WIDTH;
-  }
-
-  public override void get_preferred_height (out int minimum_height, out int natural_height) {
-    int natural_width;
-    get_preferred_width (null, out natural_width);
-    get_preferred_height_for_width (natural_width, out minimum_height, out natural_height);
-  }
-
-  int[] distribute_widths (int width) {
+  public int[] distribute_widths (int width) {
     if (cached_widths != null &&
 	cached_widths_for_width == width)
       return cached_widths;
@@ -243,7 +114,7 @@ public class Contacts.Row : Container {
 
     /* First distribute the min widths */
     for (int i = 0; i < n_columns; i++) {
-      ColumnInfo *info = &column_info[i];
+      var info = &column_info[i];
 
       if (info->prio > max_prio)
 	max_prio = info->prio;
@@ -270,7 +141,7 @@ public class Contacts.Row : Container {
 	int max_extra = width;
 
 	for (int i = 0; i < n_columns; i++) {
-	  ColumnInfo *info = &column_info[i];
+	  var info = &column_info[i];
 
 	  if (info.prio == prio &&
 	      (info.max_width < 0 ||
@@ -294,7 +165,7 @@ public class Contacts.Row : Container {
 	int per_child_extra_sum = 0;
 
 	for (int i = 0; i < n_columns; i++) {
-	  ColumnInfo *info = &column_info[i];
+	  var info = &column_info[i];
 
 	  if (info.prio == prio &&
 	      (info.max_width < 0 ||
@@ -314,6 +185,171 @@ public class Contacts.Row : Container {
     cached_widths_for_width = width;
     return widths;
   }
+
+  public void get_width (out int minimum_width, out int natural_width) {
+    minimum_width = 0;
+    natural_width = 0;
+
+    for (int i = 0; i < n_columns; i++) {
+      minimum_width += column_info[i].min_width;
+      if (column_info[i].nat_width >= 0)
+	natural_width += column_info[i].nat_width;
+      else if (column_info[i].max_width >= 0)
+	natural_width += column_info[i].max_width;
+      else
+	natural_width += column_info[i].min_width;
+      minimum_width += column_info[i].spacing;
+      natural_width += column_info[i].spacing;
+    }
+  }
+
+  public bool is_expanding () {
+    for (int i = 0; i < n_columns; i++) {
+      var info = &column_info[i];
+      if (info.max_width == -1 &&
+	  info.max_width !=  info.min_width) {
+	return true;
+      }
+    }
+    return false;
+  }
+}
+
+public class Contacts.Row : Container {
+  struct RowInfo {
+    int min_height;
+    int nat_height;
+    bool expand;
+  }
+
+  struct Child {
+    Widget? widget;
+  }
+
+  RowGroup group;
+  int n_rows;
+  Child[,] row_children;
+
+  public Row (RowGroup group) {
+    int i;
+
+    this.group = group;
+    group.add (this);
+
+    set_has_window (false);
+    set_redraw_on_allocate (false);
+    set_hexpand (true);
+
+    n_rows = 1;
+    row_children = new Child[group.n_columns, n_rows];
+  }
+
+  public void attach (Widget widget, int attach_col, int attach_row) {
+    if (attach_col >= group.n_columns) {
+      warning ("Tryint to attach widget to non-existing column");
+      return;
+    }
+
+    if (attach_row >= n_rows) {
+      int old_n_rows = n_rows;
+
+      n_rows = attach_row + 1;
+
+      var old_row_children = (owned)row_children;
+      row_children = new Child[group.n_columns, n_rows];
+
+      for (int row = 0; row < n_rows; row++) {
+	for (int col = 0; col < group.n_columns; col++) {
+	  if (row < old_n_rows &&
+	      col < group.n_columns) {
+	    row_children[col, row] = (owned)old_row_children[col, row];
+	  }
+	}
+      }
+    }
+
+    Child *child_info = &row_children[attach_col, attach_row];
+    if (child_info.widget != null) {
+      remove (child_info.widget);
+    }
+
+    child_info.widget = widget;
+    widget.set_parent (this);
+  }
+
+  public override void add (Widget widget) {
+    for (int row = 0; row < n_rows; row++) {
+      for (int col = 0; col < group.n_columns; col++) {
+	Child *child_info = &row_children[col, row];
+	if (child_info.widget == null) {
+	  attach (widget, col, row);
+	  return;
+	}
+      }
+    }
+    attach (widget, 0, n_rows);
+  }
+
+  public override void remove (Widget widget) {
+    for (int row = 0; row < n_rows; row++) {
+      for (int col = 0; col < group.n_columns; col++) {
+	Child *child_info = &row_children[col, row];
+	if (child_info.widget == widget) {
+          bool was_visible = widget.get_visible ();
+
+          widget.unparent ();
+
+	  child_info.widget = null;
+
+          if (was_visible && this.get_visible ())
+            this.queue_resize ();
+
+          return;
+	}
+      }
+    }
+  }
+
+  public override void forall_internal (bool include_internals,
+					Gtk.Callback callback) {
+    for (int row = 0; row < n_rows; row++) {
+      for (int col = 0; col < group.n_columns; col++) {
+	Child *child_info = &row_children[col, row];
+	if (child_info.widget != null) {
+	  callback (child_info.widget);
+	}
+      }
+    }
+  }
+
+  public override void compute_expand_internal (out bool hexpand, out bool vexpand) {
+    hexpand = group.is_expanding ();
+
+    vexpand = false;
+    for (int row = 0; row < n_rows; row++) {
+      for (int col = 0; col < group.n_columns; col++) {
+	Child *child_info = &row_children[col, row];
+	if (child_info.widget != null) {
+	  vexpand |= child_info.widget.compute_expand (Orientation.VERTICAL);
+	}
+      }
+    }
+  }
+
+  public override Type child_type () {
+    return typeof (Widget);
+  }
+
+  public override Gtk.SizeRequestMode get_request_mode () {
+    return SizeRequestMode.HEIGHT_FOR_WIDTH;
+  }
+
+  public override void get_preferred_height (out int minimum_height, out int natural_height) {
+    int natural_width;
+    get_preferred_width (null, out natural_width);
+    get_preferred_height_for_width (natural_width, out minimum_height, out natural_height);
+  }
+
 
   int[] distribute_heights (int height, RowInfo[] row_info) {
     var heights = new int[n_rows];
@@ -389,7 +425,7 @@ public class Contacts.Row : Container {
       bool first = true;
       bool expand = false;
 
-      for (int col = 0; col < n_columns; col++) {
+      for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
 	if (child_info.widget != null) {
 	  int child_min, child_nat;
@@ -416,8 +452,8 @@ public class Contacts.Row : Container {
   }
 
   public override void get_preferred_height_for_width (int width, out int minimum_height, out int natural_height) {
-    var widths = distribute_widths (width);
-    var row_info =  get_row_heights_for_widths (widths);
+    var widths = group.distribute_widths (width);
+    var row_info = get_row_heights_for_widths (widths);
 
     minimum_height = 0;
     natural_height = 0;
@@ -429,19 +465,7 @@ public class Contacts.Row : Container {
   }
 
   public override void get_preferred_width (out int minimum_width, out int natural_width) {
-    minimum_width = 0;
-    natural_width = 0;
-    for (int i = 0; i < n_columns; i++) {
-      minimum_width += column_info[i].min_width;
-      if (column_info[i].nat_width >= 0)
-	natural_width += column_info[i].nat_width;
-      else if (column_info[i].max_width >= 0)
-	natural_width += column_info[i].max_width;
-      else
-	natural_width += column_info[i].min_width;
-      minimum_width += column_info[i].spacing;
-      natural_width += column_info[i].spacing;
-    }
+    group.get_width (out minimum_width, out natural_width);
   }
 
   public override void get_preferred_width_for_height (int height, out int minimum_width, out int natural_width) {
@@ -449,7 +473,7 @@ public class Contacts.Row : Container {
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
-    var widths = distribute_widths (allocation.width);
+    var widths = group.distribute_widths (allocation.width);
     var row_info = get_row_heights_for_widths (widths);
     var heights = distribute_heights (allocation.height, row_info);
 
@@ -458,7 +482,7 @@ public class Contacts.Row : Container {
     int y = 0;
     for (int row = 0; row < n_rows; row ++) {
       int x = 0;
-      for (int col = 0; col < n_columns; col++) {
+      for (int col = 0; col < group.n_columns; col++) {
 	Child *child_info = &row_children[col, row];
 	if (child_info.widget != null) {
 	  Allocation child_allocation = { 0, 0, 0, 0};
@@ -473,7 +497,7 @@ public class Contacts.Row : Container {
 	  child_allocation.y = allocation.y + y;
 	  child_info.widget.size_allocate (child_allocation);
 	}
-	x += widths[col] + column_info[col].spacing;
+	x += widths[col] + group.get_column_info (col).spacing;
       }
       y += heights[row];
     }

@@ -416,17 +416,10 @@ public class Contacts.AvatarMenu : Menu {
 public class Contacts.FieldRow : Contacts.Row {
   int start;
 
-  public FieldRow(ContactPane pane) {
-    base (3);
+  public FieldRow(RowGroup group) {
+    base (group);
 
     start = 0;
-
-    set_column_min_width (0, 32);
-    set_column_min_width (1, 400);
-    set_column_max_width (1, 450);
-    set_column_min_width (2, 32);
-    set_column_spacing (0, 8);
-    set_column_spacing (1, 8);
   }
 
   public void pack (Widget w) {
@@ -514,7 +507,7 @@ public class Contacts.PersonaSheet : Grid {
     construct {
       this.set_orientation (Orientation.VERTICAL);
 
-      label_row = new FieldRow (sheet.pane);
+      label_row = new FieldRow (sheet.pane.row_group);
       this.add (label_row);
       label_row.label (label_name);
     }
@@ -536,7 +529,7 @@ public class Contacts.PersonaSheet : Grid {
     }
 
     public FieldRow new_row () {
-      var row = new FieldRow (sheet.pane);
+      var row = new FieldRow (sheet.pane.row_group);
       this.add (row);
       return row;
     }
@@ -733,7 +726,7 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!persona.store.is_primary_store) {
-      header = new FieldRow (pane);
+      header = new FieldRow (pane.row_group);
       this.attach (header, 0, row_nr++, 1, 1);
 
       header.header (Contact.format_persona_store_name (persona.store));
@@ -756,7 +749,7 @@ public class Contacts.PersonaSheet : Grid {
     }
 
     if (editable) {
-      footer = new FieldRow (pane);
+      footer = new FieldRow (pane.row_group);
       this.attach (footer, 0, row_nr++, 1, 1);
 
       var b = new Button.with_label ("Add detail...");
@@ -774,6 +767,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   private Grid top_grid;
   private Grid card_grid;
   private Grid personas_grid;
+  public RowGroup row_group;
 
   private Contact? contact;
 
@@ -912,6 +906,13 @@ public class Contacts.ContactPane : ScrolledWindow {
 
   public ContactPane (Store contacts_store) {
     this.contacts_store = contacts_store;
+    row_group = new RowGroup(3);
+    row_group.set_column_min_width (0, 32);
+    row_group.set_column_min_width (1, 400);
+    row_group.set_column_max_width (1, 450);
+    row_group.set_column_min_width (2, 32);
+    row_group.set_column_spacing (0, 8);
+    row_group.set_column_spacing (1, 8);
 
     this.set_hexpand (true);
     this.set_vexpand (true);
@@ -927,7 +928,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     this.get_child().get_style_context ().add_class ("contact-pane");
 
-    var top_row = new FieldRow (this);
+    var top_row = new FieldRow (row_group);
     top_grid.add (top_row);
     card_grid = new Grid ();
     card_grid.set_vexpand (false);
