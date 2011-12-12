@@ -120,6 +120,7 @@ public class Contacts.Contact : GLib.Object  {
 
   public Individual individual;
   uint changed_id;
+  bool changed_personas;
 
   private Gdk.Pixbuf? _small_avatar;
   public Gdk.Pixbuf small_avatar {
@@ -253,6 +254,7 @@ public class Contacts.Contact : GLib.Object  {
 
   public signal void presence_changed ();
   public signal void changed ();
+  public signal void personas_changed ();
 
   private bool _is_hidden;
   private bool _is_hidden_uptodate;
@@ -306,7 +308,7 @@ public class Contacts.Contact : GLib.Object  {
 
   private void persona_notify_cb (ParamSpec pspec) {
     this.presence_changed ();
-    queue_changed ();
+    queue_changed (false);
   }
 
   private void connect_persona (Persona p) {
@@ -373,7 +375,7 @@ public class Contacts.Contact : GLib.Object  {
 	  connect_persona (p);
 	foreach (var p in removed)
 	  disconnect_persona (p);
-	queue_changed ();
+	queue_changed (true);
       });
 
     update ();
@@ -393,7 +395,7 @@ public class Contacts.Contact : GLib.Object  {
     }
     _small_avatar = null;
     individual.notify.connect(notify_cb);
-    queue_changed ();
+    queue_changed (true);
   }
 
   public void remove () {
@@ -727,8 +729,12 @@ public class Contacts.Contact : GLib.Object  {
 
   private bool changed_cb () {
     changed_id = 0;
+    var changed_personas = this.changed_personas;
+    this.changed_personas = false;
     update ();
     changed ();
+    if (changed_personas)
+      personas_changed ();
     return false;
   }
 
@@ -739,8 +745,9 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  private void queue_changed () {
+  private void queue_changed (bool is_persona_change) {
     _is_hidden_uptodate = false;
+    changed_personas |= is_persona_change;
 
     if (changed_id != 0)
       return;
@@ -751,7 +758,7 @@ public class Contacts.Contact : GLib.Object  {
   private void notify_cb (ParamSpec pspec) {
     if (pspec.get_name () == "avatar")
       _small_avatar = null;
-    queue_changed ();
+    queue_changed (false);
   }
 
   private static bool get_is_phone (Persona persona) {
