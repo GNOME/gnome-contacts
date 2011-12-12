@@ -359,6 +359,19 @@ public class Contacts.Row : Container {
     }
   }
 
+  public Gee.List<Widget> get_children_at (int col, int row) {
+    var l = new Gee.ArrayList<Widget>();
+
+    if (row < n_rows && col < group.n_columns) {
+      Child *child_info = &row_children[col, row];
+      for (int i = 0; child_info.widgets != null && i < child_info.widgets.length; i++) {
+	l.add (child_info.widgets[i]);
+      }
+    }
+
+    return l;
+  }
+
   public override void forall_internal (bool include_internals,
 					Gtk.Callback callback) {
     for (int row = 0; row < n_rows; row++) {
