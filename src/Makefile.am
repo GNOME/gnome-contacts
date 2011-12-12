@@ -30,6 +30,7 @@ vala_sources = \
 	contacts-store.vala \
 	contacts-view.vala \
 	contacts-utils.vala \
+	contacts-clickable.vala \
 	main.vala \
 	$(NULL)
 

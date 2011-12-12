@@ -227,7 +227,7 @@ public class Contacts.Row : Container {
     Widget? widget;
   }
 
-  private Gdk.Window event_window;
+  protected Gdk.Window event_window;
   RowGroup group;
   int n_rows;
   Child[,] row_children;

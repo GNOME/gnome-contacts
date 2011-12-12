@@ -414,12 +414,28 @@ public class Contacts.AvatarMenu : Menu {
 }
 
 public class Contacts.FieldRow : Contacts.Row {
+  Clickable clickable;
   int start;
 
   public FieldRow(RowGroup group) {
     base (group);
 
+    clickable = new Clickable (this);
+    clickable.clicked.connect (() => {
+	print ("clicked!\n");
+      });
+
     start = 0;
+  }
+
+  public override void realize () {
+    base.realize ();
+    clickable.realize_for (event_window);
+  }
+
+  public override void unrealize () {
+    base.unrealize ();
+    clickable.unrealize (null);
   }
 
   public void pack (Widget w) {
