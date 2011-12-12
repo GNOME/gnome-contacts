@@ -350,6 +350,8 @@ public class Contacts.Row : Container {
 	    if (was_visible && this.get_visible ())
 	      this.queue_resize ();
 
+	    /* TODO: Remove empty rows in rwo_children */
+
 	    return;
 	  }
 	}
