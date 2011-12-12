@@ -503,6 +503,7 @@ public class Contacts.PersonaSheet : Grid {
     FieldRow label_row;
 
     public abstract void populate ();
+    public abstract bool reads_param (string param);
 
     construct {
       this.set_orientation (Orientation.VERTICAL);
@@ -513,8 +514,17 @@ public class Contacts.PersonaSheet : Grid {
     }
 
     public void add_to_sheet () {
-      sheet.attach (this, 0, row_nr, 1, 1);
-      added = true;
+      if (!added) {
+	sheet.attach (this, 0, row_nr, 1, 1);
+	added = true;
+      }
+    }
+
+    public void remove_from_sheet () {
+      if (added) {
+	sheet.remove (this);
+	added = false;
+      }
     }
 
     public bool is_empty () {
@@ -558,6 +568,9 @@ public class Contacts.PersonaSheet : Grid {
 	row.right_add (button);
       }
     }
+    public override bool reads_param (string param) {
+      return param == "urls";
+    }
   }
 
   class EmailField : Field {
@@ -574,6 +587,9 @@ public class Contacts.PersonaSheet : Grid {
 	row.text_detail (email.value, TypeSet.general.format_type (email));
       }
     }
+    public override bool reads_param (string param) {
+      return param == "email-addresses";
+    }
   }
 
   class PhoneField : Field {
@@ -589,6 +605,9 @@ public class Contacts.PersonaSheet : Grid {
 	var row = new_row ();
 	row.text_detail (phone.value, TypeSet.phone.format_type (phone));
       }
+    }
+    public override bool reads_param (string param) {
+      return param == "phone-numbers";
     }
   }
 
@@ -611,6 +630,9 @@ public class Contacts.PersonaSheet : Grid {
 	  row.text (Contact.format_im_name (im_persona, protocol, id.value));
 	}
       }
+    }
+    public override bool reads_param (string param) {
+      return param == "im-addresses";
     }
   }
 
@@ -636,6 +658,9 @@ public class Contacts.PersonaSheet : Grid {
 	row.right_add (button);
       }
     }
+    public override bool reads_param (string param) {
+      return param == "birthday";
+    }
   }
 
   class NicknameField : Field {
@@ -652,6 +677,9 @@ public class Contacts.PersonaSheet : Grid {
 	row.text (details.nickname);
       }
     }
+    public override bool reads_param (string param) {
+      return param == "nickname";
+    }
   }
 
   class NoteField : Field {
@@ -667,6 +695,9 @@ public class Contacts.PersonaSheet : Grid {
 	var row = new_row ();
 	row.text (note.value, true);
       }
+    }
+    public override bool reads_param (string param) {
+      return param == "notes";
     }
   }
 
@@ -691,6 +722,9 @@ public class Contacts.PersonaSheet : Grid {
 	}
       }
     }
+    public override bool reads_param (string param) {
+      return param == "postal-addresses";
+    }
   }
 
   static Type[] field_types = {
@@ -707,7 +741,7 @@ public class Contacts.PersonaSheet : Grid {
     */
   };
 
-  Field fields[8]; // This is really the size of field_types enum
+  Field? fields[8]; // This is really the size of field_types enum
 
   public PersonaSheet(ContactPane pane, Persona persona) {
     assert (fields.length == field_types.length);
@@ -742,6 +776,7 @@ public class Contacts.PersonaSheet : Grid {
 
     for (int i = 0; i < field_types.length; i++) {
       var field = (Field) Object.new(field_types[i], sheet: this, row_nr: row_nr++);
+      fields[i] = field;
 
       field.populate ();
       if (!field.is_empty ())
@@ -758,6 +793,28 @@ public class Contacts.PersonaSheet : Grid {
       footer.pack (b);
     }
 
+    persona.notify.connect(persona_notify_cb);
+  }
+
+  ~PersonaSheet() {
+    persona.notify.disconnect(persona_notify_cb);
+  }
+
+  private void persona_notify_cb (ParamSpec pspec) {
+    var name = pspec.get_name ();
+    foreach (var field in fields) {
+      if (field.reads_param (name)) {
+	field.clear ();
+	field.populate ();
+
+	if (field.is_empty ())
+	  field.remove_from_sheet ();
+	else {
+	  field.show_all ();
+	  field.add_to_sheet ();
+	}
+      }
+    }
   }
 }
 
