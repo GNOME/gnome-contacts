@@ -231,8 +231,6 @@ public class Contacts.Row : Container {
   Child[,] row_children;
 
   public Row (RowGroup group) {
-    int i;
-
     this.group = group;
     group.add (this);
 
