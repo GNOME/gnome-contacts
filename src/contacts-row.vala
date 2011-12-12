@@ -227,6 +227,7 @@ public class Contacts.Row : Container {
     Widget? widget;
   }
 
+  private Gdk.Window event_window;
   RowGroup group;
   int n_rows;
   Child[,] row_children;
@@ -241,6 +242,44 @@ public class Contacts.Row : Container {
 
     n_rows = 1;
     row_children = new Child[group.n_columns, n_rows];
+  }
+
+  public override void realize () {
+    Allocation allocation;
+    get_allocation (out allocation);
+    set_realized (true);
+
+    Gdk.WindowAttr attributes = { };
+    attributes.x = allocation.x;
+    attributes.y = allocation.y;
+    attributes.width = allocation.width;
+    attributes.height = allocation.height;
+    attributes.window_type = Gdk.WindowType.CHILD;
+    attributes.event_mask = this.get_events () | Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.ENTER_NOTIFY_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK;
+
+    var window = get_parent_window ();
+    this.set_window (window);
+
+    attributes.wclass = Gdk.WindowWindowClass.ONLY;
+    event_window = new Gdk.Window (window, attributes, Gdk.WindowAttributesType.X | Gdk.WindowAttributesType.Y);
+    event_window.set_user_data (this);
+  }
+
+  public override void unrealize () {
+    event_window.set_user_data (null);
+    event_window.destroy ();
+    event_window = null;
+    base.unrealize ();
+  }
+
+  public override void map () {
+    event_window.show ();
+    base.map ();
+  }
+
+  public override void unmap () {
+    event_window.hide ();
+    base.unmap ();
   }
 
   public void attach (Widget widget, int attach_col, int attach_row) {
@@ -477,6 +516,12 @@ public class Contacts.Row : Container {
     var heights = distribute_heights (allocation.height, row_info);
 
     set_allocation (allocation);
+
+    if (event_window != null)
+      event_window.move_resize (allocation.x,
+                                allocation.y,
+                                allocation.width,
+                                allocation.height);
 
     int y = 0;
     for (int row = 0; row < n_rows; row ++) {
