@@ -419,6 +419,7 @@ public class Contacts.FieldRow : Contacts.Row {
 
   public FieldRow(RowGroup group) {
     base (group);
+    set_redraw_on_allocate (true); // Since we draw the focus rect
 
     clickable = new Clickable (this);
     clickable.set_focus_on_click (true);
