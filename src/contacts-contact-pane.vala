@@ -713,6 +713,17 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     if (save && changed)
       field_set.save ();
   }
+
+  public void setup_entry_for_edit (Entry entry) {
+    ulong id = 0;
+    id = entry.size_allocate.connect ( () => {
+	entry.grab_focus ();
+	entry.disconnect (id);
+      });
+    entry.activate.connect ( () => {
+	field_set.sheet.pane.exit_edit_mode (true);
+      });
+  }
 }
 
 class Contacts.LinkFieldRow : DataFieldRow {
@@ -742,11 +753,7 @@ class Contacts.LinkFieldRow : DataFieldRow {
 
   public override void pack_edit_widgets () {
     entry = this.pack_entry (details.value);
-    entry.grab_focus ();
-    entry.set_text (details.value);
-    entry.activate.connect ( () => {
-	field_set.sheet.pane.exit_edit_mode (true);
-      });
+    setup_entry_for_edit (entry);
   }
 
   public override bool finish_edit_widgets (bool save) {
@@ -814,10 +821,7 @@ class Contacts.EmailFieldRow : DataFieldRow {
 
   public override void pack_edit_widgets () {
     this.pack_entry_detail_combo (details.value, details, TypeSet.general, out entry, out combo);
-    entry.grab_focus ();
-    entry.activate.connect ( () => {
-	field_set.sheet.pane.exit_edit_mode (true);
-      });
+    setup_entry_for_edit (entry);
   }
 
   public override bool finish_edit_widgets (bool save) {
