@@ -426,6 +426,10 @@ public class Contacts.FieldRow : Contacts.Row {
     start = 0;
   }
 
+  public void reset () {
+    start = 0;
+  }
+
   public signal void clicked ();
 
   public override void realize () {
@@ -514,6 +518,15 @@ public class Contacts.FieldRow : Contacts.Row {
     grid.add (l);
 
     pack (grid);
+
+  }
+
+  public Entry pack_entry (string s) {
+    var e = new Entry ();
+    e.set_text (s);
+    e.set_halign (Align.FILL);
+    pack (e);
+    return e;
   }
 
   public void left_add (Widget widget) {
@@ -524,6 +537,15 @@ public class Contacts.FieldRow : Contacts.Row {
   public void right_add (Widget widget) {
     this.attach (widget, 2, 0);
     widget.set_halign (Align.START);
+  }
+
+  public Button pack_delete_button () {
+    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
+    var b = new Button();
+    b.add (image);
+    right_add (b);
+    b.set_halign (Align.CENTER);
+    return b;
   }
 }
 
@@ -593,11 +615,42 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     this.field_set = field_set;
   }
   public abstract void update ();
-
-  public virtual void enter_edit_mode () {
+  public virtual void pack_edit_widgets () {
+  }
+  public virtual void finish_edit_widgets () {
   }
 
-  public virtual void exit_edit_mode () {
+  public void enter_edit_mode () {
+    this.set_can_focus (false);
+    foreach (var w in this.get_children ()) {
+      w.hide ();
+      w.set_data ("original-widget", true);
+    }
+
+    this.reset ();
+    this.pack_edit_widgets ();
+    var b = this.pack_delete_button ();
+
+    foreach (var w in this.get_children ()) {
+      if (!w.get_data<bool> ("original-widget"))
+	w.show_all ();
+    }
+
+  }
+
+  public void exit_edit_mode () {
+    finish_edit_widgets ();
+
+    foreach (var w in this.get_children ()) {
+      if (!w.get_data<bool> ("original-widget"))
+	w.destroy ();
+    }
+
+    update ();
+    // TODO: Actually change values in folks
+
+    this.show_all ();
+    this.set_can_focus (true);
   }
 }
 
@@ -605,6 +658,7 @@ class Contacts.LinkFieldRow : DataFieldRow {
   UrlFieldDetails details;
   Label text_label;
   LinkButton uri_button;
+  Entry? entry;
 
   public LinkFieldRow (FieldSet field_set, UrlFieldDetails details) {
     base (field_set);
@@ -623,6 +677,21 @@ class Contacts.LinkFieldRow : DataFieldRow {
   public override void update () {
     text_label.set_text (Contact.format_uri_link_text (details));
     uri_button.set_uri (details.value);
+  }
+
+  public override void pack_edit_widgets () {
+    entry = this.pack_entry (details.value);
+    entry.grab_focus ();
+    entry.set_text (details.value);
+    entry.activate.connect ( () => {
+	field_set.sheet.pane.exit_edit_mode ();
+      });
+  }
+
+  public override void finish_edit_widgets () {
+    var old_details = details;
+    details = new UrlFieldDetails (entry.get_text (), old_details.parameters);
+    entry = null;
   }
 }
 
@@ -888,7 +957,6 @@ class Contacts.AddressFieldRow : DataFieldRow {
     this.pack_text_detail (out text_label[0], out detail_label);
     for (int i = 1; i < text_label.length; i++) {
       text_label[i] = this.pack_text (true);
-      text_label[i].set_no_show_all (true);
     }
   }
 
@@ -900,8 +968,10 @@ class Contacts.AddressFieldRow : DataFieldRow {
       if (i < strs.length && strs[i] != null) {
 	text_label[i].set_text (strs[i]);
 	text_label[i].show ();
+	text_label[i].set_no_show_all (false);
       } else {
 	text_label[i].hide ();
+	text_label[i].set_no_show_all (true);
       }
     }
   }
