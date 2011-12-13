@@ -611,6 +611,11 @@ public abstract class Contacts.FieldSet : Grid {
     row.update ();
   }
 
+  public void remove_row (DataFieldRow row) {
+    this.remove (row);
+    data_rows.remove (row);
+  }
+
   public virtual Value? get_value () {
     return null;
   }
@@ -661,6 +666,10 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     this.reset ();
     this.pack_edit_widgets ();
     var b = this.pack_delete_button ();
+    b.clicked.connect ( () => {
+	field_set.remove_row (this);
+	field_set.save ();
+      });
 
     foreach (var w in this.get_children ()) {
       if (!w.get_data<bool> ("original-widget"))
