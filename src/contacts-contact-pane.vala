@@ -551,6 +551,7 @@ public class Contacts.FieldRow : Contacts.Row {
 
 public abstract class Contacts.FieldSet : Grid {
   public class string label_name;
+  public class string property_name;
 
   public PersonaSheet sheet { get; construct; }
   public int row_nr { get; construct; }
@@ -559,7 +560,6 @@ public abstract class Contacts.FieldSet : Grid {
   ArrayList<DataFieldRow> data_rows = new ArrayList<DataFieldRow>();
 
   public abstract void populate ();
-  public abstract bool reads_param (string param);
 
   construct {
     this.set_orientation (Orientation.VERTICAL);
@@ -581,6 +581,10 @@ public abstract class Contacts.FieldSet : Grid {
       sheet.remove (this);
       added = false;
     }
+  }
+
+  public bool reads_param (string param) {
+    return param == property_name;
   }
 
   public bool is_empty () {
@@ -698,6 +702,7 @@ class Contacts.LinkFieldRow : DataFieldRow {
 class Contacts.LinkFieldSet : FieldSet {
   class construct {
     label_name = _("Links");
+    property_name = "urls";
   }
 
   public override void populate () {
@@ -710,10 +715,6 @@ class Contacts.LinkFieldSet : FieldSet {
       var row = new LinkFieldRow (this, url_details);
       add_row (row);
     }
-  }
-
-  public override bool reads_param (string param) {
-    return param == "urls";
   }
 }
 
@@ -737,6 +738,7 @@ class Contacts.EmailFieldRow : DataFieldRow {
 class Contacts.EmailFieldSet : FieldSet {
   class construct {
     label_name = _("Email");
+    property_name = "email-addresses";
   }
 
   public override void populate () {
@@ -748,10 +750,6 @@ class Contacts.EmailFieldSet : FieldSet {
       var row = new EmailFieldRow (this, email);
       add_row (row);
     }
-  }
-
-  public override bool reads_param (string param) {
-    return param == "email-addresses";
   }
 }
 
@@ -776,6 +774,7 @@ class Contacts.PhoneFieldRow : DataFieldRow {
 class Contacts.PhoneFieldSet : FieldSet {
   class construct {
     label_name = _("Phone");
+    property_name = "phone-numbers";
   }
   public override void populate () {
     var details = sheet.persona as PhoneDetails;
@@ -786,9 +785,6 @@ class Contacts.PhoneFieldSet : FieldSet {
       var row = new PhoneFieldRow (this, phone);
       add_row (row);
     }
-  }
-  public override bool reads_param (string param) {
-    return param == "phone-numbers";
   }
 }
 
@@ -814,6 +810,7 @@ class Contacts.ChatFieldRow : DataFieldRow {
 class Contacts.ChatFieldSet : FieldSet {
   class construct {
     label_name = _("Chat");
+    property_name = "im-addresses";
   }
   public override void populate () {
     var details = sheet.persona as ImDetails;
@@ -827,9 +824,6 @@ class Contacts.ChatFieldSet : FieldSet {
 	}
       }
     }
-  }
-  public override bool reads_param (string param) {
-    return param == "im-addresses";
   }
 }
 
@@ -859,6 +853,7 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
 class Contacts.BirthdayFieldSet : FieldSet {
   class construct {
     label_name = _("Birthday");
+    property_name = "birthday";
   }
   public override void populate () {
     var details = sheet.persona as BirthdayDetails;
@@ -870,9 +865,6 @@ class Contacts.BirthdayFieldSet : FieldSet {
       var row = new BirthdayFieldRow (this, details);
       add_row (row);
     }
-  }
-  public override bool reads_param (string param) {
-    return param == "birthday";
   }
 }
 
@@ -895,6 +887,7 @@ class Contacts.NicknameFieldRow : DataFieldRow {
 class Contacts.NicknameFieldSet : FieldSet {
   class construct {
     label_name = _("Nickname");
+    property_name = "nickname";
   }
   public override void populate () {
     var details = sheet.persona as NameDetails;
@@ -905,9 +898,6 @@ class Contacts.NicknameFieldSet : FieldSet {
       var row = new NicknameFieldRow (this, details.nickname);
       add_row (row);
     }
-  }
-  public override bool reads_param (string param) {
-    return param == "nickname";
   }
 }
 
@@ -930,6 +920,7 @@ class Contacts.NoteFieldRow : DataFieldRow {
 class Contacts.NoteFieldSet : FieldSet {
   class construct {
     label_name = _("Note");
+    property_name = "notes";
   }
   public override void populate () {
     var details = sheet.persona as NoteDetails;
@@ -940,9 +931,6 @@ class Contacts.NoteFieldSet : FieldSet {
       var row = new NoteFieldRow (this, note);
       add_row (row);
     }
-  }
-  public override bool reads_param (string param) {
-    return param == "notes";
   }
 }
 
@@ -980,6 +968,7 @@ class Contacts.AddressFieldRow : DataFieldRow {
 class Contacts.AddressFieldSet : FieldSet {
   class construct {
     label_name = _("Addresses");
+    property_name = "postal-addresses";
   }
   public override void populate () {
     var details = sheet.persona as PostalAddressDetails;
@@ -990,9 +979,6 @@ class Contacts.AddressFieldSet : FieldSet {
       var row = new AddressFieldRow (this, addr);
       add_row (row);
     }
-  }
-  public override bool reads_param (string param) {
-    return param == "postal-addresses";
   }
 }
 
