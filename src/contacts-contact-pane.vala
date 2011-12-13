@@ -476,7 +476,7 @@ public class Contacts.FieldRow : Contacts.Row {
     pack (l);
   }
 
-  public void text (string s, bool wrap = false) {
+  public Label text (string s = "", bool wrap = false) {
     var l = new Label (s);
     if (wrap) {
       l.set_line_wrap (true);
@@ -486,12 +486,13 @@ public class Contacts.FieldRow : Contacts.Row {
     }
     l.set_halign (Align.START);
     pack (l);
+    return l;
   }
 
-  public void text_detail (string text, string detail, bool wrap = false) {
+  public void text_detail (out Label text_label, out Label detail_label, bool wrap = false) {
     var grid = new Grid ();
 
-    var l = new Label (text);
+    var l = new Label ("");
     l.set_hexpand (true);
     l.set_halign (Align.START);
     if (wrap) {
@@ -502,9 +503,12 @@ public class Contacts.FieldRow : Contacts.Row {
     }
     grid.add (l);
 
-    l = new Label (detail);
+    text_label = l;
+
+    l = new Label ("");
     l.set_halign (Align.END);
     l.get_style_context ().add_class ("dim-label");
+    detail_label = l;
 
     grid.set_halign (Align.FILL);
     grid.add (l);
@@ -523,272 +527,428 @@ public class Contacts.FieldRow : Contacts.Row {
   }
 }
 
+public abstract class Contacts.FieldSet : Grid {
+  public class string label_name;
+
+  public PersonaSheet sheet { get; construct; }
+  public int row_nr { get; construct; }
+  public bool added;
+  FieldRow label_row;
+  ArrayList<DataFieldRow> data_rows = new ArrayList<DataFieldRow>();
+
+  public abstract void populate ();
+  public abstract bool reads_param (string param);
+
+  construct {
+    this.set_orientation (Orientation.VERTICAL);
+
+    label_row = new FieldRow (sheet.pane.row_group);
+    this.add (label_row);
+    label_row.label (label_name);
+  }
+
+  public void add_to_sheet () {
+    if (!added) {
+      sheet.attach (this, 0, row_nr, 1, 1);
+      added = true;
+    }
+  }
+
+  public void remove_from_sheet () {
+    if (added) {
+      sheet.remove (this);
+      added = false;
+    }
+  }
+
+  public bool is_empty () {
+    return get_children ().length () == 1;
+  }
+
+  public void clear () {
+    foreach (var row in data_rows) {
+      row.destroy ();
+    }
+    data_rows.clear ();
+  }
+
+  public void add_row (DataFieldRow row) {
+    this.add (row);
+    data_rows.add (row);
+
+    row.set_can_focus (true);
+    row.clicked.connect( () => {
+	sheet.pane.enter_edit_mode (row);
+      });
+
+    row.update ();
+  }
+}
+
+public abstract class Contacts.DataFieldRow : FieldRow {
+
+  public DataFieldRow (FieldSet field_set) {
+    base (field_set.sheet.pane.row_group);
+  }
+  public abstract void update ();
+
+  public virtual void enter_edit_mode () {
+  }
+
+  public virtual void exit_edit_mode () {
+  }
+}
+
+class Contacts.LinkFieldRow : DataFieldRow {
+  UrlFieldDetails details;
+  Label text_label;
+  LinkButton uri_button;
+
+  public LinkFieldRow (FieldSet field_set, UrlFieldDetails details) {
+    base (field_set);
+    this.details = details;
+
+    text_label = this.text ();
+    var image = new Image.from_icon_name ("web-browser" /* -symbolic */, IconSize.MENU);
+    image.get_style_context ().add_class ("dim-label");
+    uri_button = new LinkButton("");
+    uri_button.remove (uri_button.get_child ());
+    uri_button.set_relief (ReliefStyle.NONE);
+    uri_button.add (image);
+    this.right_add (uri_button);
+  }
+
+  public override void update () {
+    text_label.set_text (Contact.format_uri_link_text (details));
+    uri_button.set_uri (details.value);
+  }
+}
+
+class Contacts.LinkFieldSet : FieldSet {
+  class construct {
+    label_name = _("Links");
+  }
+
+  public override void populate () {
+    var details = sheet.persona as UrlDetails;
+    if (details == null)
+      return;
+
+    var urls = details.urls;
+    foreach (var url_details in urls) {
+      var row = new LinkFieldRow (this, url_details);
+      add_row (row);
+    }
+  }
+
+  public override bool reads_param (string param) {
+    return param == "urls";
+  }
+}
+
+class Contacts.EmailFieldRow : DataFieldRow {
+  EmailFieldDetails details;
+  Label text_label;
+  Label detail_label;
+
+  public EmailFieldRow (FieldSet field_set, EmailFieldDetails details) {
+    base (field_set);
+    this.details = details;
+    this.text_detail (out text_label, out detail_label);
+  }
+
+  public override void update () {
+    text_label.set_text (details.value);
+    detail_label.set_text (TypeSet.general.format_type (details));
+  }
+}
+
+class Contacts.EmailFieldSet : FieldSet {
+  class construct {
+    label_name = _("Email");
+  }
+
+  public override void populate () {
+    var details = sheet.persona as EmailDetails;
+    if (details == null)
+      return;
+    var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+    foreach (var email in emails) {
+      var row = new EmailFieldRow (this, email);
+      add_row (row);
+    }
+  }
+
+  public override bool reads_param (string param) {
+    return param == "email-addresses";
+  }
+}
+
+class Contacts.PhoneFieldRow : DataFieldRow {
+  PhoneFieldDetails details;
+  Label text_label;
+  Label detail_label;
+
+  public PhoneFieldRow (FieldSet field_set, PhoneFieldDetails details) {
+    base (field_set);
+    this.details = details;
+    this.text_detail (out text_label, out detail_label);
+
+  }
+
+  public override void update () {
+    text_label.set_text (details.value);
+    detail_label.set_text (TypeSet.phone.format_type (details));
+  }
+}
+
+class Contacts.PhoneFieldSet : FieldSet {
+  class construct {
+    label_name = _("Phone");
+  }
+  public override void populate () {
+    var details = sheet.persona as PhoneDetails;
+    if (details == null)
+      return;
+    var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
+    foreach (var phone in phone_numbers) {
+      var row = new PhoneFieldRow (this, phone);
+      add_row (row);
+    }
+  }
+  public override bool reads_param (string param) {
+    return param == "phone-numbers";
+  }
+}
+
+class Contacts.ChatFieldRow : DataFieldRow {
+  string protocol;
+  ImFieldDetails details;
+  FieldSet field_set;
+
+  Label text_label;
+
+  public ChatFieldRow (FieldSet field_set, string protocol, ImFieldDetails details) {
+    base (field_set);
+    this.field_set = field_set;
+    this.protocol = protocol;
+    this.details = details;
+    text_label = this.text ();
+  }
+
+  public override void update () {
+    var im_persona = field_set.sheet.persona as Tpf.Persona;
+    text_label.set_text (Contact.format_im_name (im_persona, protocol, details.value));
+  }
+}
+
+class Contacts.ChatFieldSet : FieldSet {
+  class construct {
+    label_name = _("Chat");
+  }
+  public override void populate () {
+    var details = sheet.persona as ImDetails;
+    if (details == null)
+      return;
+    foreach (var protocol in details.im_addresses.get_keys ()) {
+      foreach (var id in details.im_addresses[protocol]) {
+	if (sheet.persona is Tpf.Persona) {
+	  var row = new ChatFieldRow (this, protocol, id);
+	  add_row (row);
+	}
+      }
+    }
+  }
+  public override bool reads_param (string param) {
+    return param == "im-addresses";
+  }
+}
+
+class Contacts.BirthdayFieldRow : DataFieldRow {
+  BirthdayDetails details;
+  Label text_label;
+
+  public BirthdayFieldRow (FieldSet field_set, BirthdayDetails details) {
+    base (field_set);
+    this.details = details;
+
+    text_label = this.text ();
+    var image = new Image.from_icon_name ("preferences-system-date-and-time-symbolic", IconSize.MENU);
+    image.get_style_context ().add_class ("dim-label");
+    var button = new Button();
+    button.set_relief (ReliefStyle.NONE);
+    button.add (image);
+    this.right_add (button);
+  }
+
+  public override void update () {
+    DateTime? bday = details.birthday;
+    text_label.set_text (bday.to_local ().format ("%x"));
+  }
+}
+
+class Contacts.BirthdayFieldSet : FieldSet {
+  class construct {
+    label_name = _("Birthday");
+  }
+  public override void populate () {
+    var details = sheet.persona as BirthdayDetails;
+    if (details == null)
+      return;
+
+    DateTime? bday = details.birthday;
+    if (bday != null) {
+      var row = new BirthdayFieldRow (this, details);
+      add_row (row);
+    }
+  }
+  public override bool reads_param (string param) {
+    return param == "birthday";
+  }
+}
+
+class Contacts.NicknameFieldRow : DataFieldRow {
+  string nickname;
+  Label text_label;
+
+  public NicknameFieldRow (FieldSet field_set, string nickname) {
+    base (field_set);
+    this.nickname = nickname;
+
+    text_label = this.text ();
+  }
+
+  public override void update () {
+    text_label.set_text (nickname);
+  }
+}
+
+class Contacts.NicknameFieldSet : FieldSet {
+  class construct {
+    label_name = _("Nickname");
+  }
+  public override void populate () {
+    var details = sheet.persona as NameDetails;
+    if (details == null)
+      return;
+
+    if (is_set (details.nickname)) {
+      var row = new NicknameFieldRow (this, details.nickname);
+      add_row (row);
+    }
+  }
+  public override bool reads_param (string param) {
+    return param == "nickname";
+  }
+}
+
+class Contacts.NoteFieldRow : DataFieldRow {
+  NoteFieldDetails details;
+  Label text_label;
+
+  public NoteFieldRow (FieldSet field_set, NoteFieldDetails details) {
+    base (field_set);
+    this.details = details;
+
+    text_label = this.text ("", true);
+  }
+
+  public override void update () {
+    text_label.set_text (details.value);
+  }
+}
+
+class Contacts.NoteFieldSet : FieldSet {
+  class construct {
+    label_name = _("Note");
+  }
+  public override void populate () {
+    var details = sheet.persona as NoteDetails;
+    if (details == null)
+      return;
+
+    foreach (var note in details.notes) {
+      var row = new NoteFieldRow (this, note);
+      add_row (row);
+    }
+  }
+  public override bool reads_param (string param) {
+    return param == "notes";
+  }
+}
+
+class Contacts.AddressFieldRow : DataFieldRow {
+  PostalAddressFieldDetails details;
+  Label? text_label[8];
+  Label detail_label;
+
+  public AddressFieldRow (FieldSet field_set, PostalAddressFieldDetails details) {
+    base (field_set);
+    this.details = details;
+    this.text_detail (out text_label[0], out detail_label);
+    for (int i = 1; i < text_label.length; i++) {
+      text_label[i] = this.text ("", true);
+      text_label[i].set_no_show_all (true);
+    }
+  }
+
+  public override void update () {
+    detail_label.set_text (TypeSet.general.format_type (details));
+
+    string[] strs = Contact.format_address (details.value);
+    for (int i = 0; i < text_label.length; i++) {
+      if (i < strs.length && strs[i] != null) {
+	text_label[i].set_text (strs[i]);
+	text_label[i].show ();
+      } else {
+	text_label[i].hide ();
+      }
+    }
+  }
+}
+
+class Contacts.AddressFieldSet : FieldSet {
+  class construct {
+    label_name = _("Addresses");
+  }
+  public override void populate () {
+    var details = sheet.persona as PostalAddressDetails;
+    if (details == null)
+      return;
+
+    foreach (var addr in details.postal_addresses) {
+      var row = new AddressFieldRow (this, addr);
+      add_row (row);
+    }
+  }
+  public override bool reads_param (string param) {
+    return param == "postal-addresses";
+  }
+}
+
 public class Contacts.PersonaSheet : Grid {
-  ContactPane pane;
-  Persona persona;
+  public ContactPane pane;
+  public Persona persona;
   FieldRow header;
   FieldRow footer;
 
-  abstract class Field : Grid {
-    public class string label_name;
-
-    public PersonaSheet sheet { get; construct; }
-    public int row_nr { get; construct; }
-    public bool added;
-    FieldRow label_row;
-
-    public abstract void populate ();
-    public abstract bool reads_param (string param);
-
-    construct {
-      this.set_orientation (Orientation.VERTICAL);
-
-      label_row = new FieldRow (sheet.pane.row_group);
-      this.add (label_row);
-      label_row.label (label_name);
-    }
-
-    public void add_to_sheet () {
-      if (!added) {
-	sheet.attach (this, 0, row_nr, 1, 1);
-	added = true;
-      }
-    }
-
-    public void remove_from_sheet () {
-      if (added) {
-	sheet.remove (this);
-	added = false;
-      }
-    }
-
-    public bool is_empty () {
-      return get_children ().length () == 1;
-    }
-
-    public void clear () {
-      foreach (var row in get_children ()) {
-	if (row != label_row)
-	  row.destroy ();
-      }
-    }
-
-    public FieldRow new_row () {
-      var row = new FieldRow (sheet.pane.row_group);
-      this.add (row);
-
-      row.set_can_focus (true);
-      row.clicked.connect( () => {
-	  this.set_edit_mode (row);
-	});
-
-      return row;
-    }
-
-    public virtual void set_edit_mode (FieldRow row) {
-    }
-  }
-
-  class LinkField : Field {
-    class construct {
-      label_name = _("Links");
-    }
-    public override void populate () {
-      var details = sheet.persona as UrlDetails;
-      if (details == null)
-	return;
-
-      var urls = details.urls;
-      foreach (var url_details in urls) {
-	var row = new_row ();
-	row.text (Contact.format_uri_link_text (url_details));
-	//row.detail ("Blog");
-	// Add link to url_details.value
-	var image = new Image.from_icon_name ("web-browser" /* -symbolic */, IconSize.MENU);
-	image.get_style_context ().add_class ("dim-label");
-	var button = new Button();
-	button.set_relief (ReliefStyle.NONE);
-	button.add (image);
-	row.right_add (button);
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "urls";
-    }
-  }
-
-  class EmailField : Field {
-    class construct {
-      label_name = _("Email");
-    }
-    public override void populate () {
-      var details = sheet.persona as EmailDetails;
-      if (details == null)
-	return;
-      var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
-      foreach (var email in emails) {
-	var row = new_row ();
-	row.text_detail (email.value, TypeSet.general.format_type (email));
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "email-addresses";
-    }
-  }
-
-  class PhoneField : Field {
-    class construct {
-      label_name = _("Phone");
-    }
-    public override void populate () {
-      var details = sheet.persona as PhoneDetails;
-      if (details == null)
-	return;
-      var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
-      foreach (var phone in phone_numbers) {
-	var row = new_row ();
-	row.text_detail (phone.value, TypeSet.phone.format_type (phone));
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "phone-numbers";
-    }
-  }
-
-  class ChatField : Field {
-    class construct {
-      label_name = _("Chat");
-    }
-    public override void populate () {
-      var details = sheet.persona as ImDetails;
-      if (details == null)
-	return;
-      var ims = details.im_addresses;
-      var im_keys = ims.get_keys ();
-      foreach (var protocol in im_keys) {
-	foreach (var id in ims[protocol]) {
-	  var im_persona = sheet.persona as Tpf.Persona;
-	  if (im_persona == null)
-	    continue;
-	  var row = new_row ();
-	  row.text (Contact.format_im_name (im_persona, protocol, id.value));
-	}
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "im-addresses";
-    }
-  }
-
-  class BirthdayField : Field {
-    class construct {
-      label_name = _("Birthday");
-    }
-    public override void populate () {
-      var details = sheet.persona as BirthdayDetails;
-      if (details == null)
-	return;
-
-      DateTime? bday = details.birthday;
-      if (bday != null) {
-	var row = new_row ();
-	row.text (bday.to_local ().format ("%x"));
-
-	var image = new Image.from_icon_name ("preferences-system-date-and-time-symbolic", IconSize.MENU);
-	image.get_style_context ().add_class ("dim-label");
-	var button = new Button();
-	button.set_relief (ReliefStyle.NONE);
-	button.add (image);
-	row.right_add (button);
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "birthday";
-    }
-  }
-
-  class NicknameField : Field {
-    class construct {
-      label_name = _("Nickname");
-    }
-    public override void populate () {
-      var details = sheet.persona as NameDetails;
-      if (details == null)
-	return;
-
-      if (is_set (details.nickname)) {
-	var row = new_row ();
-	row.text (details.nickname);
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "nickname";
-    }
-  }
-
-  class NoteField : Field {
-    class construct {
-      label_name = _("Note");
-    }
-    public override void populate () {
-      var details = sheet.persona as NoteDetails;
-      if (details == null)
-	return;
-
-      foreach (var note in details.notes) {
-	var row = new_row ();
-	row.text (note.value, true);
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "notes";
-    }
-  }
-
-  class AddressField : Field {
-    class construct {
-      label_name = _("Addresses");
-    }
-    public override void populate () {
-      var details = sheet.persona as PostalAddressDetails;
-      if (details == null)
-	return;
-
-      foreach (var addr in details.postal_addresses) {
-	var row = new_row ();
-	string[] strs = Contact.format_address (addr.value);
-	int i = 0;
-	foreach (var s in strs) {
-	  if (i++ == 0)
-	    row.text_detail (s, TypeSet.general.format_type (addr), true);
-	  else
-	    row.text (s, true);
-	}
-      }
-    }
-    public override bool reads_param (string param) {
-      return param == "postal-addresses";
-    }
-  }
-
-  static Type[] field_types = {
-    typeof(LinkField),
-    typeof(EmailField),
-    typeof(PhoneField),
-    typeof(ChatField),
-    typeof(BirthdayField),
-    typeof(NicknameField),
-    typeof(AddressField),
-    typeof(NoteField)
+  static Type[] field_set_types = {
+    typeof(LinkFieldSet),
+    typeof(EmailFieldSet),
+    typeof(PhoneFieldSet),
+    typeof(ChatFieldSet),
+    typeof(BirthdayFieldSet),
+    typeof(NicknameFieldSet),
+    typeof(AddressFieldSet),
+    typeof(NoteFieldSet)
     /* More:
        company/department/profession/title/manager/assistant
     */
   };
-
-  Field? fields[8]; // This is really the size of field_types enum
+  FieldSet? field_sets[8]; // This is really the size of field_set_types
 
   public PersonaSheet(ContactPane pane, Persona persona) {
-    assert (fields.length == field_types.length);
+    assert (field_sets.length == field_set_types.length);
 
     this.pane = pane;
     this.persona = persona;
@@ -818,13 +978,13 @@ public class Contacts.PersonaSheet : Grid {
       }
     }
 
-    for (int i = 0; i < field_types.length; i++) {
-      var field = (Field) Object.new(field_types[i], sheet: this, row_nr: row_nr++);
-      fields[i] = field;
+    for (int i = 0; i < field_set_types.length; i++) {
+      var field_set = (FieldSet) Object.new(field_set_types[i], sheet: this, row_nr: row_nr++);
+      field_sets[i] = field_set;
 
-      field.populate ();
-      if (!field.is_empty ())
-	field.add_to_sheet ();
+      field_set.populate ();
+      if (!field_set.is_empty ())
+	field_set.add_to_sheet ();
     }
 
     if (editable) {
@@ -846,16 +1006,16 @@ public class Contacts.PersonaSheet : Grid {
 
   private void persona_notify_cb (ParamSpec pspec) {
     var name = pspec.get_name ();
-    foreach (var field in fields) {
-      if (field.reads_param (name)) {
-	field.clear ();
-	field.populate ();
+    foreach (var field_set in field_sets) {
+      if (field_set.reads_param (name)) {
+	field_set.clear ();
+	field_set.populate ();
 
-	if (field.is_empty ())
-	  field.remove_from_sheet ();
+	if (field_set.is_empty ())
+	  field_set.remove_from_sheet ();
 	else {
-	  field.show_all ();
-	  field.add_to_sheet ();
+	  field_set.show_all ();
+	  field_set.add_to_sheet ();
 	}
       }
     }
@@ -869,6 +1029,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   private Grid card_grid;
   private Grid personas_grid;
   public RowGroup row_group;
+  public DataFieldRow? editing_row;
 
   private Contact? contact;
 
@@ -1013,6 +1174,20 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   public void new_contact (ListPane list_pane) {
+  }
+
+  public void enter_edit_mode (DataFieldRow row) {
+    if (editing_row != row) {
+      exit_edit_mode ();
+      editing_row = row;
+      editing_row.enter_edit_mode ();
+    }
+  }
+
+  public void exit_edit_mode () {
+    if (editing_row != null)
+      editing_row.exit_edit_mode ();
+    editing_row = null;
   }
 
   public ContactPane (Store contacts_store) {
