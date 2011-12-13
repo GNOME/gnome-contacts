@@ -437,6 +437,18 @@ public class Contacts.FieldRow : Contacts.Row {
     clickable.unrealize (null);
   }
 
+  public override bool draw (Cairo.Context cr) {
+    var state = this.get_state_flags ();
+    var context = this.get_style_context ();
+    context.save ();
+    // Don't propagate the clicked prelight and active state to children
+    this.set_state_flags (state & ~(StateFlags.PRELIGHT | StateFlags.ACTIVE), true);
+    base.draw (cr);
+    context.restore ();
+
+    return true;
+  }
+
   public void pack (Widget w) {
     this.attach (w, 1, start++);
   }
