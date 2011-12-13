@@ -723,6 +723,12 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     entry.activate.connect ( () => {
 	field_set.sheet.pane.exit_edit_mode (true);
       });
+    entry.key_press_event.connect ( (key_event) => {
+	if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
+	  field_set.sheet.pane.exit_edit_mode (false);
+	}
+	return false;
+      });
   }
 }
 
