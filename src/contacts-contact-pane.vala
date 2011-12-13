@@ -556,8 +556,9 @@ public abstract class Contacts.FieldSet : Grid {
   public PersonaSheet sheet { get; construct; }
   public int row_nr { get; construct; }
   public bool added;
+  public bool saving;
   FieldRow label_row;
-  ArrayList<DataFieldRow> data_rows = new ArrayList<DataFieldRow>();
+  protected ArrayList<DataFieldRow> data_rows = new ArrayList<DataFieldRow>();
 
   public abstract void populate ();
 
@@ -609,6 +610,32 @@ public abstract class Contacts.FieldSet : Grid {
 
     row.update ();
   }
+
+  public virtual Value? get_value () {
+    return null;
+  }
+
+  public void save () {
+    var value = get_value ();
+    if (value == null)
+      warning ("Unimplemented get_value()");
+    else {
+      saving = true;
+      sheet.pane.contact.set_persona_property.begin (sheet.persona, property_name, value,
+						     (obj, result) => {
+	  try {
+	    var contact = obj as Contact;
+	    contact.set_persona_property.end (result);
+	    saving = false;
+	  } catch (PropertyError e1) {
+	    warning ("Unable to edit property '%s': %s", property_name, e1.message);
+	  } catch (Error e2) {
+	    warning ("Unable to create writeable persona: %s", e2.message);
+	  }
+
+						     });
+    }
+  }
 }
 
 public abstract class Contacts.DataFieldRow : FieldRow {
@@ -639,7 +666,6 @@ public abstract class Contacts.DataFieldRow : FieldRow {
       if (!w.get_data<bool> ("original-widget"))
 	w.show_all ();
     }
-
   }
 
   public void exit_edit_mode () {
@@ -651,15 +677,15 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     }
 
     update ();
-    // TODO: Actually change values in folks
-
     this.show_all ();
     this.set_can_focus (true);
+
+    field_set.save ();
   }
 }
 
 class Contacts.LinkFieldRow : DataFieldRow {
-  UrlFieldDetails details;
+  public UrlFieldDetails details;
   Label text_label;
   LinkButton uri_button;
   Entry? entry;
@@ -715,6 +741,22 @@ class Contacts.LinkFieldSet : FieldSet {
       var row = new LinkFieldRow (this, url_details);
       add_row (row);
     }
+  }
+  public override Value? get_value () {
+    var details = sheet.persona as UrlDetails;
+    if (details == null)
+      return null;
+
+    var new_details = new HashSet<UrlFieldDetails>();
+    foreach (var row in data_rows) {
+      var link_row = row as LinkFieldRow;
+      new_details.add (link_row.details);
+    }
+
+    var value = Value(new_details.get_type ());
+    value.set_object (new_details);
+
+    return value;
   }
 }
 
@@ -1063,7 +1105,7 @@ public class Contacts.PersonaSheet : Grid {
   private void persona_notify_cb (ParamSpec pspec) {
     var name = pspec.get_name ();
     foreach (var field_set in field_sets) {
-      if (field_set.reads_param (name)) {
+      if (field_set.reads_param (name) && !field_set.saving) {
 	field_set.clear ();
 	field_set.populate ();
 
@@ -1087,7 +1129,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   public RowGroup row_group;
   public DataFieldRow? editing_row;
 
-  private Contact? contact;
+  public Contact? contact;
 
   const int PROFILE_SIZE = 128;
 
