@@ -49,6 +49,10 @@ public class Contacts.Clickable : Object {
 		       Gdk.EventMask.BUTTON_RELEASE_MASK);
   }
 
+  public void set_focus_on_click (bool focus_on_click) {
+    this.focus_on_click = focus_on_click;
+  }
+
   public void realize_for (Gdk.Window? event_window) {
     this.event_window = event_window;
   }

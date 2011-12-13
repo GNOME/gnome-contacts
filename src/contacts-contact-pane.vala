@@ -421,6 +421,7 @@ public class Contacts.FieldRow : Contacts.Row {
     base (group);
 
     clickable = new Clickable (this);
+    clickable.set_focus_on_click (true);
     clickable.clicked.connect ( () => { this.clicked (); } );
     start = 0;
   }
@@ -438,8 +439,15 @@ public class Contacts.FieldRow : Contacts.Row {
   }
 
   public override bool draw (Cairo.Context cr) {
-    var state = this.get_state_flags ();
+    Allocation allocation;
+    this.get_allocation (out allocation);
+
     var context = this.get_style_context ();
+    var state = this.get_state_flags ();
+
+    if (this.has_visible_focus ())
+      Gtk.render_focus (context, cr, 0, 0, allocation.width, allocation.height);
+
     context.save ();
     // Don't propagate the clicked prelight and active state to children
     this.set_state_flags (state & ~(StateFlags.PRELIGHT | StateFlags.ACTIVE), true);
@@ -569,6 +577,7 @@ public class Contacts.PersonaSheet : Grid {
       var row = new FieldRow (sheet.pane.row_group);
       this.add (row);
 
+      row.set_can_focus (true);
       row.clicked.connect( () => {
 	  this.set_edit_mode (row);
 	});
