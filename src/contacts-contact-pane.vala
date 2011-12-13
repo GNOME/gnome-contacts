@@ -1035,6 +1035,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     top_grid.set_margin_bottom (10);
     top_grid.set_row_spacing (20);
     this.add_with_viewport (top_grid);
+    top_grid.set_focus_vadjustment (this.get_vadjustment ());
 
     this.get_child().get_style_context ().add_class ("contact-pane");
 
