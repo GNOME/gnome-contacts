@@ -518,7 +518,27 @@ public class Contacts.FieldRow : Contacts.Row {
     grid.add (l);
 
     pack (grid);
+  }
 
+  public void pack_entry_detail_combo (string text, AbstractFieldDetails detail, TypeSet type_set, out Entry entry, out TypeCombo combo) {
+    var grid = new Grid ();
+    grid.set_column_spacing (16);
+
+    entry = new Entry ();
+    entry.set_text (text);
+    entry.set_hexpand (true);
+    entry.set_halign (Align.FILL);
+    grid.add (entry);
+
+    combo = new TypeCombo (type_set);
+    combo.set_hexpand (false);
+    combo.set_halign (Align.END);
+    combo.set_active (detail);
+
+    grid.set_halign (Align.FILL);
+    grid.add (combo);
+
+    pack (grid);
   }
 
   public Entry pack_entry (string s) {
