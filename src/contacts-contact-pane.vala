@@ -653,7 +653,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   public abstract void update ();
   public virtual void pack_edit_widgets () {
   }
-  public virtual void finish_edit_widgets () {
+  public virtual void finish_edit_widgets (bool save) {
   }
 
   public void enter_edit_mode () {
@@ -677,8 +677,8 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     }
   }
 
-  public void exit_edit_mode () {
-    finish_edit_widgets ();
+  public void exit_edit_mode (bool save) {
+    finish_edit_widgets (save);
 
     foreach (var w in this.get_children ()) {
       if (!w.get_data<bool> ("original-widget"))
@@ -689,7 +689,8 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     this.show_all ();
     this.set_can_focus (true);
 
-    field_set.save ();
+    if (save)
+      field_set.save ();
   }
 }
 
@@ -723,13 +724,14 @@ class Contacts.LinkFieldRow : DataFieldRow {
     entry.grab_focus ();
     entry.set_text (details.value);
     entry.activate.connect ( () => {
-	field_set.sheet.pane.exit_edit_mode ();
+	field_set.sheet.pane.exit_edit_mode (true);
       });
   }
 
-  public override void finish_edit_widgets () {
+  public override void finish_edit_widgets (bool save) {
     var old_details = details;
-    details = new UrlFieldDetails (entry.get_text (), old_details.parameters);
+    if (save)
+      details = new UrlFieldDetails (entry.get_text (), old_details.parameters);
     entry = null;
   }
 }
@@ -1285,15 +1287,15 @@ public class Contacts.ContactPane : ScrolledWindow {
 
   public void enter_edit_mode (DataFieldRow row) {
     if (editing_row != row) {
-      exit_edit_mode ();
+      exit_edit_mode (true);
       editing_row = row;
       editing_row.enter_edit_mode ();
     }
   }
 
-  public void exit_edit_mode () {
+  public void exit_edit_mode (bool save) {
     if (editing_row != null)
-      editing_row.exit_edit_mode ();
+      editing_row.exit_edit_mode (save);
     editing_row = null;
   }
 
