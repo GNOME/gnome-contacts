@@ -938,7 +938,7 @@ public class Contacts.Contact : GLib.Object  {
     return uri;
   }
 
-  public async Persona ensure_primary_persona () throws GLib.Error {
+  public async Persona ensure_primary_persona () throws IndividualAggregatorError, ContactError, PropertyError {
     Persona? p = find_primary_persona ();
     if (p != null)
       return p;
@@ -1054,7 +1054,7 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   internal static async void set_persona_property (Persona persona,
-						   string property_name, Value new_value) throws PropertyError {
+						   string property_name, Value new_value) throws PropertyError, IndividualAggregatorError, ContactError, PropertyError {
     if (persona is FakePersona) {
       var fake = persona as FakePersona;
       yield fake.make_real_and_set (property_name, new_value);
@@ -1207,7 +1207,7 @@ public class Contacts.FakePersona : Persona {
     }
 
   public async Persona? make_real_and_set (string property,
-					   Value value) throws GLib.Error {
+					   Value value) throws IndividualAggregatorError, ContactError, PropertyError {
     var v = new PropVal ();
     v.property = property;
     v.value = value;
