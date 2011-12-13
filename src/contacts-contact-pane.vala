@@ -461,14 +461,14 @@ public class Contacts.FieldRow : Contacts.Row {
     this.attach (w, 1, start++);
   }
 
-  public void label (string s) {
+  public void pack_label (string s) {
     var l = new Label (s);
     l.set_halign (Align.START);
     l.get_style_context ().add_class ("dim-label");
     pack (l);
   }
 
-  public void header (string s) {
+  public void pack_header (string s) {
     var l = new Label (s);
     l.set_markup (
       "<span font='24px'>%s</span>".printf (s));
@@ -476,7 +476,7 @@ public class Contacts.FieldRow : Contacts.Row {
     pack (l);
   }
 
-  public Label text (string s = "", bool wrap = false) {
+  public Label pack_text (string s = "", bool wrap = false) {
     var l = new Label (s);
     if (wrap) {
       l.set_line_wrap (true);
@@ -489,7 +489,7 @@ public class Contacts.FieldRow : Contacts.Row {
     return l;
   }
 
-  public void text_detail (out Label text_label, out Label detail_label, bool wrap = false) {
+  public void pack_text_detail (out Label text_label, out Label detail_label, bool wrap = false) {
     var grid = new Grid ();
 
     var l = new Label ("");
@@ -544,7 +544,7 @@ public abstract class Contacts.FieldSet : Grid {
 
     label_row = new FieldRow (sheet.pane.row_group);
     this.add (label_row);
-    label_row.label (label_name);
+    label_row.pack_label (label_name);
   }
 
   public void add_to_sheet () {
@@ -608,7 +608,7 @@ class Contacts.LinkFieldRow : DataFieldRow {
     base (field_set);
     this.details = details;
 
-    text_label = this.text ();
+    text_label = this.pack_text ();
     var image = new Image.from_icon_name ("web-browser" /* -symbolic */, IconSize.MENU);
     image.get_style_context ().add_class ("dim-label");
     uri_button = new LinkButton("");
@@ -654,7 +654,7 @@ class Contacts.EmailFieldRow : DataFieldRow {
   public EmailFieldRow (FieldSet field_set, EmailFieldDetails details) {
     base (field_set);
     this.details = details;
-    this.text_detail (out text_label, out detail_label);
+    this.pack_text_detail (out text_label, out detail_label);
   }
 
   public override void update () {
@@ -692,7 +692,7 @@ class Contacts.PhoneFieldRow : DataFieldRow {
   public PhoneFieldRow (FieldSet field_set, PhoneFieldDetails details) {
     base (field_set);
     this.details = details;
-    this.text_detail (out text_label, out detail_label);
+    this.pack_text_detail (out text_label, out detail_label);
 
   }
 
@@ -733,7 +733,7 @@ class Contacts.ChatFieldRow : DataFieldRow {
     this.field_set = field_set;
     this.protocol = protocol;
     this.details = details;
-    text_label = this.text ();
+    text_label = this.pack_text ();
   }
 
   public override void update () {
@@ -772,7 +772,7 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
     base (field_set);
     this.details = details;
 
-    text_label = this.text ();
+    text_label = this.pack_text ();
     var image = new Image.from_icon_name ("preferences-system-date-and-time-symbolic", IconSize.MENU);
     image.get_style_context ().add_class ("dim-label");
     var button = new Button();
@@ -815,7 +815,7 @@ class Contacts.NicknameFieldRow : DataFieldRow {
     base (field_set);
     this.nickname = nickname;
 
-    text_label = this.text ();
+    text_label = this.pack_text ();
   }
 
   public override void update () {
@@ -850,7 +850,7 @@ class Contacts.NoteFieldRow : DataFieldRow {
     base (field_set);
     this.details = details;
 
-    text_label = this.text ("", true);
+    text_label = this.pack_text ("", true);
   }
 
   public override void update () {
@@ -885,9 +885,9 @@ class Contacts.AddressFieldRow : DataFieldRow {
   public AddressFieldRow (FieldSet field_set, PostalAddressFieldDetails details) {
     base (field_set);
     this.details = details;
-    this.text_detail (out text_label[0], out detail_label);
+    this.pack_text_detail (out text_label[0], out detail_label);
     for (int i = 1; i < text_label.length; i++) {
-      text_label[i] = this.text ("", true);
+      text_label[i] = this.pack_text ("", true);
       text_label[i].set_no_show_all (true);
     }
   }
@@ -967,7 +967,7 @@ public class Contacts.PersonaSheet : Grid {
       header = new FieldRow (pane.row_group);
       this.attach (header, 0, row_nr++, 1, 1);
 
-      header.header (Contact.format_persona_store_name (persona.store));
+      header.pack_header (Contact.format_persona_store_name (persona.store));
 
       if (!editable) {
 	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
