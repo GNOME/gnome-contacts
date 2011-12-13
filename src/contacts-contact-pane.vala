@@ -795,9 +795,11 @@ class Contacts.LinkFieldSet : FieldSet {
 }
 
 class Contacts.EmailFieldRow : DataFieldRow {
-  EmailFieldDetails details;
+  public EmailFieldDetails details;
   Label text_label;
   Label detail_label;
+  Entry? entry;
+  TypeCombo? combo;
 
   public EmailFieldRow (FieldSet field_set, EmailFieldDetails details) {
     base (field_set);
@@ -808,6 +810,26 @@ class Contacts.EmailFieldRow : DataFieldRow {
   public override void update () {
     text_label.set_text (details.value);
     detail_label.set_text (TypeSet.general.format_type (details));
+  }
+
+  public override void pack_edit_widgets () {
+    this.pack_entry_detail_combo (details.value, details, TypeSet.general, out entry, out combo);
+    entry.grab_focus ();
+    entry.activate.connect ( () => {
+	field_set.sheet.pane.exit_edit_mode (true);
+      });
+  }
+
+  public override bool finish_edit_widgets (bool save) {
+    var old_details = details;
+    bool changed = details.value != entry.get_text () || combo.modified;
+    if (save && changed) {
+      details = new EmailFieldDetails (entry.get_text (), old_details.parameters);
+      combo.update_details (details);
+    }
+    entry = null;
+    combo = null;
+    return changed;
   }
 }
 
@@ -827,6 +849,22 @@ class Contacts.EmailFieldSet : FieldSet {
       add_row (row);
     }
   }
+  public override Value? get_value () {
+    var details = sheet.persona as EmailDetails;
+    if (details == null)
+      return null;
+
+    var new_details = new HashSet<EmailFieldDetails>();
+    foreach (var row in data_rows) {
+      var email_row = row as EmailFieldRow;
+      new_details.add (email_row.details);
+    }
+
+    var value = Value(new_details.get_type ());
+    value.set_object (new_details);
+
+    return value;
+  }
 }
 
 class Contacts.PhoneFieldRow : DataFieldRow {
@@ -838,7 +876,6 @@ class Contacts.PhoneFieldRow : DataFieldRow {
     base (field_set);
     this.details = details;
     this.pack_text_detail (out text_label, out detail_label);
-
   }
 
   public override void update () {
