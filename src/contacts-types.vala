@@ -334,6 +334,7 @@ public class Contacts.TypeCombo : Grid  {
   TreeIter last_active;
   bool custom_mode;
   bool in_manual_change;
+  public bool modified;
 
   public signal void changed ();
 
@@ -419,6 +420,7 @@ public class Contacts.TypeCombo : Grid  {
     if (in_manual_change)
       return;
 
+    modified = true;
     TreeIter iter;
     if (combo.get_active_iter (out iter)) {
       if (type_set.is_custom (iter)) {
@@ -440,6 +442,7 @@ public class Contacts.TypeCombo : Grid  {
     last_active = iter;
     combo.set_active_iter (iter);
     in_manual_change = false;
+    modified = false;
   }
 
   public void update_details (AbstractFieldDetails details) {
