@@ -586,9 +586,11 @@ public abstract class Contacts.FieldSet : Grid {
 }
 
 public abstract class Contacts.DataFieldRow : FieldRow {
+  public FieldSet field_set;
 
   public DataFieldRow (FieldSet field_set) {
     base (field_set.sheet.pane.row_group);
+    this.field_set = field_set;
   }
   public abstract void update ();
 
@@ -724,13 +726,11 @@ class Contacts.PhoneFieldSet : FieldSet {
 class Contacts.ChatFieldRow : DataFieldRow {
   string protocol;
   ImFieldDetails details;
-  FieldSet field_set;
 
   Label text_label;
 
   public ChatFieldRow (FieldSet field_set, string protocol, ImFieldDetails details) {
     base (field_set);
-    this.field_set = field_set;
     this.protocol = protocol;
     this.details = details;
     text_label = this.pack_text ();
