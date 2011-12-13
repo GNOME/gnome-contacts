@@ -476,8 +476,8 @@ public class Contacts.FieldRow : Contacts.Row {
     pack (l);
   }
 
-  public Label pack_text (string s = "", bool wrap = false) {
-    var l = new Label (s);
+  public Label pack_text (bool wrap = false) {
+    var l = new Label ("");
     if (wrap) {
       l.set_line_wrap (true);
       l.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
@@ -850,7 +850,7 @@ class Contacts.NoteFieldRow : DataFieldRow {
     base (field_set);
     this.details = details;
 
-    text_label = this.pack_text ("", true);
+    text_label = this.pack_text (true);
   }
 
   public override void update () {
@@ -887,7 +887,7 @@ class Contacts.AddressFieldRow : DataFieldRow {
     this.details = details;
     this.pack_text_detail (out text_label[0], out detail_label);
     for (int i = 1; i < text_label.length; i++) {
-      text_label[i] = this.pack_text ("", true);
+      text_label[i] = this.pack_text (true);
       text_label[i].set_no_show_all (true);
     }
   }
