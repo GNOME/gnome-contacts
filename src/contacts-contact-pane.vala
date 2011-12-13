@@ -1031,7 +1031,6 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     top_grid = new Grid ();
     top_grid.set_orientation (Orientation.VERTICAL);
-    top_grid.set_margin_left (10);
     top_grid.set_margin_top (10);
     top_grid.set_margin_bottom (10);
     top_grid.set_row_spacing (20);
