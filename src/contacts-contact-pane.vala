@@ -732,12 +732,14 @@ public abstract class Contacts.DataFieldRow : FieldRow {
       field_set.save ();
   }
 
-  public void setup_entry_for_edit (Entry entry) {
-    ulong id = 0;
-    id = entry.size_allocate.connect ( () => {
-	entry.grab_focus ();
-	entry.disconnect (id);
-      });
+  public void setup_entry_for_edit (Entry entry, bool grab_focus = true) {
+    if (grab_focus) {
+      ulong id = 0;
+      id = entry.size_allocate.connect ( () => {
+	  entry.grab_focus ();
+	  entry.disconnect (id);
+	});
+    }
     entry.activate.connect ( () => {
 	field_set.sheet.pane.exit_edit_mode (true);
       });
