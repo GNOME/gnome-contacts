@@ -666,6 +666,7 @@ public abstract class Contacts.FieldSet : Grid {
 
 public abstract class Contacts.DataFieldRow : FieldRow {
   public FieldSet field_set;
+  ulong set_focus_child_id;
 
   public DataFieldRow (FieldSet field_set) {
     base (field_set.sheet.pane.row_group);
@@ -697,9 +698,25 @@ public abstract class Contacts.DataFieldRow : FieldRow {
       if (!w.get_data<bool> ("original-widget"))
 	w.show_all ();
     }
+
+    var parent_container = (this.get_parent () as Container);
+    var pane = field_set.sheet.pane;
+    var row = this;
+    set_focus_child_id = parent_container.set_focus_child.connect ( (widget) => {
+	if (parent_container.get_focus_child () != row) {
+	  Idle.add(() => {
+	      if (pane.editing_row == row)
+		pane.exit_edit_mode (true);
+	      return false;
+	    });
+	}
+      });
   }
 
   public void exit_edit_mode (bool save) {
+    var parent_container = (this.get_parent () as Container);
+    parent_container.disconnect (set_focus_child_id);
+
     var changed = finish_edit_widgets (save);
 
     foreach (var w in this.get_children ()) {
