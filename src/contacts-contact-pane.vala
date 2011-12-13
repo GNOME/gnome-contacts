@@ -673,7 +673,8 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   public abstract void update ();
   public virtual void pack_edit_widgets () {
   }
-  public virtual void finish_edit_widgets (bool save) {
+  public virtual bool finish_edit_widgets (bool save) {
+    return false;
   }
 
   public void enter_edit_mode () {
@@ -698,7 +699,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   }
 
   public void exit_edit_mode (bool save) {
-    finish_edit_widgets (save);
+    var changed = finish_edit_widgets (save);
 
     foreach (var w in this.get_children ()) {
       if (!w.get_data<bool> ("original-widget"))
@@ -709,7 +710,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     this.show_all ();
     this.set_can_focus (true);
 
-    if (save)
+    if (save && changed)
       field_set.save ();
   }
 }
@@ -748,11 +749,13 @@ class Contacts.LinkFieldRow : DataFieldRow {
       });
   }
 
-  public override void finish_edit_widgets (bool save) {
+  public override bool finish_edit_widgets (bool save) {
     var old_details = details;
-    if (save)
+    var changed = entry.get_text () != details.value;
+    if (save && changed)
       details = new UrlFieldDetails (entry.get_text (), old_details.parameters);
     entry = null;
+    return changed;
   }
 }
 
