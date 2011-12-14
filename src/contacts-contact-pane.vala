@@ -425,6 +425,9 @@ public class Contacts.FieldRow : Contacts.Row {
     clickable.set_focus_on_click (true);
     clickable.clicked.connect ( () => { this.clicked (); } );
     start = 0;
+
+    /* This should really be in class construct, but that doesn't seem to work... */
+    activate_signal = GLib.Signal.lookup ("activate-row", typeof (FieldRow));
   }
 
   public void reset () {
@@ -432,6 +435,11 @@ public class Contacts.FieldRow : Contacts.Row {
   }
 
   public signal void clicked ();
+
+  [CCode (action_signal = true)]
+  public virtual signal void activate_row () {
+    clickable.activate ();
+  }
 
   public override void realize () {
     base.realize ();
