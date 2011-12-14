@@ -722,8 +722,11 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   }
 
   public void exit_edit_mode (bool save) {
-    var parent_container = (this.get_parent () as Container);
-    parent_container.disconnect (set_focus_child_id);
+    var parent = this.get_parent ();
+    if (parent != null) {
+      var parent_container = (parent as Container);
+      parent_container.disconnect (set_focus_child_id);
+    }
 
     var changed = finish_edit_widgets (save);
 
