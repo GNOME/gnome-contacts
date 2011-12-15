@@ -861,8 +861,6 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 	return false;
       });
   }
-
-
 }
 
 class Contacts.LinkFieldRow : DataFieldRow {
@@ -948,12 +946,16 @@ class Contacts.DetailedFieldRow<T> : DataFieldRow {
   Entry? entry;
   TypeCombo? combo;
 
+  public delegate AbstractFieldDetails<string> DataCreate(string s);
+  DataCreate data_create;
+
   public T details { get { return (T)_details; } }
 
-  public DetailedFieldRow (FieldSet field_set, AbstractFieldDetails<string> details, TypeSet type_set) {
+  public DetailedFieldRow (FieldSet field_set, AbstractFieldDetails<string> details, TypeSet type_set, owned DataCreate data_create) {
     base (field_set);
     this._details = details;
     this.type_set = type_set;
+    this.data_create = (owned) data_create;
     this.pack_text_detail (out text_label, out detail_label);
   }
 
@@ -971,7 +973,7 @@ class Contacts.DetailedFieldRow<T> : DataFieldRow {
     var old_details = _details;
     bool changed = _details.value != entry.get_text () || combo.modified;
     if (save && changed) {
-      _details = (AbstractFieldDetails<string>) Object.new (typeof (T), value: entry.get_text () );
+      _details = data_create (entry.get_text ());
       _details.parameters = old_details.parameters;
       combo.update_details (_details);
     }
@@ -993,7 +995,7 @@ class Contacts.EmailFieldSet : FieldSet {
       return;
     var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
     foreach (var email in emails) {
-      var row = new DetailedFieldRow<EmailFieldDetails> (this, email,TypeSet.general );
+      var row = new DetailedFieldRow<EmailFieldDetails> (this, email,TypeSet.general, (s) => { return new EmailFieldDetails (s); } );
       add_row (row);
     }
   }
@@ -1026,7 +1028,7 @@ class Contacts.PhoneFieldSet : FieldSet {
       return;
     var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
     foreach (var phone in phone_numbers) {
-      var row = new DetailedFieldRow<PhoneFieldDetails> (this, phone,TypeSet.phone );
+      var row = new DetailedFieldRow<PhoneFieldDetails> (this, phone,TypeSet.phone, (s) => { return new PhoneFieldDetails (s);} );
       add_row (row);
     }
   }
