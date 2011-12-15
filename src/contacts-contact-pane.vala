@@ -1086,19 +1086,33 @@ class Contacts.BirthdayFieldSet : FieldSet {
   }
 }
 
-class Contacts.NicknameFieldRow : DataFieldRow {
-  string nickname;
+class Contacts.StringFieldRow : DataFieldRow {
+  public string value;
   Label text_label;
+  Entry? entry;
 
-  public NicknameFieldRow (FieldSet field_set, string nickname) {
+  public StringFieldRow (FieldSet field_set, string value) {
     base (field_set);
-    this.nickname = nickname;
+    this.value = value;
 
     text_label = this.pack_text ();
   }
 
   public override void update () {
-    text_label.set_text (nickname);
+    text_label.set_text (value);
+  }
+
+  public override void pack_edit_widgets () {
+    entry = this.pack_entry (value);
+    setup_entry_for_edit (entry);
+  }
+
+  public override bool finish_edit_widgets (bool save) {
+    var changed = entry.get_text () != value;
+    if (save && changed)
+      value = entry.get_text ();
+    entry = null;
+    return changed;
   }
 }
 
@@ -1113,9 +1127,23 @@ class Contacts.NicknameFieldSet : FieldSet {
       return;
 
     if (is_set (details.nickname)) {
-      var row = new NicknameFieldRow (this, details.nickname);
+      var row = new StringFieldRow (this, details.nickname);
       add_row (row);
     }
+  }
+  public override Value? get_value () {
+    var details = sheet.persona as NameDetails;
+    if (details == null)
+      return null;
+
+    var value = Value(typeof (string));
+    value.set_string ("");
+    foreach (var row in data_rows) {
+      var string_row = row as StringFieldRow;
+      value.set_string (string_row.value);
+    }
+
+    return value;
   }
 }
 
