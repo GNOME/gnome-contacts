@@ -425,9 +425,9 @@ public class Contacts.TypeCombo : Grid  {
     if (combo.get_active_iter (out iter)) {
       if (type_set.is_custom (iter)) {
 	custom_mode = true;
-	combo.hide ();
 	entry.show ();
 	entry.grab_focus ();
+	combo.hide ();
       } else {
 	last_active = iter;
 	this.changed ();
