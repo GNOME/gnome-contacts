@@ -778,6 +778,8 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   }
 
   public void exit_edit_mode (bool save) {
+    var had_child_focus = this.get_focus_child () != null;
+
     var parent = this.get_parent ();
     if (parent != null) {
       var parent_container = (parent as Container);
@@ -794,6 +796,8 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     update ();
     this.show_all ();
     this.set_can_focus (true);
+    if (had_child_focus)
+      this.grab_focus ();
 
     if (save && changed)
       field_set.save ();
