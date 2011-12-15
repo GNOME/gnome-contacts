@@ -845,6 +845,24 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 	return false;
       });
   }
+
+  public void setup_text_view_for_edit (TextView text, bool grab_focus = true) {
+    if (grab_focus) {
+      ulong id = 0;
+      id = text.size_allocate.connect ( () => {
+	  text.grab_focus ();
+	  text.disconnect (id);
+	});
+    }
+    text.key_press_event.connect ( (key_event) => {
+	if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
+	  field_set.sheet.pane.exit_edit_mode (false);
+	}
+	return false;
+      });
+  }
+
+
 }
 
 class Contacts.LinkFieldRow : DataFieldRow {
@@ -1173,8 +1191,9 @@ class Contacts.NicknameFieldSet : FieldSet {
 }
 
 class Contacts.NoteFieldRow : DataFieldRow {
-  NoteFieldDetails details;
+  public NoteFieldDetails details;
   Label text_label;
+  TextView? text;
 
   public NoteFieldRow (FieldSet field_set, NoteFieldDetails details) {
     base (field_set);
@@ -1185,6 +1204,39 @@ class Contacts.NoteFieldRow : DataFieldRow {
 
   public override void update () {
     text_label.set_text (details.value);
+  }
+
+  public override void pack_edit_widgets () {
+    text = new TextView ();
+    text.set_hexpand (true);
+    text.set_vexpand (true);
+    var scrolled = new ScrolledWindow (null, null);
+    scrolled.set_shadow_type (ShadowType.OUT);
+    scrolled.add_with_viewport (text);
+
+    pack (scrolled);
+
+    delete_button.set_valign (Align.START);
+
+    text.get_buffer ().set_text (details.value);
+    text.get_buffer ().set_modified (false);
+
+    setup_text_view_for_edit (text);
+  }
+
+  public override bool finish_edit_widgets (bool save) {
+    var old_details = details;
+    var changed = text.get_buffer (). get_modified ();
+    if (save && changed) {
+	TextIter start, end;
+	text.get_buffer ().get_start_iter (out start);
+	text.get_buffer ().get_end_iter (out end);
+	var value = text.get_buffer ().get_text (start, end, true);
+	details = new NoteFieldDetails (value, old_details.parameters);
+    }
+    text = null;
+
+    return changed;
   }
 }
 
@@ -1202,6 +1254,22 @@ class Contacts.NoteFieldSet : FieldSet {
       var row = new NoteFieldRow (this, note);
       add_row (row);
     }
+  }
+  public override Value? get_value () {
+    var details = sheet.persona as NoteDetails;
+    if (details == null)
+      return null;
+
+    var new_details = new HashSet<NoteFieldDetails>();
+    foreach (var row in data_rows) {
+      var note_row = row as NoteFieldRow;
+      new_details.add (note_row.details);
+    }
+
+    var value = Value(new_details.get_type ());
+    value.set_object (new_details);
+
+    return value;
   }
 }
 
