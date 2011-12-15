@@ -898,35 +898,40 @@ class Contacts.LinkFieldSet : FieldSet {
   }
 }
 
-class Contacts.EmailFieldRow : DataFieldRow {
-  public EmailFieldDetails details;
+class Contacts.DetailedFieldRow<T> : DataFieldRow {
+  public AbstractFieldDetails<string> _details;
+  TypeSet type_set;
   Label text_label;
   Label detail_label;
   Entry? entry;
   TypeCombo? combo;
 
-  public EmailFieldRow (FieldSet field_set, EmailFieldDetails details) {
+  public T details { get { return (T)_details; } }
+
+  public DetailedFieldRow (FieldSet field_set, AbstractFieldDetails<string> details, TypeSet type_set) {
     base (field_set);
-    this.details = details;
+    this._details = details;
+    this.type_set = type_set;
     this.pack_text_detail (out text_label, out detail_label);
   }
 
   public override void update () {
-    text_label.set_text (details.value);
-    detail_label.set_text (TypeSet.general.format_type (details));
+    text_label.set_text (_details.value);
+    detail_label.set_text (type_set.format_type (_details));
   }
 
   public override void pack_edit_widgets () {
-    this.pack_entry_detail_combo (details.value, details, TypeSet.general, out entry, out combo);
+    this.pack_entry_detail_combo (_details.value, _details, type_set, out entry, out combo);
     setup_entry_for_edit (entry);
   }
 
   public override bool finish_edit_widgets (bool save) {
-    var old_details = details;
-    bool changed = details.value != entry.get_text () || combo.modified;
+    var old_details = _details;
+    bool changed = _details.value != entry.get_text () || combo.modified;
     if (save && changed) {
-      details = new EmailFieldDetails (entry.get_text (), old_details.parameters);
-      combo.update_details (details);
+      _details = (AbstractFieldDetails<string>) Object.new (typeof (T), value: entry.get_text () );
+      _details.parameters = old_details.parameters;
+      combo.update_details (_details);
     }
     entry = null;
     combo = null;
@@ -946,7 +951,7 @@ class Contacts.EmailFieldSet : FieldSet {
       return;
     var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
     foreach (var email in emails) {
-      var row = new EmailFieldRow (this, email);
+      var row = new DetailedFieldRow<EmailFieldDetails> (this, email,TypeSet.general );
       add_row (row);
     }
   }
@@ -957,7 +962,7 @@ class Contacts.EmailFieldSet : FieldSet {
 
     var new_details = new HashSet<EmailFieldDetails>();
     foreach (var row in data_rows) {
-      var email_row = row as EmailFieldRow;
+      var email_row = row as DetailedFieldRow<EmailFieldDetails>;
       new_details.add (email_row.details);
     }
 
