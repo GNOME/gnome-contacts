@@ -585,15 +585,11 @@ public class Contacts.FieldRow : Contacts.Row {
     pack (grid);
   }
 
-  public void pack_entry_detail_combo (string text, AbstractFieldDetails detail, TypeSet type_set, out Entry entry, out TypeCombo combo) {
+  public void pack_widget_detail_combo (Widget w, AbstractFieldDetails detail, TypeSet type_set, out TypeCombo combo) {
     var grid = new Grid ();
     grid.set_column_spacing (16);
 
-    entry = new Entry ();
-    entry.set_text (text);
-    entry.set_hexpand (true);
-    entry.set_halign (Align.FILL);
-    grid.add (entry);
+    grid.add (w);
 
     combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
@@ -604,6 +600,16 @@ public class Contacts.FieldRow : Contacts.Row {
     grid.add (combo);
 
     pack (grid);
+  }
+
+
+  public void pack_entry_detail_combo (string text, AbstractFieldDetails detail, TypeSet type_set, out Entry entry, out TypeCombo combo) {
+    entry = new Entry ();
+    entry.set_text (text);
+    entry.set_hexpand (true);
+    entry.set_halign (Align.FILL);
+
+    pack_widget_detail_combo (entry, detail, type_set, out combo);
   }
 
   public Entry pack_entry (string s) {
@@ -731,6 +737,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   public FieldSet field_set;
   ulong set_focus_child_id;
   bool editable;
+  protected Button? delete_button;
 
   public DataFieldRow (FieldSet field_set) {
     base (field_set.sheet.pane.row_group);
@@ -761,12 +768,13 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     }
 
     this.reset ();
-    this.pack_edit_widgets ();
-    var b = this.pack_delete_button ();
-    b.clicked.connect ( () => {
+    delete_button = this.pack_delete_button ();
+    delete_button.clicked.connect ( () => {
 	field_set.remove_row (this);
 	field_set.save ();
       });
+
+    this.pack_edit_widgets ();
 
     foreach (var w in this.get_children ()) {
       if (!w.get_data<bool> ("original-widget"))
@@ -803,6 +811,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 
     var changed = finish_edit_widgets (save);
 
+    delete_button = null;
     foreach (var w in this.get_children ()) {
       if (!w.get_data<bool> ("original-widget"))
 	w.destroy ();
@@ -1197,9 +1206,11 @@ class Contacts.NoteFieldSet : FieldSet {
 }
 
 class Contacts.AddressFieldRow : DataFieldRow {
-  PostalAddressFieldDetails details;
+  public PostalAddressFieldDetails details;
   Label? text_label[8];
   Label detail_label;
+  Entry? entry[7];
+  TypeCombo? combo;
 
   public AddressFieldRow (FieldSet field_set, PostalAddressFieldDetails details) {
     base (field_set);
@@ -1225,6 +1236,73 @@ class Contacts.AddressFieldRow : DataFieldRow {
       }
     }
   }
+
+  static string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
+  static string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
+
+  public override void pack_edit_widgets () {
+
+    var grid = new Grid ();
+    grid.set_orientation (Orientation.VERTICAL);
+    grid.set_hexpand (true);
+    grid.set_halign (Align.FILL);
+
+    for (int i = 0; i < entry.length; i++) {
+      string postal_part;
+      details.value.get (props[i], out postal_part);
+      entry[i] = new Entry ();
+      entry[i].set_hexpand (true);
+      if (postal_part != null)
+	entry[i].set_text (postal_part);
+      entry[i].set ("placeholder-text", nice[i]);
+      grid.add (entry[i]);
+
+      setup_entry_for_edit (entry[i], i == 0);
+    }
+
+    this.pack_widget_detail_combo (grid, details, TypeSet.general, out combo);
+    delete_button.set_valign (Align.START);
+    var size_group = new SizeGroup (SizeGroupMode.VERTICAL);
+    size_group.add_widget (delete_button);
+    size_group.add_widget (combo);
+
+  }
+
+  public override bool finish_edit_widgets (bool save) {
+    var old_details = details;
+
+    bool changed = combo.modified;
+    for (int i = 0; i < entry.length; i++) {
+      string postal_part;
+      details.value.get (props[i], out postal_part);
+      if (entry[i].get_text () != postal_part) {
+	changed = true;
+	break;
+      }
+    }
+
+    if (save && changed) {
+      var new_value = new PostalAddress (details.value.po_box,
+					 details.value.extension,
+					 details.value.street,
+					 details.value.locality,
+					 details.value.region,
+					 details.value.postal_code,
+					 details.value.country,
+					 details.value.address_format,
+					 details.value.uid);
+      for (int i = 0; i < entry.length; i++)
+	new_value.set (props[i], entry[i].get_text ());
+      details = new PostalAddressFieldDetails(new_value, old_details.parameters);
+      combo.update_details (details);
+    }
+
+    for (int i = 0; i < entry.length; i++)
+      entry[i] = null;
+    combo = null;
+
+    return changed;
+  }
 }
 
 class Contacts.AddressFieldSet : FieldSet {
@@ -1241,6 +1319,22 @@ class Contacts.AddressFieldSet : FieldSet {
       var row = new AddressFieldRow (this, addr);
       add_row (row);
     }
+  }
+  public override Value? get_value () {
+    var details = sheet.persona as PostalAddressDetails;
+    if (details == null)
+      return null;
+
+    var new_details = new HashSet<PostalAddressFieldDetails>();
+    foreach (var row in data_rows) {
+      var addr_row = row as AddressFieldRow;
+      new_details.add (addr_row.details);
+    }
+
+    var value = Value(new_details.get_type ());
+    value.set_object (new_details);
+
+    return value;
   }
 }
 
