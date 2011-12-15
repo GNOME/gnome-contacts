@@ -839,7 +839,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     if (grab_focus) {
       grab_widget_later (entry);
     }
-    entry.activate.connect ( () => {
+    entry.activate.connect_after ( () => {
 	field_set.sheet.pane.exit_edit_mode (true);
       });
     entry.key_press_event.connect ( (key_event) => {
