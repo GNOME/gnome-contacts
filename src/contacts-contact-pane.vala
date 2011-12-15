@@ -436,6 +436,62 @@ public class Contacts.FieldRow : Contacts.Row {
 
   public signal void clicked ();
 
+  public override bool focus (DirectionType direction) {
+    var row_can_focus = get_can_focus ();
+
+    /* Non-focusable rows get the standard behvaiour */
+    if (!row_can_focus)
+      return base.focus (direction);
+
+    /* Focusable rows have to also support focusable children,
+       which is not supported by Container.focus(), so we
+       work around that. */
+
+    bool res = false;
+
+    bool recurse_into = false;
+    if (has_focus) {
+      switch (direction) {
+      case DirectionType.RIGHT:
+      case DirectionType.TAB_FORWARD:
+	recurse_into = true;
+	break;
+      }
+    } else if (this.get_focus_child () != null) {
+      recurse_into = true;
+    } else {
+      switch (direction) {
+      case DirectionType.LEFT:
+      case DirectionType.TAB_BACKWARD:
+	recurse_into = true;
+	break;
+      }
+    }
+
+    if (recurse_into) {
+      set_can_focus (false);
+      res = base.focus (direction);
+      set_can_focus (true);
+
+      if (!res && !has_focus) {
+	switch (direction) {
+	case DirectionType.LEFT:
+	case DirectionType.TAB_BACKWARD:
+	  this.grab_focus ();
+	  res = true;
+	  break;
+	}
+      }
+    } else {
+      if (!has_focus) {
+	this.grab_focus ();
+	res = true;
+      }
+    }
+
+    return res;
+  }
+
   [CCode (action_signal = true)]
   public virtual signal void activate_row () {
     clickable.activate ();
@@ -632,7 +688,6 @@ public abstract class Contacts.FieldSet : Grid {
     this.add (row);
     data_rows.add (row);
 
-    row.set_can_focus (true);
     row.clicked.connect( () => {
 	sheet.pane.enter_edit_mode (row);
       });
@@ -678,6 +733,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 
   public DataFieldRow (FieldSet field_set) {
     base (field_set.sheet.pane.row_group);
+    this.set_can_focus (true);
     this.field_set = field_set;
   }
   public abstract void update ();
