@@ -973,23 +973,6 @@ class Contacts.EmailFieldSet : FieldSet {
   }
 }
 
-class Contacts.PhoneFieldRow : DataFieldRow {
-  PhoneFieldDetails details;
-  Label text_label;
-  Label detail_label;
-
-  public PhoneFieldRow (FieldSet field_set, PhoneFieldDetails details) {
-    base (field_set);
-    this.details = details;
-    this.pack_text_detail (out text_label, out detail_label);
-  }
-
-  public override void update () {
-    text_label.set_text (details.value);
-    detail_label.set_text (TypeSet.phone.format_type (details));
-  }
-}
-
 class Contacts.PhoneFieldSet : FieldSet {
   class construct {
     label_name = _("Phone");
@@ -1001,9 +984,25 @@ class Contacts.PhoneFieldSet : FieldSet {
       return;
     var phone_numbers = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
     foreach (var phone in phone_numbers) {
-      var row = new PhoneFieldRow (this, phone);
+      var row = new DetailedFieldRow<PhoneFieldDetails> (this, phone,TypeSet.phone );
       add_row (row);
     }
+  }
+  public override Value? get_value () {
+    var details = sheet.persona as PhoneDetails;
+    if (details == null)
+      return null;
+
+    var new_details = new HashSet<PhoneFieldDetails>();
+    foreach (var row in data_rows) {
+      var phone_row = row as DetailedFieldRow<PhoneFieldDetails>;
+      new_details.add (phone_row.details);
+    }
+
+    var value = Value(new_details.get_type ());
+    value.set_object (new_details);
+
+    return value;
   }
 }
 
