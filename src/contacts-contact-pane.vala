@@ -730,12 +730,19 @@ public abstract class Contacts.FieldSet : Grid {
 public abstract class Contacts.DataFieldRow : FieldRow {
   public FieldSet field_set;
   ulong set_focus_child_id;
+  bool editable;
 
   public DataFieldRow (FieldSet field_set) {
     base (field_set.sheet.pane.row_group);
-    this.set_can_focus (true);
+    set_editable (true);
     this.field_set = field_set;
   }
+
+  public void set_editable (bool editable) {
+    this.editable = editable;
+    set_can_focus (editable);
+  }
+
   public abstract void update ();
   public virtual void pack_edit_widgets () {
   }
@@ -743,7 +750,10 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     return false;
   }
 
-  public void enter_edit_mode () {
+  public bool enter_edit_mode () {
+    if (!editable)
+      return false;
+
     this.set_can_focus (false);
     foreach (var w in this.get_children ()) {
       w.hide ();
@@ -775,9 +785,14 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 	    });
 	}
       });
+
+    return true;
   }
 
   public void exit_edit_mode (bool save) {
+    if (!editable)
+      return;
+
     var had_child_focus = this.get_focus_child () != null;
 
     var parent = this.get_parent ();
@@ -1017,6 +1032,7 @@ class Contacts.ChatFieldRow : DataFieldRow {
     this.protocol = protocol;
     this.details = details;
     text_label = this.pack_text ();
+    this.set_editable (false);
   }
 
   public override void update () {
@@ -1481,8 +1497,9 @@ public class Contacts.ContactPane : ScrolledWindow {
   public void enter_edit_mode (DataFieldRow row) {
     if (editing_row != row) {
       exit_edit_mode (true);
-      editing_row = row;
-      editing_row.enter_edit_mode ();
+      editing_row = null;
+      if (row.enter_edit_mode ())
+	editing_row = row;
     }
   }
 
