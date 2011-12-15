@@ -827,13 +827,17 @@ public abstract class Contacts.DataFieldRow : FieldRow {
       field_set.save ();
   }
 
+  public void grab_widget_later (Widget widget) {
+      ulong id = 0;
+      id = widget.size_allocate.connect ( () => {
+	  widget.grab_focus ();
+	  widget.disconnect (id);
+	});
+  }
+
   public void setup_entry_for_edit (Entry entry, bool grab_focus = true) {
     if (grab_focus) {
-      ulong id = 0;
-      id = entry.size_allocate.connect ( () => {
-	  entry.grab_focus ();
-	  entry.disconnect (id);
-	});
+      grab_widget_later (entry);
     }
     entry.activate.connect ( () => {
 	field_set.sheet.pane.exit_edit_mode (true);
@@ -848,11 +852,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 
   public void setup_text_view_for_edit (TextView text, bool grab_focus = true) {
     if (grab_focus) {
-      ulong id = 0;
-      id = text.size_allocate.connect ( () => {
-	  text.grab_focus ();
-	  text.disconnect (id);
-	});
+      grab_widget_later (text);
     }
     text.key_press_event.connect ( (key_event) => {
 	if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
