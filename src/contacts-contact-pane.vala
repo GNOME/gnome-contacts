@@ -1089,10 +1089,13 @@ class Contacts.ChatFieldSet : FieldSet {
 }
 
 class Contacts.BirthdayFieldRow : DataFieldRow {
-  BirthdayDetails details;
+  public DateTime details;
   Label text_label;
+  SpinButton? day_spin;
+  SpinButton? year_spin;
+  ComboBoxText? combo;
 
-  public BirthdayFieldRow (FieldSet field_set, BirthdayDetails details) {
+  public BirthdayFieldRow (FieldSet field_set, DateTime details) {
     base (field_set);
     this.details = details;
 
@@ -1106,8 +1109,66 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
   }
 
   public override void update () {
-    DateTime? bday = details.birthday;
-    text_label.set_text (bday.to_local ().format ("%x"));
+    text_label.set_text (details.to_local ().format ("%x"));
+  }
+
+  public override void pack_edit_widgets () {
+    var bday = details.to_local ();
+    var grid = new Grid ();
+    grid.set_column_spacing (16);
+
+    day_spin = new SpinButton.with_range (0, 31, 1);
+    day_spin.set_digits (0);
+    day_spin.numeric = true;
+    day_spin.set_value ((double)bday.get_day_of_month ());
+    grid.add (day_spin);
+
+    setup_entry_for_edit (day_spin);
+
+    combo = new ComboBoxText ();
+    combo.append_text (_("January"));
+    combo.append_text (_("February"));
+    combo.append_text (_("March"));
+    combo.append_text (_("April"));
+    combo.append_text (_("May"));
+    combo.append_text (_("June"));
+    combo.append_text (_("July"));
+    combo.append_text (_("August"));
+    combo.append_text (_("September"));
+    combo.append_text (_("October"));
+    combo.append_text (_("November"));
+    combo.append_text (_("December"));
+    combo.set_active (bday.get_month () - 1);
+    grid.add (combo);
+
+    year_spin = new SpinButton.with_range (1800, 3000, 1);
+    year_spin.set_digits (0);
+    year_spin.numeric = true;
+    year_spin.set_value ((double)bday.get_year ());
+    grid.add (year_spin);
+
+    setup_entry_for_edit (year_spin, false);
+
+    pack (grid);
+  }
+
+  public override bool finish_edit_widgets (bool save) {
+    var old_details = details;
+
+    var bday = new DateTime.local ((int)year_spin.get_value (),
+				   combo.get_active () + 1,
+				   (int)day_spin.get_value (),
+				   0, 0, 0);
+    bday = bday.to_utc ();
+
+    var changed = !bday.equal (old_details);
+    if (save && changed)
+      details = bday;
+
+    combo = null;
+    day_spin = null;
+    year_spin = null;
+    return changed;
   }
 }
 
@@ -1123,9 +1184,25 @@ class Contacts.BirthdayFieldSet : FieldSet {
 
     DateTime? bday = details.birthday;
     if (bday != null) {
-      var row = new BirthdayFieldRow (this, details);
+      var row = new BirthdayFieldRow (this, bday);
       add_row (row);
     }
+  }
+  public override Value? get_value () {
+    var details = sheet.persona as BirthdayDetails;
+    if (details == null)
+      return null;
+
+    DateTime? new_details = null;
+    foreach (var row in data_rows) {
+      var bday_row = row as BirthdayFieldRow;
+      new_details = bday_row.details;
+    }
+
+    var value = Value(typeof (DateTime));
+    value.set_boxed (new_details);
+
+    return value;
   }
 }
 
