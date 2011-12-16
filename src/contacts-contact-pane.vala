@@ -1361,7 +1361,6 @@ public class Contacts.ContactPane : ScrolledWindow {
  private async Persona? set_persona_property (Persona persona,
 					       string property_name,
 					       Value value) throws GLib.Error, PropertyError {
-    contact.is_unedited = false;
     if (persona is FakePersona) {
       var fake = persona as FakePersona;
       return yield fake.make_real_and_set (property_name, value);
@@ -1379,7 +1378,6 @@ public class Contacts.ContactPane : ScrolledWindow {
   private async Persona? set_individual_property (Contact contact,
 						  string property_name,
 						  Value value) throws GLib.Error, PropertyError {
-    contact.is_unedited = false;
     bool did_set = false;
     // Need to make a copy here as it could change during the yields
     var personas_copy = contact.individual.personas.to_array ();

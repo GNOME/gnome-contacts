@@ -409,8 +409,6 @@ public class Contacts.ViewWidget : TreeView {
 	cell.visible = true;
 
 	var name = contact.display_name;
-	if (name == "" && contact.is_new)
-	  name = _("New contact");
 	switch (text_display) {
 	default:
 	case TextDisplay.NONE:

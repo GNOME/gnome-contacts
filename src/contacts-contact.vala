@@ -110,8 +110,6 @@ public class Contacts.Contact : GLib.Object  {
   public PresenceType presence_type;
   public string presence_message;
   public bool is_phone;
-  public bool is_new;
-  public bool is_unedited;
   struct ContactDataRef {
     void *key;
     void *data;
