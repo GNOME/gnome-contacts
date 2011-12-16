@@ -56,6 +56,11 @@ public class Contacts.App : Gtk.Application {
     contacts_pane.show_contact (new_selection);
   }
 
+  public void show_contact (Contact? contact) {
+    list_pane.select_contact (contact);
+    contacts_pane.show_contact (contact);
+  }
+
   public async void show_individual (string id) {
     var contact = yield contacts_store.find_contact ( (c) => {
 	return c.individual.id == id;
@@ -117,7 +122,8 @@ public class Contacts.App : Gtk.Application {
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
     list_pane.create_new.connect ( () => {
-	contacts_pane.new_contact (list_pane);
+	var dialog = new NewContactDialog (contacts_store, window);
+	dialog.show_all ();
       });
 
     grid.attach (list_pane, 0, 0, 1, 2);

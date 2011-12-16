@@ -19,7 +19,6 @@ bin_PROGRAMS = gnome-contacts
 vala_sources = \
 	contacts-app.vala \
 	contacts-cell-renderer-shape.vala \
-	contacts-details-layout.vala \
 	contacts-contact.vala \
 	contacts-contact-pane.vala \
 	contacts-types.vala \
@@ -27,9 +26,14 @@ vala_sources = \
 	contacts-link-dialog.vala \
 	contacts-linking.vala \
 	contacts-menu-button.vala \
+	contacts-row.vala \
 	contacts-store.vala \
 	contacts-view.vala \
 	contacts-utils.vala \
+	contacts-clickable.vala \
+	contacts-new-contact-dialog.vala \
+	contacts-avatar-menu.vala \
+	contacts-contact-frame.vala \
 	main.vala \
 	$(NULL)
 

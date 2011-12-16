@@ -94,7 +94,7 @@ public class Contacts.ContactPresence : Grid {
 
     update_presence_widgets ();
 
-    var id = contact.changed.connect ( () => {
+    var id = contact.presence_changed.connect ( () => {
 	update_presence_widgets ();
       });
 
@@ -110,8 +110,6 @@ public class Contacts.Contact : GLib.Object  {
   public PresenceType presence_type;
   public string presence_message;
   public bool is_phone;
-  public bool is_new;
-  public bool is_unedited;
   struct ContactDataRef {
     void *key;
     void *data;
@@ -120,6 +118,7 @@ public class Contacts.Contact : GLib.Object  {
 
   public Individual individual;
   uint changed_id;
+  bool changed_personas;
 
   private Gdk.Pixbuf? _small_avatar;
   public Gdk.Pixbuf small_avatar {
@@ -251,7 +250,9 @@ public class Contacts.Contact : GLib.Object  {
 
   private string filter_data;
 
+  public signal void presence_changed ();
   public signal void changed ();
+  public signal void personas_changed ();
 
   private bool _is_hidden;
   private bool _is_hidden_uptodate;
@@ -304,7 +305,8 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void persona_notify_cb (ParamSpec pspec) {
-    queue_changed ();
+    this.presence_changed ();
+    queue_changed (false);
   }
 
   private void connect_persona (Persona p) {
@@ -371,7 +373,7 @@ public class Contacts.Contact : GLib.Object  {
 	  connect_persona (p);
 	foreach (var p in removed)
 	  disconnect_persona (p);
-	queue_changed ();
+	queue_changed (true);
       });
 
     update ();
@@ -391,7 +393,7 @@ public class Contacts.Contact : GLib.Object  {
     }
     _small_avatar = null;
     individual.notify.connect(notify_cb);
-    queue_changed ();
+    queue_changed (true);
   }
 
   public void remove () {
@@ -578,6 +580,9 @@ public class Contacts.Contact : GLib.Object  {
     return res;
   }
 
+  public static string[] postal_element_props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
+  public static string[] postal_element_names = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
+
   public static string[] format_address (PostalAddress addr) {
     string[] lines = {};
 
@@ -670,9 +675,9 @@ public class Contacts.Contact : GLib.Object  {
     return service;
   }
 
-  public string format_im_name (string protocol, string id) {
+  public static string format_im_name (Tpf.Persona? persona,
+				       string protocol, string id) {
     string? service = null;
-    var persona = find_im_persona (protocol, id);
     if (persona != null) {
       var account = (persona.store as Tpf.PersonaStore).account;
       service = account.service;
@@ -725,8 +730,12 @@ public class Contacts.Contact : GLib.Object  {
 
   private bool changed_cb () {
     changed_id = 0;
+    var changed_personas = this.changed_personas;
+    this.changed_personas = false;
     update ();
     changed ();
+    if (changed_personas)
+      personas_changed ();
     return false;
   }
 
@@ -737,8 +746,9 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  private void queue_changed () {
+  private void queue_changed (bool is_persona_change) {
     _is_hidden_uptodate = false;
+    changed_personas |= is_persona_change;
 
     if (changed_id != 0)
       return;
@@ -749,7 +759,7 @@ public class Contacts.Contact : GLib.Object  {
   private void notify_cb (ParamSpec pspec) {
     if (pspec.get_name () == "avatar")
       _small_avatar = null;
-    queue_changed ();
+    queue_changed (false);
   }
 
   private static bool get_is_phone (Persona persona) {
@@ -913,10 +923,23 @@ public class Contacts.Contact : GLib.Object  {
     if (/https?:\/\/twitter.com\/#!\/[a-zA-Z0-9]+$/.match(uri))
       return _("Twitter");
 
+    if (uri.ascii_ncasecmp ("http:", 5) == 0 ||
+	uri.ascii_ncasecmp ("https:", 5) == 0) {
+      var start = uri.index_of (":");
+      start++;
+      while (uri[start] == '/')
+	start++;
+      var last = uri.index_of ("/", start);
+      if (last < 0)
+	last = uri.length;
+
+      return uri[start:last];
+    }
+
     return uri;
   }
 
-  public async Persona ensure_primary_persona () throws GLib.Error {
+  public async Persona ensure_primary_persona () throws IndividualAggregatorError, ContactError, PropertyError {
     Persona? p = find_primary_persona ();
     if (p != null)
       return p;
@@ -951,7 +974,27 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
+  public Gee.List<Persona> get_personas_for_display () {
+    var persona_list = new ArrayList<Persona>();
+    int i = 0;
+    persona_list.add_all (individual.personas);
+    while (i < persona_list.size) {
+      if (persona_list[i].store.type_id == "key-file")
+	persona_list.remove_at (i);
+      else
+	i++;
+    }
+    var fake_persona = FakePersona.maybe_create_for (this);
+    if (fake_persona != null && fake_persona.store.type_id != "fake")
+      persona_list.add (fake_persona);
+    persona_list.sort (Contact.compare_persona_by_store);
+
+    return persona_list;
+  }
+
   public Persona? find_primary_persona () {
+    if (store.aggregator.primary_store == null)
+      return null;
     return find_persona_from_store (store.aggregator.primary_store);
   }
 
@@ -1012,71 +1055,115 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   internal static async void set_persona_property (Persona persona,
-                                                   string property_name, Value new_value) throws PropertyError {
+						   string property_name, Value new_value) throws PropertyError, IndividualAggregatorError, ContactError, PropertyError {
+    if (persona is FakePersona) {
+      var fake = persona as FakePersona;
+      yield fake.make_real_and_set (property_name, new_value);
+    }
+
     /* FIXME: It should be possible to move these all to being delegates which are
      * passed to the functions which currently call this one; but only once bgo#604827 is fixed. */
     switch (property_name) {
       case "alias":
         yield (persona as AliasDetails).change_alias ((string) new_value);
-        return;
+        break;
       case "avatar":
         yield (persona as AvatarDetails).change_avatar ((LoadableIcon?) new_value);
-        return;
+        break;
       case "birthday":
         yield (persona as BirthdayDetails).change_birthday ((DateTime?) new_value);
-        return;
+        break;
       case "calendar-event-id":
         yield (persona as BirthdayDetails).change_calendar_event_id ((string?) new_value);
-        return;
+        break;
       case "email-addresses":
         yield (persona as EmailDetails).change_email_addresses ((Set<EmailFieldDetails>) new_value);
-        return;
+        break;
       case "is-favourite":
         yield (persona as FavouriteDetails).change_is_favourite ((bool) new_value);
-        return;
+        break;
       case "gender":
         yield (persona as GenderDetails).change_gender ((Gender) new_value);
-        return;
+        break;
       case "groups":
         yield (persona as GroupDetails).change_groups ((Set<string>) new_value);
-        return;
+        break;
       case "im-addresses":
         yield (persona as ImDetails).change_im_addresses ((MultiMap<string, ImFieldDetails>) new_value);
-        return;
+        break;
       case "local-ids":
         yield (persona as LocalIdDetails).change_local_ids ((Set<string>) new_value);
-        return;
+        break;
       case "structured-name":
         yield (persona as NameDetails).change_structured_name ((StructuredName?) new_value);
-        return;
+        break;
       case "full-name":
         yield (persona as NameDetails).change_full_name ((string) new_value);
-        return;
+        break;
       case "nickname":
         yield (persona as NameDetails).change_nickname ((string) new_value);
-        return;
+        break;
       case "notes":
         yield (persona as NoteDetails).change_notes ((Set<NoteFieldDetails>) new_value);
-        return;
+        break;
       case "phone-numbers":
         yield (persona as PhoneDetails).change_phone_numbers ((Set<PhoneFieldDetails>) new_value);
-        return;
+        break;
       case "postal-addresses":
         yield (persona as PostalAddressDetails).change_postal_addresses ((Set<PostalAddressFieldDetails>) new_value);
-        return;
+        break;
       case "roles":
         yield (persona as RoleDetails).change_roles ((Set<RoleFieldDetails>) new_value);
-        return;
+        break;
       case "urls":
         yield (persona as UrlDetails).change_urls ((Set<UrlFieldDetails>) new_value);
-        return;
+        break;
       case "web-service-addresses":
         yield (persona as WebServiceDetails).change_web_service_addresses ((MultiMap<string, WebServiceFieldDetails>) new_value);
-        return;
+        break;
       default:
         critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);
-        return;
+        break;
     }
+  }
+}
+
+public class Contacts.FakePersonaStore : PersonaStore {
+  public static FakePersonaStore _the_store;
+  public static FakePersonaStore the_store() {
+    if (_the_store == null)
+      _the_store = new FakePersonaStore ();
+    return _the_store;
+  }
+  private HashMap<string, Persona> _personas;
+  private Map<string, Persona> _personas_ro;
+
+  public override string type_id { get { return "fake"; } }
+
+  public FakePersonaStore () {
+    Object (id: "uri", display_name: "fake store");
+    this._personas = new HashMap<string, Persona> ();
+    this._personas_ro = this._personas.read_only_view;
+  }
+
+  public override Map<string, Persona> personas
+    {
+      get { return this._personas_ro; }
+    }
+
+  public override MaybeBool can_add_personas { get { return MaybeBool.FALSE; } }
+  public override MaybeBool can_alias_personas { get { return MaybeBool.FALSE; } }
+  public override MaybeBool can_group_personas { get { return MaybeBool.FALSE; } }
+  public override MaybeBool can_remove_personas { get { return MaybeBool.FALSE; } }
+  public override bool is_prepared  { get { return true; } }
+  public override bool is_quiescent  { get { return true; } }
+  private string[] _always_writeable_properties = {};
+  public override string[] always_writeable_properties { get { return this._always_writeable_properties; } }
+  public override async void prepare () throws GLib.Error { }
+  public override async Persona? add_persona_from_details (HashTable<string, Value?> details) throws Folks.PersonaStoreError {
+    return null;
+  }
+  public override async void remove_persona (Persona persona) throws Folks.PersonaStoreError {
   }
 }
 
@@ -1121,7 +1208,7 @@ public class Contacts.FakePersona : Persona {
     }
 
   public async Persona? make_real_and_set (string property,
-					   Value value) throws GLib.Error {
+					   Value value) throws IndividualAggregatorError, ContactError, PropertyError {
     var v = new PropVal ();
     v.property = property;
     v.value = value;
@@ -1150,7 +1237,7 @@ public class Contacts.FakePersona : Persona {
     Object (display_id: "display_id",
 	    uid: "uid",
 	    iid: "iid",
-	    store: contact.store.aggregator.primary_store,
+	    store: contact.store.aggregator.primary_store ?? FakePersonaStore.the_store(),
 	    is_user: false);
     this.contact = contact;
   }
