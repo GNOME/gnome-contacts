@@ -1855,6 +1855,33 @@ public class Contacts.ContactPane : ScrolledWindow {
   public void update_buttons () {
     var emails = contact.individual.email_addresses;
     email_button.set_sensitive (!emails.is_empty);
+
+    var ims = contact.individual.im_addresses;
+    var im_keys = ims.get_keys ();
+    bool found_im = false;
+    bool callable = false;
+    if (contact != null) {
+      foreach (var protocol in im_keys) {
+	foreach (var id in ims[protocol]) {
+	  var im_persona = contact.find_im_persona (protocol, id.value);
+	  if (im_persona != null) {
+	    var type = im_persona.presence_type;
+	    if (type != PresenceType.UNSET &&
+		type != PresenceType.ERROR &&
+		type != PresenceType.OFFLINE)
+	      found_im = true;
+	  }
+
+	  if (contact.is_callable (protocol, id.value) != null)
+	    callable = true;
+	}
+      }
+    }
+    chat_button.set_sensitive (found_im);
+    if (callable)
+      call_button.show ();
+    else
+      call_button.hide ();
   }
 
   public void update_personas () {
