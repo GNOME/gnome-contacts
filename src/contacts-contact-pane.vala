@@ -1880,7 +1880,15 @@ public class Contacts.ContactPane : ScrolledWindow {
 	  callable = true;
       }
     }
+
+    if (contacts_store.can_call) {
+      var phones = contact.individual.phone_numbers;
+      if (!phones.is_empty)
+	callable = true;
+    }
+
     chat_button.set_sensitive (found_im);
+
     if (callable)
       call_button.show ();
     else
@@ -2025,7 +2033,81 @@ public class Contacts.ContactPane : ScrolledWindow {
     }
   }
 
+  struct CallValue {
+    string phone_nr;
+    string protocol;
+    string id;
+    string name;
+  }
+
   public void start_call () {
+    var ims = contact.individual.im_addresses;
+    var im_keys = ims.get_keys ();
+    var call_targets = new ArrayList<CallValue?>();
+    foreach (var protocol in im_keys) {
+      foreach (var id in ims[protocol]) {
+	var im_persona = contact.find_im_persona (protocol, id.value);
+	if (im_persona != null &&
+	    contact.is_callable (protocol, id.value) != null) {
+	  var type = im_persona.presence_type;
+	  if (type != PresenceType.UNSET &&
+	      type != PresenceType.ERROR &&
+	      type != PresenceType.OFFLINE) {
+	    CallValue? value = { null, protocol, id.value, Contact.format_im_name (im_persona, protocol, id.value) };
+	    call_targets.add (value);
+	  }
+	}
+      }
+    }
+
+    if (contacts_store.can_call) {
+      var phones = contact.individual.phone_numbers;
+      foreach (var phone in phones) {
+	CallValue? value = { phone.value, null, null, phone.value };
+	call_targets.add (value);
+      }
+    }
+
+
+    if (call_targets.is_empty)
+      return;
+
+    if (call_targets.size == 1) {
+      foreach (var value in call_targets) {
+	if (value.phone_nr != null)
+	  Utils.start_call (value.phone_nr, this.contacts_store.calling_accounts);
+	else {
+	  var account = contact.is_callable (value.protocol, value.id);
+	  Utils.start_call_with_account (value.id, account);
+	}
+      }
+    } else {
+      var store = new ListStore (2, typeof (string), typeof (CallValue?));
+      foreach (var value in call_targets) {
+	TreeIter iter;
+	store.append (out iter);
+	store.set (iter, 0, value.name, 1, value);
+      }
+      TreeSelection selection;
+      var dialog = pick_one_dialog (_("Select what to call"), store, out selection);
+      dialog.response.connect ( (response) => {
+	  if (response == ResponseType.OK) {
+	    CallValue? value2;
+	    TreeIter iter2;
+
+	    if (selection.get_selected (null, out iter2)) {
+	      store.get (iter2, 1, out value2);
+	      if (value2.phone_nr != null)
+		Utils.start_call (value2.phone_nr, this.contacts_store.calling_accounts);
+	      else {
+		var account = contact.is_callable (value2.protocol, value2.id);
+		Utils.start_call_with_account (value2.id, account);
+	      }
+	    }
+	  }
+	  dialog.destroy ();
+	});
+    }
   }
 
   struct ImValue {
