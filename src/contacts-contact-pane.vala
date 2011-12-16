@@ -1949,9 +1949,6 @@ public class Contacts.ContactPane : ScrolledWindow {
     update_buttons ();
   }
 
-  public void new_contact (ListPane list_pane) {
-  }
-
   public void enter_edit_mode (DataFieldRow row) {
     if (editing_row != row) {
       exit_edit_mode (true);

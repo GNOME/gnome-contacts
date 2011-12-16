@@ -117,7 +117,8 @@ public class Contacts.App : Gtk.Application {
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
     list_pane.create_new.connect ( () => {
-	contacts_pane.new_contact (list_pane);
+	var dialog = new NewContactDialog (window);
+	dialog.show_all ();
       });
 
     grid.attach (list_pane, 0, 0, 1, 2);
