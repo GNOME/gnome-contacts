@@ -1643,7 +1643,8 @@ public class Contacts.PersonaSheet : Grid {
   }
 
   private void add_detail () {
-    var dialog = new Dialog.with_buttons (_("Add contact data to %s\n").printf (pane.contact.display_name),
+    var title = _("Add contact data to %s\n").printf (pane.contact.display_name);
+    var dialog = new Dialog.with_buttons ("",
 					  (Window) pane.get_toplevel (),
 					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
 					  Stock.CANCEL, ResponseType.CANCEL,
@@ -1673,9 +1674,19 @@ public class Contacts.PersonaSheet : Grid {
     scrolled.set_shadow_type (ShadowType.IN);
     scrolled.add (tree_view);
 
+    var grid = new Grid ();
+    grid.set_orientation (Orientation.VERTICAL);
+    grid.set_row_spacing (6);
+
+    var l = new Label (title);
+    l.set_halign (Align.START);
+
+    grid.add (l);
+    grid.add (scrolled);
+
     var box = dialog.get_content_area () as Box;
-    box.pack_start (scrolled, true, true, 0);
-    scrolled.set_border_width (6);
+    box.pack_start (grid, true, true, 0);
+    grid.set_border_width (6);
 
     TreeIter iter;
 
