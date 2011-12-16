@@ -1052,9 +1052,6 @@ class Contacts.AddressFieldRow : DataFieldRow {
     }
   }
 
-  static string[] props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
-  static string[] nice = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
-
   public override void pack_edit_widgets () {
 
     var grid = new Grid ();
@@ -1064,12 +1061,12 @@ class Contacts.AddressFieldRow : DataFieldRow {
 
     for (int i = 0; i < entry.length; i++) {
       string postal_part;
-      details.value.get (props[i], out postal_part);
+      details.value.get (Contact.postal_element_props[i], out postal_part);
       entry[i] = new Entry ();
       entry[i].set_hexpand (true);
       if (postal_part != null)
 	entry[i].set_text (postal_part);
-      entry[i].set ("placeholder-text", nice[i]);
+      entry[i].set ("placeholder-text", Contact.postal_element_names[i]);
       grid.add (entry[i]);
 
       setup_entry_for_edit (entry[i], i == 0);
@@ -1089,7 +1086,7 @@ class Contacts.AddressFieldRow : DataFieldRow {
     bool changed = combo.modified;
     for (int i = 0; i < entry.length; i++) {
       string postal_part;
-      details.value.get (props[i], out postal_part);
+      details.value.get (Contact.postal_element_props[i], out postal_part);
       if (entry[i].get_text () != postal_part) {
 	changed = true;
 	break;
@@ -1107,7 +1104,7 @@ class Contacts.AddressFieldRow : DataFieldRow {
 					 details.value.address_format,
 					 details.value.uid);
       for (int i = 0; i < entry.length; i++)
-	new_value.set (props[i], entry[i].get_text ());
+	new_value.set (Contact.postal_element_props[i], entry[i].get_text ());
       details = new PostalAddressFieldDetails(new_value, old_details.parameters);
       combo.update_details (details);
     }
