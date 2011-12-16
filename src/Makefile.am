@@ -32,6 +32,7 @@ vala_sources = \
 	contacts-utils.vala \
 	contacts-clickable.vala \
 	contacts-new-contact-dialog.vala \
+	contacts-avatar-menu.vala \
 	main.vala \
 	$(NULL)
 
