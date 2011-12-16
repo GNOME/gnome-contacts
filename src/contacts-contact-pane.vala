@@ -152,6 +152,22 @@ public class Contacts.FieldRow : Contacts.Row {
     pack (l);
   }
 
+  public Grid pack_header_in_grid (string s) {
+    var grid = new Grid ();
+    var l = new Label (s);
+    l.set_markup (
+      "<span font='24px'>%s</span>".printf (s));
+    l.set_halign (Align.START);
+    l.set_hexpand (true);
+
+    grid.set_halign (Align.FILL);
+    grid.add (l);
+
+    pack (grid);
+
+    return grid;
+  }
+
   public Label pack_text (bool wrap = false) {
     var l = new Label ("");
     if (wrap) {
@@ -347,6 +363,69 @@ public abstract class Contacts.FieldSet : Grid {
 
 						     });
     }
+  }
+}
+
+public class Contacts.TitleFieldRow : FieldRow {
+  PersonaSheet sheet;
+  ulong set_focus_child_id;
+  Grid grid;
+
+  public TitleFieldRow (PersonaSheet sheet, string text) {
+    base (sheet.pane.row_group);
+    this.sheet = sheet;
+    set_can_focus (true);
+
+    grid = pack_header_in_grid (text);
+  }
+
+  Button? unlink_button;
+  public override bool enter_edit_mode () {
+    if (sheet.persona.store.is_primary_store)
+      return false;
+
+    if (sheet.pane.contact.individual.personas.size == 1)
+      return false;
+
+    this.set_can_focus (false);
+
+    this.reset ();
+    var b = new Button.with_label("Unlink");
+    unlink_button = b;
+    b.show ();
+    grid.add (b);
+    b.set_halign (Align.END);
+    b.clicked.connect ( () => {
+	unlink_persona.begin (sheet.pane.contact, sheet.persona, (obj, result) => {
+	    unlink_persona.end (result);
+	  });
+      });
+
+    var parent_container = (this.get_parent () as Container);
+    var pane = sheet.pane;
+    var row = this;
+    set_focus_child_id = parent_container.set_focus_child.connect ( (widget) => {
+	if (parent_container.get_focus_child () != row) {
+	  Idle.add(() => {
+	      if (pane.editing_row == row)
+		pane.exit_edit_mode (true);
+	      return false;
+	    });
+	}
+      });
+
+    return true;
+  }
+
+  public override void exit_edit_mode (bool save) {
+    unlink_button.destroy ();
+
+    var parent = this.get_parent ();
+    if (parent != null) {
+      var parent_container = (parent as Container);
+      parent_container.disconnect (set_focus_child_id);
+    }
+    this.set_can_focus (true);
   }
 }
 
@@ -1213,10 +1292,12 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!persona.store.is_primary_store) {
-      header = new FieldRow (pane.row_group);
+      header = new TitleFieldRow (this, Contact.format_persona_store_name (persona.store));
       this.attach (header, 0, row_nr++, 1, 1);
 
-      header.pack_header (Contact.format_persona_store_name (persona.store));
+      header.clicked.connect ( () => {
+	  this.pane.enter_edit_mode (header);
+	});
 
       if (!editable) {
 	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
