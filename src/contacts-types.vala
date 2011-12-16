@@ -34,7 +34,7 @@ public class Contacts.TypeSet : Object  {
     public TreeIter iter; // Set if in_store
     public bool in_store;
   }
-  
+
   // Dummy Data to mark the "Custom..." store entry
   private static Data custom_dummy = new Data ();
   // Dummy Data to mark the "Other..." store entry
@@ -72,7 +72,7 @@ public class Contacts.TypeSet : Object  {
       store.insert_before (out data.iter, custom_iter);
     else
       store.append (out data.iter);
-    
+
     store.set (data.iter, 0, data.display_name, 1, data);
   }
 
@@ -84,7 +84,7 @@ public class Contacts.TypeSet : Object  {
       data.display_name = dn;
       display_name_hash.insert (dn, data);
     }
-    
+
     data.init_data.append (init_data);
 
     for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
@@ -146,6 +146,19 @@ public class Contacts.TypeSet : Object  {
     custom_hash.insert (label, iter);
   }
 
+  private unowned Data? lookup_data_by_string (string str) {
+    unowned GLib.List<InitData *>? l = vcard_lookup_hash.lookup (str);
+    foreach (unowned InitData *d in l) {
+      if (d.types[1] == null) {
+	unowned string dn = dgettext (Config.GETTEXT_PACKAGE, d.display_name_u);
+	return display_name_hash.lookup (dn);
+      }
+    }
+
+    return null;
+  }
+
+
   private unowned Data? lookup_data (AbstractFieldDetails detail) {
     var i = detail.get_parameter_values ("type");
     if (i == null || i.is_empty)
@@ -193,6 +206,16 @@ public class Contacts.TypeSet : Object  {
       iter = other_iter;
     }
   }
+
+  public void lookup_type_by_string (string type, out TreeIter iter) {
+    unowned Data? d = lookup_data_by_string (type);
+    if (d != null) {
+      iter = d.iter;
+    } else {
+      iter = other_iter;
+    }
+  }
+
 
   public void type_seen (AbstractFieldDetails detail) {
     lookup_type (detail, null);
@@ -435,14 +458,24 @@ public class Contacts.TypeCombo : Grid  {
     }
   }
 
-  public void set_active (AbstractFieldDetails details) {
-    TreeIter iter;
-    type_set.lookup_type (details, out iter);
+  private void set_from_iter (TreeIter iter) {
     in_manual_change = true;
     last_active = iter;
     combo.set_active_iter (iter);
     in_manual_change = false;
     modified = false;
+  }
+
+  public void set_active (AbstractFieldDetails details) {
+    TreeIter iter;
+    type_set.lookup_type (details, out iter);
+    set_from_iter (iter);
+  }
+
+  public void set_to (string type) {
+    TreeIter iter;
+    type_set.lookup_type_by_string (type, out iter);
+    set_from_iter (iter);
   }
 
   public void update_details (AbstractFieldDetails details) {
