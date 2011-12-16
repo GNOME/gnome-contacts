@@ -642,7 +642,9 @@ public class Contacts.FieldRow : Contacts.Row {
 
 public abstract class Contacts.FieldSet : Grid {
   public class string label_name;
+  public class string detail_name;
   public class string property_name;
+  public class bool is_single_value;
 
   public PersonaSheet sheet { get; construct; }
   public int row_nr { get; construct; }
@@ -652,6 +654,7 @@ public abstract class Contacts.FieldSet : Grid {
   protected ArrayList<DataFieldRow> data_rows = new ArrayList<DataFieldRow>();
 
   public abstract void populate ();
+  public abstract DataFieldRow new_field ();
 
   construct {
     this.set_orientation (Orientation.VERTICAL);
@@ -906,6 +909,7 @@ class Contacts.LinkFieldRow : DataFieldRow {
 class Contacts.LinkFieldSet : FieldSet {
   class construct {
     label_name = _("Links");
+    detail_name = _("Link");
     property_name = "urls";
   }
 
@@ -920,6 +924,13 @@ class Contacts.LinkFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new LinkFieldRow (this, new UrlFieldDetails (""));
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as UrlDetails;
     if (details == null)
@@ -986,6 +997,7 @@ class Contacts.DetailedFieldRow<T> : DataFieldRow {
 class Contacts.EmailFieldSet : FieldSet {
   class construct {
     label_name = _("Email");
+    detail_name = _("Email");
     property_name = "email-addresses";
   }
 
@@ -999,6 +1011,13 @@ class Contacts.EmailFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new DetailedFieldRow<EmailFieldDetails> (this, new EmailFieldDetails("") ,TypeSet.general, (s) => { return new EmailFieldDetails (s); } );
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as EmailDetails;
     if (details == null)
@@ -1020,6 +1039,7 @@ class Contacts.EmailFieldSet : FieldSet {
 class Contacts.PhoneFieldSet : FieldSet {
   class construct {
     label_name = _("Phone");
+    detail_name = _("Phone number");
     property_name = "phone-numbers";
   }
   public override void populate () {
@@ -1032,6 +1052,13 @@ class Contacts.PhoneFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new DetailedFieldRow<PhoneFieldDetails> (this, new PhoneFieldDetails("") ,TypeSet.phone, (s) => { return new EmailFieldDetails (s); } );
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as PhoneDetails;
     if (details == null)
@@ -1073,6 +1100,7 @@ class Contacts.ChatFieldRow : DataFieldRow {
 class Contacts.ChatFieldSet : FieldSet {
   class construct {
     label_name = _("Chat");
+    detail_name = _("Chat");
     property_name = "im-addresses";
   }
   public override void populate () {
@@ -1087,6 +1115,12 @@ class Contacts.ChatFieldSet : FieldSet {
 	}
       }
     }
+  }
+
+  public override DataFieldRow new_field () {
+    var row = new ChatFieldRow (this, "", new ImFieldDetails (""));
+    add_row (row);
+    return row;
   }
 }
 
@@ -1177,7 +1211,9 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
 class Contacts.BirthdayFieldSet : FieldSet {
   class construct {
     label_name = _("Birthday");
+    detail_name = _("Birthday");
     property_name = "birthday";
+    is_single_value = true;
   }
   public override void populate () {
     var details = sheet.persona as BirthdayDetails;
@@ -1190,6 +1226,13 @@ class Contacts.BirthdayFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new BirthdayFieldRow (this, new DateTime.now_utc ());
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as BirthdayDetails;
     if (details == null)
@@ -1241,7 +1284,9 @@ class Contacts.StringFieldRow : DataFieldRow {
 class Contacts.NicknameFieldSet : FieldSet {
   class construct {
     label_name = _("Nickname");
+    detail_name = _("Nickname");
     property_name = "nickname";
+    is_single_value = true;
   }
   public override void populate () {
     var details = sheet.persona as NameDetails;
@@ -1253,6 +1298,13 @@ class Contacts.NicknameFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new StringFieldRow (this, "");
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as NameDetails;
     if (details == null)
@@ -1322,7 +1374,9 @@ class Contacts.NoteFieldRow : DataFieldRow {
 class Contacts.NoteFieldSet : FieldSet {
   class construct {
     label_name = _("Note");
+    detail_name = _("Note");
     property_name = "notes";
+    is_single_value = true;
   }
   public override void populate () {
     var details = sheet.persona as NoteDetails;
@@ -1334,6 +1388,13 @@ class Contacts.NoteFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new NoteFieldRow (this, new NoteFieldDetails (""));
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as NoteDetails;
     if (details == null)
@@ -1455,6 +1516,7 @@ class Contacts.AddressFieldRow : DataFieldRow {
 class Contacts.AddressFieldSet : FieldSet {
   class construct {
     label_name = _("Addresses");
+    detail_name = _("Address");
     property_name = "postal-addresses";
   }
   public override void populate () {
@@ -1467,6 +1529,23 @@ class Contacts.AddressFieldSet : FieldSet {
       add_row (row);
     }
   }
+
+  public override DataFieldRow new_field () {
+    var row = new AddressFieldRow (this,
+				   new PostalAddressFieldDetails (
+				     new PostalAddress (null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null)));
+    add_row (row);
+    return row;
+  }
+
   public override Value? get_value () {
     var details = sheet.persona as PostalAddressDetails;
     if (details == null)
@@ -1552,7 +1631,7 @@ public class Contacts.PersonaSheet : Grid {
 
       var b = new Button.with_label ("Add detail...");
       b.set_halign (Align.START);
-
+      b.clicked.connect (add_detail);
       footer.pack (b);
     }
 
@@ -1561,6 +1640,72 @@ public class Contacts.PersonaSheet : Grid {
 
   ~PersonaSheet() {
     persona.notify.disconnect(persona_notify_cb);
+  }
+
+  private void add_detail () {
+    var dialog = new Dialog.with_buttons (_("Add contact data to %s\n").printf (pane.contact.display_name),
+					  (Window) pane.get_toplevel (),
+					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
+					  Stock.CANCEL, ResponseType.CANCEL,
+					  Stock.OK, ResponseType.OK);
+
+    dialog.set_resizable (false);
+    dialog.set_default_response (ResponseType.OK);
+
+    var tree_view = new TreeView ();
+    var store = new ListStore (2, typeof (string), typeof (FieldSet));
+    tree_view.set_model (store);
+    tree_view.set_headers_visible (false);
+    tree_view.get_selection ().set_mode (SelectionMode.BROWSE);
+
+    var column = new Gtk.TreeViewColumn ();
+    tree_view.append_column (column);
+
+    var renderer = new Gtk.CellRendererText ();
+    column.pack_start (renderer, false);
+    column.add_attribute (renderer, "text", 0);
+
+    var scrolled = new ScrolledWindow(null, null);
+    scrolled.set_size_request (340, 300);
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    scrolled.set_vexpand (true);
+    scrolled.set_hexpand (true);
+    scrolled.set_shadow_type (ShadowType.IN);
+    scrolled.add (tree_view);
+
+    var box = dialog.get_content_area () as Box;
+    box.pack_start (scrolled, true, true, 0);
+    scrolled.set_border_width (6);
+
+    TreeIter iter;
+
+    for (int i = 0; i < field_set_types.length; i++) {
+      var field_set = field_sets[i];
+      if (!(field_set is ChatFieldSet) &&
+	  Contact.persona_has_writable_property (persona, field_set.property_name) &&
+	  (field_set.is_empty () || !field_set.is_single_value)) {
+	store.append (out iter);
+	store.set (iter, 0, field_set.detail_name, 1, field_set);
+      }
+    }
+
+    dialog.show_all ();
+    dialog.response.connect ( (response) => {
+	if (response == ResponseType.OK) {
+	  FieldSet field_set;
+	  TreeIter iter2;
+
+	  if (tree_view.get_selection() .get_selected (null, out iter2)) {
+	    store.get (iter2, 1, out field_set);
+
+	    var row = field_set.new_field ();
+	    field_set.show_all ();
+	    field_set.add_to_sheet ();
+	    pane.enter_edit_mode (row);
+	  }
+	}
+	dialog.destroy ();
+      });
   }
 
   private void persona_notify_cb (ParamSpec pspec) {
