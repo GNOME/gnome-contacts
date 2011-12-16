@@ -1848,6 +1848,13 @@ public class Contacts.ContactPane : ScrolledWindow {
     card_grid.attach (box,  1, 2, 1, 1);
 
     card_grid.show_all ();
+
+    update_buttons ();
+  }
+
+  public void update_buttons () {
+    var emails = contact.individual.email_addresses;
+    email_button.set_sensitive (!emails.is_empty);
   }
 
   public void update_personas () {
@@ -1869,20 +1876,28 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   public void show_contact (Contact? new_contact, bool edit=false) {
-    if (contact != null)
+    if (contact != null) {
       contact.personas_changed.disconnect (personas_changed_cb);
+      contact.changed.disconnect (contact_changed_cb);
+    }
 
     contact = new_contact;
 
     update_card ();
     update_personas ();
 
-    if (contact != null)
+    if (contact != null) {
       contact.personas_changed.connect (personas_changed_cb);
+      contact.changed.connect (contact_changed_cb);
+    }
   }
 
   private void personas_changed_cb (Contact contact) {
     update_personas ();
+  }
+
+  private void contact_changed_cb (Contact contact) {
+    update_buttons ();
   }
 
   public void new_contact (ListPane list_pane) {
