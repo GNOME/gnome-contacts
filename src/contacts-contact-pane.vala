@@ -245,6 +245,13 @@ public class Contacts.FieldRow : Contacts.Row {
     b.set_halign (Align.CENTER);
     return b;
   }
+
+  public virtual bool enter_edit_mode () {
+    return false;
+  }
+
+  public virtual void exit_edit_mode (bool save) {
+  }
 }
 
 public abstract class Contacts.FieldSet : Grid {
@@ -367,7 +374,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     return false;
   }
 
-  public bool enter_edit_mode () {
+  public override bool enter_edit_mode () {
     if (!editable)
       return false;
 
@@ -407,7 +414,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
     return true;
   }
 
-  public void exit_edit_mode (bool save) {
+  public override void exit_edit_mode (bool save) {
     if (!editable)
       return;
 
@@ -1348,7 +1355,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   private Grid card_grid;
   private Grid personas_grid;
   public RowGroup row_group;
-  public DataFieldRow? editing_row;
+  public FieldRow? editing_row;
 
   public Button email_button;
   public Button chat_button;
@@ -1551,7 +1558,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     update_buttons ();
   }
 
-  public void enter_edit_mode (DataFieldRow row) {
+  public void enter_edit_mode (FieldRow row) {
     if (editing_row != row) {
       exit_edit_mode (true);
       editing_row = null;
