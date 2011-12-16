@@ -1838,12 +1838,14 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     chat_button = b;
+    chat_button.clicked.connect (start_chat);
 
     image = new Image.from_icon_name ("call-start-symbolic", IconSize.MENU);
     b = new Button ();
     b.add (image);
     box.pack_start (b, true, true, 0);
     call_button = b;
+    call_button.clicked.connect (start_call);
 
     card_grid.attach (box,  1, 2, 1, 1);
 
@@ -1853,6 +1855,9 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   public void update_buttons () {
+    if (contact == null)
+      return;
+
     var emails = contact.individual.email_addresses;
     email_button.set_sensitive (!emails.is_empty);
 
@@ -1860,21 +1865,19 @@ public class Contacts.ContactPane : ScrolledWindow {
     var im_keys = ims.get_keys ();
     bool found_im = false;
     bool callable = false;
-    if (contact != null) {
-      foreach (var protocol in im_keys) {
-	foreach (var id in ims[protocol]) {
-	  var im_persona = contact.find_im_persona (protocol, id.value);
-	  if (im_persona != null) {
-	    var type = im_persona.presence_type;
-	    if (type != PresenceType.UNSET &&
-		type != PresenceType.ERROR &&
-		type != PresenceType.OFFLINE)
-	      found_im = true;
-	  }
-
-	  if (contact.is_callable (protocol, id.value) != null)
-	    callable = true;
+    foreach (var protocol in im_keys) {
+      foreach (var id in ims[protocol]) {
+	var im_persona = contact.find_im_persona (protocol, id.value);
+	if (im_persona != null) {
+	  var type = im_persona.presence_type;
+	  if (type != PresenceType.UNSET &&
+	      type != PresenceType.ERROR &&
+	      type != PresenceType.OFFLINE)
+	    found_im = true;
 	}
+
+	if (contact.is_callable (protocol, id.value) != null)
+	  callable = true;
       }
     }
     chat_button.set_sensitive (found_im);
@@ -2021,6 +2024,68 @@ public class Contacts.ContactPane : ScrolledWindow {
 	});
     }
   }
+
+  public void start_call () {
+  }
+
+  struct ImValue {
+    string protocol;
+    string id;
+    string name;
+  }
+
+  public void start_chat () {
+    var ims = contact.individual.im_addresses;
+    var im_keys = ims.get_keys ();
+    var online_personas = new ArrayList<ImValue?>();
+    if (contact != null) {
+      foreach (var protocol in im_keys) {
+	foreach (var id in ims[protocol]) {
+	  var im_persona = contact.find_im_persona (protocol, id.value);
+	  if (im_persona != null) {
+	    var type = im_persona.presence_type;
+	    if (type != PresenceType.UNSET &&
+		type != PresenceType.ERROR &&
+		type != PresenceType.OFFLINE) {
+	      ImValue? value = { protocol, id.value, Contact.format_im_name (im_persona, protocol, id.value) };
+	      online_personas.add (value);
+	    }
+	  }
+	}
+      }
+    }
+
+    if (online_personas.is_empty)
+      return;
+
+    if (online_personas.size == 1) {
+      foreach (var value in online_personas) {
+	Utils.start_chat (contact, value.protocol, value.id);
+      }
+    } else {
+      var store = new ListStore (2, typeof (string), typeof (ImValue?));
+      foreach (var value in online_personas) {
+	TreeIter iter;
+	store.append (out iter);
+	store.set (iter, 0, value.name, 1, value);
+      }
+      TreeSelection selection;
+      var dialog = pick_one_dialog (_("Select chat account"), store, out selection);
+      dialog.response.connect ( (response) => {
+	  if (response == ResponseType.OK) {
+	    ImValue? value2;
+	    TreeIter iter2;
+
+	    if (selection.get_selected (null, out iter2)) {
+	      store.get (iter2, 1, out value2);
+	      Utils.start_chat (contact, value2.protocol, value2.id);
+	    }
+	  }
+	  dialog.destroy ();
+	});
+    }
+  }
+
 
   public ContactPane (Store contacts_store) {
     this.contacts_store = contacts_store;
