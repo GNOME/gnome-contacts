@@ -1735,6 +1735,10 @@ public class Contacts.ContactPane : ScrolledWindow {
   public RowGroup row_group;
   public DataFieldRow? editing_row;
 
+  public Button email_button;
+  public Button chat_button;
+  public Button call_button;
+
   public Contact? contact;
 
   const int PROFILE_SIZE = 128;
@@ -1826,16 +1830,20 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     b.set_hexpand (true);
     box.pack_start (b, true, true, 0);
+    email_button = b;
+    email_button.clicked.connect (send_email);
 
     image = new Image.from_icon_name ("user-available-symbolic", IconSize.MENU);
     b = new Button ();
     b.add (image);
     box.pack_start (b, true, true, 0);
+    chat_button = b;
 
     image = new Image.from_icon_name ("call-start-symbolic", IconSize.MENU);
     b = new Button ();
     b.add (image);
     box.pack_start (b, true, true, 0);
+    call_button = b;
 
     card_grid.attach (box,  1, 2, 1, 1);
 
@@ -1893,6 +1901,83 @@ public class Contacts.ContactPane : ScrolledWindow {
     if (editing_row != null)
       editing_row.exit_edit_mode (save);
     editing_row = null;
+  }
+
+  private Dialog pick_one_dialog (string title, TreeModel model, out TreeSelection selection) {
+    var dialog = new Dialog.with_buttons (title,
+					  (Window) this.get_toplevel (),
+					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
+					  Stock.CANCEL, ResponseType.CANCEL,
+					  Stock.OK, ResponseType.OK);
+
+    dialog.set_resizable (false);
+    dialog.set_default_response (ResponseType.OK);
+
+    var tree_view = new TreeView ();
+    tree_view.set_model (model);
+    tree_view.set_headers_visible (false);
+    tree_view.get_selection ().set_mode (SelectionMode.BROWSE);
+
+    var column = new Gtk.TreeViewColumn ();
+    tree_view.append_column (column);
+
+    var renderer = new Gtk.CellRendererText ();
+    column.pack_start (renderer, false);
+    column.add_attribute (renderer, "text", 0);
+
+    var scrolled = new ScrolledWindow(null, null);
+    scrolled.set_size_request (340, 300);
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    scrolled.set_vexpand (true);
+    scrolled.set_hexpand (true);
+    scrolled.set_shadow_type (ShadowType.IN);
+    scrolled.add (tree_view);
+
+    var box = dialog.get_content_area () as Box;
+    box.pack_start (scrolled, true, true, 0);
+    scrolled.set_border_width (6);
+
+    dialog.show_all ();
+
+    selection = tree_view.get_selection ();
+    return dialog;
+  }
+
+
+  public void send_email () {
+    var emails = contact.individual.email_addresses;
+    if (emails.is_empty)
+      return;
+    if (emails.size == 1) {
+      foreach (var email in emails) {
+	var email_addr = email.value;
+	Utils.compose_mail (email_addr);
+      }
+    } else {
+      TreeIter iter;
+
+      var store = new ListStore (1, typeof (string));
+      foreach (var email in emails) {
+	var email_addr = email.value;
+	store.append (out iter);
+	store.set (iter, 0, email_addr);
+      }
+
+      TreeSelection selection;
+      var dialog = pick_one_dialog (_("Select email address"), store, out selection);
+      dialog.response.connect ( (response) => {
+	  if (response == ResponseType.OK) {
+	    string email2;
+	    TreeIter iter2;
+
+	    if (selection.get_selected (null, out iter2)) {
+	      store.get (iter2, 0, out email2);
+	      Utils.compose_mail (email2);
+	    }
+	  }
+	  dialog.destroy ();
+	});
+    }
   }
 
   public ContactPane (Store contacts_store) {
