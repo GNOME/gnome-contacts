@@ -1986,9 +1986,19 @@ public class Contacts.ContactPane : ScrolledWindow {
     scrolled.set_shadow_type (ShadowType.IN);
     scrolled.add (tree_view);
 
+    var grid = new Grid ();
+    grid.set_orientation (Orientation.VERTICAL);
+    grid.set_row_spacing (6);
+
+    var l = new Label (title);
+    l.set_halign (Align.START);
+
+    grid.add (l);
+    grid.add (scrolled);
+
     var box = dialog.get_content_area () as Box;
-    box.pack_start (scrolled, true, true, 0);
-    scrolled.set_border_width (6);
+    box.pack_start (grid, true, true, 0);
+    grid.set_border_width (6);
 
     dialog.show_all ();
 
