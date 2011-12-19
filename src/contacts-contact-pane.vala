@@ -1433,6 +1433,7 @@ public class Contacts.PersonaSheet : Grid {
 public class Contacts.ContactPane : ScrolledWindow {
   private Store contacts_store;
   private Grid top_grid;
+  private FieldRow card_row;
   private Grid card_grid;
   private Grid personas_grid;
   public RowGroup row_group;
@@ -1901,11 +1902,11 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     this.get_child().get_style_context ().add_class ("contact-pane");
 
-    var top_row = new FieldRow (row_group);
-    top_grid.add (top_row);
+    card_row = new FieldRow (row_group);
+    top_grid.add (card_row);
     card_grid = new Grid ();
     card_grid.set_vexpand (false);
-    top_row.pack (card_grid);
+    card_row.pack (card_grid);
 
     personas_grid = new Grid ();
     personas_grid.set_orientation (Orientation.VERTICAL);
