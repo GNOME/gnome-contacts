@@ -2046,8 +2046,12 @@ public class Contacts.ContactPane : ScrolledWindow {
     dialog.show_all ();
   }
 
-  void delete_contact () {
-    contacts_store.aggregator.remove_individual (contact.individual);
-  }
+  public signal void will_delete (Contact contact);
 
+  void delete_contact () {
+    if (contact != null) {
+      contact.hide ();
+      this.will_delete (contact);
+    }
+  }
 }

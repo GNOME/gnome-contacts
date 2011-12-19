@@ -117,7 +117,12 @@ public class Contacts.App : Gtk.Application {
     window.key_press_event.connect (window_key_press_event);
 
     var grid = new Grid();
-    window.add (grid);
+
+    var overlay = new Gtk.Overlay ();
+    overlay.add (grid);
+    Gdk.RGBA transparent = { 0, 0, 0, 0 };
+    overlay.override_background_color (0, transparent);
+    window.add (overlay);
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
@@ -130,9 +135,27 @@ public class Contacts.App : Gtk.Application {
 
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
+    contacts_pane.will_delete.connect ( (c) => {
+      string msg = _("Contact deleted: \"%s\"").printf (c.display_name);
+      var notification = new Gtk.Notification (msg, Stock.UNDO);
+      notification.show ();
+      ulong id;
+      id = notification.destroy.connect ( () => {
+	contacts_store.aggregator.remove_individual (c.individual);
+      });
+      notification.actioned.connect ( () => {
+	notification.disconnect (id);
+	notification.destroy ();
+	c.show ();
+	list_pane.select_contact (c);
+	contacts_pane.show_contact (c);
+      });
+
+      overlay.add_overlay (notification);
+    });
     grid.attach (contacts_pane, 1, 0, 1, 2);
 
-    grid.show_all ();
+    overlay.show_all ();
   }
 
   public override void startup () {
