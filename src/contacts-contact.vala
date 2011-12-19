@@ -256,10 +256,15 @@ public class Contacts.Contact : GLib.Object  {
 
   private bool _is_hidden;
   private bool _is_hidden_uptodate;
+  private bool _is_hidden_to_delete;
 
   private bool _get_is_hidden () {
     // Don't show the user itself
     if (individual.is_user)
+      return true;
+
+    // Contact has been deleted (but this is not actually posted, for undo support)
+    if (_is_hidden_to_delete)
       return true;
 
     var personas = individual.personas;
@@ -298,6 +303,18 @@ public class Contacts.Contact : GLib.Object  {
       }
       return _is_hidden;
     }
+  }
+
+  public void hide () {
+    _is_hidden_to_delete = true;
+
+    queue_changed (false);
+  }
+
+  public void show () {
+    _is_hidden_to_delete = false;
+
+    queue_changed (false);
   }
 
   public static Contact from_individual (Individual i) {
