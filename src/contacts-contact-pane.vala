@@ -1435,6 +1435,9 @@ public class Contacts.ContactPane : ScrolledWindow {
   public Button email_button;
   public Button chat_button;
   public Button call_button;
+  public Menu context_menu;
+  private MenuItem link_menu_item;
+  private MenuItem delete_menu_item;
 
   public Contact? contact;
 
@@ -1713,10 +1716,27 @@ public class Contacts.ContactPane : ScrolledWindow {
     update_card ();
     update_personas ();
 
+    bool can_remove = false;
+    bool can_remove_all = true;
+
     if (contact != null) {
       contact.personas_changed.connect (personas_changed_cb);
       contact.changed.connect (contact_changed_cb);
+
+      foreach (var p in contact.individual.personas) {
+	if (p.store.can_remove_personas == MaybeBool.TRUE &&
+	    !(p is Tpf.Persona)) {
+	  can_remove = true;
+	} else {
+	  can_remove_all = false;
+	}
+      }
     }
+
+    can_remove_all = can_remove && can_remove_all;
+
+    delete_menu_item.set_sensitive (can_remove_all);
+    link_menu_item.set_sensitive (contact != null);
   }
 
   private void personas_changed_cb (Contact contact) {
@@ -1987,6 +2007,15 @@ public class Contacts.ContactPane : ScrolledWindow {
     this.add_with_viewport (top_grid);
     top_grid.set_focus_vadjustment (this.get_vadjustment ());
 
+    var viewport = this.get_child ();
+    viewport.button_press_event.connect ( (event) => {
+	if (event.button == 3) {
+	  context_menu.popup (null, null, null, event.button, event.time);
+	  return true;
+	}
+	return false;
+      });
+
     this.get_child().get_style_context ().add_class ("contact-pane");
 
     card_row = new FieldRow (row_group);
@@ -2001,5 +2030,24 @@ public class Contacts.ContactPane : ScrolledWindow {
     top_grid.add (personas_grid);
 
     top_grid.show_all ();
+
+    context_menu = new Menu ();
+    link_menu_item = Utils.add_menu_item (context_menu,_("Add/Remove Linked Contacts..."));
+    link_menu_item.activate.connect (link_contact);
+    link_menu_item.set_sensitive (false);
+    //Utils.add_menu_item (context_menu,_("Send..."));
+    delete_menu_item = Utils.add_menu_item (context_menu,_("Delete"));
+    delete_menu_item.activate.connect (delete_contact);
+    delete_menu_item.set_sensitive (false);
   }
+
+  void link_contact () {
+    var dialog = new LinkDialog (contact);
+    dialog.show_all ();
+  }
+
+  void delete_contact () {
+    contacts_store.aggregator.remove_individual (contact.individual);
+  }
+
 }
