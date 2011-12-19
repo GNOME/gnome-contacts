@@ -291,11 +291,12 @@ public class Contacts.FieldRow : Contacts.Row {
     return b;
   }
 
-  public virtual bool enter_edit_mode () {
+
+  public virtual signal bool enter_edit_mode () {
     return false;
   }
 
-  public virtual void exit_edit_mode (bool save) {
+  public virtual signal void exit_edit_mode (bool save) {
   }
 }
 
