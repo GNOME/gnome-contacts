@@ -57,7 +57,7 @@ public class Contacts.Clickable : Object {
     this.event_window = event_window;
   }
 
-  public void unrealize (Gdk.Window? event_window) {
+  public void unrealize () {
     if (activate_timeout != 0)
       finish_activate (false);
   }

@@ -112,7 +112,7 @@ public class Contacts.FieldRow : Contacts.Row {
 
   public override void unrealize () {
     base.unrealize ();
-    clickable.unrealize (null);
+    clickable.unrealize ();
   }
 
   public override bool draw (Cairo.Context cr) {
