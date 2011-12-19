@@ -36,3 +36,11 @@ namespace Contacts {
 	[CCode (cname = "eds_personal_google_group_name")]
 	public static unowned string? eds_personal_google_group_name ();
 }
+
+[CCode (cprefix = "Gtk", lower_case_cprefix = "gtk_", cheader_filename = "gtk-notification.h")]
+namespace Gtk {
+	public class Notification : Gtk.Box {
+		[CCode (has_construct_function = false, type = "GtkWidget*")]
+		public Notification (string msg, string action);
+		public virtual signal void actioned ();
+	}}

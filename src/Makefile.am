@@ -38,6 +38,7 @@ vala_sources = \
 	$(NULL)
 
 gnome_contacts_SOURCES = \
+	gtk-notification.c   \
 	contacts-esd-setup.c \
 	$(vala_sources) \
 	$(NULL)
@@ -47,5 +48,6 @@ gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 CLEANFILES = $(vala_sources:.vala=.c) *.vapi *.stamp
 
 EXTRA_DIST = \
+	gtk-notification.h   \
 	contacts-esd-setup.h \
 	$(NULL)
