@@ -1501,14 +1501,93 @@ public class Contacts.ContactPane : ScrolledWindow {
     card_grid.set_row_spacing (16);
 
     var l = new Label (null);
-    l.set_markup ("<span font='24px'>" + contact.display_name + "</span>");
+    l.set_markup ("<span font='24'>" + contact.display_name + "</span>");
     l.set_hexpand (true);
     l.set_halign (Align.START);
     l.set_valign (Align.START);
     l.set_margin_top (4);
     l.set_ellipsize (Pango.EllipsizeMode.END);
     l.xalign = 0.0f;
-    card_grid.attach (l,  1, 0, 1, 1);
+
+    var event_box = new EventBox ();
+    event_box.set_visible_window (false);
+
+    var clickable = new Clickable (event_box);
+    event_box.realize.connect_after ( (event) => {
+	Gdk.Window window = null;
+	foreach (var win in event_box.get_window ().get_children ()) {
+	  Widget *w = null;
+	  win.get_user_data (&w);
+	  if (w == event_box) {
+	    window = win;
+	  }
+	}
+	clickable.realize_for (window);
+      });
+    event_box.unrealize.connect_after ( (event) => {
+	clickable.unrealize ();
+      });
+    clickable.clicked.connect ( () => {
+	this.enter_edit_mode (card_row);
+      });
+
+    var id1 = card_row.enter_edit_mode.connect_after ( () => {
+	event_box.remove (l);
+	var entry = new Entry ();
+	entry.set_text (contact.display_name);
+	entry.show ();
+	entry.override_font (Pango.FontDescription.from_string ("24px"));
+	event_box.add (entry);
+	Utils.grab_widget_later (entry);
+
+	entry.activate.connect_after ( () => {
+	    exit_edit_mode (true);
+	  });
+	entry.key_press_event.connect ( (key_event) => {
+	    if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
+	      exit_edit_mode (false);
+	    }
+	    return false;
+	  });
+
+	return true;
+      });
+
+    var id2 = card_row.exit_edit_mode.connect ( (save) => {
+	Entry entry = event_box.get_child () as Entry;
+	bool changed = entry.get_text () != contact.display_name;
+
+	if (save && changed) {
+	  Value v = Value (typeof (string));
+	  v.set_string (entry.get_text ());
+	  set_individual_property.begin (contact,
+					 "full-name", v,
+					 (obj, result) => {
+					   try {
+					     var p = set_individual_property.end (result);
+					   } catch (Error e) {
+					     warning ("Unable to create writeable persona: %s", e.message);
+					   }
+					 });
+	}
+
+	event_box.remove (entry);
+	event_box.add (l);
+      });
+
+    var id3 = card_row.lost_child_focus.connect ( () => {
+	if (editing_row == card_row)
+	  exit_edit_mode (true);
+      });
+
+    event_box.destroy.connect ( () => {
+	card_row.disconnect (id1);
+	card_row.disconnect (id2);
+	card_row.disconnect (id3);
+      });
+
+    event_box.add (l);
+    card_grid.attach (event_box,  1, 0, 1, 1);
 
     var merged_presence = contact.create_merged_presence_widget ();
     merged_presence.set_halign (Align.START);
