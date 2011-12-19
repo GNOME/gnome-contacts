@@ -285,26 +285,12 @@ static void draw_shadow_box(cairo_t *cr, GdkRectangle rect, double radius, doubl
 	x3 = rect.x + rect.width;
 
 	y0 = rect.y;
-	y1 = rect.y + radius;
 	y2 = rect.y + rect.height - radius;
 	y3 = rect.y + rect.height;
 
 	/* Fill non-border part */
 	cairo_set_source_rgba(cr, 0, 0, 0, transparency);
-	cairo_rectangle(cr, x1, y1, x2 - x1, y2 - y1);
-	cairo_fill(cr);
-
-	/* Upper border */
-
-	pattern = cairo_pattern_create_linear(0, y0, 0, y1);
-
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, 0.0);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, transparency);
-
-	cairo_set_source(cr, pattern);
-	cairo_pattern_destroy(pattern);
-
-	cairo_rectangle(cr, x1, y0, x2 - x1, y1 - y0);
+	cairo_rectangle(cr, x1, y0, x2 - x1, y2 - y0);
 	cairo_fill(cr);
 
 	/* Bottom border */
@@ -330,7 +316,7 @@ static void draw_shadow_box(cairo_t *cr, GdkRectangle rect, double radius, doubl
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
 
-	cairo_rectangle(cr, x0, y1, x1 - x0, y2 - y1);
+	cairo_rectangle(cr, x0, y0, x1 - x0, y2 - y0);
 	cairo_fill(cr);
 
 	/* Right border */
@@ -343,33 +329,7 @@ static void draw_shadow_box(cairo_t *cr, GdkRectangle rect, double radius, doubl
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
 
-	cairo_rectangle(cr, x2, y1, x3 - x2, y2 - y1);
-	cairo_fill(cr);
-
-	/* NW corner */
-
-	pattern = cairo_pattern_create_radial(x1, y1, 0, x1, y1, radius);
-
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, transparency);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, 0.0);
-
-	cairo_set_source(cr, pattern);
-	cairo_pattern_destroy(pattern);
-
-	cairo_rectangle(cr, x0, y0, x1 - x0, y1 - y0);
-	cairo_fill(cr);
-
-	/* NE corner */
-
-	pattern = cairo_pattern_create_radial(x2, y1, 0, x2, y1, radius);
-
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, transparency);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, 0.0);
-
-	cairo_set_source(cr, pattern);
-	cairo_pattern_destroy(pattern);
-
-	cairo_rectangle(cr, x2, y0, x3 - x2, y1 - y0);
+	cairo_rectangle(cr, x2, y0, x3 - x2, y2 - y0);
 	cairo_fill(cr);
 
 	/* SW corner */
