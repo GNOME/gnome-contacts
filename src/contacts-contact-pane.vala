@@ -23,6 +23,7 @@ using Gee;
 public class Contacts.FieldRow : Contacts.Row {
   Clickable clickable;
   int start;
+  bool has_child_focus;
 
   public FieldRow(RowGroup group) {
     base (group);
@@ -131,6 +132,34 @@ public class Contacts.FieldRow : Contacts.Row {
     context.restore ();
 
     return true;
+  }
+
+  public override void parent_set (Widget? old_parent) {
+    if (old_parent != null) {
+      var old_parent_container = (old_parent as Container);
+      old_parent_container.set_focus_child.disconnect (parent_set_focus_child);
+    }
+
+    var parent_container = (this.get_parent () as Container);
+    has_child_focus = parent_container != null && parent_container.get_focus_child () == this;
+    if (parent_container != null)
+      parent_container.set_focus_child.connect (parent_set_focus_child);
+  }
+
+  public virtual signal void lost_child_focus () {
+  }
+
+  public void parent_set_focus_child (Container container, Widget? widget) {
+    var old_has_child_focus = has_child_focus;
+    has_child_focus = widget == this;
+
+    if (old_has_child_focus && !has_child_focus) {
+	  Idle.add(() => {
+	      if (!has_child_focus)
+		lost_child_focus ();
+	      return false;
+	    });
+    }
   }
 
   public void pack (Widget w) {
