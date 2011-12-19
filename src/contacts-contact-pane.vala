@@ -1509,6 +1509,12 @@ public class Contacts.ContactPane : ScrolledWindow {
     l.set_ellipsize (Pango.EllipsizeMode.END);
     l.xalign = 0.0f;
 
+    var old_contact = contact;
+    ulong id = contact.changed.connect ( () => {
+	l.set_markup ("<span font='24'>" + contact.display_name + "</span>");
+      });
+    l.destroy.connect (() => { old_contact.disconnect (id); });
+
     var event_box = new EventBox ();
     event_box.set_visible_window (false);
 
@@ -1558,6 +1564,10 @@ public class Contacts.ContactPane : ScrolledWindow {
 	bool changed = entry.get_text () != contact.display_name;
 
 	if (save && changed) {
+	  // Things look better if we update immediately, rather than after the setting has
+	  // been applied
+	  l.set_markup ("<span font='24'>" + entry.get_text () + "</span>");
+
 	  Value v = Value (typeof (string));
 	  v.set_string (entry.get_text ());
 	  set_individual_property.begin (contact,
