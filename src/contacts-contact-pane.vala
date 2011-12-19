@@ -1608,6 +1608,12 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   public void show_contact (Contact? new_contact, bool edit=false) {
+    if (contact == new_contact)
+      return;
+
+    if (contact != null && editing_row != null)
+      exit_edit_mode (true);
+
     if (contact != null) {
       contact.personas_changed.disconnect (personas_changed_cb);
       contact.changed.disconnect (contact_changed_cb);
