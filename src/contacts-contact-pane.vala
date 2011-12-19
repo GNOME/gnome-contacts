@@ -1495,7 +1495,9 @@ public class Contacts.ContactPane : ScrolledWindow {
       });
 
     var image_frame = new ContactFrame (PROFILE_SIZE, menu);
-    image_frame.set_image (contact.individual, contact);
+    contact.keep_widget_uptodate (image_frame,  (w) => {
+	(w as ContactFrame).set_image (contact.individual, contact);
+      });
 
     card_grid.attach (image_frame,  0, 0, 1, 3);
     card_grid.set_row_spacing (16);
