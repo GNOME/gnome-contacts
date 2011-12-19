@@ -188,4 +188,12 @@ public class Contacts.Utils : Object {
     }
     return res.str;
   }
+
+  public static void grab_widget_later (Widget widget) {
+      ulong id = 0;
+      id = widget.size_allocate.connect ( () => {
+	  widget.grab_focus ();
+	  widget.disconnect (id);
+	});
+  }
 }
