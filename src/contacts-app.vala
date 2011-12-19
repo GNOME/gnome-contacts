@@ -141,7 +141,7 @@ public class Contacts.App : Gtk.Application {
       notification.show ();
       ulong id;
       id = notification.destroy.connect ( () => {
-	  //contacts_store.aggregator.remove_individual (c.individual);
+	contacts_store.aggregator.remove_individual (c.individual);
       });
       notification.actioned.connect ( () => {
 	notification.disconnect (id);
