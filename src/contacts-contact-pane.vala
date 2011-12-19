@@ -1501,7 +1501,6 @@ public class Contacts.ContactPane : ScrolledWindow {
     card_grid.set_row_spacing (16);
 
     var l = new Label (null);
-    l.set_markup ("<span font='24'>" + contact.display_name + "</span>");
     l.set_hexpand (true);
     l.set_halign (Align.START);
     l.set_valign (Align.START);
@@ -1509,11 +1508,9 @@ public class Contacts.ContactPane : ScrolledWindow {
     l.set_ellipsize (Pango.EllipsizeMode.END);
     l.xalign = 0.0f;
 
-    var old_contact = contact;
-    ulong id = contact.changed.connect ( () => {
-	l.set_markup ("<span font='24'>" + contact.display_name + "</span>");
+    contact.keep_widget_uptodate (l,  (w) => {
+	(w as Label).set_markup ("<span font='24'>" + contact.display_name + "</span>");
       });
-    l.destroy.connect (() => { old_contact.disconnect (id); });
 
     var event_box = new EventBox ();
     event_box.set_visible_window (false);
