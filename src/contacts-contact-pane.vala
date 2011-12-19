@@ -397,7 +397,6 @@ public abstract class Contacts.FieldSet : Grid {
 
 public class Contacts.TitleFieldRow : FieldRow {
   PersonaSheet sheet;
-  ulong set_focus_child_id;
   Grid grid;
 
   public TitleFieldRow (PersonaSheet sheet, string text) {
@@ -430,37 +429,23 @@ public class Contacts.TitleFieldRow : FieldRow {
 	  });
       });
 
-    var parent_container = (this.get_parent () as Container);
-    var pane = sheet.pane;
-    var row = this;
-    set_focus_child_id = parent_container.set_focus_child.connect ( (widget) => {
-	if (parent_container.get_focus_child () != row) {
-	  Idle.add(() => {
-	      if (pane.editing_row == row)
-		pane.exit_edit_mode (true);
-	      return false;
-	    });
-	}
-      });
-
     return true;
+  }
+
+  public override void lost_child_focus () {
+    if (sheet.pane.editing_row == this)
+      sheet.pane.exit_edit_mode (true);
   }
 
   public override void exit_edit_mode (bool save) {
     unlink_button.destroy ();
 
-    var parent = this.get_parent ();
-    if (parent != null) {
-      var parent_container = (parent as Container);
-      parent_container.disconnect (set_focus_child_id);
-    }
     this.set_can_focus (true);
   }
 }
 
 public abstract class Contacts.DataFieldRow : FieldRow {
   public FieldSet field_set;
-  ulong set_focus_child_id;
   bool editable;
   protected Button? delete_button;
 
@@ -506,20 +491,12 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 	w.show_all ();
     }
 
-    var parent_container = (this.get_parent () as Container);
-    var pane = field_set.sheet.pane;
-    var row = this;
-    set_focus_child_id = parent_container.set_focus_child.connect ( (widget) => {
-	if (parent_container.get_focus_child () != row) {
-	  Idle.add(() => {
-	      if (pane.editing_row == row)
-		pane.exit_edit_mode (true);
-	      return false;
-	    });
-	}
-      });
-
     return true;
+  }
+
+  public override void lost_child_focus () {
+    if (field_set.sheet.pane.editing_row == this)
+      field_set.sheet.pane.exit_edit_mode (true);
   }
 
   public override void exit_edit_mode (bool save) {
@@ -527,12 +504,6 @@ public abstract class Contacts.DataFieldRow : FieldRow {
       return;
 
     var had_child_focus = this.get_focus_child () != null;
-
-    var parent = this.get_parent ();
-    if (parent != null) {
-      var parent_container = (parent as Container);
-      parent_container.disconnect (set_focus_child_id);
-    }
 
     var changed = finish_edit_widgets (save);
 
