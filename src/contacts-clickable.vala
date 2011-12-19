@@ -74,22 +74,25 @@ public class Contacts.Clickable : Object {
   }
 
   private bool button_press_event (Gdk.EventButton event) {
-    if (event.type == Gdk.EventType.BUTTON_PRESS) {
+    if (event.button == 1) {
       if (focus_on_click && !widget.has_focus)
 	widget.grab_focus ();
 
-      if (event.button == 1)
-	pressed ();
+      pressed ();
+
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   private bool button_release_event (Gdk.EventButton event) {
-    if (event.button == 1)
+    if (event.button == 1) {
       released ();
+      return true;
+    }
 
-    return true;
+    return false;
   }
 
   private bool grab_broken_event (Gdk.EventGrabBroken event) {
