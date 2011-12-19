@@ -43,13 +43,6 @@
 
 #define GTK_PARAM_READWRITE G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB
 #define SHADOW_OFFSET 10
-#define SHADOW_RADIUS 5
-
-#define GTK_STYLE_PROVIDER_PRIORITY_FORCE G_MAXUINT
-#define DEFAULT_CSS \
-  ".rounded-box {\n" \
-  "  border-radius: 0 0 5 5;\n" \
-  "}\n"
 
 enum {
 	PROP_0,
@@ -103,12 +96,7 @@ G_DEFINE_TYPE(GtkNotification, gtk_notification, GTK_TYPE_BOX);
 static void gtk_notification_init(GtkNotification *notification) {
 	g_object_set(GTK_BOX(notification), "orientation", GTK_ORIENTATION_HORIZONTAL, "homogeneous", FALSE, "spacing", 2, NULL);
 
-	//setting fixed CSS to accomplish the border-radius seen in the mockups
-	GtkStyleProvider *provider = GTK_STYLE_PROVIDER (gtk_css_provider_new ());
-	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), provider, GTK_STYLE_PROVIDER_PRIORITY_FORCE);
-	gtk_css_provider_load_from_data(GTK_CSS_PROVIDER(provider), DEFAULT_CSS, -1, NULL);
-
-	gtk_style_context_add_class(gtk_widget_get_style_context(GTK_WIDGET(notification)), "rounded-box");
+	gtk_style_context_add_class(gtk_widget_get_style_context(GTK_WIDGET(notification)), "contacts-notification");
 
 	//FIXME position should be set by properties
 	gtk_widget_set_halign(GTK_WIDGET(notification), GTK_ALIGN_CENTER);
@@ -360,26 +348,35 @@ static void draw_shadow_box(cairo_t *cr, GdkRectangle rect, double radius, doubl
 }
 
 static gboolean gtk_notification_draw(GtkWidget *widget, cairo_t *cr) {
+	GtkStyleContext *context;
 	GdkRectangle rect;
-	gtk_widget_get_allocation(widget, &rect);
+	int border_radius;
+	GtkStateFlags state;
+
+	gtk_widget_get_allocation (widget, &rect);
+
 	rect.x += SHADOW_OFFSET;
 	rect.y += SHADOW_OFFSET;
 	rect.width -= SHADOW_OFFSET;
 	rect.height -= SHADOW_OFFSET;
 
-	draw_shadow_box(cr, rect, SHADOW_RADIUS, 0.4);
+	context = gtk_widget_get_style_context(widget);
+	state = gtk_style_context_get_state (context);
 
-	GtkStyleContext * context = gtk_widget_get_style_context(widget);
-	gtk_style_context_save(context);
+	border_radius = 5; /* TODO: Should pick this up from context */
+
+	draw_shadow_box (cr, rect, border_radius, 0.4);
+
+	gtk_style_context_save (context);
 	//FIXME I don't see the frame drawing at all
-	gtk_render_background(context,
+	gtk_render_background (context,
 			cr,
 			0,
 			0,
-			gtk_widget_get_allocated_width(widget) - SHADOW_OFFSET,
-			gtk_widget_get_allocated_height(widget) - SHADOW_OFFSET);
+			gtk_widget_get_allocated_width (widget) - SHADOW_OFFSET,
+			gtk_widget_get_allocated_height (widget) - SHADOW_OFFSET);
 
-	gtk_style_context_restore(context);
+	gtk_style_context_restore (context);
 
 	if (GTK_WIDGET_CLASS(gtk_notification_parent_class)->draw)
 		GTK_WIDGET_CLASS(gtk_notification_parent_class)->draw(widget, cr);
