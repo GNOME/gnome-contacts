@@ -114,7 +114,7 @@ public class Contacts.NewContactDialog : Dialog {
     menu_button.set_hexpand (false);
     menu_button.set_halign (Align.START);
 
-    var menu = new Menu ();
+    var menu = new Gtk.Menu ();
     menu_button.set_menu (menu);
 
     Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {

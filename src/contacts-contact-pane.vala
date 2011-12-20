@@ -1435,9 +1435,9 @@ public class Contacts.ContactPane : ScrolledWindow {
   public Button email_button;
   public Button chat_button;
   public Button call_button;
-  public Menu context_menu;
-  private MenuItem link_menu_item;
-  private MenuItem delete_menu_item;
+  public Gtk.Menu context_menu;
+  private Gtk.MenuItem link_menu_item;
+  private Gtk.MenuItem delete_menu_item;
 
   public Contact? contact;
 
@@ -1525,7 +1525,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 	Gdk.Window window = null;
 	foreach (var win in event_box.get_window ().get_children ()) {
 	  Widget *w = null;
-	  win.get_user_data (&w);
+	  win.get_user_data (out w);
 	  if (w == event_box) {
 	    window = win;
 	  }
@@ -2034,7 +2034,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     top_grid.show_all ();
 
-    context_menu = new Menu ();
+    context_menu = new Gtk.Menu ();
     link_menu_item = Utils.add_menu_item (context_menu,_("Add/Remove Linked Contacts..."));
     link_menu_item.activate.connect (link_contact);
     link_menu_item.set_sensitive (false);

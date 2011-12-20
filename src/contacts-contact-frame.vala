@@ -27,9 +27,9 @@ public class Contacts.ContactFrame : Frame {
   private Pango.Layout? layout;
   private int text_height;
   private bool popup_in_progress;
-  private Menu? menu;
+  private Gtk.Menu? menu;
 
-  private void menu_position (Menu menu, out int x, out int y, out bool push_in) {
+  private void menu_position (Gtk.Menu menu, out int x, out int y, out bool push_in) {
     Allocation allocation;
     get_allocation (out allocation);
 
@@ -84,7 +84,7 @@ public class Contacts.ContactFrame : Frame {
     push_in = false;
   }
 
-  public ContactFrame (int size, Menu? menu = null) {
+  public ContactFrame (int size, Gtk.Menu? menu = null) {
     this.size = size;
 
     var image = new Image ();

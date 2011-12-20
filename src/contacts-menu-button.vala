@@ -19,7 +19,7 @@
 using Gtk;
 
 public class Contacts.MenuButton : ToggleButton  {
-  Menu? menu;
+  Gtk.Menu? menu;
   bool popup_in_progress;
 
   public MenuButton (string label) {
@@ -43,7 +43,7 @@ public class Contacts.MenuButton : ToggleButton  {
 
   public signal void popup ();
 
-  private void menu_position (Menu menu, out int x, out int y, out bool push_in) {
+  private void menu_position (Gtk.Menu menu, out int x, out int y, out bool push_in) {
     Allocation allocation;
     get_allocation (out allocation);
 
@@ -158,10 +158,10 @@ public class Contacts.MenuButton : ToggleButton  {
     set_active (false);
   }
 
-  private void menu_detach (Menu menu) {
+  private void menu_detach (Gtk.Menu menu) {
   }
 
-  public void set_menu (Menu? menu) {
+  public void set_menu (Gtk.Menu? menu) {
     if (this.menu != null) {
       this.menu.show.disconnect (menu_show);
       this.menu.hide.disconnect (menu_hide);

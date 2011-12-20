@@ -84,8 +84,8 @@ public class Contacts.Utils : Object {
     return null;
   }
 
-  public static MenuItem add_menu_item (Menu menu, string label) {
-    var mi = new MenuItem.with_label (label);
+  public static Gtk.MenuItem add_menu_item (Gtk.Menu menu, string label) {
+    var mi = new Gtk.MenuItem.with_label (label);
     menu.append (mi);
     mi.show ();
     return mi;

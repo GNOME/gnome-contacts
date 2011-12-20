@@ -20,15 +20,15 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.AvatarMenu : Menu {
+public class Contacts.AvatarMenu : Gtk.Menu {
   private Gnome.DesktopThumbnailFactory thumbnail_factory;
 
-  private MenuItem? menu_item_for_pixbuf (Gdk.Pixbuf? pixbuf, Icon icon) {
+  private Gtk.MenuItem? menu_item_for_pixbuf (Gdk.Pixbuf? pixbuf, Icon icon) {
     if (pixbuf == null)
       return null;
 
     var image = new Image.from_pixbuf (Contact.frame_icon (pixbuf));
-    var menuitem = new MenuItem ();
+    var menuitem = new Gtk.MenuItem ();
     menuitem.add (image);
     menuitem.show_all ();
     menuitem.set_data ("source-icon", icon);
@@ -36,7 +36,7 @@ public class Contacts.AvatarMenu : Menu {
     return menuitem;
   }
 
-  private MenuItem? menu_item_for_persona (Persona persona) {
+  private Gtk.MenuItem? menu_item_for_persona (Persona persona) {
     var details = persona as AvatarDetails;
     if (details == null || details.avatar == null)
       return null;
@@ -51,7 +51,7 @@ public class Contacts.AvatarMenu : Menu {
     return null;
   }
 
-  private MenuItem? menu_item_for_filename (string filename) {
+  private Gtk.MenuItem? menu_item_for_filename (string filename) {
     try {
       var pixbuf = new Gdk.Pixbuf.from_file (filename);
       pixbuf = pixbuf.scale_simple (48, 48, Gdk.InterpType.HYPER);
@@ -67,7 +67,7 @@ public class Contacts.AvatarMenu : Menu {
     icon_set (icon);
   }
 
-  private void pick_avatar_cb (MenuItem menu) {
+  private void pick_avatar_cb (Gtk.MenuItem menu) {
     Icon icon = menu.get_data<Icon> ("source-icon");
     set_avatar_from_icon (icon);
   }
@@ -105,7 +105,7 @@ public class Contacts.AvatarMenu : Menu {
     chooser.set_preview_widget_active (true);
   }
 
-  private void select_avatar_file_cb (MenuItem menu) {
+  private void select_avatar_file_cb (Gtk.MenuItem menu) {
     var chooser = new FileChooserDialog (_("Browse for more pictures"),
 					 (Window)this.get_toplevel (),
 					 FileChooserAction.OPEN,
