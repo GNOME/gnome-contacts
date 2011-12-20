@@ -1654,6 +1654,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     var im_keys = ims.get_keys ();
     bool found_im = false;
     bool callable = false;
+    PresenceType max_presence = 0;
     foreach (var protocol in im_keys) {
       foreach (var id in ims[protocol]) {
 	var im_persona = contact.find_im_persona (protocol, id.value);
@@ -1661,8 +1662,11 @@ public class Contacts.ContactPane : ScrolledWindow {
 	  var type = im_persona.presence_type;
 	  if (type != PresenceType.UNSET &&
 	      type != PresenceType.ERROR &&
-	      type != PresenceType.OFFLINE)
+	      type != PresenceType.OFFLINE) {
 	    found_im = true;
+	    if (type > max_presence)
+	      max_presence = type;
+	  }
 	}
 
 	if (contact.is_callable (protocol, id.value) != null)
@@ -1676,6 +1680,12 @@ public class Contacts.ContactPane : ScrolledWindow {
 	callable = true;
     }
 
+    string icon;
+    if (found_im)
+      icon = Contact.presence_to_icon_symbolic (max_presence);
+    else
+      icon = "user-available-symbolic";
+    (chat_button.get_child () as Image).set_from_icon_name (icon, IconSize.MENU);
     chat_button.set_sensitive (found_im);
 
     if (callable)
