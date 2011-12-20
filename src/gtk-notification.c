@@ -653,12 +653,6 @@ gtk_notification_close_button_clicked_cb (GtkWidget *widget, gpointer user_data)
   gtk_widget_destroy (GTK_WIDGET (notification));
 }
 
-static void
-gtk_notification_action_button_clicked_cb (GtkWidget *widget, gpointer user_data)
-{
-  g_signal_emit_by_name (user_data, "actioned", NULL);
-}
-
 GtkWidget *
 gtk_notification_new (void)
 {
