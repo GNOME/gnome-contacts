@@ -146,6 +146,21 @@ gtk_notification_finalize (GObject *object)
 }
 
 static void
+gtk_notification_destroy (GtkWidget *widget)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
+
+  if (priv->close_button)
+    {
+      gtk_widget_unparent (priv->close_button);
+      priv->close_button = NULL;
+    }
+
+  GTK_WIDGET_CLASS (gtk_notification_parent_class)->destroy (widget);
+}
+
+static void
 gtk_notification_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
   GtkNotification *notification = GTK_NOTIFICATION (object);
@@ -209,6 +224,7 @@ gtk_notification_class_init (GtkNotificationClass *klass)
   object_class->set_property = gtk_notification_set_property;
   object_class->get_property = gtk_notification_get_property;
 
+  widget_class->destroy = gtk_notification_destroy;
   widget_class->get_preferred_width = gtk_notification_get_preferred_width;
   widget_class->get_preferred_height_for_width = gtk_notification_get_preferred_height_for_width;
   widget_class->get_preferred_height = gtk_notification_get_preferred_height;
