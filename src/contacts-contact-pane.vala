@@ -1609,14 +1609,15 @@ public class Contacts.ContactPane : ScrolledWindow {
     card_grid.attach (merged_presence,  1, 1, 1, 1);
 
     var box = new Box (Orientation.HORIZONTAL, 0);
+    box.set_halign (Align.START);
 
     box.get_style_context ().add_class ("linked");
     var image = new Image.from_icon_name ("mail-unread-symbolic", IconSize.MENU);
     var b = new Button ();
     b.add (image);
-    b.set_hexpand (true);
     box.pack_start (b, true, true, 0);
     email_button = b;
+    email_button.set_size_request (86, 32);
     email_button.clicked.connect (send_email);
 
     image = new Image.from_icon_name ("user-available-symbolic", IconSize.MENU);
@@ -1624,6 +1625,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     chat_button = b;
+    chat_button.set_size_request (86, 32);
     chat_button.clicked.connect (start_chat);
 
     image = new Image.from_icon_name ("call-start-symbolic", IconSize.MENU);
@@ -1631,6 +1633,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     call_button = b;
+    call_button.set_size_request (86, 32);
     call_button.clicked.connect (start_call);
 
     card_grid.attach (box,  1, 2, 1, 1);
