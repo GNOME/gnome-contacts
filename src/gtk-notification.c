@@ -58,8 +58,8 @@ struct _GtkNotificationPrivate {
 	GtkWidget *action_button;
 	GtkWidget *close_button;
 
-	gchar * message_label;
-	gchar * button_label;
+	gchar *message_label;
+	gchar *button_label;
 	guint timeout;
 
 	guint timeout_source_id;
@@ -107,7 +107,7 @@ G_DEFINE_TYPE(GtkNotification, gtk_notification, GTK_TYPE_BOX);
 static void
 gtk_notification_init(GtkNotification *notification)
 {
-	GtkWidget * close_button_image;
+	GtkWidget *close_button_image;
 
 	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (notification)),
 								 "contacts-notification");
@@ -157,18 +157,17 @@ gtk_notification_init(GtkNotification *notification)
 static void
 gtk_notification_finalize (GObject *object)
 {
-	g_return_if_fail(GTK_IS_NOTIFICATION (object));
-	GtkNotification * notification = GTK_NOTIFICATION(object);
+	g_return_if_fail (GTK_IS_NOTIFICATION (object));
+	GtkNotification *notification = GTK_NOTIFICATION (object);
 
-	if (notification->priv->message_label) {
-		g_free(notification->priv->message_label);
-	}
-	if (notification->priv->button_label) {
-		g_free(notification->priv->button_label);
-	}
-	if (notification->priv->timeout_source_id != 0) {
+	if (notification->priv->message_label)
+		g_free (notification->priv->message_label);
+
+	if (notification->priv->button_label)
+		g_free (notification->priv->button_label);
+
+	if (notification->priv->timeout_source_id != 0)
 		g_source_remove(notification->priv->timeout_source_id);
-	}
 
 	G_OBJECT_CLASS (gtk_notification_parent_class)->finalize(object);
 }
@@ -176,22 +175,25 @@ gtk_notification_finalize (GObject *object)
 static void
 gtk_notification_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
-	g_return_if_fail(GTK_IS_NOTIFICATION (object));
-	GtkNotification * notification = GTK_NOTIFICATION(object);
+	GtkNotification *notification = GTK_NOTIFICATION (object);
+
+	g_return_if_fail (GTK_IS_NOTIFICATION (object));
 
 	switch (prop_id) {
 	case PROP_MESSAGE:
-		gtk_notification_update_message(notification, g_value_get_string(value));
+		gtk_notification_update_message (notification,
+										 g_value_get_string (value));
 		break;
 	case PROP_BUTTON_LABEL:
-		gtk_notification_update_button(notification, g_value_get_string(value));
+		gtk_notification_update_button (notification,
+										g_value_get_string (value));
 		break;
 	case PROP_TIMEOUT:
-		notification->priv->timeout = g_value_get_uint(value);
-		g_object_notify(object, "timeout");
+		notification->priv->timeout = g_value_get_uint (value);
+		g_object_notify (object, "timeout");
 		break;
 	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
 	}
 }
@@ -199,21 +201,21 @@ gtk_notification_set_property (GObject *object, guint prop_id, const GValue *val
 static void
 gtk_notification_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
-	g_return_if_fail(GTK_IS_NOTIFICATION (object));
-	GtkNotification * notification = GTK_NOTIFICATION(object);
+	g_return_if_fail (GTK_IS_NOTIFICATION (object));
+	GtkNotification *notification = GTK_NOTIFICATION (object);
 
 	switch (prop_id) {
 	case PROP_MESSAGE:
-		g_value_set_string(value, notification->priv->message_label);
+		g_value_set_string (value, notification->priv->message_label);
 		break;
 	case PROP_BUTTON_LABEL:
-		g_value_set_string(value, notification->priv->button_label);
+		g_value_set_string (value, notification->priv->button_label);
 		break;
 	case PROP_TIMEOUT:
-		g_value_set_uint(value, notification->priv->timeout);
+		g_value_set_uint (value, notification->priv->timeout);
 		break;
 	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
 	}
 }
@@ -244,10 +246,10 @@ gtk_notification_class_init (GtkNotificationClass *klass)
 	 *
 	 * Since: 0.1
 	 */
-	g_object_class_install_property(object_class,
-			PROP_MESSAGE,
-			g_param_spec_string("message", "message", "Message shown on the notification", "",
-			GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+									 PROP_MESSAGE,
+									 g_param_spec_string("message", "message", "Message shown on the notification", "",
+														 GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	/**
 	 * GtkNotification:button-label:
@@ -256,13 +258,13 @@ gtk_notification_class_init (GtkNotificationClass *klass)
 	 *
 	 * Since: 0.1
 	 */
-	g_object_class_install_property(object_class,
-			PROP_BUTTON_LABEL,
-			g_param_spec_string("button-label",
-					"button-label",
-					"Label of the action button, if is a stock gtk indetifier, the button will get and icon too",
-					"",
-					GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+									 PROP_BUTTON_LABEL,
+									 g_param_spec_string("button-label",
+														 "button-label",
+														 "Label of the action button, if is a stock gtk indetifier, the button will get and icon too",
+														 "",
+														 GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	/**
 	 * GtkNotification:timeout:
@@ -271,27 +273,28 @@ gtk_notification_class_init (GtkNotificationClass *klass)
 	 *
 	 * Since: 0.1
 	 */
-	g_object_class_install_property(object_class,
-			PROP_TIMEOUT,
-			g_param_spec_uint("timeout", "timeout", "The time it takes to hide the widget, in seconds", 0, G_MAXUINT, 5,
-			GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+									 PROP_TIMEOUT,
+									 g_param_spec_uint("timeout", "timeout", "The time it takes to hide the widget, in seconds",
+													   0, G_MAXUINT, 5,
+													   GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	notification_signals[ACTIONED] = g_signal_new("actioned",
-			G_OBJECT_CLASS_TYPE (klass),
-			G_SIGNAL_RUN_LAST,
-			G_STRUCT_OFFSET (GtkNotificationClass, actioned),
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__VOID,
-			G_TYPE_NONE,
-			0);
+	notification_signals[ACTIONED] = g_signal_new ("actioned",
+												   G_OBJECT_CLASS_TYPE (klass),
+												   G_SIGNAL_RUN_LAST,
+												   G_STRUCT_OFFSET (GtkNotificationClass, actioned),
+												   NULL,
+												   NULL,
+												   g_cclosure_marshal_VOID__VOID,
+												   G_TYPE_NONE,
+												   0);
 
-	g_type_class_add_private(object_class, sizeof(GtkNotificationPrivate));
+	g_type_class_add_private (object_class, sizeof (GtkNotificationPrivate));
 }
 
 static void
-draw_shadow_box (cairo_t *cr, GdkRectangle rect, int left_border, int right_border, int bottom_border,
-				 double inner_alpha)
+draw_shadow_box (cairo_t *cr, GdkRectangle rect, int left_border, int right_border,
+				 int bottom_border, double inner_alpha)
 {
 	cairo_pattern_t *pattern;
 	cairo_matrix_t matrix;
@@ -413,11 +416,11 @@ gtk_notification_draw (GtkWidget *widget, cairo_t *cr)
 
 	gtk_style_context_restore (context);
 
-	if (GTK_WIDGET_CLASS(gtk_notification_parent_class)->draw)
-		GTK_WIDGET_CLASS(gtk_notification_parent_class)->draw(widget, cr);
+	if (GTK_WIDGET_CLASS (gtk_notification_parent_class)->draw)
+		GTK_WIDGET_CLASS (gtk_notification_parent_class)->draw(widget, cr);
 
 	/* starting timeout when drawing the first time */
-	GtkNotification * notification = GTK_NOTIFICATION(widget);
+	GtkNotification *notification = GTK_NOTIFICATION(widget);
 	if (notification->priv->timeout_source_id == 0) {
 		notification->priv->timeout_source_id = g_timeout_add(notification->priv->timeout * 1000,
 				gtk_notification_auto_destroy,
@@ -431,7 +434,7 @@ gtk_notification_get_preferred_width (GtkWidget *widget, gint *minimum_size, gin
 {
 	gint parent_minimum_size, parent_natural_size;
 
-	GTK_WIDGET_CLASS(gtk_notification_parent_class)->
+	GTK_WIDGET_CLASS (gtk_notification_parent_class)->
 		get_preferred_width (widget, &parent_minimum_size, &parent_natural_size);
 
 	*minimum_size = parent_minimum_size + SHADOW_OFFSET_X * 2 + 2 * INNER_BORDER;
@@ -446,7 +449,7 @@ gtk_notification_get_preferred_height_for_width (GtkWidget *widget,
 {
 	gint parent_minimum_size, parent_natural_size;
 
-	GTK_WIDGET_CLASS(gtk_notification_parent_class)->
+	GTK_WIDGET_CLASS (gtk_notification_parent_class)->
 		get_preferred_height_for_width (widget,
 										width,
 										&parent_minimum_size,
@@ -461,7 +464,9 @@ gtk_notification_get_preferred_height (GtkWidget *widget, gint *minimum_size, gi
 {
 	gint parent_minimum_size, parent_natural_size;
 
-	GTK_WIDGET_CLASS(gtk_notification_parent_class)->get_preferred_height(widget, &parent_minimum_size, &parent_natural_size);
+	GTK_WIDGET_CLASS (gtk_notification_parent_class)->get_preferred_height (widget,
+																		   &parent_minimum_size,
+																		   &parent_natural_size);
 
 	*minimum_size = parent_minimum_size + SHADOW_OFFSET_Y + 2 * INNER_BORDER;
 	*natural_size = parent_natural_size + SHADOW_OFFSET_Y + 2 * INNER_BORDER;
@@ -474,7 +479,7 @@ gtk_notification_get_preferred_width_for_height (GtkWidget *widget,
 												 gint *natural_width) {
 	gint parent_minimum_size, parent_natural_size;
 
-	GTK_WIDGET_CLASS(gtk_notification_parent_class)->
+	GTK_WIDGET_CLASS (gtk_notification_parent_class)->
 		get_preferred_width_for_height(widget,
 									   height,
 									   &parent_minimum_size,
@@ -492,61 +497,64 @@ gtk_notification_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	parent_allocation.x = allocation->x + SHADOW_OFFSET_X + INNER_BORDER;
 	parent_allocation.y = allocation->y + INNER_BORDER;
 	parent_allocation.width = allocation->width - 2 * SHADOW_OFFSET_X - 2 * INNER_BORDER;
-	parent_allocation.height = allocation->height - SHADOW_OFFSET_Y - 2 * INNER_BORDER;
+	parent_allocation.height = allocation->height - SHADOW_OFFSET_Y - 2 *INNER_BORDER;
 
-	GTK_WIDGET_CLASS(gtk_notification_parent_class)->
+	GTK_WIDGET_CLASS (gtk_notification_parent_class)->
 		size_allocate (widget, &parent_allocation);
 
 	gtk_widget_set_allocation (widget, allocation);
 }
 
 static void
-gtk_notification_update_message (GtkNotification * notification, const gchar * new_message)
+gtk_notification_update_message (GtkNotification *notification, const gchar *new_message)
 {
-	g_free(notification->priv->message_label);
-	notification->priv->message_label = g_strdup(new_message);
-	g_object_notify(G_OBJECT(notification), "message");
+	g_free (notification->priv->message_label);
+	notification->priv->message_label = g_strdup (new_message);
+	g_object_notify (G_OBJECT (notification), "message");
 
-	gtk_label_set_text(GTK_LABEL(notification->priv->message), notification->priv->message_label);
+	gtk_label_set_text (GTK_LABEL (notification->priv->message),
+						notification->priv->message_label);
 }
 
 static void
-gtk_notification_update_button (GtkNotification * notification, const gchar * new_button_label)
+gtk_notification_update_button (GtkNotification *notification, const gchar *new_button_label)
 {
-	g_free(notification->priv->button_label);
-	notification->priv->button_label = g_strdup(new_button_label);
-	g_object_notify(G_OBJECT(notification), "button-label");
+	g_free (notification->priv->button_label);
+	notification->priv->button_label = g_strdup (new_button_label);
+	g_object_notify (G_OBJECT (notification), "button-label");
 
-	gtk_button_set_label(GTK_BUTTON(notification->priv->action_button), notification->priv->button_label);
-	gtk_button_set_use_stock(GTK_BUTTON(notification->priv->action_button), TRUE);
+	gtk_button_set_label (GTK_BUTTON (notification->priv->action_button),
+						  notification->priv->button_label);
+	gtk_button_set_use_stock (GTK_BUTTON (notification->priv->action_button),
+							  TRUE);
 }
 
 static gboolean
 gtk_notification_auto_destroy (gpointer user_data)
 {
-	GtkWidget * notification = GTK_WIDGET(user_data);
-	gtk_widget_destroy(notification);
+	GtkWidget *notification = GTK_WIDGET(user_data);
+	gtk_widget_destroy (notification);
 	return FALSE;
 }
 
 static void
-gtk_notification_close_button_clicked_cb (GtkWidget * widget, gpointer user_data)
+gtk_notification_close_button_clicked_cb (GtkWidget *widget, gpointer user_data)
 {
-	GtkNotification * notification = GTK_NOTIFICATION(user_data);
-	g_source_remove(notification->priv->timeout_source_id);
+	GtkNotification *notification = GTK_NOTIFICATION(user_data);
+	g_source_remove (notification->priv->timeout_source_id);
 	notification->priv->timeout_source_id = 0;
 
-	gtk_widget_destroy(GTK_WIDGET(notification));
+	gtk_widget_destroy (GTK_WIDGET (notification));
 }
 
 static void
-gtk_notification_action_button_clicked_cb (GtkWidget * widget, gpointer user_data)
+gtk_notification_action_button_clicked_cb (GtkWidget *widget, gpointer user_data)
 {
-	g_signal_emit_by_name(user_data, "actioned", NULL);
+	g_signal_emit_by_name (user_data, "actioned", NULL);
 }
 
 GtkWidget *
-gtk_notification_new(gchar * message, gchar * action)
+gtk_notification_new (gchar *message, gchar *action)
 {
 	return g_object_new (GTK_TYPE_NOTIFICATION,
 						 "message", message,
