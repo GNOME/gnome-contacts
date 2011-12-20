@@ -42,8 +42,9 @@
  */
 
 #define GTK_PARAM_READWRITE G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB
-#define SHADOW_OFFSET_X 4
-#define SHADOW_OFFSET_Y 6
+#define SHADOW_OFFSET_X 2
+#define SHADOW_OFFSET_Y 3
+#define INNER_BORDER 4
 
 enum {
 	PROP_0,
@@ -71,71 +72,84 @@ enum {
 
 static guint notification_signals[LAST_SIGNAL] = { 0 };
 
-static void draw_shadow_box(cairo_t *cr, GdkRectangle rect, double radius, double transparency);
-static gboolean gtk_notification_draw(GtkWidget *widget, cairo_t *cr);
-static void gtk_notification_get_preferred_width(GtkWidget *widget, gint *minimum_size, gint *natural_size);
-static void gtk_notification_get_preferred_height_for_width(GtkWidget *widget,
-		gint width,
-		gint *minimum_height,
-		gint *natural_height);
-static void gtk_notification_get_preferred_height(GtkWidget *widget, gint *minimum_size, gint *natural_size);
-static void gtk_notification_get_preferred_width_for_height(GtkWidget *widget,
-		gint height,
-		gint *minimum_width,
-		gint *natural_width);
-static void gtk_notification_size_allocate(GtkWidget *widget, GtkAllocation *allocation);
-static void gtk_notification_update_message(GtkNotification * notification, const gchar * new_message);
-static void gtk_notification_update_button(GtkNotification * notification, const gchar * new_button_label);
-static gboolean gtk_notification_auto_destroy(gpointer user_data);
+static gboolean gtk_notification_draw                           (GtkWidget       *widget,
+																 cairo_t         *cr);
+static void     gtk_notification_get_preferred_width            (GtkWidget       *widget,
+																 gint            *minimum_size,
+																 gint            *natural_size);
+static void     gtk_notification_get_preferred_height_for_width (GtkWidget       *widget,
+																 gint             width,
+																 gint            *minimum_height,
+																 gint            *natural_height);
+static void     gtk_notification_get_preferred_height           (GtkWidget       *widget,
+																 gint            *minimum_size,
+																 gint            *natural_size);
+static void     gtk_notification_get_preferred_width_for_height (GtkWidget       *widget,
+																 gint             height,
+																 gint            *minimum_width,
+																 gint            *natural_width);
+static void     gtk_notification_size_allocate                  (GtkWidget       *widget,
+																 GtkAllocation   *allocation);
+static void     gtk_notification_update_message                 (GtkNotification *notification,
+																 const gchar     *new_message);
+static void     gtk_notification_update_button                  (GtkNotification *notification,
+																 const gchar     *new_button_label);
+static gboolean gtk_notification_auto_destroy                   (gpointer         user_data);
 
 /* signals handlers */
-static void gtk_notification_close_button_clicked_cb(GtkWidget * widget, gpointer user_data);
-static void gtk_notification_action_button_clicked_cb(GtkWidget * widget, gpointer user_data);
+static void     gtk_notification_close_button_clicked_cb        (GtkWidget       *widget,
+																 gpointer         user_data);
+static void     gtk_notification_action_button_clicked_cb       (GtkWidget       *widget,
+																 gpointer         user_data);
 
 G_DEFINE_TYPE(GtkNotification, gtk_notification, GTK_TYPE_BOX);
 
 static void
 gtk_notification_init(GtkNotification *notification)
 {
-	g_object_set(GTK_BOX(notification), "orientation", GTK_ORIENTATION_HORIZONTAL, "homogeneous", FALSE, "spacing", 2, "margin-bottom", 5, NULL);
+	GtkWidget * close_button_image;
 
-	gtk_style_context_add_class(gtk_widget_get_style_context(GTK_WIDGET(notification)), "contacts-notification");
+	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (notification)),
+								 "contacts-notification");
 
 	//FIXME position should be set by properties
-	gtk_widget_set_halign(GTK_WIDGET(notification), GTK_ALIGN_CENTER);
-	gtk_widget_set_valign(GTK_WIDGET(notification), GTK_ALIGN_START);
+	gtk_widget_set_halign (GTK_WIDGET (notification), GTK_ALIGN_CENTER);
+	gtk_widget_set_valign (GTK_WIDGET (notification), GTK_ALIGN_START);
 
-	gtk_widget_push_composite_child();
+	gtk_widget_push_composite_child ();
 
-	notification->priv = G_TYPE_INSTANCE_GET_PRIVATE (notification,
-			GTK_TYPE_NOTIFICATION,
-			GtkNotificationPrivate);
+	notification->priv =
+		G_TYPE_INSTANCE_GET_PRIVATE (notification,
+									 GTK_TYPE_NOTIFICATION,
+									 GtkNotificationPrivate);
 
-	notification->priv->message = gtk_label_new(notification->priv->message_label);
-	gtk_widget_show(notification->priv->message);
-	notification->priv->action_button = gtk_button_new_with_label(notification->priv->button_label);
-	gtk_widget_show(notification->priv->action_button);
-	g_signal_connect(notification->priv->action_button,
-			"clicked",
-			G_CALLBACK(gtk_notification_action_button_clicked_cb),
-			notification);
+	notification->priv->message = gtk_label_new (notification->priv->message_label);
+	gtk_widget_show (notification->priv->message);
+	notification->priv->action_button = gtk_button_new_with_label (notification->priv->button_label);
+	gtk_widget_show (notification->priv->action_button);
+	g_signal_connect (notification->priv->action_button,
+					  "clicked",
+					  G_CALLBACK (gtk_notification_action_button_clicked_cb),
+					  notification);
 
-	notification->priv->close_button = gtk_button_new();
-	gtk_button_set_relief (GTK_BUTTON (notification->priv->close_button), GTK_RELIEF_NONE);
-	gtk_widget_show(notification->priv->close_button);
-	g_object_set(notification->priv->close_button, "relief", GTK_RELIEF_NONE, "focus-on-click", FALSE, NULL);
-	g_signal_connect(notification->priv->close_button,
-			"clicked",
-			G_CALLBACK(gtk_notification_close_button_clicked_cb),
-			notification);
-	GtkWidget * close_button_image = gtk_image_new_from_icon_name("window-close-symbolic", GTK_ICON_SIZE_BUTTON);
-	gtk_button_set_image(GTK_BUTTON(notification->priv->close_button), close_button_image);
+	notification->priv->close_button = gtk_button_new ();
+	gtk_widget_show (notification->priv->close_button);
+	g_object_set (notification->priv->close_button,
+				  "relief", GTK_RELIEF_NONE,
+				  "focus-on-click", FALSE,
+				  NULL);
+	g_signal_connect (notification->priv->close_button,
+					  "clicked",
+					  G_CALLBACK (gtk_notification_close_button_clicked_cb),
+					  notification);
+	close_button_image = gtk_image_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_BUTTON);
+	gtk_button_set_image (GTK_BUTTON (notification->priv->close_button), close_button_image);
 
-	gtk_box_pack_start(GTK_BOX(notification), notification->priv->message, FALSE, FALSE, 8);
-	gtk_box_pack_end(GTK_BOX(notification), notification->priv->close_button, FALSE, TRUE, 0);
-	gtk_box_pack_end(GTK_BOX(notification), notification->priv->action_button, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (notification), notification->priv->message, FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (notification), notification->priv->close_button, FALSE, TRUE, 0);
+	gtk_box_pack_end (GTK_BOX (notification), notification->priv->action_button, FALSE, TRUE, 0);
 
-	gtk_widget_pop_composite_child();
+	gtk_widget_pop_composite_child ();
 
 	notification->priv->timeout_source_id = 0;
 }
@@ -276,32 +290,31 @@ gtk_notification_class_init (GtkNotificationClass *klass)
 }
 
 static void
-draw_shadow_box (cairo_t *cr, GdkRectangle rect, double radius, double transparency)
+draw_shadow_box (cairo_t *cr, GdkRectangle rect, int left_border, int right_border, int bottom_border,
+				 double inner_alpha)
 {
 	cairo_pattern_t *pattern;
+	cairo_matrix_t matrix;
 	double x0, x1, x2, x3;
 	double y0, y1, y2, y3;
 
+	cairo_save (cr);
+
 	x0 = rect.x;
-	x1 = rect.x + radius;
-	x2 = rect.x + rect.width - radius;
+	x1 = rect.x + left_border;
+	x2 = rect.x + rect.width - right_border;
 	x3 = rect.x + rect.width;
 
 	y0 = rect.y;
-	y2 = rect.y + rect.height - radius;
+	y2 = rect.y + rect.height - bottom_border;
 	y3 = rect.y + rect.height;
-
-	/* Fill non-border part */
-	cairo_set_source_rgba(cr, 0, 0, 0, transparency);
-	cairo_rectangle(cr, x1, y0, x2 - x1, y2 - y0);
-	cairo_fill(cr);
 
 	/* Bottom border */
 
 	pattern = cairo_pattern_create_linear(0, y2, 0, y3);
 
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, transparency);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, 0.0);
+	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0, 0, 0, inner_alpha);
+	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0, 0, 0, 0.0);
 
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
@@ -313,8 +326,8 @@ draw_shadow_box (cairo_t *cr, GdkRectangle rect, double radius, double transpare
 
 	pattern = cairo_pattern_create_linear(x0, 0, x1, 0);
 
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, 0.0);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, transparency);
+	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0, 0, 0, 0.0);
+	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0, 0, 0, inner_alpha);
 
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
@@ -326,8 +339,8 @@ draw_shadow_box (cairo_t *cr, GdkRectangle rect, double radius, double transpare
 
 	pattern = cairo_pattern_create_linear(x2, 0, x3, 0);
 
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, transparency);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, 0.0);
+	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0, 0, 0, inner_alpha);
+	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0, 0, 0, 0.0);
 
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
@@ -337,10 +350,13 @@ draw_shadow_box (cairo_t *cr, GdkRectangle rect, double radius, double transpare
 
 	/* SW corner */
 
-	pattern = cairo_pattern_create_radial(x1, y2, 0, x1, y2, radius);
+	pattern = cairo_pattern_create_radial(0, 0, 0, 0.0, 0, 1.0);
+	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0, 0, 0, inner_alpha);
+	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0, 0, 0, 0.0);
 
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, transparency);
-	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, 0.0);
+	cairo_matrix_init_scale (&matrix, 1.0 / left_border, 1.0 / bottom_border);
+	cairo_matrix_translate (&matrix, - x1, -y2);
+	cairo_pattern_set_matrix (pattern, &matrix);
 
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
@@ -350,16 +366,21 @@ draw_shadow_box (cairo_t *cr, GdkRectangle rect, double radius, double transpare
 
 	/* SE corner */
 
-	pattern = cairo_pattern_create_radial(x2, y2, 0, x2, y2, radius);
-
-	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, transparency);
+	pattern = cairo_pattern_create_radial(0, 0, 0, 0, 0, 1.0);
+	cairo_pattern_add_color_stop_rgba(pattern, 0.0, 0.0, 0, 0, inner_alpha);
 	cairo_pattern_add_color_stop_rgba(pattern, 1.0, 0.0, 0, 0, 0.0);
+
+	cairo_matrix_init_scale (&matrix, 1.0 / left_border, 1.0 / bottom_border);
+	cairo_matrix_translate (&matrix, - x2, -y2);
+	cairo_pattern_set_matrix (pattern, &matrix);
 
 	cairo_set_source(cr, pattern);
 	cairo_pattern_destroy(pattern);
 
 	cairo_rectangle(cr, x2, y2, x3 - x2, y3 - y2);
 	cairo_fill(cr);
+
+	cairo_restore (cr);
 }
 
 static gboolean
@@ -369,18 +390,18 @@ gtk_notification_draw (GtkWidget *widget, cairo_t *cr)
 	GdkRectangle rect;
 	int border_radius;
 	GtkStateFlags state;
+	int inner_radius;
 
 	gtk_widget_get_allocation (widget, &rect);
 
 	context = gtk_widget_get_style_context(widget);
 	state = gtk_style_context_get_state (context);
 
-	border_radius = SHADOW_OFFSET_Y; /* TODO: Should pick this up from context */
-
-	draw_shadow_box (cr, rect, border_radius, 0.3);
+	inner_radius = 5;
+	draw_shadow_box (cr, rect, SHADOW_OFFSET_X + inner_radius, SHADOW_OFFSET_X + inner_radius,
+					 SHADOW_OFFSET_Y + inner_radius, 0.8);
 
 	gtk_style_context_save (context);
-	//FIXME I don't see the frame drawing at all
 	gtk_render_background (context,  cr,
 						   SHADOW_OFFSET_X, 0,
 						   gtk_widget_get_allocated_width (widget) - 2 *SHADOW_OFFSET_X,
@@ -413,8 +434,8 @@ gtk_notification_get_preferred_width (GtkWidget *widget, gint *minimum_size, gin
 	GTK_WIDGET_CLASS(gtk_notification_parent_class)->
 		get_preferred_width (widget, &parent_minimum_size, &parent_natural_size);
 
-	*minimum_size = parent_minimum_size + SHADOW_OFFSET_X * 2 + 2*2;
-	*natural_size = parent_natural_size + SHADOW_OFFSET_X * 2 + 2*2;
+	*minimum_size = parent_minimum_size + SHADOW_OFFSET_X * 2 + 2 * INNER_BORDER;
+	*natural_size = parent_natural_size + SHADOW_OFFSET_X * 2 + 2 * INNER_BORDER;
 }
 
 static void
@@ -431,8 +452,8 @@ gtk_notification_get_preferred_height_for_width (GtkWidget *widget,
 										&parent_minimum_size,
 										&parent_natural_size);
 
-	*minimum_height = parent_minimum_size + SHADOW_OFFSET_Y;
-	*natural_height = parent_natural_size + SHADOW_OFFSET_Y;
+	*minimum_height = parent_minimum_size + SHADOW_OFFSET_Y + 2 * INNER_BORDER;
+	*natural_height = parent_natural_size + SHADOW_OFFSET_Y + 2 * INNER_BORDER;
 }
 
 static void
@@ -442,8 +463,8 @@ gtk_notification_get_preferred_height (GtkWidget *widget, gint *minimum_size, gi
 
 	GTK_WIDGET_CLASS(gtk_notification_parent_class)->get_preferred_height(widget, &parent_minimum_size, &parent_natural_size);
 
-	*minimum_size = parent_minimum_size + SHADOW_OFFSET_Y + 2;
-	*natural_size = parent_natural_size + SHADOW_OFFSET_Y + 2;
+	*minimum_size = parent_minimum_size + SHADOW_OFFSET_Y + 2 * INNER_BORDER;
+	*natural_size = parent_natural_size + SHADOW_OFFSET_Y + 2 * INNER_BORDER;
 }
 
 static void
@@ -459,8 +480,8 @@ gtk_notification_get_preferred_width_for_height (GtkWidget *widget,
 									   &parent_minimum_size,
 									   &parent_natural_size);
 
-	*minimum_width = parent_minimum_size + 2 * SHADOW_OFFSET_X + 2*2;
-	*natural_width = parent_natural_size + 2 * SHADOW_OFFSET_X + 2*2;
+	*minimum_width = parent_minimum_size + 2 * SHADOW_OFFSET_X + 2 * INNER_BORDER;
+	*natural_width = parent_natural_size + 2 * SHADOW_OFFSET_X + 2 * INNER_BORDER;
 }
 
 static void
@@ -468,10 +489,10 @@ gtk_notification_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
 	GtkAllocation parent_allocation;
 
-	parent_allocation.x = allocation->x + SHADOW_OFFSET_X + 2;
-	parent_allocation.y = allocation->y;
-	parent_allocation.width = allocation->width - 2 * SHADOW_OFFSET_X - 2*2;
-	parent_allocation.height = allocation->height - SHADOW_OFFSET_Y - 2;
+	parent_allocation.x = allocation->x + SHADOW_OFFSET_X + INNER_BORDER;
+	parent_allocation.y = allocation->y + INNER_BORDER;
+	parent_allocation.width = allocation->width - 2 * SHADOW_OFFSET_X - 2 * INNER_BORDER;
+	parent_allocation.height = allocation->height - SHADOW_OFFSET_Y - 2 * INNER_BORDER;
 
 	GTK_WIDGET_CLASS(gtk_notification_parent_class)->
 		size_allocate (widget, &parent_allocation);
@@ -527,5 +548,11 @@ gtk_notification_action_button_clicked_cb (GtkWidget * widget, gpointer user_dat
 GtkWidget *
 gtk_notification_new(gchar * message, gchar * action)
 {
-	return g_object_new(GTK_TYPE_NOTIFICATION, "message", message, "button-label", action, NULL);
+	return g_object_new (GTK_TYPE_NOTIFICATION,
+						 "message", message,
+						 "button-label", action,
+						 "orientation", GTK_ORIENTATION_HORIZONTAL,
+						 "homogeneous", FALSE,
+						 "spacing", 8,
+						 NULL);
 }
