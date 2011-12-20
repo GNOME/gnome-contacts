@@ -102,7 +102,7 @@ static void     gtk_notification_close_button_clicked_cb        (GtkWidget      
 static void     gtk_notification_action_button_clicked_cb       (GtkWidget       *widget,
 																 gpointer         user_data);
 
-G_DEFINE_TYPE(GtkNotification, gtk_notification, GTK_TYPE_BOX);
+G_DEFINE_TYPE(GtkNotification, gtk_notification, GTK_TYPE_GRID);
 
 static void
 gtk_notification_init(GtkNotification *notification)
@@ -145,9 +145,9 @@ gtk_notification_init(GtkNotification *notification)
 	close_button_image = gtk_image_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_BUTTON);
 	gtk_button_set_image (GTK_BUTTON (notification->priv->close_button), close_button_image);
 
-	gtk_box_pack_start (GTK_BOX (notification), notification->priv->message, FALSE, FALSE, 0);
-	gtk_box_pack_end (GTK_BOX (notification), notification->priv->close_button, FALSE, TRUE, 0);
-	gtk_box_pack_end (GTK_BOX (notification), notification->priv->action_button, FALSE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (notification), notification->priv->message);
+	gtk_container_add (GTK_CONTAINER (notification), notification->priv->action_button);
+	gtk_container_add (GTK_CONTAINER (notification), notification->priv->close_button);
 
 	gtk_widget_pop_composite_child ();
 
@@ -560,7 +560,6 @@ gtk_notification_new (gchar *message, gchar *action)
 						 "message", message,
 						 "button-label", action,
 						 "orientation", GTK_ORIENTATION_HORIZONTAL,
-						 "homogeneous", FALSE,
-						 "spacing", 8,
+						 "column-spacing", 8,
 						 NULL);
 }

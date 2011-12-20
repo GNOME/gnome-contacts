@@ -36,14 +36,14 @@ typedef struct _GtkNotificationClass GtkNotificationClass;
 typedef struct _GtkNotification GtkNotification;
 
 struct _GtkNotificationClass {
-	GtkBoxClass parent_class;
+	GtkGridClass parent_class;
 
 	/* Signals */
 	void (*actioned) (GtkNotification *self);
 };
 
 struct _GtkNotification {
-	GtkBox parent_instance;
+	GtkGrid parent_instance;
 
 	/*< private > */
 	GtkNotificationPrivate *priv;
