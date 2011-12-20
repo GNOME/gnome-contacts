@@ -75,10 +75,6 @@ static void     gtk_notification_get_preferred_width_for_height (GtkWidget      
                                                                  gint            *natural_width);
 static void     gtk_notification_size_allocate                  (GtkWidget       *widget,
                                                                  GtkAllocation   *allocation);
-static void     gtk_notification_update_message                 (GtkNotification *notification,
-                                                                 const gchar     *new_message);
-static void     gtk_notification_update_button                  (GtkNotification *notification,
-                                                                 const gchar     *new_button_label);
 static gboolean gtk_notification_timeout_cb                     (gpointer         user_data);
 
 /* signals handlers */
@@ -270,7 +266,7 @@ draw_shadow_box (cairo_t *cr, GdkRectangle rect, int left_border, int right_bord
   cairo_pattern_t *pattern;
   cairo_matrix_t matrix;
   double x0, x1, x2, x3;
-  double y0, y1, y2, y3;
+  double y0, y2, y3;
 
   cairo_save (cr);
 
@@ -383,14 +379,11 @@ gtk_notification_draw (GtkWidget *widget, cairo_t *cr)
   GtkNotification *notification = GTK_NOTIFICATION (widget);
   GtkStyleContext *context;
   GdkRectangle rect;
-  int border_radius;
-  GtkStateFlags state;
   int inner_radius;
 
   gtk_widget_get_allocation (widget, &rect);
 
   context = gtk_widget_get_style_context(widget);
-  state = gtk_style_context_get_state (context);
 
   inner_radius = 5;
   draw_shadow_box (cr, rect, SHADOW_OFFSET_X + inner_radius, SHADOW_OFFSET_X + inner_radius,
