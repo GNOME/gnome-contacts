@@ -136,21 +136,28 @@ public class Contacts.App : Gtk.Application {
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
     contacts_pane.will_delete.connect ( (c) => {
+      var notification = new Gtk.Notification ();
+
+      var g = new Grid ();
+      g.set_column_spacing (8);
+      notification.add (g);
+
+
       string msg = _("Contact deleted: \"%s\"").printf (c.display_name);
-      var notification = new Gtk.Notification (msg, Stock.UNDO);
-      notification.show ();
-      ulong id;
-      id = notification.destroy.connect ( () => {
-	contacts_store.aggregator.remove_individual (c.individual);
+      var b = new Button.from_stock (Stock.UNDO);
+      g.add (new Label (msg));
+      g.add (b);
+
+      notification.show_all ();
+      var id = notification.timed_out.connect ( () => {
+	  contacts_store.aggregator.remove_individual (c.individual);
       });
-      notification.actioned.connect ( () => {
-	notification.disconnect (id);
-	notification.destroy ();
+      b.clicked.connect ( () => {
+	notification.dismiss ();
 	c.show ();
 	list_pane.select_contact (c);
 	contacts_pane.show_contact (c);
       });
-
       overlay.add_overlay (notification);
     });
     grid.attach (contacts_pane, 1, 0, 1, 2);

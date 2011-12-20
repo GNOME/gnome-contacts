@@ -41,6 +41,8 @@ namespace Contacts {
 namespace Gtk {
 	public class Notification : Gtk.Box {
 		[CCode (has_construct_function = false, type = "GtkWidget*")]
-		public Notification (string msg, string action);
-		public virtual signal void actioned ();
+		public Notification ();
+		public void set_timeout (uint timeout_msec);
+		public void dismiss ();
+		public virtual signal void timed_out ();
 	}}

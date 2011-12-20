@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /*
  * gtk-notification.c
  * Copyright (C) Erick Pérez Castellanos 2011 <erick.red@gmail.com>
@@ -36,22 +36,25 @@ typedef struct _GtkNotificationClass GtkNotificationClass;
 typedef struct _GtkNotification GtkNotification;
 
 struct _GtkNotificationClass {
-	GtkGridClass parent_class;
+  GtkBinClass parent_class;
 
-	/* Signals */
-	void (*actioned) (GtkNotification *self);
+  /* Signals */
+  void (*timed_out) (GtkNotification *self);
 };
 
 struct _GtkNotification {
-	GtkGrid parent_instance;
+  GtkBin parent_instance;
 
-	/*< private > */
-	GtkNotificationPrivate *priv;
+  /*< private > */
+  GtkNotificationPrivate *priv;
 };
 
 GType gtk_notification_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gtk_notification_new (gchar * message, gchar * action);
+GtkWidget *gtk_notification_new         (void);
+void       gtk_notification_set_timeout (GtkNotification *notification,
+                                         guint            timeout_msec);
+void       gtk_notification_dismiss     (GtkNotification *notification);
 
 G_END_DECLS
 
