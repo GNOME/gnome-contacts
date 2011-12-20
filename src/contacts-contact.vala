@@ -462,7 +462,7 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  public static string presence_to_icon (PresenceType presence) {
+  public static string presence_to_icon_symbolic (PresenceType presence) {
     string? iconname = null;
     switch (presence) {
     default:
@@ -488,11 +488,44 @@ public class Contacts.Contact : GLib.Object  {
     return iconname;
   }
 
+  public static string presence_to_icon_symbolic_full (PresenceType presence) {
+    string? iconname = presence_to_icon_symbolic (presence);
+    if (iconname != null)
+      return iconname;
+    return "user-offline-symbolic";
+  }
+
+  public static string presence_to_icon (PresenceType presence) {
+    string? iconname = null;
+    switch (presence) {
+    default:
+    case PresenceType.OFFLINE:
+    case PresenceType.UNSET:
+    case PresenceType.ERROR:
+      break;
+    case PresenceType.AVAILABLE:
+    case PresenceType.UNKNOWN:
+      iconname = "user-available";
+      break;
+    case PresenceType.AWAY:
+    case PresenceType.EXTENDED_AWAY:
+      iconname = "user-away";
+      break;
+    case PresenceType.BUSY:
+      iconname = "user-busy";
+      break;
+    case PresenceType.HIDDEN:
+      iconname = "user-invisible";
+      break;
+    }
+    return iconname;
+  }
+
   public static string presence_to_icon_full (PresenceType presence) {
     string? iconname = presence_to_icon (presence);
     if (iconname != null)
       return iconname;
-    return "user-offline-symbolic";
+    return "user-offline";
   }
 
   public static string presence_to_class (PresenceType presence) {
