@@ -1503,7 +1503,7 @@ public class Contacts.ContactPane : ScrolledWindow {
       });
 
     card_grid.attach (image_frame,  0, 0, 1, 3);
-    card_grid.set_row_spacing (16);
+    card_grid.set_column_spacing (16);
 
     var l = new Label (null);
     l.set_hexpand (true);
@@ -1518,6 +1518,7 @@ public class Contacts.ContactPane : ScrolledWindow {
       });
 
     var event_box = new EventBox ();
+    event_box.set_margin_top (4);
     event_box.set_visible_window (false);
 
     var clickable = new Clickable (event_box);
@@ -1543,6 +1544,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 	event_box.remove (l);
 	var entry = new Entry ();
 	entry.set_text (contact.display_name);
+	entry.set_hexpand (true);
 	entry.show ();
 	entry.override_font (Pango.FontDescription.from_string ("24px"));
 	event_box.add (entry);
@@ -1605,10 +1607,10 @@ public class Contacts.ContactPane : ScrolledWindow {
     merged_presence.set_halign (Align.START);
     merged_presence.set_valign (Align.START);
     merged_presence.set_vexpand (true);
-    merged_presence.set_margin_bottom (18);
     card_grid.attach (merged_presence,  1, 1, 1, 1);
 
     var box = new Box (Orientation.HORIZONTAL, 0);
+    box.set_margin_bottom (4 + 8);
     box.set_halign (Align.START);
 
     box.get_style_context ().add_class ("linked");
@@ -1617,7 +1619,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     email_button = b;
-    email_button.set_size_request (86, 32);
+    email_button.set_size_request (82, 32);
     email_button.clicked.connect (send_email);
 
     image = new Image.from_icon_name ("user-available-symbolic", IconSize.MENU);
@@ -1625,7 +1627,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     chat_button = b;
-    chat_button.set_size_request (86, 32);
+    chat_button.set_size_request (82, 32);
     chat_button.clicked.connect (start_chat);
 
     image = new Image.from_icon_name ("call-start-symbolic", IconSize.MENU);
@@ -1633,7 +1635,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     call_button = b;
-    call_button.set_size_request (86, 32);
+    call_button.set_size_request (82, 32);
     call_button.clicked.connect (start_call);
 
     card_grid.attach (box,  1, 2, 1, 1);
