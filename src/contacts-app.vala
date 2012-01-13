@@ -20,7 +20,7 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
-  public Window window;
+  public ApplicationWindow window;
   public static App app;
   private Store contacts_store;
   private ListPane list_pane;
@@ -79,6 +79,28 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
+  public void show_about () {
+    string[] authors = {
+      "Alexander Larsson <alexl@redhat.com>",
+      "Erick Pérez Castellanos <erick.red@gmail.com>"
+    };
+    string[] artists = {
+      "Allan Day <allanpday@gmail.com>"
+    };
+    Gtk.show_about_dialog (window,
+			   "artists", artists,
+			   "authors", authors,
+			   "program-name", _("Gnome Contacts"),
+			   "title", _("About Gnome Contacts"),
+			   "comments", _("Contact Management Application"),
+			   "copyright", "Copyright 2011 Red Hat, Inc.",
+			   "license-type", Gtk.License.GPL_2_0,
+			   "logo-icon-name", "avatar-default",
+			   "version", Config.PACKAGE_VERSION,
+			   "website", "https://live.gnome.org/Contacts",
+			   "wrap-license", true);
+  }
+
   public async void show_by_email (string email_address) {
     var contact = yield contacts_store.find_contact ( (c) => {
 	return c.has_email (email_address);
@@ -108,7 +130,34 @@ public class Contacts.App : Gtk.Application {
     }
 
     this.app = this;
-    window = new Window ();
+
+    var action = new GLib.SimpleAction ("quit", null);
+    action.activate.connect (() => { window.destroy (); });
+    this.add_action (action);
+
+    action = new GLib.SimpleAction ("about", null);
+    action.activate.connect (() => { show_about (); });
+    this.add_action (action);
+
+    var builder = new Builder ();
+    builder.set_translation_domain (Config.GETTEXT_PACKAGE);
+    try {
+      builder.add_from_string ("<interface>" +
+			       "  <menu id='app-menu'>" +
+			       "    <section>" +
+			       "      <item label='_About Contacts' action='app.about'/>" +
+			       "    </section>" +
+			       "    <section>" +
+			       "      <item label='_Quit' action='app.quit' accel='<Primary>q'/>" +
+			       "    </section>" +
+			       "  </menu>" +
+			       "</interface>", -1);
+      set_app_menu ((MenuModel)builder.get_object ("app-menu"));
+    } catch {
+      warning ("Failed to parsing ui file");
+    }
+
+    window = new ApplicationWindow (this);
     window.set_application (this);
     window.set_title (_("Contacts"));
     window.set_size_request (745, 510);
