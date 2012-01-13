@@ -260,7 +260,7 @@ public class Contacts.Row : Container {
     var window = get_parent_window ();
     this.set_window (window);
 
-    attributes.wclass = Gdk.WindowWindowClass.ONLY;
+    attributes.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
     event_window = new Gdk.Window (window, attributes, Gdk.WindowAttributesType.X | Gdk.WindowAttributesType.Y);
     event_window.set_user_data (this);
   }
