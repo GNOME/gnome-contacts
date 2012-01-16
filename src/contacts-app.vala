@@ -22,7 +22,7 @@ using Folks;
 public class Contacts.App : Gtk.Application {
   public ApplicationWindow window;
   public static App app;
-  private Store contacts_store;
+  public Store contacts_store;
   private ListPane list_pane;
   private ContactPane contacts_pane;
 
@@ -77,6 +77,87 @@ public class Contacts.App : Gtk.Application {
 	  dialog.destroy ();
 	});
     }
+  }
+
+  public void change_address_book () {
+    var title = _("Change Address Book");
+    var dialog = new Dialog.with_buttons ("",
+					  (Window) window,
+					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
+					  Stock.CANCEL, ResponseType.CANCEL,
+					  _("Select"), ResponseType.OK);
+
+    dialog.set_resizable (false);
+    dialog.set_default_response (ResponseType.OK);
+
+    var tree_view = new TreeView ();
+    var store = new ListStore (2, typeof (string), typeof (Folks.PersonaStore));
+    tree_view.set_model (store);
+    tree_view.set_headers_visible (false);
+    tree_view.get_selection ().set_mode (SelectionMode.BROWSE);
+
+    var column = new Gtk.TreeViewColumn ();
+    tree_view.append_column (column);
+
+    var renderer = new Gtk.CellRendererText ();
+    column.pack_start (renderer, false);
+    column.add_attribute (renderer, "text", 0);
+
+    var scrolled = new ScrolledWindow(null, null);
+    scrolled.set_size_request (340, 300);
+    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    scrolled.set_vexpand (true);
+    scrolled.set_hexpand (true);
+    scrolled.set_shadow_type (ShadowType.IN);
+    scrolled.add (tree_view);
+
+    var grid = new Grid ();
+    grid.set_orientation (Orientation.VERTICAL);
+    grid.set_row_spacing (6);
+
+    var l = new Label (title);
+    l.set_halign (Align.START);
+
+    grid.add (l);
+    grid.add (scrolled);
+
+    var box = dialog.get_content_area () as Box;
+    box.pack_start (grid, true, true, 0);
+    grid.set_border_width (6);
+
+    TreeIter iter;
+
+    foreach (var persona_store in Contact.get_eds_address_books ()) {
+      var name = Contact.format_persona_store_name (persona_store);
+      store.append (out iter);
+      store.set (iter, 0, name, 1, persona_store);
+      if (persona_store == contacts_store.aggregator.primary_store) {
+	tree_view.get_selection ().select_iter (iter);
+      }
+    }
+
+    dialog.show_all ();
+    dialog.response.connect ( (response) => {
+	if (response == ResponseType.OK) {
+	  PersonaStore selected_store;
+	  TreeIter iter2;
+
+	  if (tree_view.get_selection() .get_selected (null, out iter2)) {
+	    store.get (iter2, 1, out selected_store);
+
+	    var e_store = selected_store as Edsf.PersonaStore;
+
+	    try {
+	      E.BookClient.set_default_source (e_store.source);
+	    } catch {
+	      warning ("Failed to set address book");
+	    }
+
+	    contacts_store.refresh ();
+	  }
+	}
+	dialog.destroy ();
+      });
   }
 
   public void show_about () {
@@ -139,15 +220,20 @@ public class Contacts.App : Gtk.Application {
     action.activate.connect (() => { show_about (); });
     this.add_action (action);
 
+    action = new GLib.SimpleAction ("change_book", null);
+    action.activate.connect (() => { change_address_book (); });
+    this.add_action (action);
+
     var builder = new Builder ();
     builder.set_translation_domain (Config.GETTEXT_PACKAGE);
     try {
       builder.add_from_string ("<interface>" +
 			       "  <menu id='app-menu'>" +
 			       "    <section>" +
-			       "      <item label='_About Contacts' action='app.about'/>" +
+			       "      <item label='_Change Address Book...' action='app.change_book'/>" +
 			       "    </section>" +
 			       "    <section>" +
+			       "      <item label='_About Contacts' action='app.about'/>" +
 			       "      <item label='_Quit' action='app.quit' accel='<Primary>q'/>" +
 			       "    </section>" +
 			       "  </menu>" +

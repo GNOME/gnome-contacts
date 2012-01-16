@@ -1285,7 +1285,7 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!persona.store.is_primary_store) {
-      header = new TitleFieldRow (this, Contact.format_persona_store_name (persona.store));
+      header = new TitleFieldRow (this, Contact.format_persona_store_name_for_contact (persona.store));
       this.attach (header, 0, row_nr++, 1, 1);
 
       header.clicked.connect ( () => {

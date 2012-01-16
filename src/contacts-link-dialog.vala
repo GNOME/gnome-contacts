@@ -56,7 +56,7 @@ public class Contacts.LinkDialog : Dialog {
       persona_grid.attach (label, 1, i, 1, 1);
 
       label = new Label ("");
-      label.set_markup ("<span font='9'>" + Contact.format_persona_store_name (p.store) + "</span>");
+      label.set_markup ("<span font='9'>" + Contact.format_persona_store_name_for_contact (p.store) + "</span>");
       label.set_valign (Align.START);
       label.set_halign (Align.START);
       label.set_hexpand (true);

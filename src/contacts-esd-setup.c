@@ -610,6 +610,25 @@ const char *
 contacts_lookup_esource_name_by_uid (const char *uid)
 {
   if (strcmp (uid, contacts_eds_local_store) == 0)
+    return _("Local Address Book");
+
+  if (contacts_source_list) {
+    ESource *source = e_source_list_peek_source_by_uid (contacts_source_list, uid);
+    if (source) {
+      const char *relative_uri = e_source_peek_relative_uri (source);
+      if (relative_uri && g_str_has_suffix (relative_uri, "@gmail.com"))
+	return  _("Google");
+
+      return e_source_peek_name (source);
+    }
+  }
+  return NULL;
+}
+
+const char *
+contacts_lookup_esource_name_by_uid_for_contact (const char *uid)
+{
+  if (strcmp (uid, contacts_eds_local_store) == 0)
     return _("Local Contact");
 
   if (contacts_source_list) {

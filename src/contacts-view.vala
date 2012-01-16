@@ -486,7 +486,7 @@ public class Contacts.ViewWidget : TreeView {
 	  foreach (var p in contact.individual.personas) {
 	    if (!first)
 	      stores += ", ";
-	    stores += Contact.format_persona_store_name (p.store);
+	    stores += Contact.format_persona_store_name_for_contact (p.store);
 	    first = false;
 	  }
 	  cell.set ("name", name,

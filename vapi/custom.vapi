@@ -31,6 +31,8 @@ namespace Contacts {
 	public static string? eds_local_store;
 	[CCode (cname = "contacts_lookup_esource_name_by_uid")]
 	public static unowned string? lookup_esource_name_by_uid (string uid);
+	[CCode (cname = "contacts_lookup_esource_name_by_uid_for_contact")]
+	public static unowned string? lookup_esource_name_by_uid_for_contact (string uid);
 	[CCode (cname = "contacts_esource_uid_is_google")]
 	public static bool esource_uid_is_google (string uid);
 	[CCode (cname = "eds_personal_google_group_name")]

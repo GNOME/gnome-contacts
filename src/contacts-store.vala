@@ -28,6 +28,7 @@ public class Contacts.Store : GLib.Object {
   public signal void quiescent ();
 
   public IndividualAggregator aggregator { get; private set; }
+  public BackendStore backend_store { get; private set; }
   Gee.ArrayList<Contact> contacts;
 
   public Gee.HashMap<string, Account> calling_accounts;
@@ -40,6 +41,12 @@ public class Contacts.Store : GLib.Object {
 
   public bool is_quiescent {
     get { return this.aggregator.is_quiescent; }
+  }
+
+  public void refresh () {
+    foreach (var c in contacts) {
+      c.queue_changed (true);
+    }
   }
 
   private bool individual_can_replace_at_split (Individual new_individual) {
@@ -58,6 +65,7 @@ public class Contacts.Store : GLib.Object {
   public Store () {
     contacts = new Gee.ArrayList<Contact>();
 
+    backend_store = BackendStore.dup ();
     aggregator = new IndividualAggregator ();
     aggregator.notify["is-quiescent"].connect ( (obj, pspec) => {
 	// We seem to get this before individuals_changed, so hack around it

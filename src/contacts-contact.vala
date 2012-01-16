@@ -807,7 +807,7 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  private void queue_changed (bool is_persona_change) {
+  public void queue_changed (bool is_persona_change) {
     _is_hidden_uptodate = false;
     changed_personas |= is_persona_change;
 
@@ -1059,9 +1059,35 @@ public class Contacts.Contact : GLib.Object  {
     return find_persona_from_store (store.aggregator.primary_store);
   }
 
+  public static PersonaStore[] get_eds_address_books () {
+    PersonaStore[] stores = {};
+    foreach (var backend in App.app.contacts_store.backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values) {
+	if (persona_store.type_id == "eds") {
+	  stores += persona_store;
+	}
+      }
+    }
+    return stores;
+  }
+
   public static string format_persona_store_name (PersonaStore store) {
     if (store.type_id == "eds") {
       unowned string? eds_name = lookup_esource_name_by_uid (store.id);
+      if (eds_name != null)
+	return eds_name;
+    }
+    if (store.type_id == "telepathy") {
+      var account = (store as Tpf.PersonaStore).account;
+      return format_im_service (account.service, null);
+    }
+
+    return store.display_name;
+  }
+
+  public static string format_persona_store_name_for_contact (PersonaStore store) {
+    if (store.type_id == "eds") {
+      unowned string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
       if (eds_name != null)
 	return eds_name;
     }
