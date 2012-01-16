@@ -29,32 +29,48 @@ public class Contacts.View : GLib.Object {
     public int sort_prio;
   }
 
+  public enum Subset {
+    PRIMARY,
+    NON_PRIMARY,
+    ALL_SEPARATED,
+    ALL
+  }
+
   Store contacts_store;
+  Subset show_subset;
   ListStore list_store;
   HashSet<Contact> hidden_contacts;
   string []? filter_values;
   int custom_visible_count;
-  ContactData header_data;
+  ContactData suggestions_header_data;
   ContactData padding_data;
+  ContactData other_header_data;
 
   public View (Store store) {
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
+    show_subset = Subset.ALL;
 
     list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
-    header_data = new ContactData ();
-    header_data.sort_prio = int.MAX;
+    suggestions_header_data = new ContactData ();
+    suggestions_header_data.sort_prio = int.MAX;
     padding_data = new ContactData ();
     padding_data.sort_prio = 1;
+
+    other_header_data = new ContactData ();
+    other_header_data.sort_prio = -1;
 
     list_store.set_sort_func (0, (model, iter_a, iter_b) => {
 	ContactData *aa, bb;
 	model.get (iter_a, 1, out aa);
 	model.get (iter_b, 1, out bb);
 
-	if (aa->sort_prio > bb->sort_prio)
+	int a_prio = get_sort_prio (aa);
+	int b_prio = get_sort_prio (bb);
+
+	if (a_prio > b_prio)
 	    return -1;
-	if (aa->sort_prio < bb->sort_prio)
+	if (a_prio < b_prio)
 	    return 1;
 
 	var a = aa->contact;
@@ -80,18 +96,53 @@ public class Contacts.View : GLib.Object {
       contact_added_cb (store, c);
   }
 
+  private int get_sort_prio (ContactData *data) {
+    if (data->sort_prio != 0)
+      return data->sort_prio;
+
+    if (show_subset == Subset.ALL_SEPARATED &&
+	!data->contact.is_primary)
+      return -2;
+    return 0;
+  }
+
   public string get_header_text (TreeIter iter) {
     ContactData *data;
     model.get (iter, 1, out data);
-    if (data == header_data) {
+    if (data == suggestions_header_data) {
       /* Translators: This is the header for the list of suggested contacts to
 	 link to the current contact */
       return ngettext ("Suggestion", "Suggestions", custom_visible_count);
     }
+    if (data == other_header_data) {
+      /* Translators: This is the header for the list of suggested contacts to
+	 link to the current contact */
+      return _("Other Contacts");
+    }
     return "";
   }
 
-  public void add_custom_sort (Contact c, int prio) {
+  public void set_show_subset (Subset subset) {
+    show_subset = subset;
+
+    bool new_visible = show_subset == Subset.ALL_SEPARATED;
+    if (new_visible && !other_header_data.visible) {
+      other_header_data.visible = true;
+      list_store.append (out other_header_data.iter);
+      list_store.set (other_header_data.iter, 1, other_header_data);
+    }
+    if (!new_visible && other_header_data.visible) {
+      other_header_data.visible = false;
+      list_store.remove (other_header_data.iter);
+    }
+
+    refilter ();
+  }
+
+  public void set_custom_sort_prio (Contact c, int prio) {
+    /* We use negative prios internally */
+    assert (prio >= 0);
+
     var data = lookup_data (c);
     // We insert a priority between 0 and 1 for the padding
     if (prio > 0)
@@ -117,6 +168,12 @@ public class Contacts.View : GLib.Object {
       return false;
 
     if (contact in hidden_contacts)
+      return false;
+
+    if ((show_subset == Subset.PRIMARY &&
+	 !contact.is_primary) ||
+	(show_subset == Subset.NON_PRIMARY &&
+	 contact.is_primary))
       return false;
 
     if (filter_values == null || filter_values.length == 0)
@@ -161,8 +218,8 @@ public class Contacts.View : GLib.Object {
   private bool update_is_first (ContactData data, ContactData? previous) {
     bool old_is_first = data.is_first;
 
-    bool is_custom = data.sort_prio > 0;
-    bool previous_is_custom = previous != null && previous.sort_prio > 0;
+    bool is_custom = data.sort_prio != 0;
+    bool previous_is_custom = previous != null && (previous.sort_prio != 0) ;
 
     if (is_custom) {
       data.is_first = false;
@@ -183,17 +240,17 @@ public class Contacts.View : GLib.Object {
   }
 
   private void add_custom_headers () {
-    header_data.visible = true;
-    list_store.append (out header_data.iter);
-    list_store.set (header_data.iter, 1, header_data);
+    suggestions_header_data.visible = true;
+    list_store.append (out suggestions_header_data.iter);
+    list_store.set (suggestions_header_data.iter, 1, suggestions_header_data);
     padding_data.visible = true;
     list_store.append (out padding_data.iter);
     list_store.set (padding_data.iter, 1, padding_data);
   }
 
   private void remove_custom_headers () {
-    header_data.visible = false;
-    list_store.remove (header_data.iter);
+    suggestions_header_data.visible = false;
+    list_store.remove (suggestions_header_data.iter);
     padding_data.visible = false;
     list_store.remove (padding_data.iter);
   }

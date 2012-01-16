@@ -98,7 +98,7 @@ public class Contacts.LinkDialog : Dialog {
       var c = Contact.from_individual (ind);
       if (c != null) {
 	var result = matches.get (ind);
-	view.add_custom_sort (c, (int) result);
+	view.set_custom_sort_prio (c, (int) result);
       }
     }
 
