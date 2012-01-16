@@ -107,6 +107,7 @@ public class Contacts.ContactPresence : Grid {
 
 public class Contacts.Contact : GLib.Object  {
   public Store store;
+  public bool is_primary;
   public PresenceType presence_type;
   public string presence_message;
   public bool is_phone;
@@ -382,8 +383,11 @@ public class Contacts.Contact : GLib.Object  {
     individual.set_data ("contact", this);
     this.refs = new ContactDataRef[0];
 
-    foreach (var p in individual.personas)
+    foreach (var p in individual.personas) {
       connect_persona (p);
+      if (p.store.is_primary_store)
+	this.is_primary = true;
+    }
 
     individual.personas_changed.connect ( (added, removed) => {
 	foreach (var p in added)
@@ -782,6 +786,13 @@ public class Contacts.Contact : GLib.Object  {
     changed_id = 0;
     var changed_personas = this.changed_personas;
     this.changed_personas = false;
+    if (changed_personas) {
+      this.is_primary = false;
+      foreach (var p in individual.personas) {
+	if (p.store.is_primary_store)
+	  this.is_primary = true;
+      }
+    }
     update ();
     changed ();
     if (changed_personas)
