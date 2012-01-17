@@ -21,7 +21,7 @@ using Folks;
 using Gee;
 
 namespace Contacts {
-  internal abstract class PersonaAttribute : Object {
+  public abstract class PersonaAttribute : Object {
     public string property_name;
 
     public static HashSet<PersonaAttribute> create_set () {
