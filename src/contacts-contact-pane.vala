@@ -1999,8 +1999,10 @@ public class Contacts.ContactPane : ScrolledWindow {
     }
   }
 
-
   public ContactPane (Store contacts_store) {
+    this.get_style_context ().add_class ("contacts-content");
+    this.set_shadow_type (ShadowType.IN);
+
     this.contacts_store = contacts_store;
     row_group = new RowGroup(3);
     row_group.set_column_min_width (0, 32);
@@ -2031,7 +2033,8 @@ public class Contacts.ContactPane : ScrolledWindow {
 	return false;
       });
 
-    this.get_child().get_style_context ().add_class ("contact-pane");
+    this.get_child().get_style_context ().add_class ("contacts-main-view");
+    this.get_child().get_style_context ().add_class ("view");
 
     card_row = new FieldRow (row_group);
     top_grid.add (card_row);
