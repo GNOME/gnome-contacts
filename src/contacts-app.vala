@@ -247,11 +247,54 @@ public class Contacts.App : Gtk.Application {
     window.set_application (this);
     window.set_title (_("Contacts"));
     window.set_size_request (745, 510);
+    window.hide_titlebar_when_maximized = true;
     window.delete_event.connect (window_delete_event);
     window.map_event.connect (window_map_event);
     window.key_press_event.connect (window_key_press_event);
 
     var grid = new Grid();
+
+    var toolbar = new Toolbar ();
+    toolbar.set_icon_size (IconSize.MENU);
+    toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    toolbar.set_vexpand (false);
+    toolbar.set_hexpand (true);
+    grid.attach (toolbar, 0, 0, 1, 1);
+
+    var add_button = new ToolButton (null, _("Add..."));
+    add_button.margin_left = 4;
+    add_button.is_important = true;
+    toolbar.add (add_button);
+    add_button.clicked.connect ( (button) => {
+	var dialog = new NewContactDialog (contacts_store, window);
+	dialog.show_all ();
+      });
+
+    var select_button = new ToolButton (null, null);
+    select_button.set_icon_name ("object-select-symbolic");
+    select_button.is_important = false;
+    select_button.set_halign (Align.END);
+    select_button.set_expand (true);
+    toolbar.add (select_button);
+    select_button.clicked.connect ( (button) => {
+      });
+
+    toolbar = new Toolbar ();
+    toolbar.set_icon_size (IconSize.MENU);
+    toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    toolbar.set_vexpand (false);
+    toolbar.set_hexpand (true);
+    grid.attach (toolbar, 1, 0, 1, 1);
+
+    var share_button = new ToolButton (null, null);
+    share_button.margin_right = 4;
+    share_button.set_icon_name ("send-to-symbolic");
+    share_button.is_important = false;
+    share_button.set_halign (Align.END);
+    share_button.set_expand (true);
+    toolbar.add (share_button);
+    share_button.clicked.connect ( (button) => {
+      });
 
     var overlay = new Gtk.Overlay ();
     overlay.add (grid);
@@ -261,12 +304,8 @@ public class Contacts.App : Gtk.Application {
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
-    list_pane.create_new.connect ( () => {
-	var dialog = new NewContactDialog (contacts_store, window);
-	dialog.show_all ();
-      });
 
-    grid.attach (list_pane, 0, 0, 1, 2);
+    grid.attach (list_pane, 0, 1, 1, 1);
 
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
@@ -295,7 +334,7 @@ public class Contacts.App : Gtk.Application {
       });
       overlay.add_overlay (notification);
     });
-    grid.attach (contacts_pane, 1, 0, 1, 2);
+    grid.attach (contacts_pane, 1, 1, 1, 1);
 
     overlay.show_all ();
   }

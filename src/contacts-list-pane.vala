@@ -30,7 +30,6 @@ public class Contacts.ListPane : Frame {
   private bool ignore_selection_change;
 
   public signal void selection_changed (Contact? contact);
-  public signal void create_new ();
 
   private void refilter () {
     string []? values;
@@ -97,18 +96,6 @@ public class Contacts.ListPane : Frame {
     var separator = new SeparatorToolItem ();
     separator.set_draw (false);
     toolbar.add (separator);
-
-    var add_button = new ToolButton (null, null);
-    add_button.set_icon_name ("list-add-symbolic");
-    add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    add_button.is_important = false;
-    // We make the button slightly wider to look better since it
-    // becomes taller when added to the toolbar
-    add_button.set_size_request (34, -1);
-    toolbar.add (add_button);
-    add_button.clicked.connect ( (button) => {
-	create_new ();
-      });
 
     this.set_size_request (315, -1);
     this.set_hexpand (false);
