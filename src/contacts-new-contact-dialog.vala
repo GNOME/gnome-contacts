@@ -314,6 +314,7 @@ public class Contacts.NewContactDialog : Dialog {
 					 DialogFlags.MODAL,
 					 MessageType.ERROR,
 					 ButtonsType.OK,
+					 "%s",
 					 _("No primary addressbook configured\n"));
       dialog.show ();
       dialog.response.connect ( () => {
@@ -335,6 +336,7 @@ public class Contacts.NewContactDialog : Dialog {
 				      DialogFlags.MODAL,
 				      MessageType.ERROR,
 				      ButtonsType.OK,
+				      "%s",
 				      _("Unable to create new contacts: %s\n"), e.message);
 	}
 
