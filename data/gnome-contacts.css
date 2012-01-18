@@ -39,8 +39,6 @@ ContactsWindow .sidebar.view {
     background-color: #ebebeb;
 }
 
-
-
 .contact-button:active {
     border-color: #000000;
     border-image: none;
@@ -53,6 +51,13 @@ ContactsWindow .sidebar.view {
     border-style: solid;
     border-color: #bbbeb7;
     background-image: none;
+    background-color: #ffffff;
+}
+
+.contact-entry:selected,
+.contact-entry:selected:focus {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
 }
 
 .contact-entry.contact-postal-entry {

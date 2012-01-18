@@ -277,6 +277,7 @@ public class Contacts.FieldRow : Contacts.Row {
 
   public void pack_entry_detail_combo (string text, AbstractFieldDetails detail, TypeSet type_set, out Entry entry, out TypeCombo combo) {
     entry = new Entry ();
+    entry.get_style_context ().add_class ("contact-entry");
     entry.set_text (text);
     entry.set_hexpand (true);
     entry.set_halign (Align.FILL);
@@ -286,6 +287,7 @@ public class Contacts.FieldRow : Contacts.Row {
 
   public Entry pack_entry (string s) {
     var e = new Entry ();
+    e.get_style_context ().add_class ("contact-entry");
     e.set_text (s);
     e.set_halign (Align.FILL);
     pack (e);
@@ -1045,6 +1047,7 @@ class Contacts.NoteFieldRow : DataFieldRow {
 
   public override void pack_edit_widgets () {
     text = new TextView ();
+    text.get_style_context ().add_class ("contact-entry");
     text.set_hexpand (true);
     text.set_vexpand (true);
     var scrolled = new ScrolledWindow (null, null);
@@ -1153,8 +1156,7 @@ class Contacts.AddressFieldRow : DataFieldRow {
 
   public override void pack_edit_widgets () {
 
-    var grid = new Grid ();
-    grid.set_orientation (Orientation.VERTICAL);
+    var grid = new Box (Orientation.VERTICAL, 0);
     grid.set_hexpand (true);
     grid.set_halign (Align.FILL);
 
@@ -1166,6 +1168,8 @@ class Contacts.AddressFieldRow : DataFieldRow {
       if (postal_part != null)
 	entry[i].set_text (postal_part);
       entry[i].set ("placeholder-text", Contact.postal_element_names[i]);
+      entry[i].get_style_context ().add_class ("contact-entry");
+      entry[i].get_style_context ().add_class ("contact-postal-entry");
       grid.add (entry[i]);
 
       setup_entry_for_edit (entry[i], i == 0);
