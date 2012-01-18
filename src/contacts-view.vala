@@ -157,6 +157,10 @@ public class Contacts.View : GLib.Object {
     assert (prio >= 0);
 
     var data = lookup_data (c);
+
+    if (data == null)
+      return;
+
     // We insert a priority between 0 and 1 for the padding
     if (prio > 0)
       prio += 1;
