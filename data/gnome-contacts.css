@@ -1,19 +1,45 @@
+/* Copied from adwaita */
+@define-color borders #a7aba7;
+
+/* Line at top in contacts pane, similar to .documents-scrolledwin.frame */
 .contacts-content.frame {
     border-width: 1 0 0 0;
     border-radius: 0;
 }
 
+/* Background color in contacts pane, similar to .documents-main-view.view */
 .contacts-main-view.view {
     background-color: #f1f2f1;
 }
 
-ContactsListPane {
-    border-style: solid;
+/* Border on the right in the left menu toolbar */
+.contacts-left-toolbar.toolbar.menubar {
     border-width: 0 1 0 0;
-    border-color: #878787;
-    border-image: none;
-    padding: 0 1 1 1;
+    border-style: solid;
+    border-color: @borders;
 }
+
+/* Sidebar with line at top and the left */
+ContactsWindow .sidebar.frame {
+    border-width: 1 1 0 0;
+    border-style: solid;
+    border-color: @borders;
+    border-image: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* Primary toolbar with no line at top to avoid conflicts with frame border */
+ContactsWindow .primary-toolbar.toolbar {
+    border-width: 0 0 1 0;
+}
+
+ContactsWindow .sidebar,
+ContactsWindow .sidebar.view {
+    background-color: #ebebeb;
+}
+
+
 
 .contact-button:active {
     border-color: #000000;

@@ -72,6 +72,7 @@ public class Contacts.ListPane : Frame {
   }
 
   public ListPane (Store contacts_store) {
+    this.get_style_context ().add_class (STYLE_CLASS_SIDEBAR);
     this.contacts_store = contacts_store;
     this.contacts_view = new View (contacts_store);
     var toolbar = new Toolbar ();
@@ -105,7 +106,6 @@ public class Contacts.ListPane : Frame {
     scrolled.set_vexpand (true);
     scrolled.set_hexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
-    scrolled.get_style_context ().set_junction_sides (JunctionSides.RIGHT | JunctionSides.LEFT | JunctionSides.TOP);
 
     var grid = new Grid ();
     grid.set_orientation (Orientation.VERTICAL);

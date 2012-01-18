@@ -257,6 +257,7 @@ public class Contacts.App : Gtk.Application {
     var toolbar = new Toolbar ();
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    toolbar.get_style_context ().add_class ("contacts-left-toolbar");
     toolbar.set_vexpand (false);
     toolbar.set_hexpand (true);
     grid.attach (toolbar, 0, 0, 1, 1);
