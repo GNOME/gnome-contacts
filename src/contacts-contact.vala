@@ -1059,6 +1059,18 @@ public class Contacts.Contact : GLib.Object  {
     return find_persona_from_store (store.aggregator.primary_store);
   }
 
+  public string format_persona_stores () {
+    string stores = "";
+    bool first = true;
+    foreach (var p in individual.personas) {
+      if (!first)
+	stores += ", ";
+      stores += format_persona_store_name_for_contact (p.store);
+      first = false;
+    }
+    return stores;
+  }
+
   public static PersonaStore[] get_eds_address_books () {
     PersonaStore[] stores = {};
     foreach (var backend in App.app.contacts_store.backend_store.enabled_backends.values) {

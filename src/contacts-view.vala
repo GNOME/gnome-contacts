@@ -478,14 +478,7 @@ public class Contacts.ViewWidget : TreeView {
 		    "is_phone", contact.is_phone);
 	  break;
 	case TextDisplay.STORES:
-	  string stores = "";
-	  bool first = true;
-	  foreach (var p in contact.individual.personas) {
-	    if (!first)
-	      stores += ", ";
-	    stores += Contact.format_persona_store_name_for_contact (p.store);
-	    first = false;
-	  }
+	  string stores = contact.format_persona_stores ();
 	  cell.set ("name", name,
 		    "show_presence", false,
 		    "message", stores);
