@@ -427,7 +427,7 @@ public class Contacts.TypeCombo : Grid  {
   }
 
   private bool entry_key_release (Gdk.EventKey event) {
-    if (event.keyval == Gdk.keyval_from_name ("Escape")) {
+    if (event.keyval == Gdk.Key.Escape) {
       entry.set_text ("");
       finish_custom ();
     }

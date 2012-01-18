@@ -552,7 +552,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 	field_set.sheet.pane.exit_edit_mode (true);
       });
     entry.key_press_event.connect ( (key_event) => {
-	if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
+	if (key_event.keyval == Gdk.Key.Escape) {
 	  field_set.sheet.pane.exit_edit_mode (false);
 	}
 	return false;
@@ -564,7 +564,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
       Utils.grab_widget_later (text);
     }
     text.key_press_event.connect ( (key_event) => {
-	if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
+	if (key_event.keyval == Gdk.Key.Escape) {
 	  field_set.sheet.pane.exit_edit_mode (false);
 	}
 	return false;
@@ -1574,7 +1574,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 	    exit_edit_mode (true);
 	  });
 	entry.key_press_event.connect ( (key_event) => {
-	    if (key_event.keyval == Gdk.keyval_from_name ("Escape")) {
+	    if (key_event.keyval == Gdk.Key.Escape) {
 	      exit_edit_mode (false);
 	    }
 	    return false;
