@@ -32,21 +32,25 @@ public class Contacts.App : Gtk.Application {
     return false;
   }
 
-  private bool window_map_event (Gdk.EventAny event) {
-    list_pane.filter_entry.grab_focus ();
-    return true;
-  }
-
   private bool window_key_press_event (Gdk.EventKey event) {
     if ((event.keyval == Gdk.keyval_from_name ("q")) &&
 	((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
       // Clear the contacts so any changed information is stored
       contacts_pane.show_contact (null);
       window.destroy ();
-    } else if (((event.keyval == Gdk.keyval_from_name ("s")) ||
-		(event.keyval == Gdk.keyval_from_name ("f"))) &&
+    } else if (((event.keyval == Gdk.Key.s) ||
+		(event.keyval == Gdk.Key.f)) &&
 	       ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
-      list_pane.filter_entry.grab_focus ();
+      list_pane.set_search_visible (true);
+    } else if (event.length >= 1 &&
+	       Gdk.keyval_to_unicode (event.keyval) != 0 &&
+	       (event.state & Gdk.ModifierType.CONTROL_MASK) == 0 &&
+	       (event.state & Gdk.ModifierType.MOD1_MASK) == 0 &&
+	       (event.keyval != Gdk.Key.Escape) &&
+	       (event.keyval != Gdk.Key.Tab) &&
+	       (event.keyval != Gdk.Key.BackSpace) ) {
+      list_pane.set_search_visible (true);
+      window.propagate_key_event (event);
     }
 
     return false;
@@ -249,8 +253,7 @@ public class Contacts.App : Gtk.Application {
     window.set_size_request (745, 510);
     window.hide_titlebar_when_maximized = true;
     window.delete_event.connect (window_delete_event);
-    window.map_event.connect (window_map_event);
-    window.key_press_event.connect (window_key_press_event);
+    window.key_press_event.connect_after (window_key_press_event);
 
     var grid = new Grid();
 

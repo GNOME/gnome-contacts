@@ -28,6 +28,8 @@ public class Contacts.ListPane : Frame {
   private ulong non_empty_id;
   private EventBox empty_box;
   private bool ignore_selection_change;
+  private Toolbar search_toolbar;
+  private bool search_visible;
 
   public signal void selection_changed (Contact? contact);
 
@@ -55,6 +57,18 @@ public class Contacts.ListPane : Frame {
     return false;
   }
 
+  public void set_search_visible (bool visible) {
+    search_visible = visible;
+    if (visible) {
+      search_toolbar.show_all ();
+      search_toolbar.show ();
+      filter_entry.grab_focus ();
+    } else {
+      filter_entry.set_text ("");
+      search_toolbar.hide ();
+    }
+  }
+
   private void filter_entry_changed (Editable editable) {
     if (filter_entry_changed_id != 0)
       Source.remove (filter_entry_changed_id);
@@ -76,6 +90,7 @@ public class Contacts.ListPane : Frame {
     this.contacts_store = contacts_store;
     this.contacts_view = new View (contacts_store);
     var toolbar = new Toolbar ();
+    search_toolbar = toolbar;
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.set_vexpand (false);
@@ -87,6 +102,13 @@ public class Contacts.ListPane : Frame {
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
     filter_entry.icon_press.connect (filter_entry_clear);
+
+    filter_entry.key_press_event.connect ( (key_event) => {
+	if (key_event.keyval == Gdk.Key.Escape) {
+	  set_search_visible (false);
+	}
+	return false;
+      });
 
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
@@ -165,6 +187,8 @@ public class Contacts.ListPane : Frame {
     grid.add (empty_box);
 
     this.show_all ();
+    toolbar.set_no_show_all (true);
+    toolbar.hide ();
 
     if (contacts_store.is_empty ()) {
       empty_box.show ();
