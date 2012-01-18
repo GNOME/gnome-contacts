@@ -20,7 +20,7 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
-  public ApplicationWindow window;
+  public Contacts.Window window;
   public static App app;
   public Store contacts_store;
   private ListPane list_pane;
@@ -243,7 +243,7 @@ public class Contacts.App : Gtk.Application {
       warning ("Failed to parsing ui file");
     }
 
-    window = new ApplicationWindow (this);
+    window = new Contacts.Window (this);
     window.set_application (this);
     window.set_title (_("Contacts"));
     window.set_size_request (745, 510);
