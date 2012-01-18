@@ -883,6 +883,7 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
     combo.append_text (_("November"));
     combo.append_text (_("December"));
     combo.set_active (bday.get_month () - 1);
+    combo.get_style_context ().add_class ("contact-combo");
     grid.add (combo);
 
     year_spin = new SpinButton.with_range (1800, 3000, 1);
