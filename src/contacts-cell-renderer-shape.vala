@@ -208,26 +208,29 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
   private void do_get_size (Widget        widget,
 			    Gdk.Rectangle? cell_area,
 			    Pango.Layout? layout,
-			    out int       x_offset) {
+			    out int       x_offset,
+			    out int       y_offset) {
     Pango.Rectangle rect;
-    int xpad;
+    int xpad, ypad;
 
-    get_padding (out xpad, null);
+    get_padding (out xpad, out ypad);
 
     layout.get_pixel_extents (null, out rect);
 
     if (cell_area != null) {
-      rect.width  = int.min (rect.width, cell_area.width - xpad);
+      rect.width  = int.min (rect.width, cell_area.width - 2 * xpad);
 
       if (widget.get_direction () == TextDirection.RTL)
 	x_offset = cell_area.width - (rect.width + xpad);
       else
-	x_offset = 0;
+	x_offset = xpad;
 
       x_offset = int.max (x_offset, 0);
     } else {
       x_offset = 0;
     }
+
+    y_offset = ypad;
   }
 
   public override void render (Cairo.Context   cr,
@@ -239,6 +242,8 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     Pango.Layout name_layout, presence_layout;
     int name_x_offset = 0;
     int presence_x_offset = 0;
+    int name_y_offset = 0;
+    int presence_y_offset = 0;
     int xpad;
     Pango.Rectangle name_rect;
     Pango.Rectangle presence_rect;
@@ -249,14 +254,14 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     get_padding (out xpad, null);
 
     name_layout = get_name_layout (widget, cell_area, flags);
-    do_get_size (widget, cell_area, name_layout, out name_x_offset);
+    do_get_size (widget, cell_area, name_layout, out name_x_offset, out name_y_offset);
     name_layout.get_pixel_extents (null, out name_rect);
     name_x_offset = name_x_offset - name_rect.x;
 
     presence_layout = null;
     if (name_layout.get_lines_readonly ().length () == 1) {
       presence_layout = get_presence_layout (widget, cell_area, flags);
-      do_get_size (widget, cell_area, presence_layout, out presence_x_offset);
+      do_get_size (widget, cell_area, presence_layout, out presence_x_offset, out presence_y_offset);
       presence_layout.get_pixel_extents (null, out presence_rect);
       presence_x_offset = presence_x_offset - presence_rect.x;
     }
@@ -267,14 +272,14 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     cr.clip ();
 
     Gtk.render_layout (context, cr,
-		       cell_area.x + name_x_offset + xpad,
-		       cell_area.y + 0,
+		       cell_area.x + name_x_offset,
+		       cell_area.y + name_y_offset,
 		       name_layout);
 
     if (presence_layout != null)
       Gtk.render_layout (context, cr,
-			 cell_area.x + presence_x_offset + xpad,
-			 cell_area.y + 48 - 11 - presence_layout.get_baseline () / Pango.SCALE,
+			 cell_area.x + presence_x_offset,
+			 cell_area.y + presence_y_offset + 48 - 11 - presence_layout.get_baseline () / Pango.SCALE,
 			 presence_layout);
 
     cr.restore ();
@@ -294,8 +299,11 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 						       int          width,
 						       out int      minimum_height,
 						       out int      natural_height) {
-    minimum_height = 48;
-    natural_height = 48;
+    int ypad;
+
+    get_padding (null, out ypad);
+    minimum_height = 48 + ypad;
+    natural_height = 48 + ypad;
   }
 
   public override void get_preferred_height (Widget       widget,
@@ -319,4 +327,3 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     }
   }
 }
-

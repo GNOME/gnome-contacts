@@ -393,6 +393,8 @@ public class Contacts.ViewWidget : TreeView {
     set_model (view.model);
     set_headers_visible (false);
 
+    var row_padding = 4;
+
     var selection = get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
     selection.set_select_function ( (selection, model, path, path_currently_selected) => {
@@ -405,9 +407,11 @@ public class Contacts.ViewWidget : TreeView {
     selection.changed.connect (contacts_selection_changed);
 
     var column = new TreeViewColumn ();
+    column.set_spacing (4);
 
     var text = new CellRendererText ();
     text.set_alignment (0, 0);
+    text.set_padding (0, row_padding);
     column.pack_start (text, false);
     text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
     column.set_cell_data_func (text, (column, cell, model, iter) => {
@@ -427,6 +431,7 @@ public class Contacts.ViewWidget : TreeView {
       });
 
     var icon = new CellRendererPixbuf ();
+    icon.set_padding (0, row_padding);
     icon.xalign = 0.0f;
     icon.yalign = 0.0f;
     icon.width = 48 + 2;
@@ -449,7 +454,7 @@ public class Contacts.ViewWidget : TreeView {
       });
 
     shape = new CellRendererShape ();
-    shape.set_padding (4, 0);
+    shape.set_padding (0, row_padding);
 
     Pango.cairo_context_set_shape_renderer (get_pango_context (), shape.render_shape);
 
