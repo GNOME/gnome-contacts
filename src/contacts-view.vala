@@ -65,27 +65,7 @@ public class Contacts.View : GLib.Object {
 	model.get (iter_a, 1, out aa);
 	model.get (iter_b, 1, out bb);
 
-	int a_prio = get_sort_prio (aa);
-	int b_prio = get_sort_prio (bb);
-
-	if (a_prio > b_prio)
-	    return -1;
-	if (a_prio < b_prio)
-	    return 1;
-
-	var a = aa->contact;
-	var b = bb->contact;
-
-	if (is_set (a.display_name) && is_set (b.display_name))
-	  return a.display_name.collate (b.display_name);
-
-	// Sort empty names last
-	if (is_set (a.display_name))
-	  return -1;
-	if (is_set (b.display_name))
-	  return 1;
-
-	return 0;
+	return compare_data (aa, bb);
       });
     list_store.set_sort_column_id (0, SortType.ASCENDING);
 
@@ -94,6 +74,30 @@ public class Contacts.View : GLib.Object {
     contacts_store.changed.connect (contact_changed_cb);
     foreach (var c in store.get_contacts ())
       contact_added_cb (store, c);
+  }
+
+  private int compare_data (ContactData a_data, ContactData b_data) {
+    int a_prio = get_sort_prio (a_data);
+    int b_prio = get_sort_prio (b_data);
+
+    if (a_prio > b_prio)
+      return -1;
+    if (a_prio < b_prio)
+      return 1;
+
+    var a = a_data.contact;
+    var b = b_data.contact;
+
+    if (is_set (a.display_name) && is_set (b.display_name))
+      return a.display_name.collate (b.display_name);
+
+    // Sort empty names last
+    if (is_set (a.display_name))
+      return -1;
+    if (is_set (b.display_name))
+      return 1;
+
+    return 0;
   }
 
   private int get_sort_prio (ContactData *data) {
