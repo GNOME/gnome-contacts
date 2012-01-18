@@ -21,6 +21,8 @@ using Gtk;
 public class Contacts.Clickable : Object {
   Widget widget;
 
+  public StateFlags state;
+
   bool in_button;
   bool button_down;
   bool depressed;
@@ -116,8 +118,11 @@ public class Contacts.Clickable : Object {
 
   private bool enter_notify_event (Gdk.EventCrossing event) {
     if ((event.window == get_event_window ()) &&
-	(event.detail != Gdk.NotifyType.INFERIOR))
+	(event.detail != Gdk.NotifyType.INFERIOR)) {
       in_button = true;
+      update_state ();
+
+    }
 
     return false;
   }
@@ -125,8 +130,10 @@ public class Contacts.Clickable : Object {
   private bool leave_notify_event (Gdk.EventCrossing event) {
     if ((event.window == get_event_window ()) &&
 	(event.detail != Gdk.NotifyType.INFERIOR) &&
-	widget.get_sensitive ())
+	widget.get_sensitive ()) {
       in_button = false;
+      update_state ();
+    }
 
     return false;
   }
@@ -148,9 +155,8 @@ public class Contacts.Clickable : Object {
 
       if (in_button)
 	clicked ();
-
-      update_state ();
     }
+    update_state ();
   }
 
   [CCode (action_signal = true)]
@@ -224,7 +230,7 @@ public class Contacts.Clickable : Object {
     else
       depressed = in_button && button_down;
 
-    StateFlags new_state = widget.get_state_flags () & ~(StateFlags.PRELIGHT | StateFlags.ACTIVE);
+    StateFlags new_state = 0;
 
     if (in_button)
       new_state |= StateFlags.PRELIGHT;
@@ -232,8 +238,12 @@ public class Contacts.Clickable : Object {
     if (button_down || depressed)
       new_state |= StateFlags.ACTIVE;
 
+    if (new_state != state) {
+      state = new_state;
+      widget.queue_resize ();
+    }
+
     set_depressed (depressed);
-    widget.set_state_flags (new_state, true);
   }
 
   private void state_changed (Gtk.StateType previous_state) {

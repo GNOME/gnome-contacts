@@ -25,6 +25,13 @@ public class Contacts.FieldRow : Contacts.Row {
   int start;
   bool has_child_focus;
 
+  /* show_as_editable means we prelight, can_focus, show selected, etc.
+     It doesn't mean we can't edit the row. For instance the
+     Card row is editing when we're editing the full name, but
+     thats not represented in the UI as editing the row. */
+  protected bool show_as_editable;
+  protected bool is_editing;
+
   public FieldRow(RowGroup group) {
     base (group);
     set_redraw_on_allocate (true); // Since we draw the focus rect
@@ -36,6 +43,10 @@ public class Contacts.FieldRow : Contacts.Row {
 
     /* This should really be in class construct, but that doesn't seem to work... */
     activate_signal = GLib.Signal.lookup ("activate-row", typeof (FieldRow));
+  }
+
+  public void set_editing (bool val) {
+    is_editing = val;
   }
 
   public void reset () {
@@ -120,16 +131,25 @@ public class Contacts.FieldRow : Contacts.Row {
     this.get_allocation (out allocation);
 
     var context = this.get_style_context ();
-    var state = this.get_state_flags ();
+
+    context.save ();
+    StateFlags state = 0;
+    if (show_as_editable) {
+      state = clickable.state & (StateFlags.ACTIVE | StateFlags.PRELIGHT);
+      if (is_editing)
+	state |= StateFlags.SELECTED;
+    }
+    context.set_state (state);
+    if (state != 0)
+      Gtk.render_background (context, cr,
+			     0, 0, allocation.width, allocation.height);
 
     if (this.has_visible_focus ())
       Gtk.render_focus (context, cr, 0, 0, allocation.width, allocation.height);
 
-    context.save ();
-    // Don't propagate the clicked prelight and active state to children
-    this.set_state_flags (state & ~(StateFlags.PRELIGHT | StateFlags.ACTIVE), true);
-    base.draw (cr);
     context.restore ();
+
+    base.draw (cr);
 
     return true;
   }
@@ -406,14 +426,15 @@ public class Contacts.TitleFieldRow : FieldRow {
     set_can_focus (true);
 
     grid = pack_header_in_grid (text);
+
+    if (!sheet.persona.store.is_primary_store ||
+	sheet.pane.contact.individual.personas.size > 1)
+      show_as_editable = true;
   }
 
   Button? unlink_button;
   public override bool enter_edit_mode () {
-    if (sheet.persona.store.is_primary_store)
-      return false;
-
-    if (sheet.pane.contact.individual.personas.size == 1)
+    if (!show_as_editable)
       return false;
 
     this.set_can_focus (false);
@@ -447,7 +468,6 @@ public class Contacts.TitleFieldRow : FieldRow {
 
 public abstract class Contacts.DataFieldRow : FieldRow {
   public FieldSet field_set;
-  bool editable;
   protected Button? delete_button;
 
   public DataFieldRow (FieldSet field_set) {
@@ -457,7 +477,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   }
 
   public void set_editable (bool editable) {
-    this.editable = editable;
+    this.show_as_editable = editable;
     set_can_focus (editable);
   }
 
@@ -469,7 +489,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   }
 
   public override bool enter_edit_mode () {
-    if (!editable)
+    if (!show_as_editable)
       return false;
 
     this.set_can_focus (false);
@@ -501,7 +521,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   }
 
   public override void exit_edit_mode (bool save) {
-    if (!editable)
+    if (!show_as_editable)
       return;
 
     var had_child_focus = this.get_focus_child () != null;
@@ -1766,14 +1786,19 @@ public class Contacts.ContactPane : ScrolledWindow {
     if (editing_row != row) {
       exit_edit_mode (true);
       editing_row = null;
-      if (row.enter_edit_mode ())
+      if (row.enter_edit_mode ()) {
 	editing_row = row;
+	editing_row.set_editing (true);
+      }
     }
   }
 
   public void exit_edit_mode (bool save) {
-    if (editing_row != null)
+    if (editing_row != null) {
       editing_row.exit_edit_mode (save);
+      editing_row.set_editing (false);
+    }
+
     editing_row = null;
   }
 
