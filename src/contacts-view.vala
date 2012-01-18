@@ -422,27 +422,6 @@ public class Contacts.ViewWidget : TreeView {
     var column = new TreeViewColumn ();
     column.set_spacing (4);
 
-    var text = new CellRendererText ();
-    text.set_alignment (0, 0);
-    text.set_padding (0, row_padding);
-    column.pack_start (text, false);
-    text.set ("weight", Pango.Weight.BOLD, "scale", 1.28, "width", 24);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
-	string letter = "";
-	if (view.is_first (iter)) {
-	  Contact contact;
-	  view.model.get (iter, 0, out contact);
-	  letter = contact.initial_letter.to_string ();
-	}
-
-	cell.set ("text", letter);
-	if (letter != "") {
-	  cell.height = -1;
-	} else {
-	  cell.height = 1;
-	}
-      });
-
     var icon = new CellRendererPixbuf ();
     icon.set_padding (0, row_padding);
     icon.xalign = 0.0f;
@@ -514,8 +493,7 @@ public class Contacts.ViewWidget : TreeView {
 	}
       });
 
-
-    text = new CellRendererText ();
+    var text = new CellRendererText ();
     text.set_alignment (0, 0);
     column.pack_start (text, true);
     text.set ("weight", Pango.Weight.BOLD);
