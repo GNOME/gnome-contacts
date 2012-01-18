@@ -100,12 +100,21 @@ public class Contacts.View : GLib.Object {
     return 0;
   }
 
+  private bool is_other (ContactData data) {
+    if (show_subset == Subset.ALL_SEPARATED &&
+	data.contact != null &&
+	!data.contact.is_primary)
+      return true;
+    return false;
+  }
+
+  /* The hardcoded prio if set, otherwise 0 for the
+     primary/combined group, or -2 for the separated other group */
   private int get_sort_prio (ContactData *data) {
     if (data->sort_prio != 0)
       return data->sort_prio;
 
-    if (show_subset == Subset.ALL_SEPARATED &&
-	!data->contact.is_primary)
+    if (is_other (data))
       return -2;
     return 0;
   }
@@ -263,7 +272,7 @@ public class Contacts.View : GLib.Object {
     list_store.append (out data.iter);
     list_store.set (data.iter, 0, data.contact, 1, data);
 
-    if  (data.sort_prio > 0) {
+    if (data.sort_prio > 0) {
       if (custom_visible_count++ == 0)
 	add_custom_headers ();
     }
@@ -277,7 +286,7 @@ public class Contacts.View : GLib.Object {
   }
 
   private void remove_from_model (ContactData data) {
-    if( data.sort_prio > 0) {
+    if (data.sort_prio > 0) {
       if (custom_visible_count-- == 1)
 	remove_custom_headers ();
     }
@@ -297,11 +306,11 @@ public class Contacts.View : GLib.Object {
     bool was_visible = data.visible;
     data.visible = apply_filter (data.contact);
 
-    if (!was_visible && data.visible)
-      add_to_model (data);
-
     if (was_visible && !data.visible)
       remove_from_model (data);
+
+    if (!was_visible && data.visible)
+      add_to_model (data);
   }
 
   private void refilter () {
