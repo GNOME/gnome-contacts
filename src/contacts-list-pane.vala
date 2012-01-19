@@ -28,7 +28,7 @@ public class Contacts.ListPane : Frame {
   private ulong non_empty_id;
   private EventBox empty_box;
   private bool ignore_selection_change;
-  private Toolbar search_toolbar;
+  private Revealer search_revealer;
   private bool search_visible;
 
   public signal void selection_changed (Contact? contact);
@@ -60,12 +60,11 @@ public class Contacts.ListPane : Frame {
   public void set_search_visible (bool visible) {
     search_visible = visible;
     if (visible) {
-      search_toolbar.show_all ();
-      search_toolbar.show ();
+      search_revealer.reveal ();
       filter_entry.grab_focus ();
     } else {
+      search_revealer.unreveal ();
       filter_entry.set_text ("");
-      search_toolbar.hide ();
     }
   }
 
@@ -90,11 +89,13 @@ public class Contacts.ListPane : Frame {
     this.contacts_store = contacts_store;
     this.contacts_view = new View (contacts_store);
     var toolbar = new Toolbar ();
-    search_toolbar = toolbar;
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.set_vexpand (false);
     toolbar.set_hexpand (true);
+
+    search_revealer = new Revealer ();
+    search_revealer.add (toolbar);
 
     contacts_view.set_show_subset (View.Subset.MAIN);
 
@@ -182,13 +183,13 @@ public class Contacts.ListPane : Frame {
     empty_box.show_all ();
     empty_box.set_no_show_all (true);
 
-    grid.add (toolbar);
+    grid.add (search_revealer);
     grid.add (scrolled);
     grid.add (empty_box);
 
     this.show_all ();
-    toolbar.set_no_show_all (true);
-    toolbar.hide ();
+    search_revealer.set_no_show_all (true);
+    search_revealer.hide ();
 
     if (contacts_store.is_empty ()) {
       empty_box.show ();
