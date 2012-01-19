@@ -301,11 +301,16 @@ public class Contacts.App : Gtk.Application {
     share_button.clicked.connect ( (button) => {
       });
 
+    window.add (grid);
+
+    /* We put in an overlay overlapping the left and right pane for the
+       notifications, so they can show up below the toolbar */
     var overlay = new Gtk.Overlay ();
-    overlay.add (grid);
     Gdk.RGBA transparent = { 0, 0, 0, 0 };
     overlay.override_background_color (0, transparent);
-    window.add (overlay);
+    // Need to put something in here for it to work
+    overlay.add (new Alignment (0,0,0,0));
+    grid.attach (overlay, 0, 1, 2, 1);
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
@@ -341,7 +346,8 @@ public class Contacts.App : Gtk.Application {
     });
     grid.attach (contacts_pane, 1, 1, 1, 1);
 
-    overlay.show_all ();
+
+    grid.show_all ();
   }
 
   public override void startup () {
