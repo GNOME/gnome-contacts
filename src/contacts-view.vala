@@ -30,8 +30,8 @@ public class Contacts.View : GLib.Object {
   }
 
   public enum Subset {
-    PRIMARY,
-    NON_PRIMARY,
+    MAIN,
+    OTHER,
     ALL_SEPARATED,
     ALL
   }
@@ -103,13 +103,13 @@ public class Contacts.View : GLib.Object {
   private bool is_other (ContactData data) {
     if (show_subset == Subset.ALL_SEPARATED &&
 	data.contact != null &&
-	!data.contact.is_primary)
+	!data.contact.is_main)
       return true;
     return false;
   }
 
   /* The hardcoded prio if set, otherwise 0 for the
-     primary/combined group, or -2 for the separated other group */
+     main/combined group, or -2 for the separated other group */
   private int get_sort_prio (ContactData *data) {
     if (data->sort_prio != 0)
       return data->sort_prio;
@@ -187,10 +187,10 @@ public class Contacts.View : GLib.Object {
     if (contact in hidden_contacts)
       return false;
 
-    if ((show_subset == Subset.PRIMARY &&
-	 !contact.is_primary) ||
-	(show_subset == Subset.NON_PRIMARY &&
-	 contact.is_primary))
+    if ((show_subset == Subset.MAIN &&
+	 !contact.is_main) ||
+	(show_subset == Subset.OTHER &&
+	 contact.is_main))
       return false;
 
     if (filter_values == null || filter_values.length == 0)

@@ -110,10 +110,10 @@ public class Contacts.LinkDialog : Dialog {
 
     view = new View (contact.store);
     view.hide_contact (contact);
-    if (contact.is_primary)
-      view.set_show_subset (View.Subset.NON_PRIMARY);
+    if (contact.is_main)
+      view.set_show_subset (View.Subset.OTHER);
     else
-      view.set_show_subset (View.Subset.PRIMARY);
+      view.set_show_subset (View.Subset.MAIN);
 
     var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
     foreach (var ind in matches.keys) {

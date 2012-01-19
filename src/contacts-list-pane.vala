@@ -46,7 +46,7 @@ public class Contacts.ListPane : Frame {
 
     contacts_view.set_filter_values (values);
     if (values == null)
-      contacts_view.set_show_subset (View.Subset.PRIMARY);
+      contacts_view.set_show_subset (View.Subset.MAIN);
     else
       contacts_view.set_show_subset (View.Subset.ALL_SEPARATED);
   }
@@ -96,7 +96,7 @@ public class Contacts.ListPane : Frame {
     toolbar.set_vexpand (false);
     toolbar.set_hexpand (true);
 
-    contacts_view.set_show_subset (View.Subset.PRIMARY);
+    contacts_view.set_show_subset (View.Subset.MAIN);
 
     filter_entry = new Entry ();
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
