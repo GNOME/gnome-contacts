@@ -585,7 +585,7 @@ class Contacts.LinkFieldRow : DataFieldRow {
     this.details = details;
 
     text_label = this.pack_text ();
-    var image = new Image.from_icon_name ("web-browser" /* -symbolic */, IconSize.MENU);
+    var image = new Image.from_icon_name ("web-browser-symbolic", IconSize.MENU);
     image.get_style_context ().add_class ("dim-label");
     uri_button = new LinkButton("");
     uri_button.remove (uri_button.get_child ());
