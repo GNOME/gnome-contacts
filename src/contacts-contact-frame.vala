@@ -94,7 +94,7 @@ public class Contacts.ContactFrame : Frame {
 
     var button = new ToggleButton ();
     button.set_focus_on_click (false);
-    button.get_style_context ().add_class ("contact-frame-button");
+    button.get_style_context ().add_class ("contacts-frame-button");
     button.add (image);
     button.set_mode (false);
     this.add (button);

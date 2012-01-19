@@ -140,7 +140,7 @@ public class Contacts.LinkDialog : Dialog {
     grid.attach (label, 0, 0, 1, 1);
 
     var list_frame = new Frame (null);
-    list_frame.get_style_context ().add_class ("contact-list-frame");
+    list_frame.get_style_context ().add_class ("contacts-list-frame");
     grid.attach (list_frame, 0, 1, 1, 1);
 
     var list_grid = new Grid ();

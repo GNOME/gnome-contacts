@@ -141,7 +141,7 @@ public class Contacts.AvatarMenu : Gtk.Menu {
   public AvatarMenu (Contact contact) {
     thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
 
-    this.get_style_context ().add_class ("contact-frame-menu");
+    this.get_style_context ().add_class ("contacts-frame-menu");
 
     int x = 0;
     int y = 0;
