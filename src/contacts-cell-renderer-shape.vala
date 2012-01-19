@@ -98,7 +98,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     layout.set_width (width);
 
-    layout.set_wrap (Pango.WrapMode.CHAR);
+    layout.set_wrap (Pango.WrapMode.WORD_CHAR);
     layout.set_height (-2);
 
     Pango.Alignment align;
@@ -181,7 +181,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
 
     layout.set_width (width);
 
-    layout.set_wrap (Pango.WrapMode.CHAR);
+    layout.set_wrap (Pango.WrapMode.WORD_CHAR);
 
     layout.set_height (-1);
 
