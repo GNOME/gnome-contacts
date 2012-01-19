@@ -285,12 +285,6 @@ public class Contacts.Contact : GLib.Object  {
 	  store.trust_level == PersonaStoreTrust.NONE)
 	return true;
 
-      // Filter out google contacts not in "My Contacts" as these are not really useful
-      if (store.type_id == "eds" && esource_uid_is_google (store.id)) {
-	var g = persona as GroupDetails;
-	if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
-	  return true;
-      }
     }
 
     return false;
@@ -381,6 +375,13 @@ public class Contacts.Contact : GLib.Object  {
     var store = persona.store;
     if (!store.is_primary_store)
       return false;
+
+    // Mark google contacts not in "My Contacts" as non-main
+    if (store.type_id == "eds" && esource_uid_is_google (store.id)) {
+      var g = persona as GroupDetails;
+      if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
+	return false;
+    }
 
     return true;
   }
