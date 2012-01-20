@@ -2041,6 +2041,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     row_group.set_column_min_width (2, 32);
     row_group.set_column_spacing (0, 8);
     row_group.set_column_spacing (1, 8);
+    row_group.set_column_priority (1, 1);
 
     this.set_hexpand (true);
     this.set_vexpand (true);
