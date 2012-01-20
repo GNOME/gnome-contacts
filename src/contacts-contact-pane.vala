@@ -1539,7 +1539,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     l.xalign = 0.0f;
 
     contact.keep_widget_uptodate (l,  (w) => {
-	(w as Label).set_markup ("<span font='24'>" + contact.display_name + "</span>");
+	(w as Label).set_markup ("<span font='16'>" + contact.display_name + "</span>");
       });
 
     var event_box = new EventBox ();
@@ -1571,7 +1571,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 	entry.set_text (contact.display_name);
 	entry.set_hexpand (true);
 	entry.show ();
-	entry.override_font (Pango.FontDescription.from_string ("24px"));
+	entry.override_font (Pango.FontDescription.from_string ("16px"));
 	event_box.add (entry);
 	Utils.grab_widget_later (entry);
 
@@ -1595,7 +1595,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 	if (save && changed) {
 	  // Things look better if we update immediately, rather than after the setting has
 	  // been applied
-	  l.set_markup ("<span font='24'>" + entry.get_text () + "</span>");
+	  l.set_markup ("<span font='16'>" + entry.get_text () + "</span>");
 
 	  Value v = Value (typeof (string));
 	  v.set_string (entry.get_text ());
