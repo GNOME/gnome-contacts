@@ -42,7 +42,7 @@ public class Contacts.LinkDialog : Dialog {
     if (selected_contact == null)
       return;
 
-    var image_frame = new ContactFrame (48);
+    var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
     image_frame.set_image (selected_contact as AvatarDetails);
     image_frame.set_hexpand (false);
     persona_grid.attach (image_frame, 0, 0, 1, 2);

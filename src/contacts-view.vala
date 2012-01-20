@@ -430,7 +430,7 @@ public class Contacts.ViewWidget : TreeView {
     icon.set_padding (0, row_padding);
     icon.xalign = 0.0f;
     icon.yalign = 0.0f;
-    icon.width = 48 + 2;
+    icon.width = Contact.SMALL_AVATAR_SIZE + 2;
     column.pack_start (icon, false);
     column.set_cell_data_func (icon, (column, cell, model, iter) => {
 	Contact contact;

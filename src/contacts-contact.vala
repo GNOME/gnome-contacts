@@ -106,6 +106,8 @@ public class Contacts.ContactPresence : Grid {
 
 
 public class Contacts.Contact : GLib.Object  {
+  public const int SMALL_AVATAR_SIZE = 48;
+
   public Store store;
   public bool is_main;
   public PresenceType presence_type;
@@ -125,9 +127,9 @@ public class Contacts.Contact : GLib.Object  {
   public Gdk.Pixbuf small_avatar {
     get {
       if (_small_avatar == null) {
-	var pixbuf = load_icon (individual.avatar, 48);
+	var pixbuf = load_icon (individual.avatar, SMALL_AVATAR_SIZE);
 	if (pixbuf == null)
-	  pixbuf = draw_fallback_avatar (48, this);
+	  pixbuf = draw_fallback_avatar (SMALL_AVATAR_SIZE, this);
 	_small_avatar = frame_icon (pixbuf);
       }
       return _small_avatar;
@@ -947,10 +949,10 @@ public class Contacts.Contact : GLib.Object  {
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, w, h);
   }
 
-  private static Gdk.Pixbuf? fallback_pixbuf_48;
+  private static Gdk.Pixbuf? fallback_pixbuf_default;
   public static Gdk.Pixbuf draw_fallback_avatar (int size, Contact? contact) {
-    if (size == 48 && fallback_pixbuf_48 != null)
-      return fallback_pixbuf_48;
+    if (size == SMALL_AVATAR_SIZE && fallback_pixbuf_default != null)
+      return fallback_pixbuf_default;
 
     Gdk.Pixbuf pixbuf = null;
     try {
@@ -974,8 +976,8 @@ public class Contacts.Contact : GLib.Object  {
     } catch {
     }
 
-    if (size == 48)
-      fallback_pixbuf_48 = pixbuf;
+    if (size == SMALL_AVATAR_SIZE)
+      fallback_pixbuf_default = pixbuf;
 
     if (pixbuf != null)
       return pixbuf;

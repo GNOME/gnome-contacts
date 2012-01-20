@@ -30,6 +30,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
   public bool is_phone  { get;  set; }
   public bool show_presence  { get;  set; }
   const int default_width = 60;
+  int renderer_height = Contact.SMALL_AVATAR_SIZE;
 
   private struct IconShape {
     string icon;
@@ -279,7 +280,7 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     if (presence_layout != null)
       Gtk.render_layout (context, cr,
 			 cell_area.x + presence_x_offset,
-			 cell_area.y + presence_y_offset + 48 - 11 - presence_layout.get_baseline () / Pango.SCALE,
+			 cell_area.y + presence_y_offset + renderer_height - 11 - presence_layout.get_baseline () / Pango.SCALE,
 			 presence_layout);
 
     cr.restore ();
@@ -302,8 +303,8 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     int ypad;
 
     get_padding (null, out ypad);
-    minimum_height = 48 + ypad;
-    natural_height = 48 + ypad;
+    minimum_height = renderer_height + ypad;
+    natural_height = renderer_height + ypad;
   }
 
   public override void get_preferred_height (Widget       widget,
