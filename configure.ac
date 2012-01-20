@@ -38,8 +38,8 @@ pkg_modules="gtk+-3.0
 	     folks-telepathy
 	     folks-eds
 	     libnotify
-	     libebook-1.2
-	     libedataserver-1.2
+	     libebook-1.2 >= 3.2
+	     libedataserver-1.2 >= 3.2
 	     goa-1.0
 	     gee-1.0
 	     "
