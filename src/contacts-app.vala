@@ -276,6 +276,7 @@ public class Contacts.App : Gtk.Application {
       });
 
     var select_button = new ToolButton (null, null);
+    select_button.set_sensitive (false);
     select_button.set_icon_name ("object-select-symbolic");
     select_button.is_important = false;
     select_button.set_halign (Align.END);
@@ -292,6 +293,7 @@ public class Contacts.App : Gtk.Application {
     grid.attach (toolbar, 1, 0, 1, 1);
 
     var share_button = new ToolButton (null, null);
+    share_button.set_sensitive (false);
     share_button.margin_right = 4;
     share_button.set_icon_name ("send-to-symbolic");
     share_button.is_important = false;
