@@ -424,13 +424,13 @@ public class Contacts.ViewWidget : TreeView {
     selection.changed.connect (contacts_selection_changed);
 
     var column = new TreeViewColumn ();
-    column.set_spacing (4);
+    column.set_spacing (8);
 
     var icon = new CellRendererPixbuf ();
     icon.set_padding (0, row_padding);
-    icon.xalign = 0.0f;
+    icon.xalign = 1.0f;
     icon.yalign = 0.0f;
-    icon.width = Contact.SMALL_AVATAR_SIZE + 2;
+    icon.width = Contact.SMALL_AVATAR_SIZE + 12;
     column.pack_start (icon, false);
     column.set_cell_data_func (icon, (column, cell, model, iter) => {
 	Contact contact;
