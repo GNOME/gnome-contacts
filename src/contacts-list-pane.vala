@@ -61,7 +61,18 @@ public class Contacts.ListPane : Frame {
     search_visible = visible;
     if (visible) {
       search_revealer.reveal ();
-      filter_entry.grab_focus ();
+      Utils.grab_entry_focus_no_select (filter_entry);
+      if (!filter_entry.get_visible ()) {
+	/* When the toolbar size_allocate happens we initially allocate it too small
+	 * for some reason, which makes the toolbar set the child as invisible
+	 * (as its outside the toolbar size), which causes it to lose focus, so we re-set it
+	 */
+	ulong tag = 0;
+	tag = filter_entry.size_allocate.connect ( (allocation) => {
+	    Utils.grab_entry_focus_no_select (filter_entry);
+	    filter_entry.disconnect (tag);
+	  });
+      }
     } else {
       search_revealer.unreveal ();
       filter_entry.set_text ("");
