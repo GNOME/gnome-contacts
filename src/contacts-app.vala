@@ -251,7 +251,7 @@ public class Contacts.App : Gtk.Application {
     window = new Contacts.Window (this);
     window.set_application (this);
     window.set_title (_("Contacts"));
-    window.set_size_request (745, 510);
+    window.set_size_request (-1, 510);
     window.hide_titlebar_when_maximized = true;
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);

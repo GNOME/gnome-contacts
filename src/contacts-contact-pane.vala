@@ -2037,7 +2037,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     row_group = new RowGroup(3);
     row_group.set_column_min_width (0, 32);
     row_group.set_column_min_width (1, 400);
-    row_group.set_column_max_width (1, 450);
+    row_group.set_column_max_width (1, 480);
     row_group.set_column_min_width (2, 32);
     row_group.set_column_spacing (0, 8);
     row_group.set_column_spacing (1, 8);
