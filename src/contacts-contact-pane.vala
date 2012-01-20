@@ -1544,6 +1544,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     var event_box = new EventBox ();
     event_box.set_margin_top (4);
+    event_box.set_margin_bottom (8);
     event_box.set_visible_window (false);
 
     var clickable = new Clickable (event_box);
