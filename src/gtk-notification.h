@@ -39,7 +39,7 @@ struct _GtkNotificationClass {
   GtkBinClass parent_class;
 
   /* Signals */
-  void (*timed_out) (GtkNotification *self);
+  void (*dismissed) (GtkNotification *self);
 };
 
 struct _GtkNotification {

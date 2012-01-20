@@ -46,5 +46,5 @@ namespace Gtk {
 		public Notification ();
 		public void set_timeout (uint timeout_msec);
 		public void dismiss ();
-		public virtual signal void timed_out ();
+		public virtual signal void dismissed ();
 	}}

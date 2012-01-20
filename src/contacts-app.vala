@@ -332,16 +332,19 @@ public class Contacts.App : Gtk.Application {
       g.add (new Label (msg));
       g.add (b);
 
+      bool really_delete = true;
       notification.show_all ();
-      var id = notification.timed_out.connect ( () => {
-	  contacts_store.aggregator.remove_individual (c.individual);
+      var id = notification.dismissed.connect ( () => {
+	  if (really_delete)
+	    contacts_store.aggregator.remove_individual (c.individual);
       });
       b.clicked.connect ( () => {
-	notification.dismiss ();
-	c.show ();
-	list_pane.select_contact (c);
-	contacts_pane.show_contact (c);
-      });
+	  really_delete = false;
+	  notification.dismiss ();
+	  c.show ();
+	  list_pane.select_contact (c);
+	  contacts_pane.show_contact (c);
+	});
       overlay.add_overlay (notification);
     });
     grid.attach (contacts_pane, 1, 1, 1, 1);

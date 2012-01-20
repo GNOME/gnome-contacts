@@ -29,14 +29,16 @@
  * the user, allowing them to close the notification or wait for it
  * to time out.
  *
- * #GtkNotification provides one signal (#GtkNotification::timed-out), for when the notification
- * times out.
+ * #GtkNotification provides one signal (#GtkNotification::dismissed), for when the notification
+ * times out or is closed.
  *
  */
 
 #define GTK_PARAM_READWRITE G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB
 #define SHADOW_OFFSET_X 2
 #define SHADOW_OFFSET_Y 3
+#define ANIMATION_TIME 200 /* msec */
+#define ANIMATION_STEP 40 /* msec */
 
 enum {
   PROP_0,
@@ -46,12 +48,21 @@ enum {
 struct _GtkNotificationPrivate {
   GtkWidget *close_button;
 
+  GdkWindow *bin_window;
+
+  int animate_y; /* from 0 to allocation.height */
+  gboolean waiting_for_viewable;
+  gboolean revealed;
+  gboolean dismissed;
+  gboolean sent_dismissed;
+  guint animate_timeout;
+
   guint timeout;
   guint timeout_source_id;
 };
 
 enum {
-  TIMED_OUT,
+  DISMISSED,
   LAST_SIGNAL
 };
 
@@ -76,6 +87,10 @@ static void     gtk_notification_get_preferred_width_for_height (GtkWidget      
 static void     gtk_notification_size_allocate                  (GtkWidget       *widget,
                                                                  GtkAllocation   *allocation);
 static gboolean gtk_notification_timeout_cb                     (gpointer         user_data);
+static void     gtk_notification_style_updated                  (GtkWidget       *widget);
+static void     gtk_notification_show                           (GtkWidget       *widget);
+static void     gtk_notification_add                            (GtkContainer    *container,
+                                                                 GtkWidget       *child);
 
 /* signals handlers */
 static void     gtk_notification_close_button_clicked_cb        (GtkWidget       *widget,
@@ -100,6 +115,8 @@ gtk_notification_init (GtkNotification *notification)
   gtk_widget_set_halign (GTK_WIDGET (notification), GTK_ALIGN_CENTER);
   gtk_widget_set_valign (GTK_WIDGET (notification), GTK_ALIGN_START);
 
+  gtk_widget_set_has_window (GTK_WIDGET (notification), TRUE);
+
   gtk_widget_push_composite_child ();
 
   priv = notification->priv =
@@ -107,6 +124,7 @@ gtk_notification_init (GtkNotification *notification)
                                  GTK_TYPE_NOTIFICATION,
                                  GtkNotificationPrivate);
 
+  priv->animate_y = 0;
   priv->close_button = gtk_button_new ();
   gtk_widget_set_parent (priv->close_button, GTK_WIDGET (notification));
   gtk_widget_show (priv->close_button);
@@ -130,15 +148,20 @@ static void
 gtk_notification_finalize (GObject *object)
 {
   GtkNotification *notification;
+  GtkNotificationPrivate *priv;
 
   g_return_if_fail (GTK_IS_NOTIFICATION (object));
 
   notification = GTK_NOTIFICATION (object);
+  priv = notification->priv;
 
-  if (notification->priv->timeout_source_id != 0)
-    g_source_remove (notification->priv->timeout_source_id);
+  if (priv->animate_timeout != 0)
+    g_source_remove (priv->animate_timeout);
 
-  G_OBJECT_CLASS (gtk_notification_parent_class)->finalize(object);
+  if (priv->timeout_source_id != 0)
+    g_source_remove (priv->timeout_source_id);
+
+  G_OBJECT_CLASS (gtk_notification_parent_class)->finalize (object);
 }
 
 static void
@@ -147,6 +170,12 @@ gtk_notification_destroy (GtkWidget *widget)
   GtkNotification *notification = GTK_NOTIFICATION (widget);
   GtkNotificationPrivate *priv = notification->priv;
 
+  if (!priv->sent_dismissed)
+    {
+      g_signal_emit (notification, notification_signals[DISMISSED], 0);
+      priv->sent_dismissed = TRUE;
+    }
+
   if (priv->close_button)
     {
       gtk_widget_unparent (priv->close_button);
@@ -154,6 +183,163 @@ gtk_notification_destroy (GtkWidget *widget)
     }
 
   GTK_WIDGET_CLASS (gtk_notification_parent_class)->destroy (widget);
+}
+
+static void
+gtk_notification_realize (GtkWidget *widget)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
+  GtkBin *bin = GTK_BIN (widget);
+  GtkAllocation allocation;
+  GtkAllocation view_allocation;
+  GtkStyleContext *context;
+  GtkWidget *child;
+  GdkWindow *window;
+  GdkWindowAttr attributes;
+  gint attributes_mask;
+  gint event_mask;
+
+  gtk_widget_set_realized (widget, TRUE);
+
+  gtk_widget_get_allocation (widget, &allocation);
+
+  attributes.x = allocation.x;
+  attributes.y = allocation.y;
+  attributes.width = allocation.width;
+  attributes.height = allocation.height;
+  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.wclass = GDK_INPUT_OUTPUT;
+  attributes.visual = gtk_widget_get_visual (widget);
+
+  attributes.event_mask = GDK_VISIBILITY_NOTIFY_MASK | GDK_EXPOSURE_MASK;
+
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
+
+  window = gdk_window_new (gtk_widget_get_parent_window (widget),
+                           &attributes, attributes_mask);
+  gtk_widget_set_window (widget, window);
+  gdk_window_set_user_data (window, notification);
+
+  attributes.x = 0;
+  attributes.y = attributes.height + priv->animate_y;
+  attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK | GDK_VISIBILITY_NOTIFY_MASK;
+
+  priv->bin_window = gdk_window_new (window, &attributes, attributes_mask);
+  gdk_window_set_user_data (priv->bin_window, notification);
+
+  child = gtk_bin_get_child (bin);
+  if (child)
+    gtk_widget_set_parent_window (child, priv->bin_window);
+  gtk_widget_set_parent_window (priv->close_button, priv->bin_window);
+
+  context = gtk_widget_get_style_context (widget);
+  gtk_style_context_set_background (context, window);
+  gtk_style_context_set_background (context, priv->bin_window);
+
+  gdk_window_show (priv->bin_window);
+}
+
+static void
+gtk_notification_unrealize (GtkWidget *widget)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
+
+  gdk_window_set_user_data (priv->bin_window, NULL);
+  gdk_window_destroy (priv->bin_window);
+  priv->bin_window = NULL;
+
+  GTK_WIDGET_CLASS (gtk_notification_parent_class)->unrealize (widget);
+}
+
+static int
+animation_target (GtkNotification *notification)
+{
+  GtkNotificationPrivate *priv = notification->priv;
+  GtkAllocation allocation;
+
+  if (priv->revealed) {
+    gtk_widget_get_allocation (GTK_WIDGET (notification), &allocation);
+    return allocation.height;
+  } else {
+    return 0;
+  }
+}
+
+static gboolean
+animation_timeout_cb (gpointer user_data)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (user_data);
+  GtkNotificationPrivate *priv = notification->priv;
+  GtkAllocation allocation;
+  int target, delta;
+
+  target = animation_target (notification);
+
+  if (priv->animate_y != target) {
+    gtk_widget_get_allocation (GTK_WIDGET (notification), &allocation);
+
+    delta = allocation.height * ANIMATION_STEP / ANIMATION_TIME;
+
+    if (priv->revealed)
+      priv->animate_y += delta;
+    else
+      priv->animate_y -= delta;
+
+    priv->animate_y = CLAMP (priv->animate_y, 0, allocation.height);
+
+    if (priv->bin_window != NULL)
+      gdk_window_move (priv->bin_window,
+                       0,
+                       -allocation.height + priv->animate_y);
+    return TRUE;
+  }
+
+  if (priv->dismissed && priv->animate_y == 0)
+    gtk_widget_destroy (GTK_WIDGET (notification));
+
+  priv->animate_timeout = 0;
+  return FALSE;
+}
+
+static void
+start_animation (GtkNotification *notification)
+{
+  GtkNotificationPrivate *priv = notification->priv;
+  int target;
+
+  if (priv->animate_timeout != 0)
+    return; /* Already running */
+
+  target = animation_target (notification);
+  if (priv->animate_y != target)
+    notification->priv->animate_timeout =
+      gdk_threads_add_timeout (ANIMATION_STEP,
+                               animation_timeout_cb,
+                               notification);
+}
+
+static void
+gtk_notification_show (GtkWidget *widget)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
+
+  GTK_WIDGET_CLASS (gtk_notification_parent_class)->show (widget);
+  priv->revealed = TRUE;
+  priv->waiting_for_viewable = TRUE;
+}
+
+static void
+gtk_notification_hide (GtkWidget *widget)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
+
+  GTK_WIDGET_CLASS (gtk_notification_parent_class)->hide (widget);
+  priv->revealed = FALSE;
+  priv->waiting_for_viewable = FALSE;
 }
 
 static void
@@ -209,6 +395,28 @@ gtk_notification_forall (GtkContainer *container,
     (* callback) (priv->close_button, callback_data);
 }
 
+static gboolean
+gtk_notification_visibility_notify_event (GtkWidget          *widget,
+                                          GdkEventVisibility  *event)
+{
+  GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
+
+  if (priv->waiting_for_viewable)
+    {
+      start_animation (notification);
+      priv->waiting_for_viewable = FALSE;
+    }
+
+  if (notification->priv->timeout_source_id == 0)
+    notification->priv->timeout_source_id =
+      gdk_threads_add_timeout (notification->priv->timeout * 1000,
+                               gtk_notification_timeout_cb,
+                               widget);
+
+  return FALSE;
+}
+
 static void
 gtk_notification_class_init (GtkNotificationClass *klass)
 {
@@ -220,6 +428,7 @@ gtk_notification_class_init (GtkNotificationClass *klass)
   object_class->set_property = gtk_notification_set_property;
   object_class->get_property = gtk_notification_get_property;
 
+  widget_class->show = gtk_notification_show;
   widget_class->destroy = gtk_notification_destroy;
   widget_class->get_preferred_width = gtk_notification_get_preferred_width;
   widget_class->get_preferred_height_for_width = gtk_notification_get_preferred_height_for_width;
@@ -227,7 +436,12 @@ gtk_notification_class_init (GtkNotificationClass *klass)
   widget_class->get_preferred_width_for_height = gtk_notification_get_preferred_width_for_height;
   widget_class->size_allocate = gtk_notification_size_allocate;
   widget_class->draw = gtk_notification_draw;
+  widget_class->realize = gtk_notification_realize;
+  widget_class->unrealize = gtk_notification_unrealize;
+  widget_class->style_updated = gtk_notification_style_updated;
+  widget_class->visibility_notify_event = gtk_notification_visibility_notify_event;
 
+  container_class->add = gtk_notification_add;
   container_class->forall = gtk_notification_forall;
   gtk_container_class_handle_border_width (container_class);
 
@@ -246,10 +460,10 @@ gtk_notification_class_init (GtkNotificationClass *klass)
                                                      0, G_MAXUINT, 10,
                                                      GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-  notification_signals[TIMED_OUT] = g_signal_new ("timed-out",
+  notification_signals[DISMISSED] = g_signal_new ("dismissed",
                                                   G_OBJECT_CLASS_TYPE (klass),
                                                   G_SIGNAL_RUN_LAST,
-                                                  G_STRUCT_OFFSET (GtkNotificationClass, timed_out),
+                                                  G_STRUCT_OFFSET (GtkNotificationClass, dismissed),
                                                   NULL,
                                                   NULL,
                                                   g_cclosure_marshal_VOID__VOID,
@@ -377,40 +591,55 @@ static gboolean
 gtk_notification_draw (GtkWidget *widget, cairo_t *cr)
 {
   GtkNotification *notification = GTK_NOTIFICATION (widget);
+  GtkNotificationPrivate *priv = notification->priv;
   GtkStyleContext *context;
   GdkRectangle rect;
   int inner_radius;
 
-  gtk_widget_get_allocation (widget, &rect);
+  if (gtk_cairo_should_draw_window (cr, priv->bin_window))
+    {
+      gtk_widget_get_allocation (widget, &rect);
 
-  context = gtk_widget_get_style_context(widget);
+      context = gtk_widget_get_style_context(widget);
 
-  inner_radius = 5;
-  draw_shadow_box (cr, rect, SHADOW_OFFSET_X + inner_radius, SHADOW_OFFSET_X + inner_radius,
-                   SHADOW_OFFSET_Y + inner_radius, 0.8);
+      inner_radius = 5;
+      draw_shadow_box (cr, rect, SHADOW_OFFSET_X + inner_radius, SHADOW_OFFSET_X + inner_radius,
+                       SHADOW_OFFSET_Y + inner_radius, 0.8);
 
-  gtk_style_context_save (context);
-  gtk_render_background (context,  cr,
-                         SHADOW_OFFSET_X, 0,
-                         gtk_widget_get_allocated_width (widget) - 2 *SHADOW_OFFSET_X,
-                         gtk_widget_get_allocated_height (widget) - SHADOW_OFFSET_Y);
-  gtk_render_frame (context,cr,
-                    SHADOW_OFFSET_X, 0,
-                    gtk_widget_get_allocated_width (widget) - 2 *SHADOW_OFFSET_X,
-                    gtk_widget_get_allocated_height (widget) - SHADOW_OFFSET_Y);
+      gtk_style_context_save (context);
+      gtk_render_background (context,  cr,
+                             SHADOW_OFFSET_X, 0,
+                             gtk_widget_get_allocated_width (widget) - 2 *SHADOW_OFFSET_X,
+                             gtk_widget_get_allocated_height (widget) - SHADOW_OFFSET_Y);
+      gtk_render_frame (context,cr,
+                        SHADOW_OFFSET_X, 0,
+                        gtk_widget_get_allocated_width (widget) - 2 *SHADOW_OFFSET_X,
+                        gtk_widget_get_allocated_height (widget) - SHADOW_OFFSET_Y);
 
-  gtk_style_context_restore (context);
+      gtk_style_context_restore (context);
 
-  if (GTK_WIDGET_CLASS (gtk_notification_parent_class)->draw)
-    GTK_WIDGET_CLASS (gtk_notification_parent_class)->draw(widget, cr);
+      if (GTK_WIDGET_CLASS (gtk_notification_parent_class)->draw)
+        GTK_WIDGET_CLASS (gtk_notification_parent_class)->draw(widget, cr);
+    }
 
-  /* starting timeout when drawing the first time */
-  if (notification->priv->timeout_source_id == 0)
-    notification->priv->timeout_source_id = g_timeout_add (notification->priv->timeout * 1000,
-                                                           gtk_notification_timeout_cb,
-                                                           widget);
   return FALSE;
 }
+
+static void
+gtk_notification_add (GtkContainer *container,
+                      GtkWidget    *child)
+{
+  GtkBin *bin = GTK_BIN (container);
+  GtkNotification *notification = GTK_NOTIFICATION (bin);
+  GtkNotificationPrivate *priv = notification->priv;
+
+  g_return_if_fail (gtk_bin_get_child (bin) == NULL);
+
+  gtk_widget_set_parent_window (child, priv->bin_window);
+
+  GTK_CONTAINER_CLASS (gtk_notification_parent_class)->add (container, child);
+}
+
 
 static void
 gtk_notification_get_preferred_width (GtkWidget *widget, gint *minimum_size, gint *natural_size)
@@ -589,13 +818,31 @@ gtk_notification_size_allocate (GtkWidget *widget,
 
   gtk_widget_set_allocation (widget, allocation);
 
+  /* If somehow the notification changes while not hidden
+     and we're not animating, immediately follow the resize */
+  if (priv->animate_y > 0 &&
+      !priv->animate_timeout)
+    priv->animate_y = allocation->height;
+
   get_padding_and_border (notification, &padding);
 
-  child_allocation.x = allocation->x + SHADOW_OFFSET_X + padding.left;
-  child_allocation.y = allocation->y + padding.top;
+  if (gtk_widget_get_realized (widget))
+    {
+      gdk_window_move_resize (gtk_widget_get_window (widget),
+                              allocation->x,
+                              allocation->y,
+                              allocation->width,
+                              allocation->height);
+      gdk_window_move_resize (priv->bin_window,
+                              0,
+                              -allocation->height + priv->animate_y,
+                              allocation->width,
+                              allocation->height);
+    }
+
+  child_allocation.x = SHADOW_OFFSET_X + padding.left;
+  child_allocation.y = padding.top;
   child_allocation.height = MAX (1, allocation->height - SHADOW_OFFSET_Y - padding.top - padding.bottom);
-
-
   gtk_widget_get_preferred_width_for_height (priv->close_button, child_allocation.height,
                                              NULL, &button_width);
 
@@ -616,34 +863,61 @@ gtk_notification_timeout_cb (gpointer user_data)
 {
   GtkNotification *notification = GTK_NOTIFICATION (user_data);
 
-  g_signal_emit (notification, notification_signals[TIMED_OUT], 0);
   gtk_notification_dismiss (notification);
 
   return FALSE;
+}
+
+static void
+gtk_notification_style_updated (GtkWidget *widget)
+{
+   GTK_WIDGET_CLASS (gtk_notification_parent_class)->style_updated (widget);
+
+   if (gtk_widget_get_realized (widget))
+     {
+        GtkStyleContext *context;
+        GtkNotification *notification = GTK_NOTIFICATION (widget);
+        GtkNotificationPrivate *priv = notification->priv;
+
+        context = gtk_widget_get_style_context (widget);
+        gtk_style_context_set_background (context, priv->bin_window);
+        gtk_style_context_set_background (context, gtk_widget_get_window (widget));
+     }
 }
 
 void
 gtk_notification_set_timeout (GtkNotification *notification,
                               guint            timeout_msec)
 {
-  notification->priv->timeout = timeout_msec;
+  GtkNotificationPrivate *priv = notification->priv;
+
+  priv->timeout = timeout_msec;
   g_object_notify (G_OBJECT (notification), "timeout");
 }
 
 void
 gtk_notification_dismiss (GtkNotification *notification)
 {
-  gtk_widget_destroy (GTK_WIDGET (notification));
+  GtkNotificationPrivate *priv = notification->priv;
+
+  if (notification->priv->timeout_source_id)
+    {
+      g_source_remove (notification->priv->timeout_source_id);
+      notification->priv->timeout_source_id = 0;
+    }
+
+  priv->dismissed = TRUE;
+  priv->revealed = FALSE;
+  start_animation (notification);
 }
 
 static void
 gtk_notification_close_button_clicked_cb (GtkWidget *widget, gpointer user_data)
 {
   GtkNotification *notification = GTK_NOTIFICATION(user_data);
-  g_source_remove (notification->priv->timeout_source_id);
-  notification->priv->timeout_source_id = 0;
+  GtkNotificationPrivate *priv = notification->priv;
 
-  gtk_widget_destroy (GTK_WIDGET (notification));
+  gtk_notification_dismiss (notification);
 }
 
 GtkWidget *
