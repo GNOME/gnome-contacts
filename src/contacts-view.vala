@@ -410,7 +410,7 @@ public class Contacts.ViewWidget : TreeView {
     set_model (view.model);
     set_headers_visible (false);
 
-    var row_padding = 4;
+    var row_padding = 12;
 
     var selection = get_selection ();
     selection.set_mode (SelectionMode.BROWSE);
