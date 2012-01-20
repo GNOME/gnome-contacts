@@ -196,4 +196,14 @@ public class Contacts.Utils : Object {
 	  widget.disconnect (id);
 	});
   }
+
+  public static void grab_entry_focus_no_select (Entry entry) {
+    int start, end;
+    if (!entry.get_selection_bounds (out start, out end)) {
+      start = end = entry.get_position ();
+    }
+    entry.grab_focus ();
+    entry.select_region (start, end);
+  }
+
 }
