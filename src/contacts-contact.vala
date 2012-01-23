@@ -1083,7 +1083,7 @@ public class Contacts.Contact : GLib.Object  {
     foreach (var p in individual.personas) {
       if (!first)
 	stores += ", ";
-      stores += format_persona_store_name_for_contact (p.store);
+      stores += format_persona_store_name_for_contact (p);
       first = false;
     }
     return stores;
@@ -1115,11 +1115,16 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  public static string format_persona_store_name_for_contact (PersonaStore store) {
+  public static string format_persona_store_name_for_contact (Persona persona) {
+    var store = persona.store;
     if (store.type_id == "eds") {
       unowned string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
-      if (eds_name != null)
+      if (eds_name != null) {
+	var g = persona as GroupDetails;
+	if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
+	  return _("Google Other Contact");
 	return eds_name;
+      }
     }
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
