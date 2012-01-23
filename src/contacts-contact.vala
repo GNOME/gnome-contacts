@@ -1121,8 +1121,19 @@ public class Contacts.Contact : GLib.Object  {
       unowned string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
       if (eds_name != null) {
 	var g = persona as GroupDetails;
-	if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
+	if (g != null && !g.groups.contains (eds_personal_google_group_name ())) {
+	  bool is_profile = false;
+	  var u = persona as UrlDetails;
+	  if (u != null && u.urls.size == 1) {
+	    foreach (var url in u.urls) {
+	      if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
+		is_profile = true;
+	    }
+	  }
+	  if (is_profile)
+	    return _("Google Circles");
 	  return _("Google Other Contact");
+	}
 	return eds_name;
       }
     }
