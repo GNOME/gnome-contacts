@@ -201,9 +201,11 @@ public class Contacts.FieldRow : Contacts.Row {
     pack (l);
   }
 
-  public Grid pack_header_in_grid (string s) {
+  public Grid pack_header_in_grid (string s, out Label label) {
     var grid = new Grid ();
+    grid.set_column_spacing (4);
     var l = new Label (s);
+    label = l;
     l.set_markup (
       "<span font='24px'>%s</span>".printf (s));
     l.set_halign (Align.START);
@@ -415,56 +417,6 @@ public abstract class Contacts.FieldSet : Grid {
 
 						     });
     }
-  }
-}
-
-public class Contacts.TitleFieldRow : FieldRow {
-  PersonaSheet sheet;
-  Grid grid;
-
-  public TitleFieldRow (PersonaSheet sheet, string text) {
-    base (sheet.pane.row_group);
-    this.sheet = sheet;
-    set_can_focus (true);
-
-    grid = pack_header_in_grid (text);
-
-    if (!sheet.persona.store.is_primary_store ||
-	sheet.pane.contact.individual.personas.size > 1)
-      show_as_editable = true;
-  }
-
-  Button? unlink_button;
-  public override bool enter_edit_mode () {
-    if (!show_as_editable)
-      return false;
-
-    this.set_can_focus (false);
-
-    this.reset ();
-    var b = new Button.with_label("Unlink");
-    unlink_button = b;
-    b.show ();
-    grid.add (b);
-    b.set_halign (Align.END);
-    b.clicked.connect ( () => {
-	unlink_persona.begin (sheet.pane.contact, sheet.persona, (obj, result) => {
-	    unlink_persona.end (result);
-	  });
-      });
-
-    return true;
-  }
-
-  public override void lost_child_focus () {
-    if (sheet.pane.editing_row == this)
-      sheet.pane.exit_edit_mode (true);
-  }
-
-  public override void exit_edit_mode (bool save) {
-    unlink_button.destroy ();
-
-    this.set_can_focus (true);
   }
 }
 
@@ -1309,21 +1261,42 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "phone-numbers") &&
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
-    if (!persona.store.is_primary_store) {
-      header = new TitleFieldRow (this, Contact.format_persona_store_name_for_contact (persona));
+    if (!persona.store.is_primary_store || row_nr > 0) {
+      header = new FieldRow (pane.row_group);
+
+      Label label;
+      var grid = header.pack_header_in_grid (Contact.format_persona_store_name_for_contact (persona), out label);
+
+      if (!editable) {
+	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
+
+	label.set_hexpand (false);
+	image.get_style_context ().add_class ("dim-label");
+	image.set_hexpand (true);
+	image.set_halign (Align.START);
+	image.set_valign (Align.CENTER);
+	grid.add (image);
+      }
+
+      if (!persona.store.is_primary_store || row_nr > 0) {
+	var b = new Button.with_label("Unlink");
+	grid.add (b);
+
+	b.clicked.connect ( () => {
+	    unlink_persona.begin (pane.contact, persona, (obj, result) => {
+		unlink_persona.end (result);
+		/* TODO: Support undo */
+		/* TODO: Ensure we don't get suggestion for this linkage again */
+	      });
+	  });
+      }
+
       this.attach (header, 0, row_nr++, 1, 1);
 
       header.clicked.connect ( () => {
 	  this.pane.enter_edit_mode (header);
 	});
 
-      if (!editable) {
-	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
-
-	image.get_style_context ().add_class ("dim-label");
-	image.set_valign (Align.CENTER);
-	header.left_add (image);
-      }
     }
 
     for (int i = 0; i < field_set_types.length; i++) {
