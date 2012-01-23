@@ -379,10 +379,8 @@ public class Contacts.Contact : GLib.Object  {
       return false;
 
     // Mark google contacts not in "My Contacts" as non-main
-    if (store.type_id == "eds" && esource_uid_is_google (store.id)) {
-      var g = persona as GroupDetails;
-      if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
-	return false;
+    if (persona_is_google_other (persona)) {
+      return false;
     }
 
     return true;
@@ -1115,27 +1113,49 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
+  private static bool persona_is_google (Persona persona) {
+    var store = persona.store;
+
+    if (store.type_id == "eds" && esource_uid_is_google (store.id))
+      return true;
+    return false;
+  }
+
+  public static bool persona_is_google_other (Persona persona) {
+    if (!persona_is_google (persona))
+      return false;
+
+    var g = persona as GroupDetails;
+    if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
+      return true;
+    return false;
+  }
+
+  public static bool persona_is_google_profile (Persona persona) {
+    if (!persona_is_google_other (persona))
+      return false;
+
+    var u = persona as UrlDetails;
+    if (u != null && u.urls.size == 1) {
+      foreach (var url in u.urls) {
+	if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
+	  return true;
+      }
+    }
+    return false;
+  }
+
   public static string format_persona_store_name_for_contact (Persona persona) {
     var store = persona.store;
     if (store.type_id == "eds") {
+      if (persona_is_google_profile (persona))
+	return _("Google Circles");
+      else if (persona_is_google_other (persona))
+	return _("Google Other Contact");
+
       unowned string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
-      if (eds_name != null) {
-	var g = persona as GroupDetails;
-	if (g != null && !g.groups.contains (eds_personal_google_group_name ())) {
-	  bool is_profile = false;
-	  var u = persona as UrlDetails;
-	  if (u != null && u.urls.size == 1) {
-	    foreach (var url in u.urls) {
-	      if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
-		is_profile = true;
-	    }
-	  }
-	  if (is_profile)
-	    return _("Google Circles");
-	  return _("Google Other Contact");
-	}
+      if (eds_name != null)
 	return eds_name;
-      }
     }
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
