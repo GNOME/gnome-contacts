@@ -1722,6 +1722,72 @@ public class Contacts.ContactPane : ScrolledWindow {
       call_button.hide ();
   }
 
+  public void add_suggestion (Contact c) {
+    var row = new FieldRow (row_group);
+    personas_grid.add (row);
+
+    var grid = new Grid ();
+    grid.get_style_context ().add_class ("contacts-suggestion");
+    grid.set_redraw_on_allocate (true);
+    grid.draw.connect ( (cr) => {
+	Allocation allocation;
+	grid.get_allocation (out allocation);
+
+	var context = grid.get_style_context ();
+	Gtk.render_background (context, cr,
+			       0, 0,
+			       allocation.width, allocation.height);
+	return false;
+      });
+    row.pack (grid);
+
+    var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
+    c.keep_widget_uptodate (image_frame,  (w) => {
+	(w as ContactFrame).set_image (c.individual, c);
+      });
+    image_frame.set_hexpand (false);
+    grid.attach (image_frame, 0, 0, 1, 2);
+
+    var label = new Label ("");
+    if (contact.is_main)
+      label.set_markup (_("Does %s from %s belong here?").printf (c.display_name, c.format_persona_stores ()));
+    else
+      label.set_markup (_("Do these details belong to %s?").printf (c.display_name));
+    label.set_valign (Align.START);
+    label.set_halign (Align.START);
+    label.set_line_wrap (true);
+    label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    label.set_hexpand (false);
+    label.xalign = 0.0f;
+    grid.attach (label, 1, 0, 1, 1);
+
+    var bbox = new ButtonBox (Orientation.HORIZONTAL);
+    var yes = new Button.with_label (_("Yes"));
+    var no = new Button.with_label (_("No"));
+
+    yes.clicked.connect ( () => {
+	link_contacts.begin (contact, c, (obj, result) => {
+	    link_contacts.end (result);
+	  });
+	/* TODO: Add undo */
+	row.destroy ();
+      });
+
+    no.clicked.connect ( () => {
+	/* TODO: Set up anti-linking relationship (and any where we force unlink) */
+	/* TODO: Add undo */
+	row.destroy ();
+      });
+
+    bbox.add (yes);
+    bbox.add (no);
+    bbox.set_spacing (8);
+    bbox.set_halign (Align.END);
+    bbox.set_hexpand (true);
+    bbox.set_border_width (4);
+    grid.attach (bbox, 2, 0, 1, 2);
+  }
+
   public void update_personas () {
     foreach (var w in personas_grid.get_children ()) {
       w.destroy ();
@@ -1735,6 +1801,14 @@ public class Contacts.ContactPane : ScrolledWindow {
     foreach (var p in personas) {
       var sheet = new PersonaSheet(this, p);
       personas_grid.add (sheet);
+    }
+
+    var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
+    foreach (var ind in matches.keys) {
+      var c = Contact.from_individual (ind);
+      if (c != null && contact.suggest_link_to (c)) {
+	add_suggestion (c);
+      }
     }
 
     personas_grid.show_all ();

@@ -1113,6 +1113,43 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
+  /* These are "regular" address book contacts, i.e. they contain a
+     persona that would be "main" if that persona was the primary store */
+  public bool has_mainable_persona () {
+    foreach (var p in individual.personas) {
+      if (p.store.type_id == "eds" &&
+	  !persona_is_google_other (p))
+	return true;
+    }
+    return false;
+  }
+
+  /* We never want to suggest linking to google contacts that
+     are not My Contacts nor Profiles */
+  private bool non_linkable () {
+    bool all_unlinkable = true;
+
+    foreach (var p in individual.personas) {
+      if (!persona_is_google_other (p) ||
+	  persona_is_google_profile (p))
+	all_unlinkable = false;
+    }
+
+    return all_unlinkable;
+  }
+
+  public bool suggest_link_to (Contact other) {
+    if (this.non_linkable () || other.non_linkable ())
+      return false;
+
+    /* Only connect main contacts with non-mainable contacts, and vice versa. */
+    if ((this.is_main && !other.has_mainable_persona()) ||
+	(!this.has_mainable_persona () && other.is_main)) {
+      return true;
+    }
+    return false;
+  }
+
   private static bool persona_is_google (Persona persona) {
     var store = persona.store;
 
