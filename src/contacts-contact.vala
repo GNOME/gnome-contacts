@@ -999,6 +999,9 @@ public class Contacts.Contact : GLib.Object  {
     if (/https?:\/\/twitter.com\/#!\/[a-zA-Z0-9]+$/.match(uri))
       return _("Twitter");
 
+    if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(uri))
+      return _("Google Profile");
+
     if (uri.ascii_ncasecmp ("http:", 5) == 0 ||
 	uri.ascii_ncasecmp ("https:", 5) == 0) {
       var start = uri.index_of (":");
