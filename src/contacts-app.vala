@@ -275,16 +275,6 @@ public class Contacts.App : Gtk.Application {
 	dialog.show_all ();
       });
 
-    var select_button = new ToolButton (null, null);
-    select_button.set_sensitive (false);
-    select_button.set_icon_name ("object-select-symbolic");
-    select_button.is_important = false;
-    select_button.set_halign (Align.END);
-    select_button.set_expand (true);
-    toolbar.add (select_button);
-    select_button.clicked.connect ( (button) => {
-      });
-
     toolbar = new Toolbar ();
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
