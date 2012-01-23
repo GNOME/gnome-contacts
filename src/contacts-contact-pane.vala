@@ -1278,7 +1278,8 @@ public class Contacts.PersonaSheet : Grid {
 	grid.add (image);
       }
 
-      if (!persona.store.is_primary_store || row_nr > 0) {
+      if (pane.contact.individual.personas.size > 1 &&
+	  (!persona.store.is_primary_store || row_nr > 0)) {
 	var b = new Button.with_label("Unlink");
 	grid.add (b);
 

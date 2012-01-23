@@ -1061,9 +1061,6 @@ public class Contacts.Contact : GLib.Object  {
       else
 	i++;
     }
-    var fake_persona = FakePersona.maybe_create_for (this);
-    if (fake_persona != null && fake_persona.store.type_id != "fake")
-      persona_list.add (fake_persona);
     persona_list.sort (Contact.compare_persona_by_store);
 
     return persona_list;
