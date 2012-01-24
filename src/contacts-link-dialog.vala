@@ -75,16 +75,9 @@ public class Contacts.LinkDialog : Dialog {
       persona_grid.attach (bbox, 2, 0, 1, 2);
 
       link_button.clicked.connect ( (button) => {
-	string[] selected_contact_personas_iids = {};
-	foreach (var p in selected_contact.individual.personas) {
-	    selected_contact_personas_iids += p.iid;
-	    stdout.printf (" %s,\n", p.iid);
-	}
 	var selected_contact_name = selected_contact.display_name;
-	// TODO: Link selected_contact.individual into contact.individual
-	// ensure we get the same individual so that the Contact is the same
 	link_contacts.begin (contact, selected_contact, (obj, result) => {
-	    link_contacts.end (result);
+	    var operation = link_contacts.end (result);
 	    var undo_bar = new InfoBar.with_buttons ("Undo", ResponseType.APPLY, null);
 	    undo_bar.set_message_type (MessageType.INFO);
 	    var container = (undo_bar.get_content_area () as Container);
@@ -94,13 +87,7 @@ public class Contacts.LinkDialog : Dialog {
 	    container.add (message_label);
 	    undo_bar.response.connect ( (response_id) => {
 	      if (response_id == ResponseType.APPLY) {
-		foreach (var p in contact.individual.personas) {
-		  if (p.iid in selected_contact_personas_iids) {
-		    unlink_persona.begin (contact, p, (obj, result) => {
-		      unlink_persona.end (result);
-		    });
-		  }
-		}
+		operation.undo ();
 		undo_bar.destroy ();
 	      }
 	    });
