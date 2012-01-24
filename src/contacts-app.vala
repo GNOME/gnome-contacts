@@ -25,6 +25,7 @@ public class Contacts.App : Gtk.Application {
   public Store contacts_store;
   private ListPane list_pane;
   private ContactPane contacts_pane;
+  private Gtk.Overlay overlay;
 
   private bool window_delete_event (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
@@ -297,7 +298,7 @@ public class Contacts.App : Gtk.Application {
 
     /* We put in an overlay overlapping the left and right pane for the
        notifications, so they can show up below the toolbar */
-    var overlay = new Gtk.Overlay ();
+    overlay = new Gtk.Overlay ();
     Gdk.RGBA transparent = { 0, 0, 0, 0 };
     overlay.override_background_color (0, transparent);
     // Need to put something in here for it to work
@@ -311,34 +312,7 @@ public class Contacts.App : Gtk.Application {
 
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
-    contacts_pane.will_delete.connect ( (c) => {
-      var notification = new Gtk.Notification ();
-
-      var g = new Grid ();
-      g.set_column_spacing (8);
-      notification.add (g);
-
-
-      string msg = _("Contact deleted: \"%s\"").printf (c.display_name);
-      var b = new Button.from_stock (Stock.UNDO);
-      g.add (new Label (msg));
-      g.add (b);
-
-      bool really_delete = true;
-      notification.show_all ();
-      var id = notification.dismissed.connect ( () => {
-	  if (really_delete)
-	    contacts_store.aggregator.remove_individual (c.individual);
-      });
-      b.clicked.connect ( () => {
-	  really_delete = false;
-	  notification.dismiss ();
-	  c.show ();
-	  list_pane.select_contact (c);
-	  contacts_pane.show_contact (c);
-	});
-      overlay.add_overlay (notification);
-    });
+    contacts_pane.will_delete.connect (delete_contact);
     grid.attach (contacts_pane, 1, 1, 1, 1);
 
 
@@ -367,6 +341,36 @@ public class Contacts.App : Gtk.Application {
     } else {
       window.present ();
     }
+  }
+
+  private void delete_contact (Contact contact) {
+    var notification = new Gtk.Notification ();
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg = _("Contact deleted: \"%s\"").printf (contact.display_name);
+    var b = new Button.from_stock (Stock.UNDO);
+    g.add (new Label (msg));
+    g.add (b);
+
+    bool really_delete = true;
+    notification.show_all ();
+    var id = notification.dismissed.connect ( () => {
+	if (really_delete)
+	  contact.remove_personas.begin ( () => {
+	      contact.show ();
+	    });
+      });
+    b.clicked.connect ( () => {
+	really_delete = false;
+	notification.dismiss ();
+	contact.show ();
+	list_pane.select_contact (contact);
+	contacts_pane.show_contact (contact);
+      });
+    overlay.add_overlay (notification);
   }
 
   private static string individual_id = null;

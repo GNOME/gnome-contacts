@@ -1025,6 +1025,31 @@ public class Contacts.Contact : GLib.Object  {
     return uri;
   }
 
+  /* We claim something is "removable" if at least one persona is removable,
+     that will typically unlink the rest. */
+  public bool can_remove_personas () {
+    foreach (var p in individual.personas) {
+      if (p.store.can_remove_personas == MaybeBool.TRUE &&
+	  !(p is Tpf.Persona)) {
+	return true;
+      }
+    }
+    return false;
+  }
+
+  public async void remove_personas () {
+    var personas = new HashSet<Persona> ();
+    foreach (var p in individual.personas) {
+      if (p.store.can_remove_personas == MaybeBool.TRUE &&
+	  !(p is Tpf.Persona)) {
+	personas.add (p);
+      }
+    }
+    foreach (var persona in personas)  {
+      yield persona.store.remove_persona (persona);
+    }
+  }
+
   public async Persona ensure_primary_persona () throws IndividualAggregatorError, ContactError, PropertyError {
     Persona? p = find_primary_persona ();
     if (p != null)

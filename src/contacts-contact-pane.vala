@@ -1805,25 +1805,15 @@ public class Contacts.ContactPane : ScrolledWindow {
     update_personas ();
 
     bool can_remove = false;
-    bool can_remove_all = true;
 
     if (contact != null) {
       contact.personas_changed.connect (personas_changed_cb);
       contact.changed.connect (contact_changed_cb);
 
-      foreach (var p in contact.individual.personas) {
-	if (p.store.can_remove_personas == MaybeBool.TRUE &&
-	    !(p is Tpf.Persona)) {
-	  can_remove = true;
-	} else {
-	  can_remove_all = false;
-	}
-      }
+      can_remove = contact.can_remove_personas ();
     }
 
-    can_remove_all = can_remove && can_remove_all;
-
-    delete_menu_item.set_sensitive (can_remove_all);
+    delete_menu_item.set_sensitive (can_remove);
     link_menu_item.set_sensitive (contact != null);
   }
 
