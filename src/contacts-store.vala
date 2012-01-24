@@ -33,6 +33,8 @@ public class Contacts.Store : GLib.Object {
 
   public Gee.HashMap<string, Account> calling_accounts;
 
+  public Gee.HashMultiMap<string, string> dont_suggest_link;
+
   public bool can_call {
     get {
       return this.calling_accounts.size > 0 ? true : false;
@@ -62,8 +64,76 @@ public class Contacts.Store : GLib.Object {
     return c.get_data<bool> ("contacts-master-at-join");
   }
 
+  private void read_dont_suggest_db () {
+    dont_suggest_link.clear ();
+    try {
+      var path = Path.build_filename (Environment.get_user_config_dir (), "gnome-contacts", "dont_suggest.db");
+      string contents;
+      if (FileUtils.get_contents (path, out contents)) {
+	var rows = contents.split ("\n");
+	foreach (var r in rows) {
+	  var ids = r.split (" ");
+	  if (ids.length == 2) {
+	    dont_suggest_link.set (ids[0], ids[1]);
+	  }
+	}
+      }
+    } catch (GLib.Error e) {
+      if (!(e is FileError.NOENT))
+	warning ("error loading no suggestion db: %s\n", e.message);
+    }
+  }
+
+  private void write_dont_suggest_db () {
+    try {
+      var dir = Path.build_filename (Environment.get_user_config_dir (), "gnome-contacts");
+      DirUtils.create_with_parents (dir, 0700);
+      var path = Path.build_filename (dir, "dont_suggest.db");
+
+      var s = new StringBuilder ();
+      foreach (var key in dont_suggest_link.get_keys ()) {
+	foreach (var value in dont_suggest_link.get (key)) {
+	  s.append_printf ("%s %s\n", key, value);
+	}
+      }
+      FileUtils.set_contents (path, s.str, s.len);
+    } catch (GLib.Error e) {
+      warning ("error writing no suggestion db: %s\n", e.message);
+    }
+  }
+
+  public bool may_suggest_link (Contact a, Contact b) {
+    foreach (var a_persona in a.individual.personas) {
+      foreach (var no_link_uid in dont_suggest_link.get (a_persona.uid)) {
+	foreach (var b_persona in b.individual.personas) {
+	  if (b_persona.uid == no_link_uid)
+	    return false;
+	}
+      }
+    }
+    foreach (var b_persona in b.individual.personas) {
+      foreach (var no_link_uid in dont_suggest_link.get (b_persona.uid)) {
+	foreach (var a_persona in a.individual.personas) {
+	  if (a_persona.uid == no_link_uid)
+	    return false;
+	}
+      }
+    }
+    return true;
+  }
+
+  public void add_no_suggest_link (Contact a, Contact b) {
+    var persona1 = a.get_personas_for_display ().to_array ()[0];
+    var persona2 = b.get_personas_for_display ().to_array ()[0];
+    dont_suggest_link.set (persona1.uid, persona2.uid);
+    write_dont_suggest_db ();
+  }
+
   public Store () {
     contacts = new Gee.ArrayList<Contact>();
+
+    dont_suggest_link = new Gee.HashMultiMap<string, string> ();
+    read_dont_suggest_db ();
 
     backend_store = BackendStore.dup ();
     aggregator = new IndividualAggregator ();

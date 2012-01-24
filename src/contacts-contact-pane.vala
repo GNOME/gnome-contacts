@@ -1746,7 +1746,7 @@ public class Contacts.ContactPane : ScrolledWindow {
       });
 
     no.clicked.connect ( () => {
-	/* TODO: Set up anti-linking relationship (and any where we force unlink) */
+	contacts_store.add_no_suggest_link (contact, c);
 	/* TODO: Add undo */
 	row.destroy ();
       });
