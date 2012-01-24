@@ -69,9 +69,11 @@ public class Contacts.LinkDialog : Dialog {
     int is_main = contact.is_main ? 1 : 0;
     if (contact.is_main) {
       var link_button = new Button.with_label (_("Link"));
-      link_button.set_hexpand (true);
+      link_button.set_hexpand (false);
       link_button.set_valign (Align.CENTER);
-      persona_grid.attach (link_button, 2, 0, 1, 2);
+      var bbox = new ButtonBox (Orientation.HORIZONTAL);
+      bbox.add (link_button);
+      persona_grid.attach (bbox, 2, 0, 1, 2);
 
       link_button.clicked.connect ( (button) => {
 	string[] selected_contact_personas_iids = {};
