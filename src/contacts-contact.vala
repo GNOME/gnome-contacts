@@ -624,8 +624,17 @@ public class Contacts.Contact : GLib.Object  {
     var store_a = persona_a.store;
     var store_b = persona_b.store;
 
-    if (store_a == store_b)
+    if (store_a == store_b) {
+      if (persona_is_google (persona_a)) {
+	/* Non-other google personas rank before others */
+	if (persona_is_google_other (persona_a) && !persona_is_google_other (persona_b))
+	  return 1;
+	if (!persona_is_google_other (persona_a) && persona_is_google_other (persona_b))
+	  return -1;
+      }
+
       return 0;
+    }
 
     if (store_a.is_primary_store && store_b.is_primary_store)
       return 0;
