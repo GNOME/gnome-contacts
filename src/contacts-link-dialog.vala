@@ -129,6 +129,7 @@ public class Contacts.LinkDialog : Dialog {
       grid.add (label);
       foreach (var email in emails) {
 	label = new Label (email.value);
+	label.set_ellipsize (Pango.EllipsizeMode.END);
 	label.xalign = 0.0f;
 	grid.add (label);
       }
@@ -144,6 +145,7 @@ public class Contacts.LinkDialog : Dialog {
       grid.add (label);
       foreach (var phone_number in phone_numbers) {
 	label = new Label (phone_number.value);
+	label.set_ellipsize (Pango.EllipsizeMode.END);
 	label.xalign = 0.0f;
 	grid.add (label);
       }
