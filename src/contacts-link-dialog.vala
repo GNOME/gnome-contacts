@@ -74,51 +74,51 @@ public class Contacts.LinkDialog : Dialog {
       persona_grid.attach (link_button, 2, 0, 1, 2);
 
       link_button.clicked.connect ( (button) => {
-        string[] selected_contact_personas_iids = {};
-        foreach (var p in selected_contact.individual.personas) {
-            selected_contact_personas_iids += p.iid;
-            stdout.printf (" %s,\n", p.iid);
-        }
-        var selected_contact_name = selected_contact.display_name;
-        // TODO: Link selected_contact.individual into contact.individual
-        // ensure we get the same individual so that the Contact is the same
-        link_contacts.begin (contact, selected_contact, (obj, result) => {
-            link_contacts.end (result);
-            var undo_bar = new InfoBar.with_buttons ("Undo", ResponseType.APPLY, null);
-            undo_bar.set_message_type (MessageType.INFO);
-            var container = (undo_bar.get_content_area () as Container);
-            var message_label = new Label (_("%s linked to %s").printf (selected_contact_name, contact.display_name));
-            //TODO, do something smarter here.
-            message_label.set_ellipsize (Pango.EllipsizeMode.END);
-            container.add (message_label);
-            undo_bar.response.connect ( (response_id) => {
-              if (response_id == ResponseType.APPLY) {
-                foreach (var p in contact.individual.personas) {
-                  if (p.iid in selected_contact_personas_iids) {
-                    unlink_persona.begin (contact, p, (obj, result) => {
-                      unlink_persona.end (result);
-                    });
-                  }
-                }
-                undo_bar.destroy ();
-              }
-            });
-            Timeout.add (5000, () => {
-              undo_bar.destroy ();
-              return false;
-            });
-            list_grid.add (undo_bar);
-            undo_bar.show_all ();
-          });
+	string[] selected_contact_personas_iids = {};
+	foreach (var p in selected_contact.individual.personas) {
+	    selected_contact_personas_iids += p.iid;
+	    stdout.printf (" %s,\n", p.iid);
+	}
+	var selected_contact_name = selected_contact.display_name;
+	// TODO: Link selected_contact.individual into contact.individual
+	// ensure we get the same individual so that the Contact is the same
+	link_contacts.begin (contact, selected_contact, (obj, result) => {
+	    link_contacts.end (result);
+	    var undo_bar = new InfoBar.with_buttons ("Undo", ResponseType.APPLY, null);
+	    undo_bar.set_message_type (MessageType.INFO);
+	    var container = (undo_bar.get_content_area () as Container);
+	    var message_label = new Label (_("%s linked to %s").printf (selected_contact_name, contact.display_name));
+	    //TODO, do something smarter here.
+	    message_label.set_ellipsize (Pango.EllipsizeMode.END);
+	    container.add (message_label);
+	    undo_bar.response.connect ( (response_id) => {
+	      if (response_id == ResponseType.APPLY) {
+		foreach (var p in contact.individual.personas) {
+		  if (p.iid in selected_contact_personas_iids) {
+		    unlink_persona.begin (contact, p, (obj, result) => {
+		      unlink_persona.end (result);
+		    });
+		  }
+		}
+		undo_bar.destroy ();
+	      }
+	    });
+	    Timeout.add (5000, () => {
+	      undo_bar.destroy ();
+	      return false;
+	    });
+	    list_grid.add (undo_bar);
+	    undo_bar.show_all ();
+	  });
       });
     }
-    
+
     var grid = new Grid ();
     grid.set_orientation (Orientation.VERTICAL);
     grid.set_border_width (8);
 
     persona_grid.attach (grid, 0, 2, 2 + is_main, 1);
-    
+
 
     var emails = Contact.sort_fields<EmailFieldDetails>(selected_contact.individual.email_addresses);
     if (!emails.is_empty) {
@@ -251,14 +251,14 @@ public class Contacts.LinkDialog : Dialog {
     scrolled.add_with_viewport (persona_grid);
 
     response.connect ( (response_id) => {
-        if (response_id == ResponseType.APPLY &&
-            selected_contact != null) {
-          // TODO: Link selected_contact.individual into contact.individual
-          // ensure we get the same individual so that the Contact is the same
-          link_contacts.begin (selected_contact, contact, (obj, result) => {
-            link_contacts.end (result);
-          });
-        }
+	if (response_id == ResponseType.APPLY &&
+	    selected_contact != null) {
+	  // TODO: Link selected_contact.individual into contact.individual
+	  // ensure we get the same individual so that the Contact is the same
+	  link_contacts.begin (selected_contact, contact, (obj, result) => {
+	    link_contacts.end (result);
+	  });
+	}
 	this.destroy ();
       });
 
