@@ -1245,7 +1245,7 @@ public class Contacts.PersonaSheet : Grid {
   };
   FieldSet? field_sets[8]; // This is really the size of field_set_types
 
-  public PersonaSheet(ContactPane pane, Persona persona) {
+  public PersonaSheet(ContactPane pane, Persona persona, int sheet_nr) {
     assert (field_sets.length == field_set_types.length);
 
     this.pane = pane;
@@ -1261,7 +1261,7 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "phone-numbers") &&
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
-    if (!persona.store.is_primary_store || row_nr > 0) {
+    if (!persona.store.is_primary_store || sheet_nr > 0) {
       header = new FieldRow (pane.row_group);
 
       Label label;
@@ -1278,8 +1278,7 @@ public class Contacts.PersonaSheet : Grid {
 	grid.add (image);
       }
 
-      if (pane.contact.individual.personas.size > 1 &&
-	  (!persona.store.is_primary_store || row_nr > 0)) {
+      if (pane.contact.individual.personas.size > 1) {
 	var b = new Button.with_label("Unlink");
 	grid.add (b);
 
@@ -1297,7 +1296,6 @@ public class Contacts.PersonaSheet : Grid {
       header.clicked.connect ( () => {
 	  this.pane.enter_edit_mode (header);
 	});
-
     }
 
     for (int i = 0; i < field_set_types.length; i++) {
@@ -1772,8 +1770,9 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     var personas = contact.get_personas_for_display ();
 
+    int i = 0;
     foreach (var p in personas) {
-      var sheet = new PersonaSheet(this, p);
+      var sheet = new PersonaSheet(this, p, i++);
       personas_grid.add (sheet);
     }
 
