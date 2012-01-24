@@ -66,7 +66,6 @@ public class Contacts.LinkDialog : Dialog {
     label.set_ellipsize (Pango.EllipsizeMode.END);
     persona_grid.attach (label, 1, 1, 1, 1);
 
-    int is_main = contact.is_main ? 1 : 0;
     if (contact.is_main) {
       var link_button = new Button.with_label (_("Link"));
       link_button.set_hexpand (false);
@@ -119,7 +118,7 @@ public class Contacts.LinkDialog : Dialog {
     grid.set_orientation (Orientation.VERTICAL);
     grid.set_border_width (8);
 
-    persona_grid.attach (grid, 0, 2, 2 + is_main, 1);
+    persona_grid.attach (grid, 0, 2, 3, 1);
 
 
     var emails = Contact.sort_fields<EmailFieldDetails>(selected_contact.individual.email_addresses);
