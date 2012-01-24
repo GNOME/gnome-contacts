@@ -21,6 +21,73 @@ using Folks;
 using Gee;
 
 namespace Contacts {
+  public class LinkOperation : Object {
+    internal class Change {
+      public PersonaAttribute attribute;
+      public Persona persona;
+      public Object old_value;
+    }
+    private Persona? _added_persona;
+    private Contact? main_contact;
+    private ArrayList<Persona>? split_out_personas;
+    ArrayList<Change> changes;
+
+    public LinkOperation() {
+      changes = new ArrayList<Change> ();
+    }
+
+    public void set_main_contact (Contact? contact) {
+      main_contact = contact;
+    }
+
+    public void set_split_out_contact (Contact? contact) {
+      split_out_personas = new ArrayList<Persona> ();
+      split_out_personas.add_all (contact.individual.personas);
+    }
+
+    public void added_persona (Persona persona) {
+      _added_persona = persona;
+    }
+
+    public void add_change (PersonaAttribute attribute, Persona persona, Object old_value) {
+      var c = new Change ();
+      c.attribute = attribute;
+      c.persona = persona;
+      c.old_value = old_value;
+      changes.add (c);
+    }
+
+    public async void undo () {
+      if (main_contact != null)
+	main_contact.set_data ("contacts-master-at-join", true);
+      if (split_out_personas != null) {
+	foreach (var p in split_out_personas)
+	  p.set_data ("contacts-new-contact", true);
+      }
+
+      try {
+	if (_added_persona != null) {
+	  yield _added_persona.store.remove_persona (_added_persona);
+	}
+	foreach (var c in changes) {
+	  if (c.persona != _added_persona) {
+	    yield c.attribute.set_value (c.persona, c.old_value);
+	  }
+	}
+      } catch (GLib.Error e) {
+	warning ("Error when undoing linking: %s\n", e.message);
+      }
+
+      if (main_contact != null)
+	main_contact.set_data ("contacts-master-at-join", false);
+
+      if (split_out_personas != null) {
+	foreach (var p in split_out_personas)
+	  p.set_data ("contacts-new-contact", false);
+      }
+    }
+  }
+
   public abstract class PersonaAttribute : Object {
     public string property_name;
 
@@ -49,7 +116,9 @@ namespace Contacts {
 
     public abstract async void persona_apply_attributes (Persona persona,
 							 Set<PersonaAttribute> added_attributes,
-							 Set<PersonaAttribute> removed_attributes);
+							 Set<PersonaAttribute> removed_attributes,
+							 LinkOperation operation);
+    public abstract async void set_value (Persona persona, Object value);
   }
 
   internal class PersonaAttributeLocalId : PersonaAttribute {
@@ -80,7 +149,8 @@ namespace Contacts {
 
     public override async void persona_apply_attributes (Persona persona,
 							 Set<PersonaAttribute> added_attributes,
-							 Set<PersonaAttribute> removed_attributes) {
+							 Set<PersonaAttribute> removed_attributes,
+							 LinkOperation operation) {
       var details = persona as LocalIdDetails;
       if (details == null)
 	return;
@@ -113,10 +183,26 @@ namespace Contacts {
 
       if (changed) {
 	try {
+	  var old_value = new HashSet<string> ();
+	  old_value.add_all (details.local_ids);
 	  yield details.change_local_ids (new_values);
+	  operation.add_change (this, persona, old_value);
 	} catch (GLib.Error e) {
 	  warning ("Unable to set local ids when linking: %s\n", e.message);
 	}
+      }
+    }
+
+    public override async void set_value (Persona persona, Object value) {
+      var details = persona as LocalIdDetails;
+      if (details == null)
+	return;
+
+      try {
+	var v = value as HashSet<string>;
+	yield details.change_local_ids (v);
+      } catch (GLib.Error e) {
+	warning ("Unable to set local ids when undoing link: %s\n", e.message);
       }
     }
 
@@ -159,7 +245,8 @@ namespace Contacts {
 
     public override async void persona_apply_attributes (Persona persona,
 							 Set<PersonaAttribute> added_attributes,
-							 Set<PersonaAttribute> removed_attributes) {
+							 Set<PersonaAttribute> removed_attributes,
+							 LinkOperation operation) {
       var details = persona as ImDetails;
       if (details == null)
 	return;
@@ -204,10 +291,25 @@ namespace Contacts {
 
       if (changed) {
 	try {
+	  var old_value = details.im_addresses;
 	  yield details.change_im_addresses (new_values);
+	  operation.add_change (this, persona, old_value);
 	} catch (GLib.Error e) {
 	  warning ("Unable to set im address when linking: %s\n", e.message);
 	}
+      }
+    }
+
+    public override async void set_value (Persona persona, Object value) {
+      var details = persona as ImDetails;
+      if (details == null)
+	return;
+
+      try {
+	var v = value as HashMultiMap<string, ImFieldDetails>;
+	yield details.change_im_addresses (v);
+      } catch (GLib.Error e) {
+	warning ("Unable to set local ids when undoing link: %s\n", e.message);
       }
     }
 
@@ -251,7 +353,8 @@ namespace Contacts {
 
     public override async void persona_apply_attributes (Persona persona,
 							 Set<PersonaAttribute> added_attributes,
-							 Set<PersonaAttribute> removed_attributes) {
+							 Set<PersonaAttribute> removed_attributes,
+							 LinkOperation operation) {
       var details = persona as WebServiceDetails;
       if (details == null)
 	return;
@@ -296,10 +399,25 @@ namespace Contacts {
 
       if (changed) {
 	try {
+	  var old_value = details.web_service_addresses;
 	  yield details.change_web_service_addresses (new_values);
+	  operation.add_change (this, persona, old_value);
 	} catch (GLib.Error e) {
 	  warning ("Unable to set web service when linking: %s\n", e.message);
 	}
+      }
+    }
+
+    public override async void set_value (Persona persona, Object value) {
+      var details = persona as WebServiceDetails;
+      if (details == null)
+	return;
+
+      try {
+	var v = value as HashMultiMap<string, WebServiceFieldDetails>;
+	yield details.change_web_service_addresses (v);
+      } catch (GLib.Error e) {
+	warning ("Unable to set local ids when undoing link: %s\n", e.message);
       }
     }
 
@@ -378,7 +496,8 @@ namespace Contacts {
 
   public static async void persona_apply_attributes (Persona persona,
 						     Set<PersonaAttribute>? added_attributes,
-						     Set<PersonaAttribute>? removed_attributes) {
+						     Set<PersonaAttribute>? removed_attributes,
+						     LinkOperation operation) {
     var properties = new HashSet<PersonaAttribute>((GLib.HashFunc)attr_type_hash, (GLib.EqualFunc) attr_type_equal);
 
     if (added_attributes != null) {
@@ -407,14 +526,17 @@ namespace Contacts {
 	    removed.add (a4);
 	}
       }
-      yield property.persona_apply_attributes (persona, added, removed);
+      yield property.persona_apply_attributes (persona, added, removed, operation);
     }
   }
 
-  public async void link_contacts (Contact main, Contact other) {
+  public async LinkOperation link_contacts (Contact main, Contact other) {
     // This should not be used as being replaced with the new individual
     // instead we should always pick this contact to keep around
     main.set_data ("contacts-master-at-join", true);
+
+    var operation = new LinkOperation ();
+    operation.set_split_out_contact (other);
 
     var main_linkables = get_linkable_attributes_for_individual (main.individual);
     var other_linkables = get_linkable_attributes_for_individual (other.individual);
@@ -452,6 +574,7 @@ namespace Contacts {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
 	write_persona = yield main.store.aggregator.primary_store.add_persona_from_details (details);
+	operation.added_persona (write_persona);
 	linkables = main_linkables;
 	linkables.add_all (other_linkables);
 	var name_details = write_persona as NameDetails;
@@ -460,19 +583,24 @@ namespace Contacts {
       } catch (GLib.Error e) {
 	main.set_data ("contacts-master-at-join", false);
 	warning ("Unable to create new persona when linking: %s\n", e.message);
-	return;
+	return operation;
       }
     }
 
-    yield persona_apply_attributes (write_persona, linkables, null);
+    yield persona_apply_attributes (write_persona, linkables, null, operation);
 
     main.set_data ("contacts-master-at-join", false);
+
+    return operation;
   }
 
-  public async void unlink_persona (Contact contact, Persona persona_to_unlink) {
+  public async LinkOperation unlink_persona (Contact contact, Persona persona_to_unlink) {
     var individual = contact.individual;
     var persona_to_unlink_removals = PersonaAttribute.create_set ();
     var other_personas_removals = PersonaAttribute.create_set ();
+
+    var operation = new LinkOperation ();
+    operation.set_main_contact (contact);
 
     foreach (PersonaAttribute a1 in get_linkable_attributes (persona_to_unlink)) {
       // Check that this attribute actually is used to link this persona to the individual
@@ -552,9 +680,10 @@ namespace Contacts {
       try {
 	main_persona = yield contact.store.aggregator.primary_store.add_persona_from_details (details);
 	yield (main_persona as NameDetails).change_full_name (contact.display_name);
+	operation.added_persona (main_persona);
       } catch (GLib.Error e) {
 	warning ("Unable to create new persona when unlinking: %s\n", e.message);
-	return;
+	return operation;
       }
     }
 
@@ -563,13 +692,15 @@ namespace Contacts {
     // First apply all additions on the primary persona so that we avoid temporarily being
     // unlinked and then relinked
     if (main_persona != null)
-      yield persona_apply_attributes (main_persona, main_persona_additions, other_personas_removals);
+      yield persona_apply_attributes (main_persona, main_persona_additions, other_personas_removals, operation);
     foreach (var p in other_personas) {
-      yield persona_apply_attributes (p, null, other_personas_removals);
+      yield persona_apply_attributes (p, null, other_personas_removals, operation);
     }
     // Last we do the removals on the persona_to_unlink
-    yield persona_apply_attributes (persona_to_unlink, null, persona_to_unlink_removals);
+    yield persona_apply_attributes (persona_to_unlink, null, persona_to_unlink_removals, operation);
 
     persona_to_unlink.set_data ("contacts-new-contact", false);
+
+    return operation;
   }
 }
