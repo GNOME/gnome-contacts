@@ -233,17 +233,7 @@ public class Contacts.App : Gtk.Application {
     var builder = new Builder ();
     builder.set_translation_domain (Config.GETTEXT_PACKAGE);
     try {
-      builder.add_from_string ("<interface>" +
-			       "  <menu id='app-menu'>" +
-			       "    <section>" +
-			       "      <item label='_Change Address Book...' action='app.change_book'/>" +
-			       "    </section>" +
-			       "    <section>" +
-			       "      <item label='_About Contacts' action='app.about'/>" +
-			       "      <item label='_Quit' action='app.quit' accel='<Primary>q'/>" +
-			       "    </section>" +
-			       "  </menu>" +
-			       "</interface>", -1);
+      Gtk.my_builder_add_from_resource (builder, "/org/gnome/contacts/app-menu.ui");
       set_app_menu ((MenuModel)builder.get_object ("app-menu"));
     } catch {
       warning ("Failed to parsing ui file");

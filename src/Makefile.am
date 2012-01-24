@@ -39,7 +39,12 @@ vala_sources = \
 	main.vala \
 	$(NULL)
 
+contact-resources.c: contacts.gresource.xml app-menu.ui
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/contacts.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
+
 gnome_contacts_SOURCES = \
+	contact-resources.c \
 	gtk-notification.c   \
 	contacts-esd-setup.c \
 	$(vala_sources) \
