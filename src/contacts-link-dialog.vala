@@ -81,7 +81,7 @@ public class Contacts.LinkDialog : Dialog {
 	label.xalign = 0.0f;
 	grid.add (label);
       }
-      label = new Label (_(""));
+      label = new Label ("");
       label.xalign = 0.0f;
       grid.add (label);
     }
