@@ -1694,6 +1694,8 @@ public class Contacts.ContactPane : ScrolledWindow {
       call_button.hide ();
   }
 
+  public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
+  
   public void add_suggestion (Contact c) {
     var row = new FieldRow (row_group);
     personas_grid.add (row);
@@ -1738,12 +1740,14 @@ public class Contacts.ContactPane : ScrolledWindow {
     var no = new Button.with_label (_("No"));
 
     yes.clicked.connect ( () => {
-	link_contacts.begin (contact, c, (obj, result) => {
-	    link_contacts.end (result);
-	  });
-	/* TODO: Add undo */
-	row.destroy ();
+      var main_contact = contact.display_name;
+      var linked_contact = c.display_name;
+      link_contacts.begin (contact, c, (obj, result) => {
+        var operation = link_contacts.end (result);
+        this.contacts_linked (main_contact, linked_contact, operation);
       });
+      row.destroy ();
+    });
 
     no.clicked.connect ( () => {
 	contacts_store.add_no_suggest_link (contact, c);
@@ -2130,6 +2134,9 @@ public class Contacts.ContactPane : ScrolledWindow {
 
   void link_contact () {
     var dialog = new LinkDialog (contact);
+    dialog.contacts_linked.connect ( (main_contact, linked_contact, operation) => {
+      this.contacts_linked (main_contact, linked_contact, operation);
+    });
     dialog.show_all ();
   }
 

@@ -34,6 +34,8 @@ public class Contacts.LinkDialog : Dialog {
   private Grid persona_grid;
   private uint filter_entry_changed_id;
 
+  public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
+  
   private void update_contact () {
     // Remove previous personas
     foreach (var w in persona_grid.get_children ()) {
@@ -241,16 +243,20 @@ public class Contacts.LinkDialog : Dialog {
     scrolled.add_with_viewport (persona_grid);
 
     response.connect ( (response_id) => {
-	if (response_id == ResponseType.APPLY &&
-	    selected_contact != null) {
-	  // TODO: Link selected_contact.individual into contact.individual
-	  // ensure we get the same individual so that the Contact is the same
-	  link_contacts.begin (selected_contact, contact, (obj, result) => {
-	    link_contacts.end (result);
-	  });
-	}
-	this.destroy ();
-      });
+      if (response_id == ResponseType.APPLY &&
+          selected_contact != null) {
+        link_contacts.begin (selected_contact, contact, (obj, result) => {
+          var main_contact_name = selected_contact.display_name;
+          var linked_contact_name = contact.display_name;
+          var operation = link_contacts.end (result);
+          this.contacts_linked (main_contact_name, linked_contact_name, operation);
+          this.destroy ();
+        });
+      } else
+        this.destroy ();
+
+      this.hide ();
+    });
 
     set_default_size (710, 510);
   }

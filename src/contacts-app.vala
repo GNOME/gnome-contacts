@@ -294,8 +294,8 @@ public class Contacts.App : Gtk.Application {
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
     contacts_pane.will_delete.connect (delete_contact);
+    contacts_pane.contacts_linked.connect (contacts_linked);
     grid.attach (contacts_pane, 1, 1, 1, 1);
-
 
     grid.show_all ();
   }
@@ -364,6 +364,26 @@ public class Contacts.App : Gtk.Application {
     { null }
   };
 
+  private void contacts_linked (string main_contact, string linked_contact, LinkOperation operation) {
+    var notification = new Gtk.Notification ();
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg = _("%s linked to %s").printf (main_contact, linked_contact);
+    var b = new Button.from_stock (Stock.UNDO);
+    g.add (new Label (msg));
+    g.add (b);
+
+    notification.show_all ();
+    b.clicked.connect ( () => {
+      notification.dismiss ();
+      operation.undo ();
+    });
+    overlay.add_overlay (notification);
+  }
+  
   public override int command_line (ApplicationCommandLine command_line) {
     var args = command_line.get_arguments ();
     unowned string[] _args = args;
