@@ -207,15 +207,6 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_window () {
-    try {
-      var provider = new CssProvider ();
-      provider.load_from_path (Config.PKGDATADIR + "/" + "gnome-contacts.css");
-      StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider,
-					    STYLE_PROVIDER_PRIORITY_APPLICATION);
-    } catch {
-      warning ("Failed to load custom CSS");
-    }
-
     this.app = this;
 
     var action = new GLib.SimpleAction ("quit", null);
