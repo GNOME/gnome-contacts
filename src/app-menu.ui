@@ -1,17 +1,21 @@
 <interface>
   <menu id='app-menu'>
     <section>
-      <item action='app.change_book'>
-	  <attribute name='label' translatable='yes'>'_Change Address Book...'</attribute>
+      <item>
+	<attribute name='action'>app.change_book</attribute>
+	<attribute name='label' translatable='yes'>_Change Address Book...</attribute>
       </item>
     </section>
     <section>
-      <item action='app.about'>
-	  <attribute name='label' translatable='yes'>'_About Contacts'</attribute>
+      <item>
+	<attribute name='action'>app.about</attribute>
+	<attribute name='label' translatable='yes'>_About Contacts</attribute>
       </item>
-      <item action='app.quit' accel='&lt;Primary>q'>
-	  <attribute name='label' translatable='yes'>'_Quit'</attribute>
-      </item>
+      <item>
+	<attribute name='action'>app.quit</attribute>
+	<attribute name='label' translatable='yes'>_Quit</attribute>
+	<attribute name='accel'>&lt;Primary>q</attribute>
+    </item>
     </section>
   </menu>
 </interface>
