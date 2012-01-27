@@ -26,6 +26,7 @@ public class Contacts.Store : GLib.Object {
   public signal void added (Contact c);
   public signal void removed (Contact c);
   public signal void quiescent ();
+  public signal void prepared ();
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get; private set; }
@@ -43,6 +44,10 @@ public class Contacts.Store : GLib.Object {
 
   public bool is_quiescent {
     get { return this.aggregator.is_quiescent; }
+  }
+
+  public bool is_prepared {
+    get { return this.aggregator.is_prepared; }
   }
 
   public void refresh () {
@@ -144,6 +149,14 @@ public class Contacts.Store : GLib.Object {
 	    return false;
 	  });
       });
+
+    aggregator.notify["is-prepared"].connect ( (obj, pspec) => {
+	Idle.add( () => {
+	    this.prepared ();
+	    return false;
+	  });
+      });
+
     aggregator.individuals_changed_detailed.connect ( (changes) =>   {
 	// Note: Apparently the current implementation doesn't necessarily pick
 	// up unlinked individual as replacements.

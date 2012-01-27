@@ -25,8 +25,6 @@ public class Contacts.ListPane : Frame {
   private ViewWidget list;
   public Entry filter_entry;
   private uint filter_entry_changed_id;
-  private ulong non_empty_id;
-  private EventBox empty_box;
   private bool ignore_selection_change;
   private Revealer search_revealer;
   private bool search_visible;
@@ -156,64 +154,14 @@ public class Contacts.ListPane : Frame {
     list.show_all ();
     scrolled.set_no_show_all (true);
 
-    empty_box = new EventBox ();
-    empty_box.set_hexpand (false);
-    empty_box.set_vexpand (true);
-    empty_box.set_halign (Align.FILL);
-    Gdk.RGBA white = {1, 1, 1, 1};
-    empty_box.override_background_color (StateFlags.NORMAL, white);
-
-    var empty_grid = new Grid ();
-    empty_grid.set_row_spacing (8);
-    empty_grid.set_orientation (Orientation.VERTICAL);
-    empty_grid.set_valign (Align.CENTER);
-
-    var image = new Image.from_icon_name ("avatar-default-symbolic", IconSize.DIALOG);
-    image.get_style_context ().add_class ("dim-label");
-    empty_grid.add (image);
-
-    var label = new Label (_("Connect to an account,\nimport or add contacts"));
-    label.xalign = 0.5f;
-    label.set_hexpand (true);
-    label.set_halign (Align.CENTER);
-    empty_grid.add (label);
-
-    var button = new Button.with_label (_("Online Accounts"));
-    button.set_halign (Align.CENTER);
-    empty_grid.add (button);
-    button.clicked.connect ( (button) => {
-	try {
-	  Process.spawn_command_line_async ("gnome-control-center online-accounts");
-	}
-	catch (Error e) {
-	  // TODO: Show error dialog
-	}
-      });
-
-    empty_box.add (empty_grid);
-    empty_box.show_all ();
-    empty_box.set_no_show_all (true);
-
     grid.add (search_revealer);
     grid.add (scrolled);
-    grid.add (empty_box);
 
     this.show_all ();
     search_revealer.set_no_show_all (true);
     search_revealer.hide ();
 
-    if (contacts_store.is_empty ()) {
-      empty_box.show ();
-      non_empty_id = contacts_store.added.connect ( (c) => {
-	  empty_box.hide ();
-	  scrolled.show ();
-	  contacts_store.disconnect (non_empty_id);
-	  non_empty_id = 0;
-	});
-    } else {
-      scrolled.show ();
-    }
-
+    scrolled.show ();
   }
 
   public void select_contact (Contact contact, bool ignore_change = false) {

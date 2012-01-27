@@ -35,9 +35,18 @@ vala_sources = \
 	contacts-avatar-menu.vala \
 	contacts-contact-frame.vala \
 	contacts-revealer.vala \
+	contacts-setup-window.vala \
 	contacts-window.vala \
 	main.vala \
 	$(NULL)
+
+gsettingsschema_in_files = org.gnome.Contacts.gschema.xml.in
+gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
+.PRECIOUS: $(gsettings_SCHEMAS)
+
+@INTLTOOL_XML_NOMERGE_RULE@
+
+@GSETTINGS_RULES@
 
 contact-resources.c: contacts.gresource.xml app-menu.ui
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/contacts.gresource.xml \
@@ -52,9 +61,13 @@ gnome_contacts_SOURCES = \
 
 gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
-CLEANFILES = $(vala_sources:.vala=.c) *.vapi *.stamp
+CLEANFILES = \
+	$(vala_sources:.vala=.c) \
+	$(gsettings_SCHEMAS) \
+	*.vapi *.stamp
 
 EXTRA_DIST = \
 	gtk-notification.h   \
+	$(gsettingsschema_in_files)     \
 	contacts-esd-setup.h \
 	$(NULL)

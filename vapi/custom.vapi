@@ -37,6 +37,12 @@ namespace Contacts {
 	public static bool esource_uid_is_google (string uid);
 	[CCode (cname = "eds_personal_google_group_name")]
 	public static unowned string? eds_personal_google_group_name ();
+	[CCode (cname = "contacts_has_goa_account")]
+	public static bool has_goa_account ();
+	[CCode (cname = "contacts_source_list")]
+	public static E.SourceList eds_source_list;
+	[CCode (cname = "contacts_avoid_goa_workaround")]
+	public static bool avoid_goa_workaround;
 }
 
 [CCode (cprefix = "Gtk", lower_case_cprefix = "gtk_", cheader_filename = "gtk-notification.h")]

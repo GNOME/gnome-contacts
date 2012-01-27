@@ -20,6 +20,7 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
+  public GLib.Settings settings;
   public Contacts.Window window;
   public static App app;
   public Store contacts_store;
@@ -304,8 +305,46 @@ public class Contacts.App : Gtk.Application {
     base.startup ();
   }
 
+  private void show_setup () {
+    avoid_goa_workaround = true;
+    var setup = new SetupWindow ();
+    setup.set_application (this);
+    setup.destroy.connect ( () => {
+	avoid_goa_workaround = false;
+	setup.destroy ();
+	if (setup.succeeded)
+	  this.activate ();
+      });
+    setup.show ();
+  }
+
   public override void activate () {
     if (window == null) {
+      if (!settings.get_boolean ("did-initial-setup")) {
+	if (contacts_store.is_prepared)
+	  show_setup ();
+	else {
+	  hold ();
+	  ulong id = 0;
+	  uint id2 = 0;
+	  id = contacts_store.prepared.connect (() => {
+	      show_setup ();
+	      contacts_store.disconnect (id);
+	      Source.remove (id2);
+	      release ();
+	    });
+	  // Wait at most 0.5 seconds to show the window
+	  id2 = Timeout.add (500, () => {
+	      show_setup ();
+	      contacts_store.disconnect (id);
+	      release ();
+	      return false;
+	});
+	}
+
+	return;
+      }
+
       create_window ();
 
       // We delay the initial show a tiny bit so most contacts are loaded when we show
@@ -381,7 +420,7 @@ public class Contacts.App : Gtk.Application {
     });
     overlay.add_overlay (notification);
   }
-  
+
   public override int command_line (ApplicationCommandLine command_line) {
     var args = command_line.get_arguments ();
     unowned string[] _args = args;
@@ -413,5 +452,6 @@ public class Contacts.App : Gtk.Application {
   public App () {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
     this.app = this;
+    settings = new GLib.Settings ("org.gnome.Contacts");
   }
 }

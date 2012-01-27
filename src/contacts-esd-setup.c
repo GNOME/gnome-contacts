@@ -33,7 +33,8 @@ static gboolean created_local = FALSE;
 static GMainLoop *goa_loop;
 static GoaClient *goa_client;
 static GHashTable *accounts;
-static ESourceList *contacts_source_list;
+ESourceList *contacts_source_list;
+gboolean contacts_avoid_goa_workaround = FALSE;
 
 /* This whole file is a gigantic hack that copies and pastes stuff from
  * evolution to create evolution-data-server addressbooks as needed.
@@ -176,7 +177,7 @@ ensure_local_addressbook (void)
 
   client = e_book_client_new_system (NULL);
   if (client != NULL) {
-    contacts_eds_local_store = g_strdup (e_source_peek_uid (e_client_get_source (client)));
+    contacts_eds_local_store = g_strdup (e_source_peek_uid (e_client_get_source (E_CLIENT (client))));
     g_object_unref (client);
     return TRUE;
   }
@@ -345,7 +346,7 @@ online_accounts_account_added_cb (GoaClient *goa_client,
 		// a while to let a running evo instance
 		// create the account, this is a lame
 		// fix for the race condition
-		if (goa_loop == NULL) {
+		if (!contacts_avoid_goa_workaround) {
 		  struct SyncData *data = g_new (struct SyncData, 1);
 		  data->uid = g_strdup (evo_id);
 		  data->goa_object = g_object_ref (goa_object);
@@ -559,6 +560,7 @@ void contacts_ensure_eds_accounts (void)
   created_local = ensure_local_addressbook ();
 
   goa_loop = g_main_loop_new (NULL, TRUE);
+  contacts_avoid_goa_workaround = TRUE;
 
   online_accounts_connect ();
 
@@ -567,9 +569,46 @@ void contacts_ensure_eds_accounts (void)
 
   g_main_loop_unref (goa_loop);
   goa_loop = NULL;
+  contacts_avoid_goa_workaround = FALSE;
 
   contacts_source_list = NULL;
   e_book_get_addressbooks (&contacts_source_list, NULL);
+}
+
+gboolean contacts_has_goa_account (void)
+{
+  GSList *list_a;
+
+  list_a = e_source_list_peek_groups (contacts_source_list);
+  while (list_a != NULL) {
+    ESourceGroup *source_group;
+    GSList *list_b;
+
+    source_group = E_SOURCE_GROUP (list_a->data);
+    list_a = g_slist_next (list_a);
+
+    list_b = e_source_group_peek_sources (source_group);
+
+    while (list_b != NULL) {
+      ESource *source;
+      const gchar *property;
+      const gchar *uid;
+      GList *match;
+
+      source = E_SOURCE (list_b->data);
+      list_b = g_slist_next (list_b);
+
+      uid = e_source_peek_uid (source);
+      property = e_source_get_property (source, GOA_KEY);
+
+      if (property == NULL)
+	continue;
+
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 
