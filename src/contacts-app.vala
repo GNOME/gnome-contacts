@@ -207,8 +207,6 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_window () {
-    this.app = this;
-
     var action = new GLib.SimpleAction ("quit", null);
     action.activate.connect (() => { window.destroy (); });
     this.add_action (action);
@@ -414,5 +412,6 @@ public class Contacts.App : Gtk.Application {
 
   public App () {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
+    this.app = this;
   }
 }
