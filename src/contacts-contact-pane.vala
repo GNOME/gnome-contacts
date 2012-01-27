@@ -802,6 +802,9 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
     button.set_relief (ReliefStyle.NONE);
     button.add (image);
     this.right_add (button);
+    button.clicked.connect ( () => {
+	Utils.show_calendar (details);
+      });
   }
 
   public override void update () {

@@ -206,4 +206,40 @@ public class Contacts.Utils : Object {
     entry.select_region (start, end);
   }
 
+  private static void spawn_app (GLib.Settings app_settings) {
+    var needs_term = app_settings.get_boolean("needs-term");
+    var exec = app_settings.get_string("exec");
+    if (needs_term) {
+      var terminal_settings = new GLib.Settings("org.gnome.desktop.default-applications.terminal");
+      var term = terminal_settings.get_string("exec");
+      var arg = terminal_settings.get_string("exec-arg");
+      string[] args;
+      if (arg != "")
+	args = {term, arg, exec, null};
+      else
+	args = {term, exec, null};
+
+      Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
+    } else {
+      Process.spawn_command_line_async (exec);
+    }
+  }
+
+  public static void show_calendar (DateTime? day) {
+    var calendar_settings = new GLib.Settings("org.gnome.desktop.default-applications.office.calendar");
+    var exec = calendar_settings.get_string("exec");
+    if (exec == "" || exec == "evolution") {
+      string[] args = {"evolution", "-c", "calendar", null, null};
+
+      if (day != null) {
+	var d = day.to_local ();
+	var today = new DateTime.now_local ();
+	args[3] = "calendar:///?startdate=%.4d%.2d%.2d".printf (today.get_year (), d.get_month (), d.get_day_of_month ());
+      }
+
+      Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
+    } else {
+      spawn_app (calendar_settings);
+    }
+  }
 }
