@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gnome-contacts\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-30 11:21+0200\n"
-"PO-Revision-Date: 2011-12-30 11:30+0200\n"
+"POT-Creation-Date: 2012-01-28 12:33+0200\n"
+"PO-Revision-Date: 2012-01-28 12:36+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: \n"
@@ -21,40 +21,75 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../data/gnome-contacts.desktop.in.in.h:1
-#: ../src/contacts-app.vala:113
+#: ../src/contacts-app.vala:234
 #: ../src/main.vala:24
 msgid "Contacts"
 msgstr "אנשי קשר"
 
-#: ../src/contacts-app.vala:73
+#: ../src/contacts-app.vala:79
 #, c-format
 msgid "No contact with id %s found"
 msgstr "לא נמצא איש קשר בעל המזהה %s"
 
-#: ../src/contacts-app.vala:74
-#: ../src/contacts-app.vala:92
+#: ../src/contacts-app.vala:80
+#: ../src/contacts-app.vala:202
 msgid "Contact not found"
 msgstr "איש הקשר לא נמצא"
 
-#: ../src/contacts-app.vala:91
+#: ../src/contacts-app.vala:89
+msgid "Change Address Book"
+msgstr "החלפת ספר הכתובות"
+
+#: ../src/contacts-app.vala:94
+#: ../src/contacts-setup-window.vala:152
+msgid "Select"
+msgstr "בחירה"
+
+#: ../src/contacts-app.vala:180
+msgid "translator-credits"
+msgstr "ירון שהרבני <sh.yaron@gmail.com>,‏ 2012"
+
+#: ../src/contacts-app.vala:181
+msgid "GNOME Contacts"
+msgstr "אנשי קשר מבית GNOME"
+
+#: ../src/contacts-app.vala:182
+msgid "About GNOME Contacts"
+msgstr "על אודות אנשי הקשר של GNOME"
+
+#: ../src/contacts-app.vala:183
+msgid "Contact Management Application"
+msgstr "יישום לניהול אנשי קשר"
+
+#: ../src/contacts-app.vala:201
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "לא נמצאו אנשי קשר עם כתובת הדוא״ל %s"
 
-#: ../src/contacts-app.vala:146
+#: ../src/contacts-app.vala:250
+msgid "Add..."
+msgstr "הוספה..."
+
+#: ../src/contacts-app.vala:371
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "איש הקשר נמחק: „%s“"
 
-#: ../src/contacts-app.vala:196
+#: ../src/contacts-app.vala:398
 msgid "Show contact with this individual id"
 msgstr "הצגת איש קשר עם מזהה ייחודי זה"
 
-#: ../src/contacts-app.vala:198
+#: ../src/contacts-app.vala:400
 msgid "Show contact with this email address"
 msgstr "הצגת איש הקשר עם כתובת דוא״ל זו"
 
-#: ../src/contacts-app.vala:205
+#: ../src/contacts-app.vala:411
+#: ../src/contacts-link-dialog.vala:86
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s מקושר אל %s"
+
+#: ../src/contacts-app.vala:427
 msgid "— contact management"
 msgstr "— ניהול אנשי קשר"
 
@@ -66,104 +101,108 @@ msgstr "עיון למציאות תמונות נוספות"
 msgid "Browse for more pictures..."
 msgstr "עיון למציאת תמונות נוספות..."
 
-#: ../src/contacts-contact-pane.vala:597
+#: ../src/contacts-contact-pane.vala:571
 msgid "Links"
 msgstr "קישורים"
 
-#: ../src/contacts-contact-pane.vala:598
+#: ../src/contacts-contact-pane.vala:572
+#: ../src/contacts-link-dialog.vala:72
+#: ../src/contacts-link-dialog.vala:153
 msgid "Link"
 msgstr "קישור"
 
-#: ../src/contacts-contact-pane.vala:685
-#: ../src/contacts-contact-pane.vala:686
+#: ../src/contacts-contact-pane.vala:659
+#: ../src/contacts-contact-pane.vala:660
+#: ../src/contacts-link-dialog.vala:115
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
 msgstr "דוא״ל"
 
-#: ../src/contacts-contact-pane.vala:727
+#: ../src/contacts-contact-pane.vala:701
 #: ../src/contacts-new-contact-dialog.vala:94
 #: ../src/contacts-new-contact-dialog.vala:125
 msgid "Phone"
 msgstr "טלפון"
 
-#: ../src/contacts-contact-pane.vala:728
+#: ../src/contacts-contact-pane.vala:702
+#: ../src/contacts-link-dialog.vala:131
 msgid "Phone number"
 msgstr "מספר טלפון"
 
-#: ../src/contacts-contact-pane.vala:788
-#: ../src/contacts-contact-pane.vala:789
+#: ../src/contacts-contact-pane.vala:762
+#: ../src/contacts-contact-pane.vala:763
 msgid "Chat"
 msgstr "שיחה"
 
-#: ../src/contacts-contact-pane.vala:851
+#: ../src/contacts-contact-pane.vala:828
 msgid "January"
 msgstr "ינואר"
 
-#: ../src/contacts-contact-pane.vala:852
+#: ../src/contacts-contact-pane.vala:829
 msgid "February"
 msgstr "פברואר"
 
-#: ../src/contacts-contact-pane.vala:853
+#: ../src/contacts-contact-pane.vala:830
 msgid "March"
 msgstr "מרץ"
 
-#: ../src/contacts-contact-pane.vala:854
+#: ../src/contacts-contact-pane.vala:831
 msgid "April"
 msgstr "אפריל"
 
-#: ../src/contacts-contact-pane.vala:855
+#: ../src/contacts-contact-pane.vala:832
 msgid "May"
 msgstr "מאי"
 
-#: ../src/contacts-contact-pane.vala:856
+#: ../src/contacts-contact-pane.vala:833
 msgid "June"
 msgstr "יוני"
 
-#: ../src/contacts-contact-pane.vala:857
+#: ../src/contacts-contact-pane.vala:834
 msgid "July"
 msgstr "יולי"
 
-#: ../src/contacts-contact-pane.vala:858
+#: ../src/contacts-contact-pane.vala:835
 msgid "August"
 msgstr "אוגוסט"
 
-#: ../src/contacts-contact-pane.vala:859
+#: ../src/contacts-contact-pane.vala:836
 msgid "September"
 msgstr "ספטמבר"
 
-#: ../src/contacts-contact-pane.vala:860
+#: ../src/contacts-contact-pane.vala:837
 msgid "October"
 msgstr "אוקטובר"
 
-#: ../src/contacts-contact-pane.vala:861
+#: ../src/contacts-contact-pane.vala:838
 msgid "November"
 msgstr "נובמבר"
 
-#: ../src/contacts-contact-pane.vala:862
+#: ../src/contacts-contact-pane.vala:839
 msgid "December"
 msgstr "דצמבר"
 
-#: ../src/contacts-contact-pane.vala:899
-#: ../src/contacts-contact-pane.vala:900
+#: ../src/contacts-contact-pane.vala:877
+#: ../src/contacts-contact-pane.vala:878
 msgid "Birthday"
 msgstr "יום הולדת"
 
-#: ../src/contacts-contact-pane.vala:972
-#: ../src/contacts-contact-pane.vala:973
+#: ../src/contacts-contact-pane.vala:950
+#: ../src/contacts-contact-pane.vala:951
 msgid "Nickname"
 msgstr "שם חיבה"
 
-#: ../src/contacts-contact-pane.vala:1062
-#: ../src/contacts-contact-pane.vala:1063
+#: ../src/contacts-contact-pane.vala:1041
+#: ../src/contacts-contact-pane.vala:1042
 msgid "Note"
 msgstr "הערה"
 
-#: ../src/contacts-contact-pane.vala:1201
+#: ../src/contacts-contact-pane.vala:1181
 msgid "Addresses"
 msgstr "כתובות"
 
-#: ../src/contacts-contact-pane.vala:1202
+#: ../src/contacts-contact-pane.vala:1182
 #: ../src/contacts-new-contact-dialog.vala:103
 #: ../src/contacts-new-contact-dialog.vala:130
 msgid "Address"
@@ -174,234 +213,261 @@ msgstr "כתובת"
 msgid "Add contact data to %s\n"
 msgstr "הוספת נתוני איש קשר אל %s\n"
 
-#: ../src/contacts-contact-pane.vala:1851
+#: ../src/contacts-contact-pane.vala:1730
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "האם %s מ־%s קשור לכאן?"
+
+#: ../src/contacts-contact-pane.vala:1732
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "האם כל הפרטים האלו קשורים אל %s?"
+
+#: ../src/contacts-contact-pane.vala:1742
+msgid "Yes"
+msgstr "כן"
+
+#: ../src/contacts-contact-pane.vala:1743
+msgid "No"
+msgstr "לא"
+
+#: ../src/contacts-contact-pane.vala:1926
 msgid "Select email address"
 msgstr "נא לבחור בכתובת דוא״ל"
 
-#: ../src/contacts-contact-pane.vala:1923
+#: ../src/contacts-contact-pane.vala:1998
 msgid "Select what to call"
 msgstr "נא לבחור לאן להתקשר"
 
-#: ../src/contacts-contact-pane.vala:1986
+#: ../src/contacts-contact-pane.vala:2061
 msgid "Select chat account"
 msgstr "נא לבחור בחשבון צ׳אט"
 
-#: ../src/contacts-contact-pane.vala:2050
+#: ../src/contacts-contact-pane.vala:2129
 msgid "Add/Remove Linked Contacts..."
 msgstr "הוספה/הסרה של אנשי קשרים מאוגדים..."
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2054
+#: ../src/contacts-contact-pane.vala:2133
 msgid "Delete"
 msgstr "מחיקה"
 
-#: ../src/contacts-contact.vala:445
+#: ../src/contacts-contact.vala:466
 msgid "Unknown status"
 msgstr "מצב בלתי ידוע"
 
-#: ../src/contacts-contact.vala:447
+#: ../src/contacts-contact.vala:468
 msgid "Offline"
 msgstr "מנותק"
 
-#: ../src/contacts-contact.vala:451
+#: ../src/contacts-contact.vala:472
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../src/contacts-contact.vala:453
+#: ../src/contacts-contact.vala:474
 msgid "Available"
 msgstr "זמין"
 
-#: ../src/contacts-contact.vala:455
+#: ../src/contacts-contact.vala:476
 msgid "Away"
 msgstr "מרוחק"
 
-#: ../src/contacts-contact.vala:457
+#: ../src/contacts-contact.vala:478
 msgid "Extended away"
 msgstr "מרוחק לאורך זמן"
 
-#: ../src/contacts-contact.vala:459
+#: ../src/contacts-contact.vala:480
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../src/contacts-contact.vala:461
+#: ../src/contacts-contact.vala:482
 msgid "Hidden"
 msgstr "מוסתר"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "Street"
 msgstr "רחוב"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "Extension"
 msgstr "שלוחה"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "City"
 msgstr "עיר"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "State/Province"
 msgstr "מדינה/אזור"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "Zip/Postal Code"
 msgstr "זיפ/מיקוד"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "PO box"
 msgstr "תיבת דואר"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:664
 msgid "Country"
 msgstr "מדינה"
 
-#: ../src/contacts-contact.vala:690
+#: ../src/contacts-contact.vala:720
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:691
+#: ../src/contacts-contact.vala:721
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:692
-#: ../src/contacts-contact.vala:971
+#: ../src/contacts-contact.vala:722
+#: ../src/contacts-contact.vala:1004
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:693
+#: ../src/contacts-contact.vala:723
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:694
+#: ../src/contacts-contact.vala:724
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:695
+#: ../src/contacts-contact.vala:725
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:696
+#: ../src/contacts-contact.vala:726
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:697
+#: ../src/contacts-contact.vala:727
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:698
+#: ../src/contacts-contact.vala:728
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:699
+#: ../src/contacts-contact.vala:729
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:700
+#: ../src/contacts-contact.vala:730
 msgid "Local network"
 msgstr "רשת מקומית"
 
-#: ../src/contacts-contact.vala:701
+#: ../src/contacts-contact.vala:731
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:702
+#: ../src/contacts-contact.vala:732
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:703
+#: ../src/contacts-contact.vala:733
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:704
+#: ../src/contacts-contact.vala:734
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:705
+#: ../src/contacts-contact.vala:735
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:706
+#: ../src/contacts-contact.vala:736
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:707
+#: ../src/contacts-contact.vala:737
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:708
+#: ../src/contacts-contact.vala:738
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:709
+#: ../src/contacts-contact.vala:739
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:710
+#: ../src/contacts-contact.vala:740
 msgid "Telephony"
 msgstr "Telephony"
 
-#: ../src/contacts-contact.vala:711
+#: ../src/contacts-contact.vala:741
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:712
-#: ../src/contacts-contact.vala:713
+#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:743
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:714
+#: ../src/contacts-contact.vala:744
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:974
+#: ../src/contacts-contact.vala:1007
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact.vala:1013
+#: ../src/contacts-contact.vala:1010
+msgid "Google Profile"
+msgstr "פרופיל Google"
+
+#: ../src/contacts-contact.vala:1074
 msgid "Unexpected internal error: created contact was not found"
 msgstr "שגיאה פנימית בלתי צפויה: איש הקשר שנוצר לא נמצא"
 
-#: ../src/contacts-esd-setup.c:588
+#: ../src/contacts-contact.vala:1223
+msgid "Google Circles"
+msgstr "מעגלים של Google"
+
+#: ../src/contacts-contact.vala:1225
+msgid "Google Other Contact"
+msgstr "אנשי קשר אחרים של Google"
+
+#: ../src/contacts-esd-setup.c:627
 msgid "Personal"
 msgstr "אישי"
 
-#: ../src/contacts-esd-setup.c:613
-msgid "Local Contact"
-msgstr "איש קשר מקומי"
+#: ../src/contacts-esd-setup.c:652
+msgid "Local Address Book"
+msgstr "ספר כתובות מקומי"
 
-#: ../src/contacts-esd-setup.c:620
+#: ../src/contacts-esd-setup.c:659
+#: ../src/contacts-esd-setup.c:678
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-esd-setup.c:671
+msgid "Local Contact"
+msgstr "איש קשר מקומי"
+
+#: ../src/contacts-link-dialog.vala:147
 msgid "Link Contact"
 msgstr "קישור איש קשר"
 
-#: ../src/contacts-link-dialog.vala:113
+#: ../src/contacts-link-dialog.vala:151
+msgid "Close"
+msgstr "סגירה"
+
+#: ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-setup-window.vala:137
+msgid "Cancel"
+msgstr "ביטול"
+
+#: ../src/contacts-link-dialog.vala:183
 #, c-format
-msgid "Select contacts to link to %s"
-msgstr "בחירת אנשי קשר לקישור אל %s"
+msgid "<span weight='bold'>Link contacts to %s</span>"
+msgstr "<span weight='bold'>קישור אנשי קשר אל %s</span>"
 
-#: ../src/contacts-link-dialog.vala:162
-msgctxt "link-contacts-button"
-msgid "Link"
-msgstr "קישור"
-
-#: ../src/contacts-link-dialog.vala:181
-msgid "Currently linked:"
-msgstr "מקושרים נכון לעכשיו:"
-
-#: ../src/contacts-list-pane.vala:148
-msgid ""
-"Connect to an account,\n"
-"import or add contacts"
-msgstr ""
-"התחברות לחשבון,\n"
-"יבוא או הוספת אנשי קשר"
-
-#: ../src/contacts-list-pane.vala:154
-msgid "Online Accounts"
-msgstr "אנשי קשר מקוונים"
+#: ../src/contacts-link-dialog.vala:185
+msgid "<span weight='bold'>Select contact to link to</span>"
+msgstr "<span weight='bold'>נא לבחור אנשי קשר לקשר אליהם</span>"
 
 #: ../src/contacts-new-contact-dialog.vala:35
 msgid "New contact"
@@ -431,18 +497,45 @@ msgstr "הוספת פרט"
 msgid "You must specify a contact name"
 msgstr "עליך לציין שם לאיש הקשר"
 
-#: ../src/contacts-new-contact-dialog.vala:317
+#: ../src/contacts-new-contact-dialog.vala:318
 msgid "No primary addressbook configured\n"
 msgstr "לא הוגדר ספר כתובות עיקרי\n"
 
-#: ../src/contacts-new-contact-dialog.vala:338
+#: ../src/contacts-new-contact-dialog.vala:340
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "לא ניתן ליצור איש קשר חדש: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:349
+#: ../src/contacts-new-contact-dialog.vala:351
 msgid "Unable to find newly created contact\n"
 msgstr "לא ניתן למצוא את איש הקשר שזה עתה נוצר\n"
+
+#: ../src/contacts-setup-window.vala:36
+#, c-format
+msgid "Welcome to Contacts!"
+msgstr "ברוך בואך ליישום אנשי הקשר!"
+
+#: ../src/contacts-setup-window.vala:77
+msgid "Online Account Settings"
+msgstr "הגדרות חשבון מקוון"
+
+#: ../src/contacts-setup-window.vala:82
+msgid "Setup an online account or use a local address book"
+msgstr "באפשרותך להגדיר חשבון מקוון או להשתמש בספר כתובות מקומי"
+
+#: ../src/contacts-setup-window.vala:85
+msgid "Online Accounts"
+msgstr "אנשי קשר מקוונים"
+
+#: ../src/contacts-setup-window.vala:88
+msgid "Use Local Address Book"
+msgstr "שימוש בספר כתובות מקומי"
+
+#: ../src/contacts-setup-window.vala:125
+#: ../src/contacts-setup-window.vala:146
+#, c-format
+msgid "Contacts Setup"
+msgstr "הגדרת אנשי קשר"
 
 #: ../src/contacts-types.vala:113
 #: ../src/contacts-types.vala:133
@@ -522,11 +615,40 @@ msgstr "TTY"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:89
+#: ../src/contacts-view.vala:128
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "הצעה"
 msgstr[1] "הצעות"
+
+#. Translators: This is the header for the list of suggested contacts to
+#. link to the current contact
+#: ../src/contacts-view.vala:133
+msgid "Other Contacts"
+msgstr "אנשי קשר אחרים"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+msgid "First-time setup done."
+msgstr "First-time setup done."
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+msgid "Set to true when the user ran the first-time setup wizard."
+msgstr "Set to true when the user ran the first-time setup wizard."
+
+#~ msgctxt "link-contacts-button"
+
+#~ msgid "Link"
+#~ msgstr "קישור"
+
+#~ msgid "Currently linked:"
+#~ msgstr "מקושרים נכון לעכשיו:"
+
+#~ msgid ""
+#~ "Connect to an account,\n"
+#~ "import or add contacts"
+#~ msgstr ""
+#~ "התחברות לחשבון,\n"
+#~ "יבוא או הוספת אנשי קשר"
 
 #~ msgid "Enter nickname"
 #~ msgstr "נא להזין שם חיבה"
@@ -566,6 +688,3 @@ msgstr[1] "הצעות"
 
 #~ msgid "More"
 #~ msgstr "עוד"
-
-#~ msgid "Send..."
-#~ msgstr "שליחה..."
