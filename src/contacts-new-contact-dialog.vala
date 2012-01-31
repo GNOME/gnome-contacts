@@ -207,6 +207,7 @@ public class Contacts.NewContactDialog : Dialog {
 				   DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
 				   MessageType.ERROR,
 				   ButtonsType.CLOSE,
+				   "%s",
 				   _("You must specify a contact name"));
 	d.show_all ();
 	d.response.connect ( (response_id) => {
