@@ -263,6 +263,7 @@ public class Contacts.App : Gtk.Application {
     toolbar.set_hexpand (true);
     grid.attach (toolbar, 1, 0, 1, 1);
 
+    /*
     var share_button = new ToolButton (null, null);
     share_button.set_sensitive (false);
     share_button.margin_right = 4;
@@ -274,6 +275,7 @@ public class Contacts.App : Gtk.Application {
     share_button.clicked.connect ( (button) => {
       });
 
+    */
     window.add (grid);
 
     /* We put in an overlay overlapping the left and right pane for the
