@@ -80,7 +80,7 @@ public class Contacts.LinkDialog : Dialog {
 	var selected_contact_name = selected_contact.display_name;
 	link_contacts.begin (contact, selected_contact, (obj, result) => {
 	    var operation = link_contacts.end (result);
-	    var undo_bar = new InfoBar.with_buttons ("Undo", ResponseType.APPLY, null);
+	    var undo_bar = new InfoBar.with_buttons (_("Undo"), ResponseType.APPLY, null);
 	    undo_bar.set_message_type (MessageType.INFO);
 	    var container = (undo_bar.get_content_area () as Container);
 	    var message_label = new Label (_("%s linked to %s").printf (selected_contact_name, contact.display_name));

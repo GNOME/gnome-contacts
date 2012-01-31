@@ -1282,7 +1282,7 @@ public class Contacts.PersonaSheet : Grid {
       }
 
       if (pane.contact.individual.personas.size > 1) {
-	var b = new Button.with_label("Unlink");
+	var b = new Button.with_label(_("Unlink"));
 	grid.add (b);
 
 	b.clicked.connect ( () => {
@@ -1314,7 +1314,7 @@ public class Contacts.PersonaSheet : Grid {
       footer = new FieldRow (pane.row_group);
       this.attach (footer, 0, row_nr++, 1, 1);
 
-      var b = new Button.with_label ("Add detail...");
+      var b = new Button.with_label (_("Add detail..."));
       b.set_halign (Align.START);
       b.clicked.connect (add_detail);
       footer.pack (b);
