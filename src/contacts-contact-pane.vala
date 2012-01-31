@@ -568,8 +568,8 @@ class Contacts.LinkFieldRow : DataFieldRow {
 
 class Contacts.LinkFieldSet : FieldSet {
   class construct {
-    label_name = _("Links");
-    detail_name = _("Link");
+    label_name = C_("Addresses on the Web", "Links");
+    detail_name = C_("Web address", "Link");
     property_name = "urls";
   }
 

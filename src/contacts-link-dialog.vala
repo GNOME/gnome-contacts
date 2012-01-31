@@ -69,7 +69,7 @@ public class Contacts.LinkDialog : Dialog {
     persona_grid.attach (label, 1, 1, 1, 1);
 
     if (contact.is_main) {
-      var link_button = new Button.with_label (_("Link"));
+      var link_button = new Button.with_label (C_("contacts link action", "Link"));
       link_button.set_hexpand (false);
       link_button.set_valign (Align.CENTER);
       var bbox = new ButtonBox (Orientation.HORIZONTAL);
