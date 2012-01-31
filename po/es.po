@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-27 19:48+0000\n"
-"PO-Revision-Date: 2012-01-29 20:28+0100\n"
+"POT-Creation-Date: 2012-01-31 15:31+0000\n"
+"PO-Revision-Date: 2012-01-31 17:10+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,25 +68,25 @@ msgstr "No se encontró el contacto con la dirección de correo-e %s"
 msgid "Add..."
 msgstr "Añadir…"
 
-#: ../src/contacts-app.vala:371
+#: ../src/contacts-app.vala:373
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Contacto eliminado: «%s»"
 
-#: ../src/contacts-app.vala:398
+#: ../src/contacts-app.vala:400
 msgid "Show contact with this individual id"
 msgstr "Mostrar contacto con su ID individual"
 
-#: ../src/contacts-app.vala:400
+#: ../src/contacts-app.vala:402
 msgid "Show contact with this email address"
 msgstr "Mostrar contacto con su dirección de correo-e"
 
-#: ../src/contacts-app.vala:411 ../src/contacts-link-dialog.vala:86
+#: ../src/contacts-app.vala:413 ../src/contacts-link-dialog.vala:86
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s enlazado a %s"
 
-#: ../src/contacts-app.vala:427
+#: ../src/contacts-app.vala:429
 msgid "— contact management"
 msgstr ": gestión de contactos"
 
@@ -99,13 +99,16 @@ msgid "Browse for more pictures..."
 msgstr "Examinar para buscar más imágenes…"
 
 #: ../src/contacts-contact-pane.vala:571
+#| msgid "Links"
+msgctxt "Addresses on the Web"
 msgid "Links"
 msgstr "Enlaces"
 
-#: ../src/contacts-contact-pane.vala:572 ../src/contacts-link-dialog.vala:72
-#: ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-contact-pane.vala:572
+#| msgid "Link"
+msgctxt "Web address"
 msgid "Link"
-msgstr "Enlazar"
+msgstr "Enlace"
 
 #: ../src/contacts-contact-pane.vala:659 ../src/contacts-contact-pane.vala:660
 #: ../src/contacts-link-dialog.vala:115
@@ -198,6 +201,16 @@ msgstr "Direcciones"
 #: ../src/contacts-new-contact-dialog.vala:130
 msgid "Address"
 msgstr "Dirección"
+
+#: ../src/contacts-contact-pane.vala:1285
+#| msgid "Enter link"
+msgid "Unlink"
+msgstr "Desenlazar"
+
+#: ../src/contacts-contact-pane.vala:1317
+#| msgid "Add Detail"
+msgid "Add detail..."
+msgstr "Añadir detalle…"
 
 #: ../src/contacts-contact-pane.vala:1331
 #, c-format
@@ -436,6 +449,16 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "Contacto local"
 
+#: ../src/contacts-link-dialog.vala:72
+#| msgid "Link"
+msgctxt "contacts link action"
+msgid "Link"
+msgstr "Enlazar"
+
+#: ../src/contacts-link-dialog.vala:83
+msgid "Undo"
+msgstr "Deshacer"
+
 #: ../src/contacts-link-dialog.vala:147
 msgid "Link Contact"
 msgstr "Enlazar contacto"
@@ -447,6 +470,10 @@ msgstr "Cerrar"
 #: ../src/contacts-link-dialog.vala:153 ../src/contacts-setup-window.vala:137
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: ../src/contacts-link-dialog.vala:153
+msgid "Link"
+msgstr "Enlazar"
 
 #: ../src/contacts-link-dialog.vala:183
 #, c-format
@@ -481,31 +508,29 @@ msgstr "Nombre del contacto"
 msgid "Add Detail"
 msgstr "Añadir detalle"
 
-#: ../src/contacts-new-contact-dialog.vala:210
+#: ../src/contacts-new-contact-dialog.vala:211
 msgid "You must specify a contact name"
 msgstr "Debe especificar un nombre de contacto"
 
-#: ../src/contacts-new-contact-dialog.vala:318
+#: ../src/contacts-new-contact-dialog.vala:319
 msgid "No primary addressbook configured\n"
 msgstr "No se configuró una dirección primaria\n"
 
-#: ../src/contacts-new-contact-dialog.vala:340
+#: ../src/contacts-new-contact-dialog.vala:341
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "No se pudieron crear los contactos nuevos: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:351
+#: ../src/contacts-new-contact-dialog.vala:352
 msgid "Unable to find newly created contact\n"
 msgstr "No se pudo encontrar el contacto nuevo creado\n"
 
 #: ../src/contacts-setup-window.vala:36
 #, c-format
-#| msgid "Gnome Contacts"
 msgid "Welcome to Contacts!"
 msgstr "Bienvenido a Contactos."
 
 #: ../src/contacts-setup-window.vala:77
-#| msgid "Online Accounts"
 msgid "Online Account Settings"
 msgstr "Configuración de cuentas en línea"
 
@@ -518,13 +543,11 @@ msgid "Online Accounts"
 msgstr "Cuentas en línea"
 
 #: ../src/contacts-setup-window.vala:88
-#| msgid "Local Address Book"
 msgid "Use Local Address Book"
 msgstr "Usar la libreta de direcciones local"
 
 #: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
 #, c-format
-#| msgid "Contacts"
 msgid "Contacts Setup"
 msgstr "Configuración de Contactos"
 
@@ -648,9 +671,6 @@ msgstr ""
 
 #~ msgid "Enter phone number"
 #~ msgstr "Introducir número de teléfono"
-
-#~ msgid "Enter link"
-#~ msgstr "Introducir enlace"
 
 #~ msgid "Enter name"
 #~ msgstr "Introducir nombre"
