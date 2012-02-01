@@ -411,11 +411,24 @@ public abstract class Contacts.FieldSet : Grid {
 	    saving = false;
 	  } catch (PropertyError e1) {
 	    warning ("Unable to edit property '%s': %s", property_name, e1.message);
+	    refresh_from_persona ();
 	  } catch (Error e2) {
 	    warning ("Unable to create writeable persona: %s", e2.message);
+	    refresh_from_persona ();
 	  }
-
 						     });
+    }
+  }
+
+  public void refresh_from_persona () {
+    this.clear ();
+    this.populate ();
+
+    if (this.is_empty ())
+      this.remove_from_sheet ();
+    else {
+      this.show_all ();
+      this.add_to_sheet ();
     }
   }
 }
@@ -1408,15 +1421,7 @@ public class Contacts.PersonaSheet : Grid {
     var name = pspec.get_name ();
     foreach (var field_set in field_sets) {
       if (field_set.reads_param (name) && !field_set.saving) {
-	field_set.clear ();
-	field_set.populate ();
-
-	if (field_set.is_empty ())
-	  field_set.remove_from_sheet ();
-	else {
-	  field_set.show_all ();
-	  field_set.add_to_sheet ();
-	}
+	field_set.refresh_from_persona ();
       }
     }
   }
