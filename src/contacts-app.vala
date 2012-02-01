@@ -363,6 +363,20 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
+  public void show_message (string message) {
+    var notification = new Gtk.Notification ();
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    var l = new Label (message);
+    l.set_line_wrap (true);
+    l.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    notification.add (l);
+
+    notification.show_all ();
+    overlay.add_overlay (notification);
+  }
+
   private void delete_contact (Contact contact) {
     var notification = new Gtk.Notification ();
 

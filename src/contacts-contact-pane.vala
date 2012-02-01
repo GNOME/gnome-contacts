@@ -409,11 +409,8 @@ public abstract class Contacts.FieldSet : Grid {
 	    var contact = obj as Contact;
 	    contact.set_persona_property.end (result);
 	    saving = false;
-	  } catch (PropertyError e1) {
-	    warning ("Unable to edit property '%s': %s", property_name, e1.message);
-	    refresh_from_persona ();
 	  } catch (Error e2) {
-	    warning ("Unable to create writeable persona: %s", e2.message);
+	    App.app.show_message (e2.message);
 	    refresh_from_persona ();
 	  }
 						     });
@@ -1498,7 +1495,13 @@ public class Contacts.ContactPane : ScrolledWindow {
 	Value v = Value (icon.get_type ());
 	v.set_object (icon);
 	set_individual_property.begin (contact,
-				       "avatar", v, () => {
+				       "avatar", v,
+					 (obj, result) => {
+					   try {
+					     var p = set_individual_property.end (result);
+					   } catch (Error e) {
+					     App.app.show_message (e.message);
+					   }
 				       });
       });
 
@@ -1586,7 +1589,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 					   try {
 					     var p = set_individual_property.end (result);
 					   } catch (Error e) {
-					     warning ("Unable to create writeable persona: %s", e.message);
+					     App.app.show_message (e.message);
 					   }
 					 });
 	}
