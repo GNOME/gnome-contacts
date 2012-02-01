@@ -407,8 +407,8 @@ public abstract class Contacts.FieldSet : Grid {
 						     (obj, result) => {
 	  try {
 	    var contact = obj as Contact;
-	    contact.set_persona_property.end (result);
 	    saving = false;
+	    contact.set_persona_property.end (result);
 	  } catch (Error e2) {
 	    App.app.show_message (e2.message);
 	    refresh_from_persona ();
