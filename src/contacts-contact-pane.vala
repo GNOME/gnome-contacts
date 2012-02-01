@@ -1491,6 +1491,7 @@ public class Contacts.ContactPane : ScrolledWindow {
       return;
 
     var menu = new AvatarMenu (contact);
+    var image_frame = new ContactFrame (PROFILE_SIZE, menu);
     menu.icon_set.connect ( (icon) => {
 	Value v = Value (icon.get_type ());
 	v.set_object (icon);
@@ -1501,11 +1502,11 @@ public class Contacts.ContactPane : ScrolledWindow {
 					     var p = set_individual_property.end (result);
 					   } catch (Error e) {
 					     App.app.show_message (e.message);
+					     image_frame.set_image (contact.individual, contact);
 					   }
 				       });
       });
 
-    var image_frame = new ContactFrame (PROFILE_SIZE, menu);
     contact.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (contact.individual, contact);
       });
@@ -1590,6 +1591,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 					     var p = set_individual_property.end (result);
 					   } catch (Error e) {
 					     App.app.show_message (e.message);
+					     l.set_markup ("<span font='16'>" + contact.display_name + "</span>");
 					   }
 					 });
 	}
