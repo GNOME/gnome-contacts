@@ -1482,6 +1482,25 @@ public class Contacts.ContactPane : ScrolledWindow {
     return null;
   }
 
+  private void change_avatar (ContactFrame image_frame) {
+    var dialog = new AvatarDialog (contact);
+    dialog.show_all ();
+    dialog.set_avatar.connect ( (icon) =>  {
+	Value v = Value (icon.get_type ());
+	v.set_object (icon);
+	set_individual_property.begin (contact,
+				       "avatar", v,
+				       (obj, result) => {
+					 try {
+					   var p = set_individual_property.end (result);
+					 } catch (Error e) {
+					   App.app.show_message (e.message);
+					   image_frame.set_image (contact.individual, contact);
+					 }
+				       });
+      });
+  }
+
   public void update_card () {
     foreach (var w in card_grid.get_children ()) {
       w.destroy ();
@@ -1490,23 +1509,10 @@ public class Contacts.ContactPane : ScrolledWindow {
     if (contact == null)
       return;
 
-    var menu = new AvatarMenu (contact);
-    var image_frame = new ContactFrame (PROFILE_SIZE, menu);
-    menu.icon_set.connect ( (icon) => {
-	Value v = Value (icon.get_type ());
-	v.set_object (icon);
-	set_individual_property.begin (contact,
-				       "avatar", v,
-					 (obj, result) => {
-					   try {
-					     var p = set_individual_property.end (result);
-					   } catch (Error e) {
-					     App.app.show_message (e.message);
-					     image_frame.set_image (contact.individual, contact);
-					   }
-				       });
+    var image_frame = new ContactFrame (PROFILE_SIZE, true);
+    image_frame.clicked.connect ( () => {
+	change_avatar (image_frame);
       });
-
     contact.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (contact.individual, contact);
       });
@@ -1708,7 +1714,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
-  
+
   public void add_suggestion (Contact c) {
     var row = new FieldRow (row_group);
     personas_grid.add (row);
@@ -1756,8 +1762,8 @@ public class Contacts.ContactPane : ScrolledWindow {
       var main_contact = contact.display_name;
       var linked_contact = c.display_name;
       link_contacts.begin (contact, c, (obj, result) => {
-        var operation = link_contacts.end (result);
-        this.contacts_linked (main_contact, linked_contact, operation);
+	var operation = link_contacts.end (result);
+	this.contacts_linked (main_contact, linked_contact, operation);
       });
       row.destroy ();
     });

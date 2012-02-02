@@ -32,12 +32,13 @@ vala_sources = \
 	contacts-utils.vala \
 	contacts-clickable.vala \
 	contacts-new-contact-dialog.vala \
-	contacts-avatar-menu.vala \
+	contacts-avatar-dialog.vala \
 	contacts-contact-frame.vala \
 	contacts-revealer.vala \
 	contacts-setup-window.vala \
 	contacts-window.vala \
 	main.vala \
+	memory-icon.vala \
 	$(NULL)
 
 gsettingsschema_in_files = org.gnome.Contacts.gschema.xml.in

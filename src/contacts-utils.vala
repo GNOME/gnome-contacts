@@ -242,4 +242,25 @@ public class Contacts.Utils : Object {
       spawn_app (calendar_settings);
     }
   }
+
+  public static string[] get_stock_avatars () {
+    string[] files = {};
+    var system_data_dirs = Environment.get_system_data_dirs ();
+    foreach (var data_dir in system_data_dirs) {
+      var path = Path.build_filename (data_dir, "pixmaps", "faces");
+      Dir? dir = null;
+      try {
+	dir = Dir.open (path);
+      }	catch {
+      }
+      if (dir != null) {
+	string? face;
+	while ((face = dir.read_name ()) != null) {
+	  var filename = Path.build_filename (path, face);
+	  files += filename;
+	}
+      }
+    };
+    return files;
+  }
 }
