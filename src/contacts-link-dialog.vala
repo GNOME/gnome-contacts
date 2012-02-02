@@ -46,7 +46,9 @@ public class Contacts.LinkDialog : Dialog {
       return;
 
     var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
-    image_frame.set_image (selected_contact as AvatarDetails);
+    contact.keep_widget_uptodate (image_frame, (w) => {
+	(w as ContactFrame).set_image (selected_contact.individual, selected_contact);
+      });
     image_frame.set_hexpand (false);
     persona_grid.attach (image_frame, 0, 0, 1, 2);
 
