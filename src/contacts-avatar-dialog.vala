@@ -245,6 +245,7 @@ public class Contacts.AvatarDialog : Dialog {
     grid.set_row_spacing (18);
 
     var frame = new Frame (null);
+    frame.get_style_context ().add_class ("contacts-avatar-frame");
     grid.attach (frame, 0, 1, 2, 1);
     var frame_grid = new Grid ();
     frame_grid.set_orientation (Orientation.VERTICAL);
