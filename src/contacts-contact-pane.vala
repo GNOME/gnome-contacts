@@ -1487,7 +1487,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 
   private void change_avatar (ContactFrame image_frame) {
     var dialog = new AvatarDialog (contact);
-    dialog.show_all ();
+    dialog.show ();
     dialog.set_avatar.connect ( (icon) =>  {
 	Value v = Value (icon.get_type ());
 	v.set_object (icon);

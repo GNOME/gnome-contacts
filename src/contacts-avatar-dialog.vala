@@ -24,6 +24,11 @@ public class Contacts.AvatarDialog : Dialog {
   const int main_size = 96;
   const int icons_size = 64;
   private Contact contact;
+  private Grid frame_grid;
+  private ScrolledWindow scrolled;
+  private ToolButton add_button;
+  private ToolButton crop_button;
+  private ToolButton cancel_button;
   private Grid view_grid;
   private ContactFrame main_frame;
 
@@ -201,7 +206,40 @@ public class Contacts.AvatarDialog : Dialog {
 	  var in_stream = file.read ();
 	  var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
 	  in_stream.close ();
-	  selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
+	  if (pixbuf.get_width () > 128 || pixbuf.get_height () > 128) {
+	    var crop_area = new Um.CropArea ();
+	    crop_area.set_vexpand (true);
+	    crop_area.set_hexpand (true);
+	    crop_area.set_min_size (48, 48);
+	    crop_area.set_constrain_aspect (true);
+	    crop_area.set_picture (pixbuf);
+	    frame_grid.attach_next_to (crop_area, scrolled, PositionType.TOP, 1, 1);
+	    crop_area.show ();
+	    crop_button.show ();
+	    crop_button.clicked.connect ((button) => {
+		var pix = crop_area.get_picture ();
+		selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
+		crop_area.destroy ();
+		crop_button.hide ();
+		cancel_button.hide ();
+
+		scrolled.show ();
+		add_button.show ();
+	      });
+	    cancel_button.show ();
+	    cancel_button.clicked.connect ((button) => {
+		crop_button.hide ();
+		cancel_button.hide ();
+
+		scrolled.show ();
+		add_button.show ();
+	      });
+	    add_button.hide ();
+	    scrolled.hide ();
+	  } else
+	    selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
+
+	  update_grid ();
 	} catch {
 	}
 
@@ -247,11 +285,11 @@ public class Contacts.AvatarDialog : Dialog {
     var frame = new Frame (null);
     frame.get_style_context ().add_class ("contacts-avatar-frame");
     grid.attach (frame, 0, 1, 2, 1);
-    var frame_grid = new Grid ();
+    frame_grid = new Grid ();
     frame_grid.set_orientation (Orientation.VERTICAL);
     frame.add (frame_grid);
 
-    var scrolled = new ScrolledWindow(null, null);
+    scrolled = new ScrolledWindow(null, null);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
     scrolled.set_hexpand (true);
@@ -268,12 +306,24 @@ public class Contacts.AvatarDialog : Dialog {
     toolbar.set_vexpand (false);
     frame_grid.add (toolbar);
 
-    var add_button = new ToolButton (null, null);
+    add_button = new ToolButton (null, null);
     add_button.set_icon_name ("list-add-symbolic");
     add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     add_button.is_important = true;
     toolbar.add (add_button);
     add_button.clicked.connect (select_avatar_file_cb);
+
+    crop_button = new ToolButton (null, null);
+    crop_button.set_icon_name ("object-select-symbolic");
+    crop_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    crop_button.is_important = true;
+    toolbar.add (crop_button);
+
+    cancel_button = new ToolButton (null, null);
+    cancel_button.set_icon_name ("edit-undo-symbolic");
+    cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    cancel_button.is_important = true;
+    toolbar.add (cancel_button);
 
     /*
     var remove_button = new ToolButton (null, null);
@@ -298,5 +348,8 @@ public class Contacts.AvatarDialog : Dialog {
     update_grid ();
 
     grid.show_all ();
+
+    crop_button.hide ();
+    cancel_button.hide ();
   }
 }
