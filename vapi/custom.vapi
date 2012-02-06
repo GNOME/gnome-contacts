@@ -57,3 +57,15 @@ namespace Gtk {
 	[CCode (cname = "gtk_builder_add_from_resource")]
 	public static unowned uint my_builder_add_from_resource (Gtk.Builder builder, string path) throws GLib.Error;
 }
+
+[CCode (cprefix = "Um", lower_case_cprefix = "um_", cheader_filename = "um-crop-area.h")]
+namespace Um {
+	public class CropArea : Gtk.DrawingArea {
+		[CCode (has_construct_function = false, type = "GtkWidget*")]
+		public CropArea ();
+		public void set_min_size (int width, int height);
+		public void set_constrain_aspect (bool  constrain);
+		public void set_picture (Gdk.Pixbuf pixbuf);
+		public Gdk.Pixbuf get_picture ();
+	}
+}
