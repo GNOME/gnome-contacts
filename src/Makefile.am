@@ -69,6 +69,8 @@ CLEANFILES = \
 
 EXTRA_DIST = \
 	gtk-notification.h   \
+	contacts.gresource.xml \
+	app-menu.ui \
 	$(gsettingsschema_in_files)     \
 	contacts-esd-setup.h \
 	$(NULL)
