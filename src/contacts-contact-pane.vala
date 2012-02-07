@@ -436,7 +436,10 @@ public abstract class Contacts.DataFieldRow : FieldRow {
 
   public DataFieldRow (FieldSet field_set) {
     base (field_set.sheet.pane.row_group);
-    set_editable (true);
+    bool editable =
+      Contact.persona_has_writable_property (field_set.sheet.persona,
+					     field_set.property_name);
+    set_editable (editable);
     this.field_set = field_set;
   }
 
