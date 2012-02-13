@@ -1634,12 +1634,13 @@ public class Contacts.ContactPane : ScrolledWindow {
     box.set_halign (Align.START);
 
     box.get_style_context ().add_class ("linked");
+    box.set_homogeneous (true);
+    box.set_halign (Align.FILL);
     var image = new Image.from_icon_name ("mail-unread-symbolic", IconSize.MENU);
     var b = new Button ();
     b.add (image);
     box.pack_start (b, true, true, 0);
     email_button = b;
-    email_button.set_size_request (82, 32);
     email_button.clicked.connect (send_email);
 
     image = new Image.from_icon_name ("user-available-symbolic", IconSize.MENU);
@@ -1647,7 +1648,6 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     chat_button = b;
-    chat_button.set_size_request (82, 32);
     chat_button.clicked.connect (start_chat);
 
     image = new Image.from_icon_name ("call-start-symbolic", IconSize.MENU);
@@ -1655,7 +1655,6 @@ public class Contacts.ContactPane : ScrolledWindow {
     b.add (image);
     box.pack_start (b, true, true, 0);
     call_button = b;
-    call_button.set_size_request (82, 32);
     call_button.clicked.connect (start_call);
 
     card_grid.attach (box,  1, 2, 1, 1);
@@ -1710,10 +1709,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     (chat_button.get_child () as Image).set_from_icon_name (icon, IconSize.MENU);
     chat_button.set_sensitive (found_im);
 
-    if (callable)
-      call_button.show ();
-    else
-      call_button.hide ();
+    call_button.set_sensitive (callable);
   }
 
   public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
