@@ -247,7 +247,7 @@ public class Contacts.App : Gtk.Application {
     toolbar.set_hexpand (false);
     grid.attach (toolbar, 0, 0, 1, 1);
 
-    var add_button = new ToolButton (null, _("Add..."));
+    var add_button = new ToolButton (null, _("New"));
     add_button.margin_left = 4;
     add_button.is_important = true;
     toolbar.add (add_button);
