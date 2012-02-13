@@ -29,11 +29,15 @@ public class Contacts.SetupWindow : Gtk.Window {
   TreeView tree_view;
 
   public void update_content () {
-    foreach (var w in content_grid.get_children ())
+    foreach (var w in content_grid.get_children ()) {
       w.destroy ();
+    }
 
-    var l = new Label ("");
-    l.set_markup ("<b>%s</b>".printf (_("Welcome to Contacts!")));
+    var l = new Label (_("Welcome to Contacts! Please select where you want to keep your address book:"));
+    l.set_line_wrap (true);
+    l.set_max_width_chars (5);
+    l.set_halign (Align.FILL);
+    l.set_alignment (0.0f, 0.5f);
     content_grid.add (l);
 
     Button goa_button;
@@ -56,9 +60,9 @@ public class Contacts.SetupWindow : Gtk.Window {
       column.add_attribute (renderer, "text", 0);
 
       var scrolled = new ScrolledWindow(null, null);
-      scrolled.set_size_request (340, 240);
+      scrolled.set_size_request (340, 220);
       scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-      scrolled.set_vexpand (true);
+      scrolled.set_vexpand (false);
       scrolled.set_shadow_type (ShadowType.IN);
       scrolled.add (tree_view);
 
@@ -178,6 +182,7 @@ public class Contacts.SetupWindow : Gtk.Window {
     grid.attach (frame, 0, 1, 1, 1);
 
     content_grid = new Grid ();
+    content_grid.set_border_width (12);
     content_grid.set_orientation (Orientation.VERTICAL);
     content_grid.set_halign (Align.CENTER);
     content_grid.set_row_spacing (8);
