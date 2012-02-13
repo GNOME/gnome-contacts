@@ -1341,7 +1341,7 @@ public class Contacts.PersonaSheet : Grid {
   }
 
   private void add_detail () {
-    var title = _("Add contact data to %s\n").printf (pane.contact.display_name);
+    var title = _("Select detail to add to %s").printf (pane.contact.display_name);
     var dialog = new Dialog.with_buttons ("",
 					  (Window) pane.get_toplevel (),
 					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
@@ -1374,7 +1374,7 @@ public class Contacts.PersonaSheet : Grid {
 
     var grid = new Grid ();
     grid.set_orientation (Orientation.VERTICAL);
-    grid.set_row_spacing (6);
+    grid.set_row_spacing (28);
 
     var l = new Label (title);
     l.set_halign (Align.START);
