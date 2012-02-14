@@ -50,6 +50,16 @@ public class Contacts.RowGroup : Object {
     rows = new Gee.ArrayList<Row>();
   }
 
+  public RowGroup copy () {
+    var n = new RowGroup (n_columns);
+
+    for (int i = 0; i < n_columns; i++)
+      n.column_info[i] = column_info[i];
+
+    return n;
+  }
+
+
   public ColumnInfo *get_column_info (int col) {
     return &column_info[col];
   }
