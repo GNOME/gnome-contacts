@@ -24,6 +24,7 @@ public class Contacts.FieldRow : Contacts.Row {
   Clickable clickable;
   int start;
   bool has_child_focus;
+  ContactPane pane;
 
   /* show_as_editable means we prelight, can_focus, show selected, etc.
      It doesn't mean we can't edit the row. For instance the
@@ -32,9 +33,16 @@ public class Contacts.FieldRow : Contacts.Row {
   protected bool show_as_editable;
   protected bool is_editing;
 
-  public FieldRow(RowGroup group) {
+  public FieldRow(RowGroup group, ContactPane pane) {
     base (group);
+    this.pane = pane;
     set_redraw_on_allocate (true); // Since we draw the focus rect
+
+    this.button_press_event.connect ( (ev) => {
+	if (!is_editing)
+	  this.pane.exit_edit_mode (true);
+	return false;
+      });
 
     clickable = new Clickable (this);
     clickable.set_focus_on_click (true);
@@ -343,7 +351,7 @@ public abstract class Contacts.FieldSet : Grid {
   construct {
     this.set_orientation (Orientation.VERTICAL);
 
-    label_row = new FieldRow (sheet.pane.row_group);
+    label_row = new FieldRow (sheet.pane.row_group, sheet.pane);
     this.add (label_row);
     label_row.pack_label (label_name);
   }
@@ -435,7 +443,7 @@ public abstract class Contacts.DataFieldRow : FieldRow {
   protected Button? delete_button;
 
   public DataFieldRow (FieldSet field_set) {
-    base (field_set.sheet.pane.row_group);
+    base (field_set.sheet.pane.row_group, field_set.sheet.pane);
     bool editable =
       Contact.persona_has_writable_property (field_set.sheet.persona,
 					     field_set.property_name);
@@ -1278,7 +1286,7 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!persona.store.is_primary_store || sheet_nr > 0) {
-      header = new FieldRow (pane.row_group);
+      header = new FieldRow (pane.row_group, pane);
 
       Label label;
       var grid = header.pack_header_in_grid (Contact.format_persona_store_name_for_contact (persona), out label);
@@ -1324,7 +1332,7 @@ public class Contacts.PersonaSheet : Grid {
     }
 
     if (editable) {
-      footer = new FieldRow (pane.row_group);
+      footer = new FieldRow (pane.row_group, pane);
       this.attach (footer, 0, row_nr++, 1, 1);
 
       var b = new Button.with_label (_("Add detail..."));
@@ -1341,6 +1349,7 @@ public class Contacts.PersonaSheet : Grid {
   }
 
   private void add_detail () {
+    pane.exit_edit_mode (true);
     var title = _("Select detail to add to %s").printf (pane.contact.display_name);
     var dialog = new Dialog.with_buttons ("",
 					  (Window) pane.get_toplevel (),
@@ -1487,6 +1496,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   private void change_avatar (ContactFrame image_frame) {
+    this.exit_edit_mode (true);
     var dialog = new AvatarDialog (contact);
     dialog.show ();
     dialog.set_avatar.connect ( (icon) =>  {
@@ -1716,7 +1726,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
 
   public void add_suggestion (Contact c) {
-    var row = new FieldRow (row_group);
+    var row = new FieldRow (row_group, this);
     personas_grid.add (row);
 
     var grid = new Grid ();
@@ -2094,6 +2104,11 @@ public class Contacts.ContactPane : ScrolledWindow {
     this.get_style_context ().add_class ("contacts-content");
     this.set_shadow_type (ShadowType.IN);
 
+    this.button_press_event.connect ( (e) => {
+	exit_edit_mode (true);
+	return false;
+      });
+
     this.contacts_store = contacts_store;
     row_group = new RowGroup(3);
     row_group.set_column_min_width (0, 32);
@@ -2135,7 +2150,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     this.get_child().get_style_context ().add_class ("contacts-main-view");
     this.get_child().get_style_context ().add_class ("view");
 
-    card_row = new FieldRow (card_row_group);
+    card_row = new FieldRow (card_row_group, this);
     top_grid.add (card_row);
     card_grid = new Grid ();
     card_grid.set_vexpand (false);
