@@ -126,10 +126,6 @@ public class Contacts.ListPane : Frame {
     search_entry_item.add (filter_entry);
     toolbar.add (search_entry_item);
 
-    var separator = new SeparatorToolItem ();
-    separator.set_draw (false);
-    toolbar.add (separator);
-
     this.set_size_request (315, -1);
     this.set_hexpand (false);
 
