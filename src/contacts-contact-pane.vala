@@ -1435,6 +1435,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   private Grid card_grid;
   private Grid personas_grid;
   public RowGroup row_group;
+  public RowGroup card_row_group;
   public FieldRow? editing_row;
 
   public Button email_button;
@@ -2103,6 +2104,13 @@ public class Contacts.ContactPane : ScrolledWindow {
     row_group.set_column_spacing (1, 8);
     row_group.set_column_priority (1, 1);
 
+    card_row_group = row_group.copy ();
+    /* This is kinda lame hardcoding so that the frame inside
+       the button aligns with the other rows. It really
+       depends on the theme, but there seems no good way to
+       do this */
+    card_row_group.set_column_spacing (0, 0);
+
     this.set_hexpand (true);
     this.set_vexpand (true);
     this.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
@@ -2127,7 +2135,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     this.get_child().get_style_context ().add_class ("contacts-main-view");
     this.get_child().get_style_context ().add_class ("view");
 
-    card_row = new FieldRow (row_group);
+    card_row = new FieldRow (card_row_group);
     top_grid.add (card_row);
     card_grid = new Grid ();
     card_grid.set_vexpand (false);
