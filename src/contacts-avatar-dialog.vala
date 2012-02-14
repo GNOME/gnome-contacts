@@ -21,8 +21,9 @@ using Folks;
 
 public class Contacts.AvatarDialog : Dialog {
   private Gnome.DesktopThumbnailFactory thumbnail_factory;
-  const int main_size = 96;
+  const int main_size = 128;
   const int icons_size = 64;
+  const int n_columns = 6;
   private Contact contact;
   private Grid frame_grid;
   private ScrolledWindow scrolled;
@@ -110,8 +111,8 @@ public class Contacts.AvatarDialog : Dialog {
       if (frame != null) {
 	view_grid.attach (frame, i, j, 1, 1);
 	i++;
-	if (i >= 4) {
-	  i -= 4;
+	if (i >= n_columns) {
+	  i -= n_columns;
 	  j++;
 	}
       }
@@ -124,7 +125,7 @@ public class Contacts.AvatarDialog : Dialog {
 
     if (j != 0) {
       var s = new Separator (Orientation.HORIZONTAL);
-      view_grid.attach (s, 0, j++, 4, 1);
+      view_grid.attach (s, 0, j++, n_columns, 1);
     }
 
     var stock_files = Utils.get_stock_avatars ();
@@ -133,8 +134,8 @@ public class Contacts.AvatarDialog : Dialog {
       if (frame != null) {
 	view_grid.attach (frame, i, j, 1, 1);
 	i++;
-	if (i >= 4) {
-	  i -= 4;
+	if (i >= n_columns) {
+	  i -= n_columns;
 	  j++;
 	}
       }
@@ -178,7 +179,7 @@ public class Contacts.AvatarDialog : Dialog {
 
   private void select_avatar_file_cb () {
     var chooser = new FileChooserDialog (_("Browse for more pictures"),
-					 (Window)this.get_toplevel (),
+					 (Gtk.Window)this.get_toplevel (),
 					 FileChooserAction.OPEN,
 					 Stock.CANCEL, ResponseType.CANCEL,
 					 Stock.OPEN, ResponseType.ACCEPT);
@@ -260,7 +261,7 @@ public class Contacts.AvatarDialog : Dialog {
 
     var grid = new Grid ();
     grid.set_border_width (8);
-    grid.set_column_spacing (8);
+    grid.set_column_spacing (16);
     var container = (get_content_area () as Container);
     container.add (grid);
 
@@ -272,15 +273,16 @@ public class Contacts.AvatarDialog : Dialog {
     grid.attach (main_frame, 0, 0, 1, 1);
 
     var label = new Label ("");
-    label.set_markup ("<span font='13'>" + contact.display_name + "</span>");
+    label.set_markup ("<span font='16'>" + contact.display_name + "</span>");
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_hexpand (true);
+    label.set_margin_top (4);
     label.xalign = 0.0f;
     label.set_ellipsize (Pango.EllipsizeMode.END);
     grid.attach (label, 1, 0, 1, 1);
 
-    grid.set_row_spacing (18);
+    grid.set_row_spacing (11);
 
     var frame = new Frame (null);
     frame.get_style_context ().add_class ("contacts-avatar-frame");
