@@ -37,6 +37,7 @@ public class Contacts.ContactFrame : Frame {
 
     if (with_button) {
       var button = new Button ();
+      button.get_style_context ().add_class ("contacts-square");
       button.set_relief (ReliefStyle.NONE);
       button.set_focus_on_click (false);
       button.add (image);
