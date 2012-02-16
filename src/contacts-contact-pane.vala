@@ -1280,12 +1280,11 @@ public class Contacts.PersonaSheet : Grid {
 
     int row_nr = 0;
 
-    bool editable =
-      Contact.persona_has_writable_property (persona, "email-addresses") &&
+    bool editable = Contact.persona_has_writable_property (persona, "email-addresses") &&
       Contact.persona_has_writable_property (persona, "phone-numbers") &&
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
-    if (!persona.store.is_primary_store || sheet_nr > 0) {
+    if (!Contact.persona_is_main (persona) || sheet_nr > 0) {
       header = new FieldRow (pane.row_group, pane);
 
       Label label;

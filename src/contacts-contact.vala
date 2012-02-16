@@ -373,7 +373,7 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  private static bool persona_is_main (Persona persona) {
+  public static bool persona_is_main (Persona persona) {
     var store = persona.store;
     if (!store.is_primary_store)
       return false;
