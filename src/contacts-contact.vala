@@ -812,9 +812,7 @@ public class Contacts.Contact : GLib.Object  {
     changed_id = 0;
     var changed_personas = this.changed_personas;
     this.changed_personas = false;
-    if (changed_personas) {
-      this.is_main = calc_is_main ();
-    }
+    this.is_main = calc_is_main ();
     update ();
     changed ();
     if (changed_personas)
@@ -1278,9 +1276,14 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
-  public static async Persona? create_primary_persona_for_details (HashTable<string, Value?> details) throws Folks.PersonaStoreError {
+  public static async Persona? create_primary_persona_for_details (HashTable<string, Value?> details) throws GLib.Error {
     var primary_store = App.app.contacts_store.aggregator.primary_store;
-    return yield primary_store.add_persona_from_details (details);
+    var p = yield primary_store.add_persona_from_details (details);
+    if (p != null && persona_is_google (p)) {
+      var g = p as GroupDetails;
+      yield g.change_group (eds_personal_google_group_name (), true);
+    }
+    return p;
   }
 
   internal static async void set_persona_property (Persona persona,
