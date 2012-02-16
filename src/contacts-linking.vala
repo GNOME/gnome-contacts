@@ -41,8 +41,10 @@ namespace Contacts {
     }
 
     public void set_split_out_contact (Contact? contact) {
-      split_out_personas = new ArrayList<Persona> ();
-      split_out_personas.add_all (contact.individual.personas);
+      if (contact != null) {
+	split_out_personas = new ArrayList<Persona> ();
+	split_out_personas.add_all (contact.individual.personas);
+      }
     }
 
     public void added_persona (Persona persona) {
@@ -530,7 +532,7 @@ namespace Contacts {
     }
   }
 
-  public async LinkOperation link_contacts (Contact main, Contact other) {
+  public async LinkOperation link_contacts (Contact main, Contact? other) {
     // This should not be used as being replaced with the new individual
     // instead we should always pick this contact to keep around
     main.set_data ("contacts-master-at-join", true);
@@ -539,16 +541,20 @@ namespace Contacts {
     operation.set_split_out_contact (other);
 
     var main_linkables = get_linkable_attributes_for_individual (main.individual);
-    var other_linkables = get_linkable_attributes_for_individual (other.individual);
+    Set<PersonaAttribute>? other_linkables = null;
+    if (other != null)
+      other_linkables = get_linkable_attributes_for_individual (other.individual);
     Set<PersonaAttribute>? linkables = null;
 
     // Remove all linkable data from each contact that is already in the other contact
     main_linkables.remove_all (other_linkables);
-    other_linkables.remove_all (main_linkables);
+    if (other_linkables != null)
+      other_linkables.remove_all (main_linkables);
 
     Persona? write_persona = null;
     foreach (var p1 in main.individual.personas) {
-      if (persona_can_link_to (p1, other_linkables)) {
+      if (other_linkables != null &&
+	  persona_can_link_to (p1, other_linkables)) {
 	write_persona = p1;
 	linkables = other_linkables;
 	if (write_persona.store.is_primary_store)
@@ -556,7 +562,8 @@ namespace Contacts {
       }
     }
 
-    if (write_persona == null || !write_persona.store.is_primary_store) {
+    if (other != null &&
+	(write_persona == null || !write_persona.store.is_primary_store)) {
       foreach (var p2 in other.individual.personas) {
 	if (persona_can_link_to (p2, main_linkables)) {
 	  // Only override main persona if its a primary store persona
@@ -573,13 +580,14 @@ namespace Contacts {
     if (write_persona == null) {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
+	var v = Value (typeof (string));
+	v.set_string (main.display_name);
+	details.set ("full-name", v);
 	write_persona = yield main.store.aggregator.primary_store.add_persona_from_details (details);
 	operation.added_persona (write_persona);
 	linkables = main_linkables;
-	linkables.add_all (other_linkables);
-	var name_details = write_persona as NameDetails;
-	if (name_details != null)
-	  yield name_details.change_full_name (main.display_name);
+	if (other_linkables != null)
+	  linkables.add_all (other_linkables);
       } catch (GLib.Error e) {
 	main.set_data ("contacts-master-at-join", false);
 	warning ("Unable to create new persona when linking: %s\n", e.message);
