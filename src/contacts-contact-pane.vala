@@ -1301,7 +1301,17 @@ public class Contacts.PersonaSheet : Grid {
 	grid.add (image);
       }
 
-      if (pane.contact.individual.personas.size > 1) {
+      if (sheet_nr == 0) {
+	var b = new Button.with_label(_("Add to My Contacts"));
+	grid.add (b);
+
+	b.clicked.connect ( () => {
+	    link_contacts.begin (pane.contact, null, (obj, result) => {
+		link_contacts.end (result);
+		/* TODO: Support undo */
+	      });
+	  });
+      } else if (pane.contact.individual.personas.size > 1) {
 	var b = new Button.with_label(_("Unlink"));
 	grid.add (b);
 
