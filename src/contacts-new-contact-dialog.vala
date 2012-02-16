@@ -324,13 +324,13 @@ public class Contacts.NewContactDialog : Dialog {
       return;
     }
 
-    contacts_store.aggregator.primary_store.add_persona_from_details.begin (details, (obj, res) => {
+    Contact.create_primary_persona_for_details.begin (details, (obj, res) => {
 	var store = obj as PersonaStore;
 	Persona? persona = null;
 	Dialog dialog = null;
 
 	try {
-	  persona = store.add_persona_from_details.end (res);
+	  persona = Contact.create_primary_persona_for_details.end (res);
 	} catch (Error e) {
 	  dialog = new MessageDialog (this.get_toplevel () as Window,
 				      DialogFlags.DESTROY_WITH_PARENT |

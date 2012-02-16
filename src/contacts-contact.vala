@@ -1278,6 +1278,11 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
+  public static async Persona? create_primary_persona_for_details (HashTable<string, Value?> details) throws Folks.PersonaStoreError {
+    var primary_store = App.app.contacts_store.aggregator.primary_store;
+    return yield primary_store.add_persona_from_details (details);
+  }
+
   internal static async void set_persona_property (Persona persona,
 						   string property_name, Value new_value) throws PropertyError, IndividualAggregatorError, ContactError, PropertyError {
     if (persona is FakePersona) {
