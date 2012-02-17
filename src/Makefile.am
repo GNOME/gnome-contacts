@@ -7,6 +7,7 @@ AM_CPPFLAGS = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\" \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API \
+	-Dget_preferred_height_for_width_internal=get_preferred_height_for_width
 	$(NULL)
 
 AM_VALAFLAGS = \
@@ -19,7 +20,7 @@ AM_VALAFLAGS += -D HAVE_GSTREAMER @CONTACTS_GSTREAMER_PACKAGES@
 AM_CPPFLAGS += $(CONTACTS_GSTREAMER_CFLAGS)
 endif
 
-bin_PROGRAMS = gnome-contacts
+bin_PROGRAMS = gnome-contacts test-sorted
 
 vala_sources = \
 	contacts-app.vala \
@@ -66,6 +67,13 @@ gnome_contacts_SOURCES = \
 	contacts-esd-setup.c \
 	$(vala_sources) \
 	$(NULL)
+
+test_sorted_SOURCES = \
+	contacts-sorted.vala \
+	test-sorted.vala \
+	$(NULL)
+test_sorted_LDADD = $(CONTACTS_LIBS)
+
 
 gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
