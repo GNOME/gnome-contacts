@@ -70,6 +70,7 @@ public class Contacts.Sorted : Container {
   NeedSeparatorFunc? need_separator_func;
   CreateSeparatorFunc? create_separator_func;
   UpdateSeparatorFunc? update_separator_func;
+  protected Gdk.Window event_window;
 
   private int do_sort (ChildInfo? a, ChildInfo? b) {
     return sort_func (a.widget, b.widget);
@@ -81,6 +82,36 @@ public class Contacts.Sorted : Container {
 
     children = new Sequence<ChildInfo?>();
     child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
+  }
+
+  public override void realize () {
+    Allocation allocation;
+    get_allocation (out allocation);
+    set_realized (true);
+
+    Gdk.WindowAttr attributes = { };
+    attributes.x = allocation.x;
+    attributes.y = allocation.y;
+    attributes.width = allocation.width;
+    attributes.height = allocation.height;
+    attributes.window_type = Gdk.WindowType.CHILD;
+    attributes.event_mask = this.get_events () | Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.ENTER_NOTIFY_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK;
+
+    var window = get_parent_window ();
+    this.set_window (window);
+
+    attributes.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
+    event_window = new Gdk.Window (window, attributes,
+				   Gdk.WindowAttributesType.X |
+				   Gdk.WindowAttributesType.Y);
+    event_window.set_user_data (this);
+  }
+
+  public override void unrealize () {
+    event_window.set_user_data (null);
+    event_window.destroy ();
+    event_window = null;
+    base.unrealize ();
   }
 
   private void apply_filter (Widget child) {
@@ -183,10 +214,12 @@ public class Contacts.Sorted : Container {
   }
 
   public override void map () {
+    event_window.show ();
     base.map ();
   }
 
   public override void unmap () {
+    event_window.hide ();
     base.unmap ();
   }
 
@@ -336,6 +369,12 @@ public class Contacts.Sorted : Container {
     Allocation child_allocation = { 0, 0, 0, 0};
 
     set_allocation (allocation);
+
+    if (event_window != null)
+      event_window.move_resize (allocation.x,
+				allocation.y,
+				allocation.width,
+				allocation.height);
 
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y;
