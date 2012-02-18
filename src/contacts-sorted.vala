@@ -25,6 +25,7 @@ using Gee;
    + first char or type custom "separators"
      (create, destroy, update)
    + Work with largish sets of children
+   + selection and keynave
 
    filter => child visibility setting
 
@@ -207,8 +208,10 @@ public class Contacts.Sorted : Container {
 
     apply_filter (widget);
 
+    var prev_next = iter.next ();
     update_separator (iter, null, true);
     update_separator (iter.next (), iter, true);
+    update_separator (prev_next, null, true);
 
     info.iter = iter;
 
@@ -220,12 +223,17 @@ public class Contacts.Sorted : Container {
     if (info == null)
       return;
 
+    var prev_next = info.iter.next ();
+
     if (sort_func != null) {
       children.sort_changed (info.iter, do_sort);
       this.queue_resize ();
     }
     apply_filter (info.widget);
     update_separator (info.iter, null, true);
+    update_separator (info.iter.next (), info.iter, true);
+    update_separator (prev_next, null, true);
+
   }
 
   public override void remove (Widget widget) {
