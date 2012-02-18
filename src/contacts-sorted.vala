@@ -32,7 +32,7 @@ using Gee;
    How to construct separators?
    What about resort a single item, can be problem if more change
     at the same time, need a stable sort...
-   
+
    settings:
 	  sort function
 	  filter function
@@ -41,7 +41,7 @@ using Gee;
 	  update_separator (if the child below it changes)
 
 	ops:
-	  child-changed (resort, refilter, 
+	  child-changed (resort, refilter,
 	  resort-all
 	  refilter-all
 
@@ -52,15 +52,13 @@ using Gee;
 
 public class Contacts.Sorted : Container {
   public delegate bool FilterFunc (Widget child);
-  public delegate bool NeedSeparatorFunc (Widget? before, Widget widget);
-  public delegate Widget CreateSeparatorFunc (Widget child);
-  public delegate void UpdateSeparatorFunc (Widget separator, Widget child);
+  public delegate bool NeedSeparatorFunc (Widget widget, Widget? before);
+  public delegate Widget CreateSeparatorFunc ();
+  public delegate void UpdateSeparatorFunc (Widget separator, Widget child, Widget? before);
 
   struct ChildInfo {
     Widget widget;
-    bool is_separator;
-    bool has_separator;
-    int height;
+    Widget? separator;
     SequenceIter<ChildInfo?> iter;
   }
 
@@ -70,6 +68,7 @@ public class Contacts.Sorted : Container {
   FilterFunc? filter_func;
   NeedSeparatorFunc? need_separator_func;
   CreateSeparatorFunc? create_separator_func;
+  UpdateSeparatorFunc? update_separator_func;
 
   private int do_sort (ChildInfo? a, ChildInfo? b) {
     return sort_func (a.widget, b.widget);
@@ -101,17 +100,82 @@ public class Contacts.Sorted : Container {
     filter_func = (owned)f;
     refilter ();
   }
-  
+
+  public void set_separator_funcs (owned NeedSeparatorFunc? need_separator,
+				   owned CreateSeparatorFunc? create_separator,
+				   owned UpdateSeparatorFunc? update_separator = null) {
+    need_separator_func = (owned)need_separator;
+    create_separator_func = (owned)create_separator;
+    update_separator_func = (owned)update_separator;
+    reseparate ();
+  }
+
   public void refilter () {
     apply_filter_all ();
+    reseparate ();
     queue_resize ();
   }
-  
+
   public void resort () {
     children.sort (do_sort);
+    reseparate ();
     queue_resize ();
   }
-  
+
+  private void update_separator (SequenceIter<ChildInfo?> iter, SequenceIter<ChildInfo?>? before_iter,
+				bool update_if_exist) {
+    if (iter.is_end ())
+      return;
+
+    unowned ChildInfo? info = iter.get ();
+    unowned ChildInfo? before_info = null;
+    if (!iter.is_begin()) {
+      if (before_iter == null)
+	before_info = iter.prev ().get ();
+      else
+	before_info = before_iter.get ();
+    }
+
+    var widget = info.widget;
+    Widget? before_widget = before_info != null ? before_info.widget : null;
+
+    bool need_separator = false;
+
+    if (need_separator_func != null &&
+	widget.get_visible () &&
+	widget.get_child_visible ())
+      need_separator = need_separator_func (widget, before_widget);
+
+    if (need_separator) {
+      if (info.separator == null) {
+	info.separator = create_separator_func ();
+	info.separator.set_parent (this);
+	info.separator.show ();
+	if (update_separator_func != null)
+	  update_separator_func (info.separator, widget, before_widget);
+	this.queue_resize ();
+      } else if (update_if_exist) {
+	if (update_separator_func != null)
+	  update_separator_func (info.separator, widget, before_widget);
+      }
+    } else {
+      if (info.separator != null) {
+	info.separator.unparent ();
+	info.separator = null;
+	this.queue_resize ();
+      }
+    }
+  }
+
+  public void reseparate () {
+    SequenceIter<ChildInfo?>? last = null;
+    for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
+      update_separator (iter, last, false);
+      last = iter;
+    }
+    queue_resize ();
+  }
+
   public void set_sort_func (owned CompareDataFunc<Widget>? f) {
     sort_func = (owned)f;
     resort ();
@@ -128,21 +192,24 @@ public class Contacts.Sorted : Container {
   private unowned ChildInfo? lookup_info (Widget widget) {
     return child_hash.get (widget);
   }
-  
+
   public override void add (Widget widget) {
     ChildInfo? the_info = { widget };
     unowned ChildInfo? info = the_info;
     SequenceIter<ChildInfo?> iter;
-    
+
     child_hash.set (widget, info);
-    
+
     if (sort_func != null)
       iter = children.insert_sorted ((owned) the_info, do_sort);
     else
       iter = children.append ((owned) the_info);
 
     apply_filter (widget);
-    
+
+    update_separator (iter, null, true);
+    update_separator (iter.next (), iter, true);
+
     info.iter = iter;
 
     widget.set_parent (this);
@@ -158,18 +225,23 @@ public class Contacts.Sorted : Container {
       this.queue_resize ();
     }
     apply_filter (info.widget);
+    update_separator (info.iter, null, true);
   }
-  
+
   public override void remove (Widget widget) {
     unowned ChildInfo? info = lookup_info (widget);
     if (info == null)
       return;
 
+    var next = info.iter.next ();
+
     bool was_visible = widget.get_visible ();
     widget.unparent ();
 
     child_hash.unset (widget);
-    
+
+    update_separator (next, null, false);
+
     if (was_visible && this.get_visible ())
       this.queue_resize ();
   }
@@ -178,6 +250,8 @@ public class Contacts.Sorted : Container {
 					Gtk.Callback callback) {
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
       unowned ChildInfo? child_info = iter.get ();
+      if (child_info.separator != null && include_internals)
+	callback (child_info.separator);
       callback (child_info.widget);
     }
   }
@@ -187,7 +261,7 @@ public class Contacts.Sorted : Container {
     /* We don't expand vertically beyound the minimum size */
     vexpand = false;
   }
-  
+
   public override Type child_type () {
     return typeof (Widget);
   }
@@ -211,7 +285,7 @@ public class Contacts.Sorted : Container {
 
       if (!widget.get_visible () || !widget.get_child_visible ())
 	continue;
-      
+
       widget.get_preferred_height_for_width (width, out child_min, null);
       minimum_height += child_min;
     }
@@ -233,10 +307,16 @@ public class Contacts.Sorted : Container {
 
       if (!widget.get_visible () || !widget.get_child_visible ())
 	continue;
-      
+
       widget.get_preferred_width (out child_min, out child_nat);
       minimum_width = int.max (minimum_width, child_min);
       natural_width = int.max (natural_width, child_nat);
+
+      if (child_info.separator != null) {
+	child_info.separator.get_preferred_width (out child_min, out child_nat);
+	minimum_width = int.max (minimum_width, child_min);
+	natural_width = int.max (natural_width, child_nat);
+      }
     }
   }
 
@@ -248,7 +328,7 @@ public class Contacts.Sorted : Container {
     Allocation child_allocation = { 0, 0, 0, 0};
 
     set_allocation (allocation);
-    
+
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y;
     child_allocation.width = allocation.width;
@@ -260,12 +340,22 @@ public class Contacts.Sorted : Container {
 
       if (!widget.get_visible () || !widget.get_child_visible ())
 	continue;
-      
+
+      if (child_info.separator != null) {
+	child_info.separator.get_preferred_height_for_width (allocation.width, out child_min, null);
+	child_allocation.height = child_min;
+
+	child_info.separator.size_allocate (child_allocation);
+
+	child_allocation.y += child_min;
+      }
+
+
       widget.get_preferred_height_for_width (allocation.width, out child_min, null);
-      child_allocation.height = child_info.height = child_min;
+      child_allocation.height = child_min;
 
       widget.size_allocate (child_allocation);
-      
+
       child_allocation.y += child_min;
     }
   }

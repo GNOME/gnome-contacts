@@ -19,6 +19,30 @@
 using Gtk;
 using Contacts;
 
+public bool need_separator (Widget widget, Widget? before)
+{
+	if (before == null) {
+		return true;
+	}
+	var text = (widget as Label).get_text ();
+	return strcmp (text, "blah3") == 0;
+}
+
+public Widget create_separator ()
+{
+	var l = new Button.with_label ("label");
+	return l;
+}
+
+public void update_separator (Widget separator,
+							  Widget child,
+							  Widget? before_widget)
+{
+	var text = (child as Label).get_text ();
+	(separator as Button).set_label ("Label %s".printf (text));
+}
+
+
 
 public static int
 compare_label (Widget a, Widget b) {
@@ -35,18 +59,18 @@ compare_label_reverse (Widget a, Widget b) {
 public static bool
 filter (Widget widget) {
 	var text = (widget as Label).get_text ();
-	return strcmp (text, "blah2") != 0;
+	return strcmp (text, "blah3") != 0;
 }
 
 public static int
 main (string[] args) {
-	
+
   Gtk.init (ref args);
 
   var w = new Window ();
   var hbox = new Box(Orientation.HORIZONTAL, 0);
   w.add (hbox);
-  
+
   var sorted = new Sorted();
   hbox.add (sorted);
 
@@ -58,7 +82,7 @@ main (string[] args) {
 
   var vbox = new Box(Orientation.VERTICAL, 0);
   hbox.add (vbox);
-  
+
   var b = new Button.with_label ("sort");
   vbox.add (b);
   b.clicked.connect ( () => {
@@ -74,7 +98,10 @@ main (string[] args) {
   b = new Button.with_label ("change");
   vbox.add (b);
   b.clicked.connect ( () => {
-		  l3.set_label ("blah5");
+		  if (l3.get_text () == "blah3")
+			  l3.set_text ("blah5");
+		  else
+			  l3.set_text ("blah3");
 		  sorted.child_changed (l3);
 	  });
 
@@ -98,10 +125,24 @@ main (string[] args) {
 		  sorted.add (l);
 		  l.show ();
 	  });
-  
+
+  b = new Button.with_label ("separate");
+  vbox.add (b);
+  b.clicked.connect ( () => {
+		  sorted.set_separator_funcs (need_separator,
+									  create_separator,
+									  update_separator);
+	  });
+
+  b = new Button.with_label ("unseparate");
+  vbox.add (b);
+  b.clicked.connect ( () => {
+		  sorted.set_separator_funcs (null, null, null);
+	  });
+
 
   w.show_all ();
-  
+
   Gtk.main ();
 
   return 0;
