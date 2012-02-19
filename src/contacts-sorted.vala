@@ -61,6 +61,8 @@ public class Contacts.Sorted : Container {
     Widget widget;
     Widget? separator;
     SequenceIter<ChildInfo?> iter;
+    int y;
+    int height;
   }
 
   Sequence<ChildInfo?> children;
@@ -71,6 +73,7 @@ public class Contacts.Sorted : Container {
   CreateSeparatorFunc? create_separator_func;
   UpdateSeparatorFunc? update_separator_func;
   protected Gdk.Window event_window;
+  unowned ChildInfo? selected_child;
 
   private int do_sort (ChildInfo? a, ChildInfo? b) {
     return sort_func (a.widget, b.widget);
@@ -84,6 +87,47 @@ public class Contacts.Sorted : Container {
     child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
   }
 
+  public override bool button_press_event (Gdk.EventButton event) {
+    if (event.button == 1) {
+      var y = event.y;
+      unowned ChildInfo? child_info = null;
+      for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
+	unowned ChildInfo? info = iter.get ();
+	if (y >= info.y && y < info.y + info.height) {
+	  child_info = info;
+	  break;
+	}
+      }
+      selected_child = child_info;
+      queue_draw ();
+    }
+    return false;
+  }
+  
+  public override bool draw (Cairo.Context cr) {
+    Allocation allocation;
+    this.get_allocation (out allocation);
+
+    var context = this.get_style_context ();
+
+    context.save ();
+    Gtk.render_background (context, cr,
+			   0, 0, allocation.width, allocation.height);
+
+    if (selected_child != null) {
+      context.set_state (StateFlags.SELECTED);
+      Gtk.render_background (context, cr,
+			     0, selected_child.y,
+			     allocation.width, selected_child.height);
+    }
+    
+    context.restore ();
+
+    base.draw (cr);
+
+    return true;
+  }
+  
   public override void realize () {
     Allocation allocation;
     get_allocation (out allocation);
@@ -95,7 +139,7 @@ public class Contacts.Sorted : Container {
     attributes.width = allocation.width;
     attributes.height = allocation.height;
     attributes.window_type = Gdk.WindowType.CHILD;
-    attributes.event_mask = this.get_events () | Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.ENTER_NOTIFY_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK;
+    attributes.event_mask = this.get_events () | Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.BUTTON_PRESS_MASK;
 
     var window = get_parent_window ();
     this.set_window (window);
@@ -397,10 +441,11 @@ public class Contacts.Sorted : Container {
 	child_allocation.y += child_min;
       }
 
-
       widget.get_preferred_height_for_width (allocation.width, out child_min, null);
       child_allocation.height = child_min;
 
+      child_info.y = child_allocation.y;
+      child_info.height = child_allocation.height;
       widget.size_allocate (child_allocation);
 
       child_allocation.y += child_min;
