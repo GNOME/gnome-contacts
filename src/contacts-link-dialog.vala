@@ -29,7 +29,6 @@ public class Contacts.LinkDialog : Dialog {
   private Contact? selected_contact;
   private Entry filter_entry;
   private View view;
-  private ViewWidget list;
   private Grid list_grid;
   private Grid persona_grid;
   private uint filter_entry_changed_id;
@@ -155,7 +154,7 @@ public class Contacts.LinkDialog : Dialog {
       add_buttons (_("Cancel"), ResponseType.CANCEL, _("Link"), ResponseType.APPLY, null);
     }
 
-    view = new View (contact.store);
+    view = new View (contact.store, View.TextDisplay.STORES);
     view.hide_contact (contact);
     if (contact.is_main)
       view.set_show_subset (View.Subset.OTHER);
@@ -170,8 +169,6 @@ public class Contacts.LinkDialog : Dialog {
 	view.set_custom_sort_prio (c, (int) result);
       }
     }
-
-    list = new ViewWidget (view, ViewWidget.TextDisplay.STORES);
 
     var grid = new Grid ();
     grid.set_row_spacing (6);
@@ -223,10 +220,10 @@ public class Contacts.LinkDialog : Dialog {
     scrolled.set_vexpand (true);
     scrolled.set_hexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
-    scrolled.add (list);
+    scrolled.add (view);
     list_grid.add (scrolled);
 
-    list.selection_changed.connect ( (c) => {
+    view.selection_changed.connect ( (c) => {
 	selected_contact = c;
 	update_contact ();
       });

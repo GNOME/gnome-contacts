@@ -22,7 +22,6 @@ using Folks;
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
   private View contacts_view;
-  private ViewWidget list;
   public Entry filter_entry;
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
@@ -139,15 +138,13 @@ public class Contacts.ListPane : Frame {
     grid.set_orientation (Orientation.VERTICAL);
     this.add (grid);
 
-
-    list = new ViewWidget (contacts_view);
-    list.selection_changed.connect( (l, contact) => {
+    contacts_view.selection_changed.connect( (l, contact) => {
 	if (!ignore_selection_change)
 	  selection_changed (contact);
       });
 
-    scrolled.add (list);
-    list.show_all ();
+    scrolled.add (contacts_view);
+    contacts_view.show_all ();
     scrolled.set_no_show_all (true);
 
     grid.add (search_revealer);
@@ -163,7 +160,7 @@ public class Contacts.ListPane : Frame {
   public void select_contact (Contact contact, bool ignore_change = false) {
     if (ignore_change)
       ignore_selection_change = true;
-    list.select_contact (contact);
+    contacts_view.select_contact (contact);
     ignore_selection_change = false;
   }
 }

@@ -20,7 +20,7 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.View : GLib.Object {
+public class Contacts.View : TreeView {
   private class ContactData {
     public Contact contact;
     public TreeIter iter;
@@ -46,7 +46,7 @@ public class Contacts.View : GLib.Object {
   ContactData padding_data;
   ContactData other_header_data;
 
-  public View (Store store) {
+  public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
     show_subset = Subset.ALL;
@@ -74,6 +74,8 @@ public class Contacts.View : GLib.Object {
     contacts_store.changed.connect (contact_changed_cb);
     foreach (var c in store.get_contacts ())
       contact_added_cb (store, c);
+
+      init_view (text_display);
   }
 
   private int compare_data (ContactData a_data, ContactData b_data) {
@@ -388,11 +390,9 @@ public class Contacts.View : GLib.Object {
     iter = data.iter;
     return data.visible;
   }
-}
 
 
-public class Contacts.ViewWidget : TreeView {
-  public View view;
+
   private CellRendererShape shape;
   public enum TextDisplay {
     NONE,
@@ -403,11 +403,10 @@ public class Contacts.ViewWidget : TreeView {
 
   public signal void selection_changed (Contact? contact);
 
-  public ViewWidget (View view, TextDisplay text_display = TextDisplay.PRESENCE) {
-    this.view = view;
+  private void init_view (TextDisplay text_display) {
     this.text_display = text_display;
 
-    set_model (view.model);
+    set_model (model);
     set_headers_visible (false);
 
     var row_padding = 12;
@@ -418,7 +417,7 @@ public class Contacts.ViewWidget : TreeView {
 	Contact contact;
 	TreeIter iter;
 	model.get_iter (out iter, path);
-	view.model.get (iter, 0, out contact);
+	model.get (iter, 0, out contact);
 	return contact != null;
       });
     selection.changed.connect (contacts_selection_changed);
@@ -500,7 +499,7 @@ public class Contacts.ViewWidget : TreeView {
 	model.get (iter, 0, out contact);
 	cell.visible = contact == null;
 	if (cell.visible) {
-	  string header = view.get_header_text (iter);
+	  string header = get_header_text (iter);
 	  cell.set ("text", header);
 	  if (header == "")
 	    cell.height = 6; // PADDING
@@ -526,9 +525,9 @@ public class Contacts.ViewWidget : TreeView {
 
   public void select_contact (Contact contact) {
     TreeIter iter;
-    if (view.lookup_iter (contact, out iter)) {
+    if (lookup_iter (contact, out iter)) {
       get_selection ().select_iter (iter);
-      scroll_to_cell (view.model.get_path (iter),
+      scroll_to_cell (model.get_path (iter),
 		      null, true, 0.0f, 0.0f);
     }
   }
