@@ -220,8 +220,9 @@ public class Contacts.LinkDialog : Dialog {
     scrolled.set_vexpand (true);
     scrolled.set_hexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
-    scrolled.add (view);
+    scrolled.add_with_viewport (view);
     list_grid.add (scrolled);
+    view.set_focus_vadjustment (scrolled.get_vadjustment ());
 
     view.selection_changed.connect ( (c) => {
 	selected_contact = c;
