@@ -99,11 +99,16 @@ public class Contacts.Sorted : Container {
 	}
       }
       selected_child = child_info;
+
+      child_selected (selected_child != null ? selected_child.widget : null);
       queue_draw ();
     }
     return false;
   }
-  
+
+  public virtual signal void child_selected (Widget? child) {
+  }
+
   public override bool draw (Cairo.Context cr) {
     Allocation allocation;
     this.get_allocation (out allocation);
@@ -120,14 +125,14 @@ public class Contacts.Sorted : Container {
 			     0, selected_child.y,
 			     allocation.width, selected_child.height);
     }
-    
+
     context.restore ();
 
     base.draw (cr);
 
     return true;
   }
-  
+
   public override void realize () {
     Allocation allocation;
     get_allocation (out allocation);
@@ -198,22 +203,54 @@ public class Contacts.Sorted : Container {
     queue_resize ();
   }
 
-  private void update_separator (SequenceIter<ChildInfo?> iter, SequenceIter<ChildInfo?>? before_iter,
-				bool update_if_exist) {
+  private SequenceIter<ChildInfo?>? get_previous_visible (SequenceIter<ChildInfo?> _iter) {
+    if (_iter.is_begin())
+      return null;
+    var iter = _iter;
+
+    do {
+      iter = iter.prev ();
+
+      unowned ChildInfo? child_info = iter.get ();
+      unowned Widget widget = child_info.widget;
+      if (widget.get_visible () && widget.get_child_visible ())
+	return iter;
+    } while (!iter.is_begin ());
+
+    return null;
+  }
+
+  private SequenceIter<ChildInfo?>? get_next_visible (SequenceIter<ChildInfo?> _iter) {
+    if (_iter.is_end())
+      return _iter;
+
+    var iter = _iter;
+    do {
+      iter = iter.next ();
+
+      if (!iter.is_end ()) {
+	unowned ChildInfo? child_info = iter.get ();
+	unowned Widget widget = child_info.widget;
+	if (widget.get_visible () && widget.get_child_visible ())
+	  return iter;
+      }
+    } while (!iter.is_end ());
+
+    return iter;
+  }
+
+  private void update_separator (SequenceIter<ChildInfo?> iter, bool update_if_exist) {
     if (iter.is_end ())
       return;
 
     unowned ChildInfo? info = iter.get ();
-    unowned ChildInfo? before_info = null;
-    if (!iter.is_begin()) {
-      if (before_iter == null)
-	before_info = iter.prev ().get ();
-      else
-	before_info = before_iter.get ();
-    }
-
+    var before_iter = get_previous_visible (iter);
     var widget = info.widget;
-    Widget? before_widget = before_info != null ? before_info.widget : null;
+    Widget? before_widget = null;
+    if (before_iter != null) {
+      unowned ChildInfo? before_info = before_iter.get ();
+      before_widget = before_info.widget;
+    }
 
     bool need_separator = false;
 
@@ -244,10 +281,8 @@ public class Contacts.Sorted : Container {
   }
 
   public void reseparate () {
-    SequenceIter<ChildInfo?>? last = null;
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      update_separator (iter, last, false);
-      last = iter;
+      update_separator (iter, false);
     }
     queue_resize ();
   }
@@ -285,10 +320,10 @@ public class Contacts.Sorted : Container {
 
     apply_filter (widget);
 
-    var prev_next = iter.next ();
-    update_separator (iter, null, true);
-    update_separator (iter.next (), iter, true);
-    update_separator (prev_next, null, true);
+    var prev_next = get_next_visible (iter);
+    update_separator (iter, true);
+    update_separator (get_next_visible (iter), true);
+    update_separator (prev_next, true);
 
     info.iter = iter;
 
@@ -300,16 +335,16 @@ public class Contacts.Sorted : Container {
     if (info == null)
       return;
 
-    var prev_next = info.iter.next ();
+    var prev_next = get_previous_visible (info.iter);
 
     if (sort_func != null) {
       children.sort_changed (info.iter, do_sort);
       this.queue_resize ();
     }
     apply_filter (info.widget);
-    update_separator (info.iter, null, true);
-    update_separator (info.iter.next (), info.iter, true);
-    update_separator (prev_next, null, true);
+    update_separator (info.iter, true);
+    update_separator (get_next_visible (info.iter), true);
+    update_separator (prev_next, true);
 
   }
 
@@ -318,14 +353,14 @@ public class Contacts.Sorted : Container {
     if (info == null)
       return;
 
-    var next = info.iter.next ();
+    var next = get_next_visible (info.iter);
 
     bool was_visible = widget.get_visible ();
     widget.unparent ();
 
     child_hash.unset (widget);
 
-    update_separator (next, null, false);
+    update_separator (next, false);
 
     if (was_visible && this.get_visible ())
       this.queue_resize ();
@@ -370,6 +405,11 @@ public class Contacts.Sorted : Container {
 
       if (!widget.get_visible () || !widget.get_child_visible ())
 	continue;
+
+      if (child_info.separator != null) {
+	child_info.separator.get_preferred_height_for_width (width, out child_min, null);
+	minimum_height += child_min;
+      }
 
       widget.get_preferred_height_for_width (width, out child_min, null);
       minimum_height += child_min;
@@ -429,8 +469,11 @@ public class Contacts.Sorted : Container {
       unowned Widget widget = child_info.widget;
       int child_min;
 
-      if (!widget.get_visible () || !widget.get_child_visible ())
+      if (!widget.get_visible () || !widget.get_child_visible ()) {
+	child_info.y = child_allocation.y;
+	child_info.height = 0;
 	continue;
+      }
 
       if (child_info.separator != null) {
 	child_info.separator.get_preferred_height_for_width (allocation.width, out child_min, null);

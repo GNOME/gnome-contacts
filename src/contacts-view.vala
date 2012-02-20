@@ -20,13 +20,16 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.View : TreeView {
+public class Contacts.View : Contacts.Sorted {
   private class ContactData {
     public Contact contact;
-    public TreeIter iter;
-    public bool visible;
-    public bool is_first;
+    public Grid grid;
+    public Label label;
+    public ContactFrame image_frame;
     public int sort_prio;
+    public string display_name;
+    public unichar initial_letter;
+    public bool filtered;
   }
 
   public enum Subset {
@@ -36,46 +39,48 @@ public class Contacts.View : TreeView {
     ALL
   }
 
+  public enum TextDisplay {
+    NONE,
+    PRESENCE,
+    STORES
+  }
+
+  public signal void selection_changed (Contact? contact);
+
   Store contacts_store;
   Subset show_subset;
-  ListStore list_store;
+  HashMap<Contact,ContactData> contacts;
   HashSet<Contact> hidden_contacts;
+
   string []? filter_values;
   int custom_visible_count;
   ContactData suggestions_header_data;
   ContactData padding_data;
   ContactData other_header_data;
+  private TextDisplay text_display;
 
   public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
     show_subset = Subset.ALL;
 
-    list_store = new ListStore (2, typeof (Contact), typeof (ContactData *));
-    suggestions_header_data = new ContactData ();
-    suggestions_header_data.sort_prio = int.MAX;
-    padding_data = new ContactData ();
-    padding_data.sort_prio = 1;
+    contacts = new HashMap<Contact,ContactData> ();
 
-    other_header_data = new ContactData ();
-    other_header_data.sort_prio = -1;
-
-    list_store.set_sort_func (0, (model, iter_a, iter_b) => {
-	ContactData *aa, bb;
-	model.get (iter_a, 1, out aa);
-	model.get (iter_b, 1, out bb);
-
-	return compare_data (aa, bb);
+    this.set_sort_func ((widget_a, widget_b) => {
+	var a = widget_a.get_data<ContactData> ("data");
+	var b = widget_b.get_data<ContactData> ("data");
+	return compare_data (a, b);
       });
-    list_store.set_sort_column_id (0, SortType.ASCENDING);
+    this.set_filter_func (filter);
+    this.set_separator_funcs (need_separator,
+			      create_separator,
+			      update_separator);
 
     contacts_store.added.connect (contact_added_cb);
     contacts_store.removed.connect (contact_removed_cb);
     contacts_store.changed.connect (contact_changed_cb);
     foreach (var c in store.get_contacts ())
       contact_added_cb (store, c);
-
-      init_view (text_display);
   }
 
   private int compare_data (ContactData a_data, ContactData b_data) {
@@ -90,13 +95,13 @@ public class Contacts.View : TreeView {
     var a = a_data.contact;
     var b = b_data.contact;
 
-    if (is_set (a.display_name) && is_set (b.display_name))
-      return a.display_name.collate (b.display_name);
+    if (is_set (a_data.display_name) && is_set (b_data.display_name))
+      return a.display_name.collate (b_data.display_name);
 
     // Sort empty names last
-    if (is_set (a.display_name))
+    if (is_set (a_data.display_name))
       return -1;
-    if (is_set (b.display_name))
+    if (is_set (b_data.display_name))
       return 1;
 
     return 0;
@@ -121,36 +126,9 @@ public class Contacts.View : TreeView {
     return 0;
   }
 
-  public string get_header_text (TreeIter iter) {
-    ContactData *data;
-    list_store.get (iter, 1, out data);
-    if (data == suggestions_header_data) {
-      /* Translators: This is the header for the list of suggested contacts to
-	 link to the current contact */
-      return ngettext ("Suggestion", "Suggestions", custom_visible_count);
-    }
-    if (data == other_header_data) {
-      /* Translators: This is the header for the list of suggested contacts to
-	 link to the current contact */
-      return _("Other Contacts");
-    }
-    return "";
-  }
-
   public void set_show_subset (Subset subset) {
     show_subset = subset;
-
-    bool new_visible = show_subset == Subset.ALL_SEPARATED;
-    if (new_visible && !other_header_data.visible) {
-      other_header_data.visible = true;
-      list_store.append (out other_header_data.iter);
-      list_store.set (other_header_data.iter, 1, other_header_data);
-    }
-    if (!new_visible && other_header_data.visible) {
-      other_header_data.visible = false;
-      list_store.remove (other_header_data.iter);
-    }
-
+    update_all_filtered ();
     refilter ();
   }
 
@@ -158,376 +136,120 @@ public class Contacts.View : TreeView {
     /* We use negative prios internally */
     assert (prio >= 0);
 
-    var data = lookup_data (c);
-
+    var data = contacts.get (c);
     if (data == null)
       return;
-
-    // We insert a priority between 0 and 1 for the padding
-    if (prio > 0)
-      prio += 1;
-    data.sort_prio = prio;
-    contact_changed_cb (contacts_store, c);
-
-    if (data.visible) {
-      if (prio > 0) {
-	if (custom_visible_count++ == 0)
-	  add_custom_headers ();
-      } else {
-	if (custom_visible_count-- == 1)
-	  remove_custom_headers ();
-      }
-    }
-  }
-
-  private bool apply_filter (Contact contact) {
-    if (contact.is_hidden)
-      return false;
-
-    if (contact in hidden_contacts)
-      return false;
-
-    if ((show_subset == Subset.MAIN &&
-	 !contact.is_main) ||
-	(show_subset == Subset.OTHER &&
-	 contact.is_main))
-      return false;
-
-    if (filter_values == null || filter_values.length == 0)
-      return true;
-
-    return contact.contains_strings (filter_values);
-  }
-
-  public bool is_first (TreeIter iter) {
-    ContactData *data;
-    list_store.get (iter, 1, out data);
-    if (data != null)
-      return data->is_first;
-    return false;
-  }
-
-  private ContactData? get_previous (ContactData data) {
-    ContactData *previous = null;
-    TreeIter iter = data.iter;
-    if (list_store.iter_previous (ref iter))
-      list_store.get (iter, 1, out previous);
-    return previous;
-  }
-
-  private ContactData? get_next (ContactData data) {
-    ContactData *next = null;
-    TreeIter iter = data.iter;
-    if (list_store.iter_next (ref iter))
-      list_store.get (iter, 1, out next);
-    return next;
-  }
-
-  private void row_changed_no_resort (ContactData data) {
-    var path = list_store.get_path (data.iter);
-    list_store.row_changed (path, data.iter);
-  }
-
-  private void row_changed_resort (ContactData data) {
-    list_store.set (data.iter, 0, data.contact);
-  }
-
-  private bool update_is_first (ContactData data, ContactData? previous) {
-    bool old_is_first = data.is_first;
-
-    bool is_custom = data.sort_prio != 0;
-    bool previous_is_custom = previous != null && (previous.sort_prio != 0) ;
-
-    if (is_custom) {
-      data.is_first = false;
-    } else if (previous != null && !previous_is_custom) {
-      unichar previous_initial = previous.contact.initial_letter;
-      unichar initial = data.contact.initial_letter;
-      data.is_first = previous_initial != initial;
-    } else {
-      data.is_first = true;
-    }
-
-    if (old_is_first != data.is_first) {
-      row_changed_no_resort (data);
-      return true;
-    }
-
-    return false;
-  }
-
-  private void add_custom_headers () {
-    suggestions_header_data.visible = true;
-    list_store.append (out suggestions_header_data.iter);
-    list_store.set (suggestions_header_data.iter, 1, suggestions_header_data);
-    padding_data.visible = true;
-    list_store.append (out padding_data.iter);
-    list_store.set (padding_data.iter, 1, padding_data);
-  }
-
-  private void remove_custom_headers () {
-    suggestions_header_data.visible = false;
-    list_store.remove (suggestions_header_data.iter);
-    padding_data.visible = false;
-    list_store.remove (padding_data.iter);
-  }
-
-  private void add_to_model (ContactData data) {
-    list_store.append (out data.iter);
-    list_store.set (data.iter, 0, data.contact, 1, data);
-
-    if (data.sort_prio > 0) {
-      if (custom_visible_count++ == 0)
-	add_custom_headers ();
-    }
-
-    if (update_is_first (data, get_previous (data)) && data.is_first) {
-      /* The newly added row is first, the next one might not be anymore */
-      var next = get_next (data);
-      if (next != null)
-	update_is_first (next, data);
-    }
-  }
-
-  private void remove_from_model (ContactData data) {
-    if (data.sort_prio > 0) {
-      if (custom_visible_count-- == 1)
-	remove_custom_headers ();
-    }
-
-    ContactData? next = null;
-    if (data.is_first)
-      next = get_next (data);
-
-    list_store.remove (data.iter);
-    data.is_first = false;
-
-    if (next != null)
-      update_is_first (next, get_previous (next));
-  }
-
-  private void update_visible (ContactData data) {
-    bool was_visible = data.visible;
-    data.visible = apply_filter (data.contact);
-
-    if (was_visible && !data.visible)
-      remove_from_model (data);
-
-    if (!was_visible && data.visible)
-      add_to_model (data);
-  }
-
-  private void refilter () {
-    foreach (var c in contacts_store.get_contacts ()) {
-      update_visible (lookup_data (c));
-    }
   }
 
   public void hide_contact (Contact contact) {
     hidden_contacts.add (contact);
+    update_all_filtered ();
     refilter ();
   }
 
   public void set_filter_values (string []? values) {
     filter_values = values;
+    update_all_filtered ();
     refilter ();
   }
 
-  private void contact_changed_cb (Store store, Contact c) {
-    ContactData data = lookup_data (c);
+  private bool calculate_filtered (Contact c) {
+    if (c.is_hidden)
+      return false;
 
-    bool was_visible = data.visible;
+    if (c in hidden_contacts)
+      return false;
 
-    ContactData? next = null;
-    if (data.visible)
-      next = get_next (data);
+    if ((show_subset == Subset.MAIN &&
+	 !c.is_main) ||
+	(show_subset == Subset.OTHER &&
+	 c.is_main))
+      return false;
 
-    update_visible (data);
+    if (filter_values == null || filter_values.length == 0)
+      return true;
 
-    if (was_visible && data.visible) {
-      /* We just moved position in the list while visible */
+    return c.contains_strings (filter_values);
+  }
 
-      row_changed_resort (data);
+  private void update_data (ContactData data) {
+    var c = data.contact;
+    data.display_name = c.display_name;
+    data.initial_letter = c.initial_letter;
+    data.filtered = calculate_filtered (c);
 
-      /* Update the is_first on the previous next row */
-      if (next != null)
-	update_is_first (next, get_previous (next));
+    data.label.set_text (data.display_name);
+    data.image_frame.set_image (c.individual, c);
+  }
 
-      /* Update the is_first on the new next row */
-      next = get_next (data);
-      if (next != null)
-	update_is_first (next, data);
+  private void update_all_filtered () {
+    foreach (var data in contacts.values) {
+      data.filtered = calculate_filtered (data.contact);
     }
   }
 
-  private ContactData lookup_data (Contact c) {
-    return c.lookup<ContactData> (this);
+  private void contact_changed_cb (Store store, Contact c) {
+    var data = contacts.get (c);
+    update_data (data);
+    child_changed (data.grid);
   }
 
   private void contact_added_cb (Store store, Contact c) {
-    ContactData data =  new ContactData();
+    var data =  new ContactData();
     data.contact = c;
-    data.visible = false;
+    data.grid = new Grid ();
+    data.image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
+    data.label = new Label ("");
+    data.grid.add (data.image_frame);
+    data.grid.add (data.label);
 
-    c.set_lookup (this, data);
+    update_data (data);
 
-    update_visible (data);
+    data.grid.set_data<ContactData> ("data", data);
+    data.grid.show_all ();
+    contacts.set (c, data);
+    this.add (data.grid);
   }
 
   private void contact_removed_cb (Store store, Contact c) {
-    var data = lookup_data (c);
-
-    if (data.visible)
-      remove_from_model (data);
-
-    c.remove_lookup<ContactData> (this);
+    var data = contacts.get (c);
+    data.grid.destroy ();
+    data.label.destroy ();
+    data.image_frame.destroy ();
+    this.remove (data.grid);
+    contacts.unset (c);
   }
 
-  public bool lookup_iter (Contact c, out TreeIter iter) {
-    var data = lookup_data (c);
-    iter = data.iter;
-    return data.visible;
+  public override void child_selected (Widget? child) {
+    var data = child.get_data<ContactData> ("data");
+    selection_changed (data != null ? data.contact : null);
   }
 
-
-
-  private CellRendererShape shape;
-  public enum TextDisplay {
-    NONE,
-    PRESENCE,
-    STORES
-  }
-  private TextDisplay text_display;
-
-  public signal void selection_changed (Contact? contact);
-
-  private void init_view (TextDisplay text_display) {
-    this.text_display = text_display;
-
-    set_model (list_store);
-    set_headers_visible (false);
-
-    var row_padding = 12;
-
-    var selection = get_selection ();
-    selection.set_mode (SelectionMode.BROWSE);
-    selection.set_select_function ( (selection, model, path, path_currently_selected) => {
-	Contact contact;
-	TreeIter iter;
-	model.get_iter (out iter, path);
-	model.get (iter, 0, out contact);
-	return contact != null;
-      });
-    selection.changed.connect (contacts_selection_changed);
-
-    var column = new TreeViewColumn ();
-    column.set_spacing (8);
-
-    var icon = new CellRendererPixbuf ();
-    icon.set_padding (0, row_padding);
-    icon.xalign = 1.0f;
-    icon.yalign = 0.0f;
-    icon.width = Contact.SMALL_AVATAR_SIZE + 12;
-    column.pack_start (icon, false);
-    column.set_cell_data_func (icon, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-
-	if (contact == null) {
-	  cell.set ("pixbuf", null);
-	  cell.visible = false;
-	  return;
-	}
-	cell.visible = true;
-
-	if (contact != null)
-	  cell.set ("pixbuf", contact.small_avatar);
-	else
-	  cell.set ("pixbuf", null);
-      });
-
-    shape = new CellRendererShape ();
-    shape.set_padding (0, row_padding);
-
-    Pango.cairo_context_set_shape_renderer (get_pango_context (), shape.render_shape);
-
-    column.pack_start (shape, true);
-    column.set_cell_data_func (shape, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-
-	if (contact == null) {
-	  cell.visible = false;
-	  return;
-	}
-	cell.visible = true;
-
-	var name = contact.display_name;
-	switch (text_display) {
-	default:
-	case TextDisplay.NONE:
-	  cell.set ("name", name,
-		    "show_presence", false,
-		    "message", "");
-	  break;
-	case TextDisplay.PRESENCE:
-	  cell.set ("name", name,
-		    "show_presence", true,
-		    "presence", contact.presence_type,
-		    "message", contact.presence_message,
-		    "is_phone", contact.is_phone);
-	  break;
-	case TextDisplay.STORES:
-	  string stores = contact.format_persona_stores ();
-	  cell.set ("name", name,
-		    "show_presence", false,
-		    "message", stores);
-	  break;
-	}
-      });
-
-    var text = new CellRendererText ();
-    text.set_alignment (0, 0);
-    column.pack_start (text, true);
-    text.set ("weight", Pango.Weight.BOLD);
-    column.set_cell_data_func (text, (column, cell, model, iter) => {
-	Contact contact;
-
-	model.get (iter, 0, out contact);
-	cell.visible = contact == null;
-	if (cell.visible) {
-	  string header = get_header_text (iter);
-	  cell.set ("text", header);
-	  if (header == "")
-	    cell.height = 6; // PADDING
-	  else
-	    cell.height = -1;
-	}
-      });
-
-    append_column (column);
-  }
-
-  private void contacts_selection_changed (TreeSelection selection) {
-    TreeIter iter;
-    TreeModel model;
-
-    Contact? contact = null;
-    if (selection.get_selected (out model, out iter)) {
-      model.get (iter, 0, out contact);
+  private bool need_separator (Widget widget, Widget? before) {
+    if (before == null) {
+      return true;
     }
+    var w_data = widget.get_data<ContactData> ("data");
+    var before_data = before.get_data<ContactData> ("data");
 
-    selection_changed (contact);
+    return w_data.initial_letter != before_data.initial_letter;
+
+    return false;
   }
 
-  public void select_contact (Contact contact) {
-    TreeIter iter;
-    if (lookup_iter (contact, out iter)) {
-      get_selection ().select_iter (iter);
-      scroll_to_cell (list_store.get_path (iter),
-		      null, true, 0.0f, 0.0f);
-    }
+  private Widget create_separator () {
+    var s = new Label ("---------------------");
+    return s;
+  }
+
+  private bool filter (Widget child) {
+    var data = child.get_data<ContactData> ("data");
+
+    return data.filtered;
+  }
+
+  private void update_separator (Widget separator,
+				 Widget child,
+				 Widget? before_widget) {
   }
 }

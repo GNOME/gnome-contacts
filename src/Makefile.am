@@ -33,6 +33,7 @@ vala_sources = \
 	contacts-linking.vala \
 	contacts-menu-button.vala \
 	contacts-row.vala \
+	contacts-sorted.vala \
 	contacts-store.vala \
 	contacts-view.vala \
 	contacts-utils.vala \

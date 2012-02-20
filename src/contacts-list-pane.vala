@@ -143,7 +143,7 @@ public class Contacts.ListPane : Frame {
 	  selection_changed (contact);
       });
 
-    scrolled.add (contacts_view);
+    scrolled.add_with_viewport (contacts_view);
     contacts_view.show_all ();
     scrolled.set_no_show_all (true);
 
@@ -160,7 +160,6 @@ public class Contacts.ListPane : Frame {
   public void select_contact (Contact contact, bool ignore_change = false) {
     if (ignore_change)
       ignore_selection_change = true;
-    contacts_view.select_contact (contact);
     ignore_selection_change = false;
   }
 }
