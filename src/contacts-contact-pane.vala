@@ -1732,7 +1732,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     call_button.set_sensitive (callable);
   }
 
-  public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
+  public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
 
   public void add_suggestion (Contact c) {
     var row = new FieldRow (row_group, this);
@@ -1778,11 +1778,10 @@ public class Contacts.ContactPane : ScrolledWindow {
     var no = new Button.with_label (_("No"));
 
     yes.clicked.connect ( () => {
-      var main_contact = contact.display_name;
       var linked_contact = c.display_name;
       link_contacts.begin (contact, c, (obj, result) => {
 	var operation = link_contacts.end (result);
-	this.contacts_linked (main_contact, linked_contact, operation);
+	this.contacts_linked (null, linked_contact, operation);
       });
       row.destroy ();
     });

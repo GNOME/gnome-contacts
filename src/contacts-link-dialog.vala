@@ -33,7 +33,7 @@ public class Contacts.LinkDialog : Dialog {
   private Grid persona_grid;
   private uint filter_entry_changed_id;
 
-  public signal void contacts_linked (string main_contact, string linked_contact, LinkOperation operation);
+  public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
   
   private void update_contact () {
     // Remove previous personas
@@ -84,7 +84,7 @@ public class Contacts.LinkDialog : Dialog {
 	    var undo_bar = new InfoBar.with_buttons (_("Undo"), ResponseType.APPLY, null);
 	    undo_bar.set_message_type (MessageType.INFO);
 	    var container = (undo_bar.get_content_area () as Container);
-	    var message_label = new Label (_("%s linked to %s").printf (selected_contact_name, contact.display_name));
+	    var message_label = new Label (_("%s linked to the contact").printf (selected_contact_name));
 	    //TODO, do something smarter here.
 	    message_label.set_ellipsize (Pango.EllipsizeMode.END);
 	    container.add (message_label);

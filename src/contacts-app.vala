@@ -417,14 +417,19 @@ public class Contacts.App : Gtk.Application {
     { null }
   };
 
-  private void contacts_linked (string main_contact, string linked_contact, LinkOperation operation) {
+  private void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation) {
     var notification = new Gtk.Notification ();
 
     var g = new Grid ();
     g.set_column_spacing (8);
     notification.add (g);
 
-    string msg = _("%s linked to %s").printf (main_contact, linked_contact);
+    string msg;
+    if (main_contact != null)
+      msg = _("%s linked to %s").printf (main_contact, linked_contact);
+    else
+      msg = _("%s linked to the contact").printf (linked_contact);
+
     var b = new Button.from_stock (Stock.UNDO);
     g.add (new Label (msg));
     g.add (b);
