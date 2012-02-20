@@ -437,6 +437,7 @@ public class Contacts.View : TreeView {
 	model.get (iter, 0, out contact);
 
 	if (contact == null) {
+	  cell.set ("pixbuf", null);
 	  cell.visible = false;
 	  return;
 	}
