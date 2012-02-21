@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: F 677-CF0E\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-16 13:19+0000\n"
+"POT-Creation-Date: 2012-02-20 12:02+0000\n"
 "PO-Revision-Date: 2012-02-19 14:39+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
-"Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Language: sr\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n%"
+"10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:234
@@ -91,12 +91,18 @@ msgstr "Prikazuje kontakt sa ovim pojedinačnim ib-om"
 msgid "Show contact with this email address"
 msgstr "Prikazuje kontakt sa ovom adresom e-pošte"
 
-#: ../src/contacts-app.vala:427 ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-app.vala:429
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s je povezan sa %s"
 
-#: ../src/contacts-app.vala:443
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+#| msgid "%s linked to %s"
+msgid "%s linked to the contact"
+msgstr "%s je povezan sa kontaktom"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "— upravljanje kontaktima"
 
@@ -108,7 +114,7 @@ msgstr "Potražite još slika"
 msgid "Select Picture"
 msgstr "Izaberi sliku"
 
-#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:152
 msgid "Close"
 msgstr "Zatvori"
 
@@ -123,7 +129,7 @@ msgid "Link"
 msgstr "Veza"
 
 #: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
-#: ../src/contacts-link-dialog.vala:117
+#: ../src/contacts-link-dialog.vala:116
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
@@ -135,7 +141,7 @@ msgstr "E-pošta"
 msgid "Phone"
 msgstr "Telefon"
 
-#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:133
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "Broj telefona"
 
@@ -215,7 +221,6 @@ msgid "Address"
 msgstr "Adresa"
 
 #: ../src/contacts-contact-pane.vala:1305
-#| msgid "About GNOME Contacts"
 msgid "Add to My Contacts"
 msgstr "Dodaj u moje kontakte"
 
@@ -250,24 +255,24 @@ msgstr "Da"
 msgid "No"
 msgstr "Ne"
 
-#: ../src/contacts-contact-pane.vala:1961
+#: ../src/contacts-contact-pane.vala:1960
 msgid "Select email address"
 msgstr "Izaberite adresu el. pošte"
 
-#: ../src/contacts-contact-pane.vala:2033
+#: ../src/contacts-contact-pane.vala:2032
 msgid "Select what to call"
 msgstr "Izaberite šta ćete zvati"
 
-#: ../src/contacts-contact-pane.vala:2096
+#: ../src/contacts-contact-pane.vala:2095
 msgid "Select chat account"
 msgstr "Izaberite nalog ćaskanja"
 
-#: ../src/contacts-contact-pane.vala:2176
+#: ../src/contacts-contact-pane.vala:2175
 msgid "Add/Remove Linked Contacts..."
 msgstr "Dodaj/ukloni povezane kontakte..."
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2180
+#: ../src/contacts-contact-pane.vala:2179
 msgid "Delete"
 msgstr "Obriši"
 
@@ -339,7 +344,7 @@ msgstr "Gugl razgovor"
 msgid "Ovi Chat"
 msgstr "Ovi ćaskanje"
 
-#: ../src/contacts-contact.vala:722 ../src/contacts-contact.vala:1004
+#: ../src/contacts-contact.vala:722 ../src/contacts-contact.vala:1002
 msgid "Facebook"
 msgstr "Fejsbuk"
 
@@ -427,23 +432,23 @@ msgstr "Jahu! dopisnik"
 msgid "Zephyr"
 msgstr "Zefir"
 
-#: ../src/contacts-contact.vala:1007
+#: ../src/contacts-contact.vala:1005
 msgid "Twitter"
 msgstr "Tviter"
 
-#: ../src/contacts-contact.vala:1010
+#: ../src/contacts-contact.vala:1008
 msgid "Google Profile"
 msgstr "Gugl profil"
 
-#: ../src/contacts-contact.vala:1074
+#: ../src/contacts-contact.vala:1072
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Neočekivana unutrašnja greška: stvoreni kontakt nije pronađen"
 
-#: ../src/contacts-contact.vala:1223
+#: ../src/contacts-contact.vala:1221
 msgid "Google Circles"
 msgstr "Gugl krugovi"
 
-#: ../src/contacts-contact.vala:1225
+#: ../src/contacts-contact.vala:1223
 msgid "Google Other Contact"
 msgstr "Drugi kontakt Gugla"
 
@@ -463,33 +468,33 @@ msgstr "Gugl"
 msgid "Local Contact"
 msgstr "Lokalni kontakt"
 
-#: ../src/contacts-link-dialog.vala:74
+#: ../src/contacts-link-dialog.vala:73
 msgctxt "contacts link action"
 msgid "Link"
 msgstr "Poveži"
 
-#: ../src/contacts-link-dialog.vala:85
+#: ../src/contacts-link-dialog.vala:84
 msgid "Undo"
 msgstr "Opozovi"
 
-#: ../src/contacts-link-dialog.vala:149
+#: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "Poveži kontakt"
 
-#: ../src/contacts-link-dialog.vala:155 ../src/contacts-setup-window.vala:141
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: ../src/contacts-link-dialog.vala:155
+#: ../src/contacts-link-dialog.vala:154
 msgid "Link"
 msgstr "Veza"
 
-#: ../src/contacts-link-dialog.vala:185
+#: ../src/contacts-link-dialog.vala:182
 #, c-format
 msgid "<span weight='bold'>Link contacts to %s</span>"
 msgstr "<span weight='bold'>Poveži kontakt na %s</span>"
 
-#: ../src/contacts-link-dialog.vala:187
+#: ../src/contacts-link-dialog.vala:184
 msgid "<span weight='bold'>Select contact to link to</span>"
 msgstr "<span weight='bold'>Izaberite kontakte da povežete na</span>"
 
@@ -634,7 +639,7 @@ msgstr "TTV"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:128
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "Predlog"
@@ -644,7 +649,7 @@ msgstr[3] "Predlog"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:133
+#: ../src/contacts-view.vala:135
 msgid "Other Contacts"
 msgstr "Ostali kontakti"
 
