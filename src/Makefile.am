@@ -14,6 +14,11 @@ AM_VALAFLAGS = \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 
+if USE_GSTREAMER
+AM_VALAFLAGS += -D HAVE_GSTREAMER @CONTACTS_GSTREAMER_PACKAGES@
+AM_CPPFLAGS += $(CONTACTS_GSTREAMER_CFLAGS)
+endif
+
 bin_PROGRAMS = gnome-contacts
 
 vala_sources = \
@@ -62,6 +67,10 @@ gnome_contacts_SOURCES = \
 	$(NULL)
 
 gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
+
+if USE_GSTREAMER
+gnome_contacts_LDADD += $(CONTACTS_GSTREAMER_LIBS)
+endif
 
 CLEANFILES = \
 	$(vala_sources:.vala=.c) \

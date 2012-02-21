@@ -51,6 +51,18 @@ PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg libnotify"
 AC_SUBST(CONTACTS_PACKAGES)
 
+gstreamers_modules="gdk-x11-3.0
+                    gstreamer-0.10
+                    gstreamer-interfaces-0.10
+                    "
+PKG_CHECK_MODULES(CONTACTS_GSTREAMER,
+                  [$gstreamers_modules],
+                  AM_CONDITIONAL(USE_GSTREAMER, true),
+                  AM_CONDITIONAL(USE_GSTREAMER, false))
+
+CONTACTS_GSTREAMER_PACKAGES="--pkg gdk-x11-3.0 --pkg gstreamer-0.10 --pkg gstreamer-interfaces-0.10"
+AC_SUBST(CONTACTS_GSTREAMER_PACKAGES)
+
 #############
 # Resources #
 #############
