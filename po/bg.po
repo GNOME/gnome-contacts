@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 10:01+0200\n"
-"PO-Revision-Date: 2012-02-17 11:14+0200\n"
+"POT-Creation-Date: 2012-02-23 07:35+0200\n"
+"PO-Revision-Date: 2012-02-23 07:35+0200\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -21,6 +21,18 @@ msgstr ""
 #: ../src/main.vala:24
 msgid "Contacts"
 msgstr "Контакти"
+
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "_Смяна на адресника…"
+
+#: ../src/app-menu.ui.h:2
+msgid "_About Contacts"
+msgstr "_Относно Контакти на GNOME"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Quit"
+msgstr "_Спиране на програмата"
 
 #: ../src/contacts-app.vala:79
 #, c-format
@@ -84,12 +96,19 @@ msgstr "Показване на контакт с този  адрес на е-�
 
 # Предполага се, че ще се избегне лошата форма за женски род. Не е
 # тествано. Догадки.  
-#: ../src/contacts-app.vala:427 ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-app.vala:429
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s и %s са свързани"
 
-#: ../src/contacts-app.vala:443
+# Предполага се, че ще се избегне лошата форма за женски род. Не е
+# тествано. Догадки.  
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s е свързан към контакта"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "– управление на контактите"
 
@@ -101,7 +120,7 @@ msgstr "Разглеждане за други изображения"
 msgid "Select Picture"
 msgstr "Избор на изображение"
 
-#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:152
 msgid "Close"
 msgstr "Затваряне"
 
@@ -116,7 +135,7 @@ msgid "Link"
 msgstr "Уеб връзка"
 
 #: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
-#: ../src/contacts-link-dialog.vala:117
+#: ../src/contacts-link-dialog.vala:116
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
@@ -128,7 +147,7 @@ msgstr "Електронна поща"
 msgid "Phone"
 msgstr "Телефон"
 
-#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:133
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "Телефонен номер"
 
@@ -242,24 +261,24 @@ msgstr "Да"
 msgid "No"
 msgstr "Не"
 
-#: ../src/contacts-contact-pane.vala:1961
+#: ../src/contacts-contact-pane.vala:1960
 msgid "Select email address"
 msgstr "Изберете адрес за е-поща"
 
-#: ../src/contacts-contact-pane.vala:2033
+#: ../src/contacts-contact-pane.vala:2032
 msgid "Select what to call"
 msgstr "Изберете номер за обаждане"
 
-#: ../src/contacts-contact-pane.vala:2096
+#: ../src/contacts-contact-pane.vala:2095
 msgid "Select chat account"
 msgstr "Изберете регистрация за разговори"
 
-#: ../src/contacts-contact-pane.vala:2176
+#: ../src/contacts-contact-pane.vala:2175
 msgid "Add/Remove Linked Contacts..."
 msgstr "Добавяне/премахване на свързани контакти…"
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2180
+#: ../src/contacts-contact-pane.vala:2179
 msgid "Delete"
 msgstr "Изтриване"
 
@@ -457,33 +476,33 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "Местен контакт"
 
-#: ../src/contacts-link-dialog.vala:74
+#: ../src/contacts-link-dialog.vala:73
 msgctxt "contacts link action"
 msgid "Link"
 msgstr "Връзка"
 
-#: ../src/contacts-link-dialog.vala:85
+#: ../src/contacts-link-dialog.vala:84
 msgid "Undo"
 msgstr "Отмяна"
 
-#: ../src/contacts-link-dialog.vala:149
+#: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "Свързване на контакт"
 
-#: ../src/contacts-link-dialog.vala:155 ../src/contacts-setup-window.vala:141
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
 msgid "Cancel"
 msgstr "Отказ"
 
-#: ../src/contacts-link-dialog.vala:155
+#: ../src/contacts-link-dialog.vala:154
 msgid "Link"
 msgstr "Връзка"
 
-#: ../src/contacts-link-dialog.vala:185
+#: ../src/contacts-link-dialog.vala:182
 #, c-format
 msgid "<span weight='bold'>Link contacts to %s</span>"
 msgstr "<span weight='bold'>Свързване на контакта с %s</span>"
 
-#: ../src/contacts-link-dialog.vala:187
+#: ../src/contacts-link-dialog.vala:184
 msgid "<span weight='bold'>Select contact to link to</span>"
 msgstr ""
 "<span weight='bold'>Изберете контакти, които да бъдат свързани към</span>"
@@ -631,7 +650,7 @@ msgstr "Телекс"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:128
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "Предложение"
@@ -639,7 +658,7 @@ msgstr[1] "Предложения"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:133
+#: ../src/contacts-view.vala:135
 msgid "Other Contacts"
 msgstr "Други контакти"
 
