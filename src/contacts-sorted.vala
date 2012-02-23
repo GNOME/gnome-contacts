@@ -239,8 +239,8 @@ public class Contacts.Sorted : Container {
     return iter;
   }
 
-  private void update_separator (SequenceIter<ChildInfo?> iter, bool update_if_exist) {
-    if (iter.is_end ())
+  private void update_separator (SequenceIter<ChildInfo?>? iter, bool update_if_exist) {
+    if (iter == null || iter.is_end ())
       return;
 
     unowned ChildInfo? info = iter.get ();
