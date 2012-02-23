@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 19:44+0100\n"
-"PO-Revision-Date: 2012-02-19 19:45+0100\n"
+"POT-Creation-Date: 2012-02-23 18:51+0100\n"
+"PO-Revision-Date: 2012-02-23 18:52+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: Norwegian bokmål\n"
@@ -21,6 +21,18 @@ msgstr ""
 #: ../src/main.vala:24
 msgid "Contacts"
 msgstr "Kontakter"
+
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "_Bytt adressebok …"
+
+#: ../src/app-menu.ui.h:2
+msgid "_About Contacts"
+msgstr "_Om kontakter"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Quit"
+msgstr "A_vslutt"
 
 #: ../src/contacts-app.vala:79
 #, c-format
@@ -77,12 +89,17 @@ msgstr "Vis kontakt med denne individuelle IDen"
 msgid "Show contact with this email address"
 msgstr "Vis kontakt med denne e-postadressen"
 
-#: ../src/contacts-app.vala:427 ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-app.vala:429
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s lenket til %s"
 
-#: ../src/contacts-app.vala:443
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s lenket til kontakten"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "– håndtering av kontakter"
 
@@ -94,7 +111,7 @@ msgstr "Se etter flere bilder"
 msgid "Select Picture"
 msgstr "Velg bilde"
 
-#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:152
 msgid "Close"
 msgstr "Lukk"
 
@@ -109,7 +126,7 @@ msgid "Link"
 msgstr "Lenke"
 
 #: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
-#: ../src/contacts-link-dialog.vala:117
+#: ../src/contacts-link-dialog.vala:116
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
@@ -121,7 +138,7 @@ msgstr "E-post"
 msgid "Phone"
 msgstr "Telefon"
 
-#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:133
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "Telefonnummer"
 
@@ -235,24 +252,24 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nei"
 
-#: ../src/contacts-contact-pane.vala:1961
+#: ../src/contacts-contact-pane.vala:1960
 msgid "Select email address"
 msgstr "Velg e-postadresse"
 
-#: ../src/contacts-contact-pane.vala:2033
+#: ../src/contacts-contact-pane.vala:2032
 msgid "Select what to call"
 msgstr "Velg hva du vil ringe"
 
-#: ../src/contacts-contact-pane.vala:2096
+#: ../src/contacts-contact-pane.vala:2095
 msgid "Select chat account"
 msgstr "Velg lynmeldingskonto"
 
-#: ../src/contacts-contact-pane.vala:2176
+#: ../src/contacts-contact-pane.vala:2175
 msgid "Add/Remove Linked Contacts..."
 msgstr "Legg til/fjern lenkede kontakter …"
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2180
+#: ../src/contacts-contact-pane.vala:2179
 msgid "Delete"
 msgstr "Slett"
 
@@ -448,33 +465,33 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "Lokal kontakt"
 
-#: ../src/contacts-link-dialog.vala:74
+#: ../src/contacts-link-dialog.vala:73
 msgctxt "contacts link action"
 msgid "Link"
 msgstr "Koble sammen"
 
-#: ../src/contacts-link-dialog.vala:85
+#: ../src/contacts-link-dialog.vala:84
 msgid "Undo"
 msgstr "Angre"
 
-#: ../src/contacts-link-dialog.vala:149
+#: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "Koble kontakt"
 
-#: ../src/contacts-link-dialog.vala:155 ../src/contacts-setup-window.vala:141
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../src/contacts-link-dialog.vala:155
+#: ../src/contacts-link-dialog.vala:154
 msgid "Link"
 msgstr "Lenke"
 
-#: ../src/contacts-link-dialog.vala:185
+#: ../src/contacts-link-dialog.vala:182
 #, c-format
 msgid "<span weight='bold'>Link contacts to %s</span>"
 msgstr "<span weight=\"bold\">Lenk kontakter til %s</span>"
 
-#: ../src/contacts-link-dialog.vala:187
+#: ../src/contacts-link-dialog.vala:184
 msgid "<span weight='bold'>Select contact to link to</span>"
 msgstr "<span weight=\"bold\">Velg kontakt å koble til</span>"
 
@@ -522,7 +539,8 @@ msgstr "Kan ikke finne nylig opprettet kontakt\n"
 #: ../src/contacts-setup-window.vala:36
 msgid ""
 "Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr "Velkommen til Kontakter! Vennligst velg hvor du vil lagre din adressebok:"
+msgstr ""
+"Velkommen til Kontakter! Vennligst velg hvor du vil lagre din adressebok:"
 
 #: ../src/contacts-setup-window.vala:81
 msgid "Online Account Settings"
@@ -619,7 +637,7 @@ msgstr "TTY"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:128
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "Forslag"
@@ -627,7 +645,7 @@ msgstr[1] "Forslag"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:133
+#: ../src/contacts-view.vala:135
 msgid "Other Contacts"
 msgstr "Andre kontakter"
 
