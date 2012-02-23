@@ -200,8 +200,16 @@ public class Contacts.View : Contacts.Sorted {
     data.grid = new Grid ();
     data.image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
     data.label = new Label ("");
-    data.grid.add (data.image_frame);
-    data.grid.add (data.label);
+    data.label.set_ellipsize (Pango.EllipsizeMode.END);
+
+    var merged_presence = c.create_merged_presence_widget ();
+    merged_presence.set_halign (Align.START);
+    merged_presence.set_valign (Align.START);
+    merged_presence.set_vexpand (true);
+
+    data.grid.attach (data.image_frame, 0, 0, 1, 2);
+    data.grid.attach (data.label, 1, 0, 1, 1);
+    data.grid.attach (merged_presence,  1, 1, 1, 1);
 
     update_data (data);
 
