@@ -59,6 +59,7 @@ contact-resources.c: contacts.gresource.xml app-menu.ui
 		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
 
 gnome_contacts_SOURCES = \
+	cheese-flash.c \
 	um-crop-area.c \
 	contact-resources.c \
 	gtk-notification.c   \
@@ -78,6 +79,7 @@ CLEANFILES = \
 	*.vapi *.stamp
 
 EXTRA_DIST = \
+	cheese-flash.h \
 	um-crop-area.h \
 	gtk-notification.h   \
 	contacts.gresource.xml \

@@ -69,3 +69,12 @@ namespace Um {
 		public Gdk.Pixbuf get_picture ();
 	}
 }
+
+[CCode (cprefix = "Cheese", lower_case_cprefix = "cheese_", cheader_filename = "cheese-flash.h")]
+namespace Cheese {
+	public class Flash : Gtk.Window {
+		[CCode (has_construct_function = false, type = "CheeseFlash*")]
+		public Flash ();
+		public void fire (Gdk.Rectangle rect);
+	}
+}
