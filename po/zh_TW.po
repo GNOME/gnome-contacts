@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-contacts 3.3.4\n"
+"Project-Id-Version: gnome-contacts 3.3.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-18 08:41+0800\n"
-"PO-Revision-Date: 2012-01-29 10:51+0800\n"
+"POT-Creation-Date: 2012-02-25 10:48+0800\n"
+"PO-Revision-Date: 2012-02-24 23:10+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
 "Language: \n"
@@ -65,7 +65,7 @@ msgstr "找不到有電子郵件位址 %s 的連絡人"
 
 #: ../src/contacts-app.vala:250
 msgid "New"
-msgstr ""
+msgstr "新增"
 
 #: ../src/contacts-app.vala:387
 #, c-format
@@ -80,12 +80,17 @@ msgstr "顯示具有此個人 id 的連絡人"
 msgid "Show contact with this email address"
 msgstr "顯示具有這個電子郵件位址的連絡人"
 
-#: ../src/contacts-app.vala:427 ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-app.vala:429
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s 已連結到 %s"
 
-#: ../src/contacts-app.vala:443
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s 已連結到連絡人"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "— 連絡人管理"
 
@@ -94,35 +99,25 @@ msgid "Browse for more pictures"
 msgstr "瀏覽更多照片"
 
 #: ../src/contacts-avatar-dialog.vala:257
-#, fuzzy
-#| msgid ""
-#| "Add or \n"
-#| "select a picture"
 msgid "Select Picture"
-msgstr ""
-"加入或\n"
-"選擇一張圖片"
+msgstr "選擇大頭照圖片"
 
-#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:152
 msgid "Close"
 msgstr "關閉"
 
 #: ../src/contacts-contact-pane.vala:592
-#, fuzzy
-#| msgid "Links"
 msgctxt "Addresses on the Web"
 msgid "Links"
 msgstr "連結"
 
 #: ../src/contacts-contact-pane.vala:593
-#, fuzzy
-#| msgid "Link"
 msgctxt "Web address"
 msgid "Link"
 msgstr "連結"
 
 #: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
-#: ../src/contacts-link-dialog.vala:117
+#: ../src/contacts-link-dialog.vala:116
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
@@ -134,7 +129,7 @@ msgstr "電子郵件"
 msgid "Phone"
 msgstr "電話"
 
-#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:133
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "電話號碼"
 
@@ -214,26 +209,21 @@ msgid "Address"
 msgstr "地址"
 
 #: ../src/contacts-contact-pane.vala:1305
-#, fuzzy
-#| msgid "About GNOME Contacts"
 msgid "Add to My Contacts"
-msgstr "關於 GNOME 連絡人"
+msgstr "加入我的連絡人"
 
 #: ../src/contacts-contact-pane.vala:1315
 msgid "Unlink"
-msgstr ""
+msgstr "取消連結"
 
 #: ../src/contacts-contact-pane.vala:1347
-#, fuzzy
-#| msgid "Add Detail"
 msgid "Add detail..."
-msgstr "加入詳細資料"
+msgstr "加入詳細資料…"
 
 #: ../src/contacts-contact-pane.vala:1362
-#, fuzzy, c-format
-#| msgid "Select email address"
+#, c-format
 msgid "Select detail to add to %s"
-msgstr "選擇電子郵件位址"
+msgstr "選擇要加入 %s 的詳細資料"
 
 #: ../src/contacts-contact-pane.vala:1765
 #, c-format
@@ -253,24 +243,24 @@ msgstr "是"
 msgid "No"
 msgstr "否"
 
-#: ../src/contacts-contact-pane.vala:1961
+#: ../src/contacts-contact-pane.vala:1960
 msgid "Select email address"
 msgstr "選擇電子郵件位址"
 
-#: ../src/contacts-contact-pane.vala:2033
+#: ../src/contacts-contact-pane.vala:2032
 msgid "Select what to call"
 msgstr "選擇要打給誰"
 
-#: ../src/contacts-contact-pane.vala:2096
+#: ../src/contacts-contact-pane.vala:2095
 msgid "Select chat account"
 msgstr "選擇聊天帳號"
 
-#: ../src/contacts-contact-pane.vala:2176
+#: ../src/contacts-contact-pane.vala:2175
 msgid "Add/Remove Linked Contacts..."
 msgstr "加入/移除已連結的連絡人…"
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2180
+#: ../src/contacts-contact-pane.vala:2179
 msgid "Delete"
 msgstr "刪除"
 
@@ -466,35 +456,33 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "本地端連絡人"
 
-#: ../src/contacts-link-dialog.vala:74
-#, fuzzy
-#| msgid "Link"
+#: ../src/contacts-link-dialog.vala:73
 msgctxt "contacts link action"
 msgid "Link"
 msgstr "連結"
 
-#: ../src/contacts-link-dialog.vala:85
+#: ../src/contacts-link-dialog.vala:84
 msgid "Undo"
-msgstr ""
+msgstr "復原"
 
-#: ../src/contacts-link-dialog.vala:149
+#: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "連結連絡人"
 
-#: ../src/contacts-link-dialog.vala:155 ../src/contacts-setup-window.vala:141
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
 msgid "Cancel"
 msgstr "取消"
 
-#: ../src/contacts-link-dialog.vala:155
+#: ../src/contacts-link-dialog.vala:154
 msgid "Link"
 msgstr "連結"
 
-#: ../src/contacts-link-dialog.vala:185
+#: ../src/contacts-link-dialog.vala:182
 #, c-format
 msgid "<span weight='bold'>Link contacts to %s</span>"
 msgstr "<span weight='bold'>連結連絡人到 %s</span>"
 
-#: ../src/contacts-link-dialog.vala:187
+#: ../src/contacts-link-dialog.vala:184
 msgid "<span weight='bold'>Select contact to link to</span>"
 msgstr "<span weight='bold'>選取要連結的連絡人</span>"
 
@@ -542,7 +530,7 @@ msgstr "找不到最近建立的連絡人\n"
 #: ../src/contacts-setup-window.vala:36
 msgid ""
 "Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr ""
+msgstr "歡迎使用連絡人！請選擇您要在哪裡保存您的通訊錄："
 
 #: ../src/contacts-setup-window.vala:81
 msgid "Online Account Settings"
@@ -639,14 +627,14 @@ msgstr "TTY"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:128
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "建議"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:133
+#: ../src/contacts-view.vala:135
 msgid "Other Contacts"
 msgstr "其他連絡人"
 
@@ -657,6 +645,15 @@ msgstr "首次設定完成。"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:2
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr "當使用者執行完首次設定精靈後設定為「true」。"
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "改變通訊錄(_C)…"
+
+#~ msgid "_About Contacts"
+#~ msgstr "關於連絡人(_A)"
+
+#~ msgid "_Quit"
+#~ msgstr "結束(_Q)"
 
 #~ msgid "Add..."
 #~ msgstr "加入…"
