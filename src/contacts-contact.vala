@@ -1174,11 +1174,9 @@ public class Contacts.Contact : GLib.Object  {
     if (!App.app.contacts_store.may_suggest_link (this, other))
       return false;
 
-    /* Only connect main contacts with non-mainable contacts. */
-    if (this.is_main && !other.has_mainable_persona()) {
-      return true;
-    }
-    return false;
+    /* Only connect main contacts with non-mainable contacts.
+       non-main contacts can link to any other */
+    return !this.is_main || !other.has_mainable_persona();
   }
 
   private static bool persona_is_google (Persona persona) {
