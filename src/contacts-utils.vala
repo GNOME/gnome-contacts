@@ -63,18 +63,18 @@ public class Contacts.Utils : Object {
 	str_equal);
 
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
-	TelepathyGLib.IFACE_CHANNEL_TYPE_STREAMED_MEDIA);
+	TelepathyGLib.IFACE_CHANNEL_TYPE_CALL);
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
 	(int) TelepathyGLib.HandleType.CONTACT);
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, contact_id);
     request_dict.insert (
-	TelepathyGLib.PROP_CHANNEL_TYPE_STREAMED_MEDIA_INITIAL_AUDIO,
+	TelepathyGLib.PROP_CHANNEL_TYPE_CALL_INITIAL_AUDIO,
 	true);
 
     var request = new TelepathyGLib.AccountChannelRequest(account,
 	request_dict, int64.MAX);
     request.ensure_channel_async.begin (
-	"org.freedesktop.Telepathy.Client.Empathy.AudioVideo", null);
+	"org.freedesktop.Telepathy.Client.Empathy.Call", null);
   }
 
   public static T? get_first<T> (Collection<T> collection) {
