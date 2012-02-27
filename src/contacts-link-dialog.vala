@@ -159,7 +159,7 @@ public class Contacts.LinkDialog : Dialog {
     if (contact.is_main)
       view.set_show_subset (View.Subset.OTHER);
     else
-      view.set_show_subset (View.Subset.MAIN);
+      view.set_show_subset (View.Subset.ALL_SEPARATED);
 
     var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
     foreach (var ind in matches.keys) {
