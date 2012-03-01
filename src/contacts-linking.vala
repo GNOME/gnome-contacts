@@ -547,9 +547,10 @@ namespace Contacts {
     Set<PersonaAttribute>? linkables = null;
 
     // Remove all linkable data from each contact that is already in the other contact
-    main_linkables.remove_all (other_linkables);
-    if (other_linkables != null)
+    if (other_linkables != null) {
+      main_linkables.remove_all (other_linkables);
       other_linkables.remove_all (main_linkables);
+    }
 
     Persona? write_persona = null;
     foreach (var p1 in main.individual.personas) {
