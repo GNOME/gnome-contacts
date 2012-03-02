@@ -44,7 +44,8 @@ public class Contacts.ContactPresence : Grid {
 
     if (type == PresenceType.UNSET ||
 	type == PresenceType.ERROR ||
-	type == PresenceType.OFFLINE) {
+	type == PresenceType.OFFLINE ||
+	type == PresenceType.UNKNOWN) {
       image.clear ();
       image.hide ();
       label.hide ();
@@ -490,9 +491,9 @@ public class Contacts.Contact : GLib.Object  {
     case PresenceType.OFFLINE:
     case PresenceType.UNSET:
     case PresenceType.ERROR:
+    case PresenceType.UNKNOWN:
       break;
     case PresenceType.AVAILABLE:
-    case PresenceType.UNKNOWN:
       iconname = "user-available-symbolic";
       break;
     case PresenceType.AWAY:
@@ -523,9 +524,9 @@ public class Contacts.Contact : GLib.Object  {
     case PresenceType.OFFLINE:
     case PresenceType.UNSET:
     case PresenceType.ERROR:
+    case PresenceType.UNKNOWN:
       break;
     case PresenceType.AVAILABLE:
-    case PresenceType.UNKNOWN:
       iconname = "user-available";
       break;
     case PresenceType.AWAY:

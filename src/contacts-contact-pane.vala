@@ -1703,7 +1703,8 @@ public class Contacts.ContactPane : ScrolledWindow {
 	  var type = im_persona.presence_type;
 	  if (type != PresenceType.UNSET &&
 	      type != PresenceType.ERROR &&
-	      type != PresenceType.OFFLINE) {
+	      type != PresenceType.OFFLINE &&
+	      type != PresenceType.UNKNOWN) {
 	    found_im = true;
 	    if (type > max_presence)
 	      max_presence = type;
@@ -1992,7 +1993,8 @@ public class Contacts.ContactPane : ScrolledWindow {
 	  var type = im_persona.presence_type;
 	  if (type != PresenceType.UNSET &&
 	      type != PresenceType.ERROR &&
-	      type != PresenceType.OFFLINE) {
+	      type != PresenceType.OFFLINE &&
+	      type != PresenceType.UNKNOWN) {
 	    CallValue? value = { null, protocol, id.value, Contact.format_im_name (im_persona, protocol, id.value) };
 	    call_targets.add (value);
 	  }
@@ -2068,7 +2070,8 @@ public class Contacts.ContactPane : ScrolledWindow {
 	    var type = im_persona.presence_type;
 	    if (type != PresenceType.UNSET &&
 		type != PresenceType.ERROR &&
-		type != PresenceType.OFFLINE) {
+		type != PresenceType.OFFLINE &&
+		type != PresenceType.UNKNOWN) {
 	      ImValue? value = { protocol, id.value, Contact.format_im_name (im_persona, protocol, id.value) };
 	      online_personas.add (value);
 	    }
