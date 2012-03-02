@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gnome-contacts\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-18 10:45+0200\n"
-"PO-Revision-Date: 2012-02-18 10:46+0200\n"
+"POT-Creation-Date: 2012-03-02 14:43+0200\n"
+"PO-Revision-Date: 2012-03-02 14:44+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: \n"
@@ -83,13 +83,18 @@ msgstr "הצגת איש קשר עם מזהה ייחודי זה"
 msgid "Show contact with this email address"
 msgstr "הצגת איש הקשר עם כתובת דוא״ל זו"
 
-#: ../src/contacts-app.vala:427
-#: ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-app.vala:429
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s מקושר אל %s"
 
-#: ../src/contacts-app.vala:443
+#: ../src/contacts-app.vala:431
+#: ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s מקושר אל איש הקשר"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "— ניהול אנשי קשר"
 
@@ -102,7 +107,7 @@ msgid "Select Picture"
 msgstr "נא לבחור תמונה"
 
 #: ../src/contacts-avatar-dialog.vala:260
-#: ../src/contacts-link-dialog.vala:153
+#: ../src/contacts-link-dialog.vala:152
 msgid "Close"
 msgstr "סגירה"
 
@@ -118,7 +123,7 @@ msgstr "ֹקישור"
 
 #: ../src/contacts-contact-pane.vala:680
 #: ../src/contacts-contact-pane.vala:681
-#: ../src/contacts-link-dialog.vala:117
+#: ../src/contacts-link-dialog.vala:116
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
@@ -131,7 +136,7 @@ msgid "Phone"
 msgstr "טלפון"
 
 #: ../src/contacts-contact-pane.vala:723
-#: ../src/contacts-link-dialog.vala:133
+#: ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "מספר טלפון"
 
@@ -248,24 +253,24 @@ msgstr "כן"
 msgid "No"
 msgstr "לא"
 
-#: ../src/contacts-contact-pane.vala:1961
+#: ../src/contacts-contact-pane.vala:1960
 msgid "Select email address"
 msgstr "נא לבחור בכתובת דוא״ל"
 
-#: ../src/contacts-contact-pane.vala:2033
+#: ../src/contacts-contact-pane.vala:2032
 msgid "Select what to call"
 msgstr "נא לבחור לאן להתקשר"
 
-#: ../src/contacts-contact-pane.vala:2096
+#: ../src/contacts-contact-pane.vala:2095
 msgid "Select chat account"
 msgstr "נא לבחור בחשבון צ׳אט"
 
-#: ../src/contacts-contact-pane.vala:2176
+#: ../src/contacts-contact-pane.vala:2175
 msgid "Add/Remove Linked Contacts..."
 msgstr "הוספה/הסרה של אנשי קשרים מאוגדים..."
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2180
+#: ../src/contacts-contact-pane.vala:2179
 msgid "Delete"
 msgstr "מחיקה"
 
@@ -439,11 +444,11 @@ msgstr "פרופיל Google"
 msgid "Unexpected internal error: created contact was not found"
 msgstr "שגיאה פנימית בלתי צפויה: איש הקשר שנוצר לא נמצא"
 
-#: ../src/contacts-contact.vala:1221
+#: ../src/contacts-contact.vala:1218
 msgid "Google Circles"
 msgstr "מעגלים של Google"
 
-#: ../src/contacts-contact.vala:1223
+#: ../src/contacts-contact.vala:1220
 msgid "Google Other Contact"
 msgstr "אנשי קשר אחרים של Google"
 
@@ -464,34 +469,34 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "איש קשר מקומי"
 
-#: ../src/contacts-link-dialog.vala:74
+#: ../src/contacts-link-dialog.vala:73
 msgctxt "contacts link action"
 msgid "Link"
 msgstr "ֹקישור"
 
-#: ../src/contacts-link-dialog.vala:85
+#: ../src/contacts-link-dialog.vala:84
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../src/contacts-link-dialog.vala:149
+#: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "קישור איש קשר"
 
-#: ../src/contacts-link-dialog.vala:155
+#: ../src/contacts-link-dialog.vala:154
 #: ../src/contacts-setup-window.vala:141
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../src/contacts-link-dialog.vala:155
+#: ../src/contacts-link-dialog.vala:154
 msgid "Link"
 msgstr "קישור"
 
-#: ../src/contacts-link-dialog.vala:185
+#: ../src/contacts-link-dialog.vala:182
 #, c-format
 msgid "<span weight='bold'>Link contacts to %s</span>"
 msgstr "<span weight='bold'>קישור אנשי קשר אל %s</span>"
 
-#: ../src/contacts-link-dialog.vala:187
+#: ../src/contacts-link-dialog.vala:184
 msgid "<span weight='bold'>Select contact to link to</span>"
 msgstr "<span weight='bold'>נא לבחור אנשי קשר לקשר אליהם</span>"
 
@@ -640,7 +645,7 @@ msgstr "TTY"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:128
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "הצעה"
@@ -648,7 +653,7 @@ msgstr[1] "הצעות"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:133
+#: ../src/contacts-view.vala:135
 msgid "Other Contacts"
 msgstr "אנשי קשר אחרים"
 
