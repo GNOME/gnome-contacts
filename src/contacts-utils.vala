@@ -206,7 +206,7 @@ public class Contacts.Utils : Object {
     entry.select_region (start, end);
   }
 
-  private static void spawn_app (GLib.Settings app_settings) {
+  private static void spawn_app (GLib.Settings app_settings) throws GLib.SpawnError {
     var needs_term = app_settings.get_boolean("needs-term");
     var exec = app_settings.get_string("exec");
     if (needs_term) {
@@ -237,9 +237,17 @@ public class Contacts.Utils : Object {
 	args[3] = "calendar:///?startdate=%.4d%.2d%.2d".printf (today.get_year (), d.get_month (), d.get_day_of_month ());
       }
 
-      Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
+      try {
+	Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
+      }
+      catch {
+      }
     } else {
-      spawn_app (calendar_settings);
+      try {
+	spawn_app (calendar_settings);
+      }
+      catch {
+      }
     }
   }
 

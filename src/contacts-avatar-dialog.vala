@@ -93,13 +93,10 @@ public class Contacts.AvatarDialog : Dialog {
   }
 
   private void selected_pixbuf (Gdk.Pixbuf pixbuf) {
-    try {
-      var p = pixbuf.scale_simple (main_size, main_size, Gdk.InterpType.HYPER);
-      main_frame.set_pixbuf (p);
+    var p = pixbuf.scale_simple (main_size, main_size, Gdk.InterpType.HYPER);
+    main_frame.set_pixbuf (p);
 
-      new_pixbuf = pixbuf;
-    } catch {
-    }
+    new_pixbuf = pixbuf;
   }
 
   private void update_grid () {
@@ -340,8 +337,11 @@ public class Contacts.AvatarDialog : Dialog {
     response.connect ( (response_id) => {
 	if (response_id == ResponseType.CLOSE) {
 	  if (new_pixbuf != null) {
-	    var icon = new MemoryIcon.from_pixbuf (new_pixbuf);
-	    set_avatar (icon);
+	    try {
+	      var icon = new MemoryIcon.from_pixbuf (new_pixbuf);
+	      set_avatar (icon);
+	    } catch {
+	    }
 	  }
 	}
 	this.destroy ();

@@ -1036,7 +1036,7 @@ public class Contacts.Contact : GLib.Object  {
     return false;
   }
 
-  public async void remove_personas () {
+  public async void remove_personas () throws Folks.PersonaStoreError {
     var personas = new HashSet<Persona> ();
     foreach (var p in individual.personas) {
       if (p.store.can_remove_personas == MaybeBool.TRUE &&
