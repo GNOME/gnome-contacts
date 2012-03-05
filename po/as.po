@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gnome-contacts package.
 #
 # ngoswami <ngoswami@redhat.com>, 2011.
-# Nilamdyuti Goswami <ngoswami@redhat.com>, 2011.
+# Nilamdyuti Goswami <ngoswami@redhat.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-21 14:05+0000\n"
-"PO-Revision-Date: 2011-08-23 20:29+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-02-20 12:02+0000\n"
+"PO-Revision-Date: 2012-03-05 20:49+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,406 +19,586 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:108
-#: ../src/main.vala:35
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:234
+#: ../src/main.vala:24
 msgid "Contacts"
 msgstr "পৰিচয়সমূহ"
 
-#: ../src/contacts-app.vala:68
-#, fuzzy, c-format
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "ঠিকনা বহি সলনি কৰক (_C)..."
+
+#: ../src/app-menu.ui.h:2
+#| msgid "Contacts"
+msgid "_About Contacts"
+msgstr "পৰিচয়সমূহৰ বিষয়ে (_A)"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Quit"
+msgstr "প্ৰস্থান কৰক (_Q)"
+
+#: ../src/contacts-app.vala:79
+#, c-format
 #| msgid "Show contact with this individual id"
 msgid "No contact with id %s found"
-msgstr "এই সূকীয়া আই-ডিৰ সৈতে পৰিচয় দেখুৱাওক"
+msgstr "আই-ডি %s -ৰ সৈতে কোনো পৰিচা পোৱা নগল"
 
-#: ../src/contacts-app.vala:69 ../src/contacts-app.vala:87
+#: ../src/contacts-app.vala:80 ../src/contacts-app.vala:202
 msgid "Contact not found"
-msgstr ""
+msgstr "পৰিচয় পোৱা নগল"
 
-#: ../src/contacts-app.vala:86
-#, fuzzy, c-format
+#: ../src/contacts-app.vala:89
+msgid "Change Address Book"
+msgstr "ঠিকনা বহি সলনি কৰক"
+
+#: ../src/contacts-app.vala:94 ../src/contacts-setup-window.vala:156
+#| msgid "Street"
+msgid "Select"
+msgstr "বাছক"
+
+#: ../src/contacts-app.vala:180
+msgid "translator-credits"
+msgstr "নীলমদ্যুতি গোস্বামী (ngoswami@redhat.com)"
+
+#: ../src/contacts-app.vala:181
+#| msgid "Contacts"
+msgid "GNOME Contacts"
+msgstr "GNOME পৰিচয়সমূহ"
+
+#: ../src/contacts-app.vala:182
+msgid "About GNOME Contacts"
+msgstr "GNOME পৰিচয়ৰ বিষয়ে"
+
+#: ../src/contacts-app.vala:183
+msgid "Contact Management Application"
+msgstr "পৰিচয় ব্যৱস্থাপনা অনুপ্ৰয়োগ"
+
+#: ../src/contacts-app.vala:201
+#, c-format
 #| msgid "Show contact with this email address"
 msgid "No contact with email address %s found"
-msgstr "এই ই-মেইল ঠিকনাৰ সৈতে পৰিচয় দেখুৱাওক"
+msgstr "ই-মেইল ঠিকনা %s -ৰ সৈতে কোনো পৰিচয় পোৱা নগল"
 
-#: ../src/contacts-app.vala:159 ../src/main.vala:27
+#: ../src/contacts-app.vala:250
+msgid "New"
+msgstr "নতুন"
+
+#: ../src/contacts-app.vala:387
+#, c-format
+msgid "Contact deleted: \"%s\""
+msgstr "পৰিচয় মচি পেলোৱা হল: \"%s\""
+
+#: ../src/contacts-app.vala:414
 msgid "Show contact with this individual id"
 msgstr "এই সূকীয়া আই-ডিৰ সৈতে পৰিচয় দেখুৱাওক"
 
-#: ../src/contacts-app.vala:161 ../src/main.vala:29
+#: ../src/contacts-app.vala:416
 msgid "Show contact with this email address"
 msgstr "এই ই-মেইল ঠিকনাৰ সৈতে পৰিচয় দেখুৱাওক"
 
-#: ../src/contacts-app.vala:168
+#: ../src/contacts-app.vala:429
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s ক %s ৰ সৈতে সংযুক্ত কৰা হল"
+
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s ক পৰিচয়ৰ সৈতে সংযুক্ত কৰা হল"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
-msgstr ""
+msgstr "— পৰিচয় ব্যৱস্থাপনা"
 
-#: ../src/contacts-contact-pane.vala:606 ../src/contacts-contact-pane.vala:850
-#: ../src/contacts-contact-pane.vala:1348
-msgid "Nickname"
-msgstr ""
+#: ../src/contacts-avatar-dialog.vala:181
+msgid "Browse for more pictures"
+msgstr "অধিক ছবিৰ বাবে ব্ৰাউছ কৰক"
 
-#: ../src/contacts-contact-pane.vala:609
-#, fuzzy
-#| msgid "Enter name"
-msgid "Enter nickname"
-msgstr "নাম সোমাওক"
+#: ../src/contacts-avatar-dialog.vala:257
+msgid "Select Picture"
+msgstr "ছবি বাছক"
 
-#: ../src/contacts-contact-pane.vala:615
-msgid "Alias"
-msgstr ""
+#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:152
+msgid "Close"
+msgstr "বন্ধ কৰক"
 
-#: ../src/contacts-contact-pane.vala:618
-#, fuzzy
-#| msgid "Enter link"
-msgid "Enter alias"
-msgstr "লিঙ্ক সোমাওক"
-
-#: ../src/contacts-contact-pane.vala:630
-msgid "Enter email address"
-msgstr "ই-মেইল ঠিকনা সোমাওক"
-
-#: ../src/contacts-contact-pane.vala:641
-msgid "Enter phone number"
-msgstr "ফোন নম্বৰ সোমাওক"
-
-#: ../src/contacts-contact-pane.vala:647 ../src/contacts-contact-pane.vala:839
-#, fuzzy
+#: ../src/contacts-contact-pane.vala:592
 #| msgid "Link"
-msgctxt "url-link"
+msgctxt "Addresses on the Web"
+msgid "Links"
+msgstr "সংযোগসমূহ"
+
+#: ../src/contacts-contact-pane.vala:593
+#| msgid "Link"
+msgctxt "Web address"
 msgid "Link"
-msgstr "লিঙ্ক"
+msgstr "সংযোগ"
 
-#: ../src/contacts-contact-pane.vala:652
-msgid "Enter link"
-msgstr "লিঙ্ক সোমাওক"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Street"
-msgstr "ৰাস্তা"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Extension"
-msgstr "প্ৰসাৰন"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "City"
-msgstr "শহৰ"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "State/Province"
-msgstr "ৰাজ্য/প্ৰদেশ"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Zip/Postal Code"
-msgstr "Zip/ডাক কোড"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "PO box"
-msgstr "PO বাকচ"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Country"
-msgstr "দেশ"
-
-#: ../src/contacts-contact-pane.vala:746
-#: ../src/contacts-contact-pane.vala:1365
-msgid "Chat"
-msgstr "চেট"
-
-#: ../src/contacts-contact-pane.vala:807
-msgid "Add detail"
-msgstr "বিৱৰণ যোগ কৰক"
-
-#: ../src/contacts-contact-pane.vala:813
+#: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
+#: ../src/contacts-link-dialog.vala:116
+#: ../src/contacts-new-contact-dialog.vala:85
+#: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
 msgstr "ই-মেইল"
 
-#: ../src/contacts-contact-pane.vala:821
+#: ../src/contacts-contact-pane.vala:722
+#: ../src/contacts-new-contact-dialog.vala:94
+#: ../src/contacts-new-contact-dialog.vala:125
+msgid "Phone"
+msgstr "ফোন"
+
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "ফোন নম্বৰ"
 
-#: ../src/contacts-contact-pane.vala:829
-msgid "Postal Address"
-msgstr "ডাক ঠিকনা"
+#: ../src/contacts-contact-pane.vala:783 ../src/contacts-contact-pane.vala:784
+msgid "Chat"
+msgstr "চেট"
 
-#: ../src/contacts-contact-pane.vala:962
-msgid "Browse for more pictures"
-msgstr ""
+#: ../src/contacts-contact-pane.vala:849
+msgid "January"
+msgstr "জানুৱাৰী"
 
-#: ../src/contacts-contact-pane.vala:1044
-msgid "Browse for more pictures..."
-msgstr ""
+#: ../src/contacts-contact-pane.vala:850
+msgid "February"
+msgstr "ফেব্ৰুৱাৰী"
 
-#: ../src/contacts-contact-pane.vala:1264
-msgid "Enter name"
-msgstr "নাম সোমাওক"
+#: ../src/contacts-contact-pane.vala:851
+msgid "March"
+msgstr "মাৰ্চ"
 
-#: ../src/contacts-contact-pane.vala:1276
-#: ../src/contacts-contact-pane.vala:1563
-#, fuzzy
-#| msgid "Contacts"
-msgid "Contact Name"
-msgstr "পৰিচয়সমূহ"
+#: ../src/contacts-contact-pane.vala:852
+msgid "April"
+msgstr "এপ্ৰিল"
 
-#: ../src/contacts-contact-pane.vala:1430
-msgid "Address copied to clipboard"
-msgstr "ঠিকনা ক্লিপবৰ্ডলে কপি কৰা হৈছে"
+#: ../src/contacts-contact-pane.vala:853
+msgid "May"
+msgstr "মে"
 
-#: ../src/contacts-contact-pane.vala:1452
+#: ../src/contacts-contact-pane.vala:854
+msgid "June"
+msgstr "জুন"
+
+#: ../src/contacts-contact-pane.vala:855
+msgid "July"
+msgstr "জুলাই"
+
+#: ../src/contacts-contact-pane.vala:856
+msgid "August"
+msgstr "আগষ্ট"
+
+#: ../src/contacts-contact-pane.vala:857
+msgid "September"
+msgstr "চেপ্তেম্বৰ"
+
+#: ../src/contacts-contact-pane.vala:858
+#| msgid "Other"
+msgid "October"
+msgstr "অক্টোবৰ"
+
+#: ../src/contacts-contact-pane.vala:859
+#| msgid "Phone number"
+msgid "November"
+msgstr "নভেম্বৰ"
+
+#: ../src/contacts-contact-pane.vala:860
+msgid "December"
+msgstr "ডিচেম্বৰ"
+
+#: ../src/contacts-contact-pane.vala:898 ../src/contacts-contact-pane.vala:899
 msgid "Birthday"
-msgstr ""
+msgstr "জন্মদিন"
 
-#: ../src/contacts-contact-pane.vala:1461 ../src/contacts-types.vala:296
-msgid "Company"
-msgstr "কোম্পানী"
+#: ../src/contacts-contact-pane.vala:971 ../src/contacts-contact-pane.vala:972
+msgid "Nickname"
+msgstr "উপনাম"
 
-#: ../src/contacts-contact-pane.vala:1468
-msgid "Department"
-msgstr ""
+#: ../src/contacts-contact-pane.vala:1062
+#: ../src/contacts-contact-pane.vala:1063
+#| msgid "Notes"
+msgid "Note"
+msgstr "টোকা"
 
-#: ../src/contacts-contact-pane.vala:1475
-msgid "Profession"
-msgstr ""
+#: ../src/contacts-contact-pane.vala:1202
+#| msgid "Postal Address"
+msgid "Addresses"
+msgstr "ঠিকনাসমূহ"
 
-#: ../src/contacts-contact-pane.vala:1480
-#, fuzzy
-#| msgid "Twitter"
-msgid "Title"
+#: ../src/contacts-contact-pane.vala:1203
+#: ../src/contacts-new-contact-dialog.vala:103
+#: ../src/contacts-new-contact-dialog.vala:130
+#| msgid "Postal Address"
+msgid "Address"
+msgstr "ঠিকনা"
+
+#: ../src/contacts-contact-pane.vala:1305
+#| msgid "Local Contact"
+msgid "Add to My Contacts"
+msgstr "মোৰ পৰিচয়সমূহলে যোগ কৰক"
+
+#: ../src/contacts-contact-pane.vala:1315
+#| msgid "Enter link"
+msgid "Unlink"
+msgstr "সংযোগ আতৰাওক"
+
+#: ../src/contacts-contact-pane.vala:1347
+#| msgid "Add detail"
+msgid "Add detail..."
+msgstr "বিৱৰণ যোগ কৰক..."
+
+#: ../src/contacts-contact-pane.vala:1362
+#, c-format
+msgid "Select detail to add to %s"
+msgstr "%s লে যোগ কৰিবলে বিৱৰণ বাছক"
+
+#: ../src/contacts-contact-pane.vala:1765
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "%s ৰ পৰা %s ইয়াত থাকিব লাগে নে?"
+
+#: ../src/contacts-contact-pane.vala:1767
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "এই বিৱৰণসমূহ %s ৰ হয় নে?"
+
+#: ../src/contacts-contact-pane.vala:1777
+msgid "Yes"
+msgstr "হয়"
+
+#: ../src/contacts-contact-pane.vala:1778
+msgid "No"
+msgstr "নহয়"
+
+#: ../src/contacts-contact-pane.vala:1960
+#| msgid "Enter email address"
+msgid "Select email address"
+msgstr "ই-মেইল ঠিকনা বাছক"
+
+#: ../src/contacts-contact-pane.vala:2032
+msgid "Select what to call"
+msgstr "কি কল কৰা হব বাছক"
+
+#: ../src/contacts-contact-pane.vala:2095
+msgid "Select chat account"
+msgstr "চেট একাওন্ট বাছক"
+
+#: ../src/contacts-contact-pane.vala:2175
+msgid "Add/Remove Linked Contacts..."
+msgstr "সংযোগিত পৰিচয়সমূহ যোগ কৰক/আতৰাওক..."
+
+#. Utils.add_menu_item (context_menu,_("Send..."));
+#: ../src/contacts-contact-pane.vala:2179
+msgid "Delete"
+msgstr "মচি পেলাওক"
+
+#: ../src/contacts-contact.vala:466
+msgid "Unknown status"
+msgstr "অজ্ঞাত অৱস্থা"
+
+#: ../src/contacts-contact.vala:468
+msgid "Offline"
+msgstr "অফলাইন"
+
+#: ../src/contacts-contact.vala:472
+msgid "Error"
+msgstr "ত্ৰুটি"
+
+#: ../src/contacts-contact.vala:474
+msgid "Available"
+msgstr "উপলব্ধ"
+
+#: ../src/contacts-contact.vala:476
+msgid "Away"
+msgstr "আতৰত"
+
+#: ../src/contacts-contact.vala:478
+msgid "Extended away"
+msgstr "আতৰত প্ৰসাৰিত"
+
+#: ../src/contacts-contact.vala:480
+msgid "Busy"
+msgstr "ব্যস্থ"
+
+#: ../src/contacts-contact.vala:482
+msgid "Hidden"
+msgstr "লুকাই থকা"
+
+#: ../src/contacts-contact.vala:664
+msgid "Street"
+msgstr "ৰাস্তা"
+
+#: ../src/contacts-contact.vala:664
+msgid "Extension"
+msgstr "প্ৰসাৰন"
+
+#: ../src/contacts-contact.vala:664
+msgid "City"
+msgstr "শহৰ"
+
+#: ../src/contacts-contact.vala:664
+msgid "State/Province"
+msgstr "ৰাজ্য/প্ৰদেশ"
+
+#: ../src/contacts-contact.vala:664
+msgid "Zip/Postal Code"
+msgstr "Zip/ডাক কোড"
+
+#: ../src/contacts-contact.vala:664
+msgid "PO box"
+msgstr "PO বাকচ"
+
+#: ../src/contacts-contact.vala:664
+msgid "Country"
+msgstr "দেশ"
+
+#: ../src/contacts-contact.vala:720
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: ../src/contacts-contact.vala:721
+msgid "Ovi Chat"
+msgstr "Ovi Chat"
+
+#: ../src/contacts-contact.vala:722 ../src/contacts-contact.vala:1002
+msgid "Facebook"
+msgstr "Facebook"
+
+#: ../src/contacts-contact.vala:723
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: ../src/contacts-contact.vala:724
+msgid "AOL Instant Messenger"
+msgstr "AOL Instant Messenger"
+
+#: ../src/contacts-contact.vala:725
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: ../src/contacts-contact.vala:726
+msgid "Novell Groupwise"
+msgstr "Novell দলভাৱে"
+
+#: ../src/contacts-contact.vala:727
+msgid "ICQ"
+msgstr "ICQ"
+
+#: ../src/contacts-contact.vala:728
+msgid "IRC"
+msgstr "IRC"
+
+#: ../src/contacts-contact.vala:729
+msgid "Jabber"
+msgstr "Jabber"
+
+#: ../src/contacts-contact.vala:730
+msgid "Local network"
+msgstr "স্থানীয় নেটৱাৰ্ক"
+
+#: ../src/contacts-contact.vala:731
+msgid "Windows Live Messenger"
+msgstr "Windows Live Messenger"
+
+#: ../src/contacts-contact.vala:732
+msgid "MySpace"
+msgstr "MySpace"
+
+#: ../src/contacts-contact.vala:733
+msgid "MXit"
+msgstr "MXit"
+
+#: ../src/contacts-contact.vala:734
+msgid "Napster"
+msgstr "Napster"
+
+#: ../src/contacts-contact.vala:735
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: ../src/contacts-contact.vala:736
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: ../src/contacts-contact.vala:737
+msgid "SILC"
+msgstr "SILC"
+
+#: ../src/contacts-contact.vala:738
+msgid "sip"
+msgstr "sip"
+
+#: ../src/contacts-contact.vala:739
+msgid "Skype"
+msgstr "Skype"
+
+#: ../src/contacts-contact.vala:740
+msgid "Telephony"
+msgstr "টেলিফোনী"
+
+#: ../src/contacts-contact.vala:741
+msgid "Trepia"
+msgstr "Trepia"
+
+#: ../src/contacts-contact.vala:742 ../src/contacts-contact.vala:743
+msgid "Yahoo! Messenger"
+msgstr "Yahoo! Messenger"
+
+#: ../src/contacts-contact.vala:744
+msgid "Zephyr"
+msgstr "Zephyr"
+
+#: ../src/contacts-contact.vala:1005
+msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact-pane.vala:1487
-#, fuzzy
-#| msgid "Pager"
-msgid "Manager"
-msgstr "পেজাৰ"
+#: ../src/contacts-contact.vala:1008
+#| msgid "Google Talk"
+msgid "Google Profile"
+msgstr "Google আলেখ্য"
 
-#. List most specific first, always in upper case
-#: ../src/contacts-contact-pane.vala:1496 ../src/contacts-types.vala:291
-msgid "Assistant"
-msgstr "সহায়ক"
+#: ../src/contacts-contact.vala:1072
+msgid "Unexpected internal error: created contact was not found"
+msgstr "অপ্ৰত্যাষিত অভ্যন্তৰীক ত্ৰুটি: সৃষ্টি কৰা পৰিচয় পোৱা নগল"
 
-#: ../src/contacts-contact-pane.vala:1505
-#, fuzzy
+#: ../src/contacts-contact.vala:1221
+#| msgid "Google Talk"
+msgid "Google Circles"
+msgstr "Google বৃত্তসমূহ"
+
+#: ../src/contacts-contact.vala:1223
+#| msgid "Local Contact"
+msgid "Google Other Contact"
+msgstr "Google অন্য পৰিচয়"
+
+#: ../src/contacts-esd-setup.c:627
+msgid "Personal"
+msgstr "ব্যক্তিগত"
+
+#: ../src/contacts-esd-setup.c:652
+#| msgid "Postal Address"
+msgid "Local Address Book"
+msgstr "স্থানীয় ঠিকনা বহি"
+
+#: ../src/contacts-esd-setup.c:659 ../src/contacts-esd-setup.c:678
+msgid "Google"
+msgstr "Google Talk"
+
+#: ../src/contacts-esd-setup.c:671
+msgid "Local Contact"
+msgstr "স্থানীয় পৰিচয়"
+
+#: ../src/contacts-link-dialog.vala:73
 #| msgid "Link"
-msgid "Links"
-msgstr "লিঙ্ক"
+msgctxt "contacts link action"
+msgid "Link"
+msgstr "সংযোগ"
 
-#: ../src/contacts-contact-pane.vala:1578
+#: ../src/contacts-link-dialog.vala:84
+msgid "Undo"
+msgstr "কাৰ্য্য বাতিল কৰক"
+
+#: ../src/contacts-link-dialog.vala:148
+#| msgid "Local Contact"
+msgid "Link Contact"
+msgstr "সংযোগ পৰিচয়"
+
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
+msgid "Cancel"
+msgstr "বাতিল কৰক"
+
+#: ../src/contacts-link-dialog.vala:154
+#| msgid "Link"
+msgid "Link"
+msgstr "সংযোগ"
+
+#: ../src/contacts-link-dialog.vala:182
+#, c-format
+msgid "<span weight='bold'>Link contacts to %s</span>"
+msgstr "<span weight='bold'>পৰিচয়সমূহ %s লে সংযোগ কৰক</span>"
+
+#: ../src/contacts-link-dialog.vala:184
+msgid "<span weight='bold'>Select contact to link to</span>"
+msgstr "<span weight='bold'>সংযোগ কৰিবলে পৰিচয় বাছক</span>"
+
+#: ../src/contacts-new-contact-dialog.vala:35
+#| msgid "Contacts"
+msgid "New contact"
+msgstr "নতুন পৰিচয়"
+
+#: ../src/contacts-new-contact-dialog.vala:41
+#| msgid "Local Contact"
+msgid "Create Contact"
+msgstr "পৰিচয় সৃষ্টি কৰক"
+
+#: ../src/contacts-new-contact-dialog.vala:67
+msgid ""
+"Add or \n"
+"select a picture"
+msgstr ""
+"এটা ছবি যোগ কৰক অথবা\n"
+"বাছক"
+
+#: ../src/contacts-new-contact-dialog.vala:77
+#| msgid "Contacts"
+msgid "Contact Name"
+msgstr "পৰিচয় নাম"
+
+#: ../src/contacts-new-contact-dialog.vala:112
+#| msgid "Add detail"
+msgid "Add Detail"
+msgstr "বিৱৰণ যোগ কৰক"
+
+#: ../src/contacts-new-contact-dialog.vala:211
+msgid "You must specify a contact name"
+msgstr "আপুনি এটা পৰিচয় নাম ধাৰ্য্য কৰিব লাগিব"
+
+#: ../src/contacts-new-contact-dialog.vala:319
+msgid "No primary addressbook configured\n"
+msgstr "কোনো প্ৰাথমিক ঠিকনাবহি সংৰূপণ কৰা হোৱা নাই\n"
+
+#: ../src/contacts-new-contact-dialog.vala:341
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "নতুন পৰিচয়সমূহ সৃষ্টি কৰিবলে ব্যৰ্থ: %s\n"
 
-#: ../src/contacts-contact-pane.vala:1588
+#: ../src/contacts-new-contact-dialog.vala:352
 msgid "Unable to find newly created contact\n"
 msgstr "নতুনকে সৃষ্টি কৰা পৰিচয় বিচাৰি পাবলে অক্ষম\n"
 
-#: ../src/contacts-contact-pane.vala:1697
-msgid "Notes"
-msgstr "টোকাসমূহ"
-
-#: ../src/contacts-contact-pane.vala:1728
-msgid "Edit"
-msgstr "সম্পাদন কৰক"
-
-#: ../src/contacts-contact-pane.vala:1735
-msgid "More"
-msgstr "অধিক"
-
-#: ../src/contacts-contact-pane.vala:1748
-#, fuzzy
-#| msgid "Local Contact"
-msgid "Back to Contact"
-msgstr "স্থানীয় পৰিচয়"
-
-#: ../src/contacts-contact-pane.vala:1757
-msgid "Add/Remove Linked Contacts..."
-msgstr "সংযোগিত পৰিচয়সমূহ যোগ কৰক/আতৰাওক..."
-
-#. Utils.add_menu_item (menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:1759
-msgid "Delete"
-msgstr "মচি পেলাওক"
-
-#: ../src/contacts-contact.vala:405
-msgid "Unknown status"
-msgstr "অজ্ঞাত অৱস্থা"
-
-#: ../src/contacts-contact.vala:407
-msgid "Offline"
-msgstr "অফলাইন"
-
-#: ../src/contacts-contact.vala:411
-msgid "Error"
-msgstr "ত্ৰুটি"
-
-#: ../src/contacts-contact.vala:413
-msgid "Available"
-msgstr "উপলব্ধ"
-
-#: ../src/contacts-contact.vala:415
-msgid "Away"
-msgstr "আতৰত"
-
-#: ../src/contacts-contact.vala:417
-msgid "Extended away"
-msgstr "আতৰত প্ৰসাৰিত"
-
-#: ../src/contacts-contact.vala:419
-msgid "Busy"
-msgstr "ব্যস্থ"
-
-#: ../src/contacts-contact.vala:421
-msgid "Hidden"
-msgstr "লুকাই থকা"
-
-#: ../src/contacts-contact.vala:614
-msgid "Google Talk"
-msgstr "Google Talk"
-
-#: ../src/contacts-contact.vala:615
-msgid "Ovi Chat"
-msgstr "Ovi Chat"
-
-#: ../src/contacts-contact.vala:616 ../src/contacts-contact.vala:888
-msgid "Facebook"
-msgstr "Facebook"
-
-#: ../src/contacts-contact.vala:617
-msgid "Livejournal"
-msgstr "Livejournal"
-
-#: ../src/contacts-contact.vala:618
-msgid "AOL Instant Messenger"
-msgstr "AOL Instant Messenger"
-
-#: ../src/contacts-contact.vala:619
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
-
-#: ../src/contacts-contact.vala:620
-msgid "Novell Groupwise"
-msgstr "Novell দলভাৱে"
-
-#: ../src/contacts-contact.vala:621
-msgid "ICQ"
-msgstr "ICQ"
-
-#: ../src/contacts-contact.vala:622
-msgid "IRC"
-msgstr "IRC"
-
-#: ../src/contacts-contact.vala:623
-msgid "Jabber"
-msgstr "Jabber"
-
-#: ../src/contacts-contact.vala:624
-msgid "Local network"
-msgstr "স্থানীয় নেটৱাৰ্ক"
-
-#: ../src/contacts-contact.vala:625
-msgid "Windows Live Messenger"
-msgstr "Windows Live Messenger"
-
-#: ../src/contacts-contact.vala:626
-msgid "MySpace"
-msgstr "MySpace"
-
-#: ../src/contacts-contact.vala:627
-msgid "MXit"
-msgstr "MXit"
-
-#: ../src/contacts-contact.vala:628
-msgid "Napster"
-msgstr "Napster"
-
-#: ../src/contacts-contact.vala:629
-msgid "Tencent QQ"
-msgstr "Tencent QQ"
-
-#: ../src/contacts-contact.vala:630
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
-
-#: ../src/contacts-contact.vala:631
-msgid "SILC"
-msgstr "SILC"
-
-#: ../src/contacts-contact.vala:632
-msgid "sip"
-msgstr "sip"
-
-#: ../src/contacts-contact.vala:633
-msgid "Skype"
-msgstr "Skype"
-
-#: ../src/contacts-contact.vala:634
-msgid "Telephony"
-msgstr "টেলিফোনী"
-
-#: ../src/contacts-contact.vala:635
-msgid "Trepia"
-msgstr "Trepia"
-
-#: ../src/contacts-contact.vala:636 ../src/contacts-contact.vala:637
-msgid "Yahoo! Messenger"
-msgstr "Yahoo! Messenger"
-
-#: ../src/contacts-contact.vala:638
-msgid "Zephyr"
-msgstr "Zephyr"
-
-#: ../src/contacts-contact.vala:891
-msgid "Twitter"
-msgstr "Twitter"
-
-#: ../src/contacts-contact.vala:917
-msgid "Unexpected internal error: created contact was not found"
-msgstr ""
-
-#: ../src/contacts-contact.vala:938
-msgid "Local Contact"
-msgstr "স্থানীয় পৰিচয়"
-
-#: ../src/contacts-contact.vala:941
-msgid "Google"
-msgstr "Google Talk"
-
-#: ../src/contacts-link-dialog.vala:88
-#, fuzzy
-#| msgid "Local Contact"
-msgid "Link Contact"
-msgstr "স্থানীয় পৰিচয়"
-
-#: ../src/contacts-link-dialog.vala:113
-#, c-format
-msgid "Select contacts to link to %s"
-msgstr ""
-
-#: ../src/contacts-link-dialog.vala:162
-#, fuzzy
-#| msgid "Link"
-msgctxt "link-contacts-button"
-msgid "Link"
-msgstr "লিঙ্ক"
-
-#: ../src/contacts-link-dialog.vala:181
-msgid "Currently linked:"
-msgstr ""
-
-#: ../src/contacts-list-pane.vala:148
+#: ../src/contacts-setup-window.vala:36
 msgid ""
-"Connect to an account,\n"
-"import or add contacts"
+"Welcome to Contacts! Please select where you want to keep your address book:"
 msgstr ""
-"এটা একাওন্টলে সংযোগ কৰক,\n"
-"পৰিচয়সমূহ ইমপোৰ্ট অথবা যোগ কৰক"
+"পৰিচয়সমূহলে স্বাগতম! অনুগ্ৰহ কৰি আপোনাৰ ঠিকনা বহি ক'ত ৰাখিব বিচাৰিছে সেয়া "
+"বাছক:"
 
-#: ../src/contacts-list-pane.vala:154
+#: ../src/contacts-setup-window.vala:81
+#| msgid "Online Accounts"
+msgid "Online Account Settings"
+msgstr "অনলাইন একাওন্ট সংহতিসমূহ"
+
+#: ../src/contacts-setup-window.vala:86
+msgid "Setup an online account or use a local address book"
+msgstr ""
+"এটা অনলাইন একাওন্ট সংস্থাপন কৰক অথবা এটা স্থানীয় ঠিকনা বহি ব্যৱহাৰ কৰক"
+
+#: ../src/contacts-setup-window.vala:89
 msgid "Online Accounts"
 msgstr "অনলাইন একাওন্টসমূহ"
 
+#: ../src/contacts-setup-window.vala:92
+#| msgid "Postal Address"
+msgid "Use Local Address Book"
+msgstr "স্থানীয় ঠিকনা বহি ব্যৱহাৰ কৰক"
+
+#: ../src/contacts-setup-window.vala:129 ../src/contacts-setup-window.vala:150
+#, c-format
+#| msgid "Contacts"
+msgid "Contacts Setup"
+msgstr "পৰিচয়সমূহ সংস্থাপন "
+
 #: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
-#: ../src/contacts-types.vala:211 ../src/contacts-types.vala:301
+#: ../src/contacts-types.vala:234 ../src/contacts-types.vala:324
 msgid "Other"
 msgstr "অন্য"
 
@@ -427,70 +607,137 @@ msgid "Custom..."
 msgstr "স্বনিৰ্বাচিত..."
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:266 ../src/contacts-types.vala:297
+#: ../src/contacts-types.vala:289 ../src/contacts-types.vala:320
 msgid "Home"
 msgstr "ঘৰ"
 
-#: ../src/contacts-types.vala:267 ../src/contacts-types.vala:292
+#: ../src/contacts-types.vala:290 ../src/contacts-types.vala:315
 msgid "Work"
 msgstr "কৰ্ম"
 
-#: ../src/contacts-types.vala:293
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:314
+msgid "Assistant"
+msgstr "সহায়ক"
+
+#: ../src/contacts-types.vala:316
 msgid "Work Fax"
 msgstr "কৰ্ম ফেক্স"
 
-#: ../src/contacts-types.vala:294
+#: ../src/contacts-types.vala:317
 msgid "Callback"
 msgstr "কলবেক"
 
-#: ../src/contacts-types.vala:295
+#: ../src/contacts-types.vala:318
 msgid "Car"
 msgstr "গাড়ী"
 
-#: ../src/contacts-types.vala:298
+#: ../src/contacts-types.vala:319
+msgid "Company"
+msgstr "কোম্পানী"
+
+#: ../src/contacts-types.vala:321
 msgid "Home Fax"
 msgstr "ঘৰ ফেক্স"
 
-#: ../src/contacts-types.vala:299
+#: ../src/contacts-types.vala:322
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:300
+#: ../src/contacts-types.vala:323
 msgid "Mobile"
 msgstr "মবাইল"
 
-#: ../src/contacts-types.vala:302
+#: ../src/contacts-types.vala:325
 msgid "Fax"
 msgstr "ফেক্স"
 
-#: ../src/contacts-types.vala:303
+#: ../src/contacts-types.vala:326
 msgid "Pager"
 msgstr "পেজাৰ"
 
-#: ../src/contacts-types.vala:304
+#: ../src/contacts-types.vala:327
 msgid "Radio"
 msgstr "ৰেডিঅ'"
 
-#: ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:328
 msgid "Telex"
 msgstr "Telex"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:330
 msgid "TTY"
 msgstr "TTY"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:89
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "পৰামৰ্শ"
+msgstr[1] "পৰামৰ্শসমূহ"
 
-#: ../src/contacts-view.vala:413
-#, fuzzy
+#. Translators: This is the header for the list of suggested contacts to
+#. link to the current contact
+#: ../src/contacts-view.vala:135
 #| msgid "Contacts"
-msgid "New contact"
-msgstr "পৰিচয়সমূহ"
+msgid "Other Contacts"
+msgstr "অন্য পৰিচয়সমূহ"
 
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+msgid "First-time setup done."
+msgstr "প্ৰথম-বাৰ সংস্থাপন কৰা হল।"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+msgid "Set to true when the user ran the first-time setup wizard."
+msgstr ""
+"true লে সংহতি কৰা আছিল যেতিয়া ব্যৱহাৰকাৰীয়ে প্ৰথমবাৰ সংস্থাপন উইজাৰ্ড "
+"চলাইছিল।"
+
+#, fuzzy
+#~| msgid "Enter name"
+#~ msgid "Enter nickname"
+#~ msgstr "নাম সোমাওক"
+
+#, fuzzy
+#~| msgid "Enter link"
+#~ msgid "Enter alias"
+#~ msgstr "সংযোগ সোমাওক"
+
+#~ msgid "Enter phone number"
+#~ msgstr "ফোন নম্বৰ সোমাওক"
+
+#~ msgid "Enter name"
+#~ msgstr "নাম সোমাওক"
+
+#~ msgid "Address copied to clipboard"
+#~ msgstr "ঠিকনা ক্লিপবৰ্ডলে কপি কৰা হৈছে"
+
+#, fuzzy
+#~| msgid "Twitter"
+#~ msgid "Title"
+#~ msgstr "Twitter"
+
+#, fuzzy
+#~| msgid "Pager"
+#~ msgid "Manager"
+#~ msgstr "পেজাৰ"
+
+#~ msgid "Edit"
+#~ msgstr "সম্পাদন কৰক"
+
+#~ msgid "More"
+#~ msgstr "অধিক"
+
+#, fuzzy
+#~| msgid "Link"
+#~ msgctxt "link-contacts-button"
+#~ msgid "Link"
+#~ msgstr "সংযোগ"
+
+#~ msgid ""
+#~ "Connect to an account,\n"
+#~ "import or add contacts"
+#~ msgstr ""
+#~ "এটা একাওন্টলে সংযোগ কৰক,\n"
+#~ "পৰিচয়সমূহ ইমপোৰ্ট অথবা যোগ কৰক"
