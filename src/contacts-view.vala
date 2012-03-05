@@ -123,7 +123,7 @@ public class Contacts.View : TreeView {
 
   public string get_header_text (TreeIter iter) {
     ContactData *data;
-    model.get (iter, 1, out data);
+    list_store.get (iter, 1, out data);
     if (data == suggestions_header_data) {
       /* Translators: This is the header for the list of suggested contacts to
 	 link to the current contact */
@@ -179,8 +179,6 @@ public class Contacts.View : TreeView {
       }
     }
   }
-
-  public TreeModel model { get { return list_store; } }
 
   private bool apply_filter (Contact contact) {
     if (contact.is_hidden)
@@ -406,7 +404,7 @@ public class Contacts.View : TreeView {
   private void init_view (TextDisplay text_display) {
     this.text_display = text_display;
 
-    set_model (model);
+    set_model (list_store);
     set_headers_visible (false);
 
     var row_padding = 12;
@@ -528,7 +526,7 @@ public class Contacts.View : TreeView {
     TreeIter iter;
     if (lookup_iter (contact, out iter)) {
       get_selection ().select_iter (iter);
-      scroll_to_cell (model.get_path (iter),
+      scroll_to_cell (list_store.get_path (iter),
 		      null, true, 0.0f, 0.0f);
     }
   }
