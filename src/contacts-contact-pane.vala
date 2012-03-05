@@ -149,11 +149,11 @@ public class Contacts.FieldRow : Contacts.Row {
     }
     context.set_state (state);
     if (state != 0)
-      Gtk.render_background (context, cr,
-			     0, 0, allocation.width, allocation.height);
+      context.render_background (cr,
+				 0, 0, allocation.width, allocation.height);
 
     if (this.has_visible_focus ())
-      Gtk.render_focus (context, cr, 0, 0, allocation.width, allocation.height);
+      context.render_focus (cr, 0, 0, allocation.width, allocation.height);
 
     context.restore ();
 
@@ -1747,9 +1747,9 @@ public class Contacts.ContactPane : ScrolledWindow {
 	grid.get_allocation (out allocation);
 
 	var context = grid.get_style_context ();
-	Gtk.render_background (context, cr,
-			       0, 0,
-			       allocation.width, allocation.height);
+	context.render_background (cr,
+				   0, 0,
+				   allocation.width, allocation.height);
 	return false;
       });
     row.pack (grid);

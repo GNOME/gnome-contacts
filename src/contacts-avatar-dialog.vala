@@ -150,7 +150,7 @@ public class Contacts.AvatarDialog : Dialog {
 
       var file = File.new_for_uri (uri);
       try {
-	var file_info = file.query_info (GLib.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+	var file_info = file.query_info (FileAttribute.STANDARD_CONTENT_TYPE,
 					 FileQueryInfoFlags.NONE, null);
 	if (file_info != null) {
 	  var mime_type = file_info.get_content_type ();

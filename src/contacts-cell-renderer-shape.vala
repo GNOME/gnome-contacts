@@ -272,16 +272,16 @@ public class Contacts.CellRendererShape : Gtk.CellRenderer {
     Gdk.cairo_rectangle (cr, cell_area);
     cr.clip ();
 
-    Gtk.render_layout (context, cr,
-		       cell_area.x + name_x_offset,
-		       cell_area.y + name_y_offset,
-		       name_layout);
+    context.render_layout (cr,
+			   cell_area.x + name_x_offset,
+			   cell_area.y + name_y_offset,
+			   name_layout);
 
     if (presence_layout != null)
-      Gtk.render_layout (context, cr,
-			 cell_area.x + presence_x_offset,
-			 cell_area.y + presence_y_offset + renderer_height - 11 - presence_layout.get_baseline () / Pango.SCALE,
-			 presence_layout);
+      context.render_layout (cr,
+			     cell_area.x + presence_x_offset,
+			     cell_area.y + presence_y_offset + renderer_height - 11 - presence_layout.get_baseline () / Pango.SCALE,
+			     presence_layout);
 
     cr.restore ();
   }
