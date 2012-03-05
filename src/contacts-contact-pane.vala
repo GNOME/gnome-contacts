@@ -1515,7 +1515,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 				       "avatar", v,
 				       (obj, result) => {
 					 try {
-					   var p = set_individual_property.end (result);
+					   set_individual_property.end (result);
 					 } catch (Error e) {
 					   App.app.show_message (e.message);
 					   image_frame.set_image (contact.individual, contact);
@@ -1617,7 +1617,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 					 "full-name", v,
 					 (obj, result) => {
 					   try {
-					     var p = set_individual_property.end (result);
+					     set_individual_property.end (result);
 					   } catch (Error e) {
 					     App.app.show_message (e.message);
 					     l.set_markup ("<span font='16'>" + contact.display_name + "</span>");

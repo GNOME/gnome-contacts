@@ -391,7 +391,7 @@ public class Contacts.App : Gtk.Application {
 
     bool really_delete = true;
     notification.show_all ();
-    var id = notification.dismissed.connect ( () => {
+    notification.dismissed.connect ( () => {
 	if (really_delete)
 	  contact.remove_personas.begin ( () => {
 	      contact.show ();

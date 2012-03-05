@@ -325,7 +325,6 @@ public class Contacts.NewContactDialog : Dialog {
     }
 
     Contact.create_primary_persona_for_details.begin (details, (obj, res) => {
-	var store = obj as PersonaStore;
 	Persona? persona = null;
 	Dialog dialog = null;
 
