@@ -4,399 +4,575 @@
 # Aron Xu <aronxu@gnome.org>, 2011.
 # YunQiang Su <wzssyqa@gmail.com>, 2011.
 # ili <isaaclimail@gmail.com>, 2011.
+# tuhaihe <wangdianjin@linuxdeepin.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 16:57+0000\n"
-"PO-Revision-Date: 2011-09-27 17:01+0000\n"
-"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"contacts&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-03-05 15:39+0000\n"
+"PO-Revision-Date: 2012-02-26 14:44+0800\n"
+"Last-Translator: tuhaihe <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:108
-#: ../src/main.vala:35
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:234
+#: ../src/main.vala:24
 msgid "Contacts"
 msgstr "联系人"
 
-#: ../src/contacts-app.vala:68
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "修改通讯录...(_C)"
+
+#: ../src/app-menu.ui.h:2
+msgid "_About Contacts"
+msgstr "关于联系人(_A)"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Quit"
+msgstr "退出(_Q)"
+
+#: ../src/contacts-app.vala:79
 #, c-format
 msgid "No contact with id %s found"
 msgstr "未找到 ID 为 %s 的联系人"
 
-#: ../src/contacts-app.vala:69 ../src/contacts-app.vala:87
+#: ../src/contacts-app.vala:80 ../src/contacts-app.vala:202
 msgid "Contact not found"
 msgstr "未找到联系人"
 
-#: ../src/contacts-app.vala:86
+#: ../src/contacts-app.vala:89
+msgid "Change Address Book"
+msgstr "修改通讯录"
+
+#: ../src/contacts-app.vala:94 ../src/contacts-setup-window.vala:156
+msgid "Select"
+msgstr "街道"
+
+#: ../src/contacts-app.vala:180
+msgid "translator-credits"
+msgstr ""
+"Aron Xu <aronxu@gnome.org>, 2011\n"
+"YunQiang Su <wzssyqa@gmail.com>, 2011\n"
+"ili <isaaclimail@gmail.com>, 2011\n"
+"tuhaihe <wangdianjin@linuxdeepin.com>, 2012"
+
+# 是该应用英语名称，建议不翻译
+#: ../src/contacts-app.vala:181
+msgid "GNOME Contacts"
+msgstr "GNOME Contacts"
+
+#: ../src/contacts-app.vala:182
+msgid "About GNOME Contacts"
+msgstr "关于 GNOME Contacts"
+
+#: ../src/contacts-app.vala:183
+msgid "Contact Management Application"
+msgstr "联系人管理应用程序"
+
+#: ../src/contacts-app.vala:201
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "未找到电子邮件地址为 %s 的联系人"
 
-#: ../src/contacts-app.vala:159 ../src/main.vala:27
+#: ../src/contacts-app.vala:250
+msgid "New"
+msgstr "新建"
+
+#: ../src/contacts-app.vala:387
+#, c-format
+msgid "Contact deleted: \"%s\""
+msgstr "联系人已删除：“%s”"
+
+#: ../src/contacts-app.vala:414
 msgid "Show contact with this individual id"
 msgstr "显示此 ID 的联系人"
 
-#: ../src/contacts-app.vala:161 ../src/main.vala:29
+#: ../src/contacts-app.vala:416
 msgid "Show contact with this email address"
 msgstr "显示此电子邮件地址的联系人"
 
-#: ../src/contacts-app.vala:168
+#: ../src/contacts-app.vala:429
+#, c-format
+msgid "%s linked to %s"
+msgstr "链接到 %2$s 的 %1$s"
+
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "链接到该联系人的 %s"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "— 联系人管理"
 
-#: ../src/contacts-contact-pane.vala:606 ../src/contacts-contact-pane.vala:850
-#: ../src/contacts-contact-pane.vala:1348
-msgid "Nickname"
-msgstr "昵称"
-
-#: ../src/contacts-contact-pane.vala:609
-msgid "Enter nickname"
-msgstr "输入昵称"
-
-#: ../src/contacts-contact-pane.vala:615
-msgid "Alias"
-msgstr "别名"
-
-#: ../src/contacts-contact-pane.vala:618
-msgid "Enter alias"
-msgstr "输入别名"
-
-#: ../src/contacts-contact-pane.vala:630
-msgid "Enter email address"
-msgstr "输入电子邮件地址"
-
-#: ../src/contacts-contact-pane.vala:641
-msgid "Enter phone number"
-msgstr "输入电话号码"
-
-#: ../src/contacts-contact-pane.vala:647 ../src/contacts-contact-pane.vala:839
-msgctxt "url-link"
-msgid "Link"
-msgstr "链接"
-
-#: ../src/contacts-contact-pane.vala:652
-msgid "Enter link"
-msgstr "输入连接"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Street"
-msgstr "街道"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Extension"
-msgstr "分机"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "City"
-msgstr "城市"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "State/Province"
-msgstr "省/州"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Zip/Postal Code"
-msgstr "邮编"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "PO box"
-msgstr "邮政信箱"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Country"
-msgstr "国家"
-
-#: ../src/contacts-contact-pane.vala:746
-#: ../src/contacts-contact-pane.vala:1365
-msgid "Chat"
-msgstr "聊天"
-
-#: ../src/contacts-contact-pane.vala:807
-msgid "Add detail"
-msgstr "增加细节"
-
-#: ../src/contacts-contact-pane.vala:813
-msgid "Email"
-msgstr "电子邮件"
-
-#: ../src/contacts-contact-pane.vala:821
-msgid "Phone number"
-msgstr "电话号码"
-
-#: ../src/contacts-contact-pane.vala:829
-msgid "Postal Address"
-msgstr "通信地址"
-
-#: ../src/contacts-contact-pane.vala:962
+#: ../src/contacts-avatar-dialog.vala:178
 msgid "Browse for more pictures"
 msgstr "浏览更多图片"
 
-#: ../src/contacts-contact-pane.vala:1044
-msgid "Browse for more pictures..."
-msgstr "浏览更多图片..."
+#: ../src/contacts-avatar-dialog.vala:254
+msgid "Select Picture"
+msgstr "选择图片"
 
-#: ../src/contacts-contact-pane.vala:1264
-msgid "Enter name"
-msgstr "输入名字"
+#: ../src/contacts-avatar-dialog.vala:257 ../src/contacts-link-dialog.vala:152
+msgid "Close"
+msgstr "关闭"
 
-#: ../src/contacts-contact-pane.vala:1276
-#: ../src/contacts-contact-pane.vala:1563
-msgid "Contact Name"
-msgstr "联系人名称"
-
-#: ../src/contacts-contact-pane.vala:1430
-msgid "Address copied to clipboard"
-msgstr "已复制地址到剪贴板"
-
-#: ../src/contacts-contact-pane.vala:1452
-msgid "Birthday"
-msgstr "生日"
-
-#: ../src/contacts-contact-pane.vala:1461 ../src/contacts-types.vala:296
-msgid "Company"
-msgstr "公司"
-
-#: ../src/contacts-contact-pane.vala:1468
-msgid "Department"
-msgstr "部门"
-
-#: ../src/contacts-contact-pane.vala:1475
-msgid "Profession"
-msgstr "专业"
-
-#: ../src/contacts-contact-pane.vala:1480
-msgid "Title"
-msgstr "职位"
-
-#: ../src/contacts-contact-pane.vala:1487
-msgid "Manager"
-msgstr "经理"
-
-#. List most specific first, always in upper case
-#: ../src/contacts-contact-pane.vala:1496 ../src/contacts-types.vala:291
-msgid "Assistant"
-msgstr "助理"
-
-#: ../src/contacts-contact-pane.vala:1505
+#: ../src/contacts-contact-pane.vala:592
+msgctxt "Addresses on the Web"
 msgid "Links"
 msgstr "连接"
 
-#: ../src/contacts-contact-pane.vala:1578
+#: ../src/contacts-contact-pane.vala:593
+msgctxt "Web address"
+msgid "Link"
+msgstr "链接"
+
+#: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
+#: ../src/contacts-link-dialog.vala:116
+#: ../src/contacts-new-contact-dialog.vala:85
+#: ../src/contacts-new-contact-dialog.vala:120
+msgid "Email"
+msgstr "电子邮件"
+
+#: ../src/contacts-contact-pane.vala:722
+#: ../src/contacts-new-contact-dialog.vala:94
+#: ../src/contacts-new-contact-dialog.vala:125
+msgid "Phone"
+msgstr "电话"
+
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
+msgid "Phone number"
+msgstr "电话号码"
+
+#: ../src/contacts-contact-pane.vala:783 ../src/contacts-contact-pane.vala:784
+msgid "Chat"
+msgstr "聊天"
+
+#: ../src/contacts-contact-pane.vala:849
+msgid "January"
+msgstr "一月"
+
+#: ../src/contacts-contact-pane.vala:850
+msgid "February"
+msgstr "二月"
+
+#: ../src/contacts-contact-pane.vala:851
+msgid "March"
+msgstr "三月"
+
+#: ../src/contacts-contact-pane.vala:852
+msgid "April"
+msgstr "四月"
+
+#: ../src/contacts-contact-pane.vala:853
+msgid "May"
+msgstr "五月"
+
+#: ../src/contacts-contact-pane.vala:854
+msgid "June"
+msgstr "六月"
+
+#: ../src/contacts-contact-pane.vala:855
+msgid "July"
+msgstr "七月"
+
+#: ../src/contacts-contact-pane.vala:856
+msgid "August"
+msgstr "八月"
+
+#: ../src/contacts-contact-pane.vala:857
+msgid "September"
+msgstr "九月"
+
+#: ../src/contacts-contact-pane.vala:858
+msgid "October"
+msgstr "十月"
+
+#: ../src/contacts-contact-pane.vala:859
+msgid "November"
+msgstr "十一月"
+
+#: ../src/contacts-contact-pane.vala:860
+msgid "December"
+msgstr "十二月"
+
+#: ../src/contacts-contact-pane.vala:898 ../src/contacts-contact-pane.vala:899
+msgid "Birthday"
+msgstr "生日"
+
+#: ../src/contacts-contact-pane.vala:971 ../src/contacts-contact-pane.vala:972
+msgid "Nickname"
+msgstr "昵称"
+
+#: ../src/contacts-contact-pane.vala:1062
+#: ../src/contacts-contact-pane.vala:1063
+msgid "Note"
+msgstr "注释"
+
+#: ../src/contacts-contact-pane.vala:1202
+msgid "Addresses"
+msgstr "通信地址"
+
+#: ../src/contacts-contact-pane.vala:1203
+#: ../src/contacts-new-contact-dialog.vala:103
+#: ../src/contacts-new-contact-dialog.vala:130
+msgid "Address"
+msgstr "通信地址"
+
+#: ../src/contacts-contact-pane.vala:1305
+msgid "Add to My Contacts"
+msgstr "添加到联系人列表"
+
+#: ../src/contacts-contact-pane.vala:1315
+msgid "Unlink"
+msgstr "无法连接"
+
+#: ../src/contacts-contact-pane.vala:1347
+msgid "Add detail..."
+msgstr "添加详细信息..."
+
+#: ../src/contacts-contact-pane.vala:1362
+#, c-format
+msgid "Select detail to add to %s"
+msgstr "添加联系人 %s 的详细信息"
+
+#: ../src/contacts-contact-pane.vala:1766
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "%2$s 中的 %1$s 属于这里吗？"
+
+#: ../src/contacts-contact-pane.vala:1768
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "详细信息与 %s 相符吗？"
+
+#: ../src/contacts-contact-pane.vala:1778
+msgid "Yes"
+msgstr "是"
+
+#: ../src/contacts-contact-pane.vala:1779
+msgid "No"
+msgstr "否"
+
+#: ../src/contacts-contact-pane.vala:1961
+msgid "Select email address"
+msgstr "选择电子邮件地址"
+
+#: ../src/contacts-contact-pane.vala:2034
+msgid "Select what to call"
+msgstr "选择拨号对象"
+
+#: ../src/contacts-contact-pane.vala:2098
+msgid "Select chat account"
+msgstr "选择聊天帐号"
+
+#: ../src/contacts-contact-pane.vala:2178
+msgid "Add/Remove Linked Contacts..."
+msgstr "添加/删除已链接的联系人..."
+
+#. Utils.add_menu_item (context_menu,_("Send..."));
+#: ../src/contacts-contact-pane.vala:2182
+msgid "Delete"
+msgstr "删除"
+
+#: ../src/contacts-contact.vala:467
+msgid "Unknown status"
+msgstr "未知状态"
+
+#: ../src/contacts-contact.vala:469
+msgid "Offline"
+msgstr "离线"
+
+#: ../src/contacts-contact.vala:473
+msgid "Error"
+msgstr "错误"
+
+#: ../src/contacts-contact.vala:475
+msgid "Available"
+msgstr "在线"
+
+#: ../src/contacts-contact.vala:477
+msgid "Away"
+msgstr "离开"
+
+#: ../src/contacts-contact.vala:479
+msgid "Extended away"
+msgstr "远离"
+
+#: ../src/contacts-contact.vala:481
+msgid "Busy"
+msgstr "忙碌"
+
+#: ../src/contacts-contact.vala:483
+msgid "Hidden"
+msgstr "隐身"
+
+#: ../src/contacts-contact.vala:665
+msgid "Street"
+msgstr "街道"
+
+#: ../src/contacts-contact.vala:665
+msgid "Extension"
+msgstr "分机"
+
+#: ../src/contacts-contact.vala:665
+msgid "City"
+msgstr "城市"
+
+#: ../src/contacts-contact.vala:665
+msgid "State/Province"
+msgstr "省/州"
+
+#: ../src/contacts-contact.vala:665
+msgid "Zip/Postal Code"
+msgstr "邮编"
+
+#: ../src/contacts-contact.vala:665
+msgid "PO box"
+msgstr "邮政信箱"
+
+#: ../src/contacts-contact.vala:665
+msgid "Country"
+msgstr "国家"
+
+#: ../src/contacts-contact.vala:721
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: ../src/contacts-contact.vala:722
+msgid "Ovi Chat"
+msgstr "Ovi Chat"
+
+#: ../src/contacts-contact.vala:723 ../src/contacts-contact.vala:1003
+msgid "Facebook"
+msgstr "Facebook"
+
+#: ../src/contacts-contact.vala:724
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: ../src/contacts-contact.vala:725
+msgid "AOL Instant Messenger"
+msgstr "AOL 即时消息"
+
+#: ../src/contacts-contact.vala:726
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: ../src/contacts-contact.vala:727
+msgid "Novell Groupwise"
+msgstr "Novell Groupwise"
+
+#: ../src/contacts-contact.vala:728
+msgid "ICQ"
+msgstr "ICQ"
+
+#: ../src/contacts-contact.vala:729
+msgid "IRC"
+msgstr "IRC"
+
+#: ../src/contacts-contact.vala:730
+msgid "Jabber"
+msgstr "Jabber"
+
+#: ../src/contacts-contact.vala:731
+msgid "Local network"
+msgstr "本地网络"
+
+#: ../src/contacts-contact.vala:732
+msgid "Windows Live Messenger"
+msgstr "Windows Live Messenger"
+
+#: ../src/contacts-contact.vala:733
+msgid "MySpace"
+msgstr "MySpace"
+
+#: ../src/contacts-contact.vala:734
+msgid "MXit"
+msgstr "MXit"
+
+#: ../src/contacts-contact.vala:735
+msgid "Napster"
+msgstr "Napster"
+
+#: ../src/contacts-contact.vala:736
+msgid "Tencent QQ"
+msgstr "腾讯 QQ"
+
+#: ../src/contacts-contact.vala:737
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: ../src/contacts-contact.vala:738
+msgid "SILC"
+msgstr "SILC"
+
+#: ../src/contacts-contact.vala:739
+msgid "sip"
+msgstr "sip"
+
+#: ../src/contacts-contact.vala:740
+msgid "Skype"
+msgstr "Skype"
+
+#: ../src/contacts-contact.vala:741
+msgid "Telephony"
+msgstr "Telephony"
+
+#: ../src/contacts-contact.vala:742
+msgid "Trepia"
+msgstr "Trepia"
+
+#: ../src/contacts-contact.vala:743 ../src/contacts-contact.vala:744
+msgid "Yahoo! Messenger"
+msgstr "Yahoo! Messenger"
+
+#: ../src/contacts-contact.vala:745
+msgid "Zephyr"
+msgstr "Zephyr"
+
+#: ../src/contacts-contact.vala:1006
+msgid "Twitter"
+msgstr "Twitter"
+
+#: ../src/contacts-contact.vala:1009
+msgid "Google Profile"
+msgstr "Google 个人资料"
+
+#: ../src/contacts-contact.vala:1073
+msgid "Unexpected internal error: created contact was not found"
+msgstr "未预料的内部错误：无法找到新建的联系人"
+
+#: ../src/contacts-contact.vala:1219
+msgid "Google Circles"
+msgstr "Google 圈子"
+
+#: ../src/contacts-contact.vala:1221
+msgid "Google Other Contact"
+msgstr "Google 其他联系人"
+
+#: ../src/contacts-esd-setup.c:627
+msgid "Personal"
+msgstr "个人"
+
+#: ../src/contacts-esd-setup.c:652
+msgid "Local Address Book"
+msgstr "本地通讯录"
+
+#: ../src/contacts-esd-setup.c:659 ../src/contacts-esd-setup.c:678
+msgid "Google"
+msgstr "Google"
+
+#: ../src/contacts-esd-setup.c:671
+msgid "Local Contact"
+msgstr "本地联系人"
+
+#: ../src/contacts-link-dialog.vala:73
+msgctxt "contacts link action"
+msgid "Link"
+msgstr "链接"
+
+#: ../src/contacts-link-dialog.vala:84
+msgid "Undo"
+msgstr "撤消"
+
+#: ../src/contacts-link-dialog.vala:148
+msgid "Link Contact"
+msgstr "连接联系人"
+
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
+msgid "Cancel"
+msgstr "取消"
+
+#: ../src/contacts-link-dialog.vala:154
+msgid "Link"
+msgstr "链接"
+
+#: ../src/contacts-link-dialog.vala:182
+#, c-format
+msgid "<span weight='bold'>Link contacts to %s</span>"
+msgstr "<span weight='bold'>将联系人链接到 %s</span>"
+
+#: ../src/contacts-link-dialog.vala:184
+msgid "<span weight='bold'>Select contact to link to</span>"
+msgstr "<span weight='bold'>选择要链接的联系人</span>"
+
+#: ../src/contacts-new-contact-dialog.vala:35
+msgid "New contact"
+msgstr "新建联系人"
+
+#: ../src/contacts-new-contact-dialog.vala:41
+msgid "Create Contact"
+msgstr "新建联系人"
+
+#: ../src/contacts-new-contact-dialog.vala:67
+msgid ""
+"Add or \n"
+"select a picture"
+msgstr ""
+"添加或 \n"
+"选择一张照片"
+
+#: ../src/contacts-new-contact-dialog.vala:77
+msgid "Contact Name"
+msgstr "联系人名称"
+
+#: ../src/contacts-new-contact-dialog.vala:112
+msgid "Add Detail"
+msgstr "添加详细信息"
+
+#: ../src/contacts-new-contact-dialog.vala:211
+msgid "You must specify a contact name"
+msgstr "您必须指定联系人姓名"
+
+#: ../src/contacts-new-contact-dialog.vala:319
+msgid "No primary addressbook configured\n"
+msgstr "未配置主通讯录\n"
+
+#: ../src/contacts-new-contact-dialog.vala:340
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "无法新建联系人：%s\n"
 
-#: ../src/contacts-contact-pane.vala:1588
+#: ../src/contacts-new-contact-dialog.vala:351
 msgid "Unable to find newly created contact\n"
 msgstr "无法找到新建的联系人\n"
 
-#: ../src/contacts-contact-pane.vala:1697
-msgid "Notes"
-msgstr "注释"
-
-#: ../src/contacts-contact-pane.vala:1728
-msgid "Edit"
-msgstr "编辑"
-
-#: ../src/contacts-contact-pane.vala:1735
-msgid "More"
-msgstr "更多"
-
-#: ../src/contacts-contact-pane.vala:1748
-msgid "Back to Contact"
-msgstr "返回联系人列表"
-
-#: ../src/contacts-contact-pane.vala:1757
-msgid "Add/Remove Linked Contacts..."
-msgstr "添加/删除已连接的联系人..."
-
-#. Utils.add_menu_item (menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:1759
-msgid "Delete"
-msgstr "删除"
-
-#: ../src/contacts-contact.vala:405
-msgid "Unknown status"
-msgstr "未知状态"
-
-#: ../src/contacts-contact.vala:407
-msgid "Offline"
-msgstr "离线"
-
-#: ../src/contacts-contact.vala:411
-msgid "Error"
-msgstr "错误"
-
-#: ../src/contacts-contact.vala:413
-msgid "Available"
-msgstr "在线"
-
-#: ../src/contacts-contact.vala:415
-msgid "Away"
-msgstr "离开"
-
-#: ../src/contacts-contact.vala:417
-msgid "Extended away"
-msgstr "远离"
-
-#: ../src/contacts-contact.vala:419
-msgid "Busy"
-msgstr "忙碌"
-
-#: ../src/contacts-contact.vala:421
-msgid "Hidden"
-msgstr "隐身"
-
-#: ../src/contacts-contact.vala:614
-msgid "Google Talk"
-msgstr "Google Talk"
-
-#: ../src/contacts-contact.vala:615
-msgid "Ovi Chat"
-msgstr "Ovi Chat"
-
-#: ../src/contacts-contact.vala:616 ../src/contacts-contact.vala:888
-msgid "Facebook"
-msgstr "Facebook"
-
-#: ../src/contacts-contact.vala:617
-msgid "Livejournal"
-msgstr "Livejournal"
-
-#: ../src/contacts-contact.vala:618
-msgid "AOL Instant Messenger"
-msgstr "AOL 即时消息"
-
-#: ../src/contacts-contact.vala:619
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
-
-#: ../src/contacts-contact.vala:620
-msgid "Novell Groupwise"
-msgstr "Novell Groupwise"
-
-#: ../src/contacts-contact.vala:621
-msgid "ICQ"
-msgstr "ICQ"
-
-#: ../src/contacts-contact.vala:622
-msgid "IRC"
-msgstr "IRC"
-
-#: ../src/contacts-contact.vala:623
-msgid "Jabber"
-msgstr "Jabber"
-
-#: ../src/contacts-contact.vala:624
-msgid "Local network"
-msgstr "本地网络"
-
-#: ../src/contacts-contact.vala:625
-msgid "Windows Live Messenger"
-msgstr "Windows Live Messenger"
-
-#: ../src/contacts-contact.vala:626
-msgid "MySpace"
-msgstr "MySpace"
-
-#: ../src/contacts-contact.vala:627
-msgid "MXit"
-msgstr "MXit"
-
-#: ../src/contacts-contact.vala:628
-msgid "Napster"
-msgstr "Napster"
-
-#: ../src/contacts-contact.vala:629
-msgid "Tencent QQ"
-msgstr "腾讯 QQ"
-
-#: ../src/contacts-contact.vala:630
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
-
-#: ../src/contacts-contact.vala:631
-msgid "SILC"
-msgstr "SILC"
-
-#: ../src/contacts-contact.vala:632
-msgid "sip"
-msgstr "sip"
-
-#: ../src/contacts-contact.vala:633
-msgid "Skype"
-msgstr "Skype"
-
-#: ../src/contacts-contact.vala:634
-msgid "Telephony"
-msgstr "Telephony"
-
-#: ../src/contacts-contact.vala:635
-msgid "Trepia"
-msgstr "Trepia"
-
-#: ../src/contacts-contact.vala:636 ../src/contacts-contact.vala:637
-msgid "Yahoo! Messenger"
-msgstr "Yahoo! Messenger"
-
-#: ../src/contacts-contact.vala:638
-msgid "Zephyr"
-msgstr "Zephyr"
-
-#: ../src/contacts-contact.vala:891
-msgid "Twitter"
-msgstr "Twitter"
-
-#: ../src/contacts-contact.vala:917
-msgid "Unexpected internal error: created contact was not found"
-msgstr "未预料的内部错误：无法找到新建的联系人"
-
-#: ../src/contacts-contact.vala:938
-msgid "Local Contact"
-msgstr "本地联系人"
-
-#: ../src/contacts-contact.vala:941
-msgid "Google"
-msgstr "Google"
-
-#: ../src/contacts-link-dialog.vala:88
-msgid "Link Contact"
-msgstr "连接联系人"
-
-#: ../src/contacts-link-dialog.vala:113
-#, c-format
-msgid "Select contacts to link to %s"
-msgstr "选择连接到 %s 的联系人"
-
-#: ../src/contacts-link-dialog.vala:162
-msgctxt "link-contacts-button"
-msgid "Link"
-msgstr "连接"
-
-#: ../src/contacts-link-dialog.vala:181
-msgid "Currently linked:"
-msgstr "当前连接："
-
-#: ../src/contacts-list-pane.vala:148
+#: ../src/contacts-setup-window.vala:36
 msgid ""
-"Connect to an account,\n"
-"import or add contacts"
-msgstr ""
-"连接到帐号，\n"
-"导入或添加联系人"
+"Welcome to Contacts! Please select where you want to keep your address book:"
+msgstr "欢迎使用联系人应用程序！请您选择保存通讯录的位置："
 
-#: ../src/contacts-list-pane.vala:154
+#: ../src/contacts-setup-window.vala:81
+msgid "Online Account Settings"
+msgstr "在线帐号设置"
+
+#: ../src/contacts-setup-window.vala:86
+msgid "Setup an online account or use a local address book"
+msgstr "设置在线帐号或使用本地通讯录"
+
+#: ../src/contacts-setup-window.vala:89
 msgid "Online Accounts"
 msgstr "在线帐号"
 
+#: ../src/contacts-setup-window.vala:92
+msgid "Use Local Address Book"
+msgstr "使用本地通讯录"
+
+#: ../src/contacts-setup-window.vala:129 ../src/contacts-setup-window.vala:150
+#, c-format
+msgid "Contacts Setup"
+msgstr "联系人设置"
+
 #: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
-#: ../src/contacts-types.vala:211 ../src/contacts-types.vala:301
+#: ../src/contacts-types.vala:234 ../src/contacts-types.vala:324
 msgid "Other"
 msgstr "其他"
 
@@ -405,66 +581,139 @@ msgid "Custom..."
 msgstr "自定义..."
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:266 ../src/contacts-types.vala:297
+#: ../src/contacts-types.vala:289 ../src/contacts-types.vala:320
 msgid "Home"
 msgstr "家庭"
 
-#: ../src/contacts-types.vala:267 ../src/contacts-types.vala:292
+#: ../src/contacts-types.vala:290 ../src/contacts-types.vala:315
 msgid "Work"
 msgstr "工作"
 
-#: ../src/contacts-types.vala:293
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:314
+msgid "Assistant"
+msgstr "助理"
+
+#: ../src/contacts-types.vala:316
 msgid "Work Fax"
 msgstr "工作传真"
 
-#: ../src/contacts-types.vala:294
+#: ../src/contacts-types.vala:317
 msgid "Callback"
 msgstr "回呼"
 
-#: ../src/contacts-types.vala:295
+#: ../src/contacts-types.vala:318
 msgid "Car"
 msgstr "汽车"
 
-#: ../src/contacts-types.vala:298
+#: ../src/contacts-types.vala:319
+msgid "Company"
+msgstr "公司"
+
+#: ../src/contacts-types.vala:321
 msgid "Home Fax"
 msgstr "家庭传真"
 
-#: ../src/contacts-types.vala:299
+#: ../src/contacts-types.vala:322
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:300
+#: ../src/contacts-types.vala:323
 msgid "Mobile"
 msgstr "手机"
 
-#: ../src/contacts-types.vala:302
+#: ../src/contacts-types.vala:325
 msgid "Fax"
 msgstr "传真"
 
-#: ../src/contacts-types.vala:303
+#: ../src/contacts-types.vala:326
 msgid "Pager"
 msgstr "寻呼机"
 
-#: ../src/contacts-types.vala:304
+#: ../src/contacts-types.vala:327
 msgid "Radio"
 msgstr "无线电"
 
-#: ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:328
 msgid "Telex"
 msgstr "电传"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:330
 msgid "TTY"
 msgstr "电传打字机"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:89
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "建议"
 
-#: ../src/contacts-view.vala:413
-msgid "New contact"
-msgstr "新建联系人"
+#. Translators: This is the header for the list of suggested contacts to
+#. link to the current contact
+#: ../src/contacts-view.vala:135
+msgid "Other Contacts"
+msgstr "其他联系人"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+msgid "First-time setup done."
+msgstr "首次运行设置完成。"
+
+# wizard 有向导之意
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+msgid "Set to true when the user ran the first-time setup wizard."
+msgstr "当用户首次运行首次设置向导时设置为 true。"
+
+#~ msgid "Enter nickname"
+#~ msgstr "输入昵称"
+
+#~ msgid "Alias"
+#~ msgstr "别名"
+
+#~ msgid "Enter alias"
+#~ msgstr "输入别名"
+
+#~ msgid "Enter phone number"
+#~ msgstr "输入电话号码"
+
+#~ msgid "Browse for more pictures..."
+#~ msgstr "浏览更多图片..."
+
+#~ msgid "Enter name"
+#~ msgstr "输入名字"
+
+#~ msgid "Address copied to clipboard"
+#~ msgstr "已复制地址到剪贴板"
+
+#~ msgid "Department"
+#~ msgstr "部门"
+
+#~ msgid "Profession"
+#~ msgstr "专业"
+
+#~ msgid "Title"
+#~ msgstr "职位"
+
+#~ msgid "Manager"
+#~ msgstr "经理"
+
+#~ msgid "Edit"
+#~ msgstr "编辑"
+
+#~ msgid "More"
+#~ msgstr "更多"
+
+#~ msgctxt "link-contacts-button"
+#~ msgid "Link"
+#~ msgstr "连接"
+
+#~ msgid "Currently linked:"
+#~ msgstr "当前连接："
+
+#~ msgid ""
+#~ "Connect to an account,\n"
+#~ "import or add contacts"
+#~ msgstr ""
+#~ "连接到帐号，\n"
+#~ "导入或添加联系人"
