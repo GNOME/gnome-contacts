@@ -4,146 +4,209 @@
 #
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2011-2012.
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2012.
+# Gnome 2012-03 Finnish translation sprint participants:
+# Jiri Grönroos
+# Niklas Laxström
+# Timo Jyrinki
 msgid ""
 msgstr ""
+""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-07 12:38+0200\n"
-"PO-Revision-Date: 2012-01-07 12:41+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-02-20 12:02+0000\n"
+"PO-Revision-Date: 2012-03-12 08:36:58+0000\n"
 "Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: MediaWiki 1.20alpha (r113129); Translate 2012-03-02\n"
+"X-POT-Import-Date: 2012-03-05 14:49:55+0000\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:113
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:234
 #: ../src/main.vala:24
 msgid "Contacts"
 msgstr "Yhteystiedot"
 
-#: ../src/contacts-app.vala:73
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "_Vaihda osoitekirjaa..."
+
+#: ../src/app-menu.ui.h:2
+msgid "_About Contacts"
+msgstr "_Tietoja yhteystiedoista"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Quit"
+msgstr "_Lopeta"
+
+#: ../src/contacts-app.vala:79
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Yhteystietoa tunnisteella %s ei löydy"
 
-#: ../src/contacts-app.vala:74 ../src/contacts-app.vala:92
+#: ../src/contacts-app.vala:80 ../src/contacts-app.vala:202
 msgid "Contact not found"
 msgstr "Yhteystietoa ei löydy"
 
-#: ../src/contacts-app.vala:91
+#: ../src/contacts-app.vala:89
+msgid "Change Address Book"
+msgstr "Osoitekirjan vaihto"
+
+#: ../src/contacts-app.vala:94 ../src/contacts-setup-window.vala:156
+msgid "Select"
+msgstr "Valitse"
+
+#: ../src/contacts-app.vala:180
+msgid "translator-credits"
+msgstr "Timo Jyrinki <timo.jyrinki@iki.fi>, 2011-2012.\nJiri Grönroos <jiri.gronroos@iki.fi>, 2012."
+
+#: ../src/contacts-app.vala:181
+msgid "GNOME Contacts"
+msgstr "GNOME-yhteystiedot"
+
+#: ../src/contacts-app.vala:182
+msgid "About GNOME Contacts"
+msgstr "Tietoja GNOME-yhteystiedoista"
+
+#: ../src/contacts-app.vala:183
+msgid "Contact Management Application"
+msgstr "Yhteystietojen hallinta"
+
+#: ../src/contacts-app.vala:201
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Yhteystietoa sähköpostiosoitteella %s ei löydy"
 
-#: ../src/contacts-app.vala:146
+#: ../src/contacts-app.vala:250
+msgid "New"
+msgstr "Uusi"
+
+#: ../src/contacts-app.vala:387
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Yhteystieto poistettu: \"%s\""
 
-#: ../src/contacts-app.vala:196
+#: ../src/contacts-app.vala:414
 msgid "Show contact with this individual id"
 msgstr "Näytä yhteystieto tällä yksilöllisellä tunnisteella"
 
-#: ../src/contacts-app.vala:198
+#: ../src/contacts-app.vala:416
 msgid "Show contact with this email address"
 msgstr "Näytä yhteystieto tällä sähköpostiosoitteella"
 
-#: ../src/contacts-app.vala:205
+#: ../src/contacts-app.vala:429
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s linkitetty → %s"
+
+#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s linkitetty yhteystietoon"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "— yhteystietojen hallinta"
 
-#: ../src/contacts-avatar-menu.vala:109
+#: ../src/contacts-avatar-dialog.vala:181
 msgid "Browse for more pictures"
 msgstr "Selaa muita kuvia"
 
-#: ../src/contacts-avatar-menu.vala:191
-msgid "Browse for more pictures..."
-msgstr "Selaa muita kuvia..."
+#: ../src/contacts-avatar-dialog.vala:257
+msgid "Select Picture"
+msgstr "Valitse kuva"
 
-#: ../src/contacts-contact-pane.vala:597
+#: ../src/contacts-avatar-dialog.vala:260 ../src/contacts-link-dialog.vala:152
+msgid "Close"
+msgstr "Sulje"
+
+#: ../src/contacts-contact-pane.vala:592
+msgctxt "Addresses on the Web"
 msgid "Links"
 msgstr "Linkit"
 
-#: ../src/contacts-contact-pane.vala:598
+#: ../src/contacts-contact-pane.vala:593
+msgctxt "Web address"
 msgid "Link"
 msgstr "Linkki"
 
-#: ../src/contacts-contact-pane.vala:685 ../src/contacts-contact-pane.vala:686
+#: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
+#: ../src/contacts-link-dialog.vala:116
 #: ../src/contacts-new-contact-dialog.vala:85
 #: ../src/contacts-new-contact-dialog.vala:120
 msgid "Email"
 msgstr "Sähköposti"
 
-#: ../src/contacts-contact-pane.vala:727
+#: ../src/contacts-contact-pane.vala:722
 #: ../src/contacts-new-contact-dialog.vala:94
 #: ../src/contacts-new-contact-dialog.vala:125
 msgid "Phone"
 msgstr "Puhelin"
 
-#: ../src/contacts-contact-pane.vala:728
+#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "Puhelinnumero"
 
-#: ../src/contacts-contact-pane.vala:788 ../src/contacts-contact-pane.vala:789
+#: ../src/contacts-contact-pane.vala:783 ../src/contacts-contact-pane.vala:784
 msgid "Chat"
 msgstr "Keskustelu"
 
-#: ../src/contacts-contact-pane.vala:851
+#: ../src/contacts-contact-pane.vala:849
 msgid "January"
 msgstr "Tammikuu"
 
-#: ../src/contacts-contact-pane.vala:852
+#: ../src/contacts-contact-pane.vala:850
 msgid "February"
 msgstr "Helmikuu"
 
-#: ../src/contacts-contact-pane.vala:853
+#: ../src/contacts-contact-pane.vala:851
 msgid "March"
 msgstr "Maaliskuu"
 
-#: ../src/contacts-contact-pane.vala:854
+#: ../src/contacts-contact-pane.vala:852
 msgid "April"
 msgstr "Huhtikuu"
 
-#: ../src/contacts-contact-pane.vala:855
+#: ../src/contacts-contact-pane.vala:853
 msgid "May"
 msgstr "Toukokuu"
 
-#: ../src/contacts-contact-pane.vala:856
+#: ../src/contacts-contact-pane.vala:854
 msgid "June"
 msgstr "Kesäkuu"
 
-#: ../src/contacts-contact-pane.vala:857
+#: ../src/contacts-contact-pane.vala:855
 msgid "July"
 msgstr "Heinäkuu"
 
-#: ../src/contacts-contact-pane.vala:858
+#: ../src/contacts-contact-pane.vala:856
 msgid "August"
 msgstr "Elokuu"
 
-#: ../src/contacts-contact-pane.vala:859
+#: ../src/contacts-contact-pane.vala:857
 msgid "September"
 msgstr "Syyskuu"
 
-#: ../src/contacts-contact-pane.vala:860
+#: ../src/contacts-contact-pane.vala:858
 msgid "October"
 msgstr "Lokakuu"
 
-#: ../src/contacts-contact-pane.vala:861
+#: ../src/contacts-contact-pane.vala:859
 msgid "November"
 msgstr "Marraskuu"
 
-#: ../src/contacts-contact-pane.vala:862
+#: ../src/contacts-contact-pane.vala:860
 msgid "December"
 msgstr "Joulukuu"
 
-#: ../src/contacts-contact-pane.vala:899 ../src/contacts-contact-pane.vala:900
+#: ../src/contacts-contact-pane.vala:898 ../src/contacts-contact-pane.vala:899
 msgid "Birthday"
 msgstr "Syntymäpäivä"
 
-#: ../src/contacts-contact-pane.vala:972 ../src/contacts-contact-pane.vala:973
+#: ../src/contacts-contact-pane.vala:971 ../src/contacts-contact-pane.vala:972
 msgid "Nickname"
 msgstr "Lempinimi"
 
@@ -152,247 +215,293 @@ msgstr "Lempinimi"
 msgid "Note"
 msgstr "Huomautus"
 
-#: ../src/contacts-contact-pane.vala:1201
+#: ../src/contacts-contact-pane.vala:1202
 msgid "Addresses"
 msgstr "Osoitteet"
 
-#: ../src/contacts-contact-pane.vala:1202
+#: ../src/contacts-contact-pane.vala:1203
 #: ../src/contacts-new-contact-dialog.vala:103
 #: ../src/contacts-new-contact-dialog.vala:130
 msgid "Address"
 msgstr "Osoite"
 
-#: ../src/contacts-contact-pane.vala:1331
-#, c-format
-msgid "Add contact data to %s\n"
-msgstr "Lisää yhteystiedon tiedot kohteeseen %s\n"
+#: ../src/contacts-contact-pane.vala:1305
+msgid "Add to My Contacts"
+msgstr "Lisää yhteystietoihini"
 
-#: ../src/contacts-contact-pane.vala:1851
+#: ../src/contacts-contact-pane.vala:1315
+msgid "Unlink"
+msgstr "Pura liitos"
+
+#: ../src/contacts-contact-pane.vala:1347
+msgid "Add detail..."
+msgstr "Lisää tietoja..."
+
+#: ../src/contacts-contact-pane.vala:1362
+#, c-format
+msgid "Select detail to add to %s"
+msgstr "Yhteystietoon %s lisättävä tieto"
+
+#: ../src/contacts-contact-pane.vala:1766
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "Kuuluuko %s kohteesta %s tähän?"
+
+#: ../src/contacts-contact-pane.vala:1768
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "Kuuluvatko nämä tiedot kohteeseen %s?"
+
+#: ../src/contacts-contact-pane.vala:1778
+msgid "Yes"
+msgstr "Kyllä"
+
+#: ../src/contacts-contact-pane.vala:1779
+msgid "No"
+msgstr "Ei"
+
+#: ../src/contacts-contact-pane.vala:1961
 msgid "Select email address"
 msgstr "Valitse sähköpostiosoite"
 
-#: ../src/contacts-contact-pane.vala:1923
+#: ../src/contacts-contact-pane.vala:2034
 msgid "Select what to call"
-msgstr ""
+msgstr "Valitse soittovälinä"
 
-#: ../src/contacts-contact-pane.vala:1986
+#: ../src/contacts-contact-pane.vala:2098
 msgid "Select chat account"
 msgstr "Valitse keskustelutili"
 
-#: ../src/contacts-contact-pane.vala:2050
+#: ../src/contacts-contact-pane.vala:2178
 msgid "Add/Remove Linked Contacts..."
 msgstr "Lisää tai poista linkitettyjä yhteystietoja..."
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2054
+#: ../src/contacts-contact-pane.vala:2182
 msgid "Delete"
 msgstr "Poista"
 
-#: ../src/contacts-contact.vala:445
+#: ../src/contacts-contact.vala:467
 msgid "Unknown status"
 msgstr "Tuntematon tila"
 
-#: ../src/contacts-contact.vala:447
+#: ../src/contacts-contact.vala:469
 msgid "Offline"
 msgstr "Poissa linjoilta"
 
-#: ../src/contacts-contact.vala:451
+#: ../src/contacts-contact.vala:473
 msgid "Error"
 msgstr "Virhe"
 
-#: ../src/contacts-contact.vala:453
+#: ../src/contacts-contact.vala:475
 msgid "Available"
 msgstr "Tavoitettavissa"
 
-#: ../src/contacts-contact.vala:455
+#: ../src/contacts-contact.vala:477
 msgid "Away"
 msgstr "Poissa"
 
-#: ../src/contacts-contact.vala:457
+#: ../src/contacts-contact.vala:479
 msgid "Extended away"
 msgstr "Laajennettu poissaolo"
 
-#: ../src/contacts-contact.vala:459
+#: ../src/contacts-contact.vala:481
 msgid "Busy"
 msgstr "Varattu"
 
-#: ../src/contacts-contact.vala:461
+#: ../src/contacts-contact.vala:483
 msgid "Hidden"
 msgstr "Piilotettu"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "Street"
 msgstr "Katu"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "Extension"
 msgstr "Alanumero"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "City"
 msgstr "Kaupunki"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "State/Province"
 msgstr "Osavaltio"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "Zip/Postal Code"
 msgstr "Postinumero"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "PO box"
 msgstr "Postilokero"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:665
 msgid "Country"
 msgstr "Maa"
 
-#: ../src/contacts-contact.vala:690
+#: ../src/contacts-contact.vala:721
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:691
+#: ../src/contacts-contact.vala:722
 msgid "Ovi Chat"
 msgstr "Ovi-keskustelu"
 
-#: ../src/contacts-contact.vala:692 ../src/contacts-contact.vala:971
+#: ../src/contacts-contact.vala:723 ../src/contacts-contact.vala:1003
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:693
+#: ../src/contacts-contact.vala:724
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:694
+#: ../src/contacts-contact.vala:725
 msgid "AOL Instant Messenger"
 msgstr "AOL-pikaviestin"
 
-#: ../src/contacts-contact.vala:695
+#: ../src/contacts-contact.vala:726
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:696
+#: ../src/contacts-contact.vala:727
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:697
+#: ../src/contacts-contact.vala:728
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:698
+#: ../src/contacts-contact.vala:729
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:699
+#: ../src/contacts-contact.vala:730
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:700
+#: ../src/contacts-contact.vala:731
 msgid "Local network"
 msgstr "Paikallisverkko"
 
-#: ../src/contacts-contact.vala:701
+#: ../src/contacts-contact.vala:732
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:702
+#: ../src/contacts-contact.vala:733
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:703
+#: ../src/contacts-contact.vala:734
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:704
+#: ../src/contacts-contact.vala:735
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:705
+#: ../src/contacts-contact.vala:736
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:706
+#: ../src/contacts-contact.vala:737
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:707
+#: ../src/contacts-contact.vala:738
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:708
+#: ../src/contacts-contact.vala:739
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:709
+#: ../src/contacts-contact.vala:740
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:710
+#: ../src/contacts-contact.vala:741
 msgid "Telephony"
 msgstr "Puhelinpalvelu"
 
-#: ../src/contacts-contact.vala:711
+#: ../src/contacts-contact.vala:742
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:712 ../src/contacts-contact.vala:713
+#: ../src/contacts-contact.vala:743 ../src/contacts-contact.vala:744
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:714
+#: ../src/contacts-contact.vala:745
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:974
+#: ../src/contacts-contact.vala:1006
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact.vala:1013
+#: ../src/contacts-contact.vala:1009
+msgid "Google Profile"
+msgstr "Googlen profiili"
+
+#: ../src/contacts-contact.vala:1073
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Odottamaton sisäinen virhe: luotua yhteystietoa ei löydy"
 
-#: ../src/contacts-esd-setup.c:588
+#: ../src/contacts-contact.vala:1219
+msgid "Google Circles"
+msgstr "Googlen piirit"
+
+#: ../src/contacts-contact.vala:1221
+msgid "Google Other Contact"
+msgstr "Googlen muu yhteystieto"
+
+#: ../src/contacts-esd-setup.c:627
 msgid "Personal"
 msgstr "Henkilökohtainen"
 
-#: ../src/contacts-esd-setup.c:613
-msgid "Local Contact"
-msgstr "Paikallinen yhteystieto"
+#: ../src/contacts-esd-setup.c:652
+msgid "Local Address Book"
+msgstr "Paikallinen osoitekirja"
 
-#: ../src/contacts-esd-setup.c:620
+#: ../src/contacts-esd-setup.c:659 ../src/contacts-esd-setup.c:678
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-link-dialog.vala:88
+#: ../src/contacts-esd-setup.c:671
+msgid "Local Contact"
+msgstr "Paikallinen yhteystieto"
+
+#: ../src/contacts-link-dialog.vala:73
+msgctxt "contacts link action"
+msgid "Link"
+msgstr "Linkki"
+
+#: ../src/contacts-link-dialog.vala:84
+msgid "Undo"
+msgstr "Kumoa"
+
+#: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "Yhteystiedon linkittäminen"
 
-#: ../src/contacts-link-dialog.vala:113
-#, c-format
-msgid "Select contacts to link to %s"
-msgstr "Valitse linkitettävät yhteystiedot (%s)"
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
+msgid "Cancel"
+msgstr "Peru"
 
-#: ../src/contacts-link-dialog.vala:162
-msgctxt "link-contacts-button"
+#: ../src/contacts-link-dialog.vala:154
 msgid "Link"
-msgstr "Linkitä"
+msgstr "Linkki"
 
-#: ../src/contacts-link-dialog.vala:181
-msgid "Currently linked:"
-msgstr "Tällä hetkellä linkitettyinä:"
+#: ../src/contacts-link-dialog.vala:182
+#, c-format
+msgid "<span weight='bold'>Link contacts to %s</span>"
+msgstr "<span weight='bold'>Liitä yhteystiedot kontaktiin %s</span>"
 
-#: ../src/contacts-list-pane.vala:148
-msgid ""
-"Connect to an account,\n"
-"import or add contacts"
-msgstr ""
-"Yhdistä käyttäjätiliin,\n"
-"tuo tai lisää yhteystietoja"
-
-#: ../src/contacts-list-pane.vala:154
-msgid "Online Accounts"
-msgstr "Verkkotilit"
+#: ../src/contacts-link-dialog.vala:184
+msgid "<span weight='bold'>Select contact to link to</span>"
+msgstr "<span weight='bold'>Valitse yhteystieto, johon linkitetään</span>"
 
 #: ../src/contacts-new-contact-dialog.vala:35
 msgid "New contact"
@@ -403,12 +512,8 @@ msgid "Create Contact"
 msgstr "Luo yhteystieto"
 
 #: ../src/contacts-new-contact-dialog.vala:67
-msgid ""
-"Add or \n"
-"select a picture"
-msgstr ""
-"Lisää tai \n"
-"valitse kuva"
+msgid "Add or \nselect a picture"
+msgstr "Lisää tai \nvalitse kuva"
 
 #: ../src/contacts-new-contact-dialog.vala:77
 msgid "Contact Name"
@@ -418,22 +523,47 @@ msgstr "Yhteystiedon nimi"
 msgid "Add Detail"
 msgstr "Lisää tietoja"
 
-#: ../src/contacts-new-contact-dialog.vala:210
+#: ../src/contacts-new-contact-dialog.vala:211
 msgid "You must specify a contact name"
 msgstr "Yhteystiedon nimi tulee määrittää"
 
-#: ../src/contacts-new-contact-dialog.vala:317
+#: ../src/contacts-new-contact-dialog.vala:319
 msgid "No primary addressbook configured\n"
 msgstr "Ensisijaista osoitekirjaa ei ole määritelty\n"
 
-#: ../src/contacts-new-contact-dialog.vala:338
+#: ../src/contacts-new-contact-dialog.vala:341
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "Uusien yhteystietojen luominen ei onnistu: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:349
+#: ../src/contacts-new-contact-dialog.vala:352
 msgid "Unable to find newly created contact\n"
 msgstr "Juuri luotua yhteystietoa ei löydy\n"
+
+#: ../src/contacts-setup-window.vala:36
+msgid "Welcome to Contacts! Please select where you want to keep your address book:"
+msgstr "Tervetuloa Yhteystietoihin! Valitse missä haluat säilyttää osoitekirjaasi:"
+
+#: ../src/contacts-setup-window.vala:81
+msgid "Online Account Settings"
+msgstr "Verkkotilien asetukset"
+
+#: ../src/contacts-setup-window.vala:86
+msgid "Setup an online account or use a local address book"
+msgstr "Määrittele verkkotili tai käytä paikallista osoitekirjaa"
+
+#: ../src/contacts-setup-window.vala:89
+msgid "Online Accounts"
+msgstr "Verkkotilit"
+
+#: ../src/contacts-setup-window.vala:92
+msgid "Use Local Address Book"
+msgstr "Paikallinen osoitekirja"
+
+#: ../src/contacts-setup-window.vala:129 ../src/contacts-setup-window.vala:150
+#, c-format
+msgid "Contacts Setup"
+msgstr "Yhteystietoasetusten määrittely"
 
 #: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
 #: ../src/contacts-types.vala:234 ../src/contacts-types.vala:324
@@ -509,47 +639,23 @@ msgstr "Kaukokirjoitin"
 
 #. Translators: This is the header for the list of suggested contacts to
 #. link to the current contact
-#: ../src/contacts-view.vala:89
+#: ../src/contacts-view.vala:130
 msgid "Suggestion"
 msgid_plural "Suggestions"
 msgstr[0] "Ehdotus"
 msgstr[1] "Ehdotukset"
 
-#~ msgid "Enter nickname"
-#~ msgstr "Syötä lempinimi"
+#. Translators: This is the header for the list of suggested contacts to
+#. link to the current contact
+#: ../src/contacts-view.vala:135
+msgid "Other Contacts"
+msgstr "Muut yhteystiedot"
 
-#~ msgid "Alias"
-#~ msgstr "Kutsumanimi"
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+msgid "First-time setup done."
+msgstr "Ensimmäisen suorituskerran asetukset on tehty."
 
-#~ msgid "Enter alias"
-#~ msgstr "Syötä kutsumanimi"
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+msgid "Set to true when the user ran the first-time setup wizard."
+msgstr "Asetettava tosi-arvoksi, kun käyttäjä on suorittanut ensimmäisen suorituskerran velhon."
 
-#~ msgid "Enter phone number"
-#~ msgstr "Syötä puhelinnumero"
-
-#~ msgid "Enter link"
-#~ msgstr "Syötä linkki"
-
-#~ msgid "Enter name"
-#~ msgstr "Syötä nimi"
-
-#~ msgid "Address copied to clipboard"
-#~ msgstr "Osoite kopioitu leikepöydälle"
-
-#~ msgid "Department"
-#~ msgstr "Osasto"
-
-#~ msgid "Profession"
-#~ msgstr "Ammatti"
-
-#~ msgid "Title"
-#~ msgstr "Nimike"
-
-#~ msgid "Manager"
-#~ msgstr "Esimies"
-
-#~ msgid "Edit"
-#~ msgstr "Muokkaa "
-
-#~ msgid "More"
-#~ msgstr "Lisää"
