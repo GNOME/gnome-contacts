@@ -25,11 +25,8 @@ public class Contacts.AvatarDialog : Dialog {
   const int icons_size = 64;
   const int n_columns = 6;
   private Contact contact;
-  private Grid frame_grid;
-  private ScrolledWindow scrolled;
-  private ToolButton the_add_button;
-  private ToolButton crop_button;
-  private ToolButton cancel_button;
+  private Notebook notebook;
+  private Um.CropArea crop_area;
   private Grid view_grid;
   private ContactFrame main_frame;
 
@@ -174,6 +171,21 @@ public class Contacts.AvatarDialog : Dialog {
     chooser.set_preview_widget_active (true);
   }
 
+  private void set_crop_widget (Gdk.Pixbuf pixbuf) {
+    var frame_grid = notebook.get_nth_page (1) as Grid;
+    crop_area = new Um.CropArea ();
+    crop_area.set_vexpand (true);
+    crop_area.set_hexpand (true);
+    crop_area.set_min_size (48, 48);
+    crop_area.set_constrain_aspect (true);
+    crop_area.set_picture (pixbuf);
+
+    frame_grid.attach (crop_area, 0, 0, 1, 1);
+    frame_grid.show_all ();
+
+    notebook.set_current_page (1);
+  }
+
   private void select_avatar_file_cb () {
     var chooser = new FileChooserDialog (_("Browse for more pictures"),
 					 (Gtk.Window)this.get_toplevel (),
@@ -205,35 +217,7 @@ public class Contacts.AvatarDialog : Dialog {
 	  var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
 	  in_stream.close ();
 	  if (pixbuf.get_width () > 128 || pixbuf.get_height () > 128) {
-	    var crop_area = new Um.CropArea ();
-	    crop_area.set_vexpand (true);
-	    crop_area.set_hexpand (true);
-	    crop_area.set_min_size (48, 48);
-	    crop_area.set_constrain_aspect (true);
-	    crop_area.set_picture (pixbuf);
-	    frame_grid.attach_next_to (crop_area, scrolled, PositionType.TOP, 1, 1);
-	    crop_area.show ();
-	    crop_button.show ();
-	    crop_button.clicked.connect ((button) => {
-		var pix = crop_area.get_picture ();
-		selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
-		crop_area.destroy ();
-		crop_button.hide ();
-		cancel_button.hide ();
-
-		scrolled.show ();
-		the_add_button.show ();
-	      });
-	    cancel_button.show ();
-	    cancel_button.clicked.connect ((button) => {
-		crop_button.hide ();
-		cancel_button.hide ();
-
-		scrolled.show ();
-		the_add_button.show ();
-	      });
-	    the_add_button.hide ();
-	    scrolled.hide ();
+          set_crop_widget (pixbuf);
 	  } else
 	    selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
 
@@ -284,11 +268,15 @@ public class Contacts.AvatarDialog : Dialog {
     var frame = new Frame (null);
     frame.get_style_context ().add_class ("contacts-avatar-frame");
     grid.attach (frame, 0, 1, 2, 1);
-    frame_grid = new Grid ();
-    frame_grid.set_orientation (Orientation.VERTICAL);
-    frame.add (frame_grid);
 
-    scrolled = new ScrolledWindow(null, null);
+    notebook = new Gtk.Notebook ();
+    notebook.show_tabs = false;
+    frame.add (notebook);
+    
+    var frame_grid = new Grid ();
+    frame_grid.set_orientation (Orientation.VERTICAL);
+    
+    var scrolled = new ScrolledWindow(null, null);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
     scrolled.set_hexpand (true);
@@ -305,25 +293,52 @@ public class Contacts.AvatarDialog : Dialog {
     toolbar.set_vexpand (false);
     frame_grid.add (toolbar);
 
-    the_add_button = new ToolButton (null, null);
+    var the_add_button = new ToolButton (null, null);
     the_add_button.set_icon_name ("list-add-symbolic");
     the_add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     the_add_button.is_important = true;
     toolbar.add (the_add_button);
     the_add_button.clicked.connect (select_avatar_file_cb);
 
-    crop_button = new ToolButton (null, null);
-    crop_button.set_icon_name ("object-select-symbolic");
-    crop_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    crop_button.is_important = true;
-    toolbar.add (crop_button);
+    frame_grid.show_all ();
+    notebook.append_page (frame_grid, null);
 
-    cancel_button = new ToolButton (null, null);
+    /* crop page */
+    frame_grid = new Grid ();
+    frame_grid.set_orientation (Orientation.VERTICAL);
+
+    toolbar = new Toolbar ();
+    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+    toolbar.set_icon_size (IconSize.MENU);
+    toolbar.set_vexpand (false);
+    frame_grid.attach (toolbar, 0, 1, 1, 1);
+
+    var accept_button = new ToolButton (null, null);
+    accept_button.set_icon_name ("object-select-symbolic");
+    accept_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    accept_button.is_important = true;
+    toolbar.add (accept_button);
+    accept_button.clicked.connect ( (button) => {
+      var pix = crop_area.get_picture ();
+      selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
+      crop_area.destroy ();
+      notebook.set_current_page (0);
+    });
+
+    var cancel_button = new ToolButton (null, null);
     cancel_button.set_icon_name ("edit-undo-symbolic");
     cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     cancel_button.is_important = true;
     toolbar.add (cancel_button);
+    cancel_button.clicked.connect ( (button) => {
+      crop_area.destroy ();
+      notebook.set_current_page (0);
+    });
 
+    frame_grid.show_all ();
+    notebook.append_page (frame_grid, null);
+
+    notebook.set_current_page (0);
     /*
     var remove_button = new ToolButton (null, null);
     remove_button.set_icon_name ("list-remove-symbolic");
@@ -350,8 +365,5 @@ public class Contacts.AvatarDialog : Dialog {
     update_grid ();
 
     grid.show_all ();
-
-    crop_button.hide ();
-    cancel_button.hide ();
   }
 }
