@@ -37,6 +37,7 @@ public class Contacts.AvatarDialog : Dialog {
 #if HAVE_GSTREAMER
   private bool has_device = false;
   private DrawingArea photobooth_area;
+  private Cheese.Flash flash;
   private Pipeline pipeline;
   private Element sink;
 #endif
@@ -283,7 +284,7 @@ public class Contacts.AvatarDialog : Dialog {
     notebook = new Gtk.Notebook ();
     notebook.show_tabs = false;
     frame.add (notebook);
-    
+
     var frame_grid = new Grid ();
     frame_grid.set_orientation (Orientation.VERTICAL);
 
@@ -378,6 +379,8 @@ public class Contacts.AvatarDialog : Dialog {
       photobooth_area.set_hexpand (true);
       frame_grid.add (photobooth_area);
 
+      flash = new Cheese.Flash ();
+
       toolbar = new Toolbar ();
       toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
       toolbar.set_icon_size (IconSize.MENU);
@@ -390,9 +393,17 @@ public class Contacts.AvatarDialog : Dialog {
       accept_button.is_important = true;
       toolbar.add (accept_button);
       accept_button.clicked.connect ( (button) => {
+        int x, y;
+        var win = photobooth_area.get_window ();
+        win.get_origin (out x, out y);
+        Gdk.Rectangle rect = {};
+        rect.x = x;
+        rect.y = y;
+        rect.width = photobooth_area.get_allocated_width ();
+        rect.height = photobooth_area.get_allocated_height ();
+        flash.fire (rect);
         if (pipeline != null)
           pipeline.set_state (State.PAUSED);
-        var win = photobooth_area.get_window ();
         var pix = Gdk.pixbuf_get_from_window (win, 0, 0,
                                               photobooth_area.get_allocated_width (),
                                               photobooth_area.get_allocated_height ());
