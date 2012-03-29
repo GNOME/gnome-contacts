@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if HAVE_GSTREAMER
+using Gst;
+#endif
+
 using Gtk;
 using Folks;
 
@@ -29,6 +33,13 @@ public class Contacts.AvatarDialog : Dialog {
   private Um.CropArea crop_area;
   private Grid view_grid;
   private ContactFrame main_frame;
+
+#if HAVE_GSTREAMER
+  private bool has_device = false;
+  private DrawingArea photobooth_area;
+  private Pipeline pipeline;
+  private Element sink;
+#endif
 
   private Gdk.Pixbuf? new_pixbuf;
 
@@ -275,7 +286,8 @@ public class Contacts.AvatarDialog : Dialog {
     
     var frame_grid = new Grid ();
     frame_grid.set_orientation (Orientation.VERTICAL);
-    
+
+    /* main view */
     var scrolled = new ScrolledWindow(null, null);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_vexpand (true);
@@ -299,6 +311,23 @@ public class Contacts.AvatarDialog : Dialog {
     the_add_button.is_important = true;
     toolbar.add (the_add_button);
     the_add_button.clicked.connect (select_avatar_file_cb);
+
+#if HAVE_GSTREAMER
+    if (setup_gstreamer_pipeline ()) {
+      var webcam_button = new ToolButton (null, null);
+      webcam_button.set_icon_name ("camera-photo-symbolic");
+      webcam_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+      webcam_button.is_important = true;
+      toolbar.add (webcam_button);
+      webcam_button.clicked.connect ( (button) => {
+        notebook.set_current_page (2);
+        var xoverlay = this.sink as XOverlay;
+        xoverlay.set_xwindow_id (Gdk.X11Window.get_xid (photobooth_area.get_window ()));
+        pipeline.set_state (State.PLAYING);
+      });
+      has_device = true;
+    }
+#endif
 
     frame_grid.show_all ();
     notebook.append_page (frame_grid, null);
@@ -338,6 +367,54 @@ public class Contacts.AvatarDialog : Dialog {
     frame_grid.show_all ();
     notebook.append_page (frame_grid, null);
 
+#if HAVE_GSTREAMER
+    if (has_device) {
+      /* photobooth page */
+      frame_grid = new Grid ();
+      frame_grid.set_orientation (Orientation.VERTICAL);
+
+      photobooth_area = new DrawingArea ();
+      photobooth_area.set_vexpand (true);
+      photobooth_area.set_hexpand (true);
+      frame_grid.add (photobooth_area);
+
+      toolbar = new Toolbar ();
+      toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+      toolbar.set_icon_size (IconSize.MENU);
+      toolbar.set_vexpand (false);
+      frame_grid.attach (toolbar, 0, 1, 1, 1);
+
+      accept_button = new ToolButton (null, null);
+      accept_button.set_icon_name ("object-select-symbolic");
+      accept_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+      accept_button.is_important = true;
+      toolbar.add (accept_button);
+      accept_button.clicked.connect ( (button) => {
+        if (pipeline != null)
+          pipeline.set_state (State.PAUSED);
+        var win = photobooth_area.get_window ();
+        var pix = Gdk.pixbuf_get_from_window (win, 0, 0,
+                                              photobooth_area.get_allocated_width (),
+                                              photobooth_area.get_allocated_height ());
+        set_crop_widget (pix);
+      });
+
+      cancel_button = new ToolButton (null, null);
+      cancel_button.set_icon_name ("edit-undo-symbolic");
+      cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+      cancel_button.is_important = true;
+      toolbar.add (cancel_button);
+      cancel_button.clicked.connect ( (button) => {
+        if (pipeline != null)
+          pipeline.set_state (State.READY);
+        notebook.set_current_page (0);
+      });
+
+      frame_grid.show_all ();
+      notebook.append_page (frame_grid, null);
+    }
+#endif
+
     notebook.set_current_page (0);
     /*
     var remove_button = new ToolButton (null, null);
@@ -359,6 +436,11 @@ public class Contacts.AvatarDialog : Dialog {
 	    }
 	  }
 	}
+
+#if HAVE_GSTREAMER
+      pipeline.set_state (State.NULL);
+#endif
+
 	this.destroy ();
       });
 
@@ -366,4 +448,21 @@ public class Contacts.AvatarDialog : Dialog {
 
     grid.show_all ();
   }
+#if HAVE_GSTREAMER
+  private bool setup_gstreamer_pipeline () {
+    pipeline = new Pipeline ("booth_pipeline");
+    var src = ElementFactory.make ("v4l2src", "video");
+    sink = ElementFactory.make ("xvimagesink", "sink");
+    pipeline.add_many (src, sink);
+    src.link (this.sink);
+
+    unowned ParamSpec pspec = (src as PropertyProbe).get_property ("device");
+    if (pspec != null) {
+      unowned ValueArray values = (src as PropertyProbe).probe_and_get_values (pspec);
+      return (values != null);
+    }
+
+    return false;
+  }
+#endif
 }
