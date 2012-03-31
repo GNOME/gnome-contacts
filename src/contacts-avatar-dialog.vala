@@ -395,12 +395,13 @@ public class Contacts.AvatarDialog : Dialog {
       accept_button.clicked.connect ( (button) => {
         int x, y;
         var win = photobooth_area.get_window ();
-        win.get_origin (out x, out y);
+        var flash_win = Gdk.get_default_root_window ();
+        flash_win.get_origin (out x, out y);
         Gdk.Rectangle rect = {};
         rect.x = x;
         rect.y = y;
-        rect.width = photobooth_area.get_allocated_width ();
-        rect.height = photobooth_area.get_allocated_height ();
+        rect.width = flash_win.get_width ();
+        rect.height = flash_win.get_height ();
         flash.fire (rect);
         if (pipeline != null)
           pipeline.set_state (State.PAUSED);
