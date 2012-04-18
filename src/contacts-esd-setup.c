@@ -621,9 +621,14 @@ eds_personal_google_group_name (void)
   char *domain;
 
   if (name == NULL) {
-    domain = g_strdup_printf ("evolution-data-server-%d.%d\n",
+    domain = g_strdup_printf ("evolution-data-server-%d.%d",
 			      EDS_MAJOR_VERSION,
-			      EDS_MINOR_VERSION + ((EDS_MINOR_VERSION + 1) % 2));
+			      EDS_MINOR_VERSION + ((EDS_MINOR_VERSION) % 2));
+
+    /* Let's assume e-d-s is installed in the same prefix as gnome-contacts
+       (which works for system and jhbuild setups) */
+    bindtextdomain (domain, LOCALEDIR);
+
     name = dgettext (domain, "Personal");
     g_free (domain);
   }
