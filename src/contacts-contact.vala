@@ -999,7 +999,7 @@ public class Contacts.Contact : GLib.Object  {
     string uri = detail.value;
 
     if (/https?:\/\/www.facebook.com\/profile\.php\?id=[0-9]+$/.match(uri) ||
-	/https?:\/\/www.facebook.com\/[a-zA-Z0-9]+$/.match(uri))
+	/https?:\/\/www.facebook.com\/[a-zA-Z0-9.]+$/.match(uri))
       return _("Facebook");
 
     if (/https?:\/\/twitter.com\/#!\/[a-zA-Z0-9]+$/.match(uri))
