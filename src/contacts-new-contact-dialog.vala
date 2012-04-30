@@ -66,19 +66,20 @@ public class Contacts.NewContactDialog : Dialog {
     frame.set_vexpand (false);
     var l = new Label (_("Add or \nselect a picture"));
     frame.add (l);
-    grid.attach (frame, 0, 0, 1, 2);
+    // Temporarily disable this as its not implemented yet
+    //grid.attach (frame, 0, 0, 1, 2);
 
     name_entry = new Entry ();
     name_entry.set_hexpand (true);
     name_entry.set_vexpand (false);
     name_entry.set_halign (Align.FILL);
-    grid.attach (name_entry, 1, 0, 2, 1);
+    grid.attach (name_entry, 0, 1, 3, 1);
 
     l = new Label (_("Contact Name"));
     l.set_halign (Align.START);
     l.set_vexpand (false);
     l.set_valign (Align.START);
-    grid.attach (l, 1, 1, 2, 1);
+    grid.attach (l, 0, 0, 2, 1);
 
     int y = 2;
 
