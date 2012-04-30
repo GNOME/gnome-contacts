@@ -520,6 +520,8 @@ public class Contacts.View : TreeView {
     }
 
     selection_changed (contact);
+    if (contact != null)
+      contact.fetch_contact_info ();
   }
 
   public void select_contact (Contact contact) {
