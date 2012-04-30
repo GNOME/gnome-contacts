@@ -1362,6 +1362,16 @@ public class Contacts.Contact : GLib.Object  {
     ulong id = this.changed.connect ( () => { callback(w); });
     w.destroy.connect (() => { this.disconnect (id); });
   }
+
+  public void fetch_contact_info () {
+    /* TODO: Ideally Folks should have API for this (#675131) */
+    foreach (var p in individual.personas) {
+      var tp = p as Tpf.Persona;
+      if (tp != null) {
+        tp.contact.request_contact_info_async(null);
+      }
+    }
+  }
 }
 
 public class Contacts.FakePersonaStore : PersonaStore {
