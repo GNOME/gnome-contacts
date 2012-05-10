@@ -74,12 +74,15 @@ public class Contacts.Sorted : Container {
   UpdateSeparatorFunc? update_separator_func;
   unowned ChildInfo? selected_child;
   unowned ChildInfo? prelight_child;
+  /* Only set if the row is focused, not if a child is focused, valid if has_focus. */
+  unowned ChildInfo? focus_child;
 
   private int do_sort (ChildInfo? a, ChildInfo? b) {
     return sort_func (a.widget, b.widget);
   }
 
   public Sorted () {
+    set_can_focus (true);
     set_has_window (true);
     set_redraw_on_allocate (true);
 
@@ -97,6 +100,19 @@ public class Contacts.Sorted : Container {
       }
     }
     return child_info;
+  }
+  
+  private void update_selected (ChildInfo? child) {
+    if (child != selected_child) {
+      selected_child = child;
+      child_selected (selected_child != null ? selected_child.widget : null);
+      queue_draw ();
+    }
+    if (child != null) {
+      focus_child = child;
+      this.grab_focus ();
+      this.queue_draw ();
+    }
   }
 
   private void update_prelight (ChildInfo? child) {
@@ -139,15 +155,108 @@ public class Contacts.Sorted : Container {
   public override bool button_press_event (Gdk.EventButton event) {
     if (event.button == 1) {
       unowned ChildInfo? child = find_child_at_y ((int)event.y);
-      selected_child = child;
-
-      child_selected (selected_child != null ? selected_child.widget : null);
-      queue_draw ();
+      update_selected (child);
     }
     return false;
   }
 
   public virtual signal void child_selected (Widget? child) {
+  }
+
+  public override bool focus (DirectionType direction) {
+    bool had_focus;
+    bool focus_into;
+    Widget recurse_into = null;
+
+    focus_into = true;
+    had_focus = has_focus;
+
+    unowned ChildInfo? current_focus_child = null;
+    unowned ChildInfo? next_focus_child = null;
+    
+    if (had_focus) {
+      /* If on row, going right, enter into possible container */
+      if (direction == DirectionType.RIGHT ||
+	  direction == DirectionType.TAB_FORWARD) {
+	/* TODO: Handle null focus child */
+	recurse_into = focus_child.widget;
+      }
+      current_focus_child = focus_child;
+      /* Unless we're going up/down we're always leaving
+	 the container */
+      if (direction != DirectionType.UP &&
+	  direction != DirectionType.DOWN)
+	focus_into = false;
+    } else if (this.get_focus_child () != null) {
+      /* There is a focus child, always navigat inside it first */
+      recurse_into = this.get_focus_child ();
+      current_focus_child = lookup_info (recurse_into);
+      
+      /* If exiting child container to the right, exit row */
+      if (direction == DirectionType.RIGHT ||
+	  direction == DirectionType.TAB_FORWARD) 
+	focus_into = false;
+
+      /* If exiting child container to the left, select row or out */
+      if (direction == DirectionType.LEFT ||
+	  direction == DirectionType.TAB_BACKWARD) {
+	next_focus_child = current_focus_child;
+      }
+    } else {
+      /* If coming from the left, enter into possible container */
+      if (direction == DirectionType.LEFT ||
+	  direction == DirectionType.TAB_BACKWARD) {
+	if (selected_child != null)
+	  recurse_into = selected_child.widget;
+      }
+    }
+
+    if (recurse_into != null) {
+      if (recurse_into.child_focus (direction))
+	return true;
+    }
+
+    if (!focus_into)
+      return false; // Focus is leaving us
+
+    if (next_focus_child == null) {
+      if (current_focus_child != null) {
+	if (direction == DirectionType.UP) {
+	  var i = get_previous_visible (current_focus_child.iter);
+	  if (i != null)
+	    next_focus_child = i.get ();
+	} else {
+	  var i = get_next_visible (current_focus_child.iter);
+	  if (!i.is_end ())
+	    next_focus_child = i.get ();
+	}
+      } else {
+	switch (direction) {
+	case DirectionType.DOWN:
+	case DirectionType.TAB_FORWARD:
+	  next_focus_child = get_first_visible ();
+	  break;
+	case DirectionType.UP:
+	case DirectionType.TAB_BACKWARD:
+	  next_focus_child = get_last_visible ();
+	  break;
+	default:
+	  next_focus_child = selected_child;
+	  if (next_focus_child == null)
+	    next_focus_child = get_first_visible ();
+	  break;
+	}
+      }
+    }
+
+    if (next_focus_child == null)
+      return false;
+
+    focus_child = next_focus_child;
+    this.grab_focus ();
+    this.queue_draw ();
+
+    return true;
   }
 
   public override bool draw (Cairo.Context cr) {
@@ -174,6 +283,11 @@ public class Contacts.Sorted : Container {
 			     allocation.width, prelight_child.height);
     }
 
+    if (has_visible_focus() && focus_child != null) {
+      context.render_focus (cr, 0, focus_child.y,
+			    allocation.width, focus_child.height);
+    }
+    
     context.restore ();
 
     base.draw (cr);
@@ -247,6 +361,28 @@ public class Contacts.Sorted : Container {
     queue_resize ();
   }
 
+  private unowned ChildInfo? get_first_visible () {
+    for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
+      unowned ChildInfo? child_info = iter.get ();
+      unowned Widget widget = child_info.widget;
+      if (widget.get_visible () && widget.get_child_visible ())
+	return child_info;
+    }
+    return null;
+  }
+
+  private unowned ChildInfo? get_last_visible () {
+    var iter = children.get_end_iter ();
+    while (!iter.is_begin ()) {
+      iter = iter.prev ();
+      unowned ChildInfo? child_info = iter.get ();
+      unowned Widget widget = child_info.widget;
+      if (widget.get_visible () && widget.get_child_visible ())
+	return child_info;
+    }
+    return null;
+  }
+ 
   private SequenceIter<ChildInfo?>? get_previous_visible (SequenceIter<ChildInfo?> _iter) {
     if (_iter.is_begin())
       return null;
