@@ -72,33 +72,74 @@ public class Contacts.Sorted : Container {
   NeedSeparatorFunc? need_separator_func;
   CreateSeparatorFunc? create_separator_func;
   UpdateSeparatorFunc? update_separator_func;
-  protected Gdk.Window event_window;
   unowned ChildInfo? selected_child;
+  unowned ChildInfo? prelight_child;
 
   private int do_sort (ChildInfo? a, ChildInfo? b) {
     return sort_func (a.widget, b.widget);
   }
 
   public Sorted () {
-    set_has_window (false);
+    set_has_window (true);
     set_redraw_on_allocate (false);
 
     children = new Sequence<ChildInfo?>();
     child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
   }
 
+  unowned ChildInfo? find_child_at_y (int y) {
+    unowned ChildInfo? child_info = null;
+    for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
+      unowned ChildInfo? info = iter.get ();
+      if (y >= info.y && y < info.y + info.height) {
+	child_info = info;
+	break;
+      }
+    }
+    return child_info;
+  }
+
+  private void update_prelight (ChildInfo? child) {
+    if (child != prelight_child) {
+      prelight_child = child;
+      queue_draw ();
+    }
+  }
+
+  public override bool enter_notify_event (Gdk.EventCrossing event) {
+    if (event.window != get_window ())
+      return false;
+
+    unowned ChildInfo? child = find_child_at_y ((int)event.y);
+    update_prelight (child);
+
+    return false;
+  }
+
+  public override bool leave_notify_event (Gdk.EventCrossing event) {
+    if (event.window != get_window ())
+      return false;
+
+    if (event.detail != Gdk.NotifyType.INFERIOR) {
+      update_prelight (null);
+    } else {
+      unowned ChildInfo? child = find_child_at_y ((int)event.y);
+      update_prelight (child);
+    }
+
+    return false;
+  }
+
+  public override bool motion_notify_event (Gdk.EventMotion event) {
+    unowned ChildInfo? child = find_child_at_y ((int)event.y);
+    update_prelight (child);
+    return false;
+  }
+
   public override bool button_press_event (Gdk.EventButton event) {
     if (event.button == 1) {
-      var y = event.y;
-      unowned ChildInfo? child_info = null;
-      for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-	unowned ChildInfo? info = iter.get ();
-	if (y >= info.y && y < info.y + info.height) {
-	  child_info = info;
-	  break;
-	}
-      }
-      selected_child = child_info;
+      unowned ChildInfo? child = find_child_at_y ((int)event.y);
+      selected_child = child;
 
       child_selected (selected_child != null ? selected_child.widget : null);
       queue_draw ();
@@ -126,6 +167,13 @@ public class Contacts.Sorted : Container {
 			     allocation.width, selected_child.height);
     }
 
+    if (prelight_child != null && prelight_child != selected_child) {
+      context.set_state (StateFlags.PRELIGHT);
+      Gtk.render_background (context, cr,
+			     0, prelight_child.y,
+			     allocation.width, prelight_child.height);
+    }
+
     context.restore ();
 
     base.draw (cr);
@@ -144,23 +192,19 @@ public class Contacts.Sorted : Container {
     attributes.width = allocation.width;
     attributes.height = allocation.height;
     attributes.window_type = Gdk.WindowType.CHILD;
-    attributes.event_mask = this.get_events () | Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.BUTTON_PRESS_MASK;
+    attributes.event_mask = this.get_events () |
+                       Gdk.EventMask.ENTER_NOTIFY_MASK |
+		       Gdk.EventMask.LEAVE_NOTIFY_MASK |
+		       Gdk.EventMask.POINTER_MOTION_MASK |
+		       Gdk.EventMask.EXPOSURE_MASK |
+		       Gdk.EventMask.BUTTON_PRESS_MASK;
 
-    var window = get_parent_window ();
+    attributes.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT;
+    var window = new Gdk.Window (get_parent_window (), attributes,
+				 Gdk.WindowAttributesType.X |
+				 Gdk.WindowAttributesType.Y);
+    window.set_user_data (this);
     this.set_window (window);
-
-    attributes.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
-    event_window = new Gdk.Window (window, attributes,
-				   Gdk.WindowAttributesType.X |
-				   Gdk.WindowAttributesType.Y);
-    event_window.set_user_data (this);
-  }
-
-  public override void unrealize () {
-    event_window.set_user_data (null);
-    event_window.destroy ();
-    event_window = null;
-    base.unrealize ();
   }
 
   private void apply_filter (Widget child) {
@@ -290,16 +334,6 @@ public class Contacts.Sorted : Container {
   public void set_sort_func (owned CompareDataFunc<Widget>? f) {
     sort_func = (owned)f;
     resort ();
-  }
-
-  public override void map () {
-    event_window.show ();
-    base.map ();
-  }
-
-  public override void unmap () {
-    event_window.hide ();
-    base.unmap ();
   }
 
   private unowned ChildInfo? lookup_info (Widget widget) {
@@ -454,11 +488,12 @@ public class Contacts.Sorted : Container {
 
     set_allocation (allocation);
 
-    if (event_window != null)
-      event_window.move_resize (allocation.x,
-				allocation.y,
-				allocation.width,
-				allocation.height);
+    var window = get_window();
+    if (window != null)
+      window.move_resize (allocation.x,
+			  allocation.y,
+			  allocation.width,
+			  allocation.height);
 
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y;
