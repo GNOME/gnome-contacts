@@ -81,7 +81,7 @@ public class Contacts.Sorted : Container {
 
   public Sorted () {
     set_has_window (true);
-    set_redraw_on_allocate (false);
+    set_redraw_on_allocate (true);
 
     children = new Sequence<ChildInfo?>();
     child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
