@@ -21,34 +21,42 @@ using Contacts;
 
 public bool need_separator (Widget widget, Widget? before)
 {
-	if (before == null) {
-		return true;
-	}
-	var text = (widget as Label).get_text ();
-	return strcmp (text, "blah3") == 0;
+  if (before == null) {
+    return true;
+  }
+  if (!(widget is Label))
+    return false;
+  var text = (widget as Label).get_text ();
+  return strcmp (text, "blah3") == 0;
 }
 
 public Widget create_separator ()
 {
-	var l = new Button.with_label ("label");
-	return l;
+  var hbox = new Box(Orientation.HORIZONTAL, 0);
+  var l = new Label ("Separator");
+  hbox.add (l);
+  var b = new Button.with_label ("button");
+  hbox.add (b);
+  l.show ();
+  b.show ();
+  return hbox;
 }
 
 public void update_separator (Widget separator,
-							  Widget child,
-							  Widget? before_widget)
+			      Widget child,
+			      Widget? before_widget)
 {
-	var text = (child as Label).get_text ();
-	(separator as Button).set_label ("Label %s".printf (text));
+  var id = child.get_data<int>("sort_id");
+  var hbox = separator as Box;
+  var l = hbox.get_children ().data as Label;
+  l.set_text ("Separator %d".printf (id));
 }
-
-
 
 public static int
 compare_label (Widget a, Widget b) {
-	var aa = (a as Label).get_text ();
-	var bb = (b as Label).get_text ();
-	return strcmp (aa, bb);
+  var aa = a.get_data<int>("sort_id");
+  var bb = b.get_data<int>("sort_id");
+  return bb - aa;
 }
 
 public static int
@@ -74,12 +82,34 @@ main (string[] args) {
   var sorted = new Sorted();
   hbox.add (sorted);
 
-  sorted.add (new Label ("blah4"));
+  var l = new Label ("blah4");
+  l.set_data ("sort_id", 4);
+  sorted.add (l);
   var l3 = new Label ("blah3");
+  l3.set_data ("sort_id", 3);
   sorted.add (l3);
-  sorted.add (new Label ("blah1"));
-  sorted.add (new Label ("blah2"));
+  l = new Label ("blah1");
+  l.set_data ("sort_id", 1);
+  sorted.add (l);
+  l = new Label ("blah2");
+  l.set_data ("sort_id", 2);
+  sorted.add (l);
 
+  var row_hbox = new Box (Orientation.HORIZONTAL, 0);
+  row_hbox.set_data ("sort_id", 3);
+  l = new Label ("da box for da man");
+  row_hbox.add (l);
+  var check = new CheckButton ();
+  row_hbox.add (check);
+  var button = new Button.with_label ("ya!");
+  row_hbox.add (button);
+  sorted.add (row_hbox);
+
+  button = new Button.with_label ("focusable row");
+  button.set_hexpand (false);
+  button.set_halign (Align.START);
+  sorted.add (button);
+  
   var vbox = new Box(Orientation.VERTICAL, 0);
   hbox.add (vbox);
 
@@ -98,10 +128,13 @@ main (string[] args) {
   b = new Button.with_label ("change");
   vbox.add (b);
   b.clicked.connect ( () => {
-		  if (l3.get_text () == "blah3")
+		  if (l3.get_text () == "blah3") {
 			  l3.set_text ("blah5");
-		  else
+			  l3.set_data ("sort_id", 5);
+		  } else {
 			  l3.set_text ("blah3");
+			  l3.set_data ("sort_id", 3);
+		  }
 		  sorted.child_changed (l3);
 	  });
 
@@ -121,8 +154,11 @@ main (string[] args) {
   b = new Button.with_label ("add");
   vbox.add (b);
   b.clicked.connect ( () => {
-		  var l = new Label ("blah2 new %d".printf (new_button_nr++));
-		  sorted.add (l);
+		  var ll = new Label ("blah2 new %d".printf (new_button_nr));
+		  l.set_data ("sort_id", new_button_nr);
+		  new_button_nr++;
+
+		  sorted.add (ll);
 		  l.show ();
 	  });
 
