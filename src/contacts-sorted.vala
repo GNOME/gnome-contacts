@@ -101,7 +101,7 @@ public class Contacts.Sorted : Container {
     }
     return child_info;
   }
-  
+
   private void update_selected (ChildInfo? child) {
     if (child != selected_child) {
       selected_child = child;
@@ -173,7 +173,7 @@ public class Contacts.Sorted : Container {
 
     unowned ChildInfo? current_focus_child = null;
     unowned ChildInfo? next_focus_child = null;
-    
+
     if (had_focus) {
       /* If on row, going right, enter into possible container */
       if (direction == DirectionType.RIGHT ||
@@ -191,10 +191,10 @@ public class Contacts.Sorted : Container {
       /* There is a focus child, always navigat inside it first */
       recurse_into = this.get_focus_child ();
       current_focus_child = lookup_info (recurse_into);
-      
+
       /* If exiting child container to the right, exit row */
       if (direction == DirectionType.RIGHT ||
-	  direction == DirectionType.TAB_FORWARD) 
+	  direction == DirectionType.TAB_FORWARD)
 	focus_into = false;
 
       /* If exiting child container to the left, select row or out */
@@ -287,7 +287,7 @@ public class Contacts.Sorted : Container {
       context.render_focus (cr, 0, focus_child.y,
 			    allocation.width, focus_child.height);
     }
-    
+
     context.restore ();
 
     base.draw (cr);
@@ -307,7 +307,7 @@ public class Contacts.Sorted : Container {
     attributes.height = allocation.height;
     attributes.window_type = Gdk.WindowType.CHILD;
     attributes.event_mask = this.get_events () |
-                       Gdk.EventMask.ENTER_NOTIFY_MASK |
+		       Gdk.EventMask.ENTER_NOTIFY_MASK |
 		       Gdk.EventMask.LEAVE_NOTIFY_MASK |
 		       Gdk.EventMask.POINTER_MOTION_MASK |
 		       Gdk.EventMask.EXPOSURE_MASK |
@@ -382,7 +382,7 @@ public class Contacts.Sorted : Container {
     }
     return null;
   }
- 
+
   private SequenceIter<ChildInfo?>? get_previous_visible (SequenceIter<ChildInfo?> _iter) {
     if (_iter.is_begin())
       return null;
@@ -568,6 +568,10 @@ public class Contacts.Sorted : Container {
 
   public override void get_preferred_height_for_width (int width, out int minimum_height, out int natural_height) {
     minimum_height = 0;
+    var context = this.get_style_context ();
+    int focus_width, focus_pad;
+    context.get_style ("focus-line-width", out focus_width,
+		       "focus-padding", out focus_pad);
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
       unowned ChildInfo? child_info = iter.get ();
       unowned Widget widget = child_info.widget;
@@ -581,9 +585,11 @@ public class Contacts.Sorted : Container {
 	minimum_height += child_min;
       }
 
-      widget.get_preferred_height_for_width (width, out child_min, null);
-      minimum_height += child_min;
+      widget.get_preferred_height_for_width (width - 2 * (focus_width + focus_pad),
+					     out child_min, null);
+      minimum_height += child_min + 2 * (focus_width + focus_pad);
     }
+
     /* We always allocate the minimum height, since handling
        expanding rows is way too costly, and unlikely to
        be used, as lists are generally put inside a scrolling window
@@ -593,6 +599,10 @@ public class Contacts.Sorted : Container {
   }
 
   public override void get_preferred_width (out int minimum_width, out int natural_width) {
+    var context = this.get_style_context ();
+    int focus_width, focus_pad;
+    context.get_style ("focus-line-width", out focus_width,
+		       "focus-padding", out focus_pad);
     minimum_width = 0;
     natural_width = 0;
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
@@ -604,8 +614,8 @@ public class Contacts.Sorted : Container {
 	continue;
 
       widget.get_preferred_width (out child_min, out child_nat);
-      minimum_width = int.max (minimum_width, child_min);
-      natural_width = int.max (natural_width, child_nat);
+      minimum_width = int.max (minimum_width, child_min + 2 * (focus_width + focus_pad));
+      natural_width = int.max (natural_width, child_nat + 2 * (focus_width + focus_pad));
 
       if (child_info.separator != null) {
 	child_info.separator.get_preferred_width (out child_min, out child_nat);
@@ -621,6 +631,7 @@ public class Contacts.Sorted : Container {
 
   public override void size_allocate (Gtk.Allocation allocation) {
     Allocation child_allocation = { 0, 0, 0, 0};
+    Allocation separator_allocation = { 0, 0, 0, 0};
 
     set_allocation (allocation);
 
@@ -631,9 +642,17 @@ public class Contacts.Sorted : Container {
 			  allocation.width,
 			  allocation.height);
 
-    child_allocation.x = allocation.x;
+    var context = this.get_style_context ();
+    int focus_width, focus_pad;
+    context.get_style ("focus-line-width", out focus_width,
+		       "focus-padding", out focus_pad);
+
+    child_allocation.x = allocation.x + focus_width + focus_pad;
     child_allocation.y = allocation.y;
-    child_allocation.width = allocation.width;
+    child_allocation.width = allocation.width - 2 * (focus_width + focus_pad);
+
+    separator_allocation.x = allocation.x;
+    separator_allocation.width = allocation.width;
 
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
       unowned ChildInfo? child_info = iter.get ();
@@ -648,21 +667,24 @@ public class Contacts.Sorted : Container {
 
       if (child_info.separator != null) {
 	child_info.separator.get_preferred_height_for_width (allocation.width, out child_min, null);
-	child_allocation.height = child_min;
+	separator_allocation.height = child_min;
+	separator_allocation.y = child_allocation.y;
 
-	child_info.separator.size_allocate (child_allocation);
+	child_info.separator.size_allocate (separator_allocation);
 
 	child_allocation.y += child_min;
       }
 
-      widget.get_preferred_height_for_width (allocation.width, out child_min, null);
+      child_info.y = child_allocation.y;
+      child_allocation.y += focus_width + focus_pad;
+
+      widget.get_preferred_height_for_width (child_allocation.width, out child_min, null);
       child_allocation.height = child_min;
 
-      child_info.y = child_allocation.y;
-      child_info.height = child_allocation.height;
+      child_info.height = child_allocation.height + 2 * (focus_width + focus_pad);
       widget.size_allocate (child_allocation);
 
-      child_allocation.y += child_min;
+      child_allocation.y += child_min + focus_width + focus_pad;
     }
   }
 }
