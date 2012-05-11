@@ -665,12 +665,13 @@ public class Contacts.Sorted : Container {
 
   public override void remove (Widget widget) {
     unowned ChildInfo? info = lookup_info (widget);
-    if (info == null)
+    if (info == null) {
+      warning ("Tried to remove non-child %p\n", widget);
       return;
-
-    if (info == selected_child) {
-      update_selected (null);
     }
+
+    if (info == selected_child)
+      update_selected (null);
     if (info == prelight_child)
       prelight_child = null;
     if (info == cursor_child)
@@ -682,6 +683,7 @@ public class Contacts.Sorted : Container {
     widget.unparent ();
 
     child_hash.unset (widget);
+    children.remove (info.iter);
 
     update_separator (next, false);
 
