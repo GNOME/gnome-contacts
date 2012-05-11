@@ -25,14 +25,9 @@ using Gee;
    + first char or type custom "separators"
      (create, destroy, update)
    + Work with largish sets of children
-   + selection and keynave
-
-   filter => child visibility setting
-
-   Q:
-   How to construct separators?
-   What about resort a single item, can be problem if more change
-    at the same time, need a stable sort...
+   + selection and keynav
+   + activation (separate from selection)
+   + select mode (but not multiple)
 
    settings:
 	  sort function
@@ -346,6 +341,8 @@ public class Contacts.Sorted : Container {
 
     if (!focus_into)
       return false; // Focus is leaving us
+
+    /* TODO: This doesn't handle up/down going into a focusable separator */
 
     if (next_focus_child == null) {
       if (current_focus_child != null) {
