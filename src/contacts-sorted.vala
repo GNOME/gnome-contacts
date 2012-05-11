@@ -74,8 +74,8 @@ public class Contacts.Sorted : Container {
   UpdateSeparatorFunc? update_separator_func;
   unowned ChildInfo? selected_child;
   unowned ChildInfo? prelight_child;
-  /* Only set if the row is focused, not if a child is focused, valid if has_focus. */
-  unowned ChildInfo? focus_child;
+  unowned ChildInfo? cursor_child;
+  private SelectionMode selection_mode;
 
   private int do_sort (ChildInfo? a, ChildInfo? b) {
     return sort_func (a.widget, b.widget);
@@ -86,26 +86,76 @@ public class Contacts.Sorted : Container {
     set_has_window (true);
     set_redraw_on_allocate (true);
 
+    selection_mode = SelectionMode.SINGLE;
+
     children = new Sequence<ChildInfo?>();
     child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
   }
 
   [Signal (action=true)]
   public virtual signal void activate_row () {
-    select_and_activate (focus_child);
+    select_and_activate (cursor_child);
   }
 
   [Signal (action=true)]
+  public virtual signal void modify_selection () {
+    if (cursor_child == null)
+      return;
+
+    if (selection_mode == SelectionMode.SINGLE &&
+	selected_child == cursor_child)
+      update_selected (null);
+    else
+      select_and_activate (cursor_child);
+  }
+
+
+  [Signal (action=true)]
   public virtual signal void move_cursor (MovementStep step, int count) {
+    Gdk.ModifierType state;
+
+    bool modify_selection_pressed = false;
+
+    if (Gtk.get_current_event_state (out state)) {
+      var modify_mod_mask =  this.get_modifier_mask (Gdk.ModifierIntent.MODIFY_SELECTION);
+      if ((state & modify_mod_mask) == modify_mod_mask)
+	modify_selection_pressed = true;
+    }
+
     unowned ChildInfo? child = null;
-    if (step == MovementStep.BUFFER_ENDS) {
+    switch (step) {
+    case MovementStep.BUFFER_ENDS:
       if (count < 0)
 	child = get_first_visible ();
       else
 	child = get_last_visible ();
+      break;
+    case MovementStep.DISPLAY_LINES:
+
+      break;
+    default:
+      return;
     }
 
-    update_focus (child);
+    update_cursor (child);
+    if (!modify_selection_pressed)
+      update_selected (child);
+  }
+
+  private static void add_move_binding (BindingSet binding_set, uint keyval, Gdk.ModifierType modmask,
+					MovementStep step, int count) {
+    BindingEntry.add_signal (binding_set, keyval, modmask,
+			     "move-cursor", 2,
+			     typeof (MovementStep), step,
+			     typeof (int), count);
+
+    if ((modmask & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK)
+      return;
+
+    BindingEntry.add_signal (binding_set, keyval, Gdk.ModifierType.CONTROL_MASK,
+			     "move-cursor", 2,
+			     typeof (MovementStep), step,
+			     typeof (int), count);
   }
 
   [CCode (cname = "klass")]
@@ -113,14 +163,20 @@ public class Contacts.Sorted : Container {
   static construct {
     unowned BindingSet binding_set = BindingSet.by_class (workaround_for_local_var_klass);
 
-    BindingEntry.add_signal (binding_set, Gdk.Key.Home, 0,
-			     "move-cursor", 2,
-			     typeof (MovementStep), MovementStep.BUFFER_ENDS,
-			     typeof (int), -1);
-    BindingEntry.add_signal (binding_set, Gdk.Key.End, 0,
-			     "move-cursor", 2,
-			     typeof (MovementStep), MovementStep.BUFFER_ENDS,
-			     typeof (int), 1);
+    add_move_binding (binding_set, Gdk.Key.Home, 0,
+		      MovementStep.BUFFER_ENDS, -1);
+    add_move_binding (binding_set, Gdk.Key.KP_Home, 0,
+		      MovementStep.BUFFER_ENDS, -1);
+
+    add_move_binding (binding_set, Gdk.Key.End, 0,
+		      MovementStep.BUFFER_ENDS, 1);
+    add_move_binding (binding_set, Gdk.Key.KP_End, 0,
+		      MovementStep.BUFFER_ENDS, 1);
+
+    /* TODO: Add PgUp/PgDown */
+
+    BindingEntry.add_signal (binding_set, Gdk.Key.space, Gdk.ModifierType.CONTROL_MASK,
+			     "modify-selection", 0);
 
     activate_signal = GLib.Signal.lookup ("activate-row", typeof (Sorted));
   }
@@ -137,20 +193,21 @@ public class Contacts.Sorted : Container {
     return child_info;
   }
 
-  private void update_focus (ChildInfo? child) {
-    focus_child = child;
+  private void update_cursor (ChildInfo? child) {
+    cursor_child = child;
     this.grab_focus ();
     this.queue_draw ();
   }
 
   private void update_selected (ChildInfo? child) {
-    if (child != selected_child) {
+    if (child != selected_child &&
+	(child == null || selection_mode != SelectionMode.NONE)) {
       selected_child = child;
       child_selected (selected_child != null ? selected_child.widget : null);
       queue_draw ();
     }
     if (child != null)
-      update_focus (child);
+      update_cursor (child);
   }
 
   private void select_and_activate (ChildInfo? child) {
@@ -235,10 +292,10 @@ public class Contacts.Sorted : Container {
       /* If on row, going right, enter into possible container */
       if (direction == DirectionType.RIGHT ||
 	  direction == DirectionType.TAB_FORWARD) {
-	/* TODO: Handle null focus child */
-	recurse_into = focus_child.widget;
+	/* TODO: Handle null cursor child */
+	recurse_into = cursor_child.widget;
       }
-      current_focus_child = focus_child;
+      current_focus_child = cursor_child;
       /* Unless we're going up/down we're always leaving
 	 the container */
       if (direction != DirectionType.UP &&
@@ -309,7 +366,18 @@ public class Contacts.Sorted : Container {
     if (next_focus_child == null)
       return false;
 
-    update_focus (next_focus_child);
+    bool modify_selection_pressed = false;
+    Gdk.ModifierType state;
+
+    if (Gtk.get_current_event_state (out state)) {
+      var modify_mod_mask =  this.get_modifier_mask (Gdk.ModifierIntent.MODIFY_SELECTION);
+      if ((state & modify_mod_mask) == modify_mod_mask)
+	modify_selection_pressed = true;
+    }
+
+    update_cursor (next_focus_child);
+    if (!modify_selection_pressed)
+      update_selected (next_focus_child);
 
     return true;
   }
@@ -338,9 +406,9 @@ public class Contacts.Sorted : Container {
 			     allocation.width, prelight_child.height);
     }
 
-    if (has_visible_focus() && focus_child != null) {
-      context.render_focus (cr, 0, focus_child.y,
-			    allocation.width, focus_child.height);
+    if (has_visible_focus() && cursor_child != null) {
+      context.render_focus (cr, 0, cursor_child.y,
+			    allocation.width, cursor_child.height);
     }
 
     context.restore ();
@@ -388,6 +456,16 @@ public class Contacts.Sorted : Container {
       unowned ChildInfo? child_info = iter.get ();
       apply_filter (child_info.widget);
     }
+  }
+
+  public void set_selection_mode (SelectionMode mode) {
+    if (mode == SelectionMode.MULTIPLE) {
+      error ("Multiple selections not supported");
+      return;
+    }
+    selection_mode = mode;
+    if (mode == SelectionMode.NONE)
+      update_selected (null);
   }
 
   public void set_filter_func (owned FilterFunc? f) {
@@ -583,8 +661,8 @@ public class Contacts.Sorted : Container {
     }
     if (info == prelight_child)
       prelight_child = null;
-    if (info == focus_child)
-      focus_child = null;
+    if (info == cursor_child)
+      cursor_child = null;
 
     var next = get_next_visible (info.iter);
 
