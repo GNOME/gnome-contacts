@@ -224,7 +224,6 @@ public class Contacts.View : Contacts.Sorted {
     data.grid.destroy ();
     data.label.destroy ();
     data.image_frame.destroy ();
-    this.remove (data.grid);
     contacts.unset (c);
   }
 
