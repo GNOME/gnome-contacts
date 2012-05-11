@@ -192,6 +192,10 @@ public class Contacts.Sorted : Container {
     cursor_child = child;
     this.grab_focus ();
     this.queue_draw ();
+    var vadj = get_focus_vadjustment ();
+    if (child != null && vadj != null)
+      vadj.clamp_page (cursor_child.y,
+		       cursor_child.y + cursor_child.height);
   }
 
   private void update_selected (ChildInfo? child) {
