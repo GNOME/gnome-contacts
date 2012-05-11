@@ -82,6 +82,14 @@ main (string[] args) {
   var sorted = new Sorted();
   hbox.add (sorted);
 
+  sorted.child_activated.connect ( (child) => {
+      print ("activated %p\n", child);
+    });
+
+  sorted.child_selected.connect ( (child) => {
+      print ("selected %p\n", child);
+    });
+
   var l = new Label ("blah4");
   l.set_data ("sort_id", 4);
   sorted.add (l);
@@ -109,7 +117,7 @@ main (string[] args) {
   button.set_hexpand (false);
   button.set_halign (Align.START);
   sorted.add (button);
-  
+
   var vbox = new Box(Orientation.VERTICAL, 0);
   hbox.add (vbox);
 
