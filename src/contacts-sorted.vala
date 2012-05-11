@@ -102,17 +102,20 @@ public class Contacts.Sorted : Container {
     return child_info;
   }
 
+  private void update_focus (ChildInfo? child) {
+    focus_child = child;
+    this.grab_focus ();
+    this.queue_draw ();
+  }
+
   private void update_selected (ChildInfo? child) {
     if (child != selected_child) {
       selected_child = child;
       child_selected (selected_child != null ? selected_child.widget : null);
       queue_draw ();
     }
-    if (child != null) {
-      focus_child = child;
-      this.grab_focus ();
-      this.queue_draw ();
-    }
+    if (child != null)
+      update_focus (child);
   }
 
   private void update_prelight (ChildInfo? child) {
@@ -252,9 +255,7 @@ public class Contacts.Sorted : Container {
     if (next_focus_child == null)
       return false;
 
-    focus_child = next_focus_child;
-    this.grab_focus ();
-    this.queue_draw ();
+    update_focus (next_focus_child);
 
     return true;
   }
