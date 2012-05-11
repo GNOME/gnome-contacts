@@ -476,7 +476,7 @@ public class Contacts.Sorted : Container {
 
   public void set_selection_mode (SelectionMode mode) {
     if (mode == SelectionMode.MULTIPLE) {
-      error ("Multiple selections not supported");
+      warning ("Multiple selections not supported");
       return;
     }
     selection_mode = mode;
