@@ -99,8 +99,13 @@ public class Contacts.ContactPresence : Grid {
 	update_presence_widgets ();
       });
 
+    var id2 = contact.personas_changed.connect ( () => {
+	update_presence_widgets ();
+      });
+
     this.destroy.connect (() => {
 	contact.disconnect (id);
+	contact.disconnect (id2);
       });
   }
 }
