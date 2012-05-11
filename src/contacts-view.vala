@@ -178,7 +178,7 @@ public class Contacts.View : Contacts.Sorted {
     data.initial_letter = c.initial_letter;
     data.filtered = calculate_filtered (c);
 
-    data.label.set_text (data.display_name);
+    data.label.set_markup ("<span font='16px'>" + data.display_name + "</span>");
     data.image_frame.set_image (c.individual, c);
   }
 
@@ -198,14 +198,18 @@ public class Contacts.View : Contacts.Sorted {
     var data =  new ContactData();
     data.contact = c;
     data.grid = new Grid ();
+    data.grid.margin = 12;
+    data.grid.set_column_spacing (10);
     data.image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
     data.label = new Label ("");
     data.label.set_ellipsize (Pango.EllipsizeMode.END);
+    data.label.set_valign (Align.START);
 
     var merged_presence = c.create_merged_presence_widget ();
     merged_presence.set_halign (Align.START);
-    merged_presence.set_valign (Align.START);
-    merged_presence.set_vexpand (true);
+    merged_presence.set_valign (Align.END);
+    merged_presence.set_vexpand (false);
+    merged_presence.set_margin_bottom (4);
 
     data.grid.attach (data.image_frame, 0, 0, 1, 2);
     data.grid.attach (data.label, 1, 0, 1, 1);
@@ -245,7 +249,7 @@ public class Contacts.View : Contacts.Sorted {
   }
 
   private Widget create_separator () {
-    var s = new Label ("---------------------");
+    var s = new Separator (Orientation.HORIZONTAL);
     return s;
   }
 
