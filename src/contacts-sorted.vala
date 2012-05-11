@@ -91,8 +91,8 @@ public class Contacts.Sorted : Container {
   }
 
   [Signal (action=true)]
-  public virtual signal void select_row () {
-    update_selected (focus_child);
+  public virtual signal void activate_row () {
+    select_and_activate (focus_child);
   }
 
   [Signal (action=true)]
@@ -122,7 +122,7 @@ public class Contacts.Sorted : Container {
 			     typeof (MovementStep), MovementStep.BUFFER_ENDS,
 			     typeof (int), 1);
 
-    activate_signal = GLib.Signal.lookup ("select-row", typeof (Sorted));
+    activate_signal = GLib.Signal.lookup ("activate-row", typeof (Sorted));
   }
 
   unowned ChildInfo? find_child_at_y (int y) {
@@ -151,6 +151,15 @@ public class Contacts.Sorted : Container {
     }
     if (child != null)
       update_focus (child);
+  }
+
+  private void select_and_activate (ChildInfo? child) {
+    Widget? w = null;
+    if (child != null)
+      w = child.widget;
+    update_selected (child);
+    if (w != null)
+      child_activated (w);
   }
 
   private void update_prelight (ChildInfo? child) {
@@ -193,12 +202,22 @@ public class Contacts.Sorted : Container {
   public override bool button_press_event (Gdk.EventButton event) {
     if (event.button == 1) {
       unowned ChildInfo? child = find_child_at_y ((int)event.y);
-      update_selected (child);
+      select_and_activate (child);
     }
     return false;
   }
 
+  public Widget? get_selected_child (){
+    if (selected_child != null)
+      return selected_child.widget;
+
+    return null;
+  }
+
   public virtual signal void child_selected (Widget? child) {
+  }
+
+  public virtual signal void child_activated (Widget? child) {
   }
 
   public override bool focus (DirectionType direction) {
@@ -558,6 +577,14 @@ public class Contacts.Sorted : Container {
     unowned ChildInfo? info = lookup_info (widget);
     if (info == null)
       return;
+
+    if (info == selected_child) {
+      update_selected (null);
+    }
+    if (info == prelight_child)
+      prelight_child = null;
+    if (info == focus_child)
+      focus_child = null;
 
     var next = get_next_visible (info.iter);
 
