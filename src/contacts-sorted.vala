@@ -256,10 +256,24 @@ public class Contacts.Sorted : Container {
     return false;
   }
 
+  private Widget? button_down_child;
   public override bool button_press_event (Gdk.EventButton event) {
     if (event.button == 1) {
       unowned ChildInfo? child = find_child_at_y ((int)event.y);
-      select_and_activate (child);
+      if (child != null)
+	button_down_child = child.widget;
+
+      /* TODO: Should mark as active while down, and handle grab breaks */
+    }
+    return false;
+  }
+
+  public override bool button_release_event (Gdk.EventButton event) {
+    if (event.button == 1) {
+      unowned ChildInfo? child = find_child_at_y ((int)event.y);
+      if (child != null && child.widget == button_down_child)
+	select_and_activate (child);
+      button_down_child = null;
     }
     return false;
   }
@@ -434,7 +448,8 @@ public class Contacts.Sorted : Container {
 		       Gdk.EventMask.LEAVE_NOTIFY_MASK |
 		       Gdk.EventMask.POINTER_MOTION_MASK |
 		       Gdk.EventMask.EXPOSURE_MASK |
-		       Gdk.EventMask.BUTTON_PRESS_MASK;
+		       Gdk.EventMask.BUTTON_PRESS_MASK |
+		       Gdk.EventMask.BUTTON_RELEASE_MASK;
 
     attributes.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT;
     var window = new Gdk.Window (get_parent_window (), attributes,
