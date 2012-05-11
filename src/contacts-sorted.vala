@@ -90,6 +90,41 @@ public class Contacts.Sorted : Container {
     child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
   }
 
+  [Signal (action=true)]
+  public virtual signal void select_row () {
+    update_selected (focus_child);
+  }
+
+  [Signal (action=true)]
+  public virtual signal void move_cursor (MovementStep step, int count) {
+    unowned ChildInfo? child = null;
+    if (step == MovementStep.BUFFER_ENDS) {
+      if (count < 0)
+	child = get_first_visible ();
+      else
+	child = get_last_visible ();
+    }
+
+    update_focus (child);
+  }
+
+  [CCode (cname = "klass")]
+  private static extern void *workaround_for_local_var_klass;
+  static construct {
+    unowned BindingSet binding_set = BindingSet.by_class (workaround_for_local_var_klass);
+
+    BindingEntry.add_signal (binding_set, Gdk.Key.Home, 0,
+			     "move-cursor", 2,
+			     typeof (MovementStep), MovementStep.BUFFER_ENDS,
+			     typeof (int), -1);
+    BindingEntry.add_signal (binding_set, Gdk.Key.End, 0,
+			     "move-cursor", 2,
+			     typeof (MovementStep), MovementStep.BUFFER_ENDS,
+			     typeof (int), 1);
+
+    activate_signal = GLib.Signal.lookup ("select-row", typeof (Sorted));
+  }
+
   unowned ChildInfo? find_child_at_y (int y) {
     unowned ChildInfo? child_info = null;
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
