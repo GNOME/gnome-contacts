@@ -131,7 +131,6 @@ public class Contacts.View : Contacts.Sorted {
     update_all_filtered ();
     refilter ();
     resort ();
-    reseparate ();
   }
 
   public void set_custom_sort_prio (Contact c, int prio) {
