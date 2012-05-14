@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\" \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API \
-	-Dget_preferred_height_for_width_internal=get_preferred_height_for_width
 	$(NULL)
 
 AM_VALAFLAGS = \
