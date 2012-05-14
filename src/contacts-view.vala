@@ -53,10 +53,6 @@ public class Contacts.View : Contacts.Sorted {
   HashSet<Contact> hidden_contacts;
 
   string []? filter_values;
-  int custom_visible_count;
-  ContactData suggestions_header_data;
-  ContactData padding_data;
-  ContactData other_header_data;
   private TextDisplay text_display;
 
   public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
@@ -92,11 +88,8 @@ public class Contacts.View : Contacts.Sorted {
     if (a_prio < b_prio)
       return 1;
 
-    var a = a_data.contact;
-    var b = b_data.contact;
-
     if (is_set (a_data.display_name) && is_set (b_data.display_name))
-      return a.display_name.collate (b_data.display_name);
+      return a_data.display_name.collate (b_data.display_name);
 
     // Sort empty names last
     if (is_set (a_data.display_name))
