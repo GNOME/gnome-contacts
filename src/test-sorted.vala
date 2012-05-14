@@ -103,15 +103,19 @@ main (string[] args) {
   l.set_data ("sort_id", 2);
   sorted.add (l);
 
+  var row_vbox = new Box (Orientation.VERTICAL, 0);
   var row_hbox = new Box (Orientation.HORIZONTAL, 0);
-  row_hbox.set_data ("sort_id", 3);
+  row_vbox.set_data ("sort_id", 3);
   l = new Label ("da box for da man");
   row_hbox.add (l);
   var check = new CheckButton ();
   row_hbox.add (check);
   var button = new Button.with_label ("ya!");
   row_hbox.add (button);
-  sorted.add (row_hbox);
+  row_vbox.add (row_hbox);
+  check = new CheckButton ();
+  row_vbox.add (check);
+  sorted.add (row_vbox);
 
   button = new Button.with_label ("focusable row");
   button.set_hexpand (false);
