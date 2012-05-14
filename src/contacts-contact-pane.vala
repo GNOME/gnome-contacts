@@ -1552,7 +1552,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     l.xalign = 0.0f;
 
     contact.keep_widget_uptodate (l,  (w) => {
-	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s/span>", contact.display_name));
+	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
       });
 
     var event_box = new EventBox ();
