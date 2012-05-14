@@ -204,7 +204,7 @@ public class Contacts.FieldRow : Contacts.Row {
   public void pack_header (string s) {
     var l = new Label (s);
     l.set_markup (
-      "<span font='24px'>%s</span>".printf (s));
+      Markup.printf_escaped ("<span font='24px'>%s</span>", s));
     l.set_halign (Align.START);
     pack (l);
   }
@@ -215,7 +215,7 @@ public class Contacts.FieldRow : Contacts.Row {
     var l = new Label (s);
     label = l;
     l.set_markup (
-      "<span font='24px'>%s</span>".printf (s));
+      Markup.printf_escaped ("<span font='24px'>%s</span>", s));
     l.set_halign (Align.START);
     l.set_hexpand (true);
 
@@ -1552,7 +1552,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     l.xalign = 0.0f;
 
     contact.keep_widget_uptodate (l,  (w) => {
-	(w as Label).set_markup ("<span font='16'>" + contact.display_name + "</span>");
+	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
       });
 
     var event_box = new EventBox ();
@@ -1609,7 +1609,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 	if (save && changed) {
 	  // Things look better if we update immediately, rather than after the setting has
 	  // been applied
-	  l.set_markup ("<span font='16'>" + entry.get_text () + "</span>");
+	  l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", entry.get_text ()));
 
 	  Value v = Value (typeof (string));
 	  v.set_string (entry.get_text ());
@@ -1620,7 +1620,7 @@ public class Contacts.ContactPane : ScrolledWindow {
 					     set_individual_property.end (result);
 					   } catch (Error e) {
 					     App.app.show_message (e.message);
-					     l.set_markup ("<span font='16'>" + contact.display_name + "</span>");
+					     l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
 					   }
 					 });
 	}
@@ -1763,9 +1763,9 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     var label = new Label ("");
     if (contact.is_main)
-      label.set_markup (_("Does %s from %s belong here?").printf (c.display_name, c.format_persona_stores ()));
+      label.set_markup (Markup.printf_escaped (_("Does %s from %s belong here?"), c.display_name, c.format_persona_stores ()));
     else
-      label.set_markup (_("Do these details belong to %s?").printf (c.display_name));
+      label.set_markup (Markup.printf_escaped (_("Do these details belong to %s?"), c.display_name));
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_line_wrap (true);

@@ -65,7 +65,7 @@ public class Contacts.ContactPresence : Grid {
     if (message.length == 0)
       message = Contact.presence_to_string (type);
 
-    label.set_markup ("<span font='11px'>" + message + "</span>");
+    label.set_markup (Markup.printf_escaped ("<span font='11px'>%s</span>", message));
     label.set_margin_bottom (3);
 
     if (is_phone)

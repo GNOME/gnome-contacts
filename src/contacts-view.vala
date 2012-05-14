@@ -174,7 +174,7 @@ public class Contacts.View : Egg.ListBox {
     data.initial_letter = c.initial_letter;
     data.filtered = calculate_filtered (c);
 
-    data.label.set_markup ("<span font='16px'>" + data.display_name + "</span>");
+    data.label.set_markup (Markup.printf_escaped ("<span font='16px'>%s</span>", data.display_name));
     data.image_frame.set_image (c.individual, c);
   }
 

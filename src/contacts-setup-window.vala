@@ -147,7 +147,7 @@ public class Contacts.SetupWindow : Gtk.Window {
 
     var item = new ToolItem ();
     title_label = new Label ("");
-    title_label.set_markup ("<b>%s</b>".printf (_("Contacts Setup")));
+    title_label.set_markup (Markup.printf_escaped ("<b>%s</b>",_("Contacts Setup")));
     title_label.set_no_show_all (true);
     item.add (title_label);
     item.set_expand (true);

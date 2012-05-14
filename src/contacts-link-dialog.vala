@@ -52,7 +52,7 @@ public class Contacts.LinkDialog : Dialog {
     persona_grid.attach (image_frame, 0, 0, 1, 2);
 
     var label = new Label ("");
-    label.set_markup ("<span font='13'>" + selected_contact.display_name + "</span>");
+    label.set_markup (Markup.printf_escaped ("<span font='13'>%s</span>", selected_contact.display_name));
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_hexpand (false);
@@ -61,7 +61,7 @@ public class Contacts.LinkDialog : Dialog {
     persona_grid.attach (label, 1, 0, 1, 1);
 
     label = new Label ("");
-    label.set_markup ("<span font='9'>" +selected_contact.format_persona_stores () + "</span>");
+    label.set_markup (Markup.printf_escaped ("<span font='9'>%s</span>", selected_contact.format_persona_stores ()));
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_hexpand (true);
@@ -179,7 +179,7 @@ public class Contacts.LinkDialog : Dialog {
 
     var label = new Label ("");
     if (contact.is_main)
-      label.set_markup (_("<span weight='bold'>Link contacts to %s</span>").printf (contact.display_name));
+      label.set_markup (Markup.printf_escaped (_("<span weight='bold'>Link contacts to %s</span>"), contact.display_name));
     else
       label.set_markup (_("<span weight='bold'>Select contact to link to</span>"));
     label.set_valign (Align.CENTER);
