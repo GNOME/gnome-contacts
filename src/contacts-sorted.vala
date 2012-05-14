@@ -458,8 +458,14 @@ public class Contacts.Sorted : Container {
       }
     }
 
-    if (next_focus_child == null)
+    if (next_focus_child == null) {
+      if (direction == DirectionType.UP || direction == DirectionType.DOWN) {
+	error_bell ();
+	return true;
+      }
+
       return false;
+    }
 
     bool modify_selection_pressed = false;
     Gdk.ModifierType state;
