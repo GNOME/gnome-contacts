@@ -266,7 +266,7 @@ public class Contacts.AvatarDialog : Dialog {
     grid.attach (main_frame, 0, 0, 1, 1);
 
     var label = new Label ("");
-    label.set_markup ("<span font='16'>" + contact.display_name + "</span>");
+    label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_hexpand (true);
