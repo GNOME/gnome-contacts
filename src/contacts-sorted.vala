@@ -49,8 +49,7 @@ using Gee;
 public class Contacts.Sorted : Container {
   public delegate bool FilterFunc (Widget child);
   public delegate bool NeedSeparatorFunc (Widget widget, Widget? before);
-  public delegate Widget CreateSeparatorFunc ();
-  public delegate void UpdateSeparatorFunc (Widget separator, Widget child, Widget? before);
+  public delegate void UpdateSeparatorFunc (ref Widget? separator, Widget child, Widget? before);
 
   struct ChildInfo {
     Widget widget;
@@ -65,7 +64,6 @@ public class Contacts.Sorted : Container {
   CompareDataFunc<Widget>? sort_func;
   FilterFunc? filter_func;
   NeedSeparatorFunc? need_separator_func;
-  CreateSeparatorFunc? create_separator_func;
   UpdateSeparatorFunc? update_separator_func;
   unowned ChildInfo? selected_child;
   unowned ChildInfo? prelight_child;
@@ -576,10 +574,8 @@ public class Contacts.Sorted : Container {
   }
 
   public void set_separator_funcs (owned NeedSeparatorFunc? need_separator,
-				   owned CreateSeparatorFunc? create_separator,
-				   owned UpdateSeparatorFunc? update_separator = null) {
+				   owned UpdateSeparatorFunc? update_separator) {
     need_separator_func = (owned)need_separator;
-    create_separator_func = (owned)create_separator;
     update_separator_func = (owned)update_separator;
     reseparate ();
   }
@@ -674,17 +670,16 @@ public class Contacts.Sorted : Container {
 	widget.get_child_visible ())
       need_separator = need_separator_func (widget, before_widget);
 
-    if (need_separator) {
-      if (info.separator == null) {
-	info.separator = create_separator_func ();
+    if (need_separator &&
+	(info.separator == null || update_if_exist)) {
+      var old_separator = info.separator;
+      update_separator_func (ref info.separator, widget, before_widget);
+      if (old_separator != info.separator) {
+	if (old_separator != null)
+	  old_separator.unparent ();
 	info.separator.set_parent (this);
 	info.separator.show ();
-	if (update_separator_func != null)
-	  update_separator_func (info.separator, widget, before_widget);
 	this.queue_resize ();
-      } else if (update_if_exist) {
-	if (update_separator_func != null)
-	  update_separator_func (info.separator, widget, before_widget);
       }
     } else {
       if (info.separator != null) {
