@@ -59,7 +59,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void selection_changed (Contact? new_selection) {
-    contacts_pane.show_contact (new_selection);
+    contacts_pane.show_contact (new_selection, false, false);
   }
 
   public void show_contact (Contact? contact) {

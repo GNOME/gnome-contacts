@@ -1802,7 +1802,13 @@ public class Contacts.ContactPane : ScrolledWindow {
     grid.attach (bbox, 2, 0, 1, 2);
   }
 
-  public void update_personas () {
+  private uint update_personas_timeout;
+  public void update_personas (bool show_matches = true) {
+    if (update_personas_timeout != 0) {
+      Source.remove (update_personas_timeout);
+      update_personas_timeout = 0;
+    }
+
     foreach (var w in personas_grid.get_children ()) {
       w.destroy ();
     }
@@ -1818,18 +1824,20 @@ public class Contacts.ContactPane : ScrolledWindow {
       personas_grid.add (sheet);
     }
 
-    var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
-    foreach (var ind in matches.keys) {
-      var c = Contact.from_individual (ind);
-      if (c != null && contact.suggest_link_to (c)) {
-	add_suggestion (c);
+    if (show_matches) {
+      var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
+      foreach (var ind in matches.keys) {
+	var c = Contact.from_individual (ind);
+	if (c != null && contact.suggest_link_to (c)) {
+	  add_suggestion (c);
+	}
       }
     }
 
     personas_grid.show_all ();
   }
 
-  public void show_contact (Contact? new_contact, bool edit=false) {
+  public void show_contact (Contact? new_contact, bool edit=false, bool show_matches = true) {
     if (contact == new_contact)
       return;
 
@@ -1844,7 +1852,14 @@ public class Contacts.ContactPane : ScrolledWindow {
     contact = new_contact;
 
     update_card ();
-    update_personas ();
+    update_personas (show_matches);
+
+    if (!show_matches) {
+      update_personas_timeout = Gdk.threads_add_timeout (100, () => {
+	  update_personas ();
+	  return false;
+	});
+    }
 
     bool can_remove = false;
 
