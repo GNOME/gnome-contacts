@@ -126,9 +126,29 @@ public class Contacts.Sorted : Container {
 	child = get_last_visible ();
       break;
     case MovementStep.DISPLAY_LINES:
+      if (cursor_child != null) {
+	SequenceIter<ChildInfo?>? iter = cursor_child.iter;
+
+	while (count < 0 && iter != null) {
+	  iter = get_previous_visible (iter);
+	  count++;
+	}
+	while (count > 0 && iter != null) {
+	  iter = get_next_visible (iter);
+	  count--;
+	}
+	if (iter != null && !iter.is_end ()) {
+	  child = iter.get ();
+	}
+      }
 
       break;
     default:
+      return;
+    }
+
+    if (child == null) {
+      error_bell ();
       return;
     }
 
@@ -167,6 +187,16 @@ public class Contacts.Sorted : Container {
 		      MovementStep.BUFFER_ENDS, 1);
     add_move_binding (binding_set, Gdk.Key.KP_End, 0,
 		      MovementStep.BUFFER_ENDS, 1);
+
+    add_move_binding (binding_set, Gdk.Key.Up, Gdk.ModifierType.CONTROL_MASK,
+		      MovementStep.DISPLAY_LINES, -1);
+    add_move_binding (binding_set, Gdk.Key.KP_Up, Gdk.ModifierType.CONTROL_MASK,
+		      MovementStep.DISPLAY_LINES, -1);
+
+    add_move_binding (binding_set, Gdk.Key.Down, Gdk.ModifierType.CONTROL_MASK,
+		      MovementStep.DISPLAY_LINES, 1);
+    add_move_binding (binding_set, Gdk.Key.KP_Down, Gdk.ModifierType.CONTROL_MASK,
+		      MovementStep.DISPLAY_LINES, 1);
 
     /* TODO: Add PgUp/PgDown */
 
