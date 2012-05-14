@@ -721,7 +721,7 @@ public class Contacts.Sorted : Container {
 
   public override void get_preferred_height (out int minimum_height, out int natural_height) {
     int natural_width;
-    get_preferred_width (null, out natural_width);
+    get_preferred_width_internal (null, out natural_width);
     get_preferred_height_for_width_internal (natural_width, out minimum_height, out natural_height);
   }
 
@@ -785,7 +785,7 @@ public class Contacts.Sorted : Container {
   }
 
   public override void get_preferred_width_for_height (int height, out int minimum_width, out int natural_width) {
-    get_preferred_width (out minimum_width, out natural_width);
+    get_preferred_width_internal (out minimum_width, out natural_width);
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
