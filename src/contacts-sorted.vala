@@ -670,16 +670,17 @@ public class Contacts.Sorted : Container {
 	widget.get_child_visible ())
       need_separator = need_separator_func (widget, before_widget);
 
-    if (need_separator &&
-	(info.separator == null || update_if_exist)) {
-      var old_separator = info.separator;
-      update_separator_func (ref info.separator, widget, before_widget);
-      if (old_separator != info.separator) {
-	if (old_separator != null)
-	  old_separator.unparent ();
-	info.separator.set_parent (this);
-	info.separator.show ();
-	this.queue_resize ();
+    if (need_separator) {
+      if (info.separator == null || update_if_exist) {
+	var old_separator = info.separator;
+	update_separator_func (ref info.separator, widget, before_widget);
+	if (old_separator != info.separator) {
+	  if (old_separator != null)
+	    old_separator.unparent ();
+	  info.separator.set_parent (this);
+	  info.separator.show ();
+	  this.queue_resize ();
+	}
       }
     } else {
       if (info.separator != null) {
