@@ -74,7 +74,6 @@ public class Contacts.View : Contacts.Sorted {
       });
     this.set_filter_func (filter);
     this.set_separator_funcs (need_separator,
-			      create_separator,
 			      update_separator);
 
     contacts_store.added.connect (contact_added_cb);
@@ -131,6 +130,8 @@ public class Contacts.View : Contacts.Sorted {
     show_subset = subset;
     update_all_filtered ();
     refilter ();
+    resort ();
+    reseparate ();
   }
 
   public void set_custom_sort_prio (Contact c, int prio) {
@@ -241,17 +242,14 @@ public class Contacts.View : Contacts.Sorted {
     if (before == null) {
       return true;
     }
+
     var w_data = widget.get_data<ContactData> ("data");
     var before_data = before.get_data<ContactData> ("data");
 
+    if (is_other (w_data) && !is_other (before_data))
+      return true;
+
     return w_data.initial_letter != before_data.initial_letter;
-
-    return false;
-  }
-
-  private Widget create_separator () {
-    var s = new Separator (Orientation.HORIZONTAL);
-    return s;
   }
 
   private bool filter (Widget child) {
@@ -260,8 +258,27 @@ public class Contacts.View : Contacts.Sorted {
     return data.filtered;
   }
 
-  private void update_separator (Widget separator,
+  private void update_separator (ref Widget? separator,
 				 Widget child,
 				 Widget? before_widget) {
+    var w_data = child.get_data<ContactData> ("data");
+    ContactData? before_data = null;
+    if (before_widget != null) {
+      before_data = before_widget.get_data<ContactData> ("data");
+    }
+
+    if (is_other (w_data) &&
+	(before_data == null || !is_other (before_data))) {
+      if (separator == null || !(separator is Label)) {
+	var l = new Label ("");
+	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Other Contacts")));
+	l.set_halign (Align.START);
+	separator = l;
+      }
+      return;
+    }
+
+    if (separator == null || !(separator is Separator))
+      separator = new Separator (Orientation.HORIZONTAL);
   }
 }
