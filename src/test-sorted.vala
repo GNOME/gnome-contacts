@@ -30,22 +30,21 @@ public bool need_separator (Widget widget, Widget? before)
   return strcmp (text, "blah3") == 0;
 }
 
-public Widget create_separator ()
-{
-  var hbox = new Box(Orientation.HORIZONTAL, 0);
-  var l = new Label ("Separator");
-  hbox.add (l);
-  var b = new Button.with_label ("button");
-  hbox.add (b);
-  l.show ();
-  b.show ();
-  return hbox;
-}
-
-public void update_separator (Widget separator,
+public void update_separator (ref Widget? separator,
 			      Widget child,
 			      Widget? before_widget)
 {
+  if (separator == null) {
+    var hbox = new Box(Orientation.HORIZONTAL, 0);
+    var l = new Label ("Separator");
+    hbox.add (l);
+    var b = new Button.with_label ("button");
+    hbox.add (b);
+    l.show ();
+    b.show ();
+    separator = hbox;
+  }
+
   var id = child.get_data<int>("sort_id");
   var hbox = separator as Box;
   var l = hbox.get_children ().data as Label;
@@ -178,14 +177,13 @@ main (string[] args) {
   vbox.add (b);
   b.clicked.connect ( () => {
 		  sorted.set_separator_funcs (need_separator,
-									  create_separator,
-									  update_separator);
+					      update_separator);
 	  });
 
   b = new Button.with_label ("unseparate");
   vbox.add (b);
   b.clicked.connect ( () => {
-		  sorted.set_separator_funcs (null, null, null);
+		  sorted.set_separator_funcs (null, null);
 	  });
 
 
