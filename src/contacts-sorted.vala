@@ -141,7 +141,49 @@ public class Contacts.Sorted : Container {
 	  child = iter.get ();
 	}
       }
+      break;
+    case MovementStep.PAGES:
+      int page_size = 100;
+      var vadj = get_focus_vadjustment ();
+      if (vadj != null)
+	page_size = (int) vadj.get_page_increment ();
 
+      if (cursor_child != null) {
+	int start_y = cursor_child.y;
+	int end_y = start_y;
+	SequenceIter<ChildInfo?>? iter = cursor_child.iter;
+
+	child = cursor_child;
+	if (count < 0) {
+	  /* Up */
+
+	  while (iter != null && !iter.is_begin ()) {
+	    iter = get_previous_visible (iter);
+	    if (iter == null)
+	      break;
+	    unowned ChildInfo? prev = iter.get ();
+	    if (prev.y < start_y - page_size)
+	      break;
+	    child = prev;
+	  }
+	} else {
+	  /* Down */
+
+	  while (iter != null && !iter.is_end ()) {
+	    iter = get_next_visible (iter);
+	    if (iter.is_end ())
+	      break;
+	    unowned ChildInfo? next = iter.get ();
+	    if (next.y > start_y + page_size)
+	      break;
+	    child = next;
+	  }
+	}
+	end_y = child.y;
+	if (end_y != start_y && vadj != null)
+	  vadj.value += end_y - start_y;
+
+      }
       break;
     default:
       return;
@@ -198,7 +240,15 @@ public class Contacts.Sorted : Container {
     add_move_binding (binding_set, Gdk.Key.KP_Down, Gdk.ModifierType.CONTROL_MASK,
 		      MovementStep.DISPLAY_LINES, 1);
 
-    /* TODO: Add PgUp/PgDown */
+    add_move_binding (binding_set, Gdk.Key.Page_Up, 0,
+		      MovementStep.PAGES, -1);
+    add_move_binding (binding_set, Gdk.Key.KP_Page_Up, 0,
+		      MovementStep.PAGES, -1);
+
+    add_move_binding (binding_set, Gdk.Key.Page_Down, 0,
+		      MovementStep.PAGES, 1);
+    add_move_binding (binding_set, Gdk.Key.KP_Page_Down, 0,
+		      MovementStep.PAGES, 1);
 
     BindingEntry.add_signal (binding_set, Gdk.Key.space, Gdk.ModifierType.CONTROL_MASK,
 			     "modify-selection", 0);
