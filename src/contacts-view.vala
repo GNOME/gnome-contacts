@@ -60,6 +60,7 @@ public class Contacts.View : Contacts.Sorted {
   private TextDisplay text_display;
 
   public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
+    set_selection_mode (SelectionMode.BROWSE);
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
     show_subset = Subset.ALL;
