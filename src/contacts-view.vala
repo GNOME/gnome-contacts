@@ -60,6 +60,7 @@ public class Contacts.View : Contacts.Sorted {
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
     show_subset = Subset.ALL;
+    this.text_display = text_display;
 
     contacts = new HashMap<Contact,ContactData> ();
 
@@ -199,16 +200,30 @@ public class Contacts.View : Contacts.Sorted {
     data.label = new Label ("");
     data.label.set_ellipsize (Pango.EllipsizeMode.END);
     data.label.set_valign (Align.START);
-
-    var merged_presence = c.create_merged_presence_widget ();
-    merged_presence.set_halign (Align.START);
-    merged_presence.set_valign (Align.END);
-    merged_presence.set_vexpand (false);
-    merged_presence.set_margin_bottom (4);
+    data.label.set_halign (Align.START);
 
     data.grid.attach (data.image_frame, 0, 0, 1, 2);
     data.grid.attach (data.label, 1, 0, 1, 1);
-    data.grid.attach (merged_presence,  1, 1, 1, 1);
+
+    if (text_display == TextDisplay.PRESENCE) {
+      var merged_presence = c.create_merged_presence_widget ();
+      merged_presence.set_halign (Align.START);
+      merged_presence.set_valign (Align.END);
+      merged_presence.set_vexpand (false);
+      merged_presence.set_margin_bottom (4);
+
+      data.grid.attach (merged_presence,  1, 1, 1, 1);
+    }
+
+    if (text_display == TextDisplay.STORES) {
+      var stores = new Label ("");
+      stores.set_markup (Markup.printf_escaped ("<span font='12px'>%s</span>",
+						c.format_persona_stores ()));
+
+      stores.set_ellipsize (Pango.EllipsizeMode.END);
+      stores.set_halign (Align.START);
+      data.grid.attach (stores,  1, 1, 1, 1);
+    }
 
     update_data (data);
 
@@ -256,9 +271,9 @@ public class Contacts.View : Contacts.Sorted {
       }
       return;
     }
-    
+
     if (before_data != null && before_data.sort_prio > 0 &&
-        w_data.sort_prio == 0) {
+	w_data.sort_prio == 0) {
       if (separator == null ||
 	  !(separator.get_data<bool> ("contacts-rest-header"))) {
 	var l = new Label ("");
@@ -268,7 +283,7 @@ public class Contacts.View : Contacts.Sorted {
       }
       return;
     }
-    
+
     if (is_other (w_data) &&
 	(before_data == null || !is_other (before_data))) {
       if (separator == null ||
