@@ -69,8 +69,7 @@ public class Contacts.View : Contacts.Sorted {
 	return compare_data (a, b);
       });
     this.set_filter_func (filter);
-    this.set_separator_funcs (need_separator,
-			      update_separator);
+    this.set_separator_funcs (update_separator);
 
     contacts_store.added.connect (contact_added_cb);
     contacts_store.removed.connect (contact_removed_cb);
@@ -109,13 +108,13 @@ public class Contacts.View : Contacts.Sorted {
   }
 
   /* The hardcoded prio if set, otherwise 0 for the
-     main/combined group, or -2 for the separated other group */
+     main/combined group, or -1 for the separated other group */
   private int get_sort_prio (ContactData *data) {
     if (data->sort_prio != 0)
       return data->sort_prio;
 
     if (is_other (data))
-      return -2;
+      return -1;
     return 0;
   }
 
@@ -133,6 +132,8 @@ public class Contacts.View : Contacts.Sorted {
     var data = contacts.get (c);
     if (data == null)
       return;
+    data.sort_prio = prio;
+    child_changed (data.grid);
   }
 
   public void hide_contact (Contact contact) {
@@ -230,20 +231,6 @@ public class Contacts.View : Contacts.Sorted {
     selection_changed (data != null ? data.contact : null);
   }
 
-  private bool need_separator (Widget widget, Widget? before) {
-    if (before == null) {
-      return true;
-    }
-
-    var w_data = widget.get_data<ContactData> ("data");
-    var before_data = before.get_data<ContactData> ("data");
-
-    if (is_other (w_data) && !is_other (before_data))
-      return true;
-
-    return w_data.initial_letter != before_data.initial_letter;
-  }
-
   private bool filter (Widget child) {
     var data = child.get_data<ContactData> ("data");
 
@@ -251,18 +238,43 @@ public class Contacts.View : Contacts.Sorted {
   }
 
   private void update_separator (ref Widget? separator,
-				 Widget child,
+				 Widget widget,
 				 Widget? before_widget) {
-    var w_data = child.get_data<ContactData> ("data");
+    var w_data = widget.get_data<ContactData> ("data");
     ContactData? before_data = null;
-    if (before_widget != null) {
+    if (before_widget != null)
       before_data = before_widget.get_data<ContactData> ("data");
-    }
 
+    if (before_data == null && w_data.sort_prio > 0) {
+      if (separator == null ||
+	  !(separator.get_data<bool> ("contacts-suggestions-header"))) {
+	var l = new Label ("");
+	l.set_data ("contacts-suggestions-header", true);
+	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Suggestions")));
+	l.set_halign (Align.START);
+	separator = l;
+      }
+      return;
+    }
+    
+    if (before_data != null && before_data.sort_prio > 0 &&
+        w_data.sort_prio == 0) {
+      if (separator == null ||
+	  !(separator.get_data<bool> ("contacts-rest-header"))) {
+	var l = new Label ("");
+	l.set_data ("contacts-rest-header", true);
+	l.set_halign (Align.START);
+	separator = l;
+      }
+      return;
+    }
+    
     if (is_other (w_data) &&
 	(before_data == null || !is_other (before_data))) {
-      if (separator == null || !(separator is Label)) {
+      if (separator == null ||
+	  !(separator.get_data<bool> ("contacts-other-header"))) {
 	var l = new Label ("");
+	l.set_data ("contacts-other-header", true);
 	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Other Contacts")));
 	l.set_halign (Align.START);
 	separator = l;
@@ -270,7 +282,12 @@ public class Contacts.View : Contacts.Sorted {
       return;
     }
 
-    if (separator == null || !(separator is Separator))
-      separator = new Separator (Orientation.HORIZONTAL);
+    if (before_data != null &&
+	w_data.initial_letter != before_data.initial_letter) {
+      if (separator == null || !(separator is Separator))
+	separator = new Separator (Orientation.HORIZONTAL);
+      return;
+    }
+    separator = null;
   }
 }
