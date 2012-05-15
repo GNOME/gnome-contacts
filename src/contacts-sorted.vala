@@ -32,9 +32,7 @@ using Gee;
    settings:
 	  sort function
 	  filter function
-	  needs_separator function
-	  create_separator
-	  update_separator (if the child below it changes)
+	  update_separator
 
 	ops:
 	  child-changed (resort, refilter,
@@ -63,7 +61,6 @@ public class Contacts.Sorted : Container {
   HashMap<unowned Widget, unowned ChildInfo?> child_hash;
   CompareDataFunc<Widget>? sort_func;
   FilterFunc? filter_func;
-  NeedSeparatorFunc? need_separator_func;
   UpdateSeparatorFunc? update_separator_func;
   unowned ChildInfo? selected_child;
   unowned ChildInfo? prelight_child;
@@ -573,9 +570,7 @@ public class Contacts.Sorted : Container {
     refilter ();
   }
 
-  public void set_separator_funcs (owned NeedSeparatorFunc? need_separator,
-				   owned UpdateSeparatorFunc? update_separator) {
-    need_separator_func = (owned)need_separator;
+  public void set_separator_funcs (owned UpdateSeparatorFunc? update_separator) {
     update_separator_func = (owned)update_separator;
     reseparate ();
   }
@@ -650,7 +645,7 @@ public class Contacts.Sorted : Container {
     return iter;
   }
 
-  private void update_separator (SequenceIter<ChildInfo?>? iter, bool update_if_exist) {
+  private void update_separator (SequenceIter<ChildInfo?>? iter) {
     if (iter == null || iter.is_end ())
       return;
 
@@ -663,37 +658,30 @@ public class Contacts.Sorted : Container {
       before_widget = before_info.widget;
     }
 
-    bool need_separator = false;
-
-    if (need_separator_func != null &&
+    if (update_separator_func != null &&
 	widget.get_visible () &&
-	widget.get_child_visible ())
-      need_separator = need_separator_func (widget, before_widget);
-
-    if (need_separator) {
-      if (info.separator == null || update_if_exist) {
-	var old_separator = info.separator;
-	update_separator_func (ref info.separator, widget, before_widget);
-	if (old_separator != info.separator) {
-	  if (old_separator != null)
-	    old_separator.unparent ();
+	widget.get_child_visible ()) {
+      var old_separator = info.separator;
+      update_separator_func (ref info.separator, widget, before_widget);
+      if (old_separator != info.separator) {
+	if (old_separator != null)
+	  old_separator.unparent ();
+	if (info.separator != null) {
 	  info.separator.set_parent (this);
 	  info.separator.show ();
-	  this.queue_resize ();
 	}
-      }
-    } else {
-      if (info.separator != null) {
-	info.separator.unparent ();
-	info.separator = null;
 	this.queue_resize ();
       }
+    } else if (info.separator != null) {
+      info.separator.unparent ();
+      info.separator = null;
+      this.queue_resize ();
     }
   }
 
   public void reseparate () {
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      update_separator (iter, false);
+      update_separator (iter);
     }
     queue_resize ();
   }
@@ -722,9 +710,9 @@ public class Contacts.Sorted : Container {
     apply_filter (widget);
 
     var prev_next = get_next_visible (iter);
-    update_separator (iter, true);
-    update_separator (get_next_visible (iter), true);
-    update_separator (prev_next, true);
+    update_separator (iter);
+    update_separator (get_next_visible (iter));
+    update_separator (prev_next);
 
     info.iter = iter;
 
@@ -743,9 +731,9 @@ public class Contacts.Sorted : Container {
       this.queue_resize ();
     }
     apply_filter (info.widget);
-    update_separator (info.iter, true);
-    update_separator (get_next_visible (info.iter), true);
-    update_separator (prev_next, true);
+    update_separator (info.iter);
+    update_separator (get_next_visible (info.iter));
+    update_separator (prev_next);
 
   }
 
@@ -771,7 +759,7 @@ public class Contacts.Sorted : Container {
     child_hash.unset (widget);
     children.remove (info.iter);
 
-    update_separator (next, false);
+    update_separator (next);
 
     if (was_visible && this.get_visible ())
       this.queue_resize ();
