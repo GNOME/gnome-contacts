@@ -23,7 +23,6 @@ bin_PROGRAMS = gnome-contacts test-sorted
 
 vala_sources = \
 	contacts-app.vala \
-	contacts-cell-renderer-shape.vala \
 	contacts-contact.vala \
 	contacts-contact-pane.vala \
 	contacts-types.vala \
