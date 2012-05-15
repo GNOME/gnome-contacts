@@ -17,7 +17,6 @@
  */
 
 using Gtk;
-using Gee;
 
 /* Requriements:
    + sort
@@ -58,7 +57,7 @@ public class Contacts.Sorted : Container {
   }
 
   Sequence<ChildInfo?> children;
-  HashMap<unowned Widget, unowned ChildInfo?> child_hash;
+  HashTable<unowned Widget, unowned ChildInfo?> child_hash;
   CompareDataFunc<Widget>? sort_func;
   FilterFunc? filter_func;
   UpdateSeparatorFunc? update_separator_func;
@@ -79,7 +78,7 @@ public class Contacts.Sorted : Container {
     selection_mode = SelectionMode.SINGLE;
 
     children = new Sequence<ChildInfo?>();
-    child_hash = new HashMap<unowned Widget, unowned ChildInfo?> ();
+    child_hash = new HashTable<unowned Widget, unowned ChildInfo?> (GLib.direct_hash, GLib.direct_equal);
   }
 
   [Signal (action=true)]
@@ -756,7 +755,7 @@ public class Contacts.Sorted : Container {
     bool was_visible = widget.get_visible ();
     widget.unparent ();
 
-    child_hash.unset (widget);
+    child_hash.remove (widget);
     children.remove (info.iter);
 
     update_separator (next);
