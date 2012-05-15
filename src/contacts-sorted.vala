@@ -45,7 +45,6 @@ using Gtk;
 
 public class Contacts.Sorted : Container {
   public delegate bool FilterFunc (Widget child);
-  public delegate bool NeedSeparatorFunc (Widget widget, Widget? before);
   public delegate void UpdateSeparatorFunc (ref Widget? separator, Widget child, Widget? before);
 
   struct ChildInfo {
