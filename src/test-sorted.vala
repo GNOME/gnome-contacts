@@ -19,36 +19,31 @@
 using Gtk;
 using Contacts;
 
-public bool need_separator (Widget widget, Widget? before)
-{
-  if (before == null) {
-    return true;
-  }
-  if (!(widget is Label))
-    return false;
-  var text = (widget as Label).get_text ();
-  return strcmp (text, "blah3") == 0;
-}
-
 public void update_separator (ref Widget? separator,
-			      Widget child,
-			      Widget? before_widget)
+			      Widget widget,
+			      Widget? before)
 {
-  if (separator == null) {
-    var hbox = new Box(Orientation.HORIZONTAL, 0);
-    var l = new Label ("Separator");
-    hbox.add (l);
-    var b = new Button.with_label ("button");
-    hbox.add (b);
-    l.show ();
-    b.show ();
-    separator = hbox;
-  }
+  if (before == null ||
+      (widget is Label && (widget as Label).get_text () == "blah3")) {
+    if (separator == null) {
+      var hbox = new Box(Orientation.HORIZONTAL, 0);
+      var l = new Label ("Separator");
+      hbox.add (l);
+      var b = new Button.with_label ("button");
+      hbox.add (b);
+      l.show ();
+      b.show ();
+      separator = hbox;
+    }
 
-  var id = child.get_data<int>("sort_id");
-  var hbox = separator as Box;
-  var l = hbox.get_children ().data as Label;
-  l.set_text ("Separator %d".printf (id));
+    var hbox = separator as Box;
+    var id = widget.get_data<int>("sort_id");
+    var l = hbox.get_children ().data as Label;
+    l.set_text ("Separator %d".printf (id));
+  } else {
+    separator = null;
+  }
+  print ("update separator => %p\n", separator);
 }
 
 public static int
@@ -176,14 +171,13 @@ main (string[] args) {
   b = new Button.with_label ("separate");
   vbox.add (b);
   b.clicked.connect ( () => {
-		  sorted.set_separator_funcs (need_separator,
-					      update_separator);
+		  sorted.set_separator_funcs (update_separator);
 	  });
 
   b = new Button.with_label ("unseparate");
   vbox.add (b);
   b.clicked.connect ( () => {
-		  sorted.set_separator_funcs (null, null);
+		  sorted.set_separator_funcs (null);
 	  });
 
 
