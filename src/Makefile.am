@@ -24,7 +24,6 @@ bin_PROGRAMS = gnome-contacts
 vala_sources = \
 	listbox/egg-list-box.vala \
 	contacts-app.vala \
-	contacts-cell-renderer-shape.vala \
 	contacts-contact.vala \
 	contacts-contact-pane.vala \
 	contacts-types.vala \
