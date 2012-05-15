@@ -485,21 +485,21 @@ public class Contacts.Sorted : Container {
     var context = this.get_style_context ();
 
     context.save ();
-    Gtk.render_background (context, cr,
-			   0, 0, allocation.width, allocation.height);
+    context.render_background (cr,
+			       0, 0, allocation.width, allocation.height);
 
     if (selected_child != null) {
       context.set_state (StateFlags.SELECTED);
-      Gtk.render_background (context, cr,
-			     0, selected_child.y,
-			     allocation.width, selected_child.height);
+      context.render_background (cr,
+				 0, selected_child.y,
+				 allocation.width, selected_child.height);
     }
 
     if (prelight_child != null && prelight_child != selected_child) {
       context.set_state (StateFlags.PRELIGHT);
-      Gtk.render_background (context, cr,
-			     0, prelight_child.y,
-			     allocation.width, prelight_child.height);
+      context.render_background (cr,
+				 0, prelight_child.y,
+				 allocation.width, prelight_child.height);
     }
 
     if (has_visible_focus() && cursor_child != null) {
