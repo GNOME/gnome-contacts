@@ -22,24 +22,30 @@ public class Egg.ListBox : Container {
   public delegate bool FilterFunc (Widget child);
   public delegate void UpdateSeparatorFunc (ref Widget? separator, Widget child, Widget? before);
 
-  private struct ChildInfo {
-    Widget widget;
-    Widget? separator;
-    SequenceIter<ChildInfo?> iter;
-    int y;
-    int height;
+  private class ChildInfo {
+    public Widget widget;
+    public Widget? separator;
+    public SequenceIter<ChildInfo> iter;
+    public int y;
+    public int height;
+
+    public ChildInfo (Widget widget) {
+      this.widget = widget;
+    }
   }
 
-  private Sequence<ChildInfo?> children;
-  private HashTable<unowned Widget, unowned ChildInfo?> child_hash;
+  private Sequence<ChildInfo> children;
+  private HashTable<unowned Widget, unowned ChildInfo> child_hash;
   private CompareDataFunc<Widget>? sort_func;
   private FilterFunc? filter_func;
   private UpdateSeparatorFunc? update_separator_func;
-  private unowned ChildInfo? selected_child;
-  private unowned ChildInfo? prelight_child;
-  private unowned ChildInfo? cursor_child;
+  private unowned ChildInfo selected_child;
+  private unowned ChildInfo prelight_child;
+  private unowned ChildInfo cursor_child;
+  bool active_child_active;
+  private unowned ChildInfo active_child;
   private SelectionMode selection_mode;
-  
+  private Adjustment? adjustment;
 
   public ListBox () {
     set_can_focus (true);
@@ -48,11 +54,11 @@ public class Egg.ListBox : Container {
 
     selection_mode = SelectionMode.SINGLE;
 
-    children = new Sequence<ChildInfo?>();
-    child_hash = new HashTable<unowned Widget, unowned ChildInfo?> (GLib.direct_hash, GLib.direct_equal);
+    children = new Sequence<ChildInfo>();
+    child_hash = new HashTable<unowned Widget, unowned ChildInfo> (GLib.direct_hash, GLib.direct_equal);
   }
 
-  public Widget? get_selected_child (){
+  public unowned Widget? get_selected_child (){
     if (selected_child != null)
       return selected_child.widget;
 
@@ -62,7 +68,7 @@ public class Egg.ListBox : Container {
   public void select_child (Widget? child) {
     unowned ChildInfo? info = null;
     if (child != null)
-      info = child_hash.get (child);
+      info = lookup_info (child);
     update_selected (info);
   }
 
@@ -72,6 +78,15 @@ public class Egg.ListBox : Container {
   public virtual signal void child_activated (Widget? child) {
   }
 
+  public void set_adjustment (Adjustment? adjustment) {
+    this.adjustment = adjustment;
+    this.set_focus_vadjustment (adjustment);
+  }
+
+  public void add_to_scrolled (ScrolledWindow scrolled) {
+    scrolled.add_with_viewport (this);
+    this.set_adjustment (scrolled.get_vadjustment ());
+  }
 
   public void set_selection_mode (SelectionMode mode) {
     if (mode == SelectionMode.MULTIPLE) {
@@ -129,18 +144,20 @@ public class Egg.ListBox : Container {
       this.queue_resize ();
     }
     apply_filter (info.widget);
-    update_separator (info.iter);
-    update_separator (get_next_visible (info.iter));
-    update_separator (prev_next);
+    if (this.get_visible ()) {
+      update_separator (info.iter);
+      update_separator (get_next_visible (info.iter));
+      update_separator (prev_next);
+    }
 
   }
 
   /****** Implementation ***********/
 
-  private int do_sort (ChildInfo? a, ChildInfo? b) {
+  private int do_sort (ChildInfo a, ChildInfo b) {
     return sort_func (a.widget, b.widget);
   }
-  
+
   [Signal (action=true)]
   public virtual signal void activate_cursor_child () {
     select_and_activate (cursor_child);
@@ -170,7 +187,7 @@ public class Egg.ListBox : Container {
 	modify_selection_pressed = true;
     }
 
-    unowned ChildInfo? child = null;
+    ChildInfo? child = null;
     switch (step) {
     case MovementStep.BUFFER_ENDS:
       if (count < 0)
@@ -180,7 +197,7 @@ public class Egg.ListBox : Container {
       break;
     case MovementStep.DISPLAY_LINES:
       if (cursor_child != null) {
-	SequenceIter<ChildInfo?>? iter = cursor_child.iter;
+	SequenceIter<ChildInfo>? iter = cursor_child.iter;
 
 	while (count < 0 && iter != null) {
 	  iter = get_previous_visible (iter);
@@ -197,14 +214,13 @@ public class Egg.ListBox : Container {
       break;
     case MovementStep.PAGES:
       int page_size = 100;
-      var vadj = get_focus_vadjustment ();
-      if (vadj != null)
-	page_size = (int) vadj.get_page_increment ();
+      if (adjustment != null)
+	page_size = (int) adjustment.get_page_increment ();
 
       if (cursor_child != null) {
 	int start_y = cursor_child.y;
 	int end_y = start_y;
-	SequenceIter<ChildInfo?>? iter = cursor_child.iter;
+	SequenceIter<ChildInfo>? iter = cursor_child.iter;
 
 	child = cursor_child;
 	if (count < 0) {
@@ -214,7 +230,7 @@ public class Egg.ListBox : Container {
 	    iter = get_previous_visible (iter);
 	    if (iter == null)
 	      break;
-	    unowned ChildInfo? prev = iter.get ();
+	    ChildInfo prev = iter.get ();
 	    if (prev.y < start_y - page_size)
 	      break;
 	    child = prev;
@@ -226,15 +242,15 @@ public class Egg.ListBox : Container {
 	    iter = get_next_visible (iter);
 	    if (iter.is_end ())
 	      break;
-	    unowned ChildInfo? next = iter.get ();
+	    ChildInfo next = iter.get ();
 	    if (next.y > start_y + page_size)
 	      break;
 	    child = next;
 	  }
 	}
 	end_y = child.y;
-	if (end_y != start_y && vadj != null)
-	  vadj.value += end_y - start_y;
+	if (end_y != start_y && adjustment != null)
+	  adjustment.value += end_y - start_y;
 
       }
       break;
@@ -312,7 +328,7 @@ public class Egg.ListBox : Container {
   unowned ChildInfo? find_child_at_y (int y) {
     unowned ChildInfo? child_info = null;
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? info = iter.get ();
+      unowned ChildInfo info = iter.get ();
       if (y >= info.y && y < info.y + info.height) {
 	child_info = info;
 	break;
@@ -325,10 +341,9 @@ public class Egg.ListBox : Container {
     cursor_child = child;
     this.grab_focus ();
     this.queue_draw ();
-    var vadj = get_focus_vadjustment ();
-    if (child != null && vadj != null)
-      vadj.clamp_page (cursor_child.y,
-		       cursor_child.y + cursor_child.height);
+    if (child != null && adjustment != null)
+      adjustment.clamp_page (cursor_child.y,
+			     cursor_child.y + cursor_child.height);
   }
 
   private void update_selected (ChildInfo? child) {
@@ -343,7 +358,7 @@ public class Egg.ListBox : Container {
   }
 
   private void select_and_activate (ChildInfo? child) {
-    Widget? w = null;
+    unowned Widget? w = null;
     if (child != null)
       w = child.widget;
     update_selected (child);
@@ -358,12 +373,21 @@ public class Egg.ListBox : Container {
     }
   }
 
+  private void update_active (ChildInfo? child) {
+    bool val = active_child == child;
+    if (active_child != null && val != active_child_active) {
+      active_child_active = val;
+      queue_draw ();
+    }
+  }
+
   public override bool enter_notify_event (Gdk.EventCrossing event) {
     if (event.window != get_window ())
       return false;
 
     unowned ChildInfo? child = find_child_at_y ((int)event.y);
     update_prelight (child);
+    update_active (child);
 
     return false;
   }
@@ -372,12 +396,14 @@ public class Egg.ListBox : Container {
     if (event.window != get_window ())
       return false;
 
+    unowned ChildInfo? child;
     if (event.detail != Gdk.NotifyType.INFERIOR) {
-      update_prelight (null);
+      child = null;
     } else {
-      unowned ChildInfo? child = find_child_at_y ((int)event.y);
-      update_prelight (child);
+      child = find_child_at_y ((int)event.y);
     }
+    update_prelight (child);
+    update_active (child);
 
     return false;
   }
@@ -385,15 +411,19 @@ public class Egg.ListBox : Container {
   public override bool motion_notify_event (Gdk.EventMotion event) {
     unowned ChildInfo? child = find_child_at_y ((int)event.y);
     update_prelight (child);
+    update_active (child);
+
     return false;
   }
 
-  private Widget? button_down_child;
   public override bool button_press_event (Gdk.EventButton event) {
     if (event.button == 1) {
       unowned ChildInfo? child = find_child_at_y ((int)event.y);
-      if (child != null)
-	button_down_child = child.widget;
+      if (child != null) {
+	active_child = child;
+	active_child_active = true;
+	queue_draw ();
+      }
 
       /* TODO: Should mark as active while down, and handle grab breaks */
     }
@@ -402,18 +432,24 @@ public class Egg.ListBox : Container {
 
   public override bool button_release_event (Gdk.EventButton event) {
     if (event.button == 1) {
-      unowned ChildInfo? child = find_child_at_y ((int)event.y);
-      if (child != null && child.widget == button_down_child)
-	select_and_activate (child);
-      button_down_child = null;
+      if (active_child != null && active_child_active)
+	select_and_activate (active_child);
+      active_child = null;
+      active_child_active = false;
+      queue_draw ();
     }
     return false;
+  }
+
+  public override void show () {
+    reseparate ();
+    base.show ();
   }
 
   public override bool focus (DirectionType direction) {
     bool had_focus;
     bool focus_into;
-    Widget recurse_into = null;
+    unowned Widget recurse_into = null;
 
     focus_into = true;
     had_focus = has_focus;
@@ -523,36 +559,61 @@ public class Egg.ListBox : Container {
     return true;
   }
 
+  private struct ChildFlags {
+    unowned ChildInfo child;
+    StateFlags state;
+
+    public static ChildFlags *find_or_add (ref ChildFlags[] array, ChildInfo to_find) {
+      for (int i = 0; i < array.length; i++) {
+	if (array[i].child == to_find)
+	  return &array[i];
+      }
+      array.resize (array.length+1);
+      array[array.length-1].child = to_find;
+      array[array.length-1].state = 0;
+      return &array[array.length-1];
+    }
+  }
+
   public override bool draw (Cairo.Context cr) {
     Allocation allocation;
     this.get_allocation (out allocation);
 
-    var context = this.get_style_context ();
+    unowned StyleContext context = this.get_style_context ();
 
-    context.save ();
     context.render_background (cr,
 			       0, 0, allocation.width, allocation.height);
 
+    ChildFlags[] flags = {};
+
     if (selected_child != null) {
-      context.set_state (StateFlags.SELECTED);
-      context.render_background (cr,
-				 0, selected_child.y,
-				 allocation.width, selected_child.height);
+      var found = ChildFlags.find_or_add (ref flags, selected_child);
+      found.state |= StateFlags.SELECTED;
     }
 
-    if (prelight_child != null && prelight_child != selected_child) {
-      context.set_state (StateFlags.PRELIGHT);
+    if (prelight_child != null) {
+      var found = ChildFlags.find_or_add (ref flags, prelight_child);
+      found.state |= StateFlags.PRELIGHT;
+    }
+
+    if (active_child != null && active_child_active) {
+      var found = ChildFlags.find_or_add (ref flags, active_child);
+      found.state |= StateFlags.ACTIVE;
+    }
+
+    foreach (unowned ChildFlags? flag in flags) {
+      context.save ();
+      context.set_state (flag.state);
       context.render_background (cr,
-				 0, prelight_child.y,
-				 allocation.width, prelight_child.height);
+				 0, flag.child.y,
+				 allocation.width, flag.child.height);
+      context.restore ();
     }
 
     if (has_visible_focus() && cursor_child != null) {
       context.render_focus (cr, 0, cursor_child.y,
 			    allocation.width, cursor_child.height);
     }
-
-    context.restore ();
 
     base.draw (cr);
 
@@ -595,14 +656,14 @@ public class Egg.ListBox : Container {
 
   private void apply_filter_all () {
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       apply_filter (child_info.widget);
     }
   }
 
   private unowned ChildInfo? get_first_visible () {
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       unowned Widget widget = child_info.widget;
       if (widget.get_visible () && widget.get_child_visible ())
 	return child_info;
@@ -614,7 +675,7 @@ public class Egg.ListBox : Container {
     var iter = children.get_end_iter ();
     while (!iter.is_begin ()) {
       iter = iter.prev ();
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       unowned Widget widget = child_info.widget;
       if (widget.get_visible () && widget.get_child_visible ())
 	return child_info;
@@ -622,7 +683,7 @@ public class Egg.ListBox : Container {
     return null;
   }
 
-  private SequenceIter<ChildInfo?>? get_previous_visible (SequenceIter<ChildInfo?> _iter) {
+  private SequenceIter<ChildInfo>? get_previous_visible (SequenceIter<ChildInfo> _iter) {
     if (_iter.is_begin())
       return null;
     var iter = _iter;
@@ -630,7 +691,7 @@ public class Egg.ListBox : Container {
     do {
       iter = iter.prev ();
 
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       unowned Widget widget = child_info.widget;
       if (widget.get_visible () && widget.get_child_visible ())
 	return iter;
@@ -639,7 +700,7 @@ public class Egg.ListBox : Container {
     return null;
   }
 
-  private SequenceIter<ChildInfo?>? get_next_visible (SequenceIter<ChildInfo?> _iter) {
+  private SequenceIter<ChildInfo>? get_next_visible (SequenceIter<ChildInfo> _iter) {
     if (_iter.is_end())
       return _iter;
 
@@ -648,7 +709,7 @@ public class Egg.ListBox : Container {
       iter = iter.next ();
 
       if (!iter.is_end ()) {
-	unowned ChildInfo? child_info = iter.get ();
+	unowned ChildInfo child_info = iter.get ();
 	unowned Widget widget = child_info.widget;
 	if (widget.get_visible () && widget.get_child_visible ())
 	  return iter;
@@ -658,16 +719,16 @@ public class Egg.ListBox : Container {
     return iter;
   }
 
-  private void update_separator (SequenceIter<ChildInfo?>? iter) {
+  private void update_separator (SequenceIter<ChildInfo>? iter) {
     if (iter == null || iter.is_end ())
       return;
 
-    unowned ChildInfo? info = iter.get ();
+    unowned ChildInfo info = iter.get ();
     var before_iter = get_previous_visible (iter);
     var widget = info.widget;
     Widget? before_widget = null;
     if (before_iter != null) {
-      unowned ChildInfo? before_info = before_iter.get ();
+      unowned ChildInfo before_info = before_iter.get ();
       before_widget = before_info.widget;
     }
 
@@ -697,23 +758,24 @@ public class Egg.ListBox : Container {
   }
 
   public override void add (Widget widget) {
-    ChildInfo? the_info = { widget };
-    unowned ChildInfo? info = the_info;
-    SequenceIter<ChildInfo?> iter;
+    ChildInfo info = new ChildInfo (widget);
+    SequenceIter<ChildInfo> iter;
 
     child_hash.set (widget, info);
 
     if (sort_func != null)
-      iter = children.insert_sorted ((owned) the_info, do_sort);
+      iter = children.insert_sorted (info, do_sort);
     else
-      iter = children.append ((owned) the_info);
+      iter = children.append (info);
 
     apply_filter (widget);
 
-    var prev_next = get_next_visible (iter);
-    update_separator (iter);
-    update_separator (get_next_visible (iter));
-    update_separator (prev_next);
+    if (this.get_visible ()) {
+      var prev_next = get_next_visible (iter);
+      update_separator (iter);
+      update_separator (get_next_visible (iter));
+      update_separator (prev_next);
+    }
 
     info.iter = iter;
 
@@ -733,6 +795,8 @@ public class Egg.ListBox : Container {
       prelight_child = null;
     if (info == cursor_child)
       cursor_child = null;
+    if (info == active_child)
+      active_child = null;
 
     var next = get_next_visible (info.iter);
 
@@ -742,7 +806,8 @@ public class Egg.ListBox : Container {
     child_hash.remove (widget);
     children.remove (info.iter);
 
-    update_separator (next);
+    if (this.get_visible ())
+      update_separator (next);
 
     if (was_visible && this.get_visible ())
       this.queue_resize ();
@@ -751,7 +816,7 @@ public class Egg.ListBox : Container {
   public override void forall_internal (bool include_internals,
 					Gtk.Callback callback) {
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       if (child_info.separator != null && include_internals)
 	callback (child_info.separator);
       callback (child_info.widget);
@@ -780,12 +845,12 @@ public class Egg.ListBox : Container {
 
   public override void get_preferred_height_for_width (int width, out int minimum_height, out int natural_height) {
     minimum_height = 0;
-    var context = this.get_style_context ();
+    unowned StyleContext context = this.get_style_context ();
     int focus_width, focus_pad;
     context.get_style ("focus-line-width", out focus_width,
 		       "focus-padding", out focus_pad);
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       unowned Widget widget = child_info.widget;
       int child_min;
 
@@ -811,14 +876,14 @@ public class Egg.ListBox : Container {
   }
 
   public override void get_preferred_width (out int minimum_width, out int natural_width) {
-    var context = this.get_style_context ();
+    unowned StyleContext context = this.get_style_context ();
     int focus_width, focus_pad;
     context.get_style ("focus-line-width", out focus_width,
 		       "focus-padding", out focus_pad);
     minimum_width = 0;
     natural_width = 0;
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       unowned Widget widget = child_info.widget;
       int child_min, child_nat;
 
@@ -867,7 +932,7 @@ public class Egg.ListBox : Container {
     separator_allocation.width = allocation.width;
 
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
-      unowned ChildInfo? child_info = iter.get ();
+      unowned ChildInfo child_info = iter.get ();
       unowned Widget widget = child_info.widget;
       int child_min;
 
