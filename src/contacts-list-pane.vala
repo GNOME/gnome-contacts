@@ -138,14 +138,12 @@ public class Contacts.ListPane : Frame {
     grid.set_orientation (Orientation.VERTICAL);
     this.add (grid);
 
-    contacts_view.set_focus_vadjustment (scrolled.get_vadjustment ());
-
     contacts_view.selection_changed.connect( (l, contact) => {
 	if (!ignore_selection_change)
 	  selection_changed (contact);
       });
 
-    scrolled.add_with_viewport (contacts_view);
+    contacts_view.add_to_scrolled (scrolled);
     contacts_view.show_all ();
     scrolled.set_no_show_all (true);
 
