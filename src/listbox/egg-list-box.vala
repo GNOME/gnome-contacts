@@ -36,6 +36,7 @@ public class Egg.ListBox : Container {
 
   private Sequence<ChildInfo> children;
   private HashTable<unowned Widget, unowned ChildInfo> child_hash;
+  private HashTable<unowned Widget, unowned ChildInfo> separator_hash;
   private CompareDataFunc<Widget>? sort_func;
   private FilterFunc? filter_func;
   private UpdateSeparatorFunc? update_separator_func;
@@ -47,7 +48,7 @@ public class Egg.ListBox : Container {
   private SelectionMode selection_mode;
   private Adjustment? adjustment;
 
-  public ListBox () {
+  construct {
     set_can_focus (true);
     set_has_window (true);
     set_redraw_on_allocate (true);
@@ -56,6 +57,7 @@ public class Egg.ListBox : Container {
 
     children = new Sequence<ChildInfo>();
     child_hash = new HashTable<unowned Widget, unowned ChildInfo> (GLib.direct_hash, GLib.direct_equal);
+    separator_hash = new HashTable<unowned Widget, unowned ChildInfo> (GLib.direct_hash, GLib.direct_equal);
   }
 
   public unowned Widget? get_selected_child (){
@@ -341,9 +343,12 @@ public class Egg.ListBox : Container {
     cursor_child = child;
     this.grab_focus ();
     this.queue_draw ();
-    if (child != null && adjustment != null)
-      adjustment.clamp_page (cursor_child.y,
-			     cursor_child.y + cursor_child.height);
+    if (child != null && adjustment != null) {
+      Allocation allocation;
+      this.get_allocation (out allocation);
+      adjustment.clamp_page (cursor_child.y + allocation.y,
+			     cursor_child.y + allocation.y + cursor_child.height);
+    }
   }
 
   private void update_selected (ChildInfo? child) {
@@ -643,6 +648,7 @@ public class Egg.ListBox : Container {
     var window = new Gdk.Window (get_parent_window (), attributes,
 				 Gdk.WindowAttributesType.X |
 				 Gdk.WindowAttributesType.Y);
+    this.get_style_context ().set_background (window);
     window.set_user_data (this);
     this.set_window (window);
   }
@@ -738,15 +744,19 @@ public class Egg.ListBox : Container {
       var old_separator = info.separator;
       update_separator_func (ref info.separator, widget, before_widget);
       if (old_separator != info.separator) {
-	if (old_separator != null)
+	if (old_separator != null) {
 	  old_separator.unparent ();
+	  separator_hash.remove (old_separator);
+	}
 	if (info.separator != null) {
+	  separator_hash.set (info.separator, info);
 	  info.separator.set_parent (this);
 	  info.separator.show ();
 	}
 	this.queue_resize ();
       }
     } else if (info.separator != null) {
+      separator_hash.remove (info.separator);
       info.separator.unparent ();
       info.separator = null;
       this.queue_resize ();
@@ -768,6 +778,9 @@ public class Egg.ListBox : Container {
     else
       iter = children.append (info);
 
+    info.iter = iter;
+    widget.set_parent (this);
+
     apply_filter (widget);
 
     if (this.get_visible ()) {
@@ -776,17 +789,30 @@ public class Egg.ListBox : Container {
       update_separator (get_next_visible (iter));
       update_separator (prev_next);
     }
-
-    info.iter = iter;
-
-    widget.set_parent (this);
   }
 
   public override void remove (Widget widget) {
+    bool was_visible = widget.get_visible ();
+
     unowned ChildInfo? info = lookup_info (widget);
     if (info == null) {
-      warning ("Tried to remove non-child %p\n", widget);
+      info = separator_hash.get (widget);
+      if (info != null) {
+	separator_hash.remove (widget);
+	info.separator = null;
+	widget.unparent ();
+	if (was_visible && this.get_visible ())
+	  this.queue_resize ();
+
+      } else
+	warning ("Tried to remove non-child %p\n", widget);
       return;
+    }
+
+    if (info.separator != null) {
+      separator_hash.remove (info.separator);
+      info.separator.unparent ();
+      info.separator = null;
     }
 
     if (info == selected_child)
@@ -800,7 +826,6 @@ public class Egg.ListBox : Container {
 
     var next = get_next_visible (info.iter);
 
-    bool was_visible = widget.get_visible ();
     widget.unparent ();
 
     child_hash.remove (widget);
@@ -924,11 +949,11 @@ public class Egg.ListBox : Container {
     context.get_style ("focus-line-width", out focus_width,
 		       "focus-padding", out focus_pad);
 
-    child_allocation.x = allocation.x + focus_width + focus_pad;
-    child_allocation.y = allocation.y;
+    child_allocation.x = 0 + focus_width + focus_pad;
+    child_allocation.y = 0;
     child_allocation.width = allocation.width - 2 * (focus_width + focus_pad);
 
-    separator_allocation.x = allocation.x;
+    separator_allocation.x = 0;
     separator_allocation.width = allocation.width;
 
     for (var iter = children.get_begin_iter (); !iter.is_end (); iter = iter.next ()) {
