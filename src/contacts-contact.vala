@@ -63,7 +63,7 @@ public class Contacts.ContactPresence : Grid {
     label.show ();
     phone_image.show ();
     if (message.length == 0)
-      message = Contact.presence_to_string (type);
+      message = PresenceDetails.get_default_message_from_type (type);
 
     label.set_markup (Markup.printf_escaped ("<span font='11px'>%s</span>", message));
     label.set_margin_bottom (3);
@@ -463,30 +463,6 @@ public class Contacts.Contact : GLib.Object  {
 	return false;
     }
     return true;
-  }
-
-  public static string presence_to_string (PresenceType presence) {
-    switch (presence) {
-    default:
-    case PresenceType.UNKNOWN:
-      return _("Unknown status");
-    case PresenceType.OFFLINE:
-      return _("Offline");
-    case PresenceType.UNSET:
-      return "";
-    case PresenceType.ERROR:
-      return _("Error");
-    case PresenceType.AVAILABLE:
-      return _("Available");
-    case PresenceType.AWAY:
-      return _("Away");
-    case PresenceType.EXTENDED_AWAY:
-      return _("Extended away");
-    case PresenceType.BUSY:
-      return _("Busy");
-    case PresenceType.HIDDEN:
-      return _("Hidden");
-    }
   }
 
   public static string presence_to_icon_symbolic (PresenceType presence) {
