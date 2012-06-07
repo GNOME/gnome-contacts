@@ -59,7 +59,6 @@ contact-resources.c: contacts.gresource.xml app-menu.ui
 		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
 
 gnome_contacts_SOURCES = \
-	cheese-flash.c \
 	um-crop-area.c \
 	contact-resources.c \
 	gtk-notification.c   \
@@ -71,6 +70,9 @@ gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
 if USE_GSTREAMER
 gnome_contacts_LDADD += $(CONTACTS_GSTREAMER_LIBS)
+gnome_contacts_SOURCES += \
+	cheese-flash.c \
+	$(NULL)
 endif
 
 CLEANFILES = \

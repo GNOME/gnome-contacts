@@ -54,6 +54,8 @@ AC_SUBST(CONTACTS_PACKAGES)
 gstreamers_modules="gdk-x11-3.0
                     gstreamer-0.10
                     gstreamer-interfaces-0.10
+		    cheese-gtk >= 3.3.5
+		    cheese
                     "
 PKG_CHECK_MODULES(CONTACTS_GSTREAMER,
                   [$gstreamers_modules],
