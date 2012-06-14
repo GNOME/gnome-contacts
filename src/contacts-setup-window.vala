@@ -93,7 +93,7 @@ public class Contacts.SetupWindow : Gtk.Window {
       content_grid.add (b);
 
       b.clicked.connect ( () => {
-	  var source = eds_source_list.peek_source_by_uid (eds_local_store);
+	  var source = eds_source_registry.ref_builtin_address_book ();
 	  select_source (source);
 	});
     }
@@ -112,11 +112,7 @@ public class Contacts.SetupWindow : Gtk.Window {
   }
 
   private void select_source (E.Source source) {
-    try {
-      E.BookClient.set_default_source (source);
-    } catch {
-      warning ("Failed to set address book");
-    }
+    eds_source_registry.set_default_address_book (source);
     succeeded = true;
     App.app.settings.set_boolean ("did-initial-setup", true);
     destroy ();
@@ -190,7 +186,7 @@ public class Contacts.SetupWindow : Gtk.Window {
 
     update_content ();
 
-    source_list_changed_id = eds_source_list.changed.connect ( () => {
+    source_list_changed_id = eds_source_registry.source_changed.connect ( () => {
 	update_content ();
       });
 
@@ -199,7 +195,7 @@ public class Contacts.SetupWindow : Gtk.Window {
 
   public override void destroy () {
     if (source_list_changed_id != 0) {
-      eds_source_list.disconnect (source_list_changed_id);
+      eds_source_registry.disconnect (source_list_changed_id);
       source_list_changed_id = 0;
     }
     base.destroy ();

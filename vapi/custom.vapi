@@ -27,8 +27,6 @@ namespace LocalGLib {
 namespace Contacts {
 	[CCode (cname = "contacts_ensure_eds_accounts")]
 	public static void ensure_eds_accounts ();
-	[CCode (cname = "contacts_eds_local_store")]
-	public static string? eds_local_store;
 	[CCode (cname = "contacts_lookup_esource_name_by_uid")]
 	public static unowned string? lookup_esource_name_by_uid (string uid);
 	[CCode (cname = "contacts_lookup_esource_name_by_uid_for_contact")]
@@ -39,10 +37,8 @@ namespace Contacts {
 	public static unowned string? eds_personal_google_group_name ();
 	[CCode (cname = "contacts_has_goa_account")]
 	public static bool has_goa_account ();
-	[CCode (cname = "contacts_source_list")]
-	public static E.SourceList eds_source_list;
-	[CCode (cname = "contacts_avoid_goa_workaround")]
-	public static bool avoid_goa_workaround;
+	[CCode (cname = "eds_source_registry")]
+	public static E.SourceRegistry eds_source_registry;
 }
 
 [CCode (cprefix = "Gtk", lower_case_cprefix = "gtk_", cheader_filename = "gtk-notification.h")]

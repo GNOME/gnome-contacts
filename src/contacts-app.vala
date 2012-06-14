@@ -153,11 +153,7 @@ public class Contacts.App : Gtk.Application {
 
 	    var e_store = selected_store as Edsf.PersonaStore;
 
-	    try {
-	      E.BookClient.set_default_source (e_store.source);
-	    } catch {
-	      warning ("Failed to set address book");
-	    }
+	    eds_source_registry.set_default_address_book (e_store.source);
 
 	    contacts_store.refresh ();
 	  }
@@ -308,11 +304,9 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void show_setup () {
-    avoid_goa_workaround = true;
     var setup = new SetupWindow ();
     setup.set_application (this);
     setup.destroy.connect ( () => {
-	avoid_goa_workaround = false;
 	setup.destroy ();
 	if (setup.succeeded)
 	  this.activate ();
