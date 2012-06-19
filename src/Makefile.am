@@ -75,6 +75,19 @@ gnome_contacts_SOURCES += \
 	$(NULL)
 endif
 
+libexec_PROGRAMS = gnome-contacts-search-provider
+
+gnome_contacts_search_provider_SOURCES = \
+	contacts-contact.vala \
+	contacts-esd-setup.c \
+	contacts-shell-search-provider.vala \
+	contacts-store.vala \
+	contacts-types.vala \
+	contacts-utils.vala \
+	$(NULL)
+
+gnome_contacts_search_provider_LDADD = $(CONTACTS_LIBS)
+
 CLEANFILES = \
 	$(vala_sources:.vala=.c) \
 	$(gsettings_SCHEMAS) \

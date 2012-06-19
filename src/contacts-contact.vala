@@ -142,6 +142,45 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
+  public Icon? serializable_avatar_icon {
+    get {
+      if (individual.avatar != null && individual.avatar.to_string () != null)
+        return individual.avatar;
+
+      return null;
+    }
+  }
+
+  private Variant? _avatar_icon_data;
+  public Variant? avatar_icon_data {
+    get {
+      if (individual.avatar == null)
+        return null;
+
+      if (individual.avatar.to_string () != null)
+        return null;
+
+      if (_avatar_icon_data == null) {
+
+        if (small_avatar == null)
+          return null;
+
+        var pixel_data = Variant.new_from_data (VariantType.BYTESTRING,
+                                                small_avatar.get_pixels_with_length (),
+                                                true, small_avatar);
+        _avatar_icon_data = new Variant ("(iiibii@ay)",
+                                         small_avatar.get_width (),
+                                         small_avatar.get_height (),
+                                         small_avatar.get_rowstride (),
+                                         small_avatar.get_has_alpha (),
+                                         small_avatar.get_bits_per_sample (),
+                                         small_avatar.get_n_channels (),
+                                         pixel_data);
+      }
+      return _avatar_icon_data;
+    }
+  }
+
   public string display_name {
     get {
       unowned string? name = individual.full_name;
@@ -436,6 +475,7 @@ public class Contacts.Contact : GLib.Object  {
       connect_persona (p);
     }
     _small_avatar = null;
+    _avatar_icon_data = null;
     individual.notify.connect(notify_cb);
     queue_changed (true);
   }
@@ -820,8 +860,10 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void notify_cb (ParamSpec pspec) {
-    if (pspec.get_name () == "avatar")
+    if (pspec.get_name () == "avatar") {
       _small_avatar = null;
+      _avatar_icon_data = null;
+    }
     queue_changed (false);
   }
 

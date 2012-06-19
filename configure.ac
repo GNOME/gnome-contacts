@@ -17,7 +17,7 @@ AC_CONFIG_FILES([Makefile
 
 LT_INIT
 AC_PROG_CC
-AM_PROG_VALAC([0.14.0])
+AM_PROG_VALAC([0.17.2])
 AC_PROG_INSTALL
 
 GLIB_GSETTINGS
@@ -48,7 +48,7 @@ pkg_modules="gtk+-3.0 >= 3.4.0
 	     "
 PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 
-CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg libnotify"
+CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg gio-unix-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg libnotify"
 AC_SUBST(CONTACTS_PACKAGES)
 
 gstreamers_modules="gdk-x11-3.0
