@@ -2197,6 +2197,12 @@ public class Contacts.ContactPane : ScrolledWindow {
     delete_menu_item = Utils.add_menu_item (context_menu,_("Delete"));
     delete_menu_item.activate.connect (delete_contact);
     delete_menu_item.set_sensitive (false);
+
+    contacts_store.quiescent.connect (() => {
+      // Refresh the view when the store is quiescent as we may have missed
+      // some potential matches while the store was still preparing.
+      update_personas ();
+    });
   }
 
   void link_contact () {
