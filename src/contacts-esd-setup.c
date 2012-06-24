@@ -71,30 +71,6 @@ gboolean contacts_has_goa_account (void)
   return has_goa_contacts;
 }
 
-/* This is an enourmous hack to find google eds contacts that are
-   in the "My Contacts" system group. */
-char *
-eds_personal_google_group_name (void)
-{
-  static char *name = NULL;
-  char *domain;
-
-  if (name == NULL) {
-    domain = g_strdup_printf ("evolution-data-server-%d.%d",
-			      EDS_MAJOR_VERSION,
-			      EDS_MINOR_VERSION + ((EDS_MINOR_VERSION) % 2));
-
-    /* Let's assume e-d-s is installed in the same prefix as gnome-contacts
-       (which works for system and jhbuild setups) */
-    bindtextdomain (domain, LOCALEDIR);
-
-    name = dgettext (domain, "Personal");
-    g_free (domain);
-  }
-
-  return name;
-}
-
 gboolean
 contacts_esource_uid_is_google (const char *uid)
 {

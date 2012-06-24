@@ -36,7 +36,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 pkg_modules="gtk+-3.0 >= 3.4.0
 	     glib-2.0 >= 2.31.10
 	     gnome-desktop-3.0
-	     folks >= 0.7.1
+	     folks >= 0.7.2
 	     folks-telepathy
 	     folks-eds
 	     libnotify

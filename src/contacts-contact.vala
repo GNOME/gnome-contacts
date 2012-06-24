@@ -1199,13 +1199,17 @@ public class Contacts.Contact : GLib.Object  {
     return false;
   }
 
+  /**
+   * Return true only for personas which are in a Google address book, but which
+   * are not in the user's "My Contacts" group in the address book.
+   */
   public static bool persona_is_google_other (Persona persona) {
     if (!persona_is_google (persona))
       return false;
 
-    var g = persona as GroupDetails;
-    if (g != null && !g.groups.contains (eds_personal_google_group_name ()))
-      return true;
+    var p = persona as Edsf.Persona;
+    if (p != null)
+      return !p.in_google_personal_group;
     return false;
   }
 
@@ -1287,10 +1291,6 @@ public class Contacts.Contact : GLib.Object  {
 
   public static async Persona? create_primary_persona_for_details (Folks.PersonaStore store, HashTable<string, Value?> details) throws GLib.Error {
     var p = yield store.add_persona_from_details (details);
-    if (p != null && persona_is_google (p)) {
-      var g = p as GroupDetails;
-      yield g.change_group (eds_personal_google_group_name (), true);
-    }
     return p;
   }
 

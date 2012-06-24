@@ -33,8 +33,6 @@ namespace Contacts {
 	public static unowned string? lookup_esource_name_by_uid_for_contact (string uid);
 	[CCode (cname = "contacts_esource_uid_is_google")]
 	public static bool esource_uid_is_google (string uid);
-	[CCode (cname = "eds_personal_google_group_name")]
-	public static unowned string? eds_personal_google_group_name ();
 	[CCode (cname = "contacts_has_goa_account")]
 	public static bool has_goa_account ();
 	[CCode (cname = "eds_source_registry")]
