@@ -36,13 +36,13 @@ AC_SUBST(GETTEXT_PACKAGE)
 pkg_modules="gtk+-3.0 >= 3.4.0
 	     glib-2.0 >= 2.31.10
 	     gnome-desktop-3.0
-	     folks >= 0.6.1.1
+	     folks >= 0.7.1
 	     folks-telepathy
 	     folks-eds
 	     libnotify
 	     telepathy-glib >= 0.17.5
-	     libebook-1.2 >= 3.2
-	     libedataserver-1.2 >= 3.2
+	     libebook-1.2 >= 3.5.3
+	     libedataserver-1.2 >= 3.5.3
 	     goa-1.0
 	     gee-1.0
 	     "
