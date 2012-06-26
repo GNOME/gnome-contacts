@@ -1165,7 +1165,7 @@ public class Contacts.Contact : GLib.Object  {
     if (this.non_linkable () || other.non_linkable ())
       return false;
 
-    if (!App.app.contacts_store.may_suggest_link (this, other))
+    if (!this.store.may_suggest_link (this, other))
       return false;
 
     /* Only connect main contacts with non-mainable contacts.
