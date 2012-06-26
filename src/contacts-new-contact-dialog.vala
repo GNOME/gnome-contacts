@@ -325,7 +325,7 @@ public class Contacts.NewContactDialog : Dialog {
       return;
     }
 
-    Contact.create_primary_persona_for_details.begin (details, (obj, res) => {
+    Contact.create_primary_persona_for_details.begin (App.app.contacts_store.aggregator.primary_store, details, (obj, res) => {
 	Persona? persona = null;
 	Dialog dialog = null;
 

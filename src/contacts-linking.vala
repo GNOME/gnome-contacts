@@ -584,7 +584,7 @@ namespace Contacts {
 	var v = Value (typeof (string));
 	v.set_string (main.display_name);
 	details.set ("full-name", v);
-	write_persona = yield Contact.create_primary_persona_for_details (details);
+	write_persona = yield Contact.create_primary_persona_for_details (App.app.contacts_store.aggregator.primary_store, details);
 	operation.added_persona (write_persona);
 	linkables = main_linkables;
 	if (other_linkables != null)
