@@ -69,7 +69,7 @@ public class Contacts.SetupWindow : Gtk.Window {
       content_grid.add (scrolled);
 
       TreeIter iter;
-      foreach (var persona_store in Contact.get_eds_address_books ()) {
+      foreach (var persona_store in App.get_eds_address_books ()) {
 	var name = Contact.format_persona_store_name (persona_store);
 	store.append (out iter);
 	store.set (iter, 0, name, 1, persona_store);

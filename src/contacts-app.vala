@@ -133,7 +133,7 @@ public class Contacts.App : Gtk.Application {
 
     TreeIter iter;
 
-    foreach (var persona_store in Contact.get_eds_address_books ()) {
+    foreach (var persona_store in get_eds_address_books ()) {
       var name = Contact.format_persona_store_name (persona_store);
       store.append (out iter);
       store.set (iter, 0, name, 1, persona_store);
@@ -462,6 +462,18 @@ public class Contacts.App : Gtk.Application {
       app.show_by_email.begin (email_address);
 
     return 0;
+  }
+
+  public static PersonaStore[] get_eds_address_books () {
+    PersonaStore[] stores = {};
+    foreach (var backend in app.contacts_store.backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values) {
+	if (persona_store.type_id == "eds") {
+	  stores += persona_store;
+	}
+      }
+    }
+    return stores;
   }
 
   public App () {

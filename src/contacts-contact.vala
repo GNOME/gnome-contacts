@@ -1122,18 +1122,6 @@ public class Contacts.Contact : GLib.Object  {
     return stores;
   }
 
-  public static PersonaStore[] get_eds_address_books () {
-    PersonaStore[] stores = {};
-    foreach (var backend in App.app.contacts_store.backend_store.enabled_backends.values) {
-      foreach (var persona_store in backend.persona_stores.values) {
-	if (persona_store.type_id == "eds") {
-	  stores += persona_store;
-	}
-      }
-    }
-    return stores;
-  }
-
   public static string format_persona_store_name (PersonaStore store) {
     if (store.type_id == "eds") {
       unowned string? eds_name = lookup_esource_name_by_uid (store.id);
