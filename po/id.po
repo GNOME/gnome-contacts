@@ -1,411 +1,612 @@
 # Indonesian translation for gnome-contacts.
 # Copyright (C) 2011 gnome-contacts's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-contacts package.
-# Andika Triwidada <andika@gmail.com>, 2011.
+# Andika Triwidada <andika@gmail.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-25 06:38+0000\n"
-"PO-Revision-Date: 2011-09-25 14:30+0700\n"
+"POT-Creation-Date: 2012-05-30 11:43+0000\n"
+"PO-Revision-Date: 2012-06-28 23:20+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
 
 #: ../data/gnome-contacts.desktop.in.in.h:1
-#: ../src/contacts-app.vala:108
-#: ../src/main.vala:35
+#: ../src/contacts-app.vala:234
+#: ../src/main.vala:28
 msgid "Contacts"
 msgstr "Kontak"
 
-#: ../src/contacts-app.vala:68
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "_Ubah Buku Alamat..."
+
+#: ../src/app-menu.ui.h:2
+msgid "_About Contacts"
+msgstr "Tent_ang Kontak"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Quit"
+msgstr "_Keluar"
+
+#: ../src/contacts-app.vala:79
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Tak ditemukan kontak dengan id %s"
 
-#: ../src/contacts-app.vala:69
-#: ../src/contacts-app.vala:87
+#: ../src/contacts-app.vala:80
+#: ../src/contacts-app.vala:202
 msgid "Contact not found"
 msgstr "Kontak tak ditemukan"
 
-#: ../src/contacts-app.vala:86
+#: ../src/contacts-app.vala:89
+msgid "Change Address Book"
+msgstr "Ubah Buku Alamat"
+
+#: ../src/contacts-app.vala:94
+#: ../src/contacts-setup-window.vala:156
+msgid "Select"
+msgstr "Pilih"
+
+#: ../src/contacts-app.vala:180
+msgid "translator-credits"
+msgstr "Andika Triwidada <andika@gmail.com>, 2011, 2012."
+
+#: ../src/contacts-app.vala:181
+msgid "GNOME Contacts"
+msgstr "Kontak GNOME"
+
+#: ../src/contacts-app.vala:182
+msgid "About GNOME Contacts"
+msgstr "Tentang Kontak GNOME"
+
+#: ../src/contacts-app.vala:183
+msgid "Contact Management Application"
+msgstr "Aplikasi Manajemen Kontak"
+
+#: ../src/contacts-app.vala:201
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Tak ditemukan kontak dengan alamat surel %s"
 
-#: ../src/contacts-app.vala:159
-#: ../src/main.vala:27
+#: ../src/contacts-app.vala:250
+msgid "New"
+msgstr "Baru"
+
+#: ../src/contacts-app.vala:387
+#, c-format
+msgid "Contact deleted: \"%s\""
+msgstr "Kontak dihapus: \"%s\""
+
+#: ../src/contacts-app.vala:414
 msgid "Show contact with this individual id"
 msgstr "Tampilkan kontak dengan id individual ini"
 
-#: ../src/contacts-app.vala:161
-#: ../src/main.vala:29
+#: ../src/contacts-app.vala:416
 msgid "Show contact with this email address"
 msgstr "Tampilkan kontak dengan alamat surel ini"
 
-#: ../src/contacts-app.vala:168
+#: ../src/contacts-app.vala:429
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s terkait ke %s"
+
+#: ../src/contacts-app.vala:431
+#: ../src/contacts-link-dialog.vala:87
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s terkait ke kontak"
+
+#: ../src/contacts-app.vala:448
 msgid "— contact management"
 msgstr "— manajemen kontak"
 
-#: ../src/contacts-contact-pane.vala:606
-#: ../src/contacts-contact-pane.vala:850
-#: ../src/contacts-contact-pane.vala:1348
-msgid "Nickname"
-msgstr "Nama panggilan"
-
-#: ../src/contacts-contact-pane.vala:609
-msgid "Enter nickname"
-msgstr "Masukkan nama panggilan"
-
-#: ../src/contacts-contact-pane.vala:615
-msgid "Alias"
-msgstr "Alias"
-
-#: ../src/contacts-contact-pane.vala:618
-msgid "Enter alias"
-msgstr "Masukkan alias"
-
-#: ../src/contacts-contact-pane.vala:630
-msgid "Enter email address"
-msgstr "Masukkan alamat surel"
-
-#: ../src/contacts-contact-pane.vala:641
-msgid "Enter phone number"
-msgstr "Masukkan nomor telepon"
-
-#: ../src/contacts-contact-pane.vala:647
-#: ../src/contacts-contact-pane.vala:839
-msgctxt "url-link"
-msgid "Link"
-msgstr "Taut"
-
-#: ../src/contacts-contact-pane.vala:652
-msgid "Enter link"
-msgstr "Masukkan taut"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Street"
-msgstr "Jalan"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Extension"
-msgstr "Ekstensi"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "City"
-msgstr "Kota"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "State/Province"
-msgstr "Negara bagian/Provinsi"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Zip/Postal Code"
-msgstr "Kode Pos"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "PO box"
-msgstr "Kotak pos"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Country"
-msgstr "Negara"
-
-#: ../src/contacts-contact-pane.vala:746
-#: ../src/contacts-contact-pane.vala:1365
-msgid "Chat"
-msgstr "Obrolan"
-
-#: ../src/contacts-contact-pane.vala:807
-msgid "Add detail"
-msgstr "Tambah rincian"
-
-#: ../src/contacts-contact-pane.vala:813
-msgid "Email"
-msgstr "Surel"
-
-#: ../src/contacts-contact-pane.vala:821
-msgid "Phone number"
-msgstr "Nomor telepon"
-
-#: ../src/contacts-contact-pane.vala:829
-msgid "Postal Address"
-msgstr "Alamat Pos"
-
-#: ../src/contacts-contact-pane.vala:962
+#: ../src/contacts-avatar-dialog.vala:202
 msgid "Browse for more pictures"
 msgstr "Ramban lebih banyak gambar"
 
-#: ../src/contacts-contact-pane.vala:1044
-msgid "Browse for more pictures..."
-msgstr "Ramban lebih banyak gambar..."
+#: ../src/contacts-avatar-dialog.vala:250
+msgid "Select Picture"
+msgstr "Pilih Gambar"
 
-#: ../src/contacts-contact-pane.vala:1264
-msgid "Enter name"
-msgstr "Masukkan nama"
+#: ../src/contacts-avatar-dialog.vala:253
+#: ../src/contacts-link-dialog.vala:152
+msgid "Close"
+msgstr "Tutup"
 
-#: ../src/contacts-contact-pane.vala:1276
-#: ../src/contacts-contact-pane.vala:1563
-msgid "Contact Name"
-msgstr "Nama Kontak"
-
-#: ../src/contacts-contact-pane.vala:1430
-msgid "Address copied to clipboard"
-msgstr "Alamat disalin ke papan klip"
-
-#: ../src/contacts-contact-pane.vala:1452
-msgid "Birthday"
-msgstr "Tanggal Lahir"
-
-#: ../src/contacts-contact-pane.vala:1461
-#: ../src/contacts-types.vala:296
-msgid "Company"
-msgstr "Perusahaan"
-
-#: ../src/contacts-contact-pane.vala:1468
-msgid "Department"
-msgstr "Departemen"
-
-#: ../src/contacts-contact-pane.vala:1475
-msgid "Profession"
-msgstr "Profesi"
-
-#: ../src/contacts-contact-pane.vala:1480
-msgid "Title"
-msgstr "Gelar"
-
-#: ../src/contacts-contact-pane.vala:1487
-msgid "Manager"
-msgstr "Manajer"
-
-#. List most specific first, always in upper case
-#: ../src/contacts-contact-pane.vala:1496
-#: ../src/contacts-types.vala:291
-msgid "Assistant"
-msgstr "Asisten"
-
-#: ../src/contacts-contact-pane.vala:1505
+#: ../src/contacts-contact-pane.vala:592
+#| msgid "Links"
+msgctxt "Addresses on the Web"
 msgid "Links"
 msgstr "Taut"
 
-#: ../src/contacts-contact-pane.vala:1578
+#: ../src/contacts-contact-pane.vala:593
+#| msgctxt "url-link"
+#| msgid "Link"
+msgctxt "Web address"
+msgid "Link"
+msgstr "Taut"
+
+#: ../src/contacts-contact-pane.vala:680
+#: ../src/contacts-contact-pane.vala:681
+#: ../src/contacts-link-dialog.vala:116
+#: ../src/contacts-new-contact-dialog.vala:86
+#: ../src/contacts-new-contact-dialog.vala:121
+msgid "Email"
+msgstr "Surel"
+
+#: ../src/contacts-contact-pane.vala:722
+#: ../src/contacts-new-contact-dialog.vala:95
+#: ../src/contacts-new-contact-dialog.vala:126
+msgid "Phone"
+msgstr "Telepon"
+
+#: ../src/contacts-contact-pane.vala:723
+#: ../src/contacts-link-dialog.vala:132
+msgid "Phone number"
+msgstr "Nomor telepon"
+
+#: ../src/contacts-contact-pane.vala:783
+#: ../src/contacts-contact-pane.vala:784
+msgid "Chat"
+msgstr "Obrolan"
+
+#: ../src/contacts-contact-pane.vala:849
+msgid "January"
+msgstr "Januari"
+
+#: ../src/contacts-contact-pane.vala:850
+msgid "February"
+msgstr "Februari"
+
+#: ../src/contacts-contact-pane.vala:851
+msgid "March"
+msgstr "Maret"
+
+#: ../src/contacts-contact-pane.vala:852
+msgid "April"
+msgstr "April"
+
+#: ../src/contacts-contact-pane.vala:853
+msgid "May"
+msgstr "Mei"
+
+#: ../src/contacts-contact-pane.vala:854
+msgid "June"
+msgstr "Juni"
+
+#: ../src/contacts-contact-pane.vala:855
+msgid "July"
+msgstr "Juli"
+
+#: ../src/contacts-contact-pane.vala:856
+msgid "August"
+msgstr "Agustus"
+
+#: ../src/contacts-contact-pane.vala:857
+msgid "September"
+msgstr "September"
+
+#: ../src/contacts-contact-pane.vala:858
+#| msgid "Other"
+msgid "October"
+msgstr "Oktober"
+
+#: ../src/contacts-contact-pane.vala:859
+#| msgid "Phone number"
+msgid "November"
+msgstr "November"
+
+#: ../src/contacts-contact-pane.vala:860
+msgid "December"
+msgstr "Desember"
+
+#: ../src/contacts-contact-pane.vala:898
+#: ../src/contacts-contact-pane.vala:899
+msgid "Birthday"
+msgstr "Tanggal lahir"
+
+#: ../src/contacts-contact-pane.vala:971
+#: ../src/contacts-contact-pane.vala:972
+msgid "Nickname"
+msgstr "Nama panggilan"
+
+#: ../src/contacts-contact-pane.vala:1062
+#: ../src/contacts-contact-pane.vala:1063
+#| msgid "Notes"
+msgid "Note"
+msgstr "Catatan"
+
+#: ../src/contacts-contact-pane.vala:1202
+#| msgid "Postal Address"
+msgid "Addresses"
+msgstr "Alamat"
+
+#: ../src/contacts-contact-pane.vala:1203
+#: ../src/contacts-new-contact-dialog.vala:104
+#: ../src/contacts-new-contact-dialog.vala:131
+#| msgid "Postal Address"
+msgid "Address"
+msgstr "Alamat"
+
+#: ../src/contacts-contact-pane.vala:1305
+#| msgid "Back to Contact"
+msgid "Add to My Contacts"
+msgstr "Tambah ke Kontakku"
+
+#: ../src/contacts-contact-pane.vala:1315
+#| msgid "Enter link"
+msgid "Unlink"
+msgstr "Lepaskan kait"
+
+#: ../src/contacts-contact-pane.vala:1347
+#| msgid "Add detail"
+msgid "Add detail..."
+msgstr "Tambah rincian..."
+
+#: ../src/contacts-contact-pane.vala:1362
+#, c-format
+#| msgid "Select contacts to link to %s"
+msgid "Select detail to add to %s"
+msgstr "Pilih rincian untuk ditambahkan ke %s"
+
+#: ../src/contacts-contact-pane.vala:1766
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "Apakah %s dari %s masuk golongan ini?"
+
+#: ../src/contacts-contact-pane.vala:1768
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "Apakah rincian ini milik %s?"
+
+#: ../src/contacts-contact-pane.vala:1778
+msgid "Yes"
+msgstr "Ya"
+
+#: ../src/contacts-contact-pane.vala:1779
+msgid "No"
+msgstr "Tidak"
+
+#: ../src/contacts-contact-pane.vala:1976
+#| msgid "Enter email address"
+msgid "Select email address"
+msgstr "Pilih alamat surel"
+
+#: ../src/contacts-contact-pane.vala:2049
+msgid "Select what to call"
+msgstr "Pilih apa yang akan dipanggil"
+
+#: ../src/contacts-contact-pane.vala:2113
+msgid "Select chat account"
+msgstr "Pilih akun obrolan"
+
+#: ../src/contacts-contact-pane.vala:2193
+msgid "Add/Remove Linked Contacts..."
+msgstr "Tambah/Hapus Kontak Tertaut..."
+
+#. Utils.add_menu_item (context_menu,_("Send..."));
+#: ../src/contacts-contact-pane.vala:2197
+msgid "Delete"
+msgstr "Hapus"
+
+#: ../src/contacts-contact.vala:472
+msgid "Unknown status"
+msgstr "Status tak diketahui"
+
+#: ../src/contacts-contact.vala:474
+msgid "Offline"
+msgstr "Luring"
+
+#: ../src/contacts-contact.vala:478
+msgid "Error"
+msgstr "Galat"
+
+#: ../src/contacts-contact.vala:480
+msgid "Available"
+msgstr "Ada"
+
+#: ../src/contacts-contact.vala:482
+msgid "Away"
+msgstr "Pergi"
+
+#: ../src/contacts-contact.vala:484
+msgid "Extended away"
+msgstr "Pergi lama"
+
+#: ../src/contacts-contact.vala:486
+msgid "Busy"
+msgstr "Sibuk"
+
+#: ../src/contacts-contact.vala:488
+msgid "Hidden"
+msgstr "Tersembunyi"
+
+#: ../src/contacts-contact.vala:670
+msgid "Street"
+msgstr "Jalan"
+
+#: ../src/contacts-contact.vala:670
+msgid "Extension"
+msgstr "Ekstensi"
+
+#: ../src/contacts-contact.vala:670
+msgid "City"
+msgstr "Kota"
+
+#: ../src/contacts-contact.vala:670
+msgid "State/Province"
+msgstr "Negara Bagian/Provinsi"
+
+#: ../src/contacts-contact.vala:670
+msgid "Zip/Postal Code"
+msgstr "Kode Pos"
+
+#: ../src/contacts-contact.vala:670
+msgid "PO box"
+msgstr "Kotak pos"
+
+#: ../src/contacts-contact.vala:670
+msgid "Country"
+msgstr "Negara"
+
+#: ../src/contacts-contact.vala:726
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: ../src/contacts-contact.vala:727
+msgid "Ovi Chat"
+msgstr "Ovi Chat"
+
+#: ../src/contacts-contact.vala:728
+#: ../src/contacts-contact.vala:1008
+msgid "Facebook"
+msgstr "Facebook"
+
+#: ../src/contacts-contact.vala:729
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: ../src/contacts-contact.vala:730
+msgid "AOL Instant Messenger"
+msgstr "AOL Instant Messenger"
+
+#: ../src/contacts-contact.vala:731
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: ../src/contacts-contact.vala:732
+msgid "Novell Groupwise"
+msgstr "Novell Groupwise"
+
+#: ../src/contacts-contact.vala:733
+msgid "ICQ"
+msgstr "ICQ"
+
+#: ../src/contacts-contact.vala:734
+msgid "IRC"
+msgstr "IRC"
+
+#: ../src/contacts-contact.vala:735
+msgid "Jabber"
+msgstr "Jabber"
+
+#: ../src/contacts-contact.vala:736
+msgid "Local network"
+msgstr "Jaringan lokal"
+
+#: ../src/contacts-contact.vala:737
+msgid "Windows Live Messenger"
+msgstr "Windows Live Messenger"
+
+#: ../src/contacts-contact.vala:738
+msgid "MySpace"
+msgstr "MySpace"
+
+#: ../src/contacts-contact.vala:739
+msgid "MXit"
+msgstr "MXit"
+
+#: ../src/contacts-contact.vala:740
+msgid "Napster"
+msgstr "Napster"
+
+#: ../src/contacts-contact.vala:741
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: ../src/contacts-contact.vala:742
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: ../src/contacts-contact.vala:743
+msgid "SILC"
+msgstr "SILC"
+
+#: ../src/contacts-contact.vala:744
+msgid "sip"
+msgstr "sip"
+
+#: ../src/contacts-contact.vala:745
+msgid "Skype"
+msgstr "Skype"
+
+#: ../src/contacts-contact.vala:746
+msgid "Telephony"
+msgstr "Telefoni"
+
+#: ../src/contacts-contact.vala:747
+msgid "Trepia"
+msgstr "Trepia"
+
+#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:749
+msgid "Yahoo! Messenger"
+msgstr "Yahoo! Messenger"
+
+#: ../src/contacts-contact.vala:750
+msgid "Zephyr"
+msgstr "Zephyr"
+
+#: ../src/contacts-contact.vala:1011
+msgid "Twitter"
+msgstr "Twitter"
+
+#: ../src/contacts-contact.vala:1014
+#| msgid "Google Talk"
+msgid "Google Profile"
+msgstr "Profil Google"
+
+#: ../src/contacts-contact.vala:1078
+msgid "Unexpected internal error: created contact was not found"
+msgstr "Galat internal yang tak disangka: kontak yang dibuat tak ditemukan"
+
+#: ../src/contacts-contact.vala:1224
+#| msgid "Google Talk"
+msgid "Google Circles"
+msgstr "Lingkaran Google"
+
+#: ../src/contacts-contact.vala:1226
+#| msgid "Local Contact"
+msgid "Google Other Contact"
+msgstr "Kontak Lain Google"
+
+#: ../src/contacts-esd-setup.c:632
+msgid "Personal"
+msgstr "Pribadi"
+
+#: ../src/contacts-esd-setup.c:657
+#| msgid "Postal Address"
+msgid "Local Address Book"
+msgstr "Buku Alamat Lokal"
+
+#: ../src/contacts-esd-setup.c:664
+#: ../src/contacts-esd-setup.c:683
+msgid "Google"
+msgstr "Google"
+
+#: ../src/contacts-esd-setup.c:676
+msgid "Local Contact"
+msgstr "Kontak Lokal"
+
+#: ../src/contacts-link-dialog.vala:73
+#| msgctxt "url-link"
+#| msgid "Link"
+msgctxt "contacts link action"
+msgid "Link"
+msgstr "Kaitkan"
+
+#: ../src/contacts-link-dialog.vala:84
+msgid "Undo"
+msgstr "Tak jadi"
+
+#: ../src/contacts-link-dialog.vala:148
+msgid "Link Contact"
+msgstr "Kaitkan Kontak"
+
+#: ../src/contacts-link-dialog.vala:154
+#: ../src/contacts-setup-window.vala:141
+msgid "Cancel"
+msgstr "Batal"
+
+#: ../src/contacts-link-dialog.vala:154
+#| msgctxt "url-link"
+#| msgid "Link"
+msgid "Link"
+msgstr "Kaitkan"
+
+#: ../src/contacts-link-dialog.vala:182
+#, c-format
+msgid "<span weight='bold'>Link contacts to %s</span>"
+msgstr "<span weight='bold'>Kaitkan kontak ke %s</span>"
+
+#: ../src/contacts-link-dialog.vala:184
+#| msgid "Select contacts to link to %s"
+msgid "<span weight='bold'>Select contact to link to</span>"
+msgstr "<span weight='bold'>Pilih kontak untuk dikaiti</span>"
+
+#: ../src/contacts-new-contact-dialog.vala:35
+msgid "New contact"
+msgstr "Kontak baru"
+
+#: ../src/contacts-new-contact-dialog.vala:41
+#| msgid "Back to Contact"
+msgid "Create Contact"
+msgstr "Buat Kontak"
+
+#: ../src/contacts-new-contact-dialog.vala:67
+msgid ""
+"Add or \n"
+"select a picture"
+msgstr ""
+"Tambah atau \n"
+"pilih gambar"
+
+#: ../src/contacts-new-contact-dialog.vala:78
+msgid "Contact Name"
+msgstr "Nama Kontak"
+
+#: ../src/contacts-new-contact-dialog.vala:113
+#| msgid "Add detail"
+msgid "Add Detail"
+msgstr "Tambah Rincian"
+
+#: ../src/contacts-new-contact-dialog.vala:212
+msgid "You must specify a contact name"
+msgstr "Anda mesti menyatakan nama kontak"
+
+#: ../src/contacts-new-contact-dialog.vala:320
+msgid "No primary addressbook configured\n"
+msgstr "Tak ada buku alamat primer yang ditata\n"
+
+#: ../src/contacts-new-contact-dialog.vala:341
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "Tak bisa membuat kontak baru: %s\n"
 
-#: ../src/contacts-contact-pane.vala:1588
+#: ../src/contacts-new-contact-dialog.vala:352
 msgid "Unable to find newly created contact\n"
 msgstr "Tak bisa temukan kontak yang baru dibuat\n"
 
-#: ../src/contacts-contact-pane.vala:1697
-msgid "Notes"
-msgstr "Catatan"
+#: ../src/contacts-setup-window.vala:36
+msgid "Welcome to Contacts! Please select where you want to keep your address book:"
+msgstr "Selamat datang ke Kontak! Silakan pilih dimana Anda ingin menyimpan buku alamat Anda:"
 
-#: ../src/contacts-contact-pane.vala:1728
-msgid "Edit"
-msgstr "Edit"
+#: ../src/contacts-setup-window.vala:81
+#| msgid "Online Accounts"
+msgid "Online Account Settings"
+msgstr "Pengaturan Akun Daring"
 
-#: ../src/contacts-contact-pane.vala:1735
-msgid "More"
-msgstr "Lebih lanjut"
+#: ../src/contacts-setup-window.vala:86
+msgid "Setup an online account or use a local address book"
+msgstr "Siapkan akun daring atau pakai buku alamat lokal"
 
-#: ../src/contacts-contact-pane.vala:1748
-msgid "Back to Contact"
-msgstr "Kembali ke Kontak"
-
-#: ../src/contacts-contact-pane.vala:1757
-msgid "Add/Remove Linked Contacts..."
-msgstr "Tambah/Hapus Kontak Tertaut..."
-
-#. Utils.add_menu_item (menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:1759
-msgid "Delete"
-msgstr "Hapus"
-
-#: ../src/contacts-contact.vala:405
-msgid "Unknown status"
-msgstr "Status tak diketahui"
-
-#: ../src/contacts-contact.vala:407
-msgid "Offline"
-msgstr "Luring"
-
-#: ../src/contacts-contact.vala:411
-msgid "Error"
-msgstr "Galat"
-
-#: ../src/contacts-contact.vala:413
-msgid "Available"
-msgstr "Ada"
-
-#: ../src/contacts-contact.vala:415
-msgid "Away"
-msgstr "Pergi"
-
-#: ../src/contacts-contact.vala:417
-msgid "Extended away"
-msgstr "Pergi lama"
-
-#: ../src/contacts-contact.vala:419
-msgid "Busy"
-msgstr "Sibuk"
-
-#: ../src/contacts-contact.vala:421
-msgid "Hidden"
-msgstr "Tersembunyi"
-
-#: ../src/contacts-contact.vala:614
-msgid "Google Talk"
-msgstr "Google Talk"
-
-#: ../src/contacts-contact.vala:615
-msgid "Ovi Chat"
-msgstr "Ovi Chat"
-
-#: ../src/contacts-contact.vala:616
-#: ../src/contacts-contact.vala:888
-msgid "Facebook"
-msgstr "Facebook"
-
-#: ../src/contacts-contact.vala:617
-msgid "Livejournal"
-msgstr "Livejournal"
-
-#: ../src/contacts-contact.vala:618
-msgid "AOL Instant Messenger"
-msgstr "AOL Instant Messenger"
-
-#: ../src/contacts-contact.vala:619
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
-
-#: ../src/contacts-contact.vala:620
-msgid "Novell Groupwise"
-msgstr "Novell Groupwise"
-
-#: ../src/contacts-contact.vala:621
-msgid "ICQ"
-msgstr "ICQ"
-
-#: ../src/contacts-contact.vala:622
-msgid "IRC"
-msgstr "IRC"
-
-#: ../src/contacts-contact.vala:623
-msgid "Jabber"
-msgstr "Jabber"
-
-#: ../src/contacts-contact.vala:624
-msgid "Local network"
-msgstr "Jaringan lokal"
-
-#: ../src/contacts-contact.vala:625
-msgid "Windows Live Messenger"
-msgstr "Windows Live Messenger"
-
-#: ../src/contacts-contact.vala:626
-msgid "MySpace"
-msgstr "MySpace"
-
-#: ../src/contacts-contact.vala:627
-msgid "MXit"
-msgstr "MXit"
-
-#: ../src/contacts-contact.vala:628
-msgid "Napster"
-msgstr "Napster"
-
-#: ../src/contacts-contact.vala:629
-msgid "Tencent QQ"
-msgstr "Tencent QQ"
-
-#: ../src/contacts-contact.vala:630
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
-
-#: ../src/contacts-contact.vala:631
-msgid "SILC"
-msgstr "SILC"
-
-#: ../src/contacts-contact.vala:632
-msgid "sip"
-msgstr "sip"
-
-#: ../src/contacts-contact.vala:633
-msgid "Skype"
-msgstr "Skype"
-
-#: ../src/contacts-contact.vala:634
-msgid "Telephony"
-msgstr "Telefoni"
-
-#: ../src/contacts-contact.vala:635
-msgid "Trepia"
-msgstr "Trepia"
-
-#: ../src/contacts-contact.vala:636
-#: ../src/contacts-contact.vala:637
-msgid "Yahoo! Messenger"
-msgstr "Yahoo! Messenger"
-
-#: ../src/contacts-contact.vala:638
-msgid "Zephyr"
-msgstr "Zephyr"
-
-#: ../src/contacts-contact.vala:891
-msgid "Twitter"
-msgstr "Twitter"
-
-#: ../src/contacts-contact.vala:917
-msgid "Unexpected internal error: created contact was not found"
-msgstr "Galat internal yang tak disangka: kontak yang dibuat tak ditemukan"
-
-#: ../src/contacts-contact.vala:938
-msgid "Local Contact"
-msgstr "Kontak Lokal"
-
-#: ../src/contacts-contact.vala:941
-msgid "Google"
-msgstr "Google"
-
-#: ../src/contacts-link-dialog.vala:88
-msgid "Link Contact"
-msgstr "Kaitkan Kontak"
-
-#: ../src/contacts-link-dialog.vala:113
-#, c-format
-msgid "Select contacts to link to %s"
-msgstr "Pilih kontak untuk dikaitkan ke %s"
-
-#: ../src/contacts-link-dialog.vala:162
-msgctxt "link-contacts-button"
-msgid "Link"
-msgstr "Taut"
-
-#: ../src/contacts-link-dialog.vala:181
-msgid "Currently linked:"
-msgstr "Sedang dikait:"
-
-#: ../src/contacts-list-pane.vala:148
-msgid ""
-"Connect to an account,\n"
-"import or add contacts"
-msgstr ""
-"Menyambung ke akun,\n"
-"impor atau tambah kontak"
-
-#: ../src/contacts-list-pane.vala:154
+#: ../src/contacts-setup-window.vala:89
 msgid "Online Accounts"
 msgstr "Akun Daring"
 
+#: ../src/contacts-setup-window.vala:92
+#| msgid "Postal Address"
+msgid "Use Local Address Book"
+msgstr "Pakai Buku Alamat Lokal"
+
+#: ../src/contacts-setup-window.vala:129
+#: ../src/contacts-setup-window.vala:150
+#| msgid "Contacts"
+msgid "Contacts Setup"
+msgstr "Penyiapan Kontak"
+
 #: ../src/contacts-types.vala:113
 #: ../src/contacts-types.vala:133
-#: ../src/contacts-types.vala:211
-#: ../src/contacts-types.vala:301
+#: ../src/contacts-types.vala:234
+#: ../src/contacts-types.vala:324
 msgid "Other"
 msgstr "Lainnya"
 
@@ -414,69 +615,86 @@ msgid "Custom..."
 msgstr "Gubahan..."
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:266
-#: ../src/contacts-types.vala:297
+#: ../src/contacts-types.vala:289
+#: ../src/contacts-types.vala:320
 msgid "Home"
 msgstr "Rumah"
 
-#: ../src/contacts-types.vala:267
-#: ../src/contacts-types.vala:292
+#: ../src/contacts-types.vala:290
+#: ../src/contacts-types.vala:315
 msgid "Work"
 msgstr "Kantor"
 
-#: ../src/contacts-types.vala:293
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:314
+msgid "Assistant"
+msgstr "Asisten"
+
+#: ../src/contacts-types.vala:316
 msgid "Work Fax"
 msgstr "Faks Kantor"
 
-#: ../src/contacts-types.vala:294
+#: ../src/contacts-types.vala:317
 msgid "Callback"
 msgstr "Callback"
 
-#: ../src/contacts-types.vala:295
+#: ../src/contacts-types.vala:318
 msgid "Car"
 msgstr "Mobil"
 
-#: ../src/contacts-types.vala:298
+#: ../src/contacts-types.vala:319
+msgid "Company"
+msgstr "Perusahaan"
+
+#: ../src/contacts-types.vala:321
 msgid "Home Fax"
 msgstr "Faks Rumah"
 
-#: ../src/contacts-types.vala:299
+#: ../src/contacts-types.vala:322
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:300
+#: ../src/contacts-types.vala:323
 msgid "Mobile"
 msgstr "HP"
 
-#: ../src/contacts-types.vala:302
+#: ../src/contacts-types.vala:325
 msgid "Fax"
 msgstr "Faks"
 
-#: ../src/contacts-types.vala:303
+#: ../src/contacts-types.vala:326
 msgid "Pager"
 msgstr "Pager"
 
-#: ../src/contacts-types.vala:304
+#: ../src/contacts-types.vala:327
 msgid "Radio"
 msgstr "Radio"
 
-#: ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:328
 msgid "Telex"
 msgstr "Telex"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:330
 msgid "TTY"
 msgstr "TTY"
 
-#. Translators: This is the header for the list of suggested contacts to
-#. link to the current contact
-#: ../src/contacts-view.vala:89
-msgid "Suggestion"
-msgid_plural "Suggestions"
-msgstr[0] "Saran"
+#: ../src/contacts-view.vala:271
+#| msgid "Suggestion"
+#| msgid_plural "Suggestions"
+msgid "Suggestions"
+msgstr "Saran"
 
-#: ../src/contacts-view.vala:413
-msgid "New contact"
-msgstr "Kontak baru"
+#: ../src/contacts-view.vala:296
+#| msgid "Contacts"
+msgid "Other Contacts"
+msgstr "Kontak Lain"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+msgid "First-time setup done."
+msgstr "Penyiapan saat pertama selesai."
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+msgid "Set to true when the user ran the first-time setup wizard."
+msgstr "Atur ke true ketika pengguna menjalankan wizard penyiapan saat pertama."
 
