@@ -817,7 +817,7 @@ class Contacts.BirthdayFieldRow : DataFieldRow {
     this.details = details;
 
     text_label = this.pack_text ();
-    var image = new Image.from_icon_name ("preferences-system-date-and-time-symbolic", IconSize.MENU);
+    var image = new Image.from_icon_name ("preferences-system-time-symbolic", IconSize.MENU);
     image.get_style_context ().add_class ("dim-label");
     var button = new Button();
     button.set_relief (ReliefStyle.NONE);
