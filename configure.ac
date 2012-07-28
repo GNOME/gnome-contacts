@@ -1,5 +1,5 @@
 AC_PREREQ([2.67])
-AC_INIT([gnome-contacts],[3.5.4],[http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts])
+AC_INIT([gnome-contacts],[3.5.4.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts])
 AC_CONFIG_SRCDIR([src/main.vala])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -36,7 +36,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 pkg_modules="gtk+-3.0 >= 3.4.0
 	     glib-2.0 >= 2.31.10
 	     gnome-desktop-3.0
-	     folks >= 0.7.2
+	     folks >= 0.7.3
 	     folks-telepathy
 	     folks-eds
 	     libnotify
