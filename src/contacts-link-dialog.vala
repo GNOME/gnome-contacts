@@ -179,9 +179,9 @@ public class Contacts.LinkDialog : Dialog {
 
     var label = new Label ("");
     if (contact.is_main)
-      label.set_markup (Markup.printf_escaped (_("<span weight='bold'>Link contacts to %s</span>"), contact.display_name));
+      label.set_markup ("<bold>" + Markup.printf_escaped (_("Link contacts to %s"), contact.display_name) + "</bold>");
     else
-      label.set_markup (_("<span weight='bold'>Select contact to link to</span>"));
+      label.set_markup ("<bold>" + _("Select contact to link to") + "</bold>");
     label.set_valign (Align.CENTER);
     label.set_halign (Align.CENTER);
     label.set_ellipsize (Pango.EllipsizeMode.END);
