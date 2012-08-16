@@ -109,7 +109,7 @@ gtk_notification_init (GtkNotification *notification)
   GtkNotificationPrivate *priv;
 
   context = gtk_widget_get_style_context (GTK_WIDGET (notification));
-  gtk_style_context_add_class (context, "contacts-notification");
+  gtk_style_context_add_class (context, "app-notification");
 
 
   gtk_widget_set_halign (GTK_WIDGET (notification), GTK_ALIGN_CENTER);
