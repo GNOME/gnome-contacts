@@ -3,6 +3,7 @@ NULL =
 AM_CPPFLAGS = \
 	-include config.h \
 	$(CONTACTS_CFLAGS) \
+	-I$(srcdir)/listbox \
 	-DLOCALEDIR=\""$(localedir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\" \
@@ -10,7 +11,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=$(srcdir)/../vapi --pkg config --pkg custom \
+	--vapidir=$(srcdir)/../vapi --vapidir=$(srcdir)/listbox --pkg config --pkg custom --pkg egglistbox \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 
@@ -22,7 +23,6 @@ endif
 bin_PROGRAMS = gnome-contacts
 
 vala_sources = \
-	listbox/egg-list-box.vala \
 	contacts-app.vala \
 	contacts-contact.vala \
 	contacts-contact-pane.vala \
@@ -62,6 +62,7 @@ gnome_contacts_SOURCES = \
 	um-crop-area.c \
 	contact-resources.c \
 	gtk-notification.c   \
+	listbox/egg-list-box.c \
 	contacts-esd-setup.c \
 	$(vala_sources) \
 	$(NULL)
