@@ -42,11 +42,13 @@
 
 enum {
   PROP_0,
-  PROP_TIMEOUT
+  PROP_TIMEOUT,
+  PROP_SHOW_CLOSE_BUTTON
 };
 
 struct _GtkNotificationPrivate {
   GtkWidget *close_button;
+  gboolean show_close_button;
 
   GdkWindow *bin_window;
 
@@ -354,6 +356,10 @@ gtk_notification_set_property (GObject *object, guint prop_id, const GValue *val
     gtk_notification_set_timeout (notification,
                                   g_value_get_uint (value));
     break;
+  case PROP_SHOW_CLOSE_BUTTON:
+    gtk_notification_set_show_close_button (notification,
+                                            g_value_get_boolean (value));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     break;
@@ -369,6 +375,10 @@ gtk_notification_get_property (GObject *object, guint prop_id, GValue *value, GP
   switch (prop_id) {
   case PROP_TIMEOUT:
     g_value_set_uint (value, notification->priv->timeout);
+    break;
+  case PROP_SHOW_CLOSE_BUTTON:
+    g_value_set_boolean (value,
+                         notification->priv->show_close_button);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -459,6 +469,12 @@ gtk_notification_class_init (GtkNotificationClass *klass)
                                                      "The time it takes to hide the widget, in seconds",
                                                      0, G_MAXUINT, 10,
                                                      GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  g_object_class_install_property (object_class,
+                                   PROP_SHOW_CLOSE_BUTTON,
+                                   g_param_spec_boolean("show-close-button", "show-close-button",
+                                                        "Whether to show a stock close button that dismisses the notification",
+                                                        TRUE,
+                                                        GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   notification_signals[DISMISSED] = g_signal_new ("dismissed",
                                                   G_OBJECT_CLASS_TYPE (klass),
@@ -666,11 +682,13 @@ gtk_notification_get_preferred_width (GtkWidget *widget, gint *minimum_size, gin
       natural += child_nat;
     }
 
-  gtk_widget_get_preferred_width (priv->close_button,
-                                  &child_min, &child_nat);
-  minimum += child_min;
-  natural += child_nat;
-
+  if (priv->show_close_button)
+    {
+      gtk_widget_get_preferred_width (priv->close_button,
+                                      &child_min, &child_nat);
+      minimum += child_min;
+      natural += child_nat;
+    }
 
   minimum += padding.left + padding.right + 2 * SHADOW_OFFSET_X;
   natural += padding.left + padding.right + 2 * SHADOW_OFFSET_X;
@@ -712,10 +730,13 @@ gtk_notification_get_preferred_width_for_height (GtkWidget *widget,
       natural += child_nat;
     }
 
-  gtk_widget_get_preferred_width_for_height (priv->close_button, child_height,
-                                             &child_min, &child_nat);
-  minimum += child_min;
-  natural += child_nat;
+  if (priv->show_close_button)
+    {
+      gtk_widget_get_preferred_width_for_height (priv->close_button, child_height,
+                                                 &child_min, &child_nat);
+      minimum += child_min;
+      natural += child_nat;
+    }
 
   minimum += padding.left + padding.right + 2 * SHADOW_OFFSET_X;
   natural += padding.left + padding.right + 2 * SHADOW_OFFSET_X;
@@ -736,17 +757,20 @@ gtk_notification_get_preferred_height_for_width (GtkWidget *widget,
   GtkNotification *notification = GTK_NOTIFICATION (widget);
   GtkNotificationPrivate *priv = notification->priv;
   GtkBin *bin = GTK_BIN (widget);
-  gint child_min, child_nat, child_width, button_width;
+  gint child_min, child_nat, child_width, button_width = 0;
   GtkWidget *child;
   GtkBorder padding;
-  gint minimum, natural;
+  gint minimum = 0, natural = 0;
 
   get_padding_and_border (notification, &padding);
 
-  gtk_widget_get_preferred_height (priv->close_button,
-                                   &minimum, &natural);
-  gtk_widget_get_preferred_width (priv->close_button,
-                                  NULL, &button_width);
+  if (priv->show_close_button)
+    {
+      gtk_widget_get_preferred_height (priv->close_button,
+                                       &minimum, &natural);
+      gtk_widget_get_preferred_width (priv->close_button,
+                                      NULL, &button_width);
+    }
 
   child = gtk_bin_get_child (bin);
   if (child && gtk_widget_get_visible (child))
@@ -813,8 +837,8 @@ gtk_notification_size_allocate (GtkWidget *widget,
   GtkBin *bin = GTK_BIN (widget);
   GtkAllocation child_allocation;
   GtkBorder padding;
+  GtkRequisition button_req;
   GtkWidget *child;
-  int button_width;
 
   gtk_widget_set_allocation (widget, allocation);
 
@@ -842,20 +866,29 @@ gtk_notification_size_allocate (GtkWidget *widget,
 
   child_allocation.x = SHADOW_OFFSET_X + padding.left;
   child_allocation.y = padding.top;
-  child_allocation.height = MAX (1, allocation->height - SHADOW_OFFSET_Y - padding.top - padding.bottom);
-  gtk_widget_get_preferred_width_for_height (priv->close_button, child_allocation.height,
-                                             NULL, &button_width);
 
-  child_allocation.width = MAX (1, allocation->width - 2 * SHADOW_OFFSET_X - padding.left - padding.right - button_width);
+  if (priv->show_close_button)
+    gtk_widget_get_preferred_size (priv->close_button, &button_req, NULL);
+  else
+    button_req.width = button_req.height = 0;
+
+  child_allocation.height = MAX (1, allocation->height - SHADOW_OFFSET_Y - padding.top - padding.bottom);
+  child_allocation.width = MAX (1, (allocation->width - button_req.width -
+                                    2 * SHADOW_OFFSET_X - padding.left - padding.right));
 
   child = gtk_bin_get_child (bin);
   if (child && gtk_widget_get_visible (child))
     gtk_widget_size_allocate (child, &child_allocation);
 
-  child_allocation.x += child_allocation.width;
-  child_allocation.width = button_width;
+  if (priv->show_close_button)
+    {
+      child_allocation.x += child_allocation.width;
+      child_allocation.width = button_req.width;
+      child_allocation.y += (child_allocation.height - button_req.height) / 2;
+      child_allocation.height = button_req.height;
 
-  gtk_widget_size_allocate (priv->close_button, &child_allocation);
+      gtk_widget_size_allocate (priv->close_button, &child_allocation);
+    }
 }
 
 static gboolean
@@ -893,6 +926,29 @@ gtk_notification_set_timeout (GtkNotification *notification,
 
   priv->timeout = timeout_msec;
   g_object_notify (G_OBJECT (notification), "timeout");
+}
+
+void
+gtk_notification_set_show_close_button (GtkNotification *notification,
+                                        gboolean show_close_button)
+{
+  GtkNotificationPrivate *priv = notification->priv;
+
+  if (show_close_button != priv->show_close_button)
+    {
+      priv->show_close_button = show_close_button;
+
+      gtk_widget_set_visible (priv->close_button, show_close_button);
+      gtk_widget_queue_resize (GTK_WIDGET (notification));
+
+      g_object_notify (G_OBJECT (notification), "show-close-button");
+    }
+}
+
+gboolean
+gtk_notification_get_show_close_button (GtkNotification *notification)
+{
+  return notification->priv->show_close_button;
 }
 
 void
