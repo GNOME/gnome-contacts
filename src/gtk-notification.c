@@ -434,6 +434,7 @@ gtk_notification_class_init (GtkNotificationClass *klass)
   object_class->get_property = gtk_notification_get_property;
 
   widget_class->show = gtk_notification_show;
+  widget_class->hide = gtk_notification_hide;
   widget_class->destroy = gtk_notification_destroy;
   widget_class->get_preferred_width = gtk_notification_get_preferred_width;
   widget_class->get_preferred_height_for_width = gtk_notification_get_preferred_height_for_width;
