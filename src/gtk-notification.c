@@ -771,7 +771,8 @@ gtk_notification_get_preferred_height_for_width (GtkWidget *widget,
   child = gtk_bin_get_child (bin);
   if (child && gtk_widget_get_visible (child))
     {
-      child_width = width - 2 * SHADOW_OFFSET_X - padding.left - padding.top - button_width;
+      child_width = width - button_width -
+        2 * SHADOW_OFFSET_X - padding.left - padding.right;
 
       gtk_widget_get_preferred_height_for_width (child, child_width,
                                                  &child_min, &child_nat);
@@ -779,8 +780,8 @@ gtk_notification_get_preferred_height_for_width (GtkWidget *widget,
       natural = MAX (natural, child_nat);
     }
 
-  minimum += padding.top + padding.top + SHADOW_OFFSET_Y;
-  natural += padding.top + padding.top + SHADOW_OFFSET_Y;
+  minimum += padding.top + padding.bottom + SHADOW_OFFSET_Y;
+  natural += padding.top + padding.bottom + SHADOW_OFFSET_Y;
 
  if (minimum_height)
     *minimum_height = minimum;
@@ -792,36 +793,11 @@ gtk_notification_get_preferred_height_for_width (GtkWidget *widget,
 static void
 gtk_notification_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height)
 {
-  GtkNotification *notification = GTK_NOTIFICATION (widget);
-  GtkNotificationPrivate *priv = notification->priv;
-  GtkBin *bin = GTK_BIN (widget);
-  gint child_min, child_nat;
-  GtkWidget *child;
-  GtkBorder padding;
-  gint minimum, natural;
+  gint width;
 
-  get_padding_and_border (notification, &padding);
-
-  gtk_widget_get_preferred_height (priv->close_button,
-                                   &minimum, &natural);
-
-  child = gtk_bin_get_child (bin);
-  if (child && gtk_widget_get_visible (child))
-    {
-      gtk_widget_get_preferred_height (child,
-                                       &child_min, &child_nat);
-      minimum = MAX (minimum, child_min);
-      natural = MAX (natural, child_nat);
-    }
-
-  minimum += padding.top + padding.top + SHADOW_OFFSET_Y;
-  natural += padding.top + padding.top + SHADOW_OFFSET_Y;
-
- if (minimum_height)
-    *minimum_height = minimum;
-
-  if (natural_height)
-    *natural_height = natural;
+  gtk_notification_get_preferred_width (widget, &width, NULL);
+  gtk_notification_get_preferred_height_for_width (widget, width,
+                                                   minimum_height, natural_height);
 }
 
 static void
