@@ -97,9 +97,6 @@ static void     gtk_notification_add                            (GtkContainer   
 /* signals handlers */
 static void     gtk_notification_close_button_clicked_cb        (GtkWidget       *widget,
                                                                  gpointer         user_data);
-static void     gtk_notification_action_button_clicked_cb       (GtkWidget       *widget,
-                                                                 gpointer         user_data);
-
 
 G_DEFINE_TYPE(GtkNotification, gtk_notification, GTK_TYPE_BIN);
 
@@ -194,13 +191,11 @@ gtk_notification_realize (GtkWidget *widget)
   GtkNotificationPrivate *priv = notification->priv;
   GtkBin *bin = GTK_BIN (widget);
   GtkAllocation allocation;
-  GtkAllocation view_allocation;
   GtkStyleContext *context;
   GtkWidget *child;
   GdkWindow *window;
   GdkWindowAttr attributes;
   gint attributes_mask;
-  gint event_mask;
 
   gtk_widget_set_realized (widget, TRUE);
 
@@ -970,8 +965,7 @@ gtk_notification_dismiss (GtkNotification *notification)
 static void
 gtk_notification_close_button_clicked_cb (GtkWidget *widget, gpointer user_data)
 {
-  GtkNotification *notification = GTK_NOTIFICATION(user_data);
-  GtkNotificationPrivate *priv = notification->priv;
+  GtkNotification *notification = GTK_NOTIFICATION (user_data);
 
   gtk_notification_dismiss (notification);
 }
