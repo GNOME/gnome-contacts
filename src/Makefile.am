@@ -96,6 +96,7 @@ CLEANFILES = \
 
 EXTRA_DIST = \
 	listbox/egg-list-box.h \
+	listbox/egglistbox.vapi \
 	cheese-flash.h \
 	um-crop-area.h \
 	gtk-notification.h   \
