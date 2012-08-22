@@ -111,8 +111,10 @@ public class Contacts.SearchProvider : Object {
 
     var contact = contacts_map.get (search_id);
 
-    if (contact == null)
+    if (contact == null) {
+      app.release ();
       return;
+    }
 
     string id = contact.individual.id;
     try {
