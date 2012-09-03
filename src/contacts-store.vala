@@ -224,9 +224,9 @@ public class Contacts.Store : GLib.Object {
 	  }
 	}
       });
-    aggregator.prepare ();
+    aggregator.prepare.begin ();
 
-    check_call_capabilities ();
+    check_call_capabilities.begin ();
   }
 
   private void contact_changed_cb (Contact c) {

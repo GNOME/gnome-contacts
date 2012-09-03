@@ -90,7 +90,7 @@ public class Contacts.LinkDialog : Dialog {
 	    container.add (message_label);
 	    undo_bar.response.connect ( (response_id) => {
 	      if (response_id == ResponseType.APPLY) {
-		operation.undo ();
+		operation.undo.begin ();
 		undo_bar.destroy ();
 	      }
 	    });

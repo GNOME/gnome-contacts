@@ -431,7 +431,7 @@ public class Contacts.App : Gtk.Application {
     notification.show_all ();
     b.clicked.connect ( () => {
       notification.dismiss ();
-      operation.undo ();
+      operation.undo.begin ();
     });
     overlay.add_overlay (notification);
   }
@@ -478,7 +478,7 @@ public class Contacts.App : Gtk.Application {
 
   public App () {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
-    this.app = this;
+    app = this;
     settings = new GLib.Settings ("org.gnome.Contacts");
   }
 }

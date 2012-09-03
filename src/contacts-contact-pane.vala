@@ -411,12 +411,11 @@ public abstract class Contacts.FieldSet : Grid {
       warning ("Unimplemented get_value()");
     else {
       saving = true;
-      sheet.pane.contact.set_persona_property.begin (sheet.persona, property_name, value,
-						     (obj, result) => {
+      Contact.set_persona_property.begin (sheet.persona, property_name, value,
+					  (obj, result) => {
 	  try {
-	    var contact = obj as Contact;
 	    saving = false;
-	    contact.set_persona_property.end (result);
+	    Contact.set_persona_property.end (result);
 	  } catch (Error e2) {
 	    App.app.show_message (e2.message);
 	    refresh_from_persona ();
@@ -1466,19 +1465,6 @@ public class Contacts.ContactPane : ScrolledWindow {
   public Contact? contact;
 
   const int PROFILE_SIZE = 128;
-
- private async Persona? set_persona_property (Persona persona,
-					       string property_name,
-					       Value value) throws GLib.Error, PropertyError {
-    if (persona is FakePersona) {
-      var fake = persona as FakePersona;
-      return yield fake.make_real_and_set (property_name, value);
-    } else {
-      persona.set_data ("contacts-unedited", true);
-      yield Contact.set_persona_property (persona, property_name, value);
-      return null;
-    }
-  }
 
   /* Tries to set the property on all persons that have it writeable, and
    * if none, creates a new persona and writes to it, returning the new

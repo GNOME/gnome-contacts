@@ -1378,7 +1378,7 @@ public class Contacts.Contact : GLib.Object  {
     foreach (var p in individual.personas) {
       var tp = p as Tpf.Persona;
       if (tp != null) {
-        tp.contact.request_contact_info_async(null);
+        tp.contact.request_contact_info_async.begin (null);
       }
     }
   }
@@ -1455,12 +1455,12 @@ public class Contacts.FakePersona : Persona {
   private const string[] _writeable_properties = {};
   public override string[] linkable_properties
     {
-      get { return this._linkable_properties; }
+      get { return _linkable_properties; }
     }
 
   public override string[] writeable_properties
     {
-      get { return this._writeable_properties; }
+      get { return _writeable_properties; }
     }
 
   public async Persona? make_real_and_set (string property,
