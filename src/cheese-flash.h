@@ -47,6 +47,10 @@ CheeseFlash *cheese_flash_new (void);
 void cheese_flash_fire (CheeseFlash *flash,
                         GdkRectangle *rect);
 
+#include <cheese/cheese-widget.h>
+
+GObject   *cheese_widget_get_camera (CheeseWidget *widget);
+
 G_END_DECLS
 
 #endif /* _CHEESE_FLASH_H_ */

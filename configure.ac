@@ -51,39 +51,26 @@ PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg gio-unix-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg libnotify"
 AC_SUBST(CONTACTS_PACKAGES)
 
-gstreamers_modules="gdk-x11-3.0
-                    gstreamer-0.10
-                    gstreamer-interfaces-0.10
-		    cheese-gtk >= 3.3.5
-		    cheese
-                    "
+# Optional dependency for the user accounts panel
+AC_ARG_WITH([cheese],
+            AS_HELP_STRING([--with-cheese], [enable cheese webcam support]),,
+            with_cheese=auto)
 
-AC_MSG_CHECKING([whether to enable gstreamer/cheese support])
-AC_ARG_ENABLE([gst],
-    AS_HELP_STRING([--enable-gst], [Whether to enable gstreamer and cheese support @<:@default=auto@:>@]),
-    [], [enable_gst=auto])
-AC_MSG_RESULT([$enable_gst])
-if test "$enable_gst" != "no"; then
-    PKG_CHECK_MODULES(CONTACTS_GSTREAMER,
-                  [$gstreamers_modules],
-                  [have_gst=yes], [have_gst=no])
-    if test "$enable_gst" = "yes" -a "$have_gst" = "no"; then
-        AC_MSG_ERROR([GStreamer/Cheese support was requested but requirements were not met])
-    elif test "$have_gst" = "yes"; then
-        enable_gst=yes
-    else
-        enable_gst=no
-    fi
+if test x"$with_cheese" != x"no" ; then
+   PKG_CHECK_MODULES(CHEESE, gstreamer-0.10 gstreamer-interfaces-0.10 cheese-gtk >= 3.3.5 cheese, [have_cheese=yes], [have_cheese=no])
+   if test x${have_cheese} = xyes; then
+     AC_DEFINE(HAVE_CHEESE, 1, [Define to 1 to enable cheese webcam support])
+   fi
+   if test x${with_cheese} = xyes && test x${have_cheese} = xno; then
+     AC_MSG_ERROR([Cheese configured but not found])
+   fi
+else
+   have_cheese=no
 fi
+AM_CONDITIONAL(BUILD_CHEESE, test x${have_cheese} = xyes)
 
-if test "$enable_gst" = "yes"; then
-    AC_DEFINE([USE_GSTREAMER], 1,
-            [Define to enable gstreamer/cheese support])
-fi
-
-AM_CONDITIONAL(USE_GSTREAMER, test "$enable_gst" = "yes")
-CONTACTS_GSTREAMER_PACKAGES="--pkg gdk-x11-3.0 --pkg gstreamer-0.10 --pkg gstreamer-interfaces-0.10"
-AC_SUBST(CONTACTS_GSTREAMER_PACKAGES)
+CONTACTS_CHEESE_PACKAGES="--pkg gdk-x11-3.0 --pkg gstreamer-0.10 --pkg gstreamer-interfaces-0.10"
+AC_SUBST(CONTACTS_CHEESE_PACKAGES)
 
 #############
 # Resources #

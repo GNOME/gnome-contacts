@@ -27,11 +27,11 @@ main (string[] args) {
 
   Notify.init (_("Contacts"));
 
-#if HAVE_GSTREAMER
-  Gst.init (ref args);
-#endif
-
+#if HAVE_CHEESE
+  Cheese.gtk_init (ref args);
+#else
   Gtk.init (ref args);
+#endif
 
   var app = new App ();
   app.run (args);

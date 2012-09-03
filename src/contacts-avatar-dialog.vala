@@ -16,10 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if HAVE_GSTREAMER
-using Gst;
-#endif
-
 using Gtk;
 using Folks;
 
@@ -34,12 +30,11 @@ public class Contacts.AvatarDialog : Dialog {
   private Grid view_grid;
   private ContactFrame main_frame;
 
-#if HAVE_GSTREAMER
-  private bool has_device = false;
-  private DrawingArea photobooth_area;
+#if HAVE_CHEESE
   private Cheese.Flash flash;
-  private Pipeline pipeline;
-  private Element sink;
+  private Cheese.CameraDeviceMonitor camera_monitor;
+  private Cheese.Widget cheese;
+  private int num_cameras;
 #endif
 
   private Gdk.Pixbuf? new_pixbuf;
@@ -243,7 +238,6 @@ public class Contacts.AvatarDialog : Dialog {
     chooser.present ();
   }
 
-
   public AvatarDialog (Contact contact) {
     thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
     this.contact = contact;
@@ -313,21 +307,29 @@ public class Contacts.AvatarDialog : Dialog {
     toolbar.add (the_add_button);
     the_add_button.clicked.connect (select_avatar_file_cb);
 
-#if HAVE_GSTREAMER
-    if (setup_gstreamer_pipeline ()) {
-      var webcam_button = new ToolButton (null, null);
-      webcam_button.set_icon_name ("camera-photo-symbolic");
-      webcam_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-      webcam_button.is_important = true;
-      toolbar.add (webcam_button);
-      webcam_button.clicked.connect ( (button) => {
-        notebook.set_current_page (2);
-        var xoverlay = this.sink as XOverlay;
-        xoverlay.set_xwindow_id (Gdk.X11Window.get_xid (photobooth_area.get_window ()));
-        pipeline.set_state (State.PLAYING);
+#if HAVE_CHEESE
+    var webcam_button = new ToolButton (null, null);
+    webcam_button.set_icon_name ("camera-photo-symbolic");
+    webcam_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    webcam_button.is_important = true;
+    webcam_button.sensitive = false;
+    toolbar.add (webcam_button);
+
+    camera_monitor = new Cheese.CameraDeviceMonitor ();
+    camera_monitor.added.connect ( () => {
+	num_cameras++;
+	webcam_button.sensitive = num_cameras > 0;
+    });
+    camera_monitor.removed.connect ( () => {
+	num_cameras--;
+	webcam_button.sensitive = num_cameras > 0;
+    });
+    camera_monitor.coldplug ();
+
+    webcam_button.clicked.connect ( (button) => {
+	notebook.set_current_page (2);
+	cheese.show ();
       });
-      has_device = true;
-    }
 #endif
 
     frame_grid.show_all ();
@@ -361,70 +363,67 @@ public class Contacts.AvatarDialog : Dialog {
     cancel_button.is_important = true;
     toolbar.add (cancel_button);
     cancel_button.clicked.connect ( (button) => {
-      crop_area.destroy ();
-      notebook.set_current_page (0);
+	crop_area.destroy ();
+	notebook.set_current_page (0);
     });
 
     frame_grid.show_all ();
     notebook.append_page (frame_grid, null);
 
-#if HAVE_GSTREAMER
-    if (has_device) {
-      /* photobooth page */
-      frame_grid = new Grid ();
-      frame_grid.set_orientation (Orientation.VERTICAL);
+#if HAVE_CHEESE
+    /* photobooth page */
+    frame_grid = new Grid ();
+    frame_grid.set_orientation (Orientation.VERTICAL);
 
-      photobooth_area = new DrawingArea ();
-      photobooth_area.set_vexpand (true);
-      photobooth_area.set_hexpand (true);
-      frame_grid.add (photobooth_area);
+    cheese = new Cheese.Widget ();
+    cheese.set_vexpand (true);
+    cheese.set_hexpand (true);
+    cheese.set_no_show_all (true);
+    frame_grid.add (cheese);
 
-      flash = new Cheese.Flash ();
+    flash = new Cheese.Flash ();
 
-      toolbar = new Toolbar ();
-      toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
-      toolbar.set_icon_size (IconSize.MENU);
-      toolbar.set_vexpand (false);
-      frame_grid.attach (toolbar, 0, 1, 1, 1);
+    toolbar = new Toolbar ();
+    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+    toolbar.set_icon_size (IconSize.MENU);
+    toolbar.set_vexpand (false);
+    frame_grid.attach (toolbar, 0, 1, 1, 1);
 
-      accept_button = new ToolButton (null, null);
-      accept_button.set_icon_name ("object-select-symbolic");
-      accept_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-      accept_button.is_important = true;
-      toolbar.add (accept_button);
-      accept_button.clicked.connect ( (button) => {
-        int x, y;
-        var win = photobooth_area.get_window ();
-        var flash_win = Gdk.get_default_root_window ();
-        flash_win.get_origin (out x, out y);
-        Gdk.Rectangle rect = {};
-        rect.x = x;
-        rect.y = y;
-        rect.width = flash_win.get_width ();
-        rect.height = flash_win.get_height ();
+    accept_button = new ToolButton (null, null);
+    accept_button.set_icon_name ("object-select-symbolic");
+    accept_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    accept_button.is_important = true;
+    toolbar.add (accept_button);
+
+    accept_button.clicked.connect ( (button) => {
+	var camera = cheese.get_camera () as Cheese.Camera;
+
+	var screen = button.get_screen ();
+        Gdk.Rectangle rect = { 0, 0, screen.get_width (), screen.get_height ()};
         flash.fire (rect);
-        if (pipeline != null)
-          pipeline.set_state (State.PAUSED);
-        var pix = Gdk.pixbuf_get_from_window (win, 0, 0,
-                                              photobooth_area.get_allocated_width (),
-                                              photobooth_area.get_allocated_height ());
-        set_crop_widget (pix);
+
+	camera.photo_taken.connect ( (pix) => {
+	    set_crop_widget (pix);
+	    cheese.hide ();
+	  });
+
+	if (!camera.take_photo_pixbuf ()) {
+	    warning ("Unable to take photo");
+	}
       });
 
-      cancel_button = new ToolButton (null, null);
-      cancel_button.set_icon_name ("edit-undo-symbolic");
-      cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-      cancel_button.is_important = true;
-      toolbar.add (cancel_button);
-      cancel_button.clicked.connect ( (button) => {
-        if (pipeline != null)
-          pipeline.set_state (State.READY);
+    cancel_button = new ToolButton (null, null);
+    cancel_button.set_icon_name ("edit-undo-symbolic");
+    cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    cancel_button.is_important = true;
+    toolbar.add (cancel_button);
+    cancel_button.clicked.connect ( (button) => {
         notebook.set_current_page (0);
-      });
+	cheese.hide ();
+    });
 
-      frame_grid.show_all ();
-      notebook.append_page (frame_grid, null);
-    }
+    frame_grid.show_all ();
+    notebook.append_page (frame_grid, null);
 #endif
 
     notebook.set_current_page (0);
@@ -449,10 +448,6 @@ public class Contacts.AvatarDialog : Dialog {
 	  }
 	}
 
-#if HAVE_GSTREAMER
-      pipeline.set_state (State.NULL);
-#endif
-
 	this.destroy ();
       });
 
@@ -460,21 +455,4 @@ public class Contacts.AvatarDialog : Dialog {
 
     grid.show_all ();
   }
-#if HAVE_GSTREAMER
-  private bool setup_gstreamer_pipeline () {
-    pipeline = new Pipeline ("booth_pipeline");
-    var src = ElementFactory.make ("v4l2src", "video");
-    sink = ElementFactory.make ("xvimagesink", "sink");
-    pipeline.add_many (src, sink);
-    src.link (this.sink);
-
-    unowned ParamSpec pspec = (src as PropertyProbe).get_property ("device");
-    if (pspec != null) {
-      unowned ValueArray values = (src as PropertyProbe).probe_and_get_values (pspec);
-      return (values != null);
-    }
-
-    return false;
-  }
-#endif
 }
