@@ -57,7 +57,7 @@ AC_ARG_WITH([cheese],
             with_cheese=auto)
 
 if test x"$with_cheese" != x"no" ; then
-   PKG_CHECK_MODULES(CHEESE, gstreamer-0.10 gstreamer-interfaces-0.10 cheese-gtk >= 3.3.5 cheese, [have_cheese=yes], [have_cheese=no])
+   PKG_CHECK_MODULES(CHEESE, cheese-gtk >= 3.3.91 cheese, [have_cheese=yes], [have_cheese=no])
    if test x${have_cheese} = xyes; then
      AC_DEFINE(HAVE_CHEESE, 1, [Define to 1 to enable cheese webcam support])
    fi
@@ -68,9 +68,6 @@ else
    have_cheese=no
 fi
 AM_CONDITIONAL(BUILD_CHEESE, test x${have_cheese} = xyes)
-
-CONTACTS_CHEESE_PACKAGES="--pkg gdk-x11-3.0 --pkg gstreamer-0.10 --pkg gstreamer-interfaces-0.10"
-AC_SUBST(CONTACTS_CHEESE_PACKAGES)
 
 #############
 # Resources #
