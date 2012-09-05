@@ -25,7 +25,6 @@ public class Contacts.ListPane : Frame {
   public Entry filter_entry;
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
-  private Revealer search_revealer;
   private bool search_visible;
 
   public signal void selection_changed (Contact? contact);
@@ -54,28 +53,6 @@ public class Contacts.ListPane : Frame {
     return false;
   }
 
-  public void set_search_visible (bool visible) {
-    search_visible = visible;
-    if (visible) {
-      search_revealer.reveal ();
-      Utils.grab_entry_focus_no_select (filter_entry);
-      if (!filter_entry.get_visible ()) {
-	/* When the toolbar size_allocate happens we initially allocate it too small
-	 * for some reason, which makes the toolbar set the child as invisible
-	 * (as its outside the toolbar size), which causes it to lose focus, so we re-set it
-	 */
-	ulong tag = 0;
-	tag = filter_entry.size_allocate.connect ( (allocation) => {
-	    Utils.grab_entry_focus_no_select (filter_entry);
-	    filter_entry.disconnect (tag);
-	  });
-      }
-    } else {
-      search_revealer.unreveal ();
-      filter_entry.set_text ("");
-    }
-  }
-
   private void filter_entry_changed (Editable editable) {
     if (filter_entry_changed_id != 0)
       Source.remove (filter_entry_changed_id);
@@ -102,22 +79,12 @@ public class Contacts.ListPane : Frame {
     toolbar.set_vexpand (false);
     toolbar.set_hexpand (true);
 
-    search_revealer = new Revealer ();
-    search_revealer.add (toolbar);
-
     contacts_view.set_show_subset (View.Subset.MAIN);
 
     filter_entry = new Entry ();
     filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
     filter_entry.changed.connect (filter_entry_changed);
     filter_entry.icon_press.connect (filter_entry_clear);
-
-    filter_entry.key_press_event.connect ( (key_event) => {
-	if (key_event.keyval == Gdk.Key.Escape) {
-	  set_search_visible (false);
-	}
-	return false;
-      });
 
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
@@ -147,12 +114,10 @@ public class Contacts.ListPane : Frame {
     contacts_view.show_all ();
     scrolled.set_no_show_all (true);
 
-    grid.add (search_revealer);
+    grid.add (toolbar);
     grid.add (scrolled);
 
     this.show_all ();
-    search_revealer.set_no_show_all (true);
-    search_revealer.hide ();
 
     scrolled.show ();
   }

@@ -43,7 +43,7 @@ public class Contacts.App : Gtk.Application {
     } else if (((event.keyval == Gdk.Key.s) ||
 		(event.keyval == Gdk.Key.f)) &&
 	       ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
-      list_pane.set_search_visible (true);
+      Utils.grab_entry_focus_no_select (list_pane.filter_entry);
     } else if (event.length >= 1 &&
 	       Gdk.keyval_to_unicode (event.keyval) != 0 &&
 	       (event.state & Gdk.ModifierType.CONTROL_MASK) == 0 &&
@@ -51,7 +51,7 @@ public class Contacts.App : Gtk.Application {
 	       (event.keyval != Gdk.Key.Escape) &&
 	       (event.keyval != Gdk.Key.Tab) &&
 	       (event.keyval != Gdk.Key.BackSpace) ) {
-      list_pane.set_search_visible (true);
+      Utils.grab_entry_focus_no_select (list_pane.filter_entry);
       window.propagate_key_event (event);
     }
 
