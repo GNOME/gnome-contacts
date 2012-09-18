@@ -162,6 +162,12 @@ public class Contacts.App : Gtk.Application {
       });
   }
 
+  public void show_help () {
+    Gtk.show_uri (window.get_screen (),
+         "help:gnome-help/contacts",
+         Gtk.get_current_event_time ());
+  }
+
   public void show_about () {
     string[] authors = {
       "Alexander Larsson <alexl@redhat.com>",
@@ -206,6 +212,10 @@ public class Contacts.App : Gtk.Application {
   private void create_window () {
     var action = new GLib.SimpleAction ("quit", null);
     action.activate.connect (() => { window.destroy (); });
+    this.add_action (action);
+
+    action = new GLib.SimpleAction ("help", null);
+    action.activate.connect (() => { show_help (); });
     this.add_action (action);
 
     action = new GLib.SimpleAction ("about", null);
