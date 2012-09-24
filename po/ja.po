@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the gnome-contacts package.
 # Hajime Taira <htaira@redhat.com>, 2011.
 # Mako N <mako@pasero.net>, 2012.
+# Noriko Mizumoto <noriko@fedoraproject.org>, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-24 12:40+0000\n"
-"PO-Revision-Date: 2012-03-25 16:10+0900\n"
-"Last-Translator: Mako N <mako@pasero.net>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-18 17:02+0000\n"
+"PO-Revision-Date: 2012-09-11 14:35+0000\n"
+"Last-Translator: Noriko Mizumoto <noriko@fedoraproject.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -18,10 +19,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:234
-#: ../src/main.vala:24
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:240
+#: ../src/main.vala:28
 msgid "Contacts"
-msgstr "Contacts"
+msgstr "連絡先"
 
 #: ../src/app-menu.ui.h:1
 msgid "_Change Address Book..."
@@ -32,6 +33,10 @@ msgid "_About Contacts"
 msgstr "このアプリケーションについて(_A)"
 
 #: ../src/app-menu.ui.h:3
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+#: ../src/app-menu.ui.h:4
 msgid "_Quit"
 msgstr "終了(_Q)"
 
@@ -40,7 +45,7 @@ msgstr "終了(_Q)"
 msgid "No contact with id %s found"
 msgstr "ID %s に該当する連絡先はありません。"
 
-#: ../src/contacts-app.vala:80 ../src/contacts-app.vala:202
+#: ../src/contacts-app.vala:80 ../src/contacts-app.vala:204
 msgid "Contact not found"
 msgstr "連絡先が見つかりません"
 
@@ -48,430 +53,387 @@ msgstr "連絡先が見つかりません"
 msgid "Change Address Book"
 msgstr "アドレス帳を変更"
 
-#: ../src/contacts-app.vala:94 ../src/contacts-setup-window.vala:156
-#, fuzzy
+#: ../src/contacts-app.vala:94 ../src/contacts-setup-window.vala:152
 msgid "Select"
 msgstr "選択"
 
-#: ../src/contacts-app.vala:180
+#: ../src/contacts-app.vala:182
 msgid "translator-credits"
 msgstr ""
 "Hajime Taira <htaira@redhat.com>\n"
 "Mako N <mako@pasero.net>"
 
-#: ../src/contacts-app.vala:181
-#, fuzzy
+#: ../src/contacts-app.vala:183
 msgid "GNOME Contacts"
 msgstr "GNOME Contacts"
 
-#: ../src/contacts-app.vala:182
+#: ../src/contacts-app.vala:184
 msgid "About GNOME Contacts"
 msgstr "このアプリケーションについて"
 
-#: ../src/contacts-app.vala:183
-#, fuzzy
+#: ../src/contacts-app.vala:185
 msgid "Contact Management Application"
-msgstr "— 連絡先管理アプリケーション"
+msgstr "連絡先管理アプリケーション"
 
-#: ../src/contacts-app.vala:201
+#: ../src/contacts-app.vala:203
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Eメールアドレス %s に該当する連絡先はありません"
 
-#: ../src/contacts-app.vala:250
-#, fuzzy
+#: ../src/contacts-app.vala:256
 msgid "New"
 msgstr "新規"
 
-#: ../src/contacts-app.vala:387
+#: ../src/contacts-app.vala:391
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "連絡先を削除しました: \"%s\""
 
-#: ../src/contacts-app.vala:414
+#: ../src/contacts-app.vala:418
 msgid "Show contact with this individual id"
 msgstr "この個別IDで連絡先を表示"
 
-#: ../src/contacts-app.vala:416
+#: ../src/contacts-app.vala:420
 msgid "Show contact with this email address"
 msgstr "このEメールアドレスで連絡先を表示"
 
-#: ../src/contacts-app.vala:429
+#: ../src/contacts-app.vala:433
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s を %s にリンク"
 
-#: ../src/contacts-app.vala:431 ../src/contacts-link-dialog.vala:87
+#: ../src/contacts-app.vala:435 ../src/contacts-link-dialog.vala:87
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s をこの連絡先にリンク"
 
-#: ../src/contacts-app.vala:448
+#: ../src/contacts-app.vala:452
 msgid "— contact management"
 msgstr "— 連絡先の管理"
 
-#: ../src/contacts-avatar-dialog.vala:178
+#: ../src/contacts-avatar-dialog.vala:197
 msgid "Browse for more pictures"
 msgstr "もっと写真を見る"
 
-#: ../src/contacts-avatar-dialog.vala:254
+#: ../src/contacts-avatar-dialog.vala:244
 msgid "Select Picture"
 msgstr "写真を選択"
 
-#: ../src/contacts-avatar-dialog.vala:257 ../src/contacts-link-dialog.vala:152
+#: ../src/contacts-avatar-dialog.vala:247 ../src/contacts-link-dialog.vala:152
 msgid "Close"
 msgstr "閉じる"
 
-#: ../src/contacts-contact-pane.vala:592
+#: ../src/contacts-contact-pane.vala:591
 msgctxt "Addresses on the Web"
 msgid "Links"
 msgstr "リンク"
 
-#: ../src/contacts-contact-pane.vala:593
+#: ../src/contacts-contact-pane.vala:592
 msgctxt "Web address"
 msgid "Link"
 msgstr "リンク"
 
-#: ../src/contacts-contact-pane.vala:680 ../src/contacts-contact-pane.vala:681
+#: ../src/contacts-contact-pane.vala:679 ../src/contacts-contact-pane.vala:680
 #: ../src/contacts-link-dialog.vala:116
-#: ../src/contacts-new-contact-dialog.vala:85
-#: ../src/contacts-new-contact-dialog.vala:120
+#: ../src/contacts-new-contact-dialog.vala:86
+#: ../src/contacts-new-contact-dialog.vala:121
 msgid "Email"
 msgstr "Eメール"
 
-#: ../src/contacts-contact-pane.vala:722
-#: ../src/contacts-new-contact-dialog.vala:94
-#: ../src/contacts-new-contact-dialog.vala:125
+#: ../src/contacts-contact-pane.vala:721
+#: ../src/contacts-new-contact-dialog.vala:95
+#: ../src/contacts-new-contact-dialog.vala:126
 msgid "Phone"
 msgstr "電話"
 
-#: ../src/contacts-contact-pane.vala:723 ../src/contacts-link-dialog.vala:132
+#: ../src/contacts-contact-pane.vala:722 ../src/contacts-link-dialog.vala:132
 msgid "Phone number"
 msgstr "電話番号"
 
-#: ../src/contacts-contact-pane.vala:783 ../src/contacts-contact-pane.vala:784
+#: ../src/contacts-contact-pane.vala:782 ../src/contacts-contact-pane.vala:783
 msgid "Chat"
 msgstr "チャット"
 
-#: ../src/contacts-contact-pane.vala:849
+#: ../src/contacts-contact-pane.vala:848
 msgid "January"
 msgstr "1月"
 
-#: ../src/contacts-contact-pane.vala:850
+#: ../src/contacts-contact-pane.vala:849
 msgid "February"
 msgstr "2月"
 
-#: ../src/contacts-contact-pane.vala:851
+#: ../src/contacts-contact-pane.vala:850
 msgid "March"
 msgstr "3月"
 
-#: ../src/contacts-contact-pane.vala:852
+#: ../src/contacts-contact-pane.vala:851
 msgid "April"
 msgstr "4月"
 
-#: ../src/contacts-contact-pane.vala:853
+#: ../src/contacts-contact-pane.vala:852
 msgid "May"
 msgstr "5月"
 
-#: ../src/contacts-contact-pane.vala:854
+#: ../src/contacts-contact-pane.vala:853
 msgid "June"
 msgstr "6月"
 
-#: ../src/contacts-contact-pane.vala:855
+#: ../src/contacts-contact-pane.vala:854
 msgid "July"
 msgstr "7月"
 
-#: ../src/contacts-contact-pane.vala:856
+#: ../src/contacts-contact-pane.vala:855
 msgid "August"
 msgstr "8月"
 
-#: ../src/contacts-contact-pane.vala:857
+#: ../src/contacts-contact-pane.vala:856
 msgid "September"
 msgstr "9月"
 
-#: ../src/contacts-contact-pane.vala:858
+#: ../src/contacts-contact-pane.vala:857
 msgid "October"
 msgstr "10月"
 
-#: ../src/contacts-contact-pane.vala:859
+#: ../src/contacts-contact-pane.vala:858
 msgid "November"
 msgstr "11月"
 
-#: ../src/contacts-contact-pane.vala:860
+#: ../src/contacts-contact-pane.vala:859
 msgid "December"
 msgstr "12月"
 
-#: ../src/contacts-contact-pane.vala:898 ../src/contacts-contact-pane.vala:899
+#: ../src/contacts-contact-pane.vala:897 ../src/contacts-contact-pane.vala:898
 msgid "Birthday"
 msgstr "誕生日"
 
-#: ../src/contacts-contact-pane.vala:971 ../src/contacts-contact-pane.vala:972
+#: ../src/contacts-contact-pane.vala:970 ../src/contacts-contact-pane.vala:971
 msgid "Nickname"
 msgstr "ニックネーム"
 
+#: ../src/contacts-contact-pane.vala:1061
 #: ../src/contacts-contact-pane.vala:1062
-#: ../src/contacts-contact-pane.vala:1063
 msgid "Note"
 msgstr "メモ"
 
-#: ../src/contacts-contact-pane.vala:1202
+#: ../src/contacts-contact-pane.vala:1201
 msgid "Addresses"
 msgstr "住所"
 
-#: ../src/contacts-contact-pane.vala:1203
-#: ../src/contacts-new-contact-dialog.vala:103
-#: ../src/contacts-new-contact-dialog.vala:130
+#: ../src/contacts-contact-pane.vala:1202
+#: ../src/contacts-new-contact-dialog.vala:104
+#: ../src/contacts-new-contact-dialog.vala:131
 msgid "Address"
 msgstr "住所"
 
-#: ../src/contacts-contact-pane.vala:1305
-#, fuzzy
+#: ../src/contacts-contact-pane.vala:1304
 msgid "Add to My Contacts"
 msgstr "連絡先に追加"
 
-#: ../src/contacts-contact-pane.vala:1315
-#, fuzzy
+#: ../src/contacts-contact-pane.vala:1314
 msgid "Unlink"
 msgstr "リンク解除"
 
-#: ../src/contacts-contact-pane.vala:1347
+#: ../src/contacts-contact-pane.vala:1346
 msgid "Add detail..."
 msgstr "詳細を追加..."
 
-#: ../src/contacts-contact-pane.vala:1362
+#: ../src/contacts-contact-pane.vala:1361
 #, c-format
 msgid "Select detail to add to %s"
 msgstr "%s に追加する詳細情報を選択"
 
-#: ../src/contacts-contact-pane.vala:1766
+#: ../src/contacts-contact-pane.vala:1752
 #, c-format
 msgid "Does %s from %s belong here?"
-msgstr ""
+msgstr "%s (%s) が属するのはここですか?"
 
-#: ../src/contacts-contact-pane.vala:1768
+#: ../src/contacts-contact-pane.vala:1754
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "これらの詳細情報は %s に関するものですか?"
 
-#: ../src/contacts-contact-pane.vala:1778
+#: ../src/contacts-contact-pane.vala:1764
 msgid "Yes"
 msgstr "はい"
 
-#: ../src/contacts-contact-pane.vala:1779
+#: ../src/contacts-contact-pane.vala:1765
 msgid "No"
 msgstr "いいえ"
 
-#: ../src/contacts-contact-pane.vala:1961
+#: ../src/contacts-contact-pane.vala:1962
 msgid "Select email address"
 msgstr "Eメールアドレスを選択"
 
-#: ../src/contacts-contact-pane.vala:2034
+#: ../src/contacts-contact-pane.vala:2035
 msgid "Select what to call"
-msgstr ""
+msgstr "何を呼び出すか選択する"
 
-#: ../src/contacts-contact-pane.vala:2098
+#: ../src/contacts-contact-pane.vala:2099
 msgid "Select chat account"
 msgstr "チャットアカウントを選択"
 
-#: ../src/contacts-contact-pane.vala:2178
+#: ../src/contacts-contact-pane.vala:2179
 msgid "Add/Remove Linked Contacts..."
 msgstr "リンクされた連絡先の追加と削除..."
 
 #. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2182
+#: ../src/contacts-contact-pane.vala:2183
 msgid "Delete"
 msgstr "削除"
 
-#: ../src/contacts-contact.vala:467
-msgid "Unknown status"
-msgstr "不明な在席状況"
-
-#: ../src/contacts-contact.vala:469
-msgid "Offline"
-msgstr "オフライン"
-
-#: ../src/contacts-contact.vala:473
-msgid "Error"
-msgstr "エラー"
-
-#: ../src/contacts-contact.vala:475
-msgid "Available"
-msgstr "在席中"
-
-#: ../src/contacts-contact.vala:477
-msgid "Away"
-msgstr "離席中"
-
-#: ../src/contacts-contact.vala:479
-msgid "Extended away"
-msgstr "長期不在"
-
-#: ../src/contacts-contact.vala:481
-msgid "Busy"
-msgstr "取り込み中"
-
-#: ../src/contacts-contact.vala:483
-msgid "Hidden"
-msgstr "隠れ中"
-
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "Street"
 msgstr "町丁名"
 
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "Extension"
 msgstr "番地"
 
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "City"
 msgstr "市(区町村)"
 
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "State/Province"
 msgstr "県(州)"
 
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "Zip/Postal Code"
 msgstr "郵便番号"
 
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "PO box"
 msgstr "私書箱"
 
-#: ../src/contacts-contact.vala:665
+#: ../src/contacts-contact.vala:686
 msgid "Country"
 msgstr "国"
 
-#: ../src/contacts-contact.vala:721
+#: ../src/contacts-contact.vala:742
 msgid "Google Talk"
 msgstr "Google トーク"
 
-#: ../src/contacts-contact.vala:722
+#: ../src/contacts-contact.vala:743
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:723 ../src/contacts-contact.vala:1003
+#: ../src/contacts-contact.vala:744 ../src/contacts-contact.vala:1026
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:724
+#: ../src/contacts-contact.vala:745
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:725
+#: ../src/contacts-contact.vala:746
 msgid "AOL Instant Messenger"
 msgstr "AOL インスタントメッセンジャー"
 
-#: ../src/contacts-contact.vala:726
+#: ../src/contacts-contact.vala:747
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:727
+#: ../src/contacts-contact.vala:748
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:728
+#: ../src/contacts-contact.vala:749
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:729
+#: ../src/contacts-contact.vala:750
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:730
+#: ../src/contacts-contact.vala:751
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:752
 msgid "Local network"
 msgstr "ローカルネットワーク"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:753
 msgid "Windows Live Messenger"
 msgstr "Windows Live メッセンジャー"
 
-#: ../src/contacts-contact.vala:733
+#: ../src/contacts-contact.vala:754
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:755
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:756
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:757
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:758
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:759
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:760
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:761
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:762
 msgid "Telephony"
 msgstr "テレフォニー"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:763
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:743 ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:764 ../src/contacts-contact.vala:765
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! メッセンジャー"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:766
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1006
+#: ../src/contacts-contact.vala:1029
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact.vala:1009
+#: ../src/contacts-contact.vala:1032
 msgid "Google Profile"
 msgstr "Google プロフィール"
 
-#: ../src/contacts-contact.vala:1073
+#: ../src/contacts-contact.vala:1096
 msgid "Unexpected internal error: created contact was not found"
 msgstr "予期しない内部エラー: 新しく作成した連絡先が見つかりませんでした"
 
-#: ../src/contacts-contact.vala:1219
-#, fuzzy
+#: ../src/contacts-contact.vala:1234
 msgid "Google Circles"
-msgstr "Google Circles"
+msgstr "Google サークル"
 
-#: ../src/contacts-contact.vala:1221
+#: ../src/contacts-contact.vala:1236
 msgid "Google Other Contact"
 msgstr "Google のその他の連絡先"
 
-#: ../src/contacts-esd-setup.c:627
-msgid "Personal"
-msgstr ""
-
-#: ../src/contacts-esd-setup.c:652
+#: ../src/contacts-esd-setup.c:114
 msgid "Local Address Book"
 msgstr "ローカルのアドレス帳"
 
-#: ../src/contacts-esd-setup.c:659 ../src/contacts-esd-setup.c:678
+#: ../src/contacts-esd-setup.c:117 ../src/contacts-esd-setup.c:145
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:671
+#: ../src/contacts-esd-setup.c:142
 msgid "Local Contact"
 msgstr "ローカルの連絡先"
 
@@ -488,7 +450,7 @@ msgstr "やり直し"
 msgid "Link Contact"
 msgstr "連絡先をリンク"
 
-#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:141
+#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:137
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -498,13 +460,12 @@ msgstr "リンク"
 
 #: ../src/contacts-link-dialog.vala:182
 #, c-format
-msgid "<span weight='bold'>Link contacts to %s</span>"
-msgstr "<span weight='bold'>連絡先を %s にリンク</span>"
+msgid "Link contacts to %s"
+msgstr "連絡先を %s にリンクする"
 
 #: ../src/contacts-link-dialog.vala:184
-#, fuzzy
-msgid "<span weight='bold'>Select contact to link to</span>"
-msgstr "<span weight='bold'>リンクする連絡先を選択</span>"
+msgid "Select contact to link to"
+msgstr "リンクする連絡先を選択"
 
 #: ../src/contacts-new-contact-dialog.vala:35
 msgid "New contact"
@@ -522,44 +483,42 @@ msgstr ""
 "写真を追加\n"
 "または選択"
 
-#: ../src/contacts-new-contact-dialog.vala:77
+#: ../src/contacts-new-contact-dialog.vala:78
 msgid "Contact Name"
 msgstr "連絡先名"
 
-#: ../src/contacts-new-contact-dialog.vala:112
+#: ../src/contacts-new-contact-dialog.vala:113
 msgid "Add Detail"
 msgstr "詳細を追加"
 
-#: ../src/contacts-new-contact-dialog.vala:211
+#: ../src/contacts-new-contact-dialog.vala:212
 msgid "You must specify a contact name"
 msgstr "連絡先名を指定する必要があります"
 
-#: ../src/contacts-new-contact-dialog.vala:319
+#: ../src/contacts-new-contact-dialog.vala:320
 msgid "No primary addressbook configured\n"
-msgstr ""
+msgstr "プライマリーのアドレス帳が設定されていません\n"
 
-#: ../src/contacts-new-contact-dialog.vala:340
+#: ../src/contacts-new-contact-dialog.vala:341
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "新しい連絡先を作ることができません: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:351
+#: ../src/contacts-new-contact-dialog.vala:352
 msgid "Unable to find newly created contact\n"
 msgstr "新しく作成した連絡先を見つけることができません。\n"
 
 #: ../src/contacts-setup-window.vala:36
-msgid ""
-"Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr ""
+msgid "Welcome to Contacts! Please select where you want to keep your address book:"
+msgstr "ようこそ! アドレス帳の保存先を選択してください。"
 
 #: ../src/contacts-setup-window.vala:81
-#, fuzzy
 msgid "Online Account Settings"
 msgstr "オンラインアカウント設定"
 
 #: ../src/contacts-setup-window.vala:86
 msgid "Setup an online account or use a local address book"
-msgstr ""
+msgstr "オンラインアカウントを設定するか、ローカルのアドレス帳を使用します"
 
 #: ../src/contacts-setup-window.vala:89
 msgid "Online Accounts"
@@ -569,10 +528,9 @@ msgstr "オンラインアカウント"
 msgid "Use Local Address Book"
 msgstr "ローカルのアドレス帳を使う"
 
-#: ../src/contacts-setup-window.vala:129 ../src/contacts-setup-window.vala:150
-#, fuzzy, c-format
+#: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
 msgid "Contacts Setup"
-msgstr "Contacts の設定"
+msgstr "連絡先の設定"
 
 #: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
 #: ../src/contacts-types.vala:234 ../src/contacts-types.vala:324
@@ -646,16 +604,11 @@ msgstr "テレックス"
 msgid "TTY"
 msgstr "テレタイプライター"
 
-#. Translators: This is the header for the list of suggested contacts to
-#. link to the current contact
-#: ../src/contacts-view.vala:130
-msgid "Suggestion"
-msgid_plural "Suggestions"
-msgstr[0] "提案"
+#: ../src/contacts-view.vala:271
+msgid "Suggestions"
+msgstr "提案"
 
-#. Translators: This is the header for the list of suggested contacts to
-#. link to the current contact
-#: ../src/contacts-view.vala:135
+#: ../src/contacts-view.vala:296
 msgid "Other Contacts"
 msgstr "その他の連絡先"
 
@@ -664,9 +617,35 @@ msgid "First-time setup done."
 msgstr "初期設定を完了しました。"
 
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:2
-#, fuzzy
 msgid "Set to true when the user ran the first-time setup wizard."
-msgstr "初期設定ウィザードを実行したら、真に設定"
+msgstr "ユーザーが初期設定ウィザードを実行すると、ture に設定されます。"
+
+#~ msgid "Unknown status"
+#~ msgstr "不明な在席状況"
+
+#~ msgid "Offline"
+#~ msgstr "オフライン"
+
+#~ msgid "Error"
+#~ msgstr "エラー"
+
+#~ msgid "Available"
+#~ msgstr "在席中"
+
+#~ msgid "Away"
+#~ msgstr "離席中"
+
+#~ msgid "Extended away"
+#~ msgstr "長期不在"
+
+#~ msgid "Busy"
+#~ msgstr "取り込み中"
+
+#~ msgid "Hidden"
+#~ msgstr "隠れ中"
+
+#~ msgid "<span weight='bold'>Link contacts to %s</span>"
+#~ msgstr "<span weight='bold'>連絡先を %s にリンク</span>"
 
 #~ msgid "Enter nickname"
 #~ msgstr "あだ名を入力"
