@@ -1250,8 +1250,9 @@ class Contacts.AddressFieldSet : FieldSet {
 public class Contacts.PersonaSheet : Grid {
   public ContactPane pane;
   public Persona persona;
-  FieldRow header;
+  FieldRow? header;
   FieldRow footer;
+  int sheet_nr;
 
   static Type[] field_set_types = {
     typeof(LinkFieldSet),
@@ -1268,9 +1269,10 @@ public class Contacts.PersonaSheet : Grid {
   };
   FieldSet? field_sets[8]; // This is really the size of field_set_types
 
-  public PersonaSheet(ContactPane pane, Persona persona, int sheet_nr) {
+  public PersonaSheet(ContactPane pane, Persona persona, int _sheet_nr) {
     assert (field_sets.length == field_set_types.length);
 
+    this.sheet_nr = _sheet_nr;
     this.pane = pane;
     this.persona = persona;
 
@@ -1284,50 +1286,8 @@ public class Contacts.PersonaSheet : Grid {
       Contact.persona_has_writable_property (persona, "postal-addresses");
 
     if (!Contact.persona_is_main (persona) || sheet_nr > 0) {
-      header = new FieldRow (pane.row_group, pane);
-
-      Label label;
-      var grid = header.pack_header_in_grid (Contact.format_persona_store_name_for_contact (persona), out label);
-
-      if (!editable) {
-	var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
-
-	label.set_hexpand (false);
-	image.get_style_context ().add_class ("dim-label");
-	image.set_hexpand (true);
-	image.set_halign (Align.START);
-	image.set_valign (Align.CENTER);
-	grid.add (image);
-      }
-
-      if (sheet_nr == 0) {
-	var b = new Button.with_label(_("Add to My Contacts"));
-	grid.add (b);
-
-	b.clicked.connect ( () => {
-	    link_contacts.begin (pane.contact, null, (obj, result) => {
-		link_contacts.end (result);
-		/* TODO: Support undo */
-	      });
-	  });
-      } else if (pane.contact.individual.personas.size > 1) {
-	var b = new Button.with_label(_("Unlink"));
-	grid.add (b);
-
-	b.clicked.connect ( () => {
-	    unlink_persona.begin (pane.contact, persona, (obj, result) => {
-		unlink_persona.end (result);
-		/* TODO: Support undo */
-		/* TODO: Ensure we don't get suggestion for this linkage again */
-	      });
-	  });
-      }
-
-      this.attach (header, 0, row_nr++, 1, 1);
-
-      header.clicked.connect ( () => {
-	  this.pane.enter_edit_mode (header);
-	});
+      this.build_header ();
+      row_nr = 1;
     }
 
     for (int i = 0; i < field_set_types.length; i++) {
@@ -1354,6 +1314,65 @@ public class Contacts.PersonaSheet : Grid {
 
   ~PersonaSheet() {
     persona.notify.disconnect(persona_notify_cb);
+  }
+
+  private void build_header () {
+    bool editable = Contact.persona_has_writable_property (persona, "email-addresses") &&
+      Contact.persona_has_writable_property (persona, "phone-numbers") &&
+      Contact.persona_has_writable_property (persona, "postal-addresses");
+
+    header = new FieldRow (pane.row_group, pane);
+
+    Label label;
+    var grid = header.pack_header_in_grid (Contact.format_persona_store_name_for_contact (persona), out label);
+
+    if (!editable) {
+      var image = new Image.from_icon_name ("changes-prevent-symbolic", IconSize.MENU);
+
+      label.set_hexpand (false);
+      image.get_style_context ().add_class ("dim-label");
+      image.set_hexpand (true);
+      image.set_halign (Align.START);
+      image.set_valign (Align.CENTER);
+      grid.add (image);
+    }
+
+    if (sheet_nr == 0) {
+      var b = new Button.with_label(_("Add to My Contacts"));
+      grid.add (b);
+
+      if (persona.store.is_primary_store) {
+	// Google Other contact (otherwise it wouldn't be non-main while
+	// being in the primary store)
+	b.clicked.connect ( () => {
+	    (persona as Edsf.Persona).in_google_personal_group = true;
+	  });
+      } else {
+	b.clicked.connect ( () => {
+	    link_contacts.begin (pane.contact, null, (obj, result) => {
+		link_contacts.end (result);
+		/* TODO: Support undo */
+	      });
+	  });
+      }
+    } else if (pane.contact.individual.personas.size > 1) {
+      var b = new Button.with_label(_("Unlink"));
+      grid.add (b);
+
+      b.clicked.connect ( () => {
+	  unlink_persona.begin (pane.contact, persona, (obj, result) => {
+	      unlink_persona.end (result);
+	      /* TODO: Support undo */
+	      /* TODO: Ensure we don't get suggestion for this linkage again */
+	    });
+	});
+    }
+
+    this.attach (header, 0, 0, 1, 1);
+
+    header.clicked.connect ( () => {
+	this.pane.enter_edit_mode (header);
+      });
   }
 
   private void add_detail () {
@@ -1439,6 +1458,18 @@ public class Contacts.PersonaSheet : Grid {
     foreach (var field_set in field_sets) {
       if (field_set.reads_param (name) && !field_set.saving) {
 	field_set.refresh_from_persona ();
+      }
+    }
+
+    if (name == "in-google-personal-group") {
+      bool is_main = Contact.persona_is_main (persona);
+
+      if ((!is_main || sheet_nr > 0) &&
+	  header == null) {
+	this.build_header ();
+      } else if (is_main && sheet_nr == 0 && header != null) {
+	header.destroy();
+	header = null;
       }
     }
   }
