@@ -242,7 +242,7 @@ public class Contacts.View : Egg.ListBox {
   }
 
   public override void child_selected (Widget? child) {
-    var data = child.get_data<ContactData> ("data");
+    var data = child != null ? child.get_data<ContactData> ("data") : null;
     var contact = data != null ? data.contact : null;
     selection_changed (contact);
     if (contact != null)
