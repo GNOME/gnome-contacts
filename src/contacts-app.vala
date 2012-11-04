@@ -217,6 +217,7 @@ public class Contacts.App : Gtk.Application {
     action = new GLib.SimpleAction ("help", null);
     action.activate.connect (() => { show_help (); });
     this.add_action (action);
+    this.add_accelerator ("F1", "app.help", null);
 
     action = new GLib.SimpleAction ("about", null);
     action.activate.connect (() => { show_about (); });
@@ -225,6 +226,11 @@ public class Contacts.App : Gtk.Application {
     action = new GLib.SimpleAction ("change_book", null);
     action.activate.connect (() => { change_address_book (); });
     this.add_action (action);
+
+    action = new GLib.SimpleAction ("new_contact", null);
+    action.activate.connect (() => { new_contact (); });
+    this.add_action (action);
+    this.add_accelerator ("<Primary>n", "app.new_contact", null);
 
     var builder = new Builder ();
     builder.set_translation_domain (Config.GETTEXT_PACKAGE);
@@ -257,10 +263,7 @@ public class Contacts.App : Gtk.Application {
     add_button.margin_left = 4;
     add_button.is_important = true;
     toolbar.add (add_button);
-    add_button.clicked.connect ( (button) => {
-	var dialog = new NewContactDialog (contacts_store, window);
-	dialog.show_all ();
-      });
+    add_button.clicked.connect (app.new_contact);
 
     toolbar = new Toolbar ();
     toolbar.set_icon_size (IconSize.MENU);
@@ -379,6 +382,11 @@ public class Contacts.App : Gtk.Application {
 
     notification.show_all ();
     overlay.add_overlay (notification);
+  }
+
+  public void new_contact () {
+    var dialog = new NewContactDialog (contacts_store, window);
+    dialog.show_all ();
   }
 
   private void delete_contact (Contact contact) {
