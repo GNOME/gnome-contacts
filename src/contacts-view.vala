@@ -300,8 +300,7 @@ public class Contacts.View : Egg.ListBox {
       return;
     }
 
-    if (before_data != null &&
-	w_data.initial_letter != before_data.initial_letter) {
+    if (before_data != null) {
       if (separator == null || !(separator is Separator))
 	separator = new Separator (Orientation.HORIZONTAL);
       return;
