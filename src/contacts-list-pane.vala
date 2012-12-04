@@ -128,4 +128,12 @@ public class Contacts.ListPane : Frame {
     contacts_view.select_contact (contact);
     ignore_selection_change = false;
   }
+
+  public void show_selection () {
+    contacts_view.show_selectors ();
+  }
+
+  public void hide_selection () {
+    contacts_view.hide_selectors ();
+  }
 }

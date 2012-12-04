@@ -26,6 +26,7 @@ public class Contacts.View : Egg.ListBox {
     public Grid grid;
     public Label label;
     public ContactFrame image_frame;
+    public CheckButton selector_button;
     public int sort_prio;
     public string display_name;
     public unichar initial_letter;
@@ -54,6 +55,7 @@ public class Contacts.View : Egg.ListBox {
 
   string []? filter_values;
   private TextDisplay text_display;
+  private bool selectors_visible;
 
   public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
     set_selection_mode (SelectionMode.BROWSE);
@@ -71,6 +73,8 @@ public class Contacts.View : Egg.ListBox {
       });
     this.set_filter_func (filter);
     this.set_separator_funcs (update_separator);
+
+    selectors_visible = false;
 
     contacts_store.added.connect (contact_added_cb);
     contacts_store.removed.connect (contact_removed_cb);
@@ -201,9 +205,14 @@ public class Contacts.View : Egg.ListBox {
     data.label.set_ellipsize (Pango.EllipsizeMode.END);
     data.label.set_valign (Align.START);
     data.label.set_halign (Align.START);
+    data.selector_button = new CheckButton ();
+    data.selector_button.set_valign (Align.CENTER);
+    data.selector_button.set_halign (Align.END);
+    data.selector_button.set_hexpand (true);
 
     data.grid.attach (data.image_frame, 0, 0, 1, 2);
     data.grid.attach (data.label, 1, 0, 1, 1);
+    data.grid.attach (data.selector_button, 2, 0, 1, 2);
 
     if (text_display == TextDisplay.PRESENCE) {
       var merged_presence = c.create_merged_presence_widget ();
@@ -229,6 +238,7 @@ public class Contacts.View : Egg.ListBox {
 
     data.grid.set_data<ContactData> ("data", data);
     data.grid.show_all ();
+    data.selector_button.hide ();
     contacts.set (c, data);
     this.add (data.grid);
   }
@@ -311,5 +321,20 @@ public class Contacts.View : Egg.ListBox {
   public void select_contact (Contact contact) {
     var data = contacts.get (contact);
     select_child (data.grid);
+  }
+
+  public void show_selectors () {
+    foreach (var data in contacts.values) {
+      data.selector_button.show ();
+    }
+    selectors_visible = true;
+  }
+
+  public void hide_selectors () {
+    foreach (var data in contacts.values) {
+      data.selector_button.hide ();
+      data.selector_button.set_active (false);
+    }
+    selectors_visible = false;
   }
 }
