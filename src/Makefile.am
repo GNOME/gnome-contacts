@@ -4,6 +4,7 @@ AM_CPPFLAGS = \
 	-include config.h \
 	$(CONTACTS_CFLAGS) \
 	-I$(srcdir)/listbox \
+	-I$(top_srcdir)/libgd \
 	-DLOCALEDIR=\""$(localedir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\" \
@@ -11,7 +12,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=$(srcdir)/../vapi --vapidir=$(srcdir)/listbox --pkg config --pkg custom --pkg egglistbox \
+	--vapidir=$(srcdir)/../vapi --vapidir=$(srcdir)/listbox --vapidir=$(top_srcdir)/libgd --pkg config --pkg custom --pkg egglistbox --pkg gd-1.0 \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 
@@ -67,7 +68,7 @@ gnome_contacts_SOURCES = \
 	$(vala_sources) \
 	$(NULL)
 
-gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
+gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm $(top_builddir)/libgd/libgd.la
 
 if BUILD_CHEESE
 gnome_contacts_LDADD += $(CHEESE_LIBS)

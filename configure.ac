@@ -8,6 +8,7 @@ AM_INIT_AUTOMAKE
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 AC_CONFIG_FILES([Makefile
+		libgd/Makefile
 		vapi/Makefile
 		src/Makefile
 		data/Makefile
@@ -75,5 +76,16 @@ AM_CONDITIONAL(BUILD_CHEESE, test x${have_cheese} = xyes)
 
 GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable glib_compile_resources gio-2.0`
 AC_SUBST(GLIB_COMPILE_RESOURCES)
+
+dnl libgd
+LIBGD_INIT([
+  gtk-hacks
+  main-toolbar
+  main-icon-view
+  margin-container
+  static
+  tagged-entry
+  vapi
+])
 
 AC_OUTPUT
