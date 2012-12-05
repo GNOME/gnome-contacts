@@ -26,6 +26,8 @@ public class Contacts.App : Gtk.Application {
   public Store contacts_store;
   private ListPane list_pane;
   private ContactPane contacts_pane;
+  private Overlay right_overlay;
+
   private Gtk.Overlay overlay;
 
   private bool window_delete_event (Gdk.EventAny event) {
@@ -305,7 +307,12 @@ public class Contacts.App : Gtk.Application {
     contacts_pane.set_hexpand (true);
     contacts_pane.will_delete.connect (delete_contact);
     contacts_pane.contacts_linked.connect (contacts_linked);
-    grid.attach (contacts_pane, 1, 1, 1, 1);
+
+    right_overlay = new Overlay ();
+    right_overlay.override_background_color (0, transparent);
+    right_overlay.add (contacts_pane);
+
+    grid.attach (right_overlay, 1, 1, 1, 1);
 
     grid.show_all ();
   }

@@ -1493,6 +1493,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   private Gtk.MenuItem link_menu_item;
   private Gtk.MenuItem delete_menu_item;
 
+  public Grid suggestion_grid;
   public Contact? contact;
 
   const int PROFILE_SIZE = 128;
@@ -1753,30 +1754,33 @@ public class Contacts.ContactPane : ScrolledWindow {
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
 
   public void add_suggestion (Contact c) {
-    var row = new FieldRow (row_group, this);
-    personas_grid.add (row);
+    var parent_overlay = this.get_parent () as Overlay;
 
-    var grid = new Grid ();
-    grid.get_style_context ().add_class ("contacts-suggestion");
-    grid.set_redraw_on_allocate (true);
-    grid.draw.connect ( (cr) => {
+    suggestion_grid = new Grid ();
+    suggestion_grid.set_valign (Align.END);
+    parent_overlay.add_overlay (suggestion_grid);
+
+    suggestion_grid.get_style_context ().add_class ("contacts-suggestion");
+    suggestion_grid.set_redraw_on_allocate (true);
+    suggestion_grid.draw.connect ( (cr) => {
 	Allocation allocation;
-	grid.get_allocation (out allocation);
+	suggestion_grid.get_allocation (out allocation);
 
-	var context = grid.get_style_context ();
+	var context = suggestion_grid.get_style_context ();
 	context.render_background (cr,
 				   0, 0,
 				   allocation.width, allocation.height);
 	return false;
       });
-    row.pack (grid);
 
     var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
     c.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (c.individual, c);
       });
     image_frame.set_hexpand (false);
-    grid.attach (image_frame, 0, 0, 1, 2);
+    image_frame.margin = 24;
+    image_frame.margin_right = 12;
+    suggestion_grid.attach (image_frame, 0, 0, 1, 2);
 
     var label = new Label ("");
     if (contact.is_main)
@@ -1787,9 +1791,10 @@ public class Contacts.ContactPane : ScrolledWindow {
     label.set_halign (Align.START);
     label.set_line_wrap (true);
     label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
-    label.set_hexpand (false);
-    label.xalign = 0.0f;
-    grid.attach (label, 1, 0, 1, 1);
+    label.set_hexpand (true);
+    label.margin_top = 24;
+    label.margin_bottom = 24;
+    suggestion_grid.attach (label, 1, 0, 1, 2);
 
     var bbox = new ButtonBox (Orientation.HORIZONTAL);
     var yes = new Button.with_label (_("Yes"));
@@ -1801,13 +1806,13 @@ public class Contacts.ContactPane : ScrolledWindow {
 	var operation = link_contacts.end (result);
 	this.contacts_linked (null, linked_contact, operation);
       });
-      row.destroy ();
+      suggestion_grid.destroy ();
     });
 
     no.clicked.connect ( () => {
 	contacts_store.add_no_suggest_link (contact, c);
 	/* TODO: Add undo */
-	row.destroy ();
+	suggestion_grid.destroy ();
       });
 
     bbox.add (yes);
@@ -1815,8 +1820,10 @@ public class Contacts.ContactPane : ScrolledWindow {
     bbox.set_spacing (8);
     bbox.set_halign (Align.END);
     bbox.set_hexpand (true);
-    bbox.set_border_width (4);
-    grid.attach (bbox, 2, 0, 1, 2);
+    bbox.margin = 24;
+    bbox.margin_left = 12;
+    suggestion_grid.attach (bbox, 2, 0, 1, 2);
+    suggestion_grid.show_all ();
   }
 
   private uint update_personas_timeout;
@@ -1870,6 +1877,9 @@ public class Contacts.ContactPane : ScrolledWindow {
 
     update_card ();
     update_personas (show_matches);
+
+    if (suggestion_grid != null)
+      suggestion_grid.destroy ();
 
     if (!show_matches) {
       update_personas_timeout = Gdk.threads_add_timeout (100, () => {
@@ -2220,6 +2230,8 @@ public class Contacts.ContactPane : ScrolledWindow {
       // some potential matches while the store was still preparing.
       update_personas ();
     });
+
+    suggestion_grid = null;
   }
 
   void link_contact () {
