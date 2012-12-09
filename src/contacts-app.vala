@@ -20,15 +20,22 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
-  public GLib.Settings settings;
-  public Contacts.Window window;
   public static App app;
+  public GLib.Settings settings;
   public Store contacts_store;
+
+  public Contacts.Window window;
+  private Gtk.Overlay overlay;
+
+  private Gd.MainToolbar left_toolbar;
   private ListPane list_pane;
+
+  private Gd.MainToolbar right_toolbar;
+  private Button edit_button;
+  private Button done_button;
+
   private ContactPane contacts_pane;
   private Overlay right_overlay;
-
-  private Gtk.Overlay overlay;
 
   private bool window_delete_event (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
@@ -62,6 +69,15 @@ public class Contacts.App : Gtk.Application {
 
   private void selection_changed (Contact? new_selection) {
     contacts_pane.show_contact (new_selection, false, false);
+
+    /* clearing right_toolbar */
+    if (new_selection != null) {
+      edit_button.show ();
+    } else {
+      right_toolbar.set_labels (null, null);
+      edit_button.hide ();
+      done_button.hide ();
+    }
   }
 
   public void show_contact (Contact? contact) {
@@ -253,40 +269,41 @@ public class Contacts.App : Gtk.Application {
 
     var grid = new Grid();
 
-    var toolbar = new Toolbar ();
-    toolbar.set_icon_size (IconSize.MENU);
-    toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    toolbar.get_style_context ().add_class ("contacts-left-toolbar");
-    toolbar.set_vexpand (false);
-    toolbar.set_hexpand (false);
-    grid.attach (toolbar, 0, 0, 1, 1);
+    left_toolbar = new Gd.MainToolbar ();
+    left_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    left_toolbar.get_style_context ().add_class ("contacts-left-toolbar");
+    left_toolbar.set_vexpand (false);
+    grid.attach (left_toolbar, 0, 0, 1, 1);
 
-    var add_button = new ToolButton (null, _("New"));
-    add_button.margin_left = 4;
-    add_button.is_important = true;
-    toolbar.add (add_button);
+    var add_button = left_toolbar.add_button (null, _("New"), true) as Gtk.Button;
+    add_button.set_size_request (70, -1);
     add_button.clicked.connect (app.new_contact);
 
-    toolbar = new Toolbar ();
-    toolbar.set_icon_size (IconSize.MENU);
-    toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    toolbar.set_vexpand (false);
-    toolbar.set_hexpand (true);
-    grid.attach (toolbar, 1, 0, 1, 1);
+    var select_button = left_toolbar.add_button ("object-select-symbolic", null, false) as Gtk.Button;
 
-    /*
-    var share_button = new ToolButton (null, null);
-    share_button.set_sensitive (false);
-    share_button.margin_right = 4;
-    share_button.set_icon_name ("send-to-symbolic");
-    share_button.is_important = false;
-    share_button.set_halign (Align.END);
-    share_button.set_expand (true);
-    toolbar.add (share_button);
-    share_button.clicked.connect ( (button) => {
+    right_toolbar = new Gd.MainToolbar ();
+    right_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    right_toolbar.set_vexpand (false);
+    grid.attach (right_toolbar, 1, 0, 1, 1);
+
+    edit_button = right_toolbar.add_button (null, _("Edit"), false) as Gtk.Button;
+    edit_button.set_size_request (70, -1);
+
+    done_button = right_toolbar.add_button (null, _("Done"), false) as Gtk.Button;
+    done_button.set_size_request (70, -1);
+
+    edit_button.clicked.connect (() => {
+	right_toolbar.set_labels (_("Editing"), "what ?");
+	edit_button.hide ();
+	done_button.show ();
       });
 
-    */
+    done_button.clicked.connect (() => {
+	right_toolbar.set_labels (null, null);
+	done_button.hide ();
+	edit_button.show ();
+      });
+
     window.add (grid);
 
     /* We put in an overlay overlapping the left and right pane for the
@@ -315,6 +332,9 @@ public class Contacts.App : Gtk.Application {
     grid.attach (right_overlay, 1, 1, 1, 1);
 
     grid.show_all ();
+
+    edit_button.hide ();
+    done_button.hide ();
   }
 
   public override void startup () {
