@@ -1,0 +1,662 @@
+/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
+/*
+ * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using Gtk;
+using Folks;
+using Gee;
+
+public class Contacts.ContactEditor : Grid {
+  public struct PropertyData {
+    Persona persona;
+    Value value;
+  }
+
+  struct RowData {
+    AbstractFieldDetails<string> details;
+  }
+
+  struct Field {
+    bool changed;
+    HashMap<int, RowData?> rows;
+  }
+
+  private int last_row;
+  private HashMap<Persona, HashMap<string, Field?> > writable_personas;
+
+  Value get_value_from_emails (HashMap<int, RowData?> rows) {
+    var new_details = new HashSet<EmailFieldDetails>();
+
+    foreach (var row_entry in rows.entries) {
+      var combo = get_child_at (0, row_entry.key) as TypeCombo;
+      var entry = get_child_at (1, row_entry.key) as Entry;
+      combo.update_details (row_entry.value.details);
+      var details = new EmailFieldDetails (entry.get_text (), row_entry.value.details.parameters);
+      new_details.add (details);
+    }
+    var new_value = Value (new_details.get_type ());
+    new_value.set_object (new_details);
+
+    return new_value;
+  }
+
+  Value get_value_from_phones (HashMap<int, RowData?> rows) {
+    var new_details = new HashSet<PhoneFieldDetails>();
+
+    foreach (var row_entry in rows.entries) {
+      var combo = get_child_at (0, row_entry.key) as TypeCombo;
+      var entry = get_child_at (1, row_entry.key) as Entry;
+      combo.update_details (row_entry.value.details);
+      var details = new PhoneFieldDetails (entry.get_text (), row_entry.value.details.parameters);
+      new_details.add (details);
+    }
+    var new_value = Value (new_details.get_type ());
+    new_value.set_object (new_details);
+    return new_value;
+  }
+
+  Value get_value_from_urls (HashMap<int, RowData?> rows) {
+    var new_details = new HashSet<UrlFieldDetails>();
+
+    foreach (var row_entry in rows.entries) {
+      var entry = get_child_at (1, row_entry.key) as Entry;
+      var details = new UrlFieldDetails (entry.get_text (), row_entry.value.details.parameters);
+      new_details.add (details);
+    }
+    var new_value = Value (new_details.get_type ());
+    new_value.set_object (new_details);
+    return new_value;
+  }
+
+  Value get_value_from_nickname (HashMap<int, RowData?> rows) {
+    var new_value = Value (typeof (string));
+    foreach (var row_entry in rows.entries) {
+      var entry = get_child_at (1, row_entry.key) as Entry;
+      new_value.set_string (entry.get_text ());
+    }
+    return new_value;
+  }
+
+  Value get_value_from_birthday (HashMap<int, RowData?> rows) {
+    var new_value = Value (typeof (DateTime));
+    foreach (var row_entry in rows.entries) {
+      var box = get_child_at (1, row_entry.key) as Grid;
+      var day_spin  = box.get_child_at (0, 0) as SpinButton;
+      var combo  = box.get_child_at (1, 0) as ComboBoxText;
+
+      var bday = new DateTime.local ((int)box.get_data<int> ("year"),
+				     combo.get_active () + 1,
+				     (int)day_spin.get_value (),
+				     0, 0, 0);
+      bday = bday.to_utc ();
+
+      new_value.set_boxed (bday);
+    }
+    return new_value;
+  }
+
+  Value get_value_from_notes (HashMap<int, RowData?> rows) {
+    var new_details = new HashSet<NoteFieldDetails>();
+
+    foreach (var row_entry in rows.entries) {
+      var text = (get_child_at (1, row_entry.key) as Bin).get_child () as TextView;
+      TextIter start, end;
+      text.get_buffer ().get_start_iter (out start);
+      text.get_buffer ().get_end_iter (out end);
+      var value = text.get_buffer ().get_text (start, end, true);
+      var details = new NoteFieldDetails (value, row_entry.value.details.parameters);
+      new_details.add (details);
+    }
+    var new_value = Value (new_details.get_type ());
+    new_value.set_object (new_details);
+    return new_value;
+  }
+
+  void set_field_changed (int row) {
+    foreach (var fields in writable_personas.values) {
+      foreach (var entry in fields.entries) {
+	if (row in entry.value.rows.keys) {
+	  if (entry.value.changed)
+	    return;
+
+	  /* FIXME: test if it's changed */
+	  entry.value.changed = true;
+	  return;
+	}
+      }
+    }
+  }
+
+  void remove_row (int row) {
+    foreach (var fields in writable_personas.values) {
+      foreach (var field_entry in fields.entries) {
+	foreach (var idx in field_entry.value.rows.keys) {
+	  if (idx == row) {
+	    debug ("called remove_row (%d)", row);
+	    var child = get_child_at (0, row);
+	    child.destroy ();
+	    child = get_child_at (1, row);
+	    child.destroy ();
+	    child = get_child_at (3, row);
+	    child.destroy ();
+
+	    field_entry.value.changed = true;
+	    field_entry.value.rows.unset (row);
+	    return;
+	  }
+	}
+      }
+    }
+  }
+
+  void attach_row_with_entry (TypeSet type_set, AbstractFieldDetails details, string value, int row) {
+    var combo = new TypeCombo (type_set);
+    combo.set_hexpand (false);
+    combo.set_halign (Align.END);
+    combo.set_active (details);
+    attach (combo, 0, row, 1, 1);
+
+    var value_entry = new Entry ();
+    value_entry.set_text (value);
+    value_entry.set_hexpand (true);
+    attach (value_entry, 1, row, 2, 1);
+
+    var delete_button = new Button ();
+    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
+    delete_button.add (image);
+    attach (delete_button, 3, row, 1, 1);
+
+    /* Notify change to upper layer */
+    combo.changed.connect (() => {
+	set_field_changed (row);
+      });
+    value_entry.changed.connect (() => {
+	set_field_changed (row);
+      });
+    delete_button.clicked.connect (() => {
+	remove_row (row);
+      });
+  }
+
+  void attach_row_with_entry_labeled (string title, AbstractFieldDetails? details, string value, int row) {
+    var title_label = new Label (title);
+    title_label.set_hexpand (false);
+    title_label.set_halign (Align.END);
+    title_label.margin_right = 6;
+    attach (title_label, 0, row, 1, 1);
+
+    var value_entry = new Entry ();
+    value_entry.set_text (value);
+    value_entry.set_hexpand (true);
+    attach (value_entry, 1, row, 2, 1);
+
+    var delete_button = new Button ();
+    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
+    delete_button.add (image);
+    attach (delete_button, 3, row, 1, 1);
+
+    /* Notify change to upper layer */
+    value_entry.changed.connect (() => {
+	set_field_changed (row);
+      });
+    delete_button.clicked.connect (() => {
+	remove_row (row);
+      });
+  }
+
+  void attach_row_with_text_labeled (string title, AbstractFieldDetails? details, string value, int row) {
+    var title_label = new Label (title);
+    title_label.set_hexpand (false);
+    title_label.set_halign (Align.END);
+    title_label.set_valign (Align.START);
+    title_label.margin_top = 3;
+    title_label.margin_right = 6;
+    attach (title_label, 0, row, 1, 1);
+
+    var sw = new ScrolledWindow (null, null);
+    sw.set_shadow_type (ShadowType.OUT);
+    sw.set_size_request (-1, 100);
+    var value_text = new TextView ();
+    value_text.get_buffer ().set_text (value);
+    value_text.set_hexpand (true);
+    value_text.get_style_context ().add_class ("contacts-entry");
+    sw.add (value_text);
+    attach (sw, 1, row, 2, 1);
+
+    var delete_button = new Button ();
+    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
+    delete_button.add (image);
+    delete_button.set_valign (Align.START);
+    attach (delete_button, 3, row, 1, 1);
+
+    /* Notify change to upper layer */
+    value_text.get_buffer ().changed.connect (() => {
+	set_field_changed (row);
+      });
+    delete_button.clicked.connect (() => {
+	remove_row (row);
+      });
+  }
+
+  void attach_row_for_birthday (string title, AbstractFieldDetails? details, DateTime birthday, int row) {
+    var title_label = new Label (title);
+    title_label.set_hexpand (false);
+    title_label.set_halign (Align.END);
+    title_label.margin_right = 6;
+    attach (title_label, 0, row, 1, 1);
+
+    var box = new Grid ();
+    box.set_column_spacing (12);
+    var day_spin = new SpinButton.with_range (1.0, 31.0, 1.0);
+    day_spin.set_digits (0);
+    day_spin.numeric = true;
+    day_spin.set_value ((double)birthday.to_local ().get_day_of_month ());
+
+    var combo = new ComboBoxText ();
+    combo.append_text (_("January"));
+    combo.append_text (_("February"));
+    combo.append_text (_("March"));
+    combo.append_text (_("April"));
+    combo.append_text (_("May"));
+    combo.append_text (_("June"));
+    combo.append_text (_("July"));
+    combo.append_text (_("August"));
+    combo.append_text (_("September"));
+    combo.append_text (_("October"));
+    combo.append_text (_("November"));
+    combo.append_text (_("December"));
+    combo.set_active (birthday.to_local ().get_month () - 1);
+    combo.get_style_context ().add_class ("contacts-combo");
+    combo.set_hexpand (true);
+
+    /* hack to preserver year in order to compare latter full date */
+    box.set_data ("year", birthday.to_local ().get_year ());
+    box.add (day_spin);
+    box.add (combo);
+
+    attach (box, 1, row, 2, 1);
+
+    var delete_button = new Button ();
+    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
+    delete_button.add (image);
+    attach (delete_button, 3, row, 1, 1);
+
+    /* Notify change to upper layer */
+    day_spin.changed.connect (() => {
+	set_field_changed (row);
+      });
+    combo.changed.connect (() => {
+	set_field_changed (row);
+      });
+    delete_button.clicked.connect (() => {
+	remove_row (row);
+      });
+  }
+
+  void add_edit_row (Persona p, string prop_name, ref int row, bool add_empty = false) {
+    /* Here, we will need to add manually every type of field,
+     * we're planning to allow editing on */
+    /* FIXME: add all of these: postal-addresses */
+    switch (prop_name) {
+    case "email-addresses":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	var detail_field = new EmailFieldDetails ("");
+	attach_row_with_entry (TypeSet.general, detail_field, "", row);
+	rows.set (row, { detail_field });
+	row++;
+      } else {
+	var details = p as EmailDetails;
+	if (details != null) {
+	  var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+	  foreach (var email in emails) {
+	    attach_row_with_entry (TypeSet.general, email, email.value, row);
+	    rows.set (row, { email });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
+    case "phone-numbers":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	var detail_field = new PhoneFieldDetails ("");
+	attach_row_with_entry (TypeSet.phone, detail_field, "", row);
+	rows.set (row, { detail_field });
+	row++;
+      } else {
+	var details = p as PhoneDetails;
+	if (details != null) {
+	  var phones = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
+	  foreach (var phone in phones) {
+	    attach_row_with_entry (TypeSet.phone, phone, phone.value, row);
+	    rows.set (row, { phone });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
+    case "urls":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	var detail_field = new UrlFieldDetails ("");
+	attach_row_with_entry_labeled (_("Website"), detail_field, "", row);
+	rows.set (row, { detail_field });
+	row++;
+      } else {
+	var url_details = p as UrlDetails;
+	if (url_details != null) {
+	  foreach (var url in url_details.urls) {
+	    attach_row_with_entry_labeled (_("Website"), url, url.value, row);
+	    rows.set (row, { url });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
+    case "nickname":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	attach_row_with_entry_labeled (_("Nickname"), null, "", row);
+	rows.set (row, { null });
+	row++;
+      } else {
+	var name_details = p as NameDetails;
+	if (name_details != null) {
+	  if (is_set (name_details.nickname)) {
+	    attach_row_with_entry_labeled (_("Nickname"), null, name_details.nickname, row);
+	    rows.set (row, { null });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
+    case "birthday":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	var today = new DateTime.now_local ();
+	attach_row_for_birthday (_("Birthday"), null, today, row);
+	rows.set (row, { null });
+	row++;
+      } else {
+	var birthday_details = p as BirthdayDetails;
+	if (birthday_details != null) {
+	  if (birthday_details.birthday != null) {
+	    attach_row_for_birthday (_("Birthday"), null, birthday_details.birthday, row);
+	    rows.set (row, { null });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
+    case "notes":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	var detail_field = new NoteFieldDetails ("");
+	attach_row_with_text_labeled (_("Note"), detail_field, "", row);
+	rows.set (row, { detail_field });
+	row++;
+      } else {
+	var note_details = p as NoteDetails;
+	if (note_details != null || add_empty) {
+	  foreach (var note in note_details.notes) {
+	    attach_row_with_text_labeled (_("Note"), note, note.value, row);
+	    rows.set (row, { note });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
+    }
+  }
+
+  void insert_row_at (int idx) {
+    foreach (var field_maps in writable_personas.values) {
+      foreach (var field in field_maps.values) {
+	foreach (var row in field.rows.keys) {
+	  if (row >= idx) {
+	    var new_rows = new HashMap <int, RowData?> ();
+	    foreach (var old_row in field.rows.keys) {
+	      /* move all rows +1 */
+	      new_rows.set (old_row + 1, field.rows[old_row]);
+	    }
+	    field.rows = new_rows;
+	    break;
+	  }
+	}
+      }
+    }
+    insert_row (idx);
+  }
+
+  public ContactEditor () {
+    set_row_spacing (12);
+    set_column_spacing (16);
+
+    writable_personas = new HashMap<Persona, HashMap<string, Field?> > ();
+  }
+
+  public void update (Contact c) {
+    var image_frame = new ContactFrame (PROFILE_SIZE, true);
+    image_frame.set_vexpand (false);
+    image_frame.set_valign (Align.START);
+    image_frame.clicked.connect ( () => {
+	change_avatar (c, image_frame);
+      });
+    c.keep_widget_uptodate (image_frame,  (w) => {
+	(w as ContactFrame).set_image (c.individual, c);
+      });
+    attach (image_frame,  0, 0, 1, 3);
+
+    var name_entry = new Entry ();
+    name_entry.set_hexpand (true);
+    name_entry.set_valign (Align.CENTER);
+    name_entry.set_text (c.display_name);
+    name_entry.set_data ("changed", false);
+    attach (name_entry,  1, 0, 2, 1);
+
+    /* structured name change */
+    name_entry.changed.connect (() => {
+	name_entry.set_data ("changed", true);
+      });
+
+    int i = 3;
+    int last_store_position = 0;
+    bool is_first_persona = true;
+
+    var personas = c.get_personas_for_display ();
+    foreach (var p in personas) {
+      if (!is_first_persona) {
+	var store_name = new Label("");
+	store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
+						      Contact.format_persona_store_name_for_contact (p)));
+	store_name.set_halign (Align.START);
+	store_name.xalign = 0.0f;
+	store_name.margin_left = 6;
+	attach (store_name, 0, i, 1, 1);
+	last_store_position = ++i;
+      }
+
+      var rw_props = Contact.sort_persona_properties (p.writeable_properties);
+      /* FIXME: remove debug code */
+      string pps = "";
+      foreach (var pw in rw_props) {
+	pps += " %s;".printf (pw);
+      }
+      debug ("%s => rw_props: %s", p.uid, pps);
+
+      if (rw_props.length != 0) {
+	writable_personas.set (p, new HashMap<string, Field?> ());
+	foreach (var prop in rw_props) {
+	  add_edit_row (p, prop, ref i);
+	}
+      }
+
+      if (is_first_persona) {
+	last_row = i - 1;
+      }
+
+      if (i != 3) {
+	is_first_persona = false;
+      }
+
+      if (i == last_store_position) {
+	i--;
+	get_child_at (0, i).destroy ();
+      }
+    }
+  }
+
+  public void clear () {
+    foreach (var w in get_children ()) {
+      w.destroy ();
+    }
+
+    /* clean metadata as well */
+  }
+
+  public HashMap<string, PropertyData?> properties_changed () {
+    var props_set = new HashMap<string, PropertyData?> ();
+
+    foreach (var entry in writable_personas.entries) {
+      foreach (var field_entry in entry.value.entries) {
+	if (field_entry.value.changed && ! (field_entry.key in props_set)) {
+	  string rows = "";
+	  foreach (var index in field_entry.value.rows.keys) {
+	    rows += "%d ".printf (index);
+	  }
+	  debug ("field: %s changed with rows %s, in persona: %s", field_entry.key, rows, entry.key.uid);
+
+	  PropertyData p = PropertyData ();
+	  p.persona = entry.key;
+
+	  /* FIXME: add all of these: postal-addresses */
+	  switch (field_entry.key) {
+	    case "email-addresses":
+	      p.value = get_value_from_emails (field_entry.value.rows);
+	      break;
+	    case "phone-numbers":
+	      p.value = get_value_from_phones (field_entry.value.rows);
+	      break;
+	    case "urls":
+	      p.value = get_value_from_urls (field_entry.value.rows);
+	      break;
+	    case "nickname":
+	      p.value = get_value_from_nickname (field_entry.value.rows);
+	      break;
+	    case "birthday":
+	      p.value = get_value_from_birthday (field_entry.value.rows);
+	      break;
+	    case "notes":
+	      p.value = get_value_from_notes (field_entry.value.rows);
+	      break;
+	  }
+
+	  props_set.set (field_entry.key, p);
+	}
+      }
+    }
+
+    return props_set;
+  }
+
+  public bool name_changed () {
+    var name_entry = get_child_at (1, 0) as Entry;
+    return name_entry.get_data<bool> ("changed");
+  }
+
+  public Value get_full_name_value () {
+    Value v = Value (typeof (string));
+    var name_entry = get_child_at (1, 0) as Entry;
+    v.set_string (name_entry.get_text ());
+    return v;
+  }
+
+  public void add_new_row_for_property (Persona p, string prop_name) {
+    /* Somehow, I need to ensure that p is the main/default/first persona */
+    int next_idx = 0;
+    foreach (var fields in writable_personas.values) {
+      if (fields.has_key (prop_name)) {
+	  foreach (var idx in fields[prop_name].rows.keys) {
+	    if (idx < last_row)
+	      next_idx = idx > next_idx ? idx : next_idx;
+	  }
+	  break;
+      }
+    }
+    next_idx = (next_idx == 0 ? last_row : next_idx) + 1;
+    insert_row_at (next_idx);
+    add_edit_row (p, prop_name, ref next_idx, true);
+    last_row++;
+    debug ("last row in field %s is: %d", prop_name, next_idx);
+    show_all ();
+  }
+}
