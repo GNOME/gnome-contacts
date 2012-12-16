@@ -1286,6 +1286,31 @@ public class Contacts.Contact : GLib.Object  {
     return sorted_props.to_array ();
 
   }
+
+  /* Tries to set the property on all persons that have it writeable, and
+   * if none, creates a new persona and writes to it, returning the new
+   * persona.
+   */
+  public static async Persona? set_individual_property (Contact contact,
+							string property_name,
+							Value value) throws GLib.Error, PropertyError {
+    bool did_set = false;
+    // Need to make a copy here as it could change during the yields
+    var personas_copy = contact.individual.personas.to_array ();
+    foreach (var p in personas_copy) {
+      if (property_name in p.writeable_properties) {
+	did_set = true;
+	yield Contact.set_persona_property (p, property_name, value);
+      }
+    }
+
+    if (!did_set) {
+      var fake = new FakePersona (contact);
+      return yield fake.make_real_and_set (property_name, value);
+    }
+    return null;
+  }
+
   public Account? is_callable (string proto, string id) {
     Tpf.Persona? t_persona = this.find_im_persona (proto, id);
     if (t_persona != null && t_persona.contact != null) {

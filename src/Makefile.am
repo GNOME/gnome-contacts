@@ -26,6 +26,7 @@ bin_PROGRAMS = gnome-contacts
 vala_sources = \
 	contacts-app.vala \
 	contacts-contact.vala \
+	contacts-contact-sheet.vala \
 	contacts-contact-pane.vala \
 	contacts-types.vala \
 	contacts-list-pane.vala \

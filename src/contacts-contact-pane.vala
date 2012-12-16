@@ -20,132 +20,26 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.ContactSheet : Grid {
+const int PROFILE_SIZE = 128;
 
-  const int PROFILE_SIZE = 128;
-
-  public ContactSheet () {
-    set_row_spacing (12);
-    set_column_spacing (16);
-  }
-
-  public void update (Contact c) {
-    var image_frame = new ContactFrame (PROFILE_SIZE, true);
-    image_frame.set_vexpand (false);
-    image_frame.set_valign (Align.START);
-    c.keep_widget_uptodate (image_frame,  (w) => {
-	(w as ContactFrame).set_image (c.individual, c);
+namespace Contacts {
+  public static void change_avatar (Contact contact, ContactFrame image_frame) {
+    var dialog = new AvatarDialog (contact);
+    dialog.show ();
+    dialog.set_avatar.connect ( (icon) =>  {
+	Value v = Value (icon.get_type ());
+	v.set_object (icon);
+	Contact.set_individual_property.begin (contact,
+					       "avatar", v,
+					       (obj, result) => {
+						 try {
+						   Contact.set_individual_property.end (result);
+						 } catch (GLib.Error e) {
+						   App.app.show_message (e.message);
+						   image_frame.set_image (contact.individual, contact);
+					       }
+					       });
       });
-    attach (image_frame,  0, 0, 1, 3);
-
-    var name_label = new Label (null);
-    name_label.set_hexpand (true);
-    name_label.set_halign (Align.START);
-    name_label.set_valign (Align.START);
-    name_label.set_margin_top (4);
-    name_label.set_ellipsize (Pango.EllipsizeMode.END);
-    name_label.xalign = 0.0f;
-
-    c.keep_widget_uptodate (name_label, (w) => {
-	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", c.display_name));
-      });
-    attach (name_label,  1, 0, 1, 1);
-
-    var merged_presence = c.create_merged_presence_widget ();
-    merged_presence.set_halign (Align.START);
-    merged_presence.set_valign (Align.START);
-    attach (merged_presence,  1, 1, 1, 1);
-
-    int i = 3;
-    int last_store_position = 0;
-    PersonaStore last_store = null;
-
-    var personas = c.get_personas_for_display ();
-    /* Cause personas are sorted properly I can do this */
-    foreach (var p in personas) {
-      if (! Contact.persona_is_main (p) && p.store != last_store) {
-	var store_name = new Label("");
-	store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-						      Contact.format_persona_store_name_for_contact (p)));
-	store_name.set_halign (Align.START);
-	store_name.xalign = 0.0f;
-	store_name.margin_left = 6;
-	attach (store_name, 0, i, 1, 1);
-	last_store = p.store;
-	last_store_position = ++i;
-      }
-
-      /* emails first */
-      var details = p as EmailDetails;
-      if (details != null) {
-	var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
-	foreach (var email in emails) {
-	  var type_label = new Label (TypeSet.general.format_type (email));
-	  type_label.xalign = 1.0f;
-	  type_label.set_halign (Align.END);
-	  type_label.get_style_context ().add_class ("dim-label");
-	  attach (type_label, 0, i, 1, 1);
-
-	  var value_label = new Button.with_label (email.value);
-	  value_label.focus_on_click = false;
-	  value_label.relief = ReliefStyle.NONE;
-	  value_label.xalign = 0.0f;
-	  value_label.set_hexpand (true);
-	  attach (value_label, 1, i, 1, 1);
-	  i++;
-
-	  value_label.clicked.connect (() => {
-	      Utils.compose_mail ("%s <%s>".printf(c.display_name, email.value));
-	    });
-	}
-      }
-
-      /* phones then */
-      var phone_details = p as PhoneDetails;
-      if (phone_details != null) {
-	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
-	foreach (var phone in phones) {
-	  var type_label = new Label (TypeSet.general.format_type (phone));
-	  type_label.xalign = 1.0f;
-	  type_label.set_halign (Align.END);
-	  type_label.get_style_context ().add_class ("dim-label");
-	  attach (type_label, 0, i, 1, 1);
-
-	  Widget value_label;
-	  if (App.app.contacts_store.can_call) {
-	    value_label = new Button.with_label (phone.value);
-	    value_label.set_hexpand (true);
-	    (value_label as Button).focus_on_click = false;
-	    (value_label as Button).relief = ReliefStyle.NONE;
-
-	    (value_label as Button).clicked.connect (() => {
-		Utils.start_call (phone.value, App.app.contacts_store.calling_accounts);
-	      });
-	  } else {
-	    value_label = new Label (phone.value);
-	    value_label.set_halign (Align.START);
-	    /* FXIME: hardcode gap to match the button-label starting */
-	    value_label.margin_left = 6;
-	  }
-
-	  attach (value_label, 1, i, 1, 1);
-	  i++;
-
-	}
-      }
-
-      if (i == last_store_position) {
-	get_child_at (0, i - 1).destroy ();
-      }
-    }
-
-    show_all ();
-  }
-
-  public void clear () {
-    foreach (var w in get_children ()) {
-      w.destroy ();
-    }
   }
 }
 
@@ -421,7 +315,6 @@ public class Contacts.ContactPane : ScrolledWindow {
     this.get_child().get_style_context ().add_class ("view");
 
     sheet = new ContactSheet ();
-    sheet.set_orientation (Orientation.VERTICAL);
     top_grid.add (sheet);
 
     top_grid.show_all ();
