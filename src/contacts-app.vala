@@ -68,15 +68,21 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void selection_changed (Contact? new_selection) {
+    /* FIXME: ask the user lo teave edit-mode and act accordingly */
+    if (contacts_pane.on_edit_mode) {
+      contacts_pane.set_edit_mode (false);
+
+      right_toolbar.set_labels (null, null);
+      done_button.hide ();
+    }
+
     contacts_pane.show_contact (new_selection, false, false);
 
     /* clearing right_toolbar */
     if (new_selection != null) {
       edit_button.show ();
     } else {
-      right_toolbar.set_labels (null, null);
       edit_button.hide ();
-      done_button.hide ();
     }
   }
 
@@ -262,7 +268,7 @@ public class Contacts.App : Gtk.Application {
     window = new Contacts.Window (this);
     window.set_application (this);
     window.set_title (_("Contacts"));
-    window.set_default_size (888, 600);
+    window.set_default_size (900, 600);
     window.hide_titlebar_when_maximized = true;
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);
@@ -291,18 +297,7 @@ public class Contacts.App : Gtk.Application {
 
     done_button = right_toolbar.add_button (null, _("Done"), false) as Gtk.Button;
     done_button.set_size_request (70, -1);
-
-    edit_button.clicked.connect (() => {
-	right_toolbar.set_labels (_("Editing"), "what ?");
-	edit_button.hide ();
-	done_button.show ();
-      });
-
-    done_button.clicked.connect (() => {
-	right_toolbar.set_labels (null, null);
-	done_button.hide ();
-	edit_button.show ();
-      });
+    done_button.get_style_context ().add_class ("suggested-action");
 
     window.add (grid);
 
@@ -332,6 +327,20 @@ public class Contacts.App : Gtk.Application {
     grid.attach (right_overlay, 1, 1, 1, 1);
 
     grid.show_all ();
+
+    edit_button.clicked.connect (() => {
+	right_toolbar.set_labels (_("Editing"), null);
+	edit_button.hide ();
+	done_button.show ();
+	contacts_pane.set_edit_mode (true);
+      });
+
+    done_button.clicked.connect (() => {
+	right_toolbar.set_labels (null, null);
+	done_button.hide ();
+	edit_button.show ();
+	contacts_pane.set_edit_mode (false);
+      });
 
     edit_button.hide ();
     done_button.hide ();
