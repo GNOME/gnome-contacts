@@ -43,12 +43,18 @@ namespace Contacts {
   }
 }
 
-public class Contacts.ContactPane : ScrolledWindow {
+public class Contacts.ContactPane : Grid {
   private Store contacts_store;
   public Contact? contact;
 
+  private ScrolledWindow main_sw;
   private Grid top_grid;
-  private ContactSheet sheet; /* Eventually replace top_grid with sheet */
+  private ContactSheet sheet;
+
+  public bool on_edit_mode;
+  private Gd.MainToolbar edit_toolbar;
+  private Revealer edit_revealer;
+  private ContactEditor editor;
 
   private Grid no_selection_grid;
 
@@ -58,50 +64,12 @@ public class Contacts.ContactPane : ScrolledWindow {
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
   public signal void will_delete (Contact contact);
 
-  /* Tries to set the property on all persons that have it writeable, and
-   * if none, creates a new persona and writes to it, returning the new
-   * persona.
-   */
-  private async Persona? set_individual_property (Contact contact,
-						  string property_name,
-						  Value value) throws GLib.Error, PropertyError {
-    bool did_set = false;
-    // Need to make a copy here as it could change during the yields
-    var personas_copy = contact.individual.personas.to_array ();
-    foreach (var p in personas_copy) {
-      if (property_name in p.writeable_properties) {
-	did_set = true;
-	yield Contact.set_persona_property (p, property_name, value);
-      }
-    }
-
-    if (!did_set) {
-      var fake = new FakePersona (contact);
-      return yield fake.make_real_and_set (property_name, value);
-    }
-    return null;
-  }
-
-  private void change_avatar (ContactFrame image_frame) {
-    var dialog = new AvatarDialog (contact);
-    dialog.show ();
-    dialog.set_avatar.connect ( (icon) =>  {
-	Value v = Value (icon.get_type ());
-	v.set_object (icon);
-	set_individual_property.begin (contact,
-				       "avatar", v,
-				       (obj, result) => {
-					 try {
-					   set_individual_property.end (result);
-					 } catch (Error e) {
-					   App.app.show_message (e.message);
-					   image_frame.set_image (contact.individual, contact);
-					 }
-				       });
-      });
-  }
-
   public void update_sheet (bool show_matches = true) {
+    if (on_edit_mode) {
+      /* this was triggered by some signal, do nothing */
+      return;
+    }
+
     sheet.clear ();
 
     if (contact == null)
@@ -141,12 +109,13 @@ public class Contacts.ContactPane : ScrolledWindow {
       });
 
     var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
-    c.keep_widget_uptodate (image_frame,  (w) => {
-	(w as ContactFrame).set_image (c.individual, c);
-      });
     image_frame.set_hexpand (false);
     image_frame.margin = 24;
     image_frame.margin_right = 12;
+    c.keep_widget_uptodate (image_frame,  (w) => {
+	(w as ContactFrame).set_image (c.individual, c);
+      });
+
     suggestion_grid.attach (image_frame, 0, 0, 1, 2);
 
     var label = new Label ("");
@@ -193,7 +162,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     suggestion_grid.show_all ();
   }
 
-  public void show_contact (Contact? new_contact, bool edit=false, bool show_matches = true) {
+  public void show_contact (Contact? new_contact, bool edit = false, bool show_matches = true) {
     if (contact == new_contact)
       return;
 
@@ -201,11 +170,11 @@ public class Contacts.ContactPane : ScrolledWindow {
       contact.personas_changed.disconnect (personas_changed_cb);
       contact.changed.disconnect (contact_changed_cb);
     }
+    if (new_contact != null) {
+      no_selection_grid.destroy ();
+    }
 
     contact = new_contact;
-
-    if (contact != null)
-      no_selection_grid.destroy ();
 
     update_sheet ();
 
@@ -230,7 +199,7 @@ public class Contacts.ContactPane : ScrolledWindow {
   }
 
   private void contact_changed_cb (Contact contact) {
-    /* FIXME: what to do here ? */
+    update_sheet ();
   }
 
   struct ImValue {
@@ -268,67 +237,123 @@ public class Contacts.ContactPane : ScrolledWindow {
       foreach (var value in online_personas) {
 	Utils.start_chat (contact, value.protocol, value.id);
       }
-    } else {
-      /* FIXME, uncomment */
-      // var store = new ListStore (2, typeof (string), typeof (ImValue?));
-      // foreach (var value in online_personas) {
-      // 	TreeIter iter;
-      // 	store.append (out iter);
-      // 	store.set (iter, 0, value.name, 1, value);
-      // }
-      // TreeSelection selection;
-      // var dialog = pick_one_dialog (_("Select chat account"), store, out selection);
-      // dialog.response.connect ( (response) => {
-      // 	  if (response == ResponseType.OK) {
-      // 	    ImValue? value2;
-      // 	    TreeIter iter2;
-
-      // 	    if (selection.get_selected (null, out iter2)) {
-      // 	      store.get (iter2, 1, out value2);
-      // 	      Utils.start_chat (contact, value2.protocol, value2.id);
-      // 	    }
-      // 	  }
-      // 	  dialog.destroy ();
-      // 	});
     }
   }
 
   public ContactPane (Store contacts_store) {
-    this.get_style_context ().add_class ("contacts-content");
-    this.set_shadow_type (ShadowType.IN);
-
-    this.set_hexpand (true);
-    this.set_vexpand (true);
-    this.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    this.set_orientation (Orientation.VERTICAL);
 
     this.contacts_store = contacts_store;
+
+    main_sw = new ScrolledWindow (null, null);
+    main_sw.get_style_context ().add_class ("contacts-content");
+    this.add (main_sw);
+
+    main_sw.set_shadow_type (ShadowType.IN);
+    main_sw.set_hexpand (true);
+    main_sw.set_vexpand (true);
+    main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
     top_grid = new Grid ();
     top_grid.set_orientation (Orientation.VERTICAL);
     top_grid.margin = 36;
     top_grid.set_margin_bottom (24);
     top_grid.set_row_spacing (20);
-    this.add_with_viewport (top_grid);
-    top_grid.set_focus_vadjustment (this.get_vadjustment ());
+    main_sw.add_with_viewport (top_grid);
+    top_grid.set_focus_vadjustment (main_sw.get_vadjustment ());
 
-    this.get_child().get_style_context ().add_class ("contacts-main-view");
-    this.get_child().get_style_context ().add_class ("view");
+    main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
+    main_sw.get_child ().get_style_context ().add_class ("view");
 
     sheet = new ContactSheet ();
     top_grid.add (sheet);
-
     top_grid.show_all ();
 
     contacts_store.quiescent.connect (() => {
       // Refresh the view when the store is quiescent as we may have missed
       // some potential matches while the store was still preparing.
-      /* FIXME, uncomment */
-      // update_properties ();
+      update_sheet ();
     });
 
     suggestion_grid = null;
 
+    /* starts with no_selection_grid 'til someone select something */
     show_no_selection_grid ();
+
+    /* edit mode widgetry */
+    editor = new ContactEditor ();
+
+    on_edit_mode = false;
+    edit_toolbar = new Gd.MainToolbar ();
+    edit_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    edit_toolbar.get_style_context ().add_class ("contacts-edit-toolbar");
+    edit_toolbar.set_vexpand (false);
+
+    var add_detail_button = new Gtk.MenuButton ();
+    var box = new Grid ();
+    box.set_column_spacing (4);
+    box.add (new Label (_("New Detail ...")));
+    box.add (new Arrow (ArrowType.DOWN, ShadowType.OUT));
+    add_detail_button.add (box);
+    var details_menu = new Gtk.Menu ();
+    details_menu.set_halign (Align.END);
+    var item = new Gtk.MenuItem.with_label (_("Email"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "email-addresses");
+      });
+    item = new Gtk.MenuItem.with_label (_("Phone"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers");
+      });
+    item = new Gtk.MenuItem.with_label (_("Link"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "urls");
+      });
+    /* FIXME: There's only one nickname allowed, per individual */
+    item = new Gtk.MenuItem.with_label (_("Nickname"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "nickname");
+      });
+    item = new Gtk.MenuItem.with_label (_("Birthday"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "birthday");
+      });
+    item = new Gtk.MenuItem.with_label (_("Address"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-address");
+      });
+    item = new Gtk.MenuItem.with_label (_("Notes"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "notes");
+      });
+    details_menu.show_all ();
+    add_detail_button.set_popup (details_menu);
+    add_detail_button.set_direction (ArrowType.UP);
+    edit_toolbar.add_widget (add_detail_button, true);
+
+    var linked_button = edit_toolbar.add_button (null, _("Linked Accounts"), true) as Gtk.Button;
+    var remove_button = edit_toolbar.add_button (null, _("Remove Contact"), false) as Gtk.Button;
+    remove_button.clicked.connect (delete_contact);
+
+    edit_toolbar.show_all ();
+
+    edit_revealer = new Revealer ();
+    edit_revealer.add (edit_toolbar);
+    this.add (edit_revealer);
+
+    edit_revealer.set_no_show_all (true);
+    edit_revealer.hide ();
+
+    editor.set_vexpand (true);
+    editor.set_hexpand (true);
+    top_grid.add (editor);
   }
 
   void link_contact () {
@@ -369,5 +394,58 @@ public class Contacts.ContactPane : ScrolledWindow {
     no_selection_grid.add (box);
     no_selection_grid.show_all ();
     top_grid.add (no_selection_grid);
+  }
+
+  public void set_edit_mode (bool on_edit) {
+    if (on_edit) {
+      on_edit_mode = true;
+
+      edit_revealer.reveal ();
+
+      sheet.clear ();
+      sheet.hide ();
+
+      editor.clear ();
+      editor.update (contact);
+      editor.show_all ();
+    } else {
+      on_edit_mode = false;
+      /* saving changes */
+      foreach (var prop in editor.properties_changed ().entries) {
+	Contact.set_persona_property.begin (prop.value.persona, prop.key, prop.value.value,
+					    (obj, result) => {
+					      try {
+						Contact.set_persona_property.end (result);
+					      } catch (Error e2) {
+						App.app.show_message (e2.message);
+						/* FIXME: add this back */
+						/* update_sheet (); */
+					      }
+					    });
+      }
+
+      if (editor.name_changed ()) {
+	var v = editor.get_full_name_value ();
+	Contact.set_individual_property.begin (contact,
+					       "full-name", v,
+					       (obj, result) => {
+						 try {
+						   Contact.set_individual_property.end (result);
+						 } catch (Error e) {
+						   App.app.show_message (e.message);
+						   /* FIXME: add this back */
+						   /* l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name)); */
+						 }
+					       });
+      }
+
+      edit_revealer.unreveal ();
+
+      editor.clear ();
+      editor.hide ();
+
+      sheet.clear ();
+      sheet.update (contact);
+    }
   }
 }
