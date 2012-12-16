@@ -1247,6 +1247,45 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
+  public static int compare_properties (void *a, void *b) {
+    string [] sorted_array = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
+    var sorted_map = new HashMap<string, int> ();
+    int i = 0;
+    foreach (var p in sorted_array) {
+      sorted_map.set (p, ++i);
+    }
+
+    string a_str = (string) a;
+    string b_str = (string) b;
+
+    if (sorted_map.has_key (a_str) && sorted_map.has_key (b_str)) {
+      if (sorted_map[a_str] < sorted_map[b_str])
+	return -1;
+      if (sorted_map[a_str] > sorted_map[b_str])
+	return 1;
+      return 0;
+    } else if (sorted_map.has_key (a_str))
+      return -1;
+    else if (sorted_map.has_key (b_str))
+      return 1;
+    else {
+      if (a_str < b_str)
+	return -1;
+      if (a_str > b_str)
+	return 1;
+      return 0;
+    }
+  }
+
+  public static string [] sort_persona_properties (string [] props) {
+    var sorted_props = new ArrayList<string> ();
+    foreach (var s in props) {
+      sorted_props.add (s);
+    }
+    sorted_props.sort (compare_properties);
+    return sorted_props.to_array ();
+
+  }
   public Account? is_callable (string proto, string id) {
     Tpf.Persona? t_persona = this.find_im_persona (proto, id);
     if (t_persona != null && t_persona.contact != null) {
