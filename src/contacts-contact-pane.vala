@@ -207,44 +207,6 @@ public class Contacts.ContactPane : Grid {
     update_sheet ();
   }
 
-  struct ImValue {
-    string protocol;
-    string id;
-    string name;
-  }
-
-  public void start_chat () {
-    var ims = contact.individual.im_addresses;
-    var im_keys = ims.get_keys ();
-    var online_personas = new ArrayList<ImValue?>();
-    if (contact != null) {
-      foreach (var protocol in im_keys) {
-	foreach (var id in ims[protocol]) {
-	  var im_persona = contact.find_im_persona (protocol, id.value);
-	  if (im_persona != null) {
-	    var type = im_persona.presence_type;
-	    if (type != PresenceType.UNSET &&
-		type != PresenceType.ERROR &&
-		type != PresenceType.OFFLINE &&
-		type != PresenceType.UNKNOWN) {
-	      ImValue? value = { protocol, id.value, Contact.format_im_name (im_persona, protocol, id.value) };
-	      online_personas.add (value);
-	    }
-	  }
-	}
-      }
-    }
-
-    if (online_personas.is_empty)
-      return;
-
-    if (online_personas.size == 1) {
-      foreach (var value in online_personas) {
-	Utils.start_chat (contact, value.protocol, value.id);
-      }
-    }
-  }
-
   public ContactPane (Store contacts_store) {
     this.set_orientation (Orientation.VERTICAL);
 

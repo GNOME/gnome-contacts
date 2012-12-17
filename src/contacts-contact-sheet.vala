@@ -117,7 +117,6 @@ public class Contacts.ContactSheet : Grid {
 	last_store_position = ++i;
       }
 
-      /* FIXME: add all of these: postal-addresses */
       var details = p as EmailDetails;
       if (details != null) {
 	var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
@@ -140,6 +139,29 @@ public class Contacts.ContactSheet : Grid {
 	      });
 	  } else {
 	    add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
+	  }
+	}
+      }
+
+      var im_details = p as ImDetails;
+      if (im_details != null) {
+	foreach (var protocol in im_details.im_addresses.get_keys ()) {
+	  foreach (var id in im_details.im_addresses[protocol]) {
+	    if (p is Tpf.Persona) {
+	      var button = add_row_with_button (ref i, Contact.format_im_service (protocol, null), id.value);
+	      button.clicked.connect (() => {
+		  var im_persona = c.find_im_persona (protocol, id.value);
+		  if (im_persona != null) {
+		    var type = im_persona.presence_type;
+		    if (type != PresenceType.UNSET &&
+			type != PresenceType.ERROR &&
+			type != PresenceType.OFFLINE &&
+			type != PresenceType.UNKNOWN) {
+		      Utils.start_chat (c, protocol, id.value);
+		    }
+		  }
+		});
+	    }
 	  }
 	}
       }
