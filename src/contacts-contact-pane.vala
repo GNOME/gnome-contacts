@@ -330,7 +330,7 @@ public class Contacts.ContactPane : Grid {
     item = new Gtk.MenuItem.with_label (_("Address"));
     details_menu.append (item);
     item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-address");
+	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-addresses");
       });
     notes_item = new Gtk.MenuItem.with_label (_("Notes"));
     details_menu.append (notes_item);

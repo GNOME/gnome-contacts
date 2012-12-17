@@ -20,6 +20,40 @@ using Gtk;
 using Folks;
 using Gee;
 
+public class Contacts.AddressEditor : Grid {
+  public Entry? entries[7];
+  public PostalAddressFieldDetails details;
+
+  public signal void changed ();
+
+  public AddressEditor (PostalAddressFieldDetails _details) {
+    set_hexpand (true);
+    set_orientation (Orientation.VERTICAL);
+
+    details = _details;
+
+    for (int i = 0; i < entries.length; i++) {
+      string postal_part;
+      details.value.get (Contact.postal_element_props[i], out postal_part);
+
+      entries[i] = new Entry ();
+      entries[i].set_hexpand (true);
+      entries[i].set ("placeholder-text", Contact.postal_element_names[i]);
+
+      if (postal_part != null)
+	entries[i].set_text (postal_part);
+
+      entries[i].get_style_context ().add_class ("contacts-entry");
+      entries[i].get_style_context ().add_class ("contacts-postal-entry");
+      add (entries[i]);
+
+      entries[i].changed.connect (() => {
+	  changed ();
+	});
+    }
+  }
+}
+
 public class Contacts.ContactEditor : Grid {
   public struct PropertyData {
     Persona persona;
@@ -126,6 +160,34 @@ public class Contacts.ContactEditor : Grid {
     return new_value;
   }
 
+  Value get_value_from_addresses (HashMap<int, RowData?> rows) {
+    var new_details = new HashSet<PostalAddressFieldDetails>();
+
+    foreach (var row_entry in rows.entries) {
+      var combo = get_child_at (0, row_entry.key) as TypeCombo;
+      var addr_editor = get_child_at (1, row_entry.key) as AddressEditor;
+      combo.update_details (row_entry.value.details);
+
+      var new_value = new PostalAddress (addr_editor.details.value.po_box,
+					 addr_editor.details.value.extension,
+					 addr_editor.details.value.street,
+					 addr_editor.details.value.locality,
+					 addr_editor.details.value.region,
+					 addr_editor.details.value.postal_code,
+					 addr_editor.details.value.country,
+					 addr_editor.details.value.address_format,
+					 addr_editor.details.value.uid);
+      for (int i = 0; i < addr_editor.entries.length; i++)
+	new_value.set (Contact.postal_element_props[i], addr_editor.entries[i].get_text ());
+
+      var details = new PostalAddressFieldDetails(new_value, row_entry.value.details.parameters);
+      new_details.add (details);
+    }
+    var new_value = Value (new_details.get_type ());
+    new_value.set_object (new_details);
+    return new_value;
+  }
+
   void set_field_changed (int row) {
     foreach (var fields in writable_personas.values) {
       foreach (var entry in fields.entries) {
@@ -133,7 +195,6 @@ public class Contacts.ContactEditor : Grid {
 	  if (entry.value.changed)
 	    return;
 
-	  /* FIXME: test if it's changed */
 	  entry.value.changed = true;
 	  return;
 	}
@@ -146,7 +207,6 @@ public class Contacts.ContactEditor : Grid {
       foreach (var field_entry in fields.entries) {
 	foreach (var idx in field_entry.value.rows.keys) {
 	  if (idx == row) {
-	    debug ("called remove_row (%d)", row);
 	    var child = get_child_at (0, row);
 	    child.destroy ();
 	    child = get_child_at (1, row);
@@ -307,10 +367,37 @@ public class Contacts.ContactEditor : Grid {
       });
   }
 
+  void attach_row_for_address (TypeSet type_set, PostalAddressFieldDetails details, int row) {
+    var combo = new TypeCombo (type_set);
+    combo.set_hexpand (false);
+    combo.set_halign (Align.END);
+    combo.set_active (details);
+    attach (combo, 0, row, 1, 1);
+
+    var value_address = new AddressEditor (details);
+    attach (value_address, 1, row, 2, 1);
+
+    var delete_button = new Button ();
+    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
+    delete_button.add (image);
+    delete_button.set_valign (Align.START);
+    attach (delete_button, 3, row, 1, 1);
+
+    /* Notify change to upper layer */
+    combo.changed.connect (() => {
+	set_field_changed (row);
+      });
+    value_address.changed.connect (() => {
+	set_field_changed (row);
+      });
+    delete_button.clicked.connect (() => {
+	remove_row (row);
+      });
+  }
+
   void add_edit_row (Persona p, string prop_name, ref int row, bool add_empty = false) {
     /* Here, we will need to add manually every type of field,
      * we're planning to allow editing on */
-    /* FIXME: add all of these: postal-addresses */
     switch (prop_name) {
     case "email-addresses":
       var rows = new HashMap<int, RowData?> ();
@@ -475,6 +562,42 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       break;
+    case "postal-addresses":
+      var rows = new HashMap<int, RowData?> ();
+      if (add_empty) {
+	var detail_field = new PostalAddressFieldDetails (
+                             new PostalAddress (null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null));
+	attach_row_for_address (TypeSet.general, detail_field, row);
+	rows.set (row, { detail_field });
+	row++;
+      } else {
+	var address_details = p as PostalAddressDetails;
+	if (address_details != null) {
+	  foreach (var addr in address_details.postal_addresses) {
+	    attach_row_for_address (TypeSet.general, addr, row);
+	    rows.set (row, { addr });
+	    row++;
+	  }
+	}
+      }
+      if (! rows.is_empty) {
+	if (writable_personas[p].has_key (prop_name)) {
+	  foreach (var entry in rows.entries) {
+	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	  }
+	} else {
+	  writable_personas[p].set (prop_name, { false, rows });
+	}
+      }
+      break;
     }
   }
 
@@ -593,12 +716,10 @@ public class Contacts.ContactEditor : Grid {
 	  foreach (var index in field_entry.value.rows.keys) {
 	    rows += "%d ".printf (index);
 	  }
-	  debug ("field: %s changed with rows %s, in persona: %s", field_entry.key, rows, entry.key.uid);
 
 	  PropertyData p = PropertyData ();
 	  p.persona = entry.key;
 
-	  /* FIXME: add all of these: postal-addresses */
 	  switch (field_entry.key) {
 	    case "email-addresses":
 	      p.value = get_value_from_emails (field_entry.value.rows);
@@ -617,6 +738,9 @@ public class Contacts.ContactEditor : Grid {
 	      break;
 	    case "notes":
 	      p.value = get_value_from_notes (field_entry.value.rows);
+	      break;
+            case "postal-addresses":
+	      p.value = get_value_from_addresses (field_entry.value.rows);
 	      break;
 	  }
 
@@ -656,7 +780,6 @@ public class Contacts.ContactEditor : Grid {
     insert_row_at (next_idx);
     add_edit_row (p, prop_name, ref next_idx, true);
     last_row++;
-    debug ("last row in field %s is: %d", prop_name, next_idx);
     show_all ();
   }
 }

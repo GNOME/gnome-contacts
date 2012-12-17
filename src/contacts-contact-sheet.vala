@@ -175,6 +175,18 @@ public class Contacts.ContactSheet : Grid {
 	}
       }
 
+      var addr_details = p as PostalAddressDetails;
+      if (addr_details != null) {
+	foreach (var addr in addr_details.postal_addresses) {
+	  string[] strs = Contact.format_address (addr.value);
+	  var all_strs = "";
+	  foreach (var s in strs) {
+	    all_strs += s + "\n";
+	  }
+	  add_row_with_label (ref i, TypeSet.general.format_type (addr), all_strs);
+	}
+      }
+
       if (i != 3)
 	is_first_persona = false;
 
