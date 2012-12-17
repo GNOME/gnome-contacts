@@ -56,6 +56,11 @@ public class Contacts.ContactPane : Grid {
   private Revealer edit_revealer;
   private ContactEditor editor;
 
+  /* single value details */
+  private Gtk.MenuItem nickname_item;
+  private Gtk.MenuItem birthday_item;
+  private Gtk.MenuItem notes_item;
+
   private Grid no_selection_grid;
 
   public Grid suggestion_grid;
@@ -312,15 +317,14 @@ public class Contacts.ContactPane : Grid {
     item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "urls");
       });
-    /* FIXME: There's only one nickname allowed, per individual */
-    item = new Gtk.MenuItem.with_label (_("Nickname"));
-    details_menu.append (item);
-    item.activate.connect (() => {
+    nickname_item = new Gtk.MenuItem.with_label (_("Nickname"));
+    details_menu.append (nickname_item);
+    nickname_item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "nickname");
       });
-    item = new Gtk.MenuItem.with_label (_("Birthday"));
-    details_menu.append (item);
-    item.activate.connect (() => {
+    birthday_item = new Gtk.MenuItem.with_label (_("Birthday"));
+    details_menu.append (birthday_item);
+    birthday_item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "birthday");
       });
     item = new Gtk.MenuItem.with_label (_("Address"));
@@ -328,9 +332,9 @@ public class Contacts.ContactPane : Grid {
     item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-address");
       });
-    item = new Gtk.MenuItem.with_label (_("Notes"));
-    details_menu.append (item);
-    item.activate.connect (() => {
+    notes_item = new Gtk.MenuItem.with_label (_("Notes"));
+    details_menu.append (notes_item);
+    notes_item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "notes");
       });
     details_menu.show_all ();
@@ -399,6 +403,21 @@ public class Contacts.ContactPane : Grid {
   public void set_edit_mode (bool on_edit) {
     if (on_edit) {
       on_edit_mode = true;
+
+      if (contact.has_birthday ())
+	birthday_item.hide ();
+      else
+	birthday_item.show ();
+
+      if (contact.has_nickname ())
+	nickname_item.hide ();
+      else
+	nickname_item.show ();
+
+      if (contact.has_notes ())
+	notes_item.hide ();
+      else
+	notes_item.show ();
 
       edit_revealer.reveal ();
 

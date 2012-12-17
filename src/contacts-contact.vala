@@ -497,6 +497,30 @@ public class Contacts.Contact : GLib.Object  {
     return false;
   }
 
+  public bool has_birthday () {
+    return individual.birthday != null;
+  }
+
+  public bool has_nickname () {
+    return individual.nickname != null &&
+           individual.nickname != "";
+  }
+
+  public bool has_notes () {
+    bool has_notes = false;
+
+    foreach (var p in get_personas_for_display ()) {
+      var note_details = p as NoteDetails;
+      if (note_details != null) {
+	foreach (var note in note_details.notes) {
+	  if (note.value != "")
+	    return true;
+	}
+      }
+    }
+    return false;
+  }
+
   public bool contains_strings (string [] strings) {
     foreach (string i in strings) {
       if (! (i in filter_data))
