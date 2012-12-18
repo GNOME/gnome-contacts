@@ -88,7 +88,9 @@ public class Contacts.App : Gtk.Application {
 
   public void show_contact (Contact? contact) {
     list_pane.select_contact (contact);
-    contacts_pane.show_contact (contact);
+
+    /* hack for showing contact */
+    selection_changed (contact);
   }
 
   public async void show_individual (string id) {
@@ -268,7 +270,7 @@ public class Contacts.App : Gtk.Application {
     window = new Contacts.Window (this);
     window.set_application (this);
     window.set_title (_("Contacts"));
-    window.set_default_size (900, 600);
+    window.set_size_request (900, 600);
     window.hide_titlebar_when_maximized = true;
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);
@@ -426,6 +428,11 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void delete_contact (Contact contact) {
+    /* unsetting edit-mode */
+    right_toolbar.set_labels (null, null);
+    done_button.hide ();
+    contacts_pane.set_edit_mode (false);
+
     var notification = new Gtk.Notification ();
 
     var g = new Grid ();
@@ -449,8 +456,7 @@ public class Contacts.App : Gtk.Application {
 	really_delete = false;
 	notification.dismiss ();
 	contact.show ();
-	list_pane.select_contact (contact);
-	contacts_pane.show_contact (contact);
+	show_contact (contact);
       });
     overlay.add_overlay (notification);
   }
