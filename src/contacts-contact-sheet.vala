@@ -113,7 +113,7 @@ public class Contacts.ContactSheet : Grid {
 	store_name.set_halign (Align.START);
 	store_name.xalign = 0.0f;
 	store_name.margin_left = 6;
-	attach (store_name, 0, i, 1, 1);
+	attach (store_name, 0, i, 3, 1);
 	last_store_position = ++i;
       }
 

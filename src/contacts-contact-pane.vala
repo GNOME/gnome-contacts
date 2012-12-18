@@ -53,7 +53,6 @@ public class Contacts.ContactPane : Grid {
 
   public bool on_edit_mode;
   private Gd.MainToolbar edit_toolbar;
-  private Revealer edit_revealer;
   private ContactEditor editor;
 
   /* single value details */
@@ -258,9 +257,13 @@ public class Contacts.ContactPane : Grid {
 
     var add_detail_button = new Gtk.MenuButton ();
     var box = new Grid ();
+    var w = new Label (_("New Detail")) as Widget;
+    w.set_valign (Align.CENTER);
     box.set_column_spacing (4);
-    box.add (new Label (_("New Detail ...")));
-    box.add (new Arrow (ArrowType.DOWN, ShadowType.OUT));
+    box.add (w);
+    w = new Arrow (ArrowType.DOWN, ShadowType.OUT) as Widget;
+    w.set_valign (Align.CENTER);
+    box.add (w);
     add_detail_button.add (box);
     var details_menu = new Gtk.Menu ();
     details_menu.set_halign (Align.END);
@@ -310,12 +313,10 @@ public class Contacts.ContactPane : Grid {
 
     edit_toolbar.show_all ();
 
-    edit_revealer = new Revealer ();
-    edit_revealer.add (edit_toolbar);
-    this.add (edit_revealer);
+    this.add (edit_toolbar);
 
-    edit_revealer.set_no_show_all (true);
-    edit_revealer.hide ();
+    edit_toolbar.set_no_show_all (true);
+    edit_toolbar.hide ();
 
     editor.set_vexpand (true);
     editor.set_hexpand (true);
@@ -381,7 +382,7 @@ public class Contacts.ContactPane : Grid {
       else
 	notes_item.show ();
 
-      edit_revealer.reveal ();
+      edit_toolbar.show ();
 
       sheet.clear ();
       sheet.hide ();
@@ -420,7 +421,7 @@ public class Contacts.ContactPane : Grid {
 					       });
       }
 
-      edit_revealer.unreveal ();
+      edit_toolbar.hide ();
 
       editor.clear ();
       editor.hide ();

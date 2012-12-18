@@ -365,7 +365,6 @@ public class Contacts.TypeCombo : Grid  {
     this.type_set = type_set;
 
     combo = new ComboBox.with_model (type_set.store);
-    combo.get_style_context ().add_class ("contacts-combo");
     combo.set_halign (Align.FILL);
     combo.set_hexpand (true);
     this.add (combo);

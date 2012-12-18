@@ -226,7 +226,6 @@ public class Contacts.ContactEditor : Grid {
   void attach_row_with_entry (TypeSet type_set, AbstractFieldDetails details, string value, int row) {
     var combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
-    combo.set_halign (Align.END);
     combo.set_active (details);
     attach (combo, 0, row, 1, 1);
 
@@ -255,7 +254,7 @@ public class Contacts.ContactEditor : Grid {
   void attach_row_with_entry_labeled (string title, AbstractFieldDetails? details, string value, int row) {
     var title_label = new Label (title);
     title_label.set_hexpand (false);
-    title_label.set_halign (Align.END);
+    title_label.set_halign (Align.START);
     title_label.margin_right = 6;
     attach (title_label, 0, row, 1, 1);
 
@@ -281,7 +280,7 @@ public class Contacts.ContactEditor : Grid {
   void attach_row_with_text_labeled (string title, AbstractFieldDetails? details, string value, int row) {
     var title_label = new Label (title);
     title_label.set_hexpand (false);
-    title_label.set_halign (Align.END);
+    title_label.set_halign (Align.START);
     title_label.set_valign (Align.START);
     title_label.margin_top = 3;
     title_label.margin_right = 6;
@@ -315,7 +314,7 @@ public class Contacts.ContactEditor : Grid {
   void attach_row_for_birthday (string title, AbstractFieldDetails? details, DateTime birthday, int row) {
     var title_label = new Label (title);
     title_label.set_hexpand (false);
-    title_label.set_halign (Align.END);
+    title_label.set_halign (Align.START);
     title_label.margin_right = 6;
     attach (title_label, 0, row, 1, 1);
 
@@ -370,7 +369,6 @@ public class Contacts.ContactEditor : Grid {
   void attach_row_for_address (TypeSet type_set, PostalAddressFieldDetails details, int row) {
     var combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
-    combo.set_halign (Align.END);
     combo.set_active (details);
     attach (combo, 0, row, 1, 1);
 
@@ -631,6 +629,7 @@ public class Contacts.ContactEditor : Grid {
     var image_frame = new ContactFrame (PROFILE_SIZE, true);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
+    (image_frame.get_child () as Button).set_relief (ReliefStyle.NORMAL);
     image_frame.clicked.connect ( () => {
 	change_avatar (c, image_frame);
       });
