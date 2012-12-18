@@ -334,7 +334,11 @@ public class Contacts.ContactPane : Grid {
   void delete_contact () {
     if (contact != null) {
       contact.hide ();
+      set_edit_mode (false);
+
       this.will_delete (contact);
+
+      show_contact (null);
     }
   }
 
@@ -365,6 +369,10 @@ public class Contacts.ContactPane : Grid {
 
   public void set_edit_mode (bool on_edit) {
     if (on_edit) {
+      if (contact == null) {
+	return;
+      }
+
       on_edit_mode = true;
 
       if (contact.has_birthday ())
@@ -386,6 +394,9 @@ public class Contacts.ContactPane : Grid {
 
       sheet.clear ();
       sheet.hide ();
+
+      if (suggestion_grid != null)
+	suggestion_grid.destroy ();
 
       editor.clear ();
       editor.update (contact);
