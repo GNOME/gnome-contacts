@@ -52,7 +52,7 @@ public class Contacts.ContactPane : Grid {
   private ContactSheet sheet;
 
   public bool on_edit_mode;
-  private Gd.MainToolbar edit_toolbar;
+  private Toolbar edit_toolbar;
   private ContactEditor editor;
 
   /* single value details */
@@ -250,12 +250,13 @@ public class Contacts.ContactPane : Grid {
     editor = new ContactEditor ();
 
     on_edit_mode = false;
-    edit_toolbar = new Gd.MainToolbar ();
+    edit_toolbar = new Toolbar ();
     edit_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
     edit_toolbar.get_style_context ().add_class ("contacts-edit-toolbar");
     edit_toolbar.set_vexpand (false);
 
     var add_detail_button = new Gtk.MenuButton ();
+    add_detail_button.set_vexpand (true);
     var box = new Grid ();
     var w = new Label (_("New Detail")) as Widget;
     w.set_valign (Align.CENTER);
@@ -307,10 +308,28 @@ public class Contacts.ContactPane : Grid {
     details_menu.show_all ();
     add_detail_button.set_popup (details_menu);
     add_detail_button.set_direction (ArrowType.UP);
-    edit_toolbar.add_widget (add_detail_button, true);
 
-    var linked_button = edit_toolbar.add_button (null, _("Linked Accounts"), true) as Gtk.Button;
-    var remove_button = edit_toolbar.add_button (null, _("Remove Contact"), false) as Gtk.Button;
+    var tool_item = new ToolItem ();
+    tool_item.add (add_detail_button);
+    tool_item.margin_right = 12;
+    edit_toolbar.insert (tool_item, -1);
+
+    tool_item = new ToolItem ();
+    var linked_button = new Button.with_label (_("Linked Accounts"));
+    linked_button.set_vexpand (true);
+    tool_item.add (linked_button);
+    edit_toolbar.insert (tool_item, -1);
+
+    tool_item = new SeparatorToolItem ();
+    tool_item.set_expand (true);
+    (tool_item as SeparatorToolItem).set_draw (false);
+    edit_toolbar.insert (tool_item, -1);
+
+    tool_item = new ToolItem ();
+    var remove_button = new Button.with_label (_("Remove Contact"));
+    remove_button.set_vexpand (true);
+    tool_item.add (remove_button);
+    edit_toolbar.insert (tool_item, -1);
     remove_button.clicked.connect (delete_contact);
 
     edit_toolbar.show_all ();
