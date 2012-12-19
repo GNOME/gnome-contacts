@@ -269,17 +269,36 @@ public class Contacts.ContactPane : Grid {
     box.add (w);
     add_detail_button.add (box);
     var details_menu = new Gtk.Menu ();
-    details_menu.set_halign (Align.END);
-    var item = new Gtk.MenuItem.with_label (_("Email"));
+    details_menu.set_halign (Align.START);
+
+    /* building menu */
+    var item = new Gtk.MenuItem.with_label (_("Personal email"));
     details_menu.append (item);
     item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "email-addresses");
+	editor.add_new_row_for_property (contact.find_primary_persona (), "email-addresses", "PERSONAL");
       });
-    item = new Gtk.MenuItem.with_label (_("Phone"));
+    item = new Gtk.MenuItem.with_label (_("Work email"));
     details_menu.append (item);
     item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers");
+	editor.add_new_row_for_property (contact.find_primary_persona (), "email-addresses", "WORK");
       });
+
+    item = new Gtk.MenuItem.with_label (_("Mobile phone"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "CELL");
+      });
+    item = new Gtk.MenuItem.with_label (_("Home phone"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "HOME");
+      });
+    item = new Gtk.MenuItem.with_label (_("Work phone"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "WORK");
+      });
+
     item = new Gtk.MenuItem.with_label (_("Link"));
     details_menu.append (item);
     item.activate.connect (() => {
@@ -295,11 +314,18 @@ public class Contacts.ContactPane : Grid {
     birthday_item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "birthday");
       });
-    item = new Gtk.MenuItem.with_label (_("Address"));
+
+    item = new Gtk.MenuItem.with_label (_("Home address"));
     details_menu.append (item);
     item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-addresses");
+	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-addresses", "HOME");
       });
+    item = new Gtk.MenuItem.with_label (_("Work address"));
+    details_menu.append (item);
+    item.activate.connect (() => {
+	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-addresses", "WORK");
+      });
+
     notes_item = new Gtk.MenuItem.with_label (_("Notes"));
     details_menu.append (notes_item);
     notes_item.activate.connect (() => {

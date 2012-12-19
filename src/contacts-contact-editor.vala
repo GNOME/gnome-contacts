@@ -223,10 +223,12 @@ public class Contacts.ContactEditor : Grid {
     }
   }
 
-  void attach_row_with_entry (TypeSet type_set, AbstractFieldDetails details, string value, int row) {
+  void attach_row_with_entry (int row, TypeSet type_set, AbstractFieldDetails details, string value, string? type = null) {
     var combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
     combo.set_active (details);
+    if (type != null)
+      combo.set_to (type);
     attach (combo, 0, row, 1, 1);
 
     var value_entry = new Entry ();
@@ -366,10 +368,12 @@ public class Contacts.ContactEditor : Grid {
       });
   }
 
-  void attach_row_for_address (TypeSet type_set, PostalAddressFieldDetails details, int row) {
+  void attach_row_for_address (int row, TypeSet type_set, PostalAddressFieldDetails details, string? type = null) {
     var combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
     combo.set_active (details);
+    if (type != null)
+      combo.set_to (type);
     attach (combo, 0, row, 1, 1);
 
     var value_address = new AddressEditor (details);
@@ -393,7 +397,7 @@ public class Contacts.ContactEditor : Grid {
       });
   }
 
-  void add_edit_row (Persona p, string prop_name, ref int row, bool add_empty = false) {
+  void add_edit_row (Persona p, string prop_name, ref int row, bool add_empty = false, string? type = null) {
     /* Here, we will need to add manually every type of field,
      * we're planning to allow editing on */
     switch (prop_name) {
@@ -401,7 +405,7 @@ public class Contacts.ContactEditor : Grid {
       var rows = new HashMap<int, RowData?> ();
       if (add_empty) {
 	var detail_field = new EmailFieldDetails ("");
-	attach_row_with_entry (TypeSet.general, detail_field, "", row);
+	attach_row_with_entry (row, TypeSet.email, detail_field, "", type);
 	rows.set (row, { detail_field });
 	row++;
       } else {
@@ -409,7 +413,7 @@ public class Contacts.ContactEditor : Grid {
 	if (details != null) {
 	  var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
 	  foreach (var email in emails) {
-	    attach_row_with_entry (TypeSet.general, email, email.value, row);
+	    attach_row_with_entry (row, TypeSet.email, email, email.value);
 	    rows.set (row, { email });
 	    row++;
 	  }
@@ -429,7 +433,7 @@ public class Contacts.ContactEditor : Grid {
       var rows = new HashMap<int, RowData?> ();
       if (add_empty) {
 	var detail_field = new PhoneFieldDetails ("");
-	attach_row_with_entry (TypeSet.phone, detail_field, "", row);
+	attach_row_with_entry (row, TypeSet.phone, detail_field, "", type);
 	rows.set (row, { detail_field });
 	row++;
       } else {
@@ -437,7 +441,7 @@ public class Contacts.ContactEditor : Grid {
 	if (details != null) {
 	  var phones = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
 	  foreach (var phone in phones) {
-	    attach_row_with_entry (TypeSet.phone, phone, phone.value, row);
+	    attach_row_with_entry (row, TypeSet.phone, phone, phone.value, type);
 	    rows.set (row, { phone });
 	    row++;
 	  }
@@ -573,14 +577,14 @@ public class Contacts.ContactEditor : Grid {
 						null,
 						null,
 						null));
-	attach_row_for_address (TypeSet.general, detail_field, row);
+	attach_row_for_address (row, TypeSet.general, detail_field, type);
 	rows.set (row, { detail_field });
 	row++;
       } else {
 	var address_details = p as PostalAddressDetails;
 	if (address_details != null) {
 	  foreach (var addr in address_details.postal_addresses) {
-	    attach_row_for_address (TypeSet.general, addr, row);
+	    attach_row_for_address (row, TypeSet.general, addr, type);
 	    rows.set (row, { addr });
 	    row++;
 	  }
@@ -763,7 +767,7 @@ public class Contacts.ContactEditor : Grid {
     return v;
   }
 
-  public void add_new_row_for_property (Persona p, string prop_name) {
+  public void add_new_row_for_property (Persona p, string prop_name, string? type = null) {
     /* Somehow, I need to ensure that p is the main/default/first persona */
     int next_idx = 0;
     foreach (var fields in writable_personas.values) {
@@ -777,7 +781,7 @@ public class Contacts.ContactEditor : Grid {
     }
     next_idx = (next_idx == 0 ? last_row : next_idx) + 1;
     insert_row_at (next_idx);
-    add_edit_row (p, prop_name, ref next_idx, true);
+    add_edit_row (p, prop_name, ref next_idx, true, type);
     last_row++;
     show_all ();
   }

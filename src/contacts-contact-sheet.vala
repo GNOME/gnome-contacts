@@ -121,7 +121,7 @@ public class Contacts.ContactSheet : Grid {
       if (details != null) {
 	var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
 	foreach (var email in emails) {
-	  var button = add_row_with_button (ref i, TypeSet.general.format_type (email), email.value);
+	  var button = add_row_with_button (ref i, TypeSet.email.format_type (email), email.value);
 	  button.clicked.connect (() => {
 	      Utils.compose_mail ("%s <%s>".printf(c.display_name, email.value));
 	    });
