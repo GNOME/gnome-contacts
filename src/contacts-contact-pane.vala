@@ -95,6 +95,11 @@ public class Contacts.ContactPane : Grid {
   public void add_suggestion (Contact c) {
     var parent_overlay = this.get_parent () as Overlay;
 
+    if (suggestion_grid != null) {
+      suggestion_grid.destroy ();
+      suggestion_grid = null;
+    }
+
     suggestion_grid = new Grid ();
     suggestion_grid.set_valign (Align.END);
     parent_overlay.add_overlay (suggestion_grid);
@@ -170,6 +175,11 @@ public class Contacts.ContactPane : Grid {
     if (contact == new_contact)
       return;
 
+    if (suggestion_grid != null) {
+      suggestion_grid.destroy ();
+      suggestion_grid = null;
+    }
+
     if (contact != null) {
       contact.personas_changed.disconnect (personas_changed_cb);
       contact.changed.disconnect (contact_changed_cb);
@@ -181,9 +191,6 @@ public class Contacts.ContactPane : Grid {
     contact = new_contact;
 
     update_sheet ();
-
-    if (suggestion_grid != null)
-      suggestion_grid.destroy ();
 
     bool can_remove = false;
 
@@ -442,8 +449,10 @@ public class Contacts.ContactPane : Grid {
       sheet.clear ();
       sheet.hide ();
 
-      if (suggestion_grid != null)
+      if (suggestion_grid != null) {
 	suggestion_grid.destroy ();
+	suggestion_grid = null;
+      }
 
       editor.clear ();
       editor.update (contact);
@@ -458,8 +467,7 @@ public class Contacts.ContactPane : Grid {
 						Contact.set_persona_property.end (result);
 					      } catch (Error e2) {
 						App.app.show_message (e2.message);
-						/* FIXME: add this back */
-						/* update_sheet (); */
+						update_sheet ();
 					      }
 					    });
       }
