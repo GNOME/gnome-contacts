@@ -259,10 +259,12 @@ public class Contacts.ContactPane : Grid {
     var box = new Grid ();
     var w = new Label (_("New Detail")) as Widget;
     w.set_valign (Align.CENTER);
+    w.set_vexpand (true);
     box.set_column_spacing (4);
     box.add (w);
     w = new Arrow (ArrowType.DOWN, ShadowType.OUT) as Widget;
     w.set_valign (Align.CENTER);
+    w.set_vexpand (true);
     box.add (w);
     add_detail_button.add (box);
     var details_menu = new Gtk.Menu ();
