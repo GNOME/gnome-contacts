@@ -111,14 +111,6 @@ public class Contacts.TypeSet : Object  {
 
     store.append (out other_iter);
     store.set (other_iter, 0, _("Other"), 1, other_dummy);
-
-    TreeIter iter;
-    // Separator
-    store.append (out iter);
-    store.set (iter, 0, null);
-
-    store.append (out custom_iter);
-    store.set (custom_iter, 0, _("Custom..."), 1, custom_dummy);
   }
 
   public void add_custom_label (string label, out TreeIter iter) {
@@ -306,6 +298,29 @@ public class Contacts.TypeSet : Object  {
     }
   }
 
+  private static TypeSet _email;
+  private const InitData[] email_data = {
+    // List most specific first, always in upper case
+    { N_("Personal"), { "PERSONAL" } },
+    { N_("Work"), { "WORK" } }
+  };
+  public static TypeSet email {
+    get {
+      string[] standard = {
+	"Personal", "Work"
+      };
+
+      if (_email == null) {
+	_email = new TypeSet ();
+	for (int i = 0; i < email_data.length; i++)
+	  _email.add_init_data (&email_data[i]);
+	_email.add_init_data_done (standard);
+      }
+
+      return _email;
+    }
+  }
+
   private static TypeSet _phone;
   public static TypeSet phone {
     get {
@@ -333,7 +348,7 @@ public class Contacts.TypeSet : Object  {
 
       // Make sure these strings are the same as the above
       string[] standard = {
-	"Mobile", "Work", "Home", "Work Fax", "Home Fax", "Pager"
+	"Mobile", "Work", "Home"
       };
 
       if (_phone == null) {
