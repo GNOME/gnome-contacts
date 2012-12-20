@@ -30,7 +30,8 @@ public class Contacts.App : Gtk.Application {
   private Gd.MainToolbar left_toolbar;
   private ListPane list_pane;
 
-  private Gd.MainToolbar right_toolbar;
+  private Toolbar right_toolbar;
+  private Label contact_name;
   private Button edit_button;
   private Button done_button;
 
@@ -72,7 +73,7 @@ public class Contacts.App : Gtk.Application {
     if (contacts_pane.on_edit_mode) {
       contacts_pane.set_edit_mode (false);
 
-      right_toolbar.set_labels (null, null);
+      contact_name.set_text (null);
       done_button.hide ();
     }
 
@@ -289,17 +290,38 @@ public class Contacts.App : Gtk.Application {
 
     var select_button = left_toolbar.add_button ("object-select-symbolic", null, false) as Gtk.Button;
 
-    right_toolbar = new Gd.MainToolbar ();
+    right_toolbar = new Toolbar ();
     right_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    right_toolbar.get_style_context ().add_class ("contacts-right-toolbar");
     right_toolbar.set_vexpand (false);
     grid.attach (right_toolbar, 1, 0, 1, 1);
 
-    edit_button = right_toolbar.add_button (null, _("Edit"), false) as Gtk.Button;
-    edit_button.set_size_request (70, -1);
+    contact_name = new Label (null);
+    contact_name.set_valign (Align.CENTER);
+    contact_name.set_vexpand (true);
+    contact_name.set_hexpand (true);
+    var item = new ToolItem ();
+    item.add (contact_name);
+    right_toolbar.insert (item, -1);
 
-    done_button = right_toolbar.add_button (null, _("Done"), false) as Gtk.Button;
+    /* spacer */
+    item = new SeparatorToolItem ();
+    (item as SeparatorToolItem).set_draw (false);
+    (item as ToolItem).set_expand (true);
+    right_toolbar.insert (item, -1);
+
+    edit_button = new Button.with_label (_("Edit"));
+    edit_button.set_size_request (70, -1);
+    item = new ToolItem ();
+    item.add (edit_button);
+    right_toolbar.insert (item, -1);
+
+    done_button = new Button.with_label (_("Done"));
     done_button.set_size_request (70, -1);
     done_button.get_style_context ().add_class ("suggested-action");
+    item = new ToolItem ();
+    item.add (done_button);
+    right_toolbar.insert (item, -1);
 
     window.add (grid);
 
@@ -331,14 +353,19 @@ public class Contacts.App : Gtk.Application {
     grid.show_all ();
 
     edit_button.clicked.connect (() => {
-	right_toolbar.set_labels (_("Editing"), null);
+	var name = _("Editing");
+	if (contacts_pane.contact != null) {
+	  name += " %s".printf (contacts_pane.contact.display_name);
+	}
+
+	contact_name.set_markup (Markup.printf_escaped ("<b>%s</b>", name));
 	edit_button.hide ();
 	done_button.show ();
 	contacts_pane.set_edit_mode (true);
       });
 
     done_button.clicked.connect (() => {
-	right_toolbar.set_labels (null, null);
+	contact_name.set_text (null);
 	done_button.hide ();
 	edit_button.show ();
 	contacts_pane.set_edit_mode (false);
@@ -429,7 +456,7 @@ public class Contacts.App : Gtk.Application {
 
   private void delete_contact (Contact contact) {
     /* unsetting edit-mode */
-    right_toolbar.set_labels (null, null);
+    contact_name.set_text (null);
     done_button.hide ();
     contacts_pane.set_edit_mode (false);
 
