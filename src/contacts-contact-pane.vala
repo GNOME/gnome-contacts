@@ -22,6 +22,9 @@ using Gee;
 
 const int PROFILE_SIZE = 128;
 
+/* Not available until Vala 0.19 */
+extern void gtk_menu_button_set_popup (Gtk.MenuButton button, Gtk.Widget popup);
+
 namespace Contacts {
   public static void change_avatar (Contact contact, ContactFrame image_frame) {
     var dialog = new AvatarDialog (contact);
@@ -339,7 +342,9 @@ public class Contacts.ContactPane : Grid {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "notes");
       });
     details_menu.show_all ();
-    add_detail_button.set_popup (details_menu);
+    /* Not available until Vala 0.19 */
+    //add_detail_button.set_popup (details_menu);
+    gtk_menu_button_set_popup (add_detail_button, details_menu);
     add_detail_button.set_direction (ArrowType.UP);
 
     var tool_item = new ToolItem ();
