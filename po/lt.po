@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-18 17:02+0000\n"
-"PO-Revision-Date: 2012-09-21 20:47+0300\n"
+"POT-Creation-Date: 2012-12-29 19:24+0000\n"
+"PO-Revision-Date: 2013-01-02 22:25+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -18,10 +18,14 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../data/gnome-contacts.desktop.in.in.h:1
-#: ../src/contacts-app.vala:240
+#: ../src/contacts-app.vala:272
 #: ../src/main.vala:28
 msgid "Contacts"
 msgstr "Kontaktai"
+
+#: ../data/gnome-contacts.desktop.in.in.h:2
+msgid "friends;address book;"
+msgstr "draugai;adresų knyga;"
 
 #: ../src/app-menu.ui.h:1
 msgid "_Change Address Book..."
@@ -39,77 +43,89 @@ msgstr "_Žinynas"
 msgid "_Quit"
 msgstr "_Išeiti"
 
-#: ../src/contacts-app.vala:79
+#: ../src/contacts-app.vala:105
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Kontaktas su id %s nerastas"
 
-#: ../src/contacts-app.vala:80
-#: ../src/contacts-app.vala:204
+#: ../src/contacts-app.vala:106
+#: ../src/contacts-app.vala:230
 msgid "Contact not found"
 msgstr "Kontaktas nerastas"
 
-#: ../src/contacts-app.vala:89
+#: ../src/contacts-app.vala:115
 msgid "Change Address Book"
 msgstr "Keisti adresų knygą"
 
-#: ../src/contacts-app.vala:94
+#: ../src/contacts-app.vala:120
 #: ../src/contacts-setup-window.vala:152
 msgid "Select"
 msgstr "Pasirinkti"
 
-#: ../src/contacts-app.vala:182
+#: ../src/contacts-app.vala:208
 msgid "translator-credits"
 msgstr ""
 "išvertė:\n"
 "Aurimas Černius <aurisc4@gmail.com>"
 
-#: ../src/contacts-app.vala:183
+#: ../src/contacts-app.vala:209
 msgid "GNOME Contacts"
 msgstr "GNOME Kontaktai"
 
-#: ../src/contacts-app.vala:184
+#: ../src/contacts-app.vala:210
 msgid "About GNOME Contacts"
 msgstr "Apie GNOME kontaktus"
 
-#: ../src/contacts-app.vala:185
+#: ../src/contacts-app.vala:211
 msgid "Contact Management Application"
 msgstr "Kontaktų valdymo programa"
 
-#: ../src/contacts-app.vala:203
+#: ../src/contacts-app.vala:229
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Kontaktas su el. pašto adresu %s nerastas"
 
-#: ../src/contacts-app.vala:256
+#: ../src/contacts-app.vala:286
 msgid "New"
 msgstr "Naujas"
 
-#: ../src/contacts-app.vala:391
+#: ../src/contacts-app.vala:297
+msgid "Edit"
+msgstr "Keisti"
+
+#: ../src/contacts-app.vala:300
+msgid "Done"
+msgstr "Atlikta"
+
+#: ../src/contacts-app.vala:334
+msgid "Editing"
+msgstr "Keičiama"
+
+#: ../src/contacts-app.vala:442
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Kontaktas ištrintas: „%s“"
 
-#: ../src/contacts-app.vala:418
+#: ../src/contacts-app.vala:468
 msgid "Show contact with this individual id"
 msgstr "Rodyti kontaktą su šiuo individualiu id"
 
-#: ../src/contacts-app.vala:420
+#: ../src/contacts-app.vala:470
 msgid "Show contact with this email address"
 msgstr "Rodyti kontaktą su šiuo el. pašto adresu"
 
-#: ../src/contacts-app.vala:433
+#: ../src/contacts-app.vala:483
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s susietas su %s"
 
-#: ../src/contacts-app.vala:435
+#: ../src/contacts-app.vala:485
 #: ../src/contacts-link-dialog.vala:87
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s susietas su kontaktu"
 
-#: ../src/contacts-app.vala:452
+#: ../src/contacts-app.vala:502
 msgid "— contact management"
 msgstr "— kontaktų valdymas"
 
@@ -126,314 +142,301 @@ msgstr "Pasirinkite paveikslėlį"
 msgid "Close"
 msgstr "Užverti"
 
-#: ../src/contacts-contact-pane.vala:591
-msgctxt "Addresses on the Web"
-msgid "Links"
-msgstr "Saitai"
-
-#: ../src/contacts-contact-pane.vala:592
-msgctxt "Web address"
-msgid "Link"
-msgstr "Saitas"
-
-#: ../src/contacts-contact-pane.vala:679
-#: ../src/contacts-contact-pane.vala:680
-#: ../src/contacts-link-dialog.vala:116
-#: ../src/contacts-new-contact-dialog.vala:86
-#: ../src/contacts-new-contact-dialog.vala:121
-msgid "Email"
-msgstr "El. paštas"
-
-#: ../src/contacts-contact-pane.vala:721
-#: ../src/contacts-new-contact-dialog.vala:95
-#: ../src/contacts-new-contact-dialog.vala:126
-msgid "Phone"
-msgstr "Telefonas"
-
-#: ../src/contacts-contact-pane.vala:722
-#: ../src/contacts-link-dialog.vala:132
-msgid "Phone number"
-msgstr "Telefono numeris"
-
-#: ../src/contacts-contact-pane.vala:782
-#: ../src/contacts-contact-pane.vala:783
-msgid "Chat"
-msgstr "Pokalbiai"
-
-#: ../src/contacts-contact-pane.vala:848
-msgid "January"
-msgstr "Sausis"
-
-#: ../src/contacts-contact-pane.vala:849
-msgid "February"
-msgstr "Vasaris"
-
-#: ../src/contacts-contact-pane.vala:850
-msgid "March"
-msgstr "Kovas"
-
-#: ../src/contacts-contact-pane.vala:851
-msgid "April"
-msgstr "Balandis"
-
-#: ../src/contacts-contact-pane.vala:852
-msgid "May"
-msgstr "Gegužė"
-
-#: ../src/contacts-contact-pane.vala:853
-msgid "June"
-msgstr "Birželis"
-
-#: ../src/contacts-contact-pane.vala:854
-msgid "July"
-msgstr "Liepa"
-
-#: ../src/contacts-contact-pane.vala:855
-msgid "August"
-msgstr "Rugpjūtis"
-
-#: ../src/contacts-contact-pane.vala:856
-msgid "September"
-msgstr "Rugsėjis"
-
-#: ../src/contacts-contact-pane.vala:857
-msgid "October"
-msgstr "Spalis"
-
-#: ../src/contacts-contact-pane.vala:858
-msgid "November"
-msgstr "Lapkritis"
-
-#: ../src/contacts-contact-pane.vala:859
-msgid "December"
-msgstr "Gruodis"
-
-#: ../src/contacts-contact-pane.vala:897
-#: ../src/contacts-contact-pane.vala:898
-msgid "Birthday"
-msgstr "Gimtadienis"
-
-#: ../src/contacts-contact-pane.vala:970
-#: ../src/contacts-contact-pane.vala:971
-msgid "Nickname"
-msgstr "Slapyvardis"
-
-#: ../src/contacts-contact-pane.vala:1061
-#: ../src/contacts-contact-pane.vala:1062
-msgid "Note"
-msgstr "Raštelis"
-
-#: ../src/contacts-contact-pane.vala:1201
-msgid "Addresses"
-msgstr "Adresai"
-
-#: ../src/contacts-contact-pane.vala:1202
-#: ../src/contacts-new-contact-dialog.vala:104
-#: ../src/contacts-new-contact-dialog.vala:131
-msgid "Address"
-msgstr "Adresas"
-
-#: ../src/contacts-contact-pane.vala:1304
-msgid "Add to My Contacts"
-msgstr "Pridėti prie mano kontaktų"
-
-#: ../src/contacts-contact-pane.vala:1314
-msgid "Unlink"
-msgstr "Atsieti"
-
-#: ../src/contacts-contact-pane.vala:1346
-msgid "Add detail..."
-msgstr "Pridėti duomenų..."
-
-#: ../src/contacts-contact-pane.vala:1361
-#, c-format
-msgid "Select detail to add to %s"
-msgstr "Pasirinkite duomenis pridėjimui prie %s"
-
-#: ../src/contacts-contact-pane.vala:1752
+#: ../src/contacts-contact-pane.vala:132
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Ar %s iš %s čia priklauso?"
 
-#: ../src/contacts-contact-pane.vala:1754
+#: ../src/contacts-contact-pane.vala:134
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "Ar šie duomenys priklauso %s?"
 
-#: ../src/contacts-contact-pane.vala:1764
+#: ../src/contacts-contact-pane.vala:145
 msgid "Yes"
 msgstr "Taip"
 
-#: ../src/contacts-contact-pane.vala:1765
+#: ../src/contacts-contact-pane.vala:146
 msgid "No"
 msgstr "Ne"
 
-#: ../src/contacts-contact-pane.vala:1962
-msgid "Select email address"
-msgstr "Pasirinkite el. pašto adresą"
+#: ../src/contacts-contact-pane.vala:268
+#| msgid "Add Detail"
+msgid "New Detail"
+msgstr "Nauji duomenys"
 
-#: ../src/contacts-contact-pane.vala:2035
-msgid "Select what to call"
-msgstr "Pasirinkite, kuo skambinti"
+#. building menu
+#: ../src/contacts-contact-pane.vala:282
+msgid "Personal email"
+msgstr "Asmeninis el. paštas"
 
-#: ../src/contacts-contact-pane.vala:2099
-msgid "Select chat account"
-msgstr "Pasirinkite pokalbių paskyrą"
+#: ../src/contacts-contact-pane.vala:287
+#| msgid "Work Fax"
+msgid "Work email"
+msgstr "Darbo el. paštas"
 
-#: ../src/contacts-contact-pane.vala:2179
-msgid "Add/Remove Linked Contacts..."
-msgstr "Pridėti/šalinti susietus kontaktus..."
+#: ../src/contacts-contact-pane.vala:293
+#| msgid "Mobile"
+msgid "Mobile phone"
+msgstr "Mobilusis telefonas"
 
-#. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2183
-msgid "Delete"
-msgstr "Ištrinti"
+#: ../src/contacts-contact-pane.vala:298
+msgid "Home phone"
+msgstr "Namų telefonas"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact-pane.vala:303
+msgid "Work phone"
+msgstr "Darbo telefonas"
+
+#: ../src/contacts-contact-pane.vala:309
+#: ../src/contacts-link-dialog.vala:154
+msgid "Link"
+msgstr "Saitas"
+
+#: ../src/contacts-contact-pane.vala:314
+#: ../src/contacts-contact-sheet.vala:182
+#: ../src/contacts-contact-editor.vala:490
+#: ../src/contacts-contact-editor.vala:497
+msgid "Nickname"
+msgstr "Slapyvardis"
+
+#: ../src/contacts-contact-pane.vala:319
+#: ../src/contacts-contact-sheet.vala:189
+#: ../src/contacts-contact-editor.vala:517
+#: ../src/contacts-contact-editor.vala:524
+msgid "Birthday"
+msgstr "Gimtadienis"
+
+#: ../src/contacts-contact-pane.vala:325
+#| msgid "Address"
+msgid "Home address"
+msgstr "Namų adresas"
+
+#: ../src/contacts-contact-pane.vala:330
+#| msgid "Address"
+msgid "Work address"
+msgstr "Darbo adresas"
+
+#: ../src/contacts-contact-pane.vala:336
+#| msgid "Note"
+msgid "Notes"
+msgstr "Pastabos"
+
+#: ../src/contacts-contact-pane.vala:351
+#| msgid "Online Accounts"
+msgid "Linked Accounts"
+msgstr "Susietos paskyros"
+
+#: ../src/contacts-contact-pane.vala:362
+#| msgid "Create Contact"
+msgid "Remove Contact"
+msgstr "Pašalinti kontaktą"
+
+#: ../src/contacts-contact.vala:710
 msgid "Street"
 msgstr "Gatvė"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:710
 msgid "Extension"
 msgstr "Plėtinys"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:710
 msgid "City"
 msgstr "Miestas"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:710
 msgid "State/Province"
 msgstr "Valstija/provincija"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:710
 msgid "Zip/Postal Code"
 msgstr "Zip/pašto kodas"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:710
 msgid "PO box"
 msgstr "Pašto dėžutė"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:710
 msgid "Country"
 msgstr "Šalis"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:766
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:767
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:744
-#: ../src/contacts-contact.vala:1026
+#: ../src/contacts-contact.vala:768
+#: ../src/contacts-contact.vala:1050
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:769
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:770
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:771
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:772
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:773
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:774
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:751
+#: ../src/contacts-contact.vala:775
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:776
 msgid "Local network"
 msgstr "Vietinis tinklas"
 
-#: ../src/contacts-contact.vala:753
+#: ../src/contacts-contact.vala:777
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:754
+#: ../src/contacts-contact.vala:778
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:755
+#: ../src/contacts-contact.vala:779
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:756
+#: ../src/contacts-contact.vala:780
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:757
+#: ../src/contacts-contact.vala:781
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:758
+#: ../src/contacts-contact.vala:782
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:759
+#: ../src/contacts-contact.vala:783
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:760
+#: ../src/contacts-contact.vala:784
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:761
+#: ../src/contacts-contact.vala:785
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:762
+#: ../src/contacts-contact.vala:786
 msgid "Telephony"
 msgstr "Telefonas"
 
-#: ../src/contacts-contact.vala:763
+#: ../src/contacts-contact.vala:787
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:764
-#: ../src/contacts-contact.vala:765
+#: ../src/contacts-contact.vala:788
+#: ../src/contacts-contact.vala:789
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:766
+#: ../src/contacts-contact.vala:790
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1029
+#: ../src/contacts-contact.vala:1053
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact.vala:1032
+#: ../src/contacts-contact.vala:1056
 msgid "Google Profile"
 msgstr "Google profilis"
 
-#: ../src/contacts-contact.vala:1096
+#: ../src/contacts-contact.vala:1120
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Netikėta vidinė klaida: sukurtas kontaktas nerastas"
 
-#: ../src/contacts-contact.vala:1234
+#: ../src/contacts-contact.vala:1258
 msgid "Google Circles"
 msgstr "Google Circles"
 
-#: ../src/contacts-contact.vala:1236
+#: ../src/contacts-contact.vala:1260
 msgid "Google Other Contact"
 msgstr "Kitas Google kontaktas"
+
+#: ../src/contacts-contact-sheet.vala:172
+#: ../src/contacts-contact-editor.vala:464
+#: ../src/contacts-contact-editor.vala:471
+msgid "Website"
+msgstr "Tinklapis"
+
+#: ../src/contacts-contact-sheet.vala:196
+#: ../src/contacts-contact-editor.vala:544
+#: ../src/contacts-contact-editor.vala:551
+msgid "Note"
+msgstr "Raštelis"
+
+#: ../src/contacts-contact-editor.vala:331
+msgid "January"
+msgstr "Sausis"
+
+#: ../src/contacts-contact-editor.vala:332
+msgid "February"
+msgstr "Vasaris"
+
+#: ../src/contacts-contact-editor.vala:333
+msgid "March"
+msgstr "Kovas"
+
+#: ../src/contacts-contact-editor.vala:334
+msgid "April"
+msgstr "Balandis"
+
+#: ../src/contacts-contact-editor.vala:335
+msgid "May"
+msgstr "Gegužė"
+
+#: ../src/contacts-contact-editor.vala:336
+msgid "June"
+msgstr "Birželis"
+
+#: ../src/contacts-contact-editor.vala:337
+msgid "July"
+msgstr "Liepa"
+
+#: ../src/contacts-contact-editor.vala:338
+msgid "August"
+msgstr "Rugpjūtis"
+
+#: ../src/contacts-contact-editor.vala:339
+msgid "September"
+msgstr "Rugsėjis"
+
+#: ../src/contacts-contact-editor.vala:340
+msgid "October"
+msgstr "Spalis"
+
+#: ../src/contacts-contact-editor.vala:341
+msgid "November"
+msgstr "Lapkritis"
+
+#: ../src/contacts-contact-editor.vala:342
+msgid "December"
+msgstr "Gruodis"
 
 #: ../src/contacts-esd-setup.c:114
 msgid "Local Address Book"
@@ -457,6 +460,16 @@ msgstr "Saitas"
 msgid "Undo"
 msgstr "Atšaukti"
 
+#: ../src/contacts-link-dialog.vala:116
+#: ../src/contacts-new-contact-dialog.vala:86
+#: ../src/contacts-new-contact-dialog.vala:121
+msgid "Email"
+msgstr "El. paštas"
+
+#: ../src/contacts-link-dialog.vala:132
+msgid "Phone number"
+msgstr "Telefono numeris"
+
 #: ../src/contacts-link-dialog.vala:148
 msgid "Link Contact"
 msgstr "Susieti kontaktą"
@@ -465,10 +478,6 @@ msgstr "Susieti kontaktą"
 #: ../src/contacts-setup-window.vala:137
 msgid "Cancel"
 msgstr "Atsisakyti"
-
-#: ../src/contacts-link-dialog.vala:154
-msgid "Link"
-msgstr "Saitas"
 
 #: ../src/contacts-link-dialog.vala:182
 #, c-format
@@ -498,6 +507,16 @@ msgstr ""
 #: ../src/contacts-new-contact-dialog.vala:78
 msgid "Contact Name"
 msgstr "Kontakto vardas"
+
+#: ../src/contacts-new-contact-dialog.vala:95
+#: ../src/contacts-new-contact-dialog.vala:126
+msgid "Phone"
+msgstr "Telefonas"
+
+#: ../src/contacts-new-contact-dialog.vala:104
+#: ../src/contacts-new-contact-dialog.vala:131
+msgid "Address"
+msgstr "Adresas"
 
 #: ../src/contacts-new-contact-dialog.vala:113
 msgid "Add Detail"
@@ -546,78 +565,80 @@ msgid "Contacts Setup"
 msgstr "Kontaktų nustatymas"
 
 #: ../src/contacts-types.vala:113
-#: ../src/contacts-types.vala:133
-#: ../src/contacts-types.vala:234
-#: ../src/contacts-types.vala:324
+#: ../src/contacts-types.vala:125
+#: ../src/contacts-types.vala:226
+#: ../src/contacts-types.vala:339
 msgid "Other"
 msgstr "Kita"
 
-#: ../src/contacts-types.vala:121
-msgid "Custom..."
-msgstr "Pasirinktinis..."
-
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:289
-#: ../src/contacts-types.vala:320
+#: ../src/contacts-types.vala:281
+#: ../src/contacts-types.vala:335
 msgid "Home"
 msgstr "Namų"
 
-#: ../src/contacts-types.vala:290
-#: ../src/contacts-types.vala:315
+#: ../src/contacts-types.vala:282
+#: ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:330
 msgid "Work"
 msgstr "Darbo"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:314
+#: ../src/contacts-types.vala:304
+msgid "Personal"
+msgstr "Asmeninis"
+
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:329
 msgid "Assistant"
 msgstr "Asistentas"
 
-#: ../src/contacts-types.vala:316
+#: ../src/contacts-types.vala:331
 msgid "Work Fax"
 msgstr "Darbo faksas"
 
-#: ../src/contacts-types.vala:317
+#: ../src/contacts-types.vala:332
 msgid "Callback"
 msgstr "Perskambinimas"
 
-#: ../src/contacts-types.vala:318
+#: ../src/contacts-types.vala:333
 msgid "Car"
 msgstr "Automobilis"
 
-#: ../src/contacts-types.vala:319
+#: ../src/contacts-types.vala:334
 msgid "Company"
 msgstr "Kompanija"
 
-#: ../src/contacts-types.vala:321
+#: ../src/contacts-types.vala:336
 msgid "Home Fax"
 msgstr "Namų faksas"
 
-#: ../src/contacts-types.vala:322
+#: ../src/contacts-types.vala:337
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:323
+#: ../src/contacts-types.vala:338
 msgid "Mobile"
 msgstr "Mobilusis"
 
-#: ../src/contacts-types.vala:325
+#: ../src/contacts-types.vala:340
 msgid "Fax"
 msgstr "Faksas"
 
-#: ../src/contacts-types.vala:326
+#: ../src/contacts-types.vala:341
 msgid "Pager"
 msgstr "Pranešimų gaviklis"
 
-#: ../src/contacts-types.vala:327
+#: ../src/contacts-types.vala:342
 msgid "Radio"
 msgstr "Radijas"
 
-#: ../src/contacts-types.vala:328
+#: ../src/contacts-types.vala:343
 msgid "Telex"
 msgstr "Teleksas"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:330
+#: ../src/contacts-types.vala:345
 msgid "TTY"
 msgstr "TTY"
 
