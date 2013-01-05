@@ -12,7 +12,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=$(srcdir)/../vapi --vapidir=$(srcdir)/listbox --vapidir=$(top_srcdir)/libgd --pkg config --pkg custom --pkg egglistbox --pkg gd-1.0 \
+	--vapidir=../vapi --vapidir=listbox --vapidir=../libgd --pkg config --pkg custom --pkg egglistbox --pkg gd-1.0 \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 
