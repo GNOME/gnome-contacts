@@ -1022,9 +1022,11 @@ public class Contacts.Contact : GLib.Object  {
       int avatar_size = (int) (size * 0.3);
       var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default-symbolic", avatar_size,
 							    IconLookupFlags.GENERIC_FALLBACK);
-      Gdk.cairo_set_source_pixbuf (cr, icon_info.load_icon (), (size - avatar_size) / 2, (size - avatar_size) / 2);
-      cr.rectangle ((size - avatar_size) / 2, (size - avatar_size) / 2, avatar_size, avatar_size);
-      cr.fill ();
+      if (icon_info != null) {
+	Gdk.cairo_set_source_pixbuf (cr, icon_info.load_icon (), (size - avatar_size) / 2, (size - avatar_size) / 2);
+	cr.rectangle ((size - avatar_size) / 2, (size - avatar_size) / 2, avatar_size, avatar_size);
+	cr.fill ();
+      }
       pixbuf = Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
     } catch {
     }
