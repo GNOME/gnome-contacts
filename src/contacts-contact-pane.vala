@@ -46,20 +46,40 @@ namespace Contacts {
   }
 }
 
+public class Center : Bin {
+  public int max_width { get; set; }
+  public double xalign { get; set; }
+
+  public Center () {
+    this.xalign = 0.5;
+  }
+
+  public override void size_allocate (Gtk.Allocation allocation) {
+    Gtk.Allocation new_alloc;
+
+    set_allocation (allocation);
+    new_alloc = allocation;
+    if (allocation.width > this.max_width) {
+      new_alloc.width = this.max_width;
+      new_alloc.x = (int) ((allocation.width - this.max_width) * this.xalign) + allocation.x;
+    }
+
+    var child = get_child ();
+    child.size_allocate (new_alloc);
+  }
+}
+
 public class Contacts.ContactPane : Notebook {
   private Store contacts_store;
   public Contact? contact;
 
-  /* 3 pages */
-
-  /* first page */
+  /* 3 pages, first */
   private Frame no_selection_frame;
 
   /* second page */
   private ContactSheet sheet;
 
   /* thrid page */
-  private Toolbar edit_toolbar;
   private ContactEditor editor;
 
   /* single value details */
@@ -233,12 +253,18 @@ public class Contacts.ContactPane : Notebook {
     main_sw.set_vexpand (true);
     main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
+    var hcenter = new Center ();
+    hcenter.max_width = 600;
+
     sheet = new ContactSheet ();
+    hcenter.add (sheet);
+
     sheet.set_hexpand (true);
     sheet.set_vexpand (true);
     sheet.margin = 36;
     sheet.set_margin_bottom (24);
-    main_sw.add_with_viewport (sheet);
+
+    main_sw.add_with_viewport (hcenter);
     sheet.set_focus_vadjustment (main_sw.get_vadjustment ());
 
     main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
@@ -268,17 +294,22 @@ public class Contacts.ContactPane : Notebook {
     main_sw.set_vexpand (true);
     main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
+    hcenter = new Center ();
+    hcenter.max_width = 600;
+
     editor = new ContactEditor ();
+    hcenter.add (editor);
+
     editor.margin = 36;
     editor.set_margin_bottom (24);
-    main_sw.add_with_viewport (editor);
+    main_sw.add_with_viewport (hcenter);
     editor.set_focus_vadjustment (main_sw.get_vadjustment ());
 
     main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
     main_sw.get_child ().get_style_context ().add_class ("view");
 
     on_edit_mode = false;
-    edit_toolbar = new Toolbar ();
+    var edit_toolbar = new Toolbar ();
     edit_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
     edit_toolbar.get_style_context ().add_class ("contacts-edit-toolbar");
     edit_toolbar.set_vexpand (false);
