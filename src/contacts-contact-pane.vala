@@ -46,15 +46,19 @@ namespace Contacts {
   }
 }
 
-public class Contacts.ContactPane : Grid {
+public class Contacts.ContactPane : Notebook {
   private Store contacts_store;
   public Contact? contact;
 
-  private ScrolledWindow main_sw;
-  private Grid top_grid;
+  /* 3 pages */
+
+  /* first page */
+  private Frame no_selection_frame;
+
+  /* second page */
   private ContactSheet sheet;
 
-  public bool on_edit_mode;
+  /* thrid page */
   private Toolbar edit_toolbar;
   private ContactEditor editor;
 
@@ -63,8 +67,7 @@ public class Contacts.ContactPane : Grid {
   private Gtk.MenuItem birthday_item;
   private Gtk.MenuItem notes_item;
 
-  private Grid no_selection_grid;
-
+  public bool on_edit_mode;
   public Grid suggestion_grid;
 
   /* Signals */
@@ -83,6 +86,7 @@ public class Contacts.ContactPane : Grid {
       return;
 
     sheet.update (contact);
+    set_current_page (1);
 
     if (show_matches) {
       var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
@@ -187,9 +191,6 @@ public class Contacts.ContactPane : Grid {
       contact.personas_changed.disconnect (personas_changed_cb);
       contact.changed.disconnect (contact_changed_cb);
     }
-    if (new_contact != null) {
-      no_selection_grid.destroy ();
-    }
 
     contact = new_contact;
 
@@ -205,7 +206,7 @@ public class Contacts.ContactPane : Grid {
     }
 
     if (contact == null)
-      show_no_selection_grid ();
+      show_no_selection_frame ();
   }
 
   private void personas_changed_cb (Contact contact) {
@@ -217,33 +218,34 @@ public class Contacts.ContactPane : Grid {
   }
 
   public ContactPane (Store contacts_store) {
-    this.set_orientation (Orientation.VERTICAL);
+    this.show_tabs = false;
 
     this.contacts_store = contacts_store;
 
-    main_sw = new ScrolledWindow (null, null);
+    /* starts with no_selection_frame 'til someone select something */
+    show_no_selection_frame ();
+
+    var main_sw = new ScrolledWindow (null, null);
     main_sw.get_style_context ().add_class ("contacts-content");
-    this.add (main_sw);
 
     main_sw.set_shadow_type (ShadowType.IN);
     main_sw.set_hexpand (true);
     main_sw.set_vexpand (true);
     main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
-    top_grid = new Grid ();
-    top_grid.set_orientation (Orientation.VERTICAL);
-    top_grid.margin = 36;
-    top_grid.set_margin_bottom (24);
-    top_grid.set_row_spacing (20);
-    main_sw.add_with_viewport (top_grid);
-    top_grid.set_focus_vadjustment (main_sw.get_vadjustment ());
+    sheet = new ContactSheet ();
+    sheet.set_hexpand (true);
+    sheet.set_vexpand (true);
+    sheet.margin = 36;
+    sheet.set_margin_bottom (24);
+    main_sw.add_with_viewport (sheet);
+    sheet.set_focus_vadjustment (main_sw.get_vadjustment ());
 
     main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
     main_sw.get_child ().get_style_context ().add_class ("view");
 
-    sheet = new ContactSheet ();
-    top_grid.add (sheet);
-    top_grid.show_all ();
+    main_sw.show_all ();
+    insert_page (main_sw, null, 1);
 
     contacts_store.quiescent.connect (() => {
       // Refresh the view when the store is quiescent as we may have missed
@@ -253,11 +255,27 @@ public class Contacts.ContactPane : Grid {
 
     suggestion_grid = null;
 
-    /* starts with no_selection_grid 'til someone select something */
-    show_no_selection_grid ();
+    /* edit mode widgetry, third page */
+    var top_grid = new Grid ();
+    top_grid.set_orientation (Orientation.VERTICAL);
 
-    /* edit mode widgetry */
+    main_sw = new ScrolledWindow (null, null);
+    top_grid.add (main_sw);
+    main_sw.get_style_context ().add_class ("contacts-content");
+
+    main_sw.set_shadow_type (ShadowType.IN);
+    main_sw.set_hexpand (true);
+    main_sw.set_vexpand (true);
+    main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+
     editor = new ContactEditor ();
+    editor.margin = 36;
+    editor.set_margin_bottom (24);
+    main_sw.add_with_viewport (editor);
+    editor.set_focus_vadjustment (main_sw.get_vadjustment ());
+
+    main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
+    main_sw.get_child ().get_style_context ().add_class ("view");
 
     on_edit_mode = false;
     edit_toolbar = new Toolbar ();
@@ -371,15 +389,14 @@ public class Contacts.ContactPane : Grid {
     remove_button.clicked.connect (delete_contact);
 
     edit_toolbar.show_all ();
-
-    this.add (edit_toolbar);
-
-    edit_toolbar.set_no_show_all (true);
-    edit_toolbar.hide ();
+    top_grid.add (edit_toolbar);
 
     editor.set_vexpand (true);
     editor.set_hexpand (true);
-    top_grid.add (editor);
+    editor.show_all ();
+    main_sw.show ();
+    top_grid.show_all ();
+    insert_page (top_grid, null, 2);
   }
 
   void link_contact () {
@@ -401,29 +418,33 @@ public class Contacts.ContactPane : Grid {
     }
   }
 
-  void show_no_selection_grid () {
-    if ( icon_size_from_name ("ULTRABIG") == 0)
+  void show_no_selection_frame () {
+    if ( icon_size_from_name ("ULTRABIG") == 0) {
       icon_size_register ("ULTRABIG", 144, 144);
 
-    no_selection_grid = new Grid ();
+      no_selection_frame = new Frame (null);
+      no_selection_frame.get_style_context ().add_class ("contacts-content");
 
-    var box = new Grid ();
-    box.set_orientation (Orientation.VERTICAL);
-    box.set_valign (Align.CENTER);
-    box.set_halign (Align.CENTER);
-    box.set_vexpand (true);
-    box.set_hexpand (true);
+      var box = new Grid ();
+      box.set_orientation (Orientation.VERTICAL);
+      box.set_valign (Align.CENTER);
+      box.set_halign (Align.CENTER);
+      box.set_vexpand (true);
+      box.set_hexpand (true);
 
-    var image = new Image.from_icon_name ("avatar-default-symbolic", icon_size_from_name ("ULTRABIG"));
-    image.get_style_context ().add_class ("dim-label");
-    box.add (image);
+      var image = new Image.from_icon_name ("avatar-default-symbolic", icon_size_from_name ("ULTRABIG"));
+      image.get_style_context ().add_class ("dim-label");
+      box.add (image);
 
-    var label = new Gtk.Label ("Select a contact");
-    box.add (label);
+      var label = new Gtk.Label ("Select a contact");
+      box.add (label);
 
-    no_selection_grid.add (box);
-    no_selection_grid.show_all ();
-    top_grid.add (no_selection_grid);
+      no_selection_frame.add (box);
+      no_selection_frame.show_all ();
+      insert_page (no_selection_frame, null, 0);
+    }
+
+    set_current_page (0);
   }
 
   public void set_edit_mode (bool on_edit) {
@@ -449,10 +470,7 @@ public class Contacts.ContactPane : Grid {
       else
 	notes_item.show ();
 
-      edit_toolbar.show ();
-
       sheet.clear ();
-      sheet.hide ();
 
       if (suggestion_grid != null) {
 	suggestion_grid.destroy ();
@@ -462,6 +480,7 @@ public class Contacts.ContactPane : Grid {
       editor.clear ();
       editor.update (contact);
       editor.show_all ();
+      set_current_page (2);
     } else {
       on_edit_mode = false;
       /* saving changes */
@@ -492,13 +511,11 @@ public class Contacts.ContactPane : Grid {
 					       });
       }
 
-      edit_toolbar.hide ();
-
       editor.clear ();
-      editor.hide ();
 
       sheet.clear ();
       sheet.update (contact);
+      set_current_page (1);
     }
   }
 }
