@@ -292,7 +292,6 @@ public class Contacts.App : Gtk.Application {
 
     right_toolbar = new Toolbar ();
     right_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    right_toolbar.get_style_context ().add_class ("contacts-right-toolbar");
     right_toolbar.set_vexpand (false);
     grid.attach (right_toolbar, 1, 0, 1, 1);
 
@@ -300,6 +299,8 @@ public class Contacts.App : Gtk.Application {
     contact_name.set_valign (Align.CENTER);
     contact_name.set_vexpand (true);
     contact_name.set_hexpand (true);
+    contact_name.margin_left = 12;
+    contact_name.margin_right = 12;
     var item = new ToolItem ();
     item.add (contact_name);
     right_toolbar.insert (item, -1);
