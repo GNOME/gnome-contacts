@@ -81,6 +81,8 @@ public class Contacts.ContactPane : Notebook {
 
   /* thrid page */
   private ContactEditor editor;
+  private Button linked_button;
+  private Button remove_button;
 
   /* single value details */
   private Gtk.MenuItem nickname_item;
@@ -217,13 +219,18 @@ public class Contacts.ContactPane : Notebook {
     update_sheet ();
 
     bool can_remove = false;
+    bool has_links = false;
 
     if (contact != null) {
       contact.personas_changed.connect (personas_changed_cb);
       contact.changed.connect (contact_changed_cb);
 
       can_remove = contact.can_remove_personas ();
+      has_links = contact.individual.personas.size > 1;
     }
+
+    remove_button.set_sensitive (can_remove);
+    linked_button.set_sensitive (has_links);
 
     if (contact == null)
       show_no_selection_frame ();
@@ -402,10 +409,11 @@ public class Contacts.ContactPane : Notebook {
     edit_toolbar.insert (tool_item, -1);
 
     tool_item = new ToolItem ();
-    var linked_button = new Button.with_label (_("Linked Accounts"));
+    linked_button = new Button.with_label (_("Linked Accounts"));
     linked_button.set_vexpand (true);
     tool_item.add (linked_button);
     edit_toolbar.insert (tool_item, -1);
+    linked_button.clicked.connect (linked_accounts);
 
     tool_item = new SeparatorToolItem ();
     tool_item.set_expand (true);
@@ -413,7 +421,7 @@ public class Contacts.ContactPane : Notebook {
     edit_toolbar.insert (tool_item, -1);
 
     tool_item = new ToolItem ();
-    var remove_button = new Button.with_label (_("Remove Contact"));
+    remove_button = new Button.with_label (_("Remove Contact"));
     remove_button.set_vexpand (true);
     tool_item.add (remove_button);
     edit_toolbar.insert (tool_item, -1);
@@ -430,11 +438,8 @@ public class Contacts.ContactPane : Notebook {
     insert_page (top_grid, null, 2);
   }
 
-  void link_contact () {
-    var dialog = new LinkDialog (contact);
-    dialog.contacts_linked.connect ( (main_contact, linked_contact, operation) => {
-      this.contacts_linked (main_contact, linked_contact, operation);
-    });
+  void linked_accounts () {
+    var dialog = new LinkedAccountsDialog (contact);
     dialog.show_all ();
   }
 
