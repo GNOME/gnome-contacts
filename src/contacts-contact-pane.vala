@@ -54,6 +54,28 @@ public class Center : Bin {
     this.xalign = 0.5;
   }
 
+  public override void get_preferred_height (out int minimum_height, out int natural_height) {
+    var child = get_child ();
+    if (child != null) {
+      int min;
+      int nat;
+      child.get_preferred_height (out min, out nat);
+      minimum_height = min;
+      natural_height = nat;
+    }
+  }
+
+  public override void get_preferred_width (out int minimum_width, out int natural_width) {
+    var child = get_child ();
+    if (child != null) {
+      int min;
+      int nat;
+      child.get_preferred_width (out min, out nat);
+      minimum_width = min;
+      natural_width = nat;
+    }
+  }
+
   public override void size_allocate (Gtk.Allocation allocation) {
     Gtk.Allocation new_alloc;
 
