@@ -70,12 +70,9 @@ public class Contacts.ContactSheet : Grid {
   }
 
   public void update (Contact c) {
-    var image_frame = new ContactFrame (PROFILE_SIZE, true);
+    var image_frame = new ContactFrame (PROFILE_SIZE);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
-    image_frame.clicked.connect ( () => {
-	change_avatar (c, image_frame);
-      });
     c.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (c.individual, c);
       });
