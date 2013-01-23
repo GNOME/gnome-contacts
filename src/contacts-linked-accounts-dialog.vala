@@ -102,12 +102,28 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       button.get_child ().margin = 6;
       row_grid.attach (button, 2, 0, 1, 2);
 
+      /* signal */
+      button.clicked.connect (() => {
+	  unlink_persona.begin (contact, p, (obj, result) => {
+	      unlink_persona.end (result);
+	      var sep = row_grid.get_data<Widget> ("separator");
+	      if (sep != null)
+		sep.destroy ();
+
+	      row_grid.destroy ();
+	      /* TODO: Support undo */
+	      /* TODO: Ensure we don't get suggestion for this linkage again */
+	    });
+	});
+
       row_grid.show_all ();
       linked_accounts_view.add (row_grid);
 
       if (counter != personas.size - 1) {
-	linked_accounts_view.add (new Separator (Orientation.HORIZONTAL));
+	var sep = new Separator (Orientation.HORIZONTAL);
+	linked_accounts_view.add (sep);
 	counter++;
+	row_grid.set_data ("separator", sep);
       }
     }
 
