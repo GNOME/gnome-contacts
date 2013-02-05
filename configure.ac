@@ -81,10 +81,9 @@ dnl libgd
 LIBGD_INIT([
   gtk-hacks
   main-toolbar
-  main-icon-view
+  notification
   margin-container
   static
-  tagged-entry
   vapi
 ])
 
