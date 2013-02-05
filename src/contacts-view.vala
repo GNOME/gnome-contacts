@@ -330,7 +330,13 @@ public class Contacts.View : Egg.ListBox {
     separator = null;
   }
 
-  public void select_contact (Contact contact) {
+  public void select_contact (Contact? contact) {
+    if (contact == null) {
+      /* deselect */
+      select_child (null);
+      return;
+    }
+
     var data = contacts.get (contact);
     select_child (data.grid);
   }

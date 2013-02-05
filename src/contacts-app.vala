@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Gee;
 using Gtk;
 using Folks;
 
@@ -338,6 +339,7 @@ public class Contacts.App : Gtk.Application {
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
+    list_pane.delete_contacts.connect (delete_contacts);
 
     grid.attach (list_pane, 0, 1, 1, 1);
 
@@ -461,6 +463,43 @@ public class Contacts.App : Gtk.Application {
   public void new_contact () {
     var dialog = new NewContactDialog (contacts_store, window);
     dialog.show_all ();
+  }
+
+  private void delete_contacts (LinkedList<Contact> contacts_list) {
+    /* getting out of selection mode */
+    show_contact (null);
+    select_button.set_active (false);
+
+    var notification = new Gd.Notification ();
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg = _("%d contacts deleted").printf (contacts_list.size);
+    var b = new Button.from_stock (Stock.UNDO);
+    g.add (new Label (msg));
+    g.add (b);
+
+    notification.show_all ();
+    overlay.add_overlay (notification);
+
+    /* signal handlers */
+    bool really_delete = true;
+    notification.dismissed.connect ( () => {
+	if (really_delete) {
+	  foreach (var c in contacts_list) {
+	    c.remove_personas.begin ();
+	  }
+	}
+      });
+    b.clicked.connect ( () => {
+	really_delete = false;
+	notification.dismiss ();
+	  foreach (var c in contacts_list) {
+	    c.show ();
+	  }
+      });
   }
 
   private void delete_contact (Contact contact) {

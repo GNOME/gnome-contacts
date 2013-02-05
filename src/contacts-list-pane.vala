@@ -111,8 +111,8 @@ public class Contacts.ListPane : Frame {
     this.add (grid);
 
     contacts_view.selection_changed.connect( (l, contact) => {
-	if (!ignore_selection_change)
-	  selection_changed (contact);
+        if (!ignore_selection_change)
+          selection_changed (contact);
       });
 
     contacts_view.add_to_scrolled (scrolled);
@@ -165,7 +165,7 @@ public class Contacts.ListPane : Frame {
       });
   }
 
-  public void select_contact (Contact contact, bool ignore_change = false) {
+  public void select_contact (Contact? contact, bool ignore_change = false) {
     if (ignore_change)
       ignore_selection_change = true;
     contacts_view.select_contact (contact);
