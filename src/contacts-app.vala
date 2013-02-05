@@ -28,6 +28,7 @@ public class Contacts.App : Gtk.Application {
   private Gtk.Overlay overlay;
 
   private Gd.MainToolbar left_toolbar;
+  private ToggleButton select_button;
   private ListPane list_pane;
 
   private Toolbar right_toolbar;
@@ -288,7 +289,7 @@ public class Contacts.App : Gtk.Application {
     add_button.set_size_request (70, -1);
     add_button.clicked.connect (app.new_contact);
 
-    var select_button = left_toolbar.add_button ("object-select-symbolic", null, false) as Gtk.Button;
+    select_button = left_toolbar.add_toggle ("object-select-symbolic", null, false) as ToggleButton;
 
     right_toolbar = new Toolbar ();
     right_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
@@ -352,6 +353,13 @@ public class Contacts.App : Gtk.Application {
     grid.attach (right_overlay, 1, 1, 1, 1);
 
     grid.show_all ();
+
+    select_button.toggled.connect (() => {
+	if (select_button.active)
+	  list_pane.show_selection ();
+	else
+	  list_pane.hide_selection ();
+      });
 
     edit_button.clicked.connect (() => {
 	var name = _("Editing");

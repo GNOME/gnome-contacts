@@ -21,8 +21,11 @@ using Folks;
 
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
-  private View contacts_view;
+
   public Entry filter_entry;
+  private View contacts_view;
+  private Gd.MainToolbar selection_toolbar;
+
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
   private bool search_visible;
@@ -117,9 +120,25 @@ public class Contacts.ListPane : Frame {
     grid.add (toolbar);
     grid.add (scrolled);
 
+    selection_toolbar = new Gd.MainToolbar ();
+    selection_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
+    selection_toolbar.get_style_context ().add_class ("contacts-selection-toolbar");
+    selection_toolbar.set_vexpand (false);
+
+    var link_selected_button = selection_toolbar.add_button (null, _("Link"), true) as Gtk.Button;
+    link_selected_button.set_size_request (70, -1);
+    link_selected_button.set_sensitive (false);
+    var delete_selected_button = selection_toolbar.add_button (null, _("Delete"), false) as Gtk.Button;
+    delete_selected_button.set_size_request (70, -1);
+    delete_selected_button.set_sensitive (false);
+
+    grid.add (selection_toolbar);
+
     this.show_all ();
+    this.set_no_show_all (true);
 
     scrolled.show ();
+    selection_toolbar.hide ();
   }
 
   public void select_contact (Contact contact, bool ignore_change = false) {
@@ -131,9 +150,11 @@ public class Contacts.ListPane : Frame {
 
   public void show_selection () {
     contacts_view.show_selectors ();
+    selection_toolbar.show ();
   }
 
   public void hide_selection () {
     contacts_view.hide_selectors ();
+    selection_toolbar.hide ();
   }
 }
