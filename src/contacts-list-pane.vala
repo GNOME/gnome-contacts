@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Gee;
 using Gtk;
 using Folks;
 
@@ -31,6 +32,7 @@ public class Contacts.ListPane : Frame {
   private bool search_visible;
 
   public signal void selection_changed (Contact? contact);
+  public signal void delete_contacts (LinkedList<Contact> contacts_list);
 
   private void refilter () {
     string []? values;
@@ -139,6 +141,28 @@ public class Contacts.ListPane : Frame {
 
     scrolled.show ();
     selection_toolbar.hide ();
+
+    /* contact mark handling */
+    contacts_view.contacts_marked.connect ((nr_contacts_marked) => {
+        if (nr_contacts_marked > 0)
+          delete_selected_button.set_sensitive (true);
+        else
+          delete_selected_button.set_sensitive (false);
+
+        if (nr_contacts_marked > 1)
+          link_selected_button.set_sensitive (true);
+        else
+          link_selected_button.set_sensitive (false);
+      });
+
+    delete_selected_button.clicked.connect (() => {
+        var marked_contacts = contacts_view.get_marked_contacts ();
+        foreach (var c in marked_contacts) {
+	  c.hide ();
+        }
+
+	delete_contacts (marked_contacts);
+      });
   }
 
   public void select_contact (Contact contact, bool ignore_change = false) {
