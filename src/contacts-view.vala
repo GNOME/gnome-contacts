@@ -47,11 +47,13 @@ public class Contacts.View : Egg.ListBox {
   }
 
   public signal void selection_changed (Contact? contact);
+  public signal void contacts_marked (int contacts_marked);
 
   Store contacts_store;
   Subset show_subset;
   HashMap<Contact,ContactData> contacts;
   HashSet<Contact> hidden_contacts;
+  int nr_contacts_marked;
 
   string []? filter_values;
   private TextDisplay text_display;
@@ -61,6 +63,7 @@ public class Contacts.View : Egg.ListBox {
     set_selection_mode (SelectionMode.BROWSE);
     contacts_store = store;
     hidden_contacts = new HashSet<Contact>();
+    nr_contacts_marked = 0;
     show_subset = Subset.ALL;
     this.text_display = text_display;
 
@@ -236,6 +239,15 @@ public class Contacts.View : Egg.ListBox {
 
     update_data (data);
 
+    data.selector_button.toggled.connect (() => {
+	if (data.selector_button.active)
+	  this.nr_contacts_marked++;
+	else
+	  this.nr_contacts_marked--;
+
+	contacts_marked (this.nr_contacts_marked);
+      });
+
     data.grid.set_data<ContactData> ("data", data);
     data.grid.show_all ();
     data.selector_button.hide ();
@@ -336,5 +348,15 @@ public class Contacts.View : Egg.ListBox {
       data.selector_button.set_active (false);
     }
     selectors_visible = false;
+    nr_contacts_marked = 0;
+  }
+
+  public LinkedList<Contact> get_marked_contacts () {
+    var cs = new LinkedList<Contact> ();
+    foreach (var data in contacts.values) {
+      if (data.selector_button.active)
+	cs.add (data.contact);
+    }
+    return cs;
   }
 }
