@@ -447,7 +447,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void show_message (string message) {
-    var notification = new Gtk.Notification ();
+    var notification = new Gd.Notification ();
 
     var g = new Grid ();
     g.set_column_spacing (8);
@@ -508,7 +508,7 @@ public class Contacts.App : Gtk.Application {
     done_button.hide ();
     contacts_pane.set_edit_mode (false);
 
-    var notification = new Gtk.Notification ();
+    var notification = new Gd.Notification ();
 
     var g = new Grid ();
     g.set_column_spacing (8);
@@ -547,7 +547,7 @@ public class Contacts.App : Gtk.Application {
   };
 
   private void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation) {
-    var notification = new Gtk.Notification ();
+    var notification = new Gd.Notification ();
 
     var g = new Grid ();
     g.set_column_spacing (8);
