@@ -64,7 +64,6 @@ contact-resources.c: contacts.gresource.xml app-menu.ui
 gnome_contacts_SOURCES = \
 	um-crop-area.c \
 	contact-resources.c \
-	gtk-notification.c   \
 	listbox/egg-list-box.c \
 	contacts-esd-setup.c \
 	$(vala_sources) \
@@ -102,7 +101,6 @@ EXTRA_DIST = \
 	listbox/egglistbox.vapi \
 	cheese-flash.h \
 	um-crop-area.h \
-	gtk-notification.h   \
 	contacts.gresource.xml \
 	app-menu.ui \
 	$(gsettingsschema_in_files)     \
