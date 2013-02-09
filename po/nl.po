@@ -2,14 +2,16 @@
 #
 # This file is distributed under the same license as the gnome-contacts package.
 #
-# Wouter Bolsterlee <wbolster@gnome.org>, 2011
+# Wouter Bolsterlee <wbolster@gnome.org>, 2011‒2013
+#
+# Contact (en):  contactpersoon (niet alleen contact)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-08 01:35+0200\n"
-"PO-Revision-Date: 2011-10-08 01:35+0200\n"
+"POT-Creation-Date: 2013-02-09 17:02+0100\n"
+"PO-Revision-Date: 2013-02-09 17:02+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -18,453 +20,623 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:108
-#: ../src/main.vala:35
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:275
+#: ../src/main.vala:28
 msgid "Contacts"
-msgstr "Contacten"
+msgstr "Contactpersonen"
 
-#: ../src/contacts-app.vala:68
+#: ../data/gnome-contacts.desktop.in.in.h:2
+msgid "friends;address book;"
+msgstr ""
+"vrienden;kennissen;contactpersonen;contacten;personen;adressen;adresboek"
+
+#: ../src/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "_Adresboek veranderen…"
+
+#: ../src/app-menu.ui.h:2
+msgid "_About Contacts"
+msgstr "_Over Contacten"
+
+#: ../src/app-menu.ui.h:3
+msgid "_Help"
+msgstr "_Hulp"
+
+#: ../src/app-menu.ui.h:4
+msgid "_Quit"
+msgstr "Afsl_uiten"
+
+#: ../src/contacts-app.vala:108
 #, c-format
 msgid "No contact with id %s found"
-msgstr "Geen contact met id %s gevonden"
+msgstr "Geen contactpersoon met id %s gevonden"
 
-#: ../src/contacts-app.vala:69 ../src/contacts-app.vala:87
+#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
 msgid "Contact not found"
-msgstr "Contact niet gevonden"
+msgstr "Contactpersoon niet gevonden"
 
-#: ../src/contacts-app.vala:86
+#: ../src/contacts-app.vala:118
+msgid "Change Address Book"
+msgstr "Adresboek veranderen"
+
+#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
+msgid "Select"
+msgstr "Selecteren"
+
+#: ../src/contacts-app.vala:211
+msgid "translator-credits"
+msgstr ""
+"GNOME-NL\n"
+"\n"
+"Wouter Bolsterlee"
+
+#: ../src/contacts-app.vala:212
+msgid "GNOME Contacts"
+msgstr "Gnome Contactpersonen"
+
+#: ../src/contacts-app.vala:213
+msgid "About GNOME Contacts"
+msgstr "Over Gnome Contactpersonen"
+
+#: ../src/contacts-app.vala:214
+msgid "Contact Management Application"
+msgstr "Toepassing voor het beheer van contactgegevens"
+
+#: ../src/contacts-app.vala:232
 #, c-format
 msgid "No contact with email address %s found"
-msgstr "Geen contact met e-mailadres %s gevonden"
+msgstr "Geen contactpersoon met e-mailadres %s gevonden"
 
-#: ../src/contacts-app.vala:159 ../src/main.vala:27
-msgid "Show contact with this individual id"
-msgstr "Contact met dit specifieke id tonen"
+#: ../src/contacts-app.vala:289
+msgid "New"
+msgstr "Nieuw"
 
-#: ../src/contacts-app.vala:161 ../src/main.vala:29
-msgid "Show contact with this email address"
-msgstr "Contact met dit e-mailadres tonen"
-
-#: ../src/contacts-app.vala:168
-msgid "— contact management"
-msgstr "— contactmanagement"
-
-#: ../src/contacts-contact-pane.vala:606 ../src/contacts-contact-pane.vala:850
-#: ../src/contacts-contact-pane.vala:1348
-msgid "Nickname"
-msgstr "Bijnaam"
-
-#: ../src/contacts-contact-pane.vala:609
-msgid "Enter nickname"
-msgstr "Geef bijnaam"
-
-#: ../src/contacts-contact-pane.vala:615
-msgid "Alias"
-msgstr "Alias"
-
-#: ../src/contacts-contact-pane.vala:618
-msgid "Enter alias"
-msgstr "Geef alias"
-
-#: ../src/contacts-contact-pane.vala:630
-msgid "Enter email address"
-msgstr "Geef e-mailadres"
-
-#: ../src/contacts-contact-pane.vala:641
-msgid "Enter phone number"
-msgstr "Geef telefoonnummer"
-
-#: ../src/contacts-contact-pane.vala:647 ../src/contacts-contact-pane.vala:839
-msgctxt "url-link"
-msgid "Link"
-msgstr "Verwijzing"
-
-#: ../src/contacts-contact-pane.vala:652
-msgid "Enter link"
-msgstr "Geef verwijzing"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Street"
-msgstr "Straat"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Extension"
-msgstr "Toevoeging"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "City"
-msgstr "Plaats"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "State/Province"
-msgstr "Staat/provincie"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Zip/Postal Code"
-msgstr "Postcode"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "PO box"
-msgstr "Postbus"
-
-#: ../src/contacts-contact-pane.vala:659
-msgid "Country"
-msgstr "Land"
-
-#: ../src/contacts-contact-pane.vala:746
-#: ../src/contacts-contact-pane.vala:1365
-msgid "Chat"
-msgstr "Chat"
-
-#: ../src/contacts-contact-pane.vala:807
-msgid "Add detail"
-msgstr "Detail toevoegen"
-
-#: ../src/contacts-contact-pane.vala:813
-msgid "Email"
-msgstr "E-mail"
-
-#: ../src/contacts-contact-pane.vala:821
-msgid "Phone number"
-msgstr "Telefoonnummer"
-
-#: ../src/contacts-contact-pane.vala:829
-msgid "Postal Address"
-msgstr "Postadres"
-
-#: ../src/contacts-contact-pane.vala:962
-msgid "Browse for more pictures"
-msgstr "Bladeren naar meer afbeeldingen"
-
-#: ../src/contacts-contact-pane.vala:1044
-msgid "Browse for more pictures..."
-msgstr "Bladeren naar meer afbeeldingen…"
-
-#: ../src/contacts-contact-pane.vala:1264
-msgid "Enter name"
-msgstr "Geef naam"
-
-#: ../src/contacts-contact-pane.vala:1276
-#: ../src/contacts-contact-pane.vala:1563
-msgid "Contact Name"
-msgstr "Naam van contact"
-
-#: ../src/contacts-contact-pane.vala:1430
-msgid "Address copied to clipboard"
-msgstr "Adres naar klembord gekopieerd"
-
-#: ../src/contacts-contact-pane.vala:1452
-msgid "Birthday"
-msgstr "Verjaardag"
-
-#: ../src/contacts-contact-pane.vala:1461 ../src/contacts-types.vala:296
-msgid "Company"
-msgstr "Bedrijf"
-
-#: ../src/contacts-contact-pane.vala:1468
-msgid "Department"
-msgstr "Afdeling"
-
-#: ../src/contacts-contact-pane.vala:1475
-msgid "Profession"
-msgstr "Beroep"
-
-#: ../src/contacts-contact-pane.vala:1480
-msgid "Title"
-msgstr "Titel"
-
-#: ../src/contacts-contact-pane.vala:1487
-msgid "Manager"
-msgstr "Manager"
-
-#. List most specific first, always in upper case
-#: ../src/contacts-contact-pane.vala:1496 ../src/contacts-types.vala:291
-msgid "Assistant"
-msgstr "Assistent"
-
-#: ../src/contacts-contact-pane.vala:1505
-msgid "Links"
-msgstr "Verwijzingen"
-
-#: ../src/contacts-contact-pane.vala:1578
-#, c-format
-msgid "Unable to create new contacts: %s\n"
-msgstr "Kon nieuwe contacten niet aanmaken: %s\n"
-
-#: ../src/contacts-contact-pane.vala:1589
-msgid "Unable to find newly created contact\n"
-msgstr "Kon nieuw aangemaakt contact niet vinden\n"
-
-#: ../src/contacts-contact-pane.vala:1698
-msgid "Notes"
-msgstr "Opmerkingen"
-
-#: ../src/contacts-contact-pane.vala:1729
+#: ../src/contacts-app.vala:316
 msgid "Edit"
 msgstr "Bewerken"
 
-#: ../src/contacts-contact-pane.vala:1736
-msgid "More"
-msgstr "Meer"
+#: ../src/contacts-app.vala:322
+msgid "Done"
+msgstr "Klaar"
 
-#: ../src/contacts-contact-pane.vala:1749
-msgid "Back to Contact"
-msgstr "Terug naar contact"
+#: ../src/contacts-app.vala:367
+msgid "Editing"
+msgstr "Bewerken"
 
-#: ../src/contacts-contact-pane.vala:1758
-msgid "Add/Remove Linked Contacts..."
-msgstr "Gekoppelde contacten toevoegen/verwijderen…"
+#: ../src/contacts-app.vala:479
+#, c-format
+msgid "%d contacts deleted"
+msgstr "%d contactpersonen verwijderd"
 
-#. Utils.add_menu_item (menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:1760
-msgid "Delete"
-msgstr "Verwijderen"
+#: ../src/contacts-app.vala:517
+#, c-format
+msgid "Contact deleted: \"%s\""
+msgstr "Contactpersoon verwijderd: ‘%s’"
 
-#: ../src/contacts-contact.vala:405
-msgid "Unknown status"
-msgstr "Onbekende status"
+#: ../src/contacts-app.vala:543
+msgid "Show contact with this individual id"
+msgstr "Contactpersoon met dit specifieke id tonen"
 
-#: ../src/contacts-contact.vala:407
-msgid "Offline"
-msgstr "Offline"
+#: ../src/contacts-app.vala:545
+msgid "Show contact with this email address"
+msgstr "Contactpersoon met dit e-mailadres tonen"
 
-#: ../src/contacts-contact.vala:411
-msgid "Error"
-msgstr "Fout"
+#: ../src/contacts-app.vala:558
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s gekoppeld aan %s"
 
-#: ../src/contacts-contact.vala:413
-msgid "Available"
-msgstr "Beschikbaar"
+#: ../src/contacts-app.vala:560
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s gekoppeld aan contactpersoon"
 
-#: ../src/contacts-contact.vala:415
-msgid "Away"
-msgstr "Afwezig"
+#: ../src/contacts-app.vala:577
+msgid "— contact management"
+msgstr "— beheer van contactgegevens"
 
-#: ../src/contacts-contact.vala:417
-msgid "Extended away"
-msgstr "Langdurig afwezig"
+#: ../src/contacts-avatar-dialog.vala:197
+msgid "Browse for more pictures"
+msgstr "Bladeren naar meer afbeeldingen"
 
-#: ../src/contacts-contact.vala:419
-msgid "Busy"
-msgstr "Bezig"
+#: ../src/contacts-avatar-dialog.vala:244
+msgid "Select Picture"
+msgstr "Afbeelding selecteren"
 
-#: ../src/contacts-contact.vala:421
-msgid "Hidden"
-msgstr "Verborgen"
+#: ../src/contacts-avatar-dialog.vala:247
+#: ../src/contacts-linked-accounts-dialog.vala:33
+msgid "Close"
+msgstr "Sluiten"
 
-#: ../src/contacts-contact.vala:614
+#: ../src/contacts-contact-editor.vala:331
+msgid "January"
+msgstr "Januari"
+
+#: ../src/contacts-contact-editor.vala:332
+msgid "February"
+msgstr "Februari"
+
+#: ../src/contacts-contact-editor.vala:333
+msgid "March"
+msgstr "Maart"
+
+#: ../src/contacts-contact-editor.vala:334
+msgid "April"
+msgstr "April"
+
+#: ../src/contacts-contact-editor.vala:335
+msgid "May"
+msgstr "Mii"
+
+#: ../src/contacts-contact-editor.vala:336
+msgid "June"
+msgstr "Juni"
+
+#: ../src/contacts-contact-editor.vala:337
+msgid "July"
+msgstr "Juli"
+
+#: ../src/contacts-contact-editor.vala:338
+msgid "August"
+msgstr "Augustus"
+
+#: ../src/contacts-contact-editor.vala:339
+msgid "September"
+msgstr "September"
+
+#: ../src/contacts-contact-editor.vala:340
+msgid "October"
+msgstr "Oktober"
+
+#: ../src/contacts-contact-editor.vala:341
+msgid "November"
+msgstr "November"
+
+#: ../src/contacts-contact-editor.vala:342
+msgid "December"
+msgstr "December"
+
+#: ../src/contacts-contact-editor.vala:464
+#: ../src/contacts-contact-editor.vala:471
+#: ../src/contacts-contact-sheet.vala:169
+msgid "Website"
+msgstr "Website"
+
+#: ../src/contacts-contact-editor.vala:490
+#: ../src/contacts-contact-editor.vala:497
+#: ../src/contacts-contact-pane.vala:395
+#: ../src/contacts-contact-sheet.vala:179
+msgid "Nickname"
+msgstr "Bijnaam"
+
+#: ../src/contacts-contact-editor.vala:517
+#: ../src/contacts-contact-editor.vala:524
+#: ../src/contacts-contact-pane.vala:400
+#: ../src/contacts-contact-sheet.vala:186
+msgid "Birthday"
+msgstr "Verjaardag"
+
+#: ../src/contacts-contact-editor.vala:544
+#: ../src/contacts-contact-editor.vala:551
+#: ../src/contacts-contact-sheet.vala:193
+msgid "Note"
+msgstr "Opmerking"
+
+#: ../src/contacts-contact-pane.vala:183
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "Hoort %s van %s hierbij?"
+
+#: ../src/contacts-contact-pane.vala:185
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "Horen deze gegevens bij %s?"
+
+#: ../src/contacts-contact-pane.vala:196
+msgid "Yes"
+msgstr "Ja"
+
+#: ../src/contacts-contact-pane.vala:197
+msgid "No"
+msgstr "Nee"
+
+#: ../src/contacts-contact-pane.vala:349
+msgid "New Detail"
+msgstr "Nieuw kenmerk"
+
+#. building menu
+#: ../src/contacts-contact-pane.vala:363
+msgid "Personal email"
+msgstr "E-mail (persoonlijk)"
+
+#: ../src/contacts-contact-pane.vala:368
+msgid "Work email"
+msgstr "E-mail (werk)"
+
+#: ../src/contacts-contact-pane.vala:374
+msgid "Mobile phone"
+msgstr "Telefoon (mobiel)"
+
+#: ../src/contacts-contact-pane.vala:379
+msgid "Home phone"
+msgstr "Telefoon (thuis)"
+
+#: ../src/contacts-contact-pane.vala:384
+msgid "Work phone"
+msgstr "Telefoon (werk)"
+
+#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:130
+msgid "Link"
+msgstr "Verwijzing"
+
+#: ../src/contacts-contact-pane.vala:406
+msgid "Home address"
+msgstr "Adres (thuis)"
+
+#: ../src/contacts-contact-pane.vala:411
+msgid "Work address"
+msgstr "Adres (werk)"
+
+#: ../src/contacts-contact-pane.vala:417
+msgid "Notes"
+msgstr "Opmerkingen"
+
+#: ../src/contacts-contact-pane.vala:434
+msgid "Linked Accounts"
+msgstr "Gekoppelde accounts"
+
+#: ../src/contacts-contact-pane.vala:446
+msgid "Remove Contact"
+msgstr "contactpersoon verwijderen"
+
+#: ../src/contacts-contact.vala:710
+msgid "Street"
+msgstr "Straat"
+
+#: ../src/contacts-contact.vala:710
+msgid "Extension"
+msgstr "Toevoeging"
+
+#: ../src/contacts-contact.vala:710
+msgid "City"
+msgstr "Plaats"
+
+#: ../src/contacts-contact.vala:710
+msgid "State/Province"
+msgstr "Staat/provincie"
+
+#: ../src/contacts-contact.vala:710
+msgid "Zip/Postal Code"
+msgstr "Postcode"
+
+#: ../src/contacts-contact.vala:710
+msgid "PO box"
+msgstr "Postbus"
+
+#: ../src/contacts-contact.vala:710
+msgid "Country"
+msgstr "Land"
+
+#: ../src/contacts-contact.vala:766
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:615
+#: ../src/contacts-contact.vala:767
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:616 ../src/contacts-contact.vala:888
+#: ../src/contacts-contact.vala:768 ../src/contacts-contact.vala:1052
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:617
+#: ../src/contacts-contact.vala:769
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:618
+#: ../src/contacts-contact.vala:770
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:619
+#: ../src/contacts-contact.vala:771
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:620
+#: ../src/contacts-contact.vala:772
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:621
+#: ../src/contacts-contact.vala:773
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:622
+#: ../src/contacts-contact.vala:774
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:623
+#: ../src/contacts-contact.vala:775
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:624
+#: ../src/contacts-contact.vala:776
 msgid "Local network"
 msgstr "Lokale netwerk"
 
-#: ../src/contacts-contact.vala:625
+#: ../src/contacts-contact.vala:777
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:626
+#: ../src/contacts-contact.vala:778
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:627
+#: ../src/contacts-contact.vala:779
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:628
+#: ../src/contacts-contact.vala:780
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:629
+#: ../src/contacts-contact.vala:781
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:630
+#: ../src/contacts-contact.vala:782
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:631
+#: ../src/contacts-contact.vala:783
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:632
+#: ../src/contacts-contact.vala:784
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:633
+#: ../src/contacts-contact.vala:785
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:634
+#: ../src/contacts-contact.vala:786
 msgid "Telephony"
 msgstr "Telephony"
 
-#: ../src/contacts-contact.vala:635
+#: ../src/contacts-contact.vala:787
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:636 ../src/contacts-contact.vala:637
+#: ../src/contacts-contact.vala:788 ../src/contacts-contact.vala:789
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:638
+#: ../src/contacts-contact.vala:790
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:891
+#: ../src/contacts-contact.vala:1055
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact.vala:917
+#: ../src/contacts-contact.vala:1058
+msgid "Google Profile"
+msgstr "Google-profiel"
+
+#: ../src/contacts-contact.vala:1122
 msgid "Unexpected internal error: created contact was not found"
-msgstr "Onverwachte interne fout: aangemaakte contact niet gevonden"
+msgstr "Onverwachte interne fout: aangemaakt contactpersoon niet gevonden"
 
-#: ../src/contacts-contact.vala:938
-msgid "Local Contact"
-msgstr "Lokaal contact"
+#: ../src/contacts-contact.vala:1260
+msgid "Google Circles"
+msgstr "Google Kringen"
 
-#: ../src/contacts-contact.vala:941
+# Niet echt fraai… (Wouter Bolsterlee)
+#: ../src/contacts-contact.vala:1262
+msgid "Google Other Contact"
+msgstr "Google overig contactpersoon"
+
+#: ../src/contacts-esd-setup.c:114
+msgid "Local Address Book"
+msgstr "Lokaal adresboek"
+
+#: ../src/contacts-esd-setup.c:117 ../src/contacts-esd-setup.c:145
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-link-dialog.vala:88
-msgid "Link Contact"
-msgstr "Contacten verbinden"
+#: ../src/contacts-esd-setup.c:142
+msgid "Local Contact"
+msgstr "Lokaal contact"
 
-#: ../src/contacts-link-dialog.vala:113
+#: ../src/contacts-linked-accounts-dialog.vala:28
 #, c-format
-msgid "Select contacts to link to %s"
-msgstr "Kies de contacten om te verbinden met ‘%s’"
+msgid "%s - Linked Accounts"
+msgstr "%s – gekoppelde accounts"
 
-#: ../src/contacts-link-dialog.vala:162
-msgctxt "link-contacts-button"
-msgid "Link"
-msgstr "Verbinden"
+#: ../src/contacts-linked-accounts-dialog.vala:52
+msgid "You can manually link contacts from the contacts list"
+msgstr "Contactpersonen kunnen handmatig gekoppeld worden vanuit het overzicht"
 
-#: ../src/contacts-link-dialog.vala:181
-msgid "Currently linked:"
-msgstr "Momenteel verbonden met:"
+#: ../src/contacts-linked-accounts-dialog.vala:98
+msgid "Remove"
+msgstr "Verwijderen"
 
-#: ../src/contacts-list-pane.vala:148
+#: ../src/contacts-list-pane.vala:133
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: ../src/contacts-new-contact-dialog.vala:35
+msgid "New contact"
+msgstr "Nieuw contactpersoon"
+
+#: ../src/contacts-new-contact-dialog.vala:41
+msgid "Create Contact"
+msgstr "Contactpersoon aanmaken"
+
+#: ../src/contacts-new-contact-dialog.vala:67
 msgid ""
-"Connect to an account,\n"
-"import or add contacts"
+"Add or \n"
+"select a picture"
 msgstr ""
-"Met een account verbinden,\n"
-"contacten importeren of toevoegen"
+"Kies een afbeelding \n"
+"of voeg er een toe"
 
-#: ../src/contacts-list-pane.vala:154
+#: ../src/contacts-new-contact-dialog.vala:78
+msgid "Contact Name"
+msgstr "Naam van contactpersoon"
+
+#: ../src/contacts-new-contact-dialog.vala:86
+#: ../src/contacts-new-contact-dialog.vala:121
+msgid "Email"
+msgstr "E-mail"
+
+#: ../src/contacts-new-contact-dialog.vala:95
+#: ../src/contacts-new-contact-dialog.vala:126
+msgid "Phone"
+msgstr "Telefoon"
+
+#: ../src/contacts-new-contact-dialog.vala:104
+#: ../src/contacts-new-contact-dialog.vala:131
+msgid "Address"
+msgstr "Adres"
+
+#: ../src/contacts-new-contact-dialog.vala:113
+msgid "Add Detail"
+msgstr "Kenmerk toevoegen"
+
+#: ../src/contacts-new-contact-dialog.vala:212
+msgid "You must specify a contact name"
+msgstr "Er moet een naam opgegeven worden"
+
+#: ../src/contacts-new-contact-dialog.vala:320
+msgid "No primary addressbook configured\n"
+msgstr "Geen voorkeursadresboek ingesteld\n"
+
+#: ../src/contacts-new-contact-dialog.vala:341
+#, c-format
+msgid "Unable to create new contacts: %s\n"
+msgstr "Kon nieuwe contactpersonen niet aanmaken: %s\n"
+
+#: ../src/contacts-new-contact-dialog.vala:352
+msgid "Unable to find newly created contact\n"
+msgstr "Kon nieuw aangemaakt contactpersoon niet vinden\n"
+
+#: ../src/contacts-setup-window.vala:36
+msgid ""
+"Welcome to Contacts! Please select where you want to keep your address book:"
+msgstr ""
+"Welkom bij Contactpersonen! Geef aan waar u uw adresboek wilt bijhouden:"
+
+#: ../src/contacts-setup-window.vala:81
+msgid "Online Account Settings"
+msgstr "Instellingen online accounts"
+
+#: ../src/contacts-setup-window.vala:86
+msgid "Setup an online account or use a local address book"
+msgstr "Online account instellen of een lokaal adresboek gebruiken"
+
+#: ../src/contacts-setup-window.vala:89
 msgid "Online Accounts"
 msgstr "Online accounts"
 
-#: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
-#: ../src/contacts-types.vala:211 ../src/contacts-types.vala:301
+#: ../src/contacts-setup-window.vala:92
+msgid "Use Local Address Book"
+msgstr "Lokaal adresboek gebruiken"
+
+#: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
+msgid "Contacts Setup"
+msgstr "Contactpersonen configureren voor eerste gebruik"
+
+#: ../src/contacts-setup-window.vala:137
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: ../src/contacts-types.vala:113 ../src/contacts-types.vala:125
+#: ../src/contacts-types.vala:226 ../src/contacts-types.vala:339
 msgid "Other"
 msgstr "Anders"
 
-#: ../src/contacts-types.vala:121
-msgid "Custom..."
-msgstr "Aangepast…"
-
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:266 ../src/contacts-types.vala:297
+#: ../src/contacts-types.vala:281 ../src/contacts-types.vala:335
 msgid "Home"
 msgstr "Thuis"
 
-#: ../src/contacts-types.vala:267 ../src/contacts-types.vala:292
+#: ../src/contacts-types.vala:282 ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:330
 msgid "Work"
 msgstr "Werk"
 
-#: ../src/contacts-types.vala:293
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:304
+msgid "Personal"
+msgstr "Persoonlijk"
+
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:329
+msgid "Assistant"
+msgstr "Assistent"
+
+#: ../src/contacts-types.vala:331
 msgid "Work Fax"
 msgstr "Fax (werk)"
 
-#: ../src/contacts-types.vala:294
+#: ../src/contacts-types.vala:332
 msgid "Callback"
 msgstr "Terugbellen"
 
-#: ../src/contacts-types.vala:295
+#: ../src/contacts-types.vala:333
 msgid "Car"
 msgstr "Auto"
 
-#: ../src/contacts-types.vala:298
+#: ../src/contacts-types.vala:334
+msgid "Company"
+msgstr "Bedrijf"
+
+#: ../src/contacts-types.vala:336
 msgid "Home Fax"
 msgstr "Fax (thuis)"
 
-#: ../src/contacts-types.vala:299
+#: ../src/contacts-types.vala:337
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:300
+#: ../src/contacts-types.vala:338
 msgid "Mobile"
 msgstr "Mobiel"
 
-#: ../src/contacts-types.vala:302
+#: ../src/contacts-types.vala:340
 msgid "Fax"
 msgstr "Fax"
 
-#: ../src/contacts-types.vala:303
+#: ../src/contacts-types.vala:341
 msgid "Pager"
 msgstr "Pager"
 
-#: ../src/contacts-types.vala:304
+#: ../src/contacts-types.vala:342
 msgid "Radio"
 msgstr "Radio"
 
-#: ../src/contacts-types.vala:305
+#: ../src/contacts-types.vala:343
 msgid "Telex"
 msgstr "Telex"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:345
 msgid "TTY"
 msgstr "TTY"
 
-#. Translators: This is the header for the list of suggested contacts to
-#. link to the current contact
-#: ../src/contacts-view.vala:89
-msgid "Suggestion"
-msgid_plural "Suggestions"
-msgstr[0] "Suggestie"
-msgstr[1] "Suggesties"
+#: ../src/contacts-view.vala:293
+msgid "Suggestions"
+msgstr "Suggesties"
 
-#: ../src/contacts-view.vala:413
-msgid "New contact"
-msgstr "Nieuw contact"
+#: ../src/contacts-view.vala:318
+msgid "Other Contacts"
+msgstr "Andere contactpersonen"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+msgid "First-time setup done."
+msgstr "Configuratie voor eerste gebruik afgerond"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+msgid "Set to true when the user ran the first-time setup wizard."
+msgstr ""
+"Ingeschakeld als de gebruiker de configuratiestappen voor het eerste gebruik "
+"heeft doorlopen"
