@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-13 16:37+0100\n"
-"PO-Revision-Date: 2013-01-13 16:38+0200\n"
+"POT-Creation-Date: 2013-02-10 15:36+0100\n"
+"PO-Revision-Date: 2013-02-10 15:36+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:273
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:275
 #: ../src/main.vala:28
 msgid "Contacts"
 msgstr "Contactos"
@@ -47,24 +47,24 @@ msgstr "_Axuda"
 msgid "_Quit"
 msgstr "_Saír"
 
-#: ../src/contacts-app.vala:106
+#: ../src/contacts-app.vala:108
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Non foi posíbel atopar o contacto co identificador %s"
 
-#: ../src/contacts-app.vala:107 ../src/contacts-app.vala:231
+#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
 msgid "Contact not found"
 msgstr "Contacto non atopado"
 
-#: ../src/contacts-app.vala:116
+#: ../src/contacts-app.vala:118
 msgid "Change Address Book"
 msgstr "Cambiar caderno de enderezos"
 
-#: ../src/contacts-app.vala:121 ../src/contacts-setup-window.vala:152
+#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../src/contacts-app.vala:209
+#: ../src/contacts-app.vala:211
 msgid "translator-credits"
 msgstr ""
 "Leandro Regueiro <leandro.regueiro@gmail.com>, 2012\n"
@@ -72,63 +72,68 @@ msgstr ""
 "Proxecto Trasno - Tradución de software libre ao galego <proxecto@trasno."
 "net>, 1999-2012"
 
-#: ../src/contacts-app.vala:210
+#: ../src/contacts-app.vala:212
 msgid "GNOME Contacts"
 msgstr "Contactos de GNOME"
 
-#: ../src/contacts-app.vala:211
+#: ../src/contacts-app.vala:213
 msgid "About GNOME Contacts"
 msgstr "Sobre Contactos de GNOME"
 
-#: ../src/contacts-app.vala:212
+#: ../src/contacts-app.vala:214
 msgid "Contact Management Application"
 msgstr "Aplicativo de xestión de contactos"
 
-#: ../src/contacts-app.vala:230
+#: ../src/contacts-app.vala:232
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Non foi posíbel atopar o contacto co correo electrónico %s"
 
-#: ../src/contacts-app.vala:287
+#: ../src/contacts-app.vala:289
 msgid "New"
 msgstr "Novo"
 
-#: ../src/contacts-app.vala:314
+#: ../src/contacts-app.vala:316
 msgid "Edit"
 msgstr "Editar"
 
-#: ../src/contacts-app.vala:320
+#: ../src/contacts-app.vala:322
 msgid "Done"
 msgstr "Feito"
 
-#: ../src/contacts-app.vala:357
+#: ../src/contacts-app.vala:367
 msgid "Editing"
 msgstr "Editando"
 
-#: ../src/contacts-app.vala:470
+#: ../src/contacts-app.vala:479
+#, c-format
+msgid "%d contacts deleted"
+msgstr "%d contactos eliminados"
+
+#: ../src/contacts-app.vala:517
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Contacto eliminado: «%s»"
 
-#: ../src/contacts-app.vala:496
+#: ../src/contacts-app.vala:543
 msgid "Show contact with this individual id"
 msgstr "Mostrar contacto co seu ID individual"
 
-#: ../src/contacts-app.vala:498
+#: ../src/contacts-app.vala:545
 msgid "Show contact with this email address"
 msgstr "Mostrar contacto co seu enderezo de correo electrónico"
 
-#: ../src/contacts-app.vala:511
+#: ../src/contacts-app.vala:558
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s ligado a %s"
 
-#: ../src/contacts-app.vala:513
+#: ../src/contacts-app.vala:560
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s ligado ao contacto"
 
-#: ../src/contacts-app.vala:530
+#: ../src/contacts-app.vala:577
 msgid "— contact management"
 msgstr "— xestión de contactos"
 
@@ -262,7 +267,7 @@ msgstr "Teléfono persoal"
 msgid "Work phone"
 msgstr "Teléfono do traballo"
 
-#: ../src/contacts-contact-pane.vala:390
+#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:130
 msgid "Link"
 msgstr "Ligar"
 
@@ -455,6 +460,10 @@ msgstr "Pode ligar contactos de forma manual desde a lista de contactos"
 msgid "Remove"
 msgstr "Eliminar"
 
+#: ../src/contacts-list-pane.vala:133
+msgid "Delete"
+msgstr "Eliminar"
+
 #: ../src/contacts-new-contact-dialog.vala:35
 msgid "New contact"
 msgstr "Novo contacto"
@@ -615,11 +624,11 @@ msgstr "Télex"
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:271
+#: ../src/contacts-view.vala:293
 msgid "Suggestions"
 msgstr "Suxestións"
 
-#: ../src/contacts-view.vala:296
+#: ../src/contacts-view.vala:318
 msgid "Other Contacts"
 msgstr "Outros contactos"
 
@@ -688,9 +697,6 @@ msgstr ""
 
 #~ msgid "Add/Remove Linked Contacts..."
 #~ msgstr "Engadir/retirar contactos ligados…"
-
-#~ msgid "Delete"
-#~ msgstr "Eliminar"
 
 #~ msgid "Custom..."
 #~ msgstr "Personalizado…"
