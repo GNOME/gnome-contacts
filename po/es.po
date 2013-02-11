@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-12 17:23+0000\n"
-"PO-Revision-Date: 2013-01-15 12:32+0100\n"
+"POT-Creation-Date: 2013-02-09 01:24+0000\n"
+"PO-Revision-Date: 2013-02-11 13:41+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:273
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:275
 #: ../src/main.vala:28
 msgid "Contacts"
 msgstr "Contactos"
@@ -48,84 +48,90 @@ msgstr "Ay_uda"
 msgid "_Quit"
 msgstr "_Salir"
 
-#: ../src/contacts-app.vala:106
+#: ../src/contacts-app.vala:108
 #, c-format
 msgid "No contact with id %s found"
 msgstr "No se encontró ningún contacto con ID %s"
 
-#: ../src/contacts-app.vala:107 ../src/contacts-app.vala:231
+#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
 msgid "Contact not found"
 msgstr "No se encontró el contacto"
 
-#: ../src/contacts-app.vala:116
+#: ../src/contacts-app.vala:118
 msgid "Change Address Book"
 msgstr "Cambiar libreta de direcciones"
 
-#: ../src/contacts-app.vala:121 ../src/contacts-setup-window.vala:152
+#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../src/contacts-app.vala:209
+#: ../src/contacts-app.vala:211
 msgid "translator-credits"
 msgstr "Daniel Mustieles <daniel.mustieles@gmail.com>, 2011-2012"
 
-#: ../src/contacts-app.vala:210
+#: ../src/contacts-app.vala:212
 msgid "GNOME Contacts"
 msgstr "Contactos de GNOME"
 
-#: ../src/contacts-app.vala:211
+#: ../src/contacts-app.vala:213
 msgid "About GNOME Contacts"
 msgstr "Acerca de Contactos de GNOME"
 
-#: ../src/contacts-app.vala:212
+#: ../src/contacts-app.vala:214
 msgid "Contact Management Application"
 msgstr "Aplicación de gestión de contactos"
 
-#: ../src/contacts-app.vala:230
+#: ../src/contacts-app.vala:232
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "No se encontró el contacto con la dirección de correo-e %s"
 
-#: ../src/contacts-app.vala:287
+#: ../src/contacts-app.vala:289
 msgid "New"
 msgstr "Nuevo"
 
-#: ../src/contacts-app.vala:314
+#: ../src/contacts-app.vala:316
 msgid "Edit"
 msgstr "Editar"
 
-#: ../src/contacts-app.vala:320
+#: ../src/contacts-app.vala:322
 msgid "Done"
 msgstr "Hecho"
 
-#: ../src/contacts-app.vala:357
+#: ../src/contacts-app.vala:367
 msgid "Editing"
 msgstr "Editando"
 
-#: ../src/contacts-app.vala:470
+#: ../src/contacts-app.vala:479
+#, c-format
+#| msgid "Contact deleted: \"%s\""
+msgid "%d contacts deleted"
+msgstr "%d contactos eliminados"
+
+#: ../src/contacts-app.vala:517
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Contacto eliminado: «%s»"
 
-#: ../src/contacts-app.vala:496
+#: ../src/contacts-app.vala:543
 msgid "Show contact with this individual id"
 msgstr "Mostrar contacto con su ID individual"
 
-#: ../src/contacts-app.vala:498
+#: ../src/contacts-app.vala:545
 msgid "Show contact with this email address"
 msgstr "Mostrar contacto con su dirección de correo-e"
 
-#: ../src/contacts-app.vala:511
+#: ../src/contacts-app.vala:558
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s enlazado a %s"
 
-#: ../src/contacts-app.vala:513
+#: ../src/contacts-app.vala:560
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s enlazado al contacto"
 
-#: ../src/contacts-app.vala:530
+#: ../src/contacts-app.vala:577
 msgid "— contact management"
 msgstr ": gestión de contactos"
 
@@ -259,7 +265,7 @@ msgstr "Teléfono personal"
 msgid "Work phone"
 msgstr "Teléfono del trabajo"
 
-#: ../src/contacts-contact-pane.vala:390
+#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:130
 msgid "Link"
 msgstr "Enlazar"
 
@@ -442,7 +448,6 @@ msgstr "Contacto local"
 
 #: ../src/contacts-linked-accounts-dialog.vala:28
 #, c-format
-#| msgid "Linked Accounts"
 msgid "%s - Linked Accounts"
 msgstr "%s : cuentas enlazadas"
 
@@ -451,9 +456,12 @@ msgid "You can manually link contacts from the contacts list"
 msgstr "Puede enlazar contactos manualmente desde la lista de contactos"
 
 #: ../src/contacts-linked-accounts-dialog.vala:98
-#| msgid "Remove Contact"
 msgid "Remove"
 msgstr "Quitar"
+
+#: ../src/contacts-list-pane.vala:133
+msgid "Delete"
+msgstr "Eliminar"
 
 #: ../src/contacts-new-contact-dialog.vala:35
 msgid "New contact"
@@ -616,11 +624,11 @@ msgstr "Télex"
 msgid "TTY"
 msgstr "Teletipo"
 
-#: ../src/contacts-view.vala:271
+#: ../src/contacts-view.vala:293
 msgid "Suggestions"
 msgstr "Sugerencias"
 
-#: ../src/contacts-view.vala:296
+#: ../src/contacts-view.vala:318
 msgid "Other Contacts"
 msgstr "Otros contactos"
 
@@ -689,9 +697,6 @@ msgstr ""
 
 #~ msgid "Add/Remove Linked Contacts..."
 #~ msgstr "Añadir/quitar contactos enlazados…"
-
-#~ msgid "Delete"
-#~ msgstr "Eliminar"
 
 #~ msgid "Custom..."
 #~ msgstr "Personalizado…"
