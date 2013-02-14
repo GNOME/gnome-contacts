@@ -462,7 +462,14 @@ public class Contacts.ContactPane : Notebook {
 
   void linked_accounts () {
     var dialog = new LinkedAccountsDialog (contact);
-    dialog.show_all ();
+    var result = dialog.run ();
+    if (result == ResponseType.CLOSE &&
+	dialog.any_unlinked) {
+      /* update edited contact if any_unlinked */
+      set_edit_mode (false);
+      set_edit_mode (true);
+    }
+    dialog.destroy ();
   }
 
   void delete_contact () {

@@ -20,11 +20,15 @@ using Gtk;
 using Folks;
 
 public class Contacts.LinkedAccountsDialog : Dialog {
-  private Contact contact;
-  private Egg.ListBox linked_accounts_view;
+  Contact contact;
+  Egg.ListBox linked_accounts_view;
+
+  public bool any_unlinked;
 
   public LinkedAccountsDialog (Contact contact) {
     this.contact = contact;
+    any_unlinked = false;
+
     set_title (_("%s - Linked Accounts").printf (contact.display_name));
     set_transient_for (App.app.window);
     set_modal (true);
@@ -111,6 +115,8 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 		sep.destroy ();
 
 	      row_grid.destroy ();
+
+	      any_unlinked = true;
 	      /* TODO: Support undo */
 	      /* TODO: Ensure we don't get suggestion for this linkage again */
 	    });
@@ -126,10 +132,5 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 	row_grid.set_data ("separator", sep);
       }
     }
-
-    /* signals */
-    response.connect ( (response_id) => {
-	this.destroy ();
-      });
   }
 }
