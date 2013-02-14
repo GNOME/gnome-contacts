@@ -65,6 +65,7 @@ gnome_contacts_SOURCES = \
 	um-crop-area.c \
 	contact-resources.c \
 	listbox/egg-list-box.c \
+	listbox/egg-list-box-accessible.c \
 	contacts-esd-setup.c \
 	$(vala_sources) \
 	$(NULL)
