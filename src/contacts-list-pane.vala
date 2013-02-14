@@ -32,6 +32,8 @@ public class Contacts.ListPane : Frame {
   private bool search_visible;
 
   public signal void selection_changed (Contact? contact);
+
+  public signal void link_contacts (LinkedList<Contact> contacts_list);
   public signal void delete_contacts (LinkedList<Contact> contacts_list);
 
   private void refilter () {
@@ -153,6 +155,12 @@ public class Contacts.ListPane : Frame {
           link_selected_button.set_sensitive (true);
         else
           link_selected_button.set_sensitive (false);
+      });
+
+    link_selected_button.clicked.connect (() => {
+        var marked_contacts = contacts_view.get_marked_contacts ();
+
+	link_contacts (marked_contacts);
       });
 
     delete_selected_button.clicked.connect (() => {

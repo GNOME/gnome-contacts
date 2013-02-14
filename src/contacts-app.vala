@@ -339,6 +339,7 @@ public class Contacts.App : Gtk.Application {
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
+    list_pane.link_contacts.connect (link_contacts);
     list_pane.delete_contacts.connect (delete_contacts);
 
     grid.attach (list_pane, 0, 1, 1, 1);
@@ -465,7 +466,36 @@ public class Contacts.App : Gtk.Application {
     dialog.show_all ();
   }
 
-  private void delete_contacts (LinkedList<Contact> contacts_list) {
+  private void link_contacts (LinkedList<Contact> contact_list) {
+    /* getting out of selection mode */
+    show_contact (null);
+    select_button.set_active (false);
+
+    link_contacts_list.begin (contact_list, (obj, result) => {
+	link_contacts_list.end (result);
+      });
+
+    var notification = new Gd.Notification ();
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg = _("%d contact%s linked").printf (contact_list.size, contact_list.size > 1 ? "s" : "");
+    var b = new Button.from_stock (Stock.UNDO);
+    g.add (new Label (msg));
+    g.add (b);
+
+    notification.show_all ();
+    overlay.add_overlay (notification);
+
+    /* signal handlers */
+    b.clicked.connect ( () => {
+	/* here, we will unlink the thing in question */
+      });
+  }
+
+  private void delete_contacts (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     show_contact (null);
     select_button.set_active (false);
@@ -476,7 +506,7 @@ public class Contacts.App : Gtk.Application {
     g.set_column_spacing (8);
     notification.add (g);
 
-    string msg = _("%d contacts deleted").printf (contacts_list.size);
+    string msg = _("%d contact%s deleted").printf (contact_list.size, contact_list.size > 1 ? "s" : "");
     var b = new Button.from_stock (Stock.UNDO);
     g.add (new Label (msg));
     g.add (b);
@@ -488,7 +518,7 @@ public class Contacts.App : Gtk.Application {
     bool really_delete = true;
     notification.dismissed.connect ( () => {
 	if (really_delete) {
-	  foreach (var c in contacts_list) {
+	  foreach (var c in contact_list) {
 	    c.remove_personas.begin ();
 	  }
 	}
@@ -496,7 +526,7 @@ public class Contacts.App : Gtk.Application {
     b.clicked.connect ( () => {
 	really_delete = false;
 	notification.dismiss ();
-	  foreach (var c in contacts_list) {
+	  foreach (var c in contact_list) {
 	    c.show ();
 	  }
       });

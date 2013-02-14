@@ -713,4 +713,19 @@ namespace Contacts {
 
     return operation;
   }
+
+  public class LinkOperation2 : Object {
+  }
+
+  public async LinkOperation2 link_contacts_list (LinkedList<Contact> contact_list) {
+    var operation = new LinkOperation2 ();
+
+    var all_personas = new HashSet<Persona> ();
+    foreach (var c in contact_list) {
+      all_personas.add_all (c.individual.personas);
+    }
+
+    yield App.app.contacts_store.aggregator.link_personas (all_personas);
+    return operation;
+  }
 }
