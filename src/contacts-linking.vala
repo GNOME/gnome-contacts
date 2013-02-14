@@ -94,8 +94,8 @@ namespace Contacts {
     public string property_name;
 
     public static HashSet<PersonaAttribute> create_set () {
-      return new HashSet<PersonaAttribute>((GLib.HashFunc) PersonaAttribute.hash,
-					   (GLib.EqualFunc) PersonaAttribute.equal);
+      return new HashSet<PersonaAttribute>((HashDataFunc<PersonaAttribute>) PersonaAttribute.hash,
+					   (EqualDataFunc<PersonaAttribute>) PersonaAttribute.equal);
     }
 
     public virtual bool is_removable (Persona from_persona) {
@@ -254,23 +254,24 @@ namespace Contacts {
 	return;
 
       var added_values = new HashMultiMap<string, ImFieldDetails> (null, null,
-								   (GLib.HashFunc) ImFieldDetails.hash,
-								   (GLib.EqualFunc) ImFieldDetails.equal);
+								   AbstractFieldDetails<string>.hash_static,
+								   AbstractFieldDetails<string>.equal_static);
       foreach (var added in added_attributes) {
 	added_values.set (((PersonaAttributeImAddress)added).protocol, ((PersonaAttributeImAddress)added).detail);
       }
 
       var removed_values = new HashMultiMap<string, ImFieldDetails> (null, null,
-								     (GLib.HashFunc) ImFieldDetails.hash,
-								     (GLib.EqualFunc) ImFieldDetails.equal);
+								     AbstractFieldDetails<string>.hash_static,
+								     AbstractFieldDetails<string>.equal_static);
+
       foreach (var removed in removed_attributes) {
 	removed_values.set (((PersonaAttributeImAddress)removed).protocol, ((PersonaAttributeImAddress)removed).detail);
       }
 
       var new_values =
 	new HashMultiMap<string, ImFieldDetails> (null, null,
-						  (GLib.HashFunc) ImFieldDetails.hash,
-						  (GLib.EqualFunc) ImFieldDetails.equal);
+						  AbstractFieldDetails<string>.hash_static,
+						  AbstractFieldDetails<string>.equal_static);
       bool changed = false;
       foreach (var proto1 in details.im_addresses.get_keys ()) {
 	foreach (var detail1 in details.im_addresses.get (proto1)) {
@@ -362,23 +363,23 @@ namespace Contacts {
 	return;
 
       var added_values = new HashMultiMap<string, WebServiceFieldDetails> (null, null,
-									   (GLib.HashFunc) WebServiceFieldDetails.hash,
-									   (GLib.EqualFunc) WebServiceFieldDetails.equal);
+									   AbstractFieldDetails<string>.hash_static,
+									   AbstractFieldDetails<string>.equal_static);
       foreach (var added in added_attributes) {
 	added_values.set (((PersonaAttributeWebService)added).service, ((PersonaAttributeWebService)added).detail);
       }
 
       var removed_values = new HashMultiMap<string, WebServiceFieldDetails> (null, null,
-									     (GLib.HashFunc) WebServiceFieldDetails.hash,
-									     (GLib.EqualFunc) WebServiceFieldDetails.equal);
+									     AbstractFieldDetails<string>.hash_static,
+									     AbstractFieldDetails<string>.equal_static);
       foreach (var removed in removed_attributes) {
 	removed_values.set (((PersonaAttributeWebService)removed).service, ((PersonaAttributeWebService)removed).detail);
       }
 
       var new_values =
 	new HashMultiMap<string, WebServiceFieldDetails> (null, null,
-							  (GLib.HashFunc) WebServiceFieldDetails.hash,
-							  (GLib.EqualFunc) WebServiceFieldDetails.equal);
+							  AbstractFieldDetails<string>.hash_static,
+							  AbstractFieldDetails<string>.equal_static);
       bool changed = false;
       foreach (var srv1 in details.web_service_addresses.get_keys ()) {
 	foreach (var detail1 in details.web_service_addresses.get (srv1)) {
@@ -475,7 +476,7 @@ namespace Contacts {
   }
 
   public static bool persona_can_link_to (Persona persona, Set<PersonaAttribute> attributes) {
-    var property_names = new HashSet<string>(str_hash, str_equal);
+    var property_names = new HashSet<string>();
     foreach (var a in attributes)
       property_names.add (a.property_name);
 
@@ -500,7 +501,7 @@ namespace Contacts {
 						     Set<PersonaAttribute>? added_attributes,
 						     Set<PersonaAttribute>? removed_attributes,
 						     LinkOperation operation) {
-    var properties = new HashSet<PersonaAttribute>((GLib.HashFunc)attr_type_hash, (GLib.EqualFunc) attr_type_equal);
+    var properties = new HashSet<PersonaAttribute>();
 
     if (added_attributes != null) {
       foreach (var a1 in added_attributes) {

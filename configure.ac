@@ -45,7 +45,7 @@ pkg_modules="gtk+-3.0 >= 3.4.0
 	     libebook-1.2 >= 3.5.3
 	     libedataserver-1.2 >= 3.5.3
 	     goa-1.0
-	     gee-1.0
+	     gee-0.8
 	     "
 PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 

@@ -664,41 +664,6 @@ public class Contacts.Contact : GLib.Object  {
     return 0;
   }
 
-  public static int compare_persona_by_store (void *a, void *b) {
-    Persona persona_a = (Persona *)a;
-    Persona persona_b = (Persona *)b;
-    var store_a = persona_a.store;
-    var store_b = persona_b.store;
-
-    if (store_a == store_b) {
-      if (persona_is_google (persona_a)) {
-	/* Non-other google personas rank before others */
-	if (persona_is_google_other (persona_a) && !persona_is_google_other (persona_b))
-	  return 1;
-	if (!persona_is_google_other (persona_a) && persona_is_google_other (persona_b))
-	  return -1;
-      }
-
-      return 0;
-    }
-
-    if (store_a.is_primary_store && store_b.is_primary_store)
-      return 0;
-    if (store_a.is_primary_store)
-      return -1;
-    if (store_b.is_primary_store)
-      return 1;
-
-    if (store_a.type_id == "eds" && store_b.type_id == "eds")
-      return strcmp (store_a.id, store_b.id);
-    if (store_a.type_id == "eds")
-      return -1;
-    if (store_b.type_id == "eds")
-      return 1;
-
-    return strcmp (store_a.id, store_b.id);
-  }
-
   public static ArrayList<T> sort_fields<T> (Collection<T> fields) {
     var res = new ArrayList<T>();
     res.add_all (fields);
@@ -1134,6 +1099,42 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Gee.List<Persona> get_personas_for_display () {
+    CompareDataFunc<Persona> compare_persona_by_store = (a, b) =>
+    {
+      Persona persona_a = (Persona *)a;
+      Persona persona_b = (Persona *)b;
+      var store_a = persona_a.store;
+      var store_b = persona_b.store;
+
+      if (store_a == store_b) {
+	if (persona_is_google (persona_a)) {
+	  /* Non-other google personas rank before others */
+	  if (persona_is_google_other (persona_a) && !persona_is_google_other (persona_b))
+	    return 1;
+	  if (!persona_is_google_other (persona_a) && persona_is_google_other (persona_b))
+	    return -1;
+	}
+
+	return 0;
+      }
+
+      if (store_a.is_primary_store && store_b.is_primary_store)
+	return 0;
+      if (store_a.is_primary_store)
+	return -1;
+      if (store_b.is_primary_store)
+	return 1;
+
+      if (store_a.type_id == "eds" && store_b.type_id == "eds")
+	return strcmp (store_a.id, store_b.id);
+      if (store_a.type_id == "eds")
+	return -1;
+      if (store_b.type_id == "eds")
+	return 1;
+
+      return strcmp (store_a.id, store_b.id);
+    };
+
     var persona_list = new ArrayList<Persona>();
     int i = 0;
     persona_list.add_all (individual.personas);
@@ -1143,7 +1144,7 @@ public class Contacts.Contact : GLib.Object  {
       else
 	i++;
     }
-    persona_list.sort (Contact.compare_persona_by_store);
+    persona_list.sort (compare_persona_by_store);
 
     return persona_list;
   }
@@ -1273,37 +1274,39 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  public static int compare_properties (void *a, void *b) {
-    string [] sorted_array = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
-    var sorted_map = new HashMap<string, int> ();
-    int i = 0;
-    foreach (var p in sorted_array) {
-      sorted_map.set (p, ++i);
-    }
+  public static string[] sorted_properties = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
 
-    string a_str = (string) a;
-    string b_str = (string) b;
+  public static string []sort_persona_properties (string [] props) {
+    CompareDataFunc<string> compare_properties = (a, b) =>
+    {
+      var sorted_map = new HashMap<string, int> ();
+      int i = 0;
+      foreach (var p in sorted_properties) {
+	sorted_map.set (p, ++i);
+      }
 
-    if (sorted_map.has_key (a_str) && sorted_map.has_key (b_str)) {
-      if (sorted_map[a_str] < sorted_map[b_str])
+      string a_str = (string) a;
+      string b_str = (string) b;
+
+      if (sorted_map.has_key (a_str) && sorted_map.has_key (b_str)) {
+	if (sorted_map[a_str] < sorted_map[b_str])
+	  return -1;
+	if (sorted_map[a_str] > sorted_map[b_str])
+	  return 1;
+	return 0;
+      } else if (sorted_map.has_key (a_str))
 	return -1;
-      if (sorted_map[a_str] > sorted_map[b_str])
+      else if (sorted_map.has_key (b_str))
 	return 1;
-      return 0;
-    } else if (sorted_map.has_key (a_str))
-      return -1;
-    else if (sorted_map.has_key (b_str))
-      return 1;
-    else {
-      if (a_str < b_str)
-	return -1;
+      else {
+	if (a_str < b_str)
+	  return -1;
       if (a_str > b_str)
 	return 1;
       return 0;
-    }
-  }
+      }
+    };
 
-  public static string [] sort_persona_properties (string [] props) {
     var sorted_props = new ArrayList<string> ();
     foreach (var s in props) {
       sorted_props.add (s);
@@ -1342,7 +1345,7 @@ public class Contacts.Contact : GLib.Object  {
     if (t_persona != null && t_persona.contact != null) {
       unowned TelepathyGLib.Capabilities caps =
       t_persona.contact.get_capabilities ();
-      if (caps.supports_audio_call (TelepathyGLib.HandleType.CONTACT)) 
+      if (caps.supports_audio_call (TelepathyGLib.HandleType.CONTACT))
 	      return (t_persona.store as Tpf.PersonaStore).account;
     }
 

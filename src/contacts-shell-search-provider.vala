@@ -62,7 +62,7 @@ public class Contacts.SearchProvider : Object {
           matches.add (c);
     }
 
-    matches.sort((CompareFunc<Contact>) compare_contacts);
+    matches.sort((CompareDataFunc<Contact>) compare_contacts);
 
     var results = new string[matches.size];
     for (int i = 0; i < matches.size; i++)
