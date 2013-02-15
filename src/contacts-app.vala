@@ -471,8 +471,9 @@ public class Contacts.App : Gtk.Application {
     show_contact (null);
     select_button.set_active (false);
 
+    LinkOperation2 operation = null;
     link_contacts_list.begin (contact_list, (obj, result) => {
-	link_contacts_list.end (result);
+	operation = link_contacts_list.end (result);
       });
 
     var notification = new Gd.Notification ();
@@ -492,6 +493,9 @@ public class Contacts.App : Gtk.Application {
     /* signal handlers */
     b.clicked.connect ( () => {
 	/* here, we will unlink the thing in question */
+	operation.undo.begin ();
+
+	notification.dismiss ();
       });
   }
 

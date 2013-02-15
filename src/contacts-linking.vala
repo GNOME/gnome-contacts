@@ -715,6 +715,41 @@ namespace Contacts {
   }
 
   public class LinkOperation2 : Object {
+    /* One Set<Persona> per individual linked, with the intention
+     * of restore the old perosonas set on undo operation */
+    LinkedList< HashSet<Persona> > old_personas_distribution;
+
+    public LinkOperation2 () {
+      old_personas_distribution = new  LinkedList< HashSet<Persona> > ();
+    }
+
+    public void add_persona_set (Set<Persona> persona_set) {
+      if (persona_set.size > 0) {
+	var s = new HashSet<Persona> ();
+	foreach (var p in persona_set) {
+	  s.add (p);
+	}
+	old_personas_distribution.add (s);
+      }
+    }
+
+    public async void undo () {
+      Individual ind = null;
+      if (old_personas_distribution.size > 0) {
+	var ps = old_personas_distribution.first ();
+	foreach (var p in ps) {
+	  ind = p.individual;
+	  break;
+	}
+      }
+      if (ind != null) {
+	yield App.app.contacts_store.aggregator.unlink_individual (ind);
+      }
+
+      foreach (var ps in old_personas_distribution) {
+	yield App.app.contacts_store.aggregator.link_personas (ps);
+      }
+    }
   }
 
   public async LinkOperation2 link_contacts_list (LinkedList<Contact> contact_list) {
@@ -722,7 +757,9 @@ namespace Contacts {
 
     var all_personas = new HashSet<Persona> ();
     foreach (var c in contact_list) {
-      all_personas.add_all (c.individual.personas);
+      var ps = c.individual.personas;
+      all_personas.add_all (ps);
+      operation.add_persona_set (ps);
     }
 
     yield App.app.contacts_store.aggregator.link_personas (all_personas);
