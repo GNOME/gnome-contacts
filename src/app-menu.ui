@@ -1,6 +1,19 @@
 <interface>
   <menu id="app-menu">
     <section>
+      <attribute name="label" translatable="yes">View</attribute>
+      <item>
+	<attribute name="action">app.view_subset</attribute>
+	<attribute name="target">main</attribute>
+	<attribute name="label" translatable="yes">Main contacts</attribute>
+      </item>
+      <item>
+	<attribute name="action">app.view_subset</attribute>
+	<attribute name="target">all</attribute>
+	<attribute name="label" translatable="yes">All contacts</attribute>
+      </item>
+    </section>
+    <section>
       <item>
 	<attribute name="action">app.change_book</attribute>
 	<attribute name="label" translatable="yes">_Change Address Book...</attribute>

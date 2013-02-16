@@ -36,7 +36,7 @@ public class Contacts.ListPane : Frame {
   public signal void link_contacts (LinkedList<Contact> contacts_list);
   public signal void delete_contacts (LinkedList<Contact> contacts_list);
 
-  private void refilter () {
+  public void refilter () {
     string []? values;
     string str = filter_entry.get_text ();
 
@@ -48,10 +48,16 @@ public class Contacts.ListPane : Frame {
     }
 
     contacts_view.set_filter_values (values);
-    if (values == null)
-      contacts_view.set_show_subset (View.Subset.MAIN);
-    else
-      contacts_view.set_show_subset (View.Subset.ALL_SEPARATED);
+
+    var subset = App.app.settings.get_enum ("view-subset");
+    if (subset == View.Subset.MAIN) {
+      if (values == null)
+	contacts_view.set_show_subset (View.Subset.MAIN);
+      else
+	contacts_view.set_show_subset (View.Subset.ALL_SEPARATED);
+    } else {
+	contacts_view.set_show_subset (View.Subset.ALL);
+    }
   }
 
   private bool filter_entry_changed_timeout () {
