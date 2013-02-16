@@ -55,6 +55,8 @@ public class Contacts.AddressEditor : Grid {
 }
 
 public class Contacts.ContactEditor : Grid {
+  Contact contact;
+
   public struct PropertyData {
     Persona persona;
     Value value;
@@ -630,6 +632,8 @@ public class Contacts.ContactEditor : Grid {
   }
 
   public void update (Contact c) {
+    contact = c;
+
     var image_frame = new ContactFrame (PROFILE_SIZE, true);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
@@ -767,8 +771,16 @@ public class Contacts.ContactEditor : Grid {
     return v;
   }
 
-  public void add_new_row_for_property (Persona p, string prop_name, string? type = null) {
+  public void add_new_row_for_property (Persona? p, string prop_name, string? type = null) {
     /* Somehow, I need to ensure that p is the main/default/first persona */
+    Persona persona;
+    if (p == null) {
+      persona = new FakePersona (contact);
+      writable_personas.set (persona, new HashMap<string, Field?> ());
+    } else {
+      persona = p;
+    }
+
     int next_idx = 0;
     foreach (var fields in writable_personas.values) {
       if (fields.has_key (prop_name)) {
@@ -781,7 +793,7 @@ public class Contacts.ContactEditor : Grid {
     }
     next_idx = (next_idx == 0 ? last_row : next_idx) + 1;
     insert_row_at (next_idx);
-    add_edit_row (p, prop_name, ref next_idx, true, type);
+    add_edit_row (persona, prop_name, ref next_idx, true, type);
     last_row++;
     show_all ();
   }

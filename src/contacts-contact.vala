@@ -1362,6 +1362,7 @@ public class Contacts.Contact : GLib.Object  {
     if (persona is FakePersona) {
       var fake = persona as FakePersona;
       yield fake.make_real_and_set (property_name, new_value);
+      return;
     }
 
     /* FIXME: It should be possible to move these all to being delegates which are
