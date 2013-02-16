@@ -49,6 +49,10 @@ vala_sources = \
 	memory-icon.vala \
 	$(NULL)
 
+gsettings_ENUM_NAMESPACE = org.gnome.Contacts
+gsettings_ENUM_FILES = \
+        contacts-view.c
+
 gsettingsschema_in_files = org.gnome.Contacts.gschema.xml.in
 gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
 .PRECIOUS: $(gsettings_SCHEMAS)
@@ -62,12 +66,12 @@ contact-resources.c: contacts.gresource.xml app-menu.ui
 		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
 
 gnome_contacts_SOURCES = \
+	$(vala_sources) \
 	um-crop-area.c \
 	contact-resources.c \
 	listbox/egg-list-box.c \
 	listbox/egg-list-box-accessible.c \
 	contacts-esd-setup.c \
-	$(vala_sources) \
 	$(NULL)
 
 gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm $(top_builddir)/libgd/libgd.la
