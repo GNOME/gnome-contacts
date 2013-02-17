@@ -375,6 +375,9 @@ public class Contacts.App : Gtk.Application {
       });
 
     edit_button.clicked.connect (() => {
+	if (select_button.active)
+	  select_button.set_active (false);
+
 	var name = _("Editing");
 	if (contacts_pane.contact != null) {
 	  name += " %s".printf (contacts_pane.contact.display_name);
