@@ -250,7 +250,8 @@ public class Contacts.View : Egg.ListBox {
 
     data.grid.set_data<ContactData> ("data", data);
     data.grid.show_all ();
-    data.selector_button.hide ();
+    if (! selectors_visible)
+      data.selector_button.hide ();
     contacts.set (c, data);
     this.add (data.grid);
   }
