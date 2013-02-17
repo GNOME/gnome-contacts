@@ -489,6 +489,7 @@ public class Contacts.ContactPane : Notebook {
 
       no_selection_frame = new Frame (null);
       no_selection_frame.get_style_context ().add_class ("contacts-content");
+      no_selection_frame.set_size_request (500, -1);
 
       var box = new Grid ();
       box.set_orientation (Orientation.VERTICAL);
