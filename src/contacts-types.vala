@@ -110,6 +110,8 @@ public class Contacts.TypeSet : Object  {
     }
 
     store.append (out other_iter);
+    /* Refers to the type of the detail, could be Home, Work or Other for email, and the same
+     * for phone numbers, addresses, etc. */
     store.set (other_iter, 0, _("Other"), 1, other_dummy);
   }
 
