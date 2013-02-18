@@ -495,11 +495,7 @@ public class Contacts.App : Gtk.Application {
     g.set_column_spacing (8);
     notification.add (g);
 
-    string msg;
-    if (contact_list.size > 2)
-      msg = _("%d contacts linked").printf (contact_list.size);
-    else
-      msg = _("Contacts linked");
+    string msg = _("%d contacts linked").printf (contact_list.size);
 
     var b = new Button.from_stock (Stock.UNDO);
     g.add (new Label (msg));
@@ -528,11 +524,10 @@ public class Contacts.App : Gtk.Application {
     g.set_column_spacing (8);
     notification.add (g);
 
-    string msg;
-    if (contact_list.size > 1)
-      msg = _("%d contacts deleted").printf (contact_list.size);
-    else
-      msg = _("Contact deleted");
+    string msg = ngettext ("%d contact deleted",
+                           "%d contacts deleted",
+                           contact_list.size).printf (contact_list.size);
+
     var b = new Button.from_stock (Stock.UNDO);
     g.add (new Label (msg));
     g.add (b);
