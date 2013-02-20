@@ -52,6 +52,10 @@ public class Contacts.AddressEditor : Grid {
 	});
     }
   }
+
+  public override void grab_focus () {
+    entries[0].grab_focus ();
+  }
 }
 
 public class Contacts.ContactEditor : Grid {
@@ -253,6 +257,11 @@ public class Contacts.ContactEditor : Grid {
     delete_button.clicked.connect (() => {
 	remove_row (row);
       });
+
+    value_entry.map.connect (() => {
+	if (value == "")
+	  value_entry.grab_focus ();
+      });
   }
 
   void attach_row_with_entry_labeled (string title, AbstractFieldDetails? details, string value, int row) {
@@ -278,6 +287,11 @@ public class Contacts.ContactEditor : Grid {
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
+      });
+
+    value_entry.map.connect (() => {
+	if (value == "")
+	  value_entry.grab_focus ();
       });
   }
 
@@ -312,6 +326,11 @@ public class Contacts.ContactEditor : Grid {
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
+      });
+
+    value_text.map.connect (() => {
+	if (value == "")
+	  value_text.grab_focus ();
       });
   }
 
@@ -396,6 +415,10 @@ public class Contacts.ContactEditor : Grid {
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
+      });
+
+    value_address.map.connect (() => {
+	value_address.grab_focus ();
       });
   }
 
