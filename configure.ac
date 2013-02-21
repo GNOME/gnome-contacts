@@ -3,7 +3,7 @@ AC_INIT([gnome-contacts],[3.7.90],[http://bugzilla.gnome.org/enter_bug.cgi?produ
 AC_CONFIG_SRCDIR([src/main.vala])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([tar-ustar dist-xz no-dist-gzip])
 # Enable silent rules is available
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])

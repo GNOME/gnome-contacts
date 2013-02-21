@@ -103,6 +103,7 @@ CLEANFILES = \
 
 EXTRA_DIST = \
 	listbox/egg-list-box.h \
+	listbox/egg-list-box-accessible.h \
 	listbox/egglistbox.vapi \
 	cheese-flash.h \
 	um-crop-area.h \
