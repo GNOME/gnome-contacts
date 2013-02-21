@@ -82,7 +82,7 @@ LIBGD_INIT([
   gtk-hacks
   main-toolbar
   notification
-  margin-container
+  revealer
   static
   vapi
 ])

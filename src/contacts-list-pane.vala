@@ -25,7 +25,7 @@ public class Contacts.ListPane : Frame {
 
   public Entry filter_entry;
   private View contacts_view;
-  private Gd.MainToolbar selection_toolbar;
+  private Gd.Revealer selection_revealer;
 
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
@@ -126,14 +126,16 @@ public class Contacts.ListPane : Frame {
     contacts_view.add_to_scrolled (scrolled);
     contacts_view.show_all ();
     scrolled.set_no_show_all (true);
+    scrolled.show ();
 
     grid.add (toolbar);
     grid.add (scrolled);
 
-    selection_toolbar = new Gd.MainToolbar ();
+    selection_revealer = new Gd.Revealer ();
+
+    var selection_toolbar = new Gd.MainToolbar ();
     selection_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
     selection_toolbar.get_style_context ().add_class ("contacts-selection-toolbar");
-    selection_toolbar.set_vexpand (false);
 
     var link_selected_button = selection_toolbar.add_button (null, _("Link"), true) as Gtk.Button;
     link_selected_button.set_size_request (70, -1);
@@ -142,13 +144,10 @@ public class Contacts.ListPane : Frame {
     delete_selected_button.set_size_request (70, -1);
     delete_selected_button.set_sensitive (false);
 
-    grid.add (selection_toolbar);
+    selection_revealer.add (selection_toolbar);
+    grid.add (selection_revealer);
 
     this.show_all ();
-    this.set_no_show_all (true);
-
-    scrolled.show ();
-    selection_toolbar.hide ();
 
     /* contact mark handling */
     contacts_view.contacts_marked.connect ((nr_contacts_marked) => {
@@ -188,11 +187,11 @@ public class Contacts.ListPane : Frame {
 
   public void show_selection () {
     contacts_view.show_selectors ();
-    selection_toolbar.show ();
+    selection_revealer.set_reveal_child (true);
   }
 
   public void hide_selection () {
     contacts_view.hide_selectors ();
-    selection_toolbar.hide ();
+    selection_revealer.set_reveal_child (false);
   }
 }
