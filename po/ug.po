@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ug\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-14 14:15+0000\n"
-"PO-Revision-Date: 2013-02-16 12:44+0900\n"
+"POT-Creation-Date: 2013-02-20 18:38+0000\n"
+"PO-Revision-Date: 2013-02-24 11:47+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:275
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:285
 #: ../src/main.vala:28
 msgid "Contacts"
 msgstr "ئالاقەداشلار"
@@ -26,18 +26,32 @@ msgid "friends;address book;"
 msgstr "دوستلار;ئادرېس دەپتىرى;friends;address book;"
 
 #: ../src/app-menu.ui.h:1
+msgid "View"
+msgstr "كۆرۈنۈش"
+
+#: ../src/app-menu.ui.h:2
+#| msgid "Link Contact"
+msgid "Main contacts"
+msgstr "ئاساسلىق ئالاقەداشلار"
+
+#: ../src/app-menu.ui.h:3
+#| msgid "Contacts"
+msgid "All contacts"
+msgstr "بارلىق ئالاقەداشلار"
+
+#: ../src/app-menu.ui.h:4
 msgid "_Change Address Book..."
 msgstr "ئادرېس دەپتىرىنى ئۆزگەرت(_C)…"
 
-#: ../src/app-menu.ui.h:2
+#: ../src/app-menu.ui.h:5
 msgid "_About Contacts"
 msgstr "ئالاقەداشلار ھەققىدە(_A)"
 
-#: ../src/app-menu.ui.h:3
+#: ../src/app-menu.ui.h:6
 msgid "_Help"
 msgstr "ياردەم(_H)"
 
-#: ../src/app-menu.ui.h:4
+#: ../src/app-menu.ui.h:7
 msgid "_Quit"
 msgstr "ئاخىرلاشتۇر(_Q)"
 
@@ -81,58 +95,60 @@ msgstr "ئالاقەداشلارنى باشقۇرۇش پروگراممىسى"
 msgid "No contact with email address %s found"
 msgstr "ئېلخەت ئادرېسى %s بولغان ئالاقەداش تېپىلمىدى"
 
-#: ../src/contacts-app.vala:289
+#: ../src/contacts-app.vala:299
 msgid "New"
 msgstr "يېڭى"
 
-#: ../src/contacts-app.vala:316
+#: ../src/contacts-app.vala:326
 msgid "Edit"
 msgstr "تەھرىرلەش"
 
-#: ../src/contacts-app.vala:322
+#: ../src/contacts-app.vala:332
 msgid "Done"
 msgstr "تامام"
 
-#: ../src/contacts-app.vala:368
+#: ../src/contacts-app.vala:381
 msgid "Editing"
 msgstr "تەھرىرلەۋاتىدۇ"
 
-#: ../src/contacts-app.vala:484
+#: ../src/contacts-app.vala:498
 #, c-format
-#| msgid "%d contacts deleted"
-msgid "%d contact%s linked"
-msgstr ""
+#| msgid "Select contact to link to"
+msgid "%d contacts linked"
+msgid_plural "%d contacts linked"
+msgstr[0] "%d ئالاقەداش ئۇلاندى"
 
-#: ../src/contacts-app.vala:509
+#: ../src/contacts-app.vala:529
 #, c-format
-#| msgid "%d contacts deleted"
-msgid "%d contact%s deleted"
-msgstr ""
+#| msgid "Contact deleted: \"%s\""
+msgid "%d contact deleted"
+msgid_plural "%d contacts deleted"
+msgstr[0] "%d ئالاقەداش ئۆچۈرۈلدى"
 
-#: ../src/contacts-app.vala:547
+#: ../src/contacts-app.vala:570
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "ئالاقەداش ئۆچۈرۈلدى: «%s»"
 
-#: ../src/contacts-app.vala:573
+#: ../src/contacts-app.vala:596
 msgid "Show contact with this individual id"
 msgstr "مۇشۇنداق كىملىكى بار ئالاقەداشنى كۆرسەت"
 
-#: ../src/contacts-app.vala:575
+#: ../src/contacts-app.vala:598
 msgid "Show contact with this email address"
 msgstr "مۇشۇنداق ئېلخەت ئادرېسى بار ئالاقەداشنى كۆرسەت"
 
-#: ../src/contacts-app.vala:588
+#: ../src/contacts-app.vala:611
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s نى %s غا ئۇلىدى"
 
-#: ../src/contacts-app.vala:590
+#: ../src/contacts-app.vala:613
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s بۇ ئالاقەداشقا ئۇلاندى"
 
-#: ../src/contacts-app.vala:607
+#: ../src/contacts-app.vala:630
 msgid "— contact management"
 msgstr "— ئالاقەداش باشقۇرۇش"
 
@@ -149,76 +165,76 @@ msgstr "سۈرەت تاللا"
 msgid "Close"
 msgstr "ياپ"
 
-#: ../src/contacts-contact-editor.vala:331
+#: ../src/contacts-contact-editor.vala:352
 msgid "January"
 msgstr "قەھرىتان"
 
-#: ../src/contacts-contact-editor.vala:332
+#: ../src/contacts-contact-editor.vala:353
 msgid "February"
 msgstr "ھۇت"
 
-#: ../src/contacts-contact-editor.vala:333
+#: ../src/contacts-contact-editor.vala:354
 msgid "March"
 msgstr "نەۋرۇز"
 
-#: ../src/contacts-contact-editor.vala:334
+#: ../src/contacts-contact-editor.vala:355
 msgid "April"
 msgstr "ئۈمىد"
 
-#: ../src/contacts-contact-editor.vala:335
+#: ../src/contacts-contact-editor.vala:356
 msgid "May"
 msgstr "باھار"
 
-#: ../src/contacts-contact-editor.vala:336
+#: ../src/contacts-contact-editor.vala:357
 msgid "June"
 msgstr "سەپەر"
 
-#: ../src/contacts-contact-editor.vala:337
+#: ../src/contacts-contact-editor.vala:358
 msgid "July"
 msgstr "چىللە"
 
-#: ../src/contacts-contact-editor.vala:338
+#: ../src/contacts-contact-editor.vala:359
 msgid "August"
 msgstr "تومۇز"
 
-#: ../src/contacts-contact-editor.vala:339
+#: ../src/contacts-contact-editor.vala:360
 msgid "September"
 msgstr "مىزان"
 
-#: ../src/contacts-contact-editor.vala:340
+#: ../src/contacts-contact-editor.vala:361
 msgid "October"
 msgstr "ئوغۇز"
 
-#: ../src/contacts-contact-editor.vala:341
+#: ../src/contacts-contact-editor.vala:362
 msgid "November"
 msgstr "ئوغلاق"
 
-#: ../src/contacts-contact-editor.vala:342
+#: ../src/contacts-contact-editor.vala:363
 msgid "December"
 msgstr "كۆنەك"
 
-#: ../src/contacts-contact-editor.vala:464
-#: ../src/contacts-contact-editor.vala:471
+#: ../src/contacts-contact-editor.vala:489
+#: ../src/contacts-contact-editor.vala:496
 #: ../src/contacts-contact-sheet.vala:169
 msgid "Website"
 msgstr "تورتۇرا"
 
-#: ../src/contacts-contact-editor.vala:490
-#: ../src/contacts-contact-editor.vala:497
+#: ../src/contacts-contact-editor.vala:515
+#: ../src/contacts-contact-editor.vala:522
 #: ../src/contacts-contact-pane.vala:395
 #: ../src/contacts-contact-sheet.vala:179
 msgid "Nickname"
 msgstr "تەخەللۇس"
 
-#: ../src/contacts-contact-editor.vala:517
-#: ../src/contacts-contact-editor.vala:524
+#: ../src/contacts-contact-editor.vala:542
+#: ../src/contacts-contact-editor.vala:549
 #: ../src/contacts-contact-pane.vala:400
 #: ../src/contacts-contact-sheet.vala:186
 msgid "Birthday"
 msgstr "تۇغۇلغان كۈن"
 
-#: ../src/contacts-contact-editor.vala:544
-#: ../src/contacts-contact-editor.vala:551
+#: ../src/contacts-contact-editor.vala:569
+#: ../src/contacts-contact-editor.vala:576
 #: ../src/contacts-contact-sheet.vala:193
 msgid "Note"
 msgstr "ئىزاھات"
@@ -266,7 +282,7 @@ msgstr "ئۆي تېلېفونى"
 msgid "Work phone"
 msgstr "خىزمەت تېلېفونى"
 
-#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:132
+#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:138
 msgid "Link"
 msgstr "ئۇلانما"
 
@@ -459,7 +475,7 @@ msgstr "ئالاقەداشلار تىزىمىدىكى ئالاقەداشلارن
 msgid "Remove"
 msgstr "چىقىرىۋەت"
 
-#: ../src/contacts-list-pane.vala:135
+#: ../src/contacts-list-pane.vala:141
 msgid "Delete"
 msgstr "ئۆچۈر"
 
@@ -546,85 +562,87 @@ msgstr "ئالاقەداشلار تەڭشىكى"
 msgid "Cancel"
 msgstr "ئەمەلدىن قالدۇر"
 
-#: ../src/contacts-types.vala:113 ../src/contacts-types.vala:125
-#: ../src/contacts-types.vala:226 ../src/contacts-types.vala:339
+#. Refers to the type of the detail, could be Home, Work or Other for email, and the same
+#. * for phone numbers, addresses, etc.
+#: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
+#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:341
 msgid "Other"
 msgstr "باشقا"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:281 ../src/contacts-types.vala:335
+#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:337
 msgid "Home"
 msgstr "ماكان"
 
-#: ../src/contacts-types.vala:282 ../src/contacts-types.vala:305
-#: ../src/contacts-types.vala:330
+#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:332
 msgid "Work"
 msgstr "ئىش"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:304
+#: ../src/contacts-types.vala:306
 msgid "Personal"
 msgstr "شەخسىي"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:329
+#: ../src/contacts-types.vala:331
 msgid "Assistant"
 msgstr "ياردەمچى"
 
-#: ../src/contacts-types.vala:331
+#: ../src/contacts-types.vala:333
 msgid "Work Fax"
 msgstr "خىزمەتتىكى فاكىس"
 
-#: ../src/contacts-types.vala:332
+#: ../src/contacts-types.vala:334
 msgid "Callback"
 msgstr "قايتۇرما چاقىرىق"
 
-#: ../src/contacts-types.vala:333
+#: ../src/contacts-types.vala:335
 msgid "Car"
 msgstr "ماشىنا"
 
-#: ../src/contacts-types.vala:334
+#: ../src/contacts-types.vala:336
 msgid "Company"
 msgstr "شىركەت"
 
-#: ../src/contacts-types.vala:336
+#: ../src/contacts-types.vala:338
 msgid "Home Fax"
 msgstr "ئوي فاكىسى"
 
-#: ../src/contacts-types.vala:337
+#: ../src/contacts-types.vala:339
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:338
+#: ../src/contacts-types.vala:340
 msgid "Mobile"
 msgstr "يانفون"
 
-#: ../src/contacts-types.vala:340
+#: ../src/contacts-types.vala:342
 msgid "Fax"
 msgstr "فاكىس"
 
-#: ../src/contacts-types.vala:341
+#: ../src/contacts-types.vala:343
 msgid "Pager"
 msgstr "چاقىرغۇ"
 
-#: ../src/contacts-types.vala:342
+#: ../src/contacts-types.vala:344
 msgid "Radio"
 msgstr "رادىئو"
 
-#: ../src/contacts-types.vala:343
+#: ../src/contacts-types.vala:345
 msgid "Telex"
 msgstr "تېلېگرامما"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:345
+#: ../src/contacts-types.vala:347
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:293
+#: ../src/contacts-view.vala:294
 msgid "Suggestions"
 msgstr "نامزاتلار"
 
-#: ../src/contacts-view.vala:318
+#: ../src/contacts-view.vala:319
 msgid "Other Contacts"
 msgstr "باشقا ئالاقەداشلار"
 
@@ -636,6 +654,15 @@ msgstr "تۇنجى قېتىملىق تەڭشەش تاماملاندى."
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr "ئىشلەتكۈچى دەسلەپكى تەڭشەش ئېلىپ بارسا، true تەڭشىلىدۇ."
 
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:3
+msgid "View subset"
+msgstr "تارماق توپنى كۆرۈش"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:4
+#| msgid "New contact"
+msgid "View contacts subset"
+msgstr "ئالاقەداشلار تارماق توپىنى كۆرۈش"
+
 #~ msgctxt "contacts link action"
 #~ msgid "Link"
 #~ msgstr "ئۇلانما"
@@ -646,14 +673,8 @@ msgstr "ئىشلەتكۈچى دەسلەپكى تەڭشەش ئېلىپ بارسا
 #~ msgid "Phone number"
 #~ msgstr "تېلېفون نومۇرى"
 
-#~ msgid "Link Contact"
-#~ msgstr "ئالاقەداشنى ئۇلاش"
-
 #~ msgid "Link contacts to %s"
 #~ msgstr "ئالاقەداشنى %s غا ئۇلا"
-
-#~ msgid "Select contact to link to"
-#~ msgstr "ئۇلايدىغان ئالاقەداشنى تاللاڭ"
 
 #~ msgctxt "Addresses on the Web"
 #~ msgid "Links"
