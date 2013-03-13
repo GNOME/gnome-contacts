@@ -1,15 +1,15 @@
 # Estonian translation for gnome-contacts.
 # Copyright (C) 2012 gnome-contacts's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-contacts package.
-# Mattias Põldaru <mahfiaz@gmail.com>, 2012.
+# Mattias Põldaru <mahfiaz@gmail.com>, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-19 07:36+0000\n"
-"PO-Revision-Date: 2012-12-19 17:49+0300\n"
+"POT-Creation-Date: 2013-03-12 00:02+0000\n"
+"PO-Revision-Date: 2013-03-12 22:07+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -23,6 +23,15 @@ msgstr "Kontaktid"
 
 msgid "friends;address book;"
 msgstr "sõbrad;aadressiraamat;kontaktid;telefoniraamat;"
+
+msgid "View"
+msgstr "Vaade"
+
+msgid "Main contacts"
+msgstr "Peamised kontaktid"
+
+msgid "All contacts"
+msgstr "Kõik kontaktid"
 
 msgid "_Change Address Book..."
 msgstr "_Aadressiraamatu muutmine..."
@@ -78,6 +87,18 @@ msgid "Editing"
 msgstr "Muutmine"
 
 #, c-format
+msgid "%d contacts linked"
+msgid_plural "%d contacts linked"
+msgstr[0] "%d kontakt lingitud"
+msgstr[1] "%d kontakti lingitud"
+
+#, c-format
+msgid "%d contact deleted"
+msgid_plural "%d contacts deleted"
+msgstr[0] "%d kontakt kustutati"
+msgstr[1] "%d kontakti kustutati"
+
+#, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Kontakt kustutati: \"%s\""
 
@@ -107,6 +128,54 @@ msgstr "Pildi valimine"
 msgid "Close"
 msgstr "Sulge"
 
+msgid "January"
+msgstr "Jaanuar"
+
+msgid "February"
+msgstr "Veebruar"
+
+msgid "March"
+msgstr "Märts"
+
+msgid "April"
+msgstr "Aprill"
+
+msgid "May"
+msgstr "Mai"
+
+msgid "June"
+msgstr "Juuni"
+
+msgid "July"
+msgstr "Juuli"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "September"
+
+msgid "October"
+msgstr "Oktoober"
+
+msgid "November"
+msgstr "November"
+
+msgid "December"
+msgstr "Detsember"
+
+msgid "Website"
+msgstr "Veebileht"
+
+msgid "Nickname"
+msgstr "Hüüdnimi"
+
+msgid "Birthday"
+msgstr "Sünnipäev"
+
+msgid "Note"
+msgstr "Märkused"
+
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Kas %s kohast %s kuulub siia?"
@@ -124,23 +193,30 @@ msgstr "Ei"
 msgid "New Detail"
 msgstr "Uued andmed"
 
-msgid "Email"
-msgstr "E-post"
+#. building menu
+msgid "Personal email"
+msgstr "Isiklik e-post"
 
-msgid "Phone"
-msgstr "Telefon"
+msgid "Work email"
+msgstr "Töö e-post"
+
+msgid "Mobile phone"
+msgstr "Mobiiltelefon"
+
+msgid "Home phone"
+msgstr "Kodutelefon"
+
+msgid "Work phone"
+msgstr "Töötelefon"
 
 msgid "Link"
 msgstr "Seo"
 
-msgid "Nickname"
-msgstr "Hüüdnimi"
+msgid "Home address"
+msgstr "Kodu aadress"
 
-msgid "Birthday"
-msgstr "Sünnipäev"
-
-msgid "Address"
-msgstr "Aadress"
+msgid "Work address"
+msgstr "Tööaadress"
 
 msgid "Notes"
 msgstr "Märkused"
@@ -269,28 +345,18 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "Kohalik kontakt"
 
-msgctxt "contacts link action"
-msgid "Link"
-msgstr "Seo"
-
-msgid "Undo"
-msgstr "Võta tagasi"
-
-msgid "Phone number"
-msgstr "Telefoninumber"
-
-msgid "Link Contact"
-msgstr "Kontaktide sidumine"
-
-msgid "Cancel"
-msgstr "Loobu"
-
 #, c-format
-msgid "Link contacts to %s"
-msgstr "Kontaktide sidumine kasutajaga %s"
+msgid "%s - Linked Accounts"
+msgstr "%s - lingitud kontod"
 
-msgid "Select contact to link to"
-msgstr "Vali, kellega see kontakt siduda"
+msgid "You can manually link contacts from the contacts list"
+msgstr "Sa võid käsitsi ühendada kontakte kontaktinimekirjas"
+
+msgid "Remove"
+msgstr "Eemalda"
+
+msgid "Delete"
+msgstr "Kustuta"
 
 msgid "New contact"
 msgstr "Uus kontakt"
@@ -307,6 +373,15 @@ msgstr ""
 
 msgid "Contact Name"
 msgstr "Kontakti nimi"
+
+msgid "Email"
+msgstr "E-post"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Address"
+msgstr "Aadress"
 
 msgid "Add Detail"
 msgstr "Lisa andmeid"
@@ -345,11 +420,13 @@ msgstr "Kohaliku aadressiraamatu kasutamine"
 msgid "Contacts Setup"
 msgstr "Kontaktide seadistus"
 
+msgid "Cancel"
+msgstr "Loobu"
+
+#. Refers to the type of the detail, could be Home, Work or Other for email, and the same
+#. * for phone numbers, addresses, etc.
 msgid "Other"
 msgstr "Muud"
-
-msgid "Custom..."
-msgstr "Kohandatud..."
 
 #. List most specific first, always in upper case
 msgid "Home"
@@ -357,6 +434,10 @@ msgstr "Kodu"
 
 msgid "Work"
 msgstr "Töö"
+
+#. List most specific first, always in upper case
+msgid "Personal"
+msgstr "Isiklik"
 
 #. List most specific first, always in upper case
 msgid "Assistant"
@@ -411,6 +492,28 @@ msgstr "Esmaseadistus on tehtud."
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr "Märgitud, kui kasutaja on esmakäivituse seadistuse teinud."
 
+msgid "View subset"
+msgstr "Näida valikut"
+
+msgid "View contacts subset"
+msgstr "Näita valikut kontaktidest"
+
+#~ msgctxt "contacts link action"
+#~ msgid "Link"
+#~ msgstr "Seo"
+
+#~ msgid "Undo"
+#~ msgstr "Võta tagasi"
+
+#~ msgid "Phone number"
+#~ msgstr "Telefoninumber"
+
+#~ msgid "Link contacts to %s"
+#~ msgstr "Kontaktide sidumine kasutajaga %s"
+
+#~ msgid "Custom..."
+#~ msgstr "Kohandatud..."
+
 #~ msgctxt "Addresses on the Web"
 #~ msgid "Links"
 #~ msgstr "Lingid"
@@ -421,42 +524,6 @@ msgstr "Märgitud, kui kasutaja on esmakäivituse seadistuse teinud."
 
 #~ msgid "Chat"
 #~ msgstr "Vestlus"
-
-#~ msgid "January"
-#~ msgstr "Jaanuar"
-
-#~ msgid "February"
-#~ msgstr "Veebruar"
-
-#~ msgid "March"
-#~ msgstr "Märts"
-
-#~ msgid "April"
-#~ msgstr "Aprill"
-
-#~ msgid "May"
-#~ msgstr "Mai"
-
-#~ msgid "June"
-#~ msgstr "Juuni"
-
-#~ msgid "July"
-#~ msgstr "Juuli"
-
-#~ msgid "August"
-#~ msgstr "August"
-
-#~ msgid "September"
-#~ msgstr "September"
-
-#~ msgid "October"
-#~ msgstr "Oktoober"
-
-#~ msgid "November"
-#~ msgstr "November"
-
-#~ msgid "December"
-#~ msgstr "Detsember"
 
 #~ msgid "Addresses"
 #~ msgstr "Aadressid"
@@ -482,9 +549,6 @@ msgstr "Märgitud, kui kasutaja on esmakäivituse seadistuse teinud."
 #~ msgid "Add/Remove Linked Contacts..."
 #~ msgstr "Seotud kontaktide lisamine/eemaldamine..."
 
-#~ msgid "Delete"
-#~ msgstr "Kustuta"
-
 #~ msgid "Unknown status"
 #~ msgstr "Tundmatu olek"
 
@@ -508,9 +572,6 @@ msgstr "Märgitud, kui kasutaja on esmakäivituse seadistuse teinud."
 
 #~ msgid "Hidden"
 #~ msgstr "Nähtamatu"
-
-#~ msgid "Personal"
-#~ msgstr "Isiklik"
 
 #~ msgid "<span weight='bold'>Link contacts to %s</span>"
 #~ msgstr "<span weight='bold'>Kontaktide linkimine kasutajaga %s</span>"
