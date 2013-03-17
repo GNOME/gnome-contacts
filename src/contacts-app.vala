@@ -495,7 +495,7 @@ public class Contacts.App : Gtk.Application {
     g.set_column_spacing (8);
     notification.add (g);
 
-    string msg = ngettext ("%d contact linked",
+    string msg = ngettext ("%d contacts linked",
                            "%d contacts linked",
                            contact_list.size).printf (contact_list.size);
 
