@@ -2,15 +2,15 @@
 # Copyright (C) 2011 gnome-contacts's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-contacts package.
 #
-# Dr.T.Vasudevan <agnihot3@gmail.com>, 2011, 2012.
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-02 15:41+0530\n"
-"PO-Revision-Date: 2012-12-02 15:42+0530\n"
+"POT-Creation-Date: 2013-03-21 12:48+0530\n"
+"PO-Revision-Date: 2013-03-21 12:54+0530\n"
 "Last-Translator: Dr.T.Vasudevan <drtvasudevan@gmail.com>\n"
-"Language-Team: Tamil <gnome-tamil-translation@googlegroups.com>\n"
+"Language-Team: Tamil <<gnome-tamil-translation@googlegroups.com>>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,97 +18,135 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:246
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:285
 #: ../src/main.vala:28
 msgid "Contacts"
 msgstr "தொடர்புகள்"
 
 #: ../data/gnome-contacts.desktop.in.in.h:2
 msgid "friends;address book;"
-msgstr ""
+msgstr "நண்பர்கள்;முகவரி புத்தகம்;"
 
 #: ../src/app-menu.ui.h:1
+msgid "View"
+msgstr "காட்சி"
+
+#: ../src/app-menu.ui.h:2
+msgid "Main contacts"
+msgstr "முக்கிய தொடர்புகள்"
+
+#: ../src/app-menu.ui.h:3
+msgid "All contacts"
+msgstr "எல்லா தொடர்புகள்"
+
+#: ../src/app-menu.ui.h:4
 msgid "_Change Address Book..."
 msgstr "முகவரி புத்தகத்தை மாற்று... (_C)"
 
-#: ../src/app-menu.ui.h:2
+#: ../src/app-menu.ui.h:5
 msgid "_About Contacts"
 msgstr "தொடர்புகள் - அறிமுகம் (_A)"
 
-#: ../src/app-menu.ui.h:3
+#: ../src/app-menu.ui.h:6
 msgid "_Help"
 msgstr "உதவி (_H)"
 
-#: ../src/app-menu.ui.h:4
+#: ../src/app-menu.ui.h:7
 msgid "_Quit"
 msgstr "வெளியேறு (_Q)"
 
-#: ../src/contacts-app.vala:79
+#: ../src/contacts-app.vala:108
 #, c-format
 msgid "No contact with id %s found"
 msgstr "%s ஐடி உடன் தொடர்பு ஏதுமில்லை"
 
-#: ../src/contacts-app.vala:80 ../src/contacts-app.vala:204
+#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
 msgid "Contact not found"
 msgstr "தொடர்பு ஏதும் காணவில்லை"
 
-#: ../src/contacts-app.vala:89
+#: ../src/contacts-app.vala:118
 msgid "Change Address Book"
 msgstr "முகவரி புத்தகத்தை மாற்று"
 
-#: ../src/contacts-app.vala:94 ../src/contacts-setup-window.vala:152
+#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
 msgid "Select"
 msgstr "தேர்வு செய்க "
 
-#: ../src/contacts-app.vala:182
+#: ../src/contacts-app.vala:211
 msgid "translator-credits"
 msgstr "I. Felix <ifelix@redhat.com>. Dr. T. Vasudevan <agnihot3@gmail.com>"
 
-#: ../src/contacts-app.vala:183
+#: ../src/contacts-app.vala:212
 msgid "GNOME Contacts"
 msgstr "க்னோம் தொடர்புகள்"
 
-#: ../src/contacts-app.vala:184
+#: ../src/contacts-app.vala:213
 msgid "About GNOME Contacts"
 msgstr "க்னோம் தொடர்புகள் பற்றி"
 
-#: ../src/contacts-app.vala:185
+#: ../src/contacts-app.vala:214
 msgid "Contact Management Application"
 msgstr "தொடர்பு மேலாண்மை பயன்பாடு"
 
-#: ../src/contacts-app.vala:203
+#: ../src/contacts-app.vala:232
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "%s மின்னஞ்சல் முகவரி உடன் தொடர்பு ஏதுமில்லை"
 
-#: ../src/contacts-app.vala:262
+#: ../src/contacts-app.vala:299
 msgid "New"
 msgstr "புதிய"
 
-#: ../src/contacts-app.vala:399
+#: ../src/contacts-app.vala:326
+msgid "Edit"
+msgstr "திருத்து"
+
+#: ../src/contacts-app.vala:332
+msgid "Done"
+msgstr "முடிந்தது"
+
+#: ../src/contacts-app.vala:381
+msgid "Editing"
+msgstr "திருத்துகிறது"
+
+#: ../src/contacts-app.vala:498
+#, c-format
+msgid "%d contacts linked"
+msgid_plural "%d contacts linked"
+msgstr[0] "%d தொடர்புகள் இணைக்கப்பட்டது"
+msgstr[1] "%d தொடர்புகள் இணைக்கப்பட்டது"
+
+#: ../src/contacts-app.vala:529
+#, c-format
+msgid "%d contact deleted"
+msgid_plural "%d contacts deleted"
+msgstr[0] "%d  தொடர்பு நீக்கப்பட்டது"
+msgstr[1] "%d தொடர்புகள் நீக்கப்பட்டன"
+
+#: ../src/contacts-app.vala:570
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "தொடர்பு நீக்கப்பட்டது: \"%s\""
 
-#: ../src/contacts-app.vala:426
+#: ../src/contacts-app.vala:596
 msgid "Show contact with this individual id"
 msgstr "இந்த தனி ஐடி உடன் உள்ள தொடர்பை காட்டு "
 
-#: ../src/contacts-app.vala:428
+#: ../src/contacts-app.vala:598
 msgid "Show contact with this email address"
 msgstr "இந்த மின்னஞ்சல் முகவரி உடன் உள்ள தொடர்பை காட்டு "
 
-#: ../src/contacts-app.vala:441
+#: ../src/contacts-app.vala:611
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s %s க்கு இணைக்கப்பட்டது"
 
-#: ../src/contacts-app.vala:443 ../src/contacts-link-dialog.vala:87
+#: ../src/contacts-app.vala:613
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s தொடர்புடன் இணைக்கப்பட்டது."
 
-#: ../src/contacts-app.vala:460
+#: ../src/contacts-app.vala:630
 msgid "— contact management"
 msgstr "— தொடர்பு மேலாண்மை"
 
@@ -120,309 +158,293 @@ msgstr "அதிக படங்களுக்கு உலாவி காண
 msgid "Select Picture"
 msgstr "ஒரு படத்தை தேர்வு செய்"
 
-#: ../src/contacts-avatar-dialog.vala:247 ../src/contacts-link-dialog.vala:152
+#: ../src/contacts-avatar-dialog.vala:247
+#: ../src/contacts-linked-accounts-dialog.vala:37
 msgid "Close"
 msgstr "மூடு"
 
-#: ../src/contacts-contact-pane.vala:591
-msgctxt "Addresses on the Web"
-msgid "Links"
-msgstr "இணைப்புகள்"
-
-#: ../src/contacts-contact-pane.vala:592
-msgctxt "Web address"
-msgid "Link"
-msgstr "இணைப்பு"
-
-#: ../src/contacts-contact-pane.vala:679 ../src/contacts-contact-pane.vala:680
-#: ../src/contacts-link-dialog.vala:116
-#: ../src/contacts-new-contact-dialog.vala:86
-#: ../src/contacts-new-contact-dialog.vala:121
-msgid "Email"
-msgstr "மின்னஞ்சல்"
-
-#: ../src/contacts-contact-pane.vala:721
-#: ../src/contacts-new-contact-dialog.vala:95
-#: ../src/contacts-new-contact-dialog.vala:126
-msgid "Phone"
-msgstr "தொலைபேசி"
-
-#: ../src/contacts-contact-pane.vala:722 ../src/contacts-link-dialog.vala:132
-msgid "Phone number"
-msgstr "தொலைபேசி எண்"
-
-#: ../src/contacts-contact-pane.vala:782 ../src/contacts-contact-pane.vala:783
-msgid "Chat"
-msgstr "அரட்டை"
-
-#: ../src/contacts-contact-pane.vala:848
+#: ../src/contacts-contact-editor.vala:352
 msgid "January"
 msgstr "ஜனவரி"
 
-#: ../src/contacts-contact-pane.vala:849
+#: ../src/contacts-contact-editor.vala:353
 msgid "February"
 msgstr "பெப்ரவரி"
 
-#: ../src/contacts-contact-pane.vala:850
+#: ../src/contacts-contact-editor.vala:354
 msgid "March"
 msgstr "மார்ச்"
 
-#: ../src/contacts-contact-pane.vala:851
+#: ../src/contacts-contact-editor.vala:355
 msgid "April"
 msgstr "ஏப்ரல்"
 
-#: ../src/contacts-contact-pane.vala:852
+#: ../src/contacts-contact-editor.vala:356
 msgid "May"
 msgstr "மே"
 
-#: ../src/contacts-contact-pane.vala:853
+#: ../src/contacts-contact-editor.vala:357
 msgid "June"
 msgstr "ஜூன்"
 
-#: ../src/contacts-contact-pane.vala:854
+#: ../src/contacts-contact-editor.vala:358
 msgid "July"
 msgstr "ஜூலை"
 
-#: ../src/contacts-contact-pane.vala:855
+#: ../src/contacts-contact-editor.vala:359
 msgid "August"
 msgstr "ஆகஸ்ட்"
 
-#: ../src/contacts-contact-pane.vala:856
+#: ../src/contacts-contact-editor.vala:360
 msgid "September"
 msgstr "செப்டம்பர்"
 
-#: ../src/contacts-contact-pane.vala:857
+#: ../src/contacts-contact-editor.vala:361
 msgid "October"
 msgstr "அக்டோபர்"
 
-#: ../src/contacts-contact-pane.vala:858
+#: ../src/contacts-contact-editor.vala:362
 msgid "November"
 msgstr "நவம்பர்"
 
-#: ../src/contacts-contact-pane.vala:859
+#: ../src/contacts-contact-editor.vala:363
 msgid "December"
 msgstr "திசம்பர்"
 
-#: ../src/contacts-contact-pane.vala:897 ../src/contacts-contact-pane.vala:898
-msgid "Birthday"
-msgstr "பிறந்தநாள்"
+#: ../src/contacts-contact-editor.vala:489
+#: ../src/contacts-contact-editor.vala:496
+#: ../src/contacts-contact-sheet.vala:169
+msgid "Website"
+msgstr "வலைத்தளம்"
 
-#: ../src/contacts-contact-pane.vala:970 ../src/contacts-contact-pane.vala:971
+#: ../src/contacts-contact-editor.vala:515
+#: ../src/contacts-contact-editor.vala:522
+#: ../src/contacts-contact-pane.vala:395
+#: ../src/contacts-contact-sheet.vala:179
 msgid "Nickname"
 msgstr "செல்லப்பெயர்"
 
-#: ../src/contacts-contact-pane.vala:1061
-#: ../src/contacts-contact-pane.vala:1062
+#: ../src/contacts-contact-editor.vala:542
+#: ../src/contacts-contact-editor.vala:549
+#: ../src/contacts-contact-pane.vala:400
+#: ../src/contacts-contact-sheet.vala:186
+msgid "Birthday"
+msgstr "பிறந்தநாள்"
+
+#: ../src/contacts-contact-editor.vala:569
+#: ../src/contacts-contact-editor.vala:576
+#: ../src/contacts-contact-sheet.vala:193
 msgid "Note"
 msgstr "குறிப்பு"
 
-#: ../src/contacts-contact-pane.vala:1201
-msgid "Addresses"
-msgstr "முகவரிகள்"
-
-#: ../src/contacts-contact-pane.vala:1202
-#: ../src/contacts-new-contact-dialog.vala:104
-#: ../src/contacts-new-contact-dialog.vala:131
-msgid "Address"
-msgstr "முகவரி"
-
-#: ../src/contacts-contact-pane.vala:1306
-msgid "Add detail..."
-msgstr "விவரம் சேர்..."
-
-#: ../src/contacts-contact-pane.vala:1341
-msgid "Add to My Contacts"
-msgstr "என் தொடர்புகளுக்கு சேர்"
-
-#: ../src/contacts-contact-pane.vala:1359
-msgid "Unlink"
-msgstr "இணைப்புகள் ஐ நீக்கு"
-
-#: ../src/contacts-contact-pane.vala:1380
-#, c-format
-msgid "Select detail to add to %s"
-msgstr "%s க்கு சேர்க்க விவரங்களை தேர்ந்தெடு"
-
-#: ../src/contacts-contact-pane.vala:1783
+#: ../src/contacts-contact-pane.vala:183
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "%s %s இலிருந்து, இங்கே பொருந்துகிறதா?"
 
-#: ../src/contacts-contact-pane.vala:1785
+#: ../src/contacts-contact-pane.vala:185
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "இந்த விவரங்கள் %s க்கு சொந்தமானதா?"
 
-#: ../src/contacts-contact-pane.vala:1795
+#: ../src/contacts-contact-pane.vala:196
 msgid "Yes"
 msgstr "ஆம்"
 
-#: ../src/contacts-contact-pane.vala:1796
+#: ../src/contacts-contact-pane.vala:197
 msgid "No"
 msgstr "இல்லை"
 
-#: ../src/contacts-contact-pane.vala:1993
-msgid "Select email address"
-msgstr "மின்னஞ்சல் முகவரியை தேர்ந்தெடு"
+#: ../src/contacts-contact-pane.vala:349
+msgid "New Detail"
+msgstr "புதிய விவரம் "
 
-#: ../src/contacts-contact-pane.vala:2066
-msgid "Select what to call"
-msgstr "எதை அழைக்க வேன்டும் என தேர்ந்தெடுக்கவும்"
+#. building menu
+#: ../src/contacts-contact-pane.vala:363
+msgid "Personal email"
+msgstr "தனிப்பட்ட அஞ்சல்"
 
-#: ../src/contacts-contact-pane.vala:2130
-msgid "Select chat account"
-msgstr "அரட்டை கணக்கை தேர்ந்தெடுக்கவும்"
+#: ../src/contacts-contact-pane.vala:368
+msgid "Work email"
+msgstr "பணி மின்னஞ்சல்"
 
-#: ../src/contacts-contact-pane.vala:2210
-msgid "Add/Remove Linked Contacts..."
-msgstr "தொடுப்பில் உள்ள தொடர்புகளை சேர்/நீக்கு..."
+#: ../src/contacts-contact-pane.vala:374
+msgid "Mobile phone"
+msgstr "மொபைல் தொலைபேசி"
 
-#. Utils.add_menu_item (context_menu,_("Send..."));
-#: ../src/contacts-contact-pane.vala:2214
-msgid "Delete"
-msgstr "நீக்கு"
+#: ../src/contacts-contact-pane.vala:379
+msgid "Home phone"
+msgstr "வீட்டு தொலைபேசி எண்"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact-pane.vala:384
+msgid "Work phone"
+msgstr "அலுவலக தொலைபேசி"
+
+#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:140
+msgid "Link"
+msgstr "இணைப்பு"
+
+#: ../src/contacts-contact-pane.vala:406
+msgid "Home address"
+msgstr "வீட்டு முகவரி"
+
+#: ../src/contacts-contact-pane.vala:411
+msgid "Work address"
+msgstr "அலுவலக முகவரி"
+
+#: ../src/contacts-contact-pane.vala:417
+msgid "Notes"
+msgstr "குறிப்புகள்"
+
+#: ../src/contacts-contact-pane.vala:434
+msgid "Linked Accounts"
+msgstr "இணைக்கப்பட்ட கணக்குகள்"
+
+#: ../src/contacts-contact-pane.vala:446
+msgid "Remove Contact"
+msgstr "தொடர்பை நீக்கு"
+
+#: ../src/contacts-contact.vala:675
 msgid "Street"
 msgstr "தெரு:"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:675
 msgid "Extension"
 msgstr "விரிவாக்கம் "
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:675
 msgid "City"
 msgstr "மாநகரம்:"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:675
 msgid "State/Province"
 msgstr "மாநிலம்/பிரதேசம் "
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:675
 msgid "Zip/Postal Code"
 msgstr "ஃஜிப்/அஞ்சல் குறி"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:675
 msgid "PO box"
 msgstr "தபால் பெட்டி"
 
-#: ../src/contacts-contact.vala:686
+#: ../src/contacts-contact.vala:675
 msgid "Country"
 msgstr "நாடு"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:731
 msgid "Google Talk"
 msgstr "கூகுள் டாக் "
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:732
 msgid "Ovi Chat"
 msgstr "ஓவி சாட்"
 
-#: ../src/contacts-contact.vala:744 ../src/contacts-contact.vala:1026
+#: ../src/contacts-contact.vala:733 ../src/contacts-contact.vala:1017
 msgid "Facebook"
 msgstr "பேஸ்புக்"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:734
 msgid "Livejournal"
 msgstr "லைவ்ஜெர்னல் "
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:735
 msgid "AOL Instant Messenger"
 msgstr "ஏஓஎல் உடனடி செய்தியாளர்"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:736
 msgid "Gadu-Gadu"
 msgstr "காடு-காடு"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:737
 msgid "Novell Groupwise"
 msgstr "நோவல் க்ரூப்வைஸ்"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:738
 msgid "ICQ"
 msgstr "ஐஸீக்யூ"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:739
 msgid "IRC"
 msgstr "ஐஆர்சி"
 
-#: ../src/contacts-contact.vala:751
+#: ../src/contacts-contact.vala:740
 msgid "Jabber"
 msgstr "ஜாப்பர்"
 
-#: ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:741
 msgid "Local network"
 msgstr "உள்ளமை பிணையம்"
 
-#: ../src/contacts-contact.vala:753
+#: ../src/contacts-contact.vala:742
 msgid "Windows Live Messenger"
 msgstr "விண்டோஸ் லைவ் மெசஞ்சர்"
 
-#: ../src/contacts-contact.vala:754
+#: ../src/contacts-contact.vala:743
 msgid "MySpace"
 msgstr "மைஸ்பேஸ்"
 
-#: ../src/contacts-contact.vala:755
+#: ../src/contacts-contact.vala:744
 msgid "MXit"
 msgstr "எம்எக்ஸ்இட்"
 
-#: ../src/contacts-contact.vala:756
+#: ../src/contacts-contact.vala:745
 msgid "Napster"
 msgstr "நேப்ஸ்டர்"
 
-#: ../src/contacts-contact.vala:757
+#: ../src/contacts-contact.vala:746
 msgid "Tencent QQ"
 msgstr "டென்சென்ட் க்யூக்யூ"
 
-#: ../src/contacts-contact.vala:758
+#: ../src/contacts-contact.vala:747
 msgid "IBM Lotus Sametime"
 msgstr "ஐபிஎம் லோடஸ் சேம்டைம்"
 
-#: ../src/contacts-contact.vala:759
+#: ../src/contacts-contact.vala:748
 msgid "SILC"
 msgstr "எஸ்ஐஎல்சி"
 
-#: ../src/contacts-contact.vala:760
+#: ../src/contacts-contact.vala:749
 msgid "sip"
 msgstr "சிப்"
 
-#: ../src/contacts-contact.vala:761
+#: ../src/contacts-contact.vala:750
 msgid "Skype"
 msgstr "ஸ்கைபி"
 
-#: ../src/contacts-contact.vala:762
+#: ../src/contacts-contact.vala:751
 msgid "Telephony"
 msgstr "போன் சேவை"
 
-#: ../src/contacts-contact.vala:763
+#: ../src/contacts-contact.vala:752
 msgid "Trepia"
 msgstr "ட்ரெபியா"
 
-#: ../src/contacts-contact.vala:764 ../src/contacts-contact.vala:765
+#: ../src/contacts-contact.vala:753 ../src/contacts-contact.vala:754
 msgid "Yahoo! Messenger"
 msgstr "யாகூ! மெசஞ்சர்"
 
-#: ../src/contacts-contact.vala:766
+#: ../src/contacts-contact.vala:755
 msgid "Zephyr"
 msgstr "ஜெஃபைர்"
 
-#: ../src/contacts-contact.vala:1029
+#: ../src/contacts-contact.vala:1020
 msgid "Twitter"
 msgstr "ட்விட்டர்"
 
-#: ../src/contacts-contact.vala:1032
+#: ../src/contacts-contact.vala:1023
 msgid "Google Profile"
 msgstr "கூகுள் வரிவுரு"
 
-#: ../src/contacts-contact.vala:1096
+#: ../src/contacts-contact.vala:1087
 msgid "Unexpected internal error: created contact was not found"
 msgstr "எதிர்பாராத உள்ளார்ந்த பிழை: உருவாக்கிய தொடர்பை காணவில்லை"
 
-#: ../src/contacts-contact.vala:1234
+#: ../src/contacts-contact.vala:1261
 msgid "Google Circles"
 msgstr "கூகுள் வட்டங்கள் "
 
-#: ../src/contacts-contact.vala:1236
+#: ../src/contacts-contact.vala:1263
 msgid "Google Other Contact"
 msgstr "கூகுள் மற்ற தொடர்பு"
 
@@ -438,35 +460,22 @@ msgstr "கூகுள்"
 msgid "Local Contact"
 msgstr "உள்ளமை தொடர்பு"
 
-#: ../src/contacts-link-dialog.vala:73
-msgctxt "contacts link action"
-msgid "Link"
-msgstr "இணைப்பு"
-
-#: ../src/contacts-link-dialog.vala:84
-msgid "Undo"
-msgstr "ரத்து செய்க"
-
-#: ../src/contacts-link-dialog.vala:148
-msgid "Link Contact"
-msgstr "தொடர்பு இணை  "
-
-#: ../src/contacts-link-dialog.vala:154 ../src/contacts-setup-window.vala:137
-msgid "Cancel"
-msgstr "ரத்துசெய்க"
-
-#: ../src/contacts-link-dialog.vala:154
-msgid "Link"
-msgstr "இணைப்பு"
-
-#: ../src/contacts-link-dialog.vala:182
+#: ../src/contacts-linked-accounts-dialog.vala:32
 #, c-format
-msgid "Link contacts to %s"
-msgstr "%s க்கு தொடர்புகளை இணை  "
+msgid "%s - Linked Accounts"
+msgstr "%s - இணைக்கப்பட்ட கணக்குகள்"
 
-#: ../src/contacts-link-dialog.vala:184
-msgid "Select contact to link to"
-msgstr "இணைக்க தொடர்புகளை தேர்ந்தெடு"
+#: ../src/contacts-linked-accounts-dialog.vala:56
+msgid "You can manually link contacts from the contacts list"
+msgstr "நீங்கள் கைமுறையாக தொடர்பை தொடர்பு பட்டியலில் இருந்து நீக்கலாம்."
+
+#: ../src/contacts-linked-accounts-dialog.vala:102
+msgid "Remove"
+msgstr "நீக்கு"
+
+#: ../src/contacts-list-pane.vala:143
+msgid "Delete"
+msgstr "நீக்கு"
 
 #: ../src/contacts-new-contact-dialog.vala:35
 msgid "New contact"
@@ -487,6 +496,21 @@ msgstr ""
 #: ../src/contacts-new-contact-dialog.vala:78
 msgid "Contact Name"
 msgstr "தொடர்பு பெயர்"
+
+#: ../src/contacts-new-contact-dialog.vala:86
+#: ../src/contacts-new-contact-dialog.vala:121
+msgid "Email"
+msgstr "மின்னஞ்சல்"
+
+#: ../src/contacts-new-contact-dialog.vala:95
+#: ../src/contacts-new-contact-dialog.vala:126
+msgid "Phone"
+msgstr "தொலைபேசி"
+
+#: ../src/contacts-new-contact-dialog.vala:104
+#: ../src/contacts-new-contact-dialog.vala:131
+msgid "Address"
+msgstr "முகவரி"
 
 #: ../src/contacts-new-contact-dialog.vala:113
 msgid "Add Detail"
@@ -536,83 +560,91 @@ msgstr "உள்ளமை முகவரிப் புத்தகத்த�
 msgid "Contacts Setup"
 msgstr "தொடர்புகளை அமை"
 
-#: ../src/contacts-types.vala:113 ../src/contacts-types.vala:133
-#: ../src/contacts-types.vala:234 ../src/contacts-types.vala:324
+#: ../src/contacts-setup-window.vala:137
+msgid "Cancel"
+msgstr "ரத்துசெய்க"
+
+#. Refers to the type of the detail, could be Home, Work or Other for email, and the same
+#. * for phone numbers, addresses, etc.
+#: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
+#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:341
 msgid "Other"
 msgstr "மற்றவை"
 
-#: ../src/contacts-types.vala:121
-msgid "Custom..."
-msgstr "தனிபயன்..."
-
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:289 ../src/contacts-types.vala:320
+#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:337
 msgid "Home"
 msgstr "இல்லம்"
 
-#: ../src/contacts-types.vala:290 ../src/contacts-types.vala:315
+#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:332
 msgid "Work"
 msgstr "வேலை"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:314
+#: ../src/contacts-types.vala:306
+msgid "Personal"
+msgstr "தனிப்பட்ட"
+
+#. List most specific first, always in upper case
+#: ../src/contacts-types.vala:331
 msgid "Assistant"
 msgstr "உதவியாள்"
 
-#: ../src/contacts-types.vala:316
+#: ../src/contacts-types.vala:333
 msgid "Work Fax"
 msgstr "வேலையிட தொலைநகலி"
 
-#: ../src/contacts-types.vala:317
+#: ../src/contacts-types.vala:334
 msgid "Callback"
 msgstr "திரும்ப அழை"
 
-#: ../src/contacts-types.vala:318
+#: ../src/contacts-types.vala:335
 msgid "Car"
 msgstr "கார்"
 
-#: ../src/contacts-types.vala:319
+#: ../src/contacts-types.vala:336
 msgid "Company"
 msgstr "நிறுவனம்"
 
-#: ../src/contacts-types.vala:321
+#: ../src/contacts-types.vala:338
 msgid "Home Fax"
 msgstr "வீட்டு தொலைநகலி"
 
-#: ../src/contacts-types.vala:322
+#: ../src/contacts-types.vala:339
 msgid "ISDN"
 msgstr "ஐஎஸ்டிஎன்"
 
-#: ../src/contacts-types.vala:323
+#: ../src/contacts-types.vala:340
 msgid "Mobile"
 msgstr "அலைபேசி "
 
-#: ../src/contacts-types.vala:325
+#: ../src/contacts-types.vala:342
 msgid "Fax"
 msgstr "தொலை நகலி"
 
-#: ../src/contacts-types.vala:326
+#: ../src/contacts-types.vala:343
 msgid "Pager"
 msgstr "பேஜர்"
 
-#: ../src/contacts-types.vala:327
+#: ../src/contacts-types.vala:344
 msgid "Radio"
 msgstr "வானொலி"
 
-#: ../src/contacts-types.vala:328
+#: ../src/contacts-types.vala:345
 msgid "Telex"
 msgstr "டெலக்ஸ்"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:330
+#: ../src/contacts-types.vala:347
 msgid "TTY"
 msgstr "டிடிஒய்"
 
-#: ../src/contacts-view.vala:271
+#: ../src/contacts-view.vala:294
 msgid "Suggestions"
 msgstr "பரிந்துரைகள்"
 
-#: ../src/contacts-view.vala:296
+#: ../src/contacts-view.vala:319
 msgid "Other Contacts"
 msgstr "மற்ற தொடர்புகள்"
 
@@ -623,6 +655,68 @@ msgstr "முதல் முறை அமைப்பு முடிந்த
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:2
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr "முதல் முறை அமைப்பு வழிகாட்டியை பயனர் இயக்கியபோது உண்மை என அமை."
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:3
+msgid "View subset"
+msgstr "துணை வகையை காண்க"
+
+#: ../src/org.gnome.Contacts.gschema.xml.in.h:4
+msgid "View contacts subset"
+msgstr "தொடர்பு துணை வகையை காண்க"
+
+#~ msgctxt "Addresses on the Web"
+#~ msgid "Links"
+#~ msgstr "இணைப்புகள்"
+
+#~ msgctxt "Web address"
+#~ msgid "Link"
+#~ msgstr "இணைப்பு"
+
+#~ msgid "Phone number"
+#~ msgstr "தொலைபேசி எண்"
+
+#~ msgid "Chat"
+#~ msgstr "அரட்டை"
+
+#~ msgid "Addresses"
+#~ msgstr "முகவரிகள்"
+
+#~ msgid "Add detail..."
+#~ msgstr "விவரம் சேர்..."
+
+#~ msgid "Add to My Contacts"
+#~ msgstr "என் தொடர்புகளுக்கு சேர்"
+
+#~ msgid "Unlink"
+#~ msgstr "இணைப்புகள் ஐ நீக்கு"
+
+#~ msgid "Select detail to add to %s"
+#~ msgstr "%s க்கு சேர்க்க விவரங்களை தேர்ந்தெடு"
+
+#~ msgid "Select email address"
+#~ msgstr "மின்னஞ்சல் முகவரியை தேர்ந்தெடு"
+
+#~ msgid "Select what to call"
+#~ msgstr "எதை அழைக்க வேன்டும் என தேர்ந்தெடுக்கவும்"
+
+#~ msgid "Select chat account"
+#~ msgstr "அரட்டை கணக்கை தேர்ந்தெடுக்கவும்"
+
+#~ msgid "Add/Remove Linked Contacts..."
+#~ msgstr "தொடுப்பில் உள்ள தொடர்புகளை சேர்/நீக்கு..."
+
+#~ msgctxt "contacts link action"
+#~ msgid "Link"
+#~ msgstr "இணைப்பு"
+
+#~ msgid "Undo"
+#~ msgstr "ரத்து செய்க"
+
+#~ msgid "Link contacts to %s"
+#~ msgstr "%s க்கு தொடர்புகளை இணை  "
+
+#~ msgid "Custom..."
+#~ msgstr "தனிபயன்..."
 
 #~ msgid "Unknown status"
 #~ msgstr "தெரியாத நிலை"
@@ -647,9 +741,6 @@ msgstr "முதல் முறை அமைப்பு வழிகாட்
 
 #~ msgid "Hidden"
 #~ msgstr "மறைக்கப்பட்ட"
-
-#~ msgid "Personal"
-#~ msgstr "தனிப்பட்ட"
 
 #~ msgid "<span weight='bold'>Link contacts to %s</span>"
 #~ msgstr "<span weight='bold'>%s க்கு தொடர்புகளை இணை</span>"
@@ -686,9 +777,6 @@ msgstr "முதல் முறை அமைப்பு வழிகாட்
 
 #~ msgid "Manager"
 #~ msgstr "மேலாளர்"
-
-#~ msgid "Edit"
-#~ msgstr "திருத்து"
 
 #~ msgid "More"
 #~ msgstr "மேலும்"
