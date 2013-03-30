@@ -553,13 +553,7 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
-	if (writable_personas[p].has_key (prop_name)) {
-	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
-	  }
-	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
-	}
+	writable_personas[p].set (prop_name, { add_empty, rows });
       }
       break;
     case "notes":
@@ -699,13 +693,6 @@ public class Contacts.ContactEditor : Grid {
       }
 
       var rw_props = Contact.sort_persona_properties (p.writeable_properties);
-      /* FIXME: remove debug code */
-      string pps = "";
-      foreach (var pw in rw_props) {
-	pps += " %s;".printf (pw);
-      }
-      debug ("%s => rw_props: %s", p.uid, pps);
-
       if (rw_props.length != 0) {
 	writable_personas.set (p, new HashMap<string, Field?> ());
 	foreach (var prop in rw_props) {
@@ -742,11 +729,6 @@ public class Contacts.ContactEditor : Grid {
     foreach (var entry in writable_personas.entries) {
       foreach (var field_entry in entry.value.entries) {
 	if (field_entry.value.changed && ! (field_entry.key in props_set)) {
-	  string rows = "";
-	  foreach (var index in field_entry.value.rows.keys) {
-	    rows += "%d ".printf (index);
-	  }
-
 	  PropertyData p = PropertyData ();
 	  p.persona = entry.key;
 
