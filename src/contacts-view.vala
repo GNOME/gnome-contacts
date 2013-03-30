@@ -56,8 +56,9 @@ public class Contacts.View : Egg.ListBox {
   int nr_contacts_marked;
 
   string []? filter_values;
-  private TextDisplay text_display;
-  private bool selectors_visible;
+  TextDisplay text_display;
+  bool selectors_visible;
+  Widget last_selected;
 
   public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
     set_selection_mode (SelectionMode.BROWSE);
@@ -270,6 +271,18 @@ public class Contacts.View : Egg.ListBox {
     selection_changed (contact);
     if (contact != null)
       contact.fetch_contact_info ();
+
+    /* Hack for white display-name label */
+    if (last_selected != null) {
+      var last_data = last_selected.get_data<ContactData> ("data");
+      var label_flags = last_data.label.get_state_flags ();
+      label_flags &= ~(StateFlags.SELECTED);
+      last_data.label.set_state_flags (label_flags, true);
+    }
+    if (data != null) {
+      data.label.set_state_flags (StateFlags.SELECTED, false);
+      last_selected = child;
+    }
   }
 
   private bool filter (Widget child) {
