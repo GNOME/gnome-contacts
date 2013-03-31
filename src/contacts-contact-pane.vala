@@ -502,7 +502,7 @@ public class Contacts.ContactPane : Notebook {
       image.get_style_context ().add_class ("dim-label");
       box.add (image);
 
-      var label = new Gtk.Label ("Select a contact");
+      var label = new Gtk.Label (_("Select a contact"));
       box.add (label);
 
       no_selection_frame.add (box);
