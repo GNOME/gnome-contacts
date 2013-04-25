@@ -271,14 +271,8 @@ public class Contacts.App : Gtk.Application {
         settings.set_value ("view-subset", parameter);
       });
 
-    var builder = new Builder ();
-    builder.set_translation_domain (Config.GETTEXT_PACKAGE);
-    try {
-      Gtk.my_builder_add_from_resource (builder, "/org/gnome/contacts/app-menu.ui");
-      set_app_menu ((MenuModel)builder.get_object ("app-menu"));
-    } catch {
-      warning ("Failed to parsing ui file");
-    }
+    var builder = load_ui ("app-menu.ui");
+    set_app_menu ((MenuModel)builder.get_object ("app-menu"));
 
     window = new Contacts.Window (this);
     window.set_application (this);

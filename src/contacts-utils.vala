@@ -25,6 +25,16 @@ namespace Contacts {
   private static bool is_set (string? str) {
     return str != null && str != "";
   }
+
+  public Gtk.Builder load_ui (string ui) {
+    var builder = new Gtk.Builder ();
+    try {
+        builder.add_from_resource ("/org/gnome/contacts/".concat (ui, null));
+    } catch (GLib.Error e) {
+        error ("loading ui file: %s", e.message);
+    }
+    return builder;
+  }
 }
 
 
