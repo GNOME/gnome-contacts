@@ -295,7 +295,7 @@ public class Contacts.AvatarDialog : Dialog {
     scrolled.add_with_viewport (view_grid);
 
     var toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+    toolbar.get_style_context ().add_class (STYLE_CLASS_INLINE_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.set_vexpand (false);
     frame_grid.add (toolbar);
