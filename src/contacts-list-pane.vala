@@ -23,7 +23,7 @@ using Folks;
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
 
-  public Entry filter_entry;
+  public SearchEntry filter_entry;
   private View contacts_view;
   private Gd.Revealer selection_revealer;
 
@@ -71,15 +71,6 @@ public class Contacts.ListPane : Frame {
       Source.remove (filter_entry_changed_id);
 
     filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
-
-    if (filter_entry.get_text () == "")
-      filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
-    else
-      filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-clear-symbolic");
-  }
-
-  private void filter_entry_clear (EntryIconPosition position) {
-    filter_entry.set_text ("");
   }
 
   public ListPane (Store contacts_store) {
@@ -94,10 +85,8 @@ public class Contacts.ListPane : Frame {
 
     contacts_view.set_show_subset (View.Subset.MAIN);
 
-    filter_entry = new Entry ();
-    filter_entry.set_icon_from_icon_name (EntryIconPosition.SECONDARY, "edit-find-symbolic");
+    filter_entry = new SearchEntry ();
     filter_entry.changed.connect (filter_entry_changed);
-    filter_entry.icon_press.connect (filter_entry_clear);
 
     var search_entry_item = new ToolItem ();
     search_entry_item.is_important = false;
