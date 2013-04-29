@@ -298,6 +298,7 @@ public class Contacts.App : Gtk.Application {
 
     var add_button = left_toolbar.add_button (null, _("New"), true) as Gtk.Button;
     add_button.set_size_request (70, -1);
+    add_button.set_vexpand (true);
     add_button.clicked.connect (app.new_contact);
 
     select_button = left_toolbar.add_toggle ("object-select-symbolic", null, false) as ToggleButton;
