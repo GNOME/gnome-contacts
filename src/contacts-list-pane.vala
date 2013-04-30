@@ -86,6 +86,7 @@ public class Contacts.ListPane : Frame {
     contacts_view.set_show_subset (View.Subset.MAIN);
 
     filter_entry = new SearchEntry ();
+    filter_entry.set_placeholder_text (_("Type to search"));
     filter_entry.changed.connect (filter_entry_changed);
 
     var search_entry_item = new ToolItem ();
