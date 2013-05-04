@@ -284,6 +284,7 @@ public class Contacts.ContactPane : Notebook {
 
     var hcenter = new Center ();
     hcenter.max_width = 600;
+    hcenter.xalign = 0.0;
 
     sheet = new ContactSheet ();
     hcenter.add (sheet);
@@ -325,6 +326,7 @@ public class Contacts.ContactPane : Notebook {
 
     hcenter = new Center ();
     hcenter.max_width = 600;
+    hcenter.xalign = 0.0;
 
     editor = new ContactEditor ();
     hcenter.add (editor);
