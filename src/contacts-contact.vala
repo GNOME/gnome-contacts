@@ -112,6 +112,7 @@ public class Contacts.ContactPresence : Grid {
 
 
 public class Contacts.Contact : GLib.Object  {
+  public const int LIST_AVATAR_SIZE = 48;
   public const int SMALL_AVATAR_SIZE = 54;
 
   public Store store;

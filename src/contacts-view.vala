@@ -182,7 +182,7 @@ public class Contacts.View : Egg.ListBox {
     data.initial_letter = c.initial_letter;
     data.filtered = calculate_filtered (c);
 
-    data.label.set_markup (Markup.printf_escaped ("<span font='16px'>%s</span>", data.display_name));
+    data.label.set_text (data.display_name);
     data.image_frame.set_image (c.individual, c);
   }
 
@@ -202,41 +202,21 @@ public class Contacts.View : Egg.ListBox {
     var data =  new ContactData();
     data.contact = c;
     data.grid = new Grid ();
-    data.grid.margin = 12;
+    data.grid.margin = 8;
     data.grid.set_column_spacing (10);
-    data.image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
+    data.image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
     data.label = new Label ("");
     data.label.set_ellipsize (Pango.EllipsizeMode.END);
-    data.label.set_valign (Align.START);
+    data.label.set_valign (Align.CENTER);
     data.label.set_halign (Align.START);
     data.selector_button = new CheckButton ();
     data.selector_button.set_valign (Align.CENTER);
     data.selector_button.set_halign (Align.END);
     data.selector_button.set_hexpand (true);
 
-    data.grid.attach (data.image_frame, 0, 0, 1, 2);
+    data.grid.attach (data.image_frame, 0, 0, 1, 1);
     data.grid.attach (data.label, 1, 0, 1, 1);
-    data.grid.attach (data.selector_button, 2, 0, 1, 2);
-
-    if (text_display == TextDisplay.PRESENCE) {
-      var merged_presence = c.create_merged_presence_widget ();
-      merged_presence.set_halign (Align.START);
-      merged_presence.set_valign (Align.END);
-      merged_presence.set_vexpand (false);
-      merged_presence.set_margin_bottom (4);
-
-      data.grid.attach (merged_presence,  1, 1, 1, 1);
-    }
-
-    if (text_display == TextDisplay.STORES) {
-      var stores = new Label ("");
-      stores.set_markup (Markup.printf_escaped ("<span font='12px'>%s</span>",
-						c.format_persona_stores ()));
-
-      stores.set_ellipsize (Pango.EllipsizeMode.END);
-      stores.set_halign (Align.START);
-      data.grid.attach (stores,  1, 1, 1, 1);
-    }
+    data.grid.attach (data.selector_button, 2, 0, 1, 1);
 
     update_data (data);
 
