@@ -95,7 +95,6 @@ public class Contacts.ListPane : Frame {
     search_entry_item.add (filter_entry);
     toolbar.add (search_entry_item);
 
-    this.set_size_request (315, -1);
     this.set_hexpand (false);
 
     var scrolled = new ScrolledWindow(null, null);
@@ -183,5 +182,10 @@ public class Contacts.ListPane : Frame {
   public void hide_selection () {
     contacts_view.hide_selectors ();
     selection_revealer.set_reveal_child (false);
+  }
+
+  /* Limiting width hack */
+  public override void get_preferred_width (out int minimum_width, out int natural_width) {
+    minimum_width = natural_width = 300;
   }
 }
