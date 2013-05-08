@@ -202,7 +202,7 @@ public class Contacts.View : Egg.ListBox {
     var data =  new ContactData();
     data.contact = c;
     data.grid = new Grid ();
-    data.grid.margin = 8;
+    data.grid.margin = 6;
     data.grid.set_column_spacing (10);
     data.image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
     data.label = new Label ("");
