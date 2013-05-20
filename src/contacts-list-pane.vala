@@ -40,7 +40,7 @@ public class Contacts.ListPane : Frame {
     string []? values;
     string str = filter_entry.get_text ();
 
-    if (str.length == 0)
+    if (Utils.string_is_empty (str))
       values = null;
     else {
       str = Utils.canonicalize_for_search (str);
