@@ -174,6 +174,20 @@ public class Contacts.Utils : Object {
     }
   }
 
+  /* Returns false if the given string contains at least one non-"space"
+   * character.
+   */
+  public static bool string_is_empty (string str) {
+    unichar c;
+
+    for (int i = 0; str.get_next_char (ref i, out c);) {
+      if (!c.isspace ())
+	return false;
+    }
+
+    return true;
+  }
+
   public static string canonicalize_for_search (string str) {
     unowned string s;
     var buf = new unichar[18];
