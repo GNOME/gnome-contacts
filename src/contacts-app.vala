@@ -469,7 +469,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void new_contact () {
-    var dialog = new NewContactDialog (contacts_store, window);
+    var dialog = NewContactDialog.get_default (contacts_store, window);
     dialog.show_all ();
   }
 

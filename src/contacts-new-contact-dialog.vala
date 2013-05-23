@@ -20,6 +20,8 @@ using Gtk;
 using Folks;
 using Gee;
 
+private static Contacts.NewContactDialog new_contact_dialog;
+
 public class Contacts.NewContactDialog : Dialog {
   Store contacts_store;
   Grid grid;
@@ -31,7 +33,15 @@ public class Contacts.NewContactDialog : Dialog {
   ArrayList<Grid> address_entries;
   ArrayList<TypeCombo> address_combos;
 
-  public NewContactDialog(Store contacts_store, Window? parent) {
+  public static NewContactDialog get_default (Store contacts_store,
+                                              Window? parent) {
+    if (new_contact_dialog == null)
+      new_contact_dialog = new NewContactDialog (contacts_store, parent);
+
+    return new_contact_dialog;
+  }
+
+  private NewContactDialog (Store contacts_store, Window? parent) {
     set_title (_("New contact"));
     this.contacts_store = contacts_store;
     set_destroy_with_parent (true);
@@ -220,6 +230,8 @@ public class Contacts.NewContactDialog : Dialog {
       var details = get_details ();
       create_persona (details);
     }
+
+    new_contact_dialog = null;
 
     this.destroy ();
   }
