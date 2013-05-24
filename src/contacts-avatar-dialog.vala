@@ -448,6 +448,14 @@ public class Contacts.AvatarDialog : Dialog {
 	  }
 	}
 
+#if HAVE_CHEESE
+	/* Ensure the Vala garbage collector disposes of the Cheese widget.
+	 * This prevents the 'Device or resource busy' warnings, see:
+	 *   https://bugzilla.gnome.org/show_bug.cgi?id=700959
+	 */
+	cheese = null;
+#endif
+
 	this.destroy ();
       });
 
