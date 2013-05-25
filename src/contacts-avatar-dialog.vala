@@ -384,7 +384,7 @@ public class Contacts.AvatarDialog : Dialog {
     flash = new Cheese.Flash ();
 
     toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+    toolbar.get_style_context ().add_class (STYLE_CLASS_INLINE_TOOLBAR);
     toolbar.set_icon_size (IconSize.MENU);
     toolbar.set_vexpand (false);
     frame_grid.attach (toolbar, 0, 1, 1, 1);
