@@ -37,6 +37,10 @@ public class Contacts.ContactSheet : Grid {
     attach (value_button, 1, row, 1, 1);
     row++;
 
+    (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
+    (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
+
+
     return value_button;
   }
 
@@ -52,6 +56,8 @@ public class Contacts.ContactSheet : Grid {
     value_label.set_line_wrap (true);
     value_label.xalign = 0.0f;
     value_label.set_halign (Align.START);
+    value_label.set_ellipsize (Pango.EllipsizeMode.END);
+    value_label.wrap_mode = Pango.WrapMode.CHAR;
 
     /* FIXME: hardcode gap to match the button size */
     type_label.margin_top = 3;

@@ -302,12 +302,16 @@ public class Contacts.App : Gtk.Application {
     grid.attach (right_toolbar, 1, 0, 1, 1);
 
     contact_name = new Label (null);
+    contact_name.set_ellipsize (Pango.EllipsizeMode.END);
+    contact_name.wrap_mode = Pango.WrapMode.CHAR;
+    contact_name.set_halign (Align.START);
     contact_name.set_valign (Align.CENTER);
     contact_name.set_vexpand (true);
     contact_name.set_hexpand (true);
     contact_name.margin_left = 12;
     contact_name.margin_right = 12;
     var item = new ToolItem ();
+    item.set_expand (true);
     item.add (contact_name);
     right_toolbar.insert (item, -1);
 
