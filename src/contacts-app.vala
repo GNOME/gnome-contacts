@@ -334,16 +334,26 @@ public class Contacts.App : Gtk.Application {
     item.add (done_button);
     right_toolbar.insert (item, -1);
 
-    window.add (grid);
 
-    /* We put in an overlay overlapping the left and right pane for the
-       notifications, so they can show up below the toolbar */
     overlay = new Gtk.Overlay ();
     Gdk.RGBA transparent = { 0, 0, 0, 0 };
     overlay.override_background_color (0, transparent);
-    // Need to put something in here for it to work
-    overlay.add (new Alignment (0,0,0,0));
-    grid.attach (overlay, 0, 1, 2, 1);
+    overlay.add (grid);
+    overlay.get_child_position.connect ((overlay, widget, alloc) => {
+	int nat;
+	widget.get_preferred_width (null, out nat);
+	alloc.width = nat;
+
+	alloc.x = (overlay.get_allocated_width () - nat) / 2;
+	alloc.y = left_toolbar.get_allocated_height ();
+
+	widget.get_preferred_height (null, out nat);
+	alloc.height = nat;
+
+	return true;
+      });
+
+    window.add (overlay);
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
@@ -363,7 +373,7 @@ public class Contacts.App : Gtk.Application {
 
     grid.attach (right_overlay, 1, 1, 1, 1);
 
-    grid.show_all ();
+    overlay.show_all ();
 
     select_button.toggled.connect (() => {
         if (select_button.active)
@@ -460,6 +470,7 @@ public class Contacts.App : Gtk.Application {
 
   public void show_message (string message) {
     var notification = new Gd.Notification ();
+    notification.timeout = 5;
 
     var g = new Grid ();
     g.set_column_spacing (8);
@@ -488,6 +499,7 @@ public class Contacts.App : Gtk.Application {
       });
 
     var notification = new Gd.Notification ();
+    notification.timeout = 5;
 
     var g = new Grid ();
     g.set_column_spacing (8);
@@ -519,6 +531,7 @@ public class Contacts.App : Gtk.Application {
     select_button.set_active (false);
 
     var notification = new Gd.Notification ();
+    notification.timeout = 5;
 
     var g = new Grid ();
     g.set_column_spacing (8);
@@ -560,6 +573,7 @@ public class Contacts.App : Gtk.Application {
     contacts_pane.set_edit_mode (false);
 
     var notification = new Gd.Notification ();
+    notification.timeout = 5;
 
     var g = new Grid ();
     g.set_column_spacing (8);
@@ -599,6 +613,7 @@ public class Contacts.App : Gtk.Application {
 
   private void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation) {
     var notification = new Gd.Notification ();
+    notification.timeout = 5;
 
     var g = new Grid ();
     g.set_column_spacing (8);
