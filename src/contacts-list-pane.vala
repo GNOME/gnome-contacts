@@ -112,8 +112,8 @@ public class Contacts.ListPane : Frame {
           selection_changed (contact);
       });
 
-    contacts_view.add_to_scrolled (scrolled);
     contacts_view.show_all ();
+    scrolled.add (contacts_view);
     scrolled.set_no_show_all (true);
     scrolled.show ();
 

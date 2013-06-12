@@ -17,11 +17,12 @@
  */
 
 using Gtk;
+using LocalGtk;
 using Folks;
 using Gee;
 
-public class Contacts.View : Egg.ListBox {
-  private class ContactData {
+public class Contacts.View : ListBox {
+  private class ContactDataRow : ListBoxRow {
     public Contact contact;
     public Grid grid;
     public Label label;
@@ -31,6 +32,33 @@ public class Contacts.View : Egg.ListBox {
     public string display_name;
     public unichar initial_letter;
     public bool filtered;
+
+    public ContactDataRow(Contact c) {
+      this.contact = c;
+      grid = new Grid ();
+      grid.margin = 6;
+      grid.set_column_spacing (10);
+      image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
+      label = new Label ("");
+      label.set_ellipsize (Pango.EllipsizeMode.END);
+      label.set_valign (Align.CENTER);
+      label.set_halign (Align.START);
+      selector_button = new CheckButton ();
+      selector_button.set_valign (Align.CENTER);
+      selector_button.set_halign (Align.END);
+      selector_button.set_hexpand (true);
+
+      grid.attach (image_frame, 0, 0, 1, 1);
+      grid.attach (label, 1, 0, 1, 1);
+      grid.attach (selector_button, 2, 0, 1, 1);
+      this.add (grid);
+      this.show_all ();
+    }
+
+    public void update_widgets () {
+      label.set_text (display_name);
+      image_frame.set_image (contact.individual, contact);
+    }
   }
 
   public enum Subset {
@@ -51,7 +79,7 @@ public class Contacts.View : Egg.ListBox {
 
   Store contacts_store;
   Subset show_subset;
-  HashMap<Contact,ContactData> contacts;
+  HashMap<Contact,ContactDataRow> contacts;
   HashSet<Contact> hidden_contacts;
   int nr_contacts_marked;
 
@@ -68,15 +96,15 @@ public class Contacts.View : Egg.ListBox {
     show_subset = Subset.ALL;
     this.text_display = text_display;
 
-    contacts = new HashMap<Contact,ContactData> ();
+    contacts = new HashMap<Contact,ContactDataRow> ();
 
-    this.set_sort_func ((widget_a, widget_b) => {
-	var a = widget_a.get_data<ContactData> ("data");
-	var b = widget_b.get_data<ContactData> ("data");
+    this.set_sort_func ((row_a, row_b) => {
+	var a = row_a as ContactDataRow;
+	var b = row_b as ContactDataRow;
 	return compare_data (a, b);
       });
     this.set_filter_func (filter);
-    this.set_separator_funcs (update_separator);
+    this.set_header_func (update_header);
 
     selectors_visible = false;
 
@@ -87,7 +115,7 @@ public class Contacts.View : Egg.ListBox {
       contact_added_cb (store, c);
   }
 
-  private int compare_data (ContactData a_data, ContactData b_data) {
+  private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
     int a_prio = get_sort_prio (a_data);
     int b_prio = get_sort_prio (b_data);
 
@@ -108,7 +136,7 @@ public class Contacts.View : Egg.ListBox {
     return 0;
   }
 
-  private bool is_other (ContactData data) {
+  private bool is_other (ContactDataRow data) {
     if (show_subset == Subset.ALL_SEPARATED &&
 	data.contact != null &&
 	!data.contact.is_main)
@@ -118,7 +146,7 @@ public class Contacts.View : Egg.ListBox {
 
   /* The hardcoded prio if set, otherwise 0 for the
      main/combined group, or -1 for the separated other group */
-  private int get_sort_prio (ContactData *data) {
+  private int get_sort_prio (ContactDataRow *data) {
     if (data->sort_prio != 0)
       return data->sort_prio;
 
@@ -130,8 +158,8 @@ public class Contacts.View : Egg.ListBox {
   public void set_show_subset (Subset subset) {
     show_subset = subset;
     update_all_filtered ();
-    refilter ();
-    resort ();
+    invalidate_filter ();
+    invalidate_sort ();
   }
 
   public void set_custom_sort_prio (Contact c, int prio) {
@@ -142,19 +170,29 @@ public class Contacts.View : Egg.ListBox {
     if (data == null)
       return;
     data.sort_prio = prio;
-    child_changed (data.grid);
+    data.changed ();
   }
 
   public void hide_contact (Contact contact) {
     hidden_contacts.add (contact);
     update_all_filtered ();
-    refilter ();
+    invalidate_filter ();
   }
 
   public void set_filter_values (string []? values) {
+    if (filter_values == values)
+      return;
+
+    if (filter_values == null)
+      set_placeholder (null);
+    else {
+      var l = new Label (_("No results matched search"));
+      l.show ();
+      set_placeholder (l);
+    }
     filter_values = values;
     update_all_filtered ();
-    refilter ();
+    invalidate_filter ();
   }
 
   private bool calculate_filtered (Contact c) {
@@ -176,14 +214,13 @@ public class Contacts.View : Egg.ListBox {
     return c.contains_strings (filter_values);
   }
 
-  private void update_data (ContactData data) {
+  private void update_data (ContactDataRow data) {
     var c = data.contact;
     data.display_name = c.display_name;
     data.initial_letter = c.initial_letter;
     data.filtered = calculate_filtered (c);
 
-    data.label.set_text (data.display_name);
-    data.image_frame.set_image (c.individual, c);
+    data.update_widgets ();
   }
 
   private void update_all_filtered () {
@@ -195,28 +232,11 @@ public class Contacts.View : Egg.ListBox {
   private void contact_changed_cb (Store store, Contact c) {
     var data = contacts.get (c);
     update_data (data);
-    child_changed (data.grid);
+    data.changed();
   }
 
   private void contact_added_cb (Store store, Contact c) {
-    var data =  new ContactData();
-    data.contact = c;
-    data.grid = new Grid ();
-    data.grid.margin = 6;
-    data.grid.set_column_spacing (10);
-    data.image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
-    data.label = new Label ("");
-    data.label.set_ellipsize (Pango.EllipsizeMode.END);
-    data.label.set_valign (Align.CENTER);
-    data.label.set_halign (Align.START);
-    data.selector_button = new CheckButton ();
-    data.selector_button.set_valign (Align.CENTER);
-    data.selector_button.set_halign (Align.END);
-    data.selector_button.set_hexpand (true);
-
-    data.grid.attach (data.image_frame, 0, 0, 1, 1);
-    data.grid.attach (data.label, 1, 0, 1, 1);
-    data.grid.attach (data.selector_button, 2, 0, 1, 1);
+    var data =  new ContactDataRow(c);
 
     update_data (data);
 
@@ -229,110 +249,92 @@ public class Contacts.View : Egg.ListBox {
 	contacts_marked (this.nr_contacts_marked);
       });
 
-    data.grid.set_data<ContactData> ("data", data);
-    data.grid.show_all ();
     if (! selectors_visible)
       data.selector_button.hide ();
     contacts.set (c, data);
-    this.add (data.grid);
+    this.add (data);
   }
 
   private void contact_removed_cb (Store store, Contact c) {
     var data = contacts.get (c);
-    data.grid.destroy ();
-    data.label.destroy ();
-    data.image_frame.destroy ();
     contacts.unset (c);
+    data.destroy ();
   }
 
-  public override void child_selected (Widget? child) {
-    var data = child != null ? child.get_data<ContactData> ("data") : null;
+  public override void row_selected (ListBoxRow row) {
+    var data = row as ContactDataRow;
     var contact = data != null ? data.contact : null;
     selection_changed (contact);
     if (contact != null)
       contact.fetch_contact_info ();
-
-    /* Hack for white display-name label */
-    if (last_selected != null) {
-      var last_data = last_selected.get_data<ContactData> ("data");
-      var label_flags = last_data.label.get_state_flags ();
-      label_flags &= ~(StateFlags.SELECTED);
-      last_data.label.set_state_flags (label_flags, true);
-    }
-    if (data != null) {
-      data.label.set_state_flags (StateFlags.SELECTED, false);
-      last_selected = child;
-    }
   }
 
-  private bool filter (Widget child) {
-    var data = child.get_data<ContactData> ("data");
-
+  private bool filter (ListBoxRow row) {
+    var data = row as ContactDataRow;
     return data.filtered;
   }
 
-  private void update_separator (ref Widget? separator,
-				 Widget widget,
-				 Widget? before_widget) {
-    var w_data = widget.get_data<ContactData> ("data");
-    ContactData? before_data = null;
-    if (before_widget != null)
-      before_data = before_widget.get_data<ContactData> ("data");
+  private void update_header (ListBoxRow row,
+			      ListBoxRow? before_row) {
+    var row_data = row as ContactDataRow;
+    var before_data = before_row as ContactDataRow;
 
-    if (before_data == null && w_data.sort_prio > 0) {
-      if (separator == null ||
-	  !(separator.get_data<bool> ("contacts-suggestions-header"))) {
+    var current = row.get_header ();
+
+    if (before_data == null && row_data.sort_prio > 0) {
+      if (current == null ||
+	  !(current.get_data<bool> ("contacts-suggestions-header"))) {
 	var l = new Label ("");
 	l.set_data ("contacts-suggestions-header", true);
 	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Suggestions")));
 	l.set_halign (Align.START);
-	separator = l;
+	row.set_header (l);
       }
       return;
     }
 
     if (before_data != null && before_data.sort_prio > 0 &&
-	w_data.sort_prio == 0) {
-      if (separator == null ||
-	  !(separator.get_data<bool> ("contacts-rest-header"))) {
+	row_data.sort_prio == 0) {
+      if (current == null ||
+	  !(current.get_data<bool> ("contacts-rest-header"))) {
 	var l = new Label ("");
 	l.set_data ("contacts-rest-header", true);
 	l.set_halign (Align.START);
-	separator = l;
+	row.set_header (l);
       }
       return;
     }
 
-    if (is_other (w_data) &&
+    if (is_other (row_data) &&
 	(before_data == null || !is_other (before_data))) {
-      if (separator == null ||
-	  !(separator.get_data<bool> ("contacts-other-header"))) {
+      if (current == null ||
+	  !(current.get_data<bool> ("contacts-other-header"))) {
 	var l = new Label ("");
 	l.set_data ("contacts-other-header", true);
 	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Other Contacts")));
 	l.set_halign (Align.START);
-	separator = l;
+	row.set_header (l);
       }
       return;
     }
 
     if (before_data != null) {
-      if (separator == null || !(separator is Separator))
-	separator = new Separator (Orientation.HORIZONTAL);
+      if (current == null || !(current is Separator))
+	row.set_header (new Separator (Orientation.HORIZONTAL));
       return;
     }
-    separator = null;
+    row.set_header (null);
   }
 
   public void select_contact (Contact? contact) {
     if (contact == null) {
       /* deselect */
-      select_child (null);
+      select_row (null);
       return;
     }
 
     var data = contacts.get (contact);
-    select_child (data.grid);
+    select_row (data);
   }
 
   public void show_selectors () {
