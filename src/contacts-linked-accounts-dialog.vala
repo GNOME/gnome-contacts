@@ -17,11 +17,12 @@
  */
 
 using Gtk;
+using LocalGtk;
 using Folks;
 
 public class Contacts.LinkedAccountsDialog : Dialog {
   Contact contact;
-  Egg.ListBox linked_accounts_view;
+  ListBox linked_accounts_view;
 
   public bool any_unlinked;
 
@@ -47,10 +48,10 @@ public class Contacts.LinkedAccountsDialog : Dialog {
     scrolled.set_vexpand (true);
     scrolled.set_shadow_type (ShadowType.NONE);
 
-    linked_accounts_view = new Egg.ListBox ();
+    linked_accounts_view = new ListBox ();
     linked_accounts_view.set_selection_mode (SelectionMode.NONE);
 
-    linked_accounts_view.add_to_scrolled (scrolled);
+    scrolled.add (linked_accounts_view);
     grid.add (scrolled);
 
     var label = new Label (_("You can manually link contacts from the contacts list"));
