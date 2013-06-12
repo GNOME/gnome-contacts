@@ -1432,7 +1432,7 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  public void keep_widget_uptodate (Widget w, Gtk.Callback callback) {
+  public void keep_widget_uptodate (Widget w, owned Gtk.Callback callback) {
     callback(w);
     ulong id = this.changed.connect ( () => { callback(w); });
     w.destroy.connect (() => { this.disconnect (id); });
