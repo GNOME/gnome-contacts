@@ -516,6 +516,9 @@ public class Contacts.ContactPane : Notebook {
   }
 
   public void set_edit_mode (bool on_edit) {
+    if (on_edit == on_edit_mode)
+      return;
+
     if (on_edit) {
       if (contact == null) {
 	return;
