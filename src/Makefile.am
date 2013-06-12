@@ -3,7 +3,6 @@ NULL =
 AM_CPPFLAGS = \
 	-include config.h \
 	$(CONTACTS_CFLAGS) \
-	-I$(srcdir)/listbox \
 	-I$(top_srcdir)/libgd \
 	-DLOCALEDIR=\""$(localedir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
@@ -12,7 +11,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=../vapi --vapidir=listbox --vapidir=../libgd --pkg config --pkg custom --pkg egglistbox --pkg gd-1.0 \
+	--vapidir=../vapi --vapidir=../libgd --pkg config --pkg custom --pkg gd-1.0 \
 	@CONTACTS_PACKAGES@ \
 	$(NULL)
 
@@ -69,8 +68,6 @@ gnome_contacts_SOURCES = \
 	$(vala_sources) \
 	um-crop-area.c \
 	contact-resources.c \
-	listbox/egg-list-box.c \
-	listbox/egg-list-box-accessible.c \
 	contacts-esd-setup.c \
 	$(NULL)
 
@@ -102,9 +99,6 @@ CLEANFILES = \
 	*.vapi *.stamp
 
 EXTRA_DIST = \
-	listbox/egg-list-box.h \
-	listbox/egg-list-box-accessible.h \
-	listbox/egglistbox.vapi \
 	cheese-flash.h \
 	um-crop-area.h \
 	contacts.gresource.xml \
