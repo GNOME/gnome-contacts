@@ -17,7 +17,6 @@
  */
 
 using Gtk;
-using LocalGtk;
 using Folks;
 
 public class Contacts.LinkedAccountsDialog : Dialog {
