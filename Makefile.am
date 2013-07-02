@@ -1,6 +1,11 @@
 ACLOCAL_AMFLAGS = -I m4 -I libgd ${ACLOCAL_FLAGS}
 NULL=
 SUBDIRS = libgd src vapi data po
+if BUILD_MAN_PAGES
+SUBDIRS += man
+endif
+DIST_SUBDIRS = libgd src vapi data po man
+
 EXTRA_DIST = \
 	autogen.sh \
 	intltool-extract.in \
