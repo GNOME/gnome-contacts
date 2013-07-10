@@ -381,7 +381,7 @@ public class Contacts.AvatarDialog : Dialog {
     cheese.set_no_show_all (true);
     frame_grid.add (cheese);
 
-    flash = new Cheese.Flash ();
+    flash = new Cheese.Flash (this);
 
     toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
@@ -398,9 +398,7 @@ public class Contacts.AvatarDialog : Dialog {
     accept_button.clicked.connect ( (button) => {
 	var camera = cheese.get_camera () as Cheese.Camera;
 
-	var screen = button.get_screen ();
-        Gdk.Rectangle rect = { 0, 0, screen.get_width (), screen.get_height ()};
-        flash.fire (rect);
+        flash.fire ();
 
 	camera.photo_taken.connect ( (pix) => {
 	    set_crop_widget (pix);
