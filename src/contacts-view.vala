@@ -43,6 +43,7 @@ public class Contacts.View : ListBox {
       label.set_valign (Align.CENTER);
       label.set_halign (Align.START);
       selector_button = new CheckButton ();
+      selector_button.no_show_all = true;
       selector_button.set_valign (Align.CENTER);
       selector_button.set_halign (Align.END);
       selector_button.set_hexpand (true);
