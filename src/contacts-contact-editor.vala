@@ -240,7 +240,7 @@ public class Contacts.ContactEditor : Grid {
     var value_entry = new Entry ();
     value_entry.set_text (value);
     value_entry.set_hexpand (true);
-    attach (value_entry, 1, row, 2, 1);
+    attach (value_entry, 1, row, 1, 1);
 
     var delete_button = new Button ();
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
@@ -274,7 +274,7 @@ public class Contacts.ContactEditor : Grid {
     var value_entry = new Entry ();
     value_entry.set_text (value);
     value_entry.set_hexpand (true);
-    attach (value_entry, 1, row, 2, 1);
+    attach (value_entry, 1, row, 1, 1);
 
     var delete_button = new Button ();
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
@@ -312,7 +312,7 @@ public class Contacts.ContactEditor : Grid {
     value_text.set_hexpand (true);
     value_text.get_style_context ().add_class ("contacts-entry");
     sw.add (value_text);
-    attach (sw, 1, row, 2, 1);
+    attach (sw, 1, row, 1, 1);
 
     var delete_button = new Button ();
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
@@ -370,7 +370,7 @@ public class Contacts.ContactEditor : Grid {
     box.add (day_spin);
     box.add (combo);
 
-    attach (box, 1, row, 2, 1);
+    attach (box, 1, row, 1, 1);
 
     var delete_button = new Button ();
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
@@ -398,7 +398,7 @@ public class Contacts.ContactEditor : Grid {
     attach (combo, 0, row, 1, 1);
 
     var value_address = new AddressEditor (details);
-    attach (value_address, 1, row, 2, 1);
+    attach (value_address, 1, row, 1, 1);
 
     var delete_button = new Button ();
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
@@ -643,7 +643,7 @@ public class Contacts.ContactEditor : Grid {
 
   public ContactEditor () {
     set_row_spacing (12);
-    set_column_spacing (16);
+    set_column_spacing (12);
 
     writable_personas = new HashMap<Persona, HashMap<string, Field?> > ();
   }
@@ -688,7 +688,7 @@ public class Contacts.ContactEditor : Grid {
 	store_name.set_halign (Align.START);
 	store_name.xalign = 0.0f;
 	store_name.margin_left = 6;
-	attach (store_name, 0, i, 1, 1);
+	attach (store_name, 0, i, 2, 1);
 	last_store_position = ++i;
       }
 
