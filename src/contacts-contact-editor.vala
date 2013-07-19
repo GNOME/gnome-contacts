@@ -20,7 +20,7 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.AddressEditor : Grid {
+public class Contacts.AddressEditor : Box {
   public Entry? entries[7];
   public PostalAddressFieldDetails details;
 
