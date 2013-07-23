@@ -116,15 +116,26 @@ public class Contacts.App : Gtk.Application {
 
   public void change_address_book () {
     var title = _("Change Address Book");
-    var dialog = new Dialog.with_buttons (_("Primary Contacts Account"),
+    var dialog = new Dialog.with_buttons ("",
 					  (Window) window,
 					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
-					  _("Cancel"), ResponseType.CANCEL,
-					  _("Done"), ResponseType.OK);
-
-    dialog.set_title (_("Accounts"));
+					  null);
     dialog.set_resizable (false);
-    dialog.set_default_response (ResponseType.OK);
+    dialog.set_border_width (36);
+
+    var header = new HeaderBar ();
+    header.set_title (_("Primary Contacts Account"));
+    var done_button = new Button.with_label (_("Done"));
+    done_button.get_style_context ().add_class ("suggested-action");
+    done_button.get_child ().margin = 3;
+    done_button.get_child ().margin_left = 6;
+    done_button.get_child ().margin_right = 6;
+    done_button.clicked.connect (() => {
+	dialog.response (ResponseType.OK);
+      });
+    header.pack_end (done_button);
+
+    dialog.set_titlebar (header);
 
     var acc = new AccountsGrid ();
 
