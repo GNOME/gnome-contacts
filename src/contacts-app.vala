@@ -116,78 +116,31 @@ public class Contacts.App : Gtk.Application {
 
   public void change_address_book () {
     var title = _("Change Address Book");
-    var dialog = new Dialog.with_buttons ("",
-                                          (Window) window,
-                                          DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
-                                          Stock.CANCEL, ResponseType.CANCEL,
-                                          _("Select"), ResponseType.OK);
+    var dialog = new Dialog.with_buttons (_("Primary Contacts Account"),
+					  (Window) window,
+					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
+					  _("Cancel"), ResponseType.CANCEL,
+					  _("Done"), ResponseType.OK);
 
+    dialog.set_title (_("Accounts"));
     dialog.set_resizable (false);
     dialog.set_default_response (ResponseType.OK);
 
-    var tree_view = new TreeView ();
-    var store = new ListStore (2, typeof (string), typeof (Folks.PersonaStore));
-    tree_view.set_model (store);
-    tree_view.set_headers_visible (false);
-    tree_view.get_selection ().set_mode (SelectionMode.BROWSE);
-
-    var column = new Gtk.TreeViewColumn ();
-    tree_view.append_column (column);
-
-    var renderer = new Gtk.CellRendererText ();
-    column.pack_start (renderer, false);
-    column.add_attribute (renderer, "text", 0);
-
-    var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_size_request (340, 300);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_vexpand (true);
-    scrolled.set_hexpand (true);
-    scrolled.set_shadow_type (ShadowType.IN);
-    scrolled.add (tree_view);
-
-    var grid = new Grid ();
-    grid.set_orientation (Orientation.VERTICAL);
-    grid.set_row_spacing (6);
-
-    var l = new Label (title);
-    l.set_halign (Align.START);
-
-    grid.add (l);
-    grid.add (scrolled);
+    var acc = new AccountsGrid ();
 
     var box = dialog.get_content_area () as Box;
-    box.pack_start (grid, true, true, 0);
-    grid.set_border_width (6);
-
-    TreeIter iter;
-
-    foreach (var persona_store in get_eds_address_books ()) {
-      var name = Contact.format_persona_store_name (persona_store);
-      store.append (out iter);
-      store.set (iter, 0, name, 1, persona_store);
-      if (persona_store == contacts_store.aggregator.primary_store) {
-        tree_view.get_selection ().select_iter (iter);
-      }
-    }
+    box.pack_start (acc, true, true, 0);
 
     dialog.show_all ();
     dialog.response.connect ( (response) => {
-        if (response == ResponseType.OK) {
-          PersonaStore selected_store;
-          TreeIter iter2;
-
-          if (tree_view.get_selection() .get_selected (null, out iter2)) {
-            store.get (iter2, 1, out selected_store);
-
-            var e_store = selected_store as Edsf.PersonaStore;
-
-            eds_source_registry.set_default_address_book (e_store.source);
-
-            contacts_store.refresh ();
-          }
-        }
-        dialog.destroy ();
+	if (response == ResponseType.OK) {
+	  var e_store = acc.selected_store as Edsf.PersonaStore;
+	  if (e_store != null) {
+	    eds_source_registry.set_default_address_book (e_store.source);
+	    contacts_store.refresh ();
+	  }
+	}
+	dialog.destroy ();
       });
   }
 

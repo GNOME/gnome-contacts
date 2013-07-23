@@ -40,6 +40,7 @@ vala_sources = \
 	contacts-clickable.vala \
 	contacts-new-contact-dialog.vala \
 	contacts-avatar-dialog.vala \
+	contacts-accounts-list.vala \
 	contacts-contact-frame.vala \
 	contacts-revealer.vala \
 	contacts-setup-window.vala \
