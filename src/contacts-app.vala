@@ -139,8 +139,7 @@ public class Contacts.App : Gtk.Application {
 
     var acc = new AccountsGrid ();
 
-    var box = dialog.get_content_area () as Box;
-    box.pack_start (acc, true, true, 0);
+    (dialog.get_content_area () as Box).add (acc);
 
     dialog.show_all ();
     dialog.response.connect ( (response) => {

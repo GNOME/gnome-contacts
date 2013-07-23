@@ -35,7 +35,7 @@ public class Contacts.AccountsGrid : Frame {
     accounts_view.set_activate_on_single_click (true);
 
     var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_size_request (-1, 280);
+    scrolled.set_size_request (-1, 200);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_shadow_type (ShadowType.NONE);
     scrolled.add (accounts_view);
@@ -45,10 +45,10 @@ public class Contacts.AccountsGrid : Frame {
 
     add_account_button = new Button.with_label (_("Add an Online Account"));
     add_account_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    (add_account_button as Bin).get_child ().margin_left = 6;
-    (add_account_button as Bin).get_child ().margin_right = 6;
-    (add_account_button as Bin).get_child ().margin_top = 3;
-    (add_account_button as Bin).get_child ().margin_bottom = 3;
+    add_account_button.get_child ().margin_left = 6;
+    add_account_button.get_child ().margin_right = 6;
+    add_account_button.get_child ().margin_top = 3;
+    add_account_button.get_child ().margin_bottom = 3;
     add_account_button.clicked.connect (() => {
         try {
           Process.spawn_command_line_async ("gnome-control-center online-accounts");
@@ -92,9 +92,6 @@ public class Contacts.AccountsGrid : Frame {
       }
       var source = (persona_store as Edsf.PersonaStore).source;
       var parent_source = eds_source_registry.ref_source (source.parent);
-      stdout.printf ("store.id: %s\n", persona_store.id);
-      stdout.printf ("source.display_name: %s\n", source.display_name);
-      stdout.printf ("parent_source.display_name: %s\n", parent_source.display_name);
 
       var provider_name = Contact.format_persona_store_name (persona_store);
 
