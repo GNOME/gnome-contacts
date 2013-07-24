@@ -137,7 +137,8 @@ public class Contacts.App : Gtk.Application {
 
     dialog.set_titlebar (header);
 
-    var acc = new AccountsGrid ();
+    var acc = new AccountsList ();
+    acc.update_contents (true);
 
     (dialog.get_content_area () as Box).add (acc);
 

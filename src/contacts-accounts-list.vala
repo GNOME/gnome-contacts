@@ -19,20 +19,22 @@
 using Gtk;
 using Folks;
 
-public class Contacts.AccountsGrid : Frame {
+public class Contacts.AccountsList : Frame {
   ListBox accounts_view;
   ListBoxRow last_selected_row;
   Button add_account_button;
 
   public PersonaStore selected_store;
 
-  public AccountsGrid () {
+  public signal void account_selected ();
+
+  public AccountsList () {
     selected_store = null;
 
     accounts_view = new ListBox ();
     accounts_view.set_selection_mode (SelectionMode.BROWSE);
     accounts_view.set_size_request (400, -1);
-    accounts_view.set_activate_on_single_click (true);
+    accounts_view.set_header_func (update_header_func);
 
     var scrolled = new ScrolledWindow(null, null);
     scrolled.set_size_request (-1, 200);
@@ -80,10 +82,46 @@ public class Contacts.AccountsGrid : Frame {
     add (box);
     show_all ();
 
-    update_contents ();
+    /* signal handling */
+    accounts_view.row_selected.connect (row_selected);
   }
 
-  public void update_contents () {
+  private void row_selected (ListBoxRow? row) {
+    if (row == null)
+      return;
+
+    var row_data = (row as Bin).get_child ();
+    var account_label = (row_data as Grid).get_child_at (1, 0);
+    if (account_label != null)
+      account_label.get_style_context ().remove_class ("dim-label");
+
+    if (last_selected_row != null) {
+      var last_row_data = (last_selected_row as Bin).get_child ();
+      var last_account_label = (last_row_data as Grid).get_child_at (1, 0);
+      if (last_account_label != null)
+        last_account_label.get_style_context ().add_class ("dim-label");
+    }
+
+    last_selected_row = row;
+
+    selected_store = row_data.get_data<PersonaStore> ("store");
+
+    account_selected ();
+  }
+
+  private void update_header_func (ListBoxRow row, ListBoxRow? before) {
+    if (row.get_header () == null) {
+      row.set_header (new Separator (Orientation.HORIZONTAL));
+      return;
+    }
+    row.set_header (null);
+  }
+
+  public void update_contents (bool select_active) {
+    foreach (var child in accounts_view.get_children ()) {
+      child.destroy ();
+    }
+
     PersonaStore local_store = null;
     foreach (var persona_store in App.get_eds_address_books ()) {
       if (persona_store.id == "system-address-book") {
@@ -111,7 +149,8 @@ public class Contacts.AccountsGrid : Frame {
 
       accounts_view.add (row_data);
 
-      if (persona_store == App.app.contacts_store.aggregator.primary_store) {
+      if (select_active &&
+          persona_store == App.app.contacts_store.aggregator.primary_store) {
         var row = row_data.get_parent () as ListBoxRow;
         accounts_view.select_row (row);
       }
@@ -123,35 +162,12 @@ public class Contacts.AccountsGrid : Frame {
     var local_label = new Label (_("Keep contacts on this computer only"));
     local_data.add (local_label);
     accounts_view.add (local_data);
-    if (local_store == App.app.contacts_store.aggregator.primary_store) {
+    if (select_active &&
+        local_store == App.app.contacts_store.aggregator.primary_store) {
       var row = local_data.get_parent () as ListBoxRow;
       accounts_view.select_row (row);
     }
 
-    accounts_view.set_header_func ((row) => {
-        if (row.get_header () == null)
-          row.set_header (new Separator (Orientation.HORIZONTAL));
-      });
-
-    accounts_view.row_selected.connect ((row) => {
-        if (row == null)
-          return;
-
-        var row_data = (row as Bin).get_child ();
-        var account_label = (row_data as Grid).get_child_at (1, 0);
-        if (account_label != null)
-          account_label.get_style_context ().remove_class ("dim-label");
-
-        if (last_selected_row != null) {
-          var last_row_data = (last_selected_row as Bin).get_child ();
-          var last_account_label = (last_row_data as Grid).get_child_at (1, 0);
-          if (last_account_label != null)
-            last_account_label.get_style_context ().add_class ("dim-label");
-        }
-
-        last_selected_row = row;
-
-        selected_store = row_data.get_data<PersonaStore> ("store");
-      });
+    accounts_view.show_all ();
   }
 }
