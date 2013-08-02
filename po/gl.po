@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-01 22:54+0200\n"
-"PO-Revision-Date: 2013-06-01 22:54+0200\n"
+"POT-Creation-Date: 2013-08-02 11:46+0200\n"
+"PO-Revision-Date: 2013-08-02 11:47+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:279
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:243
 #: ../src/main.vala:28
 msgid "Contacts"
 msgstr "Contactos"
@@ -59,12 +59,20 @@ msgstr "_Axuda"
 msgid "_Quit"
 msgstr "_Saír"
 
+#: ../src/contacts-accounts-list.vala:48
+msgid "Add an Online Account"
+msgstr "Engadir unha conta en liña"
+
+#: ../src/contacts-accounts-list.vala:162
+msgid "Keep contacts on this computer only"
+msgstr "Manter os contactos só neste computador"
+
 #: ../src/contacts-app.vala:108
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Non foi posíbel atopar o contacto co identificador %s"
 
-#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
+#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:197
 msgid "Contact not found"
 msgstr "Contacto non atopado"
 
@@ -72,87 +80,88 @@ msgstr "Contacto non atopado"
 msgid "Change Address Book"
 msgstr "Cambiar caderno de enderezos"
 
-#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
-msgid "Select"
-msgstr "Seleccionar"
+#: ../src/contacts-app.vala:127
+msgid "Primary Contacts Account"
+msgstr "Conta de contactos primaria"
 
-#: ../src/contacts-app.vala:211
+#: ../src/contacts-app.vala:128 ../src/contacts-app.vala:294
+#: ../src/contacts-setup-window.vala:55
+msgid "Done"
+msgstr "Feito"
+
+#: ../src/contacts-app.vala:175
 msgid "translator-credits"
 msgstr ""
 "Fran Diéguez <frandieguez@gnome.org>, 2011-2013\n"
 "Leandro Regueiro <leandro.regueiro@gmail.com>, 2012"
 
-#: ../src/contacts-app.vala:212
+#: ../src/contacts-app.vala:176
 msgid "GNOME Contacts"
 msgstr "Contactos de GNOME"
 
-#: ../src/contacts-app.vala:213
+#: ../src/contacts-app.vala:177
 msgid "About GNOME Contacts"
 msgstr "Sobre Contactos de GNOME"
 
-#: ../src/contacts-app.vala:214
+#: ../src/contacts-app.vala:178
 msgid "Contact Management Application"
 msgstr "Aplicativo de xestión de contactos"
 
-#: ../src/contacts-app.vala:232
+#: ../src/contacts-app.vala:196
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Non foi posíbel atopar o contacto co correo electrónico %s"
 
-#: ../src/contacts-app.vala:293
+#: ../src/contacts-app.vala:257
 msgid "New"
 msgstr "Novo"
 
-#: ../src/contacts-app.vala:320
+#: ../src/contacts-app.vala:288
 msgid "Edit"
 msgstr "Editar"
 
-#: ../src/contacts-app.vala:326
-msgid "Done"
-msgstr "Feito"
-
-#: ../src/contacts-app.vala:375
+#: ../src/contacts-app.vala:353
 msgid "Editing"
 msgstr "Editando"
 
-#: ../src/contacts-app.vala:492
+#: ../src/contacts-app.vala:472
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d contacto ligado"
 msgstr[1] "%d contacto ligados"
 
-#: ../src/contacts-app.vala:523
+#: ../src/contacts-app.vala:504
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d contacto eliminado"
 msgstr[1] "%d contacto eliminados"
 
-#: ../src/contacts-app.vala:564
+#: ../src/contacts-app.vala:546
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Contacto eliminado: «%s»"
 
-#: ../src/contacts-app.vala:590
+#: ../src/contacts-app.vala:574
 msgid "Show contact with this individual id"
 msgstr "Mostrar contacto co seu ID individual"
 
-#: ../src/contacts-app.vala:592
+#: ../src/contacts-app.vala:576
 msgid "Show contact with this email address"
 msgstr "Mostrar contacto co seu enderezo de correo electrónico"
 
-#: ../src/contacts-app.vala:605
+#: ../src/contacts-app.vala:590
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s ligado a %s"
 
-#: ../src/contacts-app.vala:607
+#: ../src/contacts-app.vala:592
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s ligado ao contacto"
 
-#: ../src/contacts-app.vala:624
+#: ../src/contacts-app.vala:609
 msgid "— contact management"
 msgstr "— xestión de contactos"
 
@@ -219,27 +228,27 @@ msgstr "Decembro"
 
 #: ../src/contacts-contact-editor.vala:489
 #: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:169
+#: ../src/contacts-contact-sheet.vala:175
 msgid "Website"
 msgstr "Sitio web"
 
 #: ../src/contacts-contact-editor.vala:515
 #: ../src/contacts-contact-editor.vala:522
 #: ../src/contacts-contact-pane.vala:397
-#: ../src/contacts-contact-sheet.vala:179
+#: ../src/contacts-contact-sheet.vala:185
 msgid "Nickname"
 msgstr "Alcume"
 
 #: ../src/contacts-contact-editor.vala:542
 #: ../src/contacts-contact-editor.vala:549
 #: ../src/contacts-contact-pane.vala:402
-#: ../src/contacts-contact-sheet.vala:186
+#: ../src/contacts-contact-sheet.vala:192
 msgid "Birthday"
 msgstr "Cumpreanos"
 
 #: ../src/contacts-contact-editor.vala:563
 #: ../src/contacts-contact-editor.vala:570
-#: ../src/contacts-contact-sheet.vala:193
+#: ../src/contacts-contact-sheet.vala:199
 msgid "Note"
 msgstr "Nota"
 
@@ -547,35 +556,17 @@ msgstr "Non foi posíbel crear os contactos novos: %s\n"
 msgid "Unable to find newly created contact\n"
 msgstr "Non foi posíbel atopar o contacto novo creado\n"
 
-#: ../src/contacts-setup-window.vala:36
-msgid ""
-"Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr ""
-"Benvido a Contactos. Seleccione onde quere gardar o seu caderno de enderezos:"
-
-#: ../src/contacts-setup-window.vala:81
-msgid "Online Account Settings"
-msgstr "Configuración de contas en liña"
-
-#: ../src/contacts-setup-window.vala:86
-msgid "Setup an online account or use a local address book"
-msgstr "Configurar unha conta en liña ou usar un caderno de enderezos local"
-
-#: ../src/contacts-setup-window.vala:89
-msgid "Online Accounts"
-msgstr "Contas en liña"
-
-#: ../src/contacts-setup-window.vala:92
-msgid "Use Local Address Book"
-msgstr "Usar caderno de enderezos local"
-
-#: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
+#: ../src/contacts-setup-window.vala:39
 msgid "Contacts Setup"
 msgstr "Configuración de Contactos"
 
-#: ../src/contacts-setup-window.vala:137
+#: ../src/contacts-setup-window.vala:42
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: ../src/contacts-setup-window.vala:70
+msgid "Please select your primary Contacts account"
+msgstr "Seleccione unha conta de contactos primaria"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -653,11 +644,15 @@ msgstr "Télex"
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:287
+#: ../src/contacts-view.vala:189
+msgid "No results matched search"
+msgstr "Ningún resultado coincide coa súa busca"
+
+#: ../src/contacts-view.vala:289
 msgid "Suggestions"
 msgstr "Suxestións"
 
-#: ../src/contacts-view.vala:312
+#: ../src/contacts-view.vala:314
 msgid "Other Contacts"
 msgstr "Outros contactos"
 
@@ -677,6 +672,25 @@ msgstr "Ver subconxunto"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "Ver subconxunto de contacto"
+
+#~ msgid "Select"
+#~ msgstr "Seleccionar"
+
+#~ msgid ""
+#~ "Welcome to Contacts! Please select where you want to keep your address "
+#~ "book:"
+#~ msgstr ""
+#~ "Benvido a Contactos. Seleccione onde quere gardar o seu caderno de "
+#~ "enderezos:"
+
+#~ msgid "Online Account Settings"
+#~ msgstr "Configuración de contas en liña"
+
+#~ msgid "Setup an online account or use a local address book"
+#~ msgstr "Configurar unha conta en liña ou usar un caderno de enderezos local"
+
+#~ msgid "Use Local Address Book"
+#~ msgstr "Usar caderno de enderezos local"
 
 #~ msgctxt "contacts link action"
 #~ msgid "Link"
