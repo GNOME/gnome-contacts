@@ -476,7 +476,7 @@ public class Contacts.App : Gtk.Application {
                            "%d contacts linked",
                            contact_list.size).printf (contact_list.size);
 
-    var b = new Button.from_stock (Stock.UNDO);
+    var b = new Button.with_mnemonic (_("_Undo"));
     g.add (new Label (msg));
     g.add (b);
 
@@ -508,7 +508,7 @@ public class Contacts.App : Gtk.Application {
                            "%d contacts deleted",
                            contact_list.size).printf (contact_list.size);
 
-    var b = new Button.from_stock (Stock.UNDO);
+    var b = new Button.with_mnemonic (_("_Undo"));
     g.add (new Label (msg));
     g.add (b);
 
@@ -549,7 +549,7 @@ public class Contacts.App : Gtk.Application {
     var label = new Label (_("Contact deleted: \"%s\"").printf (contact.display_name));
     label.set_max_width_chars (45);
     label.set_ellipsize (Pango.EllipsizeMode.END);
-    var b = new Button.from_stock (Stock.UNDO);
+    var b = new Button.with_mnemonic (_("_Undo"));
     g.add (label);
     g.add (b);
 
@@ -594,7 +594,7 @@ public class Contacts.App : Gtk.Application {
     else
       msg = _("%s linked to the contact").printf (linked_contact);
 
-    var b = new Button.from_stock (Stock.UNDO);
+    var b = new Button.with_mnemonic (_("_Undo"));
     g.add (new Label (msg));
     g.add (b);
 

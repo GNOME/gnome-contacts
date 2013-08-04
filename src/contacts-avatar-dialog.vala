@@ -171,7 +171,7 @@ public class Contacts.AvatarDialog : Dialog {
       if (pixbuf != null)
 	preview.set_from_pixbuf (pixbuf);
       else
-	preview.set_from_stock (Stock.DIALOG_QUESTION,
+	preview.set_from_stock ("dialog-question",
 				IconSize.DIALOG);
     }
 
@@ -197,8 +197,8 @@ public class Contacts.AvatarDialog : Dialog {
     var chooser = new FileChooserDialog (_("Browse for more pictures"),
 					 (Gtk.Window)this.get_toplevel (),
 					 FileChooserAction.OPEN,
-					 Stock.CANCEL, ResponseType.CANCEL,
-					 Stock.OPEN, ResponseType.ACCEPT);
+					 _("_Cancel"), ResponseType.CANCEL,
+					 _("_Open"), ResponseType.ACCEPT);
     chooser.set_modal (true);
     chooser.set_local_only (false);
     var preview = new Image ();

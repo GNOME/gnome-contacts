@@ -47,7 +47,7 @@ public class Contacts.NewContactDialog : Dialog {
     set_destroy_with_parent (true);
     set_transient_for (parent);
 
-    add_buttons (Stock.CANCEL, ResponseType.CANCEL,
+    add_buttons (_("_Cancel"), ResponseType.CANCEL,
 		 _("Create Contact"), ResponseType.OK);
 
     set_default_response (ResponseType.OK);
