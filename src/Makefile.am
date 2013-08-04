@@ -46,7 +46,6 @@ vala_sources = \
 	contacts-setup-window.vala \
 	contacts-window.vala \
 	main.vala \
-	memory-icon.vala \
 	$(NULL)
 
 gsettings_ENUM_NAMESPACE = org.gnome.Contacts

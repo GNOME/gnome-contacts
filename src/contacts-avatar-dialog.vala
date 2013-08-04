@@ -439,8 +439,13 @@ public class Contacts.AvatarDialog : Dialog {
 	if (response_id == ResponseType.CLOSE) {
 	  if (new_pixbuf != null) {
 	    try {
-	      var icon = new MemoryIcon.from_pixbuf (new_pixbuf);
-	      set_avatar (icon);
+	      uint8[] buffer;
+	      if (new_pixbuf.save_to_buffer (out buffer, "png", null)) {
+	        var icon = new BytesIcon (new Bytes (buffer));
+	        set_avatar (icon);
+	      } else {
+	        /* Failure. Fall through. */
+	      }
 	    } catch {
 	    }
 	  }
