@@ -493,10 +493,6 @@ namespace Contacts {
       a.property_name == b.property_name;
   }
 
-  internal uint attr_type_hash (PersonaAttribute key) {
-    return (uint)key.get_type() ^ key.property_name. hash ();
-  }
-
   public static async void persona_apply_attributes (Persona persona,
 						     Set<PersonaAttribute>? added_attributes,
 						     Set<PersonaAttribute>? removed_attributes,
