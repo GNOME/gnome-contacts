@@ -182,7 +182,7 @@ public class Contacts.ContactEditor : Grid {
 					 addr_editor.details.value.postal_code,
 					 addr_editor.details.value.country,
 					 addr_editor.details.value.address_format,
-					 addr_editor.details.value.uid);
+					 addr_editor.details.id);
       for (int i = 0; i < addr_editor.entries.length; i++)
 	new_value.set (Contact.postal_element_props[i], addr_editor.entries[i].get_text ());
 
