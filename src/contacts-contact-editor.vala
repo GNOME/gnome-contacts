@@ -728,7 +728,7 @@ public class Contacts.ContactEditor : Grid {
 
     foreach (var entry in writable_personas.entries) {
       foreach (var field_entry in entry.value.entries) {
-	if (field_entry.value.changed && ! (field_entry.key in props_set)) {
+	if (field_entry.value.changed && !props_set.has_key (field_entry.key)) {
 	  PropertyData p = PropertyData ();
 	  p.persona = entry.key;
 
