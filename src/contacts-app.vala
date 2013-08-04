@@ -139,6 +139,10 @@ public class Contacts.App : Gtk.Application {
     var acc = new AccountsList ();
     acc.update_contents (true);
 
+    ulong stores_changed_id = contacts_store.eds_persona_store_changed.connect  ( () => {
+    	acc.update_contents (true);
+      });
+
     (dialog.get_content_area () as Box).add (acc);
 
     dialog.show_all ();
@@ -150,6 +154,7 @@ public class Contacts.App : Gtk.Application {
 	    contacts_store.refresh ();
 	  }
 	}
+	contacts_store.disconnect (stores_changed_id);
 	dialog.destroy ();
       });
   }

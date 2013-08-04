@@ -76,7 +76,7 @@ public class Contacts.SetupWindow : Gtk.Window {
 
     grid.add (accounts_list);
 
-    source_list_changed_id = eds_source_registry.source_changed.connect ( () => {
+    source_list_changed_id = App.app.contacts_store.eds_persona_store_changed.connect  ( () => {
     	accounts_list.update_contents (false);
       });
 
@@ -95,7 +95,7 @@ public class Contacts.SetupWindow : Gtk.Window {
 
   public override void destroy () {
     if (source_list_changed_id != 0) {
-      eds_source_registry.disconnect (source_list_changed_id);
+      App.app.contacts_store.disconnect (source_list_changed_id);
       source_list_changed_id = 0;
     }
     base.destroy ();
