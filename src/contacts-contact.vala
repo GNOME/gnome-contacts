@@ -508,8 +508,6 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public bool has_notes () {
-    bool has_notes = false;
-
     foreach (var p in get_personas_for_display ()) {
       var note_details = p as NoteDetails;
       if (note_details != null) {

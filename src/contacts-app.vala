@@ -115,7 +115,6 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void change_address_book () {
-    var title = _("Change Address Book");
     var dialog = new Dialog.with_buttons ("",
 					  (Window) window,
 					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,

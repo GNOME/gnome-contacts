@@ -22,7 +22,6 @@ using Folks;
 public class Contacts.SetupWindow : Gtk.Window {
   public bool succeeded;
   private ulong source_list_changed_id;
-  AccountsList accounts_list;
   Button done_button;
 
   private void select_source (E.Source source) {
@@ -86,7 +85,6 @@ public class Contacts.SetupWindow : Gtk.Window {
       });
 
     done_button.clicked.connect ( (button) => {
-	PersonaStore selected_store;
 	var e_store = accounts_list.selected_store as Edsf.PersonaStore;
 
 	select_source (e_store.source);

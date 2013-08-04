@@ -86,7 +86,6 @@ public class Contacts.View : ListBox {
   string []? filter_values;
   TextDisplay text_display;
   bool selectors_visible;
-  Widget last_selected;
 
   public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
     set_selection_mode (SelectionMode.BROWSE);

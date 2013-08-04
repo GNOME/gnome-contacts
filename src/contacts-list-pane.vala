@@ -29,7 +29,6 @@ public class Contacts.ListPane : Frame {
 
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
-  private bool search_visible;
 
   public signal void selection_changed (Contact? contact);
 
