@@ -208,7 +208,7 @@ public class Contacts.ContactEditor : Grid {
     }
   }
 
-  void remove_row (int row) {
+  new void remove_row (int row) {
     foreach (var fields in writable_personas.values) {
       foreach (var field_entry in fields.entries) {
 	foreach (var idx in field_entry.value.rows.keys) {
