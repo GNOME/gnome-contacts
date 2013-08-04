@@ -62,6 +62,9 @@ public class Center : Bin {
       child.get_preferred_height (out min, out nat);
       minimum_height = min;
       natural_height = nat;
+    } else {
+      minimum_height = -1;
+      natural_height = -1;
     }
   }
 
@@ -73,6 +76,9 @@ public class Center : Bin {
       child.get_preferred_width (out min, out nat);
       minimum_width = min;
       natural_width = nat;
+    } else {
+      minimum_width = -1;
+      natural_width = -1;
     }
   }
 
