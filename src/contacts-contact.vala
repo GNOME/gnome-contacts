@@ -1143,7 +1143,7 @@ public class Contacts.Contact : GLib.Object  {
       else
 	i++;
     }
-    persona_list.sort (compare_persona_by_store);
+    persona_list.sort ((owned) compare_persona_by_store);
 
     return persona_list;
   }
@@ -1310,7 +1310,7 @@ public class Contacts.Contact : GLib.Object  {
     foreach (var s in props) {
       sorted_props.add (s);
     }
-    sorted_props.sort (compare_properties);
+    sorted_props.sort ((owned) compare_properties);
     return sorted_props.to_array ();
 
   }
