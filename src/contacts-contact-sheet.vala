@@ -174,7 +174,11 @@ public class Contacts.ContactSheet : Grid {
 	foreach (var url in url_details.urls) {
 	  var button = add_row_with_button (ref i, _("Website"), Contact.format_uri_link_text (url));
 	  button.clicked.connect (() => {
-	      Gtk.show_uri (null, url.value, 0);
+	      try {
+	        Gtk.show_uri (null, url.value, 0);
+	      } catch (GLib.Error e1) {
+	        warning ("Error opening website ‘%s’: %s", url.value, e1.message);
+	      }
 	    });
 	}
       }

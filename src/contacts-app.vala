@@ -155,9 +155,13 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void show_help () {
-    Gtk.show_uri (window.get_screen (),
-         "help:gnome-help/contacts",
-         Gtk.get_current_event_time ());
+    try {
+      Gtk.show_uri (window.get_screen (),
+           "help:gnome-help/contacts",
+           Gtk.get_current_event_time ());
+    } catch (GLib.Error e1) {
+      warning ("Error showing help: %s", e1.message);
+    }
   }
 
   public void show_about () {

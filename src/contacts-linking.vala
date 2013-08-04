@@ -743,11 +743,19 @@ namespace Contacts {
 	}
       }
       if (ind != null) {
-	yield App.app.contacts_store.aggregator.unlink_individual (ind);
+        try {
+	  yield App.app.contacts_store.aggregator.unlink_individual (ind);
+	} catch (GLib.Error e1) {
+	  warning ("Error unlinking individual ‘%s’: %s", ind.id, e1.message);
+	}
       }
 
       foreach (var ps in old_personas_distribution) {
-	yield App.app.contacts_store.aggregator.link_personas (ps);
+        try {
+	  yield App.app.contacts_store.aggregator.link_personas (ps);
+	} catch (GLib.Error e1) {
+	  warning ("Error linking personas: %s", e1.message);
+	}
       }
     }
   }
@@ -762,7 +770,12 @@ namespace Contacts {
       operation.add_persona_set (ps);
     }
 
-    yield App.app.contacts_store.aggregator.link_personas (all_personas);
+    try {
+      yield App.app.contacts_store.aggregator.link_personas (all_personas);
+    } catch (GLib.Error e1) {
+      warning ("Error linking personas: %s", e1.message);
+    }
+
     return operation;
   }
 }
