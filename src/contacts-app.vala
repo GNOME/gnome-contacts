@@ -75,7 +75,7 @@ public class Contacts.App : Gtk.Application {
     if (contacts_pane.on_edit_mode) {
       contacts_pane.set_edit_mode (false);
 
-      contact_name.set_text (null);
+      contact_name.set_text ("");
       done_button.hide ();
     }
 
@@ -362,7 +362,7 @@ public class Contacts.App : Gtk.Application {
       });
 
     done_button.clicked.connect (() => {
-        contact_name.set_text (null);
+        contact_name.set_text ("");
         done_button.hide ();
         edit_button.show ();
         contacts_pane.set_edit_mode (false);
@@ -532,7 +532,7 @@ public class Contacts.App : Gtk.Application {
 
   private void delete_contact (Contact contact) {
     /* unsetting edit-mode */
-    contact_name.set_text (null);
+    contact_name.set_text ("");
     done_button.hide ();
     contacts_pane.set_edit_mode (false);
 
