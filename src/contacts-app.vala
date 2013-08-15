@@ -28,14 +28,7 @@ public class Contacts.App : Gtk.Application {
   public Contacts.Window window;
   private Gtk.Overlay overlay;
 
-  private Gd.MainToolbar left_toolbar;
-  private ToggleButton select_button;
   private ListPane list_pane;
-
-  private Toolbar right_toolbar;
-  private Label contact_name;
-  private Button edit_button;
-  private Button done_button;
 
   private ContactPane contacts_pane;
   private Overlay right_overlay;
@@ -75,17 +68,17 @@ public class Contacts.App : Gtk.Application {
     if (contacts_pane.on_edit_mode) {
       contacts_pane.set_edit_mode (false);
 
-      contact_name.set_text ("");
-      done_button.hide ();
+      window.right_toolbar.set_title ("");
+      window.done_button.hide ();
     }
 
     contacts_pane.show_contact (new_selection, false, false);
 
     /* clearing right_toolbar */
     if (new_selection != null) {
-      edit_button.show ();
+      window.edit_button.show ();
     } else {
-      edit_button.hide ();
+      window.edit_button.hide ();
     }
   }
 
@@ -247,83 +240,15 @@ public class Contacts.App : Gtk.Application {
     set_app_menu ((MenuModel)builder.get_object ("app-menu"));
 
     window = new Contacts.Window (this);
-    window.set_application (this);
-    window.set_title (_("Contacts"));
-    window.set_default_size (800, 600);
-    window.hide_titlebar_when_maximized = true;
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);
 
     var grid = new Grid();
 
-    left_toolbar = new Gd.MainToolbar ();
-    left_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    left_toolbar.get_style_context ().add_class ("contacts-left-toolbar");
-    left_toolbar.set_vexpand (false);
-    grid.attach (left_toolbar, 0, 0, 1, 1);
-
-    var add_button = left_toolbar.add_button (null, _("New"), true) as Gtk.Button;
-    add_button.set_size_request (70, -1);
-    add_button.clicked.connect (app.new_contact);
-
-    select_button = left_toolbar.add_toggle ("object-select-symbolic", null, false) as ToggleButton;
-
-    right_toolbar = new Toolbar ();
-    right_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    right_toolbar.set_vexpand (false);
-    grid.attach (right_toolbar, 1, 0, 1, 1);
-
-    contact_name = new Label (null);
-    contact_name.set_ellipsize (Pango.EllipsizeMode.END);
-    contact_name.wrap_mode = Pango.WrapMode.CHAR;
-    contact_name.set_halign (Align.START);
-    contact_name.set_valign (Align.CENTER);
-    contact_name.set_vexpand (true);
-    contact_name.set_hexpand (true);
-    contact_name.margin_left = 12;
-    contact_name.margin_right = 12;
-    var item = new ToolItem ();
-    item.set_expand (true);
-    item.add (contact_name);
-    right_toolbar.insert (item, -1);
-
-    /* spacer */
-    item = new SeparatorToolItem ();
-    (item as SeparatorToolItem).set_draw (false);
-    (item as ToolItem).set_expand (true);
-    right_toolbar.insert (item, -1);
-
-    edit_button = new Button.with_label (_("Edit"));
-    edit_button.set_size_request (70, -1);
-    item = new ToolItem ();
-    item.add (edit_button);
-    right_toolbar.insert (item, -1);
-
-    done_button = new Button.with_label (_("Done"));
-    done_button.set_size_request (70, -1);
-    done_button.get_style_context ().add_class ("suggested-action");
-    item = new ToolItem ();
-    item.add (done_button);
-    right_toolbar.insert (item, -1);
-
-
     overlay = new Gtk.Overlay ();
     Gdk.RGBA transparent = { 0, 0, 0, 0 };
     overlay.override_background_color (0, transparent);
     overlay.add (grid);
-    overlay.get_child_position.connect ((overlay, widget, alloc) => {
-	int nat;
-	widget.get_preferred_width (null, out nat);
-	alloc.width = nat;
-
-	alloc.x = (overlay.get_allocated_width () - nat) / 2;
-	alloc.y = left_toolbar.get_allocated_height ();
-
-	widget.get_preferred_height (null, out nat);
-	alloc.height = nat;
-
-	return true;
-      });
 
     window.add (overlay);
 
@@ -333,6 +258,11 @@ public class Contacts.App : Gtk.Application {
     list_pane.delete_contacts.connect (delete_contacts);
 
     grid.attach (list_pane, 0, 1, 1, 1);
+
+    /* horizontal size group, for the splitted headerbar */
+    var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
+    hsize_group.add_widget (window.left_toolbar);
+    hsize_group.add_widget (list_pane);
 
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
@@ -347,37 +277,52 @@ public class Contacts.App : Gtk.Application {
 
     overlay.show_all ();
 
-    select_button.toggled.connect (() => {
-        if (select_button.active)
+    window.add_button.clicked.connect (app.new_contact);
+
+    window.select_button.toggled.connect (() => {
+        if (window.select_button.active) {
+	  /* Update UI */
+	  window.add_button.hide ();
+	  window.left_toolbar.set_title (_("Select"));
+	  window.left_toolbar.get_style_context ().add_class ("selection-mode");
+	  window.right_toolbar.get_style_context ().add_class ("selection-mode");
+
           list_pane.show_selection ();
-        else
+	} else {
+	  /* Update UI */
+	  window.add_button.show ();
+	  window.left_toolbar.set_title (_("All Contacts"));
+	  window.left_toolbar.get_style_context ().remove_class ("selection-mode");
+	  window.right_toolbar.get_style_context ().remove_class ("selection-mode");
+
           list_pane.hide_selection ();
+	}
       });
 
-    edit_button.clicked.connect (() => {
-        if (select_button.active)
-          select_button.set_active (false);
+    window.edit_button.clicked.connect (() => {
+        if (window.select_button.active)
+          window.select_button.set_active (false);
 
         var name = _("Editing");
         if (contacts_pane.contact != null) {
           name += " %s".printf (contacts_pane.contact.display_name);
         }
 
-        contact_name.set_markup (Markup.printf_escaped ("<b>%s</b>", name));
-        edit_button.hide ();
-        done_button.show ();
+	window.right_toolbar.set_title (name);
+        window.edit_button.hide ();
+        window.done_button.show ();
         contacts_pane.set_edit_mode (true);
       });
 
-    done_button.clicked.connect (() => {
-        contact_name.set_text ("");
-        done_button.hide ();
-        edit_button.show ();
+    window.done_button.clicked.connect (() => {
+	window.right_toolbar.set_title ("");
+        window.done_button.hide ();
+        window.edit_button.show ();
         contacts_pane.set_edit_mode (false);
       });
 
-    edit_button.hide ();
-    done_button.hide ();
+    window.edit_button.hide ();
+    window.done_button.hide ();
   }
 
   public override void startup () {
@@ -463,7 +408,7 @@ public class Contacts.App : Gtk.Application {
   private void link_contacts (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     show_contact (null);
-    select_button.set_active (false);
+    window.select_button.set_active (false);
 
     LinkOperation2 operation = null;
     link_contacts_list.begin (contact_list, (obj, result) => {
@@ -500,7 +445,7 @@ public class Contacts.App : Gtk.Application {
   private void delete_contacts (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     show_contact (null);
-    select_button.set_active (false);
+    window.select_button.set_active (false);
 
     var notification = new Gd.Notification ();
     notification.timeout = 5;
@@ -540,8 +485,8 @@ public class Contacts.App : Gtk.Application {
 
   private void delete_contact (Contact contact) {
     /* unsetting edit-mode */
-    contact_name.set_text ("");
-    done_button.hide ();
+    window.right_toolbar.set_title ("");
+    window.done_button.hide ();
     contacts_pane.set_edit_mode (false);
 
     var notification = new Gd.Notification ();

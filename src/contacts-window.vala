@@ -19,8 +19,63 @@
 using Gtk;
 using Folks;
 
+/* FIXME: big changes:
+ * 1. remove edit_button/done_button from public
+ * 2. hide toolbar as well, make public properties to set the title
+ * 3. make property virtual prop to change the select bar header
+ * 4. this will remove the window.edit_button from contacts-app.vala */
+
 public class Contacts.Window : Gtk.ApplicationWindow {
-	public Window (Gtk.Application app) {
-		Object (application: app);
-	}
+  /* FIXME: remove from public what it is not needed */
+  public HeaderBar left_toolbar;
+  public Button add_button;
+  public Gd.HeaderToggleButton select_button;
+
+  public HeaderBar right_toolbar;
+  public Button edit_button;
+  public Button done_button;
+
+  public Window (Gtk.Application app) {
+    Object (application: app);
+
+    set_default_size (800, 600);
+
+    /* building ui, latter replaced by .ui resource file */
+    /* titlebar */
+    var titlebar = new Box (Orientation.HORIZONTAL, 0);
+    left_toolbar = new HeaderBar ();
+    titlebar.add (left_toolbar);
+
+    /* FIXME: Here it should not be 'All' but the source of the contacts subset your
+     viewing, if it happens to be 'All', well */
+    left_toolbar.set_title (_("All Contacts"));
+
+    var add_image = new Gtk.Image.from_icon_name ("list-add-symbolic", IconSize.MENU);
+    add_button = new Button ();
+    add_button.add (add_image);
+    left_toolbar.pack_start (add_button);
+
+    var select_image = new Gtk.Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+    select_button = new Gd.HeaderToggleButton ();
+    select_button.add (select_image);
+    left_toolbar.pack_end (select_button);
+
+    titlebar.add (new Separator (Orientation.VERTICAL));
+
+    right_toolbar = new HeaderBar ();
+    right_toolbar.set ("show-close-button", true);
+    titlebar.pack_end (right_toolbar, true, true, 0);
+
+    edit_button = new Button.with_label (_("Edit"));
+    edit_button.set_size_request (70, -1);
+    right_toolbar.pack_end (edit_button);
+
+    done_button = new Button.with_label (_("Done"));
+    done_button.set_size_request (70, -1);
+    done_button.get_style_context ().add_class ("suggested-action");
+    right_toolbar.pack_end (done_button);
+
+    titlebar.show_all ();
+    set_titlebar (titlebar);
+  }
 }
