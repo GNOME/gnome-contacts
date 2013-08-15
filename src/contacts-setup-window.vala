@@ -66,7 +66,7 @@ public class Contacts.SetupWindow : Gtk.Window {
     grid.set_row_spacing (24);
     this.add (grid);
 
-    var l = new Label (_("Please select your primary Contacts account"));
+    var l = new Label (_("Please select your primary contacts account"));
     l.set_halign (Align.CENTER);
     grid.add (l);
 

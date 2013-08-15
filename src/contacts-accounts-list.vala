@@ -19,7 +19,7 @@
 using Gtk;
 using Folks;
 
-public class Contacts.AccountsList : Frame {
+public class Contacts.AccountsList : Grid {
   ListBox accounts_view;
   ListBoxRow last_selected_row;
   Button add_account_button;
@@ -29,6 +29,9 @@ public class Contacts.AccountsList : Frame {
   public signal void account_selected ();
 
   public AccountsList () {
+    set_orientation (Orientation.VERTICAL);
+    set_row_spacing (22);
+
     selected_store = null;
 
     accounts_view = new ListBox ();
@@ -37,15 +40,12 @@ public class Contacts.AccountsList : Frame {
     accounts_view.set_header_func (update_header_func);
 
     var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_size_request (-1, 200);
+    scrolled.set_min_content_height (260);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_shadow_type (ShadowType.NONE);
+    scrolled.set_shadow_type (ShadowType.IN);
     scrolled.add (accounts_view);
 
-    var toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
-
-    add_account_button = new Button.with_label (_("Add an Online Account"));
+    add_account_button = new Button.with_label (_("Online Accounts"));
     add_account_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
     add_account_button.get_child ().margin_left = 6;
     add_account_button.get_child ().margin_right = 6;
@@ -60,26 +60,9 @@ public class Contacts.AccountsList : Frame {
         }
       });
 
-    var spacer = new SeparatorToolItem ();
-    spacer.set_draw (false);
-    spacer.set_expand (true);
-    toolbar.add (spacer);
+    add (scrolled);
+    add (add_account_button);
 
-    var item = new ToolItem ();
-    item.add (add_account_button);
-    toolbar.add (item);
-
-    spacer = new SeparatorToolItem ();
-    spacer.set_draw (false);
-    spacer.set_expand (true);
-    toolbar.add (spacer);
-
-    var box = new Grid ();
-    box.set_orientation (Orientation.VERTICAL);
-    box.add (scrolled);
-    box.add (toolbar);
-
-    add (box);
     show_all ();
 
     /* signal handling */
@@ -159,7 +142,7 @@ public class Contacts.AccountsList : Frame {
     var local_data = new Grid ();
     local_data.margin = 12;
     local_data.set_data ("store", local_store);
-    var local_label = new Label (_("Keep contacts on this computer only"));
+    var local_label = new Label (_("Local Address Book"));
     local_data.add (local_label);
     accounts_view.add (local_data);
     if (select_active &&
