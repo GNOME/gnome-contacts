@@ -19,18 +19,13 @@
 using Gtk;
 using Folks;
 
-/* FIXME: big changes:
- * 1. remove edit_button/done_button from public
- * 2. hide toolbar as well, make public properties to set the title
- * 3. make property virtual prop to change the select bar header
- * 4. this will remove the window.edit_button from contacts-app.vala */
-
 public class Contacts.Window : Gtk.ApplicationWindow {
+  private HeaderBar left_toolbar;
   private HeaderBar right_toolbar;
   private Overlay overlay;
+  private Grid grid;
 
   /* FIXME: remove from public what it is not needed */
-  public HeaderBar left_toolbar;
   public Button add_button;
   public Gd.HeaderToggleButton select_button;
 
@@ -102,6 +97,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     overlay.override_background_color (0, transparent);
 
     add (overlay);
+
+    grid = new Grid();
+    overlay.add (grid);
   }
 
   public void activate_selection_mode (bool active) {
@@ -122,8 +120,22 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  public void add_main_child (Widget child) {
-    overlay.add (child);
+  public void add_left_child (Widget child) {
+    grid.attach (child, 0, 1, 1, 1);
+
+    /* horizontal size group, for the splitted headerbar */
+    var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
+    hsize_group.add_widget (left_toolbar);
+    hsize_group.add_widget (child);
+  }
+
+  public void add_right_child (Widget child) {
+    Gdk.RGBA transparent = { 0, 0, 0, 0 };
+    var right_overlay = new Overlay ();
+    right_overlay.override_background_color (0, transparent);
+    right_overlay.add (child);
+
+    grid.attach (right_overlay, 1, 1, 1, 1);
   }
 
   public void add_notification (Widget notification) {

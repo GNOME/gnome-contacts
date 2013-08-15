@@ -28,9 +28,7 @@ public class Contacts.App : Gtk.Application {
   public Contacts.Window window;
 
   private ListPane list_pane;
-
   private ContactPane contacts_pane;
-  private Overlay right_overlay;
 
   private bool window_delete_event (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
@@ -242,39 +240,26 @@ public class Contacts.App : Gtk.Application {
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);
 
-    var grid = new Grid();
-
-    window.add_main_child (grid);
-
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
     list_pane.link_contacts.connect (link_contacts);
     list_pane.delete_contacts.connect (delete_contacts);
-    list_pane.contacts_marked.connect ((nr_contacts) => {
-	if (nr_contacts == 0)
-	  window.left_title = _("Select");
-	else
-	  window.left_title = _("%d Selected").printf (nr_contacts);
-      });
 
-    grid.attach (list_pane, 0, 1, 1, 1);
-
-    /* horizontal size group, for the splitted headerbar */
-    var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
-    hsize_group.add_widget (window.left_toolbar);
-    hsize_group.add_widget (list_pane);
+    window.add_left_child (list_pane);
 
     contacts_pane = new ContactPane (contacts_store);
     contacts_pane.set_hexpand (true);
     contacts_pane.will_delete.connect (delete_contact);
     contacts_pane.contacts_linked.connect (contacts_linked);
 
-    Gdk.RGBA transparent = { 0, 0, 0, 0 };
-    right_overlay = new Overlay ();
-    right_overlay.override_background_color (0, transparent);
-    right_overlay.add (contacts_pane);
+    window.add_right_child (contacts_pane);
 
-    grid.attach (right_overlay, 1, 1, 1, 1);
+    list_pane.contacts_marked.connect ((nr_contacts) => {
+	if (nr_contacts == 0)
+	  window.left_title = _("Select");
+	else
+	  window.left_title = _("%d Selected").printf (nr_contacts);
+      });
 
     window.add_button.clicked.connect (app.new_contact);
 
