@@ -44,6 +44,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     /* titlebar */
     var titlebar = new Box (Orientation.HORIZONTAL, 0);
     left_toolbar = new HeaderBar ();
+    left_toolbar.get_style_context ().add_class ("contacts-left-header-bar");
     titlebar.add (left_toolbar);
 
     /* FIXME: Here it should not be 'All' but the source of the contacts subset your
@@ -59,8 +60,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     select_button = new Gd.HeaderToggleButton ();
     select_button.add (select_image);
     left_toolbar.pack_end (select_button);
-
-    titlebar.add (new Separator (Orientation.VERTICAL));
 
     right_toolbar = new HeaderBar ();
     right_toolbar.set ("show-close-button", true);

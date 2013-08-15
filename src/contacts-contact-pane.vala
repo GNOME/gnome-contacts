@@ -281,9 +281,8 @@ public class Contacts.ContactPane : Notebook {
     show_no_selection_frame ();
 
     var main_sw = new ScrolledWindow (null, null);
-    main_sw.get_style_context ().add_class ("contacts-content");
 
-    main_sw.set_shadow_type (ShadowType.IN);
+    main_sw.set_shadow_type (ShadowType.NONE);
     main_sw.set_hexpand (true);
     main_sw.set_vexpand (true);
     main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
@@ -323,9 +322,8 @@ public class Contacts.ContactPane : Notebook {
 
     main_sw = new ScrolledWindow (null, null);
     top_grid.add (main_sw);
-    main_sw.get_style_context ().add_class ("contacts-content");
 
-    main_sw.set_shadow_type (ShadowType.IN);
+    main_sw.set_shadow_type (ShadowType.NONE);
     main_sw.set_hexpand (true);
     main_sw.set_vexpand (true);
     main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
@@ -496,7 +494,7 @@ public class Contacts.ContactPane : Notebook {
       icon_size_register ("ULTRABIG", 144, 144);
 
       no_selection_frame = new Frame (null);
-      no_selection_frame.get_style_context ().add_class ("contacts-content");
+      no_selection_frame.set_shadow_type (ShadowType.NONE);
       no_selection_frame.set_size_request (500, -1);
 
       var box = new Grid ();
