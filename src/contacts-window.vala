@@ -77,4 +77,22 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     titlebar.show_all ();
     set_titlebar (titlebar);
   }
+
+  public void activate_selection_mode (bool active) {
+    if (active) {
+      add_button.hide ();
+
+      left_toolbar.get_style_context ().add_class ("selection-mode");
+      right_toolbar.get_style_context ().add_class ("selection-mode");
+
+      left_toolbar.set_title (_("Select"));
+    } else {
+      add_button.show ();
+
+      left_toolbar.get_style_context ().remove_class ("selection-mode");
+      right_toolbar.get_style_context ().remove_class ("selection-mode");
+
+      left_toolbar.set_title (_("All Contacts"));
+    }
+  }
 }

@@ -288,20 +288,14 @@ public class Contacts.App : Gtk.Application {
     window.select_button.toggled.connect (() => {
         if (window.select_button.active) {
 	  /* Update UI */
-	  window.add_button.hide ();
-	  window.left_toolbar.set_title (_("Select"));
-	  window.left_toolbar.get_style_context ().add_class ("selection-mode");
-	  window.right_toolbar.get_style_context ().add_class ("selection-mode");
+	  window.activate_selection_mode (true);
 
           list_pane.show_selection ();
 	} else {
-	  /* Update UI */
-	  window.add_button.show ();
-	  window.left_toolbar.set_title (_("All Contacts"));
-	  window.left_toolbar.get_style_context ().remove_class ("selection-mode");
-	  window.right_toolbar.get_style_context ().remove_class ("selection-mode");
-
           list_pane.hide_selection ();
+
+	  /* Update UI */
+	  window.activate_selection_mode (false);
 	}
       });
 
