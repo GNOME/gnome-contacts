@@ -77,6 +77,8 @@ public class Contacts.ContactSheet : Grid {
 
   public void update (Contact c) {
     var image_frame = new ContactFrame (PROFILE_SIZE);
+    image_frame.get_style_context ().add_class ("main-avatar-frame");
+    image_frame.set_shadow_type (ShadowType.IN);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
     c.keep_widget_uptodate (image_frame,  (w) => {
