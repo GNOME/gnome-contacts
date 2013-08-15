@@ -35,6 +35,8 @@ public class Contacts.ListPane : Frame {
   public signal void link_contacts (LinkedList<Contact> contacts_list);
   public signal void delete_contacts (LinkedList<Contact> contacts_list);
 
+  public signal void contacts_marked (int contacts_marked);
+
   public void refilter () {
     string []? values;
     string str = filter_entry.get_text ();
@@ -148,6 +150,8 @@ public class Contacts.ListPane : Frame {
           link_selected_button.set_sensitive (true);
         else
           link_selected_button.set_sensitive (false);
+
+	contacts_marked (nr_contacts_marked);
       });
 
     link_selected_button.clicked.connect (() => {

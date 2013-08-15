@@ -256,6 +256,12 @@ public class Contacts.App : Gtk.Application {
     list_pane.selection_changed.connect (selection_changed);
     list_pane.link_contacts.connect (link_contacts);
     list_pane.delete_contacts.connect (delete_contacts);
+    list_pane.contacts_marked.connect ((nr_contacts) => {
+	if (nr_contacts == 0)
+	  window.left_toolbar.set_title (_("Select"));
+	else
+	  window.left_toolbar.set_title (_("%d Selected").printf (nr_contacts));
+      });
 
     grid.attach (list_pane, 0, 1, 1, 1);
 
