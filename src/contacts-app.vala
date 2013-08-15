@@ -223,16 +223,6 @@ public class Contacts.App : Gtk.Application {
     this.add_action (action);
     this.add_accelerator ("<Primary>n", "app.new_contact", null);
 
-    var view_action = new GLib.SimpleAction.stateful ("view_subset", VariantType.STRING, settings.get_value ("view-subset"));
-    this.add_action (view_action);
-    settings.changed["view-subset"].connect (() => {
-        view_action.set_state (settings.get_value ("view-subset"));
-        list_pane.refilter ();
-      });
-    view_action.activate.connect ((act, parameter) => {
-        settings.set_value ("view-subset", parameter);
-      });
-
     var builder = load_ui ("app-menu.ui");
     set_app_menu ((MenuModel)builder.get_object ("app-menu"));
 

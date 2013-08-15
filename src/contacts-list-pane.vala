@@ -50,15 +50,10 @@ public class Contacts.ListPane : Frame {
 
     contacts_view.set_filter_values (values);
 
-    var subset = App.app.settings.get_enum ("view-subset");
-    if (subset == View.Subset.MAIN) {
-      if (values == null)
-	contacts_view.set_show_subset (View.Subset.MAIN);
-      else
-	contacts_view.set_show_subset (View.Subset.ALL_SEPARATED);
-    } else {
-	contacts_view.set_show_subset (View.Subset.ALL);
-    }
+    if (values == null)
+      contacts_view.set_show_subset (View.Subset.ALL);
+    else
+      contacts_view.set_show_subset (View.Subset.ALL_SEPARATED);
   }
 
   private bool filter_entry_changed_timeout () {
