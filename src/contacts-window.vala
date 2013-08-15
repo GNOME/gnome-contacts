@@ -26,14 +26,33 @@ using Folks;
  * 4. this will remove the window.edit_button from contacts-app.vala */
 
 public class Contacts.Window : Gtk.ApplicationWindow {
+  private HeaderBar right_toolbar;
+
   /* FIXME: remove from public what it is not needed */
   public HeaderBar left_toolbar;
   public Button add_button;
   public Gd.HeaderToggleButton select_button;
 
-  public HeaderBar right_toolbar;
   public Button edit_button;
   public Button done_button;
+
+  public string left_title {
+    get {
+      return left_toolbar.get_title ();
+    }
+    set {
+      left_toolbar.set_title (value);
+    }
+  }
+
+  public string right_title {
+    get {
+      return right_toolbar.get_title ();
+    }
+    set {
+      right_toolbar.set_title (value);
+    }
+  }
 
   public Window (Gtk.Application app) {
     Object (application: app);

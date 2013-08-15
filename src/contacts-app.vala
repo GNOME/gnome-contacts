@@ -68,7 +68,7 @@ public class Contacts.App : Gtk.Application {
     if (contacts_pane.on_edit_mode) {
       contacts_pane.set_edit_mode (false);
 
-      window.right_toolbar.set_title ("");
+      window.right_title = "";
       window.done_button.hide ();
     }
 
@@ -258,9 +258,9 @@ public class Contacts.App : Gtk.Application {
     list_pane.delete_contacts.connect (delete_contacts);
     list_pane.contacts_marked.connect ((nr_contacts) => {
 	if (nr_contacts == 0)
-	  window.left_toolbar.set_title (_("Select"));
+	  window.left_title = _("Select");
 	else
-	  window.left_toolbar.set_title (_("%d Selected").printf (nr_contacts));
+	  window.left_title = _("%d Selected").printf (nr_contacts);
       });
 
     grid.attach (list_pane, 0, 1, 1, 1);
@@ -308,14 +308,14 @@ public class Contacts.App : Gtk.Application {
           name += " %s".printf (contacts_pane.contact.display_name);
         }
 
-	window.right_toolbar.set_title (name);
+	window.right_title = name;
         window.edit_button.hide ();
         window.done_button.show ();
         contacts_pane.set_edit_mode (true);
       });
 
     window.done_button.clicked.connect (() => {
-	window.right_toolbar.set_title ("");
+	window.right_title = "";
         window.done_button.hide ();
         window.edit_button.show ();
         contacts_pane.set_edit_mode (false);
@@ -485,7 +485,7 @@ public class Contacts.App : Gtk.Application {
 
   private void delete_contact (Contact contact) {
     /* unsetting edit-mode */
-    window.right_toolbar.set_title ("");
+    window.right_title = "";
     window.done_button.hide ();
     contacts_pane.set_edit_mode (false);
 
