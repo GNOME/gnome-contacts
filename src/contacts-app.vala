@@ -26,7 +26,6 @@ public class Contacts.App : Gtk.Application {
   public Store contacts_store;
 
   public Contacts.Window window;
-  private Gtk.Overlay overlay;
 
   private ListPane list_pane;
 
@@ -245,12 +244,7 @@ public class Contacts.App : Gtk.Application {
 
     var grid = new Grid();
 
-    overlay = new Gtk.Overlay ();
-    Gdk.RGBA transparent = { 0, 0, 0, 0 };
-    overlay.override_background_color (0, transparent);
-    overlay.add (grid);
-
-    window.add (overlay);
+    window.add_main_child (grid);
 
     list_pane = new ListPane (contacts_store);
     list_pane.selection_changed.connect (selection_changed);
@@ -275,13 +269,12 @@ public class Contacts.App : Gtk.Application {
     contacts_pane.will_delete.connect (delete_contact);
     contacts_pane.contacts_linked.connect (contacts_linked);
 
+    Gdk.RGBA transparent = { 0, 0, 0, 0 };
     right_overlay = new Overlay ();
     right_overlay.override_background_color (0, transparent);
     right_overlay.add (contacts_pane);
 
     grid.attach (right_overlay, 1, 1, 1, 1);
-
-    overlay.show_all ();
 
     window.add_button.clicked.connect (app.new_contact);
 
@@ -320,6 +313,8 @@ public class Contacts.App : Gtk.Application {
         window.edit_button.show ();
         contacts_pane.set_edit_mode (false);
       });
+
+    window.show_all ();
 
     window.edit_button.hide ();
     window.done_button.hide ();
@@ -397,7 +392,7 @@ public class Contacts.App : Gtk.Application {
     notification.add (l);
 
     notification.show_all ();
-    overlay.add_overlay (notification);
+    window.add_notification (notification);
   }
 
   public void new_contact () {
@@ -431,7 +426,7 @@ public class Contacts.App : Gtk.Application {
     g.add (b);
 
     notification.show_all ();
-    overlay.add_overlay (notification);
+    window.add_notification (notification);
 
     /* signal handlers */
     b.clicked.connect ( () => {
@@ -463,7 +458,7 @@ public class Contacts.App : Gtk.Application {
     g.add (b);
 
     notification.show_all ();
-    overlay.add_overlay (notification);
+    window.add_notification (notification);
 
     /* signal handlers */
     bool really_delete = true;
@@ -517,7 +512,7 @@ public class Contacts.App : Gtk.Application {
         contact.show ();
         show_contact (contact);
       });
-    overlay.add_overlay (notification);
+    window.add_notification (notification);
   }
 
   private static string individual_id = null;
@@ -553,7 +548,7 @@ public class Contacts.App : Gtk.Application {
       notification.dismiss ();
       operation.undo.begin ();
     });
-    overlay.add_overlay (notification);
+    window.add_notification (notification);
   }
 
   public override int command_line (ApplicationCommandLine command_line) {

@@ -27,6 +27,7 @@ using Folks;
 
 public class Contacts.Window : Gtk.ApplicationWindow {
   private HeaderBar right_toolbar;
+  private Overlay overlay;
 
   /* FIXME: remove from public what it is not needed */
   public HeaderBar left_toolbar;
@@ -95,6 +96,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     titlebar.show_all ();
     set_titlebar (titlebar);
+
+    overlay = new Gtk.Overlay ();
+    Gdk.RGBA transparent = { 0, 0, 0, 0 };
+    overlay.override_background_color (0, transparent);
+
+    add (overlay);
   }
 
   public void activate_selection_mode (bool active) {
@@ -113,5 +120,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
       left_toolbar.set_title (_("All Contacts"));
     }
+  }
+
+  public void add_main_child (Widget child) {
+    overlay.add (child);
+  }
+
+  public void add_notification (Widget notification) {
+    overlay.add_overlay (notification);
   }
 }
