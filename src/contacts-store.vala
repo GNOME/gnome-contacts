@@ -154,7 +154,7 @@ public class Contacts.Store : GLib.Object {
 	}
       });
 
-    aggregator = new IndividualAggregator ();
+    aggregator = IndividualAggregator.dup ();
     aggregator.notify["is-quiescent"].connect ( (obj, pspec) => {
 	// We seem to get this before individuals_changed, so hack around it
 	Idle.add( () => {
