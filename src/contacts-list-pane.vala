@@ -79,7 +79,7 @@ public class Contacts.ListPane : Frame {
     toolbar.set_vexpand (false);
     toolbar.set_hexpand (true);
 
-    contacts_view.set_show_subset (View.Subset.MAIN);
+    contacts_view.set_show_subset (View.Subset.ALL);
 
     filter_entry = new SearchEntry ();
     filter_entry.set_placeholder_text (_("Type to search"));
