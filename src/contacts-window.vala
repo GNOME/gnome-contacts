@@ -19,17 +19,28 @@
 using Gtk;
 using Folks;
 
+[GtkTemplate (ui = "/org/gnome/contacts/contacts-window.ui")]
 public class Contacts.Window : Gtk.ApplicationWindow {
+  [GtkChild]
   private HeaderBar left_toolbar;
+  [GtkChild]
   private HeaderBar right_toolbar;
+  [GtkChild]
   private Overlay overlay;
+  [GtkChild]
   private Grid grid;
+  [GtkChild]
+  private Overlay right_overlay;
 
   /* FIXME: remove from public what it is not needed */
+  [GtkChild]
   public Button add_button;
-  public Gd.HeaderToggleButton select_button;
+  [GtkChild]
+  public ToggleButton select_button;
 
+  [GtkChild]
   public Button edit_button;
+  [GtkChild]
   public Button done_button;
 
   public string left_title {
@@ -53,53 +64,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public Window (Gtk.Application app) {
     Object (application: app);
 
-    set_default_size (800, 600);
-
-    /* building ui, latter replaced by .ui resource file */
-    /* titlebar */
-    var titlebar = new Box (Orientation.HORIZONTAL, 0);
-    left_toolbar = new HeaderBar ();
-    left_toolbar.get_style_context ().add_class ("contacts-left-header-bar");
-    titlebar.add (left_toolbar);
-
-    /* FIXME: Here it should not be 'All' but the source of the contacts subset your
-     viewing, if it happens to be 'All', well */
-    left_toolbar.set_title (_("All Contacts"));
-
-    var add_image = new Gtk.Image.from_icon_name ("list-add-symbolic", IconSize.MENU);
-    add_button = new Button ();
-    add_button.add (add_image);
-    left_toolbar.pack_start (add_button);
-
-    var select_image = new Gtk.Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
-    select_button = new Gd.HeaderToggleButton ();
-    select_button.add (select_image);
-    left_toolbar.pack_end (select_button);
-
-    right_toolbar = new HeaderBar ();
-    right_toolbar.set ("show-close-button", true);
-    titlebar.pack_end (right_toolbar, true, true, 0);
-
-    edit_button = new Button.with_label (_("Edit"));
-    edit_button.set_size_request (70, -1);
-    right_toolbar.pack_end (edit_button);
-
-    done_button = new Button.with_label (_("Done"));
-    done_button.set_size_request (70, -1);
-    done_button.get_style_context ().add_class ("suggested-action");
-    right_toolbar.pack_end (done_button);
-
-    titlebar.show_all ();
-    set_titlebar (titlebar);
-
-    overlay = new Gtk.Overlay ();
-    Gdk.RGBA transparent = { 0, 0, 0, 0 };
-    overlay.override_background_color (0, transparent);
-
-    add (overlay);
-
-    grid = new Grid();
-    overlay.add (grid);
   }
 
   public void activate_selection_mode (bool active) {
@@ -121,7 +85,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public void add_left_child (Widget child) {
-    grid.attach (child, 0, 1, 1, 1);
+    grid.attach (child, 0, 0, 1, 1);
 
     /* horizontal size group, for the splitted headerbar */
     var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
@@ -130,12 +94,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public void add_right_child (Widget child) {
-    Gdk.RGBA transparent = { 0, 0, 0, 0 };
-    var right_overlay = new Overlay ();
-    right_overlay.override_background_color (0, transparent);
     right_overlay.add (child);
-
-    grid.attach (right_overlay, 1, 1, 1, 1);
   }
 
   public void add_notification (Widget notification) {

@@ -37,6 +37,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 
 pkg_modules="gtk+-3.0 >= 3.9.1
 	     glib-2.0 >= 2.37.6
+	     gmodule-export-2.0
 	     gnome-desktop-3.0
 	     folks >= 0.7.3
 	     folks-telepathy

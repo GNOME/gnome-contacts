@@ -13,6 +13,7 @@ AM_CPPFLAGS = \
 AM_VALAFLAGS = \
 	--vapidir=../vapi --vapidir=../libgd --pkg config --pkg custom --pkg gd-1.0 \
 	@CONTACTS_PACKAGES@ \
+	--target-glib=2.38 --gresources=$(srcdir)/contacts.gresource.xml \
 	$(NULL)
 
 if BUILD_CHEESE
@@ -60,7 +61,7 @@ gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
 
 @GSETTINGS_RULES@
 
-contact-resources.c: contacts.gresource.xml app-menu.ui
+contact-resources.c: contacts.gresource.xml app-menu.ui contacts-window.ui
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/contacts.gresource.xml \
 		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
 
@@ -103,6 +104,7 @@ EXTRA_DIST = \
 	um-crop-area.h \
 	contacts.gresource.xml \
 	app-menu.ui \
+	contacts-window.ui \
 	$(gsettingsschema_in_files)     \
 	contacts-esd-setup.h \
 	$(NULL)
