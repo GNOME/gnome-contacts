@@ -73,6 +73,7 @@ public class Contacts.App : Gtk.Application {
 
     /* clearing right_toolbar */
     if (new_selection != null) {
+      window.right_title = new_selection.display_name;
       window.edit_button.show ();
     } else {
       window.edit_button.hide ();
