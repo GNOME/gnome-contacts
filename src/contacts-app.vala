@@ -114,6 +114,15 @@ public class Contacts.App : Gtk.Application {
 
     var header = new HeaderBar ();
     header.set_title (_("Primary Contacts Account"));
+    var cancel_button = new Button.with_label (_("Cancel"));
+    cancel_button.get_child ().margin = 3;
+    cancel_button.get_child ().margin_left = 6;
+    cancel_button.get_child ().margin_right = 6;
+    cancel_button.clicked.connect (() => {
+	dialog.response (ResponseType.CANCEL);
+      });
+    header.pack_start (cancel_button);
+
     var done_button = new Button.with_label (_("Done"));
     done_button.get_style_context ().add_class ("suggested-action");
     done_button.get_child ().margin = 3;
