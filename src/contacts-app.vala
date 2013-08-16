@@ -91,8 +91,7 @@ public class Contacts.App : Gtk.Application {
         return c.individual.id == id;
       });
     if (contact != null) {
-      list_pane.select_contact (contact);
-      contacts_pane.show_contact (contact);
+      show_contact (contact);
     } else {
       var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
                                       _("No contact with id %s found"), id);
@@ -187,8 +186,7 @@ public class Contacts.App : Gtk.Application {
         return c.has_email (email_address);
       });
     if (contact != null) {
-      list_pane.select_contact (contact);
-      contacts_pane.show_contact (contact);
+      show_contact (contact);
     } else {
       var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
                                       _("No contact with email address %s found"), email_address);
