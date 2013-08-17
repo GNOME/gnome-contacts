@@ -39,7 +39,7 @@ pkg_modules="gtk+-3.0 >= 3.9.11
 	     glib-2.0 >= 2.37.6
 	     gmodule-export-2.0
 	     gnome-desktop-3.0
-	     folks >= 0.7.3
+	     folks >= 0.9.5
 	     folks-telepathy
 	     folks-eds
 	     libnotify
