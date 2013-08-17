@@ -507,12 +507,15 @@ public class Contacts.ContactPane : Notebook {
       box.set_halign (Align.CENTER);
       box.set_vexpand (true);
       box.set_hexpand (true);
+      box.margin_bottom = 60;
 
       var image = new Image.from_icon_name ("avatar-default-symbolic", icon_size_from_name ("ULTRABIG"));
-      image.get_style_context ().add_class ("dim-label");
+      image.get_style_context ().add_class ("contacts-watermark");
       box.add (image);
 
-      var label = new Gtk.Label (_("Select a contact"));
+      var label = new Gtk.Label ("");
+      label.set_markup ("<span font=\"12\">%s</span>".printf (_("Select a contact")));
+      label.get_style_context ().add_class ("contacts-watermark");
       box.add (label);
 
       no_selection_frame.add (box);
