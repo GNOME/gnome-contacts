@@ -70,7 +70,6 @@ public class Contacts.ListPane : Frame {
   }
 
   public ListPane (Store contacts_store) {
-    this.get_style_context ().add_class (STYLE_CLASS_SIDEBAR);
     this.contacts_store = contacts_store;
     this.contacts_view = new View (contacts_store);
     var toolbar = new Toolbar ();

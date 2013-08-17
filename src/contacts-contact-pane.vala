@@ -497,6 +497,10 @@ public class Contacts.ContactPane : Notebook {
       no_selection_frame.set_shadow_type (ShadowType.NONE);
       no_selection_frame.set_size_request (500, -1);
 
+      var color = Gdk.RGBA ();
+      color.parse ("#f1f2f1");
+      no_selection_frame.override_background_color (0, color);
+
       var box = new Grid ();
       box.set_orientation (Orientation.VERTICAL);
       box.set_valign (Align.CENTER);

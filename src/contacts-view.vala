@@ -112,6 +112,11 @@ public class Contacts.View : ListBox {
     contacts_store.changed.connect (contact_changed_cb);
     foreach (var c in store.get_contacts ())
       contact_added_cb (store, c);
+
+    /* background color */
+    var color = Gdk.RGBA ();
+    color.parse ("#ebedeb");
+    override_background_color (0, color);
   }
 
   private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
