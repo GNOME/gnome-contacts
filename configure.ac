@@ -19,7 +19,7 @@ AC_CONFIG_FILES([Makefile
 
 LT_INIT
 AC_PROG_CC
-AM_PROG_VALAC([0.17.2])
+AM_PROG_VALAC([0.21.1.8-8f10])
 AC_PROG_INSTALL
 
 GLIB_GSETTINGS
@@ -35,7 +35,7 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
 AC_SUBST(GETTEXT_PACKAGE)
 
 
-pkg_modules="gtk+-3.0 >= 3.9.1
+pkg_modules="gtk+-3.0 >= 3.9.11
 	     glib-2.0 >= 2.37.6
 	     gmodule-export-2.0
 	     gnome-desktop-3.0
