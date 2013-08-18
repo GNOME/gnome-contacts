@@ -91,10 +91,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
     hsize_group.add_widget (left_toolbar);
     hsize_group.add_widget (child);
+    child.show ();
   }
 
   public void add_right_child (Widget child) {
     right_overlay.add (child);
+    child.show ();
   }
 
   public void add_notification (Widget notification) {

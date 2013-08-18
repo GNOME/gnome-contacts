@@ -299,11 +299,6 @@ public class Contacts.App : Gtk.Application {
 	  window.right_title = contacts_pane.contact.display_name;
         }
       });
-
-    window.show_all ();
-
-    window.edit_button.hide ();
-    window.done_button.hide ();
   }
 
   public override void startup () {
