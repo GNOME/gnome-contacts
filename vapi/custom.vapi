@@ -37,6 +37,8 @@ namespace Contacts {
 	public static bool has_goa_account ();
 	[CCode (cname = "eds_source_registry")]
 	public static E.SourceRegistry eds_source_registry;
+	[CCode (cname = "contacts_get_icon_for_goa_account")]
+	public static unowned Gtk.Widget get_icon_for_goa_account (string goa_id);
 }
 
 [CCode (cprefix = "Um", lower_case_cprefix = "um_", cheader_filename = "um-crop-area.h")]

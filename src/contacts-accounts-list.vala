@@ -35,7 +35,7 @@ public class Contacts.AccountsList : Grid {
     selected_store = null;
 
     accounts_view = new ListBox ();
-    accounts_view.set_selection_mode (SelectionMode.BROWSE);
+    accounts_view.set_selection_mode (SelectionMode.NONE);
     accounts_view.set_size_request (400, -1);
     accounts_view.set_header_func (update_header_func);
 
@@ -66,23 +66,26 @@ public class Contacts.AccountsList : Grid {
     show_all ();
 
     /* signal handling */
-    accounts_view.row_selected.connect (row_selected);
+    accounts_view.row_activated.connect (row_activated);
   }
 
-  private void row_selected (ListBoxRow? row) {
+  private void row_activated (ListBoxRow? row) {
     if (row == null)
       return;
 
-    var row_data = (row as Bin).get_child ();
-    var account_label = (row_data as Grid).get_child_at (1, 0);
-    if (account_label != null)
-      account_label.get_style_context ().remove_class ("dim-label");
+    var row_data = (row as Bin).get_child () as Grid;
+    var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+    checkmark.margin_right = 12;
+    checkmark.set_valign (Align.CENTER);
+    checkmark.set_halign (Align.END);
+    checkmark.set_vexpand (true);
+    checkmark.set_hexpand (true);
+    checkmark.show ();
+    row_data.attach (checkmark, 2, 0, 1, 2);
 
     if (last_selected_row != null) {
-      var last_row_data = (last_selected_row as Bin).get_child ();
-      var last_account_label = (last_row_data as Grid).get_child_at (1, 0);
-      if (last_account_label != null)
-        last_account_label.get_style_context ().add_class ("dim-label");
+      var last_row_data = (last_selected_row as Bin).get_child () as Grid;
+      last_row_data.get_child_at (2, 0).destroy ();
     }
 
     last_selected_row = row;
@@ -116,39 +119,66 @@ public class Contacts.AccountsList : Grid {
 
       var provider_name = Contact.format_persona_store_name (persona_store);
 
+      var source_account_id = "";
+      if (parent_source.has_extension (E.SOURCE_EXTENSION_GOA)) {
+        var goa_source_ext = parent_source.get_extension (E.SOURCE_EXTENSION_GOA) as E.SourceGoa;
+        source_account_id = goa_source_ext.account_id;
+      }
+
       var row_data = new Grid ();
       row_data.set_data ("store", persona_store);
-      row_data.margin = 12;
+      row_data.margin = 6;
+      row_data.margin_left = 5;
+      row_data.set_row_spacing (2);
+      row_data.set_column_spacing (10);
+
+      if (source_account_id != "") {
+        var provider_image = Contacts.get_icon_for_goa_account (source_account_id);
+        row_data.attach (provider_image, 0, 0, 1, 2);
+      } else {
+        var provider_image = new Image.from_icon_name ("drive-harddisk-system-symbolic",
+                                                       IconSize.DIALOG);
+        row_data.attach (provider_image, 0, 0, 1, 2);
+      }
 
       var provider_label = new Label (provider_name);
-      row_data.add (provider_label);
+      provider_label.set_halign (Align.START);
+      provider_label.set_hexpand (true);
+      provider_label.set_valign (Align.END);
+      row_data.attach (provider_label, 1, 0, 1, 1);
 
       var account_name = parent_source.display_name;
       var account_label = new Label (account_name);
-      account_label.set_halign (Align.END);
+      account_label.set_halign (Align.START);
       account_label.set_hexpand (true);
+      account_label.set_valign (Align.START);
       account_label.get_style_context ().add_class ("dim-label");
-      row_data.add (account_label);
+      row_data.attach (account_label, 1, 1, 1, 1);
 
       accounts_view.add (row_data);
 
       if (select_active &&
           persona_store == App.app.contacts_store.aggregator.primary_store) {
         var row = row_data.get_parent () as ListBoxRow;
-        accounts_view.select_row (row);
+        row_activated (row);
       }
     }
 
     var local_data = new Grid ();
-    local_data.margin = 12;
+    local_data.margin = 6;
+    local_data.margin_left = 5;
+    local_data.set_column_spacing (10);
     local_data.set_data ("store", local_store);
+    var provider_image = new Image.from_icon_name ("drive-harddisk-system-symbolic",
+                                                   IconSize.DIALOG);
+    local_data.add (provider_image);
     var local_label = new Label (_("Local Address Book"));
     local_data.add (local_label);
     accounts_view.add (local_data);
     if (select_active &&
         local_store == App.app.contacts_store.aggregator.primary_store) {
       var row = local_data.get_parent () as ListBoxRow;
-      accounts_view.select_row (row);
+      row_activated (row);
     }
 
     accounts_view.show_all ();

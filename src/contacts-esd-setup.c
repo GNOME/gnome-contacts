@@ -20,6 +20,10 @@
 #include <libebook/libebook.h>
 #include <glib/gi18n-lib.h>
 
+#define GOA_API_IS_SUBJECT_TO_CHANGE
+#include <goa/goa.h>
+#include <gtk/gtk.h>
+
 ESourceRegistry *eds_source_registry = NULL;
 
 void contacts_ensure_eds_accounts (void)
@@ -151,4 +155,46 @@ contacts_lookup_esource_name_by_uid_for_contact (const char *uid)
   g_object_unref (source);
 
   return display_name;
+}
+
+GtkWidget*
+contacts_get_icon_for_goa_account (const char* goa_id)
+{
+  GoaClient *client;
+  GoaObject *goa_object;
+  GoaAccount *goa_account;
+  GError *error;
+
+  const gchar* icon_data;
+  GIcon *provider_icon;
+  GtkWidget *image_icon;
+
+  error = NULL;
+  client = goa_client_new_sync (NULL, &error);
+  if (client == NULL)
+    {
+      g_error_free (error);
+      return NULL;
+    }
+
+  goa_object = goa_client_lookup_by_id (client, goa_id);
+  goa_account = goa_object_get_account (goa_object);
+
+  icon_data = goa_account_get_provider_icon (goa_account);
+
+  error = NULL;
+  provider_icon = g_icon_new_for_string (icon_data, &error);
+  if (provider_icon == NULL)
+    {
+      g_debug ("Error obtaining provider_icon");
+      g_error_free (error);
+    }
+  image_icon = gtk_image_new_from_gicon (provider_icon, GTK_ICON_SIZE_DIALOG);
+
+  g_object_unref (goa_account);
+  g_object_unref (goa_object);
+
+  g_clear_object (&client);
+
+  return image_icon;
 }
