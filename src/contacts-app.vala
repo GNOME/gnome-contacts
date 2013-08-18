@@ -291,10 +291,13 @@ public class Contacts.App : Gtk.Application {
       });
 
     window.done_button.clicked.connect (() => {
-	window.right_title = "";
         window.done_button.hide ();
         window.edit_button.show ();
         contacts_pane.set_edit_mode (false);
+
+        if (contacts_pane.contact != null) {
+	  window.right_title = contacts_pane.contact.display_name;
+        }
       });
 
     window.show_all ();
