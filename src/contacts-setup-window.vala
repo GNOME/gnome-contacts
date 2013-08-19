@@ -71,6 +71,7 @@ public class Contacts.SetupWindow : Gtk.Window {
     grid.add (l);
 
     var accounts_list = new AccountsList ();
+    accounts_list.set_hexpand (true);
     accounts_list.set_halign (Align.CENTER);
     accounts_list.update_contents (false);
 
