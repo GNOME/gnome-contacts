@@ -253,10 +253,12 @@ public class Contacts.App : Gtk.Application {
     window.add_right_child (contacts_pane);
 
     list_pane.contacts_marked.connect ((nr_contacts) => {
-	if (nr_contacts == 0)
+	if (nr_contacts == 0) {
 	  window.left_title = _("Select");
-	else
-	  window.left_title = _("%d Selected").printf (nr_contacts);
+	} else {
+	  window.left_title = ngettext ("%d Selected",
+					"%d Selected", nr_contacts).printf (nr_contacts);
+	}
       });
 
     window.add_button.clicked.connect (app.new_contact);
