@@ -668,7 +668,7 @@ public class Contacts.ContactEditor : Grid {
     name_entry.set_valign (Align.CENTER);
     name_entry.set_text (c.display_name);
     name_entry.set_data ("changed", false);
-    attach (name_entry,  1, 0, 3, 1);
+    attach (name_entry,  1, 0, 3, 3);
 
     /* structured name change */
     name_entry.changed.connect (() => {
