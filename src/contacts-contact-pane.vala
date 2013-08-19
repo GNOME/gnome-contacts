@@ -20,7 +20,7 @@ using Gtk;
 using Folks;
 using Gee;
 
-const int PROFILE_SIZE = 128;
+const int PROFILE_SIZE = 96;
 
 /* Not available until Vala 0.19 */
 extern void gtk_menu_button_set_popup (Gtk.MenuButton button, Gtk.Widget popup);

@@ -89,15 +89,15 @@ public class Contacts.ContactSheet : Grid {
     var name_label = new Label (null);
     name_label.set_hexpand (true);
     name_label.set_halign (Align.START);
-    name_label.set_valign (Align.START);
-    name_label.set_margin_top (4);
+    name_label.set_valign (Align.CENTER);
+    name_label.margin_left = 6;
     name_label.set_ellipsize (Pango.EllipsizeMode.END);
     name_label.xalign = 0.0f;
 
     c.keep_widget_uptodate (name_label, (w) => {
 	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", c.display_name));
       });
-    attach (name_label,  1, 0, 1, 1);
+    attach (name_label,  1, 0, 1, 3);
 
     var merged_presence = c.create_merged_presence_widget ();
     merged_presence.set_halign (Align.START);
