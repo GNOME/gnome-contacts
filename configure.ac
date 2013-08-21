@@ -101,7 +101,6 @@ LIBGD_INIT([
   gtk-hacks
   main-toolbar
   notification
-  revealer
   static
   vapi
 ])

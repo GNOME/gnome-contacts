@@ -25,7 +25,7 @@ public class Contacts.ListPane : Frame {
 
   public SearchEntry filter_entry;
   private View contacts_view;
-  private Gd.Revealer selection_revealer;
+  private Revealer selection_revealer;
 
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
@@ -115,7 +115,8 @@ public class Contacts.ListPane : Frame {
     grid.add (toolbar);
     grid.add (scrolled);
 
-    selection_revealer = new Gd.Revealer ();
+    selection_revealer = new Revealer ();
+    selection_revealer.set_transition_type (RevealerTransitionType.SLIDE_UP);
 
     var selection_toolbar = new Gd.MainToolbar ();
     selection_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);

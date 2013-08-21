@@ -43,7 +43,6 @@ vala_sources = \
 	contacts-avatar-dialog.vala \
 	contacts-accounts-list.vala \
 	contacts-contact-frame.vala \
-	contacts-revealer.vala \
 	contacts-setup-window.vala \
 	contacts-window.vala \
 	main.vala \
