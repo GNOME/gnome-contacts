@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-04 08:15+0000\n"
-"PO-Revision-Date: 2013-08-08 22:59+0300\n"
+"POT-Creation-Date: 2013-08-19 17:59+0000\n"
+"PO-Revision-Date: 2013-08-26 23:11+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -20,8 +20,7 @@ msgstr ""
 "%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:246
-#: ../src/main.vala:28
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "Kontaktai"
 
@@ -30,96 +29,93 @@ msgid "friends;address book;"
 msgstr "draugai;adresų knyga;"
 
 #: ../src/app-menu.ui.h:1
-msgid "View"
-msgstr "Rodymas"
-
-#: ../src/app-menu.ui.h:2
-msgid "Main contacts"
-msgstr "Pagrindiniai kontaktai"
-
-#: ../src/app-menu.ui.h:3
-msgid "All contacts"
-msgstr "Visi kontaktai"
-
-#: ../src/app-menu.ui.h:4
 msgid "_Change Address Book..."
 msgstr "_Keisti adresų knygą..."
 
-#: ../src/app-menu.ui.h:5
+#: ../src/app-menu.ui.h:2
 msgid "_About Contacts"
 msgstr "_Apie kontaktus"
 
-#: ../src/app-menu.ui.h:6
+#: ../src/app-menu.ui.h:3
 msgid "_Help"
 msgstr "_Žinynas"
 
-#: ../src/app-menu.ui.h:7
+#: ../src/app-menu.ui.h:4
 msgid "_Quit"
 msgstr "_Išeiti"
 
 #: ../src/contacts-accounts-list.vala:48
-#| msgid "Online Accounts"
-msgid "Add an Online Account"
-msgstr "Pridėti internetinę paskyrą"
+#| msgid "Linked Accounts"
+msgid "Online Accounts"
+msgstr "Internetinės paskyros"
 
-#: ../src/contacts-accounts-list.vala:162
-msgid "Keep contacts on this computer only"
-msgstr "Laikyti kontaktus tik šiame kompiuteryje"
+#: ../src/contacts-accounts-list.vala:175 ../src/contacts-esd-setup.c:118
+msgid "Local Address Book"
+msgstr "Vietinė adresų knyga"
 
-#: ../src/contacts-app.vala:108
+#: ../src/contacts-app.vala:98
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Kontaktas su id %s nerastas"
 
-#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:200
+#: ../src/contacts-app.vala:99 ../src/contacts-app.vala:203
 msgid "Contact not found"
 msgstr "Kontaktas nerastas"
 
-#: ../src/contacts-app.vala:126
+#: ../src/contacts-app.vala:116
 msgid "Primary Contacts Account"
 msgstr "Pirminė kontaktų paskyra"
 
-#: ../src/contacts-app.vala:127 ../src/contacts-app.vala:297
-#: ../src/contacts-setup-window.vala:54
+#: ../src/contacts-app.vala:117 ../src/contacts-setup-window.vala:41
+msgid "Cancel"
+msgstr "Atsisakyti"
+
+#: ../src/contacts-app.vala:126 ../src/contacts-setup-window.vala:54
+#: ../src/contacts-window.ui.h:3
 msgid "Done"
 msgstr "Atlikta"
 
-#: ../src/contacts-app.vala:178
+#: ../src/contacts-app.vala:182
 msgid "translator-credits"
 msgstr ""
 "išvertė:\n"
 "Aurimas Černius <aurisc4@gmail.com>"
 
-#: ../src/contacts-app.vala:179
+#: ../src/contacts-app.vala:183
 msgid "GNOME Contacts"
 msgstr "GNOME Kontaktai"
 
-#: ../src/contacts-app.vala:180
+#: ../src/contacts-app.vala:184
 msgid "About GNOME Contacts"
 msgstr "Apie GNOME kontaktus"
 
-#: ../src/contacts-app.vala:181
+#: ../src/contacts-app.vala:185
 msgid "Contact Management Application"
 msgstr "Kontaktų valdymo programa"
 
-#: ../src/contacts-app.vala:199
+#: ../src/contacts-app.vala:202
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Kontaktas su el. pašto adresu %s nerastas"
 
-#: ../src/contacts-app.vala:260
-msgid "New"
-msgstr "Naujas"
+#: ../src/contacts-app.vala:257 ../src/contacts-window.vala:76
+#| msgid "Select Picture"
+msgid "Select"
+msgstr "Pasirinkite"
 
-#: ../src/contacts-app.vala:291
-msgid "Edit"
-msgstr "Keisti"
+#: ../src/contacts-app.vala:259
+#, c-format
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "Pasirinktas %d"
+msgstr[1] "Pasirinkti %d"
+msgstr[2] "Pasirinkta %d"
 
-#: ../src/contacts-app.vala:356
+#: ../src/contacts-app.vala:284
 msgid "Editing"
 msgstr "Keičiama"
 
-#: ../src/contacts-app.vala:475
+#: ../src/contacts-app.vala:403
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -127,12 +123,12 @@ msgstr[0] "Susietas %d kontaktas"
 msgstr[1] "Susieti %d kontaktai"
 msgstr[2] "Susieta %d kontaktų"
 
-#: ../src/contacts-app.vala:479 ../src/contacts-app.vala:511
-#: ../src/contacts-app.vala:552 ../src/contacts-app.vala:597
+#: ../src/contacts-app.vala:407 ../src/contacts-app.vala:439
+#: ../src/contacts-app.vala:480 ../src/contacts-app.vala:525
 msgid "_Undo"
 msgstr "_Atšaukti"
 
-#: ../src/contacts-app.vala:507
+#: ../src/contacts-app.vala:435
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -140,30 +136,30 @@ msgstr[0] "Ištrintas %d kontaktas"
 msgstr[1] "Ištrinti %d kontaktai"
 msgstr[2] "Ištrinta %d kontaktų"
 
-#: ../src/contacts-app.vala:549
+#: ../src/contacts-app.vala:477
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Kontaktas ištrintas: „%s“"
 
-#: ../src/contacts-app.vala:577
+#: ../src/contacts-app.vala:505
 msgid "Show contact with this individual id"
 msgstr "Rodyti kontaktą su šiuo individualiu id"
 
-#: ../src/contacts-app.vala:579
+#: ../src/contacts-app.vala:507
 msgid "Show contact with this email address"
 msgstr "Rodyti kontaktą su šiuo el. pašto adresu"
 
-#: ../src/contacts-app.vala:593
+#: ../src/contacts-app.vala:521
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s susietas su %s"
 
-#: ../src/contacts-app.vala:595
+#: ../src/contacts-app.vala:523
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s susietas su kontaktu"
 
-#: ../src/contacts-app.vala:612
+#: ../src/contacts-app.vala:540
 msgid "— contact management"
 msgstr "— kontaktų valdymas"
 
@@ -173,7 +169,6 @@ msgstr "Naršyti daugiau paveikslėlių"
 
 #: ../src/contacts-avatar-dialog.vala:200
 #: ../src/contacts-new-contact-dialog.vala:50
-#| msgid "Cancel"
 msgid "_Cancel"
 msgstr "At_sisakyti"
 
@@ -240,27 +235,27 @@ msgstr "Gruodis"
 
 #: ../src/contacts-contact-editor.vala:489
 #: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:175
+#: ../src/contacts-contact-sheet.vala:177
 msgid "Website"
 msgstr "Tinklapis"
 
 #: ../src/contacts-contact-editor.vala:515
 #: ../src/contacts-contact-editor.vala:522
-#: ../src/contacts-contact-pane.vala:403
-#: ../src/contacts-contact-sheet.vala:189
+#: ../src/contacts-contact-pane.vala:401
+#: ../src/contacts-contact-sheet.vala:191
 msgid "Nickname"
 msgstr "Slapyvardis"
 
 #: ../src/contacts-contact-editor.vala:542
 #: ../src/contacts-contact-editor.vala:549
-#: ../src/contacts-contact-pane.vala:408
-#: ../src/contacts-contact-sheet.vala:196
+#: ../src/contacts-contact-pane.vala:406
+#: ../src/contacts-contact-sheet.vala:198
 msgid "Birthday"
 msgstr "Gimtadienis"
 
 #: ../src/contacts-contact-editor.vala:563
 #: ../src/contacts-contact-editor.vala:570
-#: ../src/contacts-contact-sheet.vala:203
+#: ../src/contacts-contact-sheet.vala:205
 msgid "Note"
 msgstr "Raštelis"
 
@@ -282,56 +277,57 @@ msgstr "Taip"
 msgid "No"
 msgstr "Ne"
 
-#: ../src/contacts-contact-pane.vala:357
+#: ../src/contacts-contact-pane.vala:355
 msgid "New Detail"
 msgstr "Nauji duomenys"
 
 #. building menu
-#: ../src/contacts-contact-pane.vala:371
+#: ../src/contacts-contact-pane.vala:369
 msgid "Personal email"
 msgstr "Asmeninis el. paštas"
 
-#: ../src/contacts-contact-pane.vala:376
+#: ../src/contacts-contact-pane.vala:374
 msgid "Work email"
 msgstr "Darbo el. paštas"
 
-#: ../src/contacts-contact-pane.vala:382
+#: ../src/contacts-contact-pane.vala:380
 msgid "Mobile phone"
 msgstr "Mobilusis telefonas"
 
-#: ../src/contacts-contact-pane.vala:387
+#: ../src/contacts-contact-pane.vala:385
 msgid "Home phone"
 msgstr "Namų telefonas"
 
-#: ../src/contacts-contact-pane.vala:392
+#: ../src/contacts-contact-pane.vala:390
 msgid "Work phone"
 msgstr "Darbo telefonas"
 
-#: ../src/contacts-contact-pane.vala:398 ../src/contacts-list-pane.vala:128
+#: ../src/contacts-contact-pane.vala:396 ../src/contacts-list-pane.vala:124
 msgid "Link"
 msgstr "Saitas"
 
-#: ../src/contacts-contact-pane.vala:414
+#: ../src/contacts-contact-pane.vala:412
 msgid "Home address"
 msgstr "Namų adresas"
 
-#: ../src/contacts-contact-pane.vala:419
+#: ../src/contacts-contact-pane.vala:417
 msgid "Work address"
 msgstr "Darbo adresas"
 
-#: ../src/contacts-contact-pane.vala:425
+#: ../src/contacts-contact-pane.vala:423
 msgid "Notes"
 msgstr "Pastabos"
 
-#: ../src/contacts-contact-pane.vala:442
+#: ../src/contacts-contact-pane.vala:440
 msgid "Linked Accounts"
 msgstr "Susietos paskyros"
 
-#: ../src/contacts-contact-pane.vala:454
+#: ../src/contacts-contact-pane.vala:452
 msgid "Remove Contact"
 msgstr "Pašalinti kontaktą"
 
-#: ../src/contacts-contact-pane.vala:513
+#: ../src/contacts-contact-pane.vala:517
+#, c-format
 msgid "Select a contact"
 msgstr "Pasirinkite kontaktą"
 
@@ -479,15 +475,11 @@ msgstr "Google Circles"
 msgid "Google Other Contact"
 msgstr "Kitas Google kontaktas"
 
-#: ../src/contacts-esd-setup.c:114
-msgid "Local Address Book"
-msgstr "Vietinė adresų knyga"
-
-#: ../src/contacts-esd-setup.c:117 ../src/contacts-esd-setup.c:145
+#: ../src/contacts-esd-setup.c:121 ../src/contacts-esd-setup.c:149
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:142
+#: ../src/contacts-esd-setup.c:146
 msgid "Local Contact"
 msgstr "Vietinis kontaktas"
 
@@ -504,11 +496,11 @@ msgstr "Galite rankiniu būdu susieti kontaktus iš kontaktų sąrašo"
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../src/contacts-list-pane.vala:88
+#: ../src/contacts-list-pane.vala:84
 msgid "Type to search"
 msgstr "Rašykite paieškai"
 
-#: ../src/contacts-list-pane.vala:131
+#: ../src/contacts-list-pane.vala:127
 msgid "Delete"
 msgstr "Ištrinti"
 
@@ -572,12 +564,9 @@ msgstr "Nepavyksta rasti naujai sukurto kontakto\n"
 msgid "Contacts Setup"
 msgstr "Kontaktų nustatymas"
 
-#: ../src/contacts-setup-window.vala:41
-msgid "Cancel"
-msgstr "Atsisakyti"
-
 #: ../src/contacts-setup-window.vala:69
-msgid "Please select your primary Contacts account"
+#| msgid "Please select your primary Contacts account"
+msgid "Please select your primary contacts account"
 msgstr "Pasirinkite savo pagrindinę kontaktų paskyrą"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
@@ -656,17 +645,26 @@ msgstr "Teleksas"
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:188
+#: ../src/contacts-view.vala:193
 msgid "No results matched search"
 msgstr "Nėra paiešką atitinkančių rezultatų"
 
-#: ../src/contacts-view.vala:288
+#: ../src/contacts-view.vala:293
 msgid "Suggestions"
 msgstr "Pasiūlymai"
 
-#: ../src/contacts-view.vala:313
+#: ../src/contacts-view.vala:318
 msgid "Other Contacts"
 msgstr "Kiti kontaktai"
+
+#: ../src/contacts-window.ui.h:1 ../src/contacts-window.vala:83
+#| msgid "All contacts"
+msgid "All Contacts"
+msgstr "Visi kontaktai"
+
+#: ../src/contacts-window.ui.h:2
+msgid "Edit"
+msgstr "Keisti"
 
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:1
 msgid "First-time setup done."
