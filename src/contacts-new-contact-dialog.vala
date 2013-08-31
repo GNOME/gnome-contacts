@@ -120,13 +120,14 @@ public class Contacts.NewContactDialog : Dialog {
 
     pack_spacing (16, ref y);
 
-    var menu_button = new MenuButton (_("Add Detail"));
+    var menu_button = new MenuButton ();
+    menu_button.set_label (_("Add Detail"));
     grid.attach (menu_button, 0, y, 2, 1);
     menu_button.set_hexpand (false);
     menu_button.set_halign (Align.START);
 
     var menu = new Gtk.Menu ();
-    menu_button.set_menu (menu);
+    menu_button.set_popup (menu);
 
     Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
 	int row = row_after (email_entries.get (email_entries.size - 1));
