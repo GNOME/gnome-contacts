@@ -278,13 +278,14 @@ public class Contacts.App : Gtk.Application {
       });
 
     window.edit_button.clicked.connect (() => {
+	if (contacts_pane.contact == null)
+	  return;
+
         if (window.select_button.active)
           window.select_button.set_active (false);
 
-        var name = _("Editing");
-        if (contacts_pane.contact != null) {
-          name += " %s".printf (contacts_pane.contact.display_name);
-        }
+	var name = contacts_pane.contact.display_name;
+        window.right_title = _("Editing %s").printf (name);
 
 	window.right_title = name;
         window.edit_button.hide ();
