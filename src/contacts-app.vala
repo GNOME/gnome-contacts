@@ -161,8 +161,8 @@ public class Contacts.App : Gtk.Application {
   public void show_help () {
     try {
       Gtk.show_uri (window.get_screen (),
-           "help:gnome-help/contacts",
-           Gtk.get_current_event_time ());
+		    "help:gnome-help/contacts",
+		    Gtk.get_current_event_time ());
     } catch (GLib.Error e1) {
       warning ("Error showing help: %s", e1.message);
     }
@@ -341,7 +341,7 @@ public class Contacts.App : Gtk.Application {
               contacts_store.disconnect (id);
               release ();
               return false;
-        });
+	    });
         }
 
         return;
@@ -455,9 +455,9 @@ public class Contacts.App : Gtk.Application {
     b.clicked.connect ( () => {
         really_delete = false;
         notification.dismiss ();
-          foreach (var c in contact_list) {
-            c.show ();
-          }
+	foreach (var c in contact_list) {
+	  c.show ();
+	}
       });
   }
 
@@ -528,9 +528,9 @@ public class Contacts.App : Gtk.Application {
 
     notification.show_all ();
     b.clicked.connect ( () => {
-      notification.dismiss ();
-      operation.undo.begin ();
-    });
+	notification.dismiss ();
+	operation.undo.begin ();
+      });
     window.add_notification (notification);
   }
 
