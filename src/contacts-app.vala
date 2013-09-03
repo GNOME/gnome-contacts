@@ -287,7 +287,6 @@ public class Contacts.App : Gtk.Application {
 	var name = contacts_pane.contact.display_name;
         window.right_title = _("Editing %s").printf (name);
 
-	window.right_title = name;
         window.edit_button.hide ();
         window.done_button.show ();
         contacts_pane.set_edit_mode (true);
