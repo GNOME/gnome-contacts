@@ -21,8 +21,12 @@ service_DATA = $(service_in_files:.service.in=.service)
 	$(AM_V_GEN) [ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 	            sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
 
+appdatadir = $(datadir)/appdata
+appdata_DATA = gnome-contacts.appdata.xml
+
 EXTRA_DIST = \
 	gnome-contacts.desktop.in.in	\
+	gnome-contacts.appdata.xml	\
 	$(searchprovider_DATA) 	\
 	$(service_in_files)  \
 	$(NULL)
