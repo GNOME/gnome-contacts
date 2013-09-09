@@ -17,6 +17,7 @@
             <property name="title" translatable="yes">All Contacts</property>
             <style>
               <class name="contacts-left-header-bar"/>
+              <class name="titlebar"/>
             </style>
             <child>
               <object class="GtkButton" id="add_button">
@@ -70,6 +71,10 @@
             <property name="visible">True</property>
             <property name="hexpand">True</property>
             <property name="show_close_button">True</property>
+            <style>
+              <class name="contacts-right-header-bar"/>
+              <class name="titlebar"/>
+            </style>
             <child>
               <object class="GtkButton" id="edit_button">
                 <property name="visible">False</property>
