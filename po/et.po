@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-12 00:02+0000\n"
-"PO-Revision-Date: 2013-03-12 22:07+0300\n"
+"POT-Creation-Date: 2013-09-11 19:26+0000\n"
+"PO-Revision-Date: 2013-09-11 23:02+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -17,21 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid "Contacts"
 msgstr "Kontaktid"
 
 msgid "friends;address book;"
 msgstr "sõbrad;aadressiraamat;kontaktid;telefoniraamat;"
-
-msgid "View"
-msgstr "Vaade"
-
-msgid "Main contacts"
-msgstr "Peamised kontaktid"
-
-msgid "All contacts"
-msgstr "Kõik kontaktid"
 
 msgid "_Change Address Book..."
 msgstr "_Aadressiraamatu muutmine..."
@@ -45,6 +37,12 @@ msgstr "A_bi"
 msgid "_Quit"
 msgstr "_Lõpeta"
 
+msgid "Online Accounts"
+msgstr "Veebikontod"
+
+msgid "Local Address Book"
+msgstr "Kohalik aadressiraamat"
+
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Kontakti id-ga %s ei leitud"
@@ -52,11 +50,14 @@ msgstr "Kontakti id-ga %s ei leitud"
 msgid "Contact not found"
 msgstr "Kontakti ei leitud"
 
-msgid "Change Address Book"
-msgstr "Aadressiraamatu muutmine"
+msgid "Primary Contacts Account"
+msgstr "Peamine kontaktide konto"
 
-msgid "Select"
-msgstr "Vali"
+msgid "Cancel"
+msgstr "Loobu"
+
+msgid "Done"
+msgstr "Valmis"
 
 msgid "translator-credits"
 msgstr "Mattias Põldaru"
@@ -74,23 +75,27 @@ msgstr "Kontaktihalduse rakendus"
 msgid "No contact with email address %s found"
 msgstr "Ühtegi %s meiliaadressiga kontakti ei leitud"
 
-msgid "New"
-msgstr "Uus"
+msgid "Select"
+msgstr "Vali"
 
-msgid "Edit"
-msgstr "Muuda"
+#, c-format
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "%d valitud"
+msgstr[1] "%d valitud"
 
-msgid "Done"
-msgstr "Valmis"
-
-msgid "Editing"
-msgstr "Muutmine"
+#, c-format
+msgid "Editing %s"
+msgstr "%s muutmine"
 
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d kontakt lingitud"
 msgstr[1] "%d kontakti lingitud"
+
+msgid "_Undo"
+msgstr "_Võta tagasi"
 
 #, c-format
 msgid "%d contact deleted"
@@ -121,6 +126,12 @@ msgstr "— kontaktihaldus"
 
 msgid "Browse for more pictures"
 msgstr "Lisapiltide sirvimine"
+
+msgid "_Cancel"
+msgstr "_Loobu"
+
+msgid "_Open"
+msgstr "_Ava"
 
 msgid "Select Picture"
 msgstr "Pildi valimine"
@@ -226,6 +237,10 @@ msgstr "Lingitud kontod"
 
 msgid "Remove Contact"
 msgstr "Eemalda kontakt"
+
+#, c-format
+msgid "Select a contact"
+msgstr "Vali kontakt"
 
 msgid "Street"
 msgstr "Tänav"
@@ -336,9 +351,6 @@ msgstr "Google'i suhtlusringid"
 msgid "Google Other Contact"
 msgstr "Muu Google'i kontakt"
 
-msgid "Local Address Book"
-msgstr "Kohalik aadressiraamat"
-
 msgid "Google"
 msgstr "Google"
 
@@ -354,6 +366,9 @@ msgstr "Sa võid käsitsi ühendada kontakte kontaktinimekirjas"
 
 msgid "Remove"
 msgstr "Eemalda"
+
+msgid "Type to search"
+msgstr "Otsimiseks kirjuta"
 
 msgid "Delete"
 msgstr "Kustuta"
@@ -399,29 +414,11 @@ msgstr "Uute kontaktide loomine pole võimalik: %s\n"
 msgid "Unable to find newly created contact\n"
 msgstr "Just loodud kontakti ei leitud\n"
 
-msgid ""
-"Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr ""
-"Tere tulemast kontaktide rakendust kasutama! Palun vali, kus sa tahad oma "
-"aadressiraamatut hoida:"
-
-msgid "Online Account Settings"
-msgstr "Veebikontode sätted"
-
-msgid "Setup an online account or use a local address book"
-msgstr "Veebikonto või kohaliku aadressiraamatu seadistamine"
-
-msgid "Online Accounts"
-msgstr "Veebikontod"
-
-msgid "Use Local Address Book"
-msgstr "Kohaliku aadressiraamatu kasutamine"
-
 msgid "Contacts Setup"
 msgstr "Kontaktide seadistus"
 
-msgid "Cancel"
-msgstr "Loobu"
+msgid "Please select your primary contacts account"
+msgstr "Palun vali oma peamine kontaktide konto"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -480,11 +477,20 @@ msgstr "Telex"
 msgid "TTY"
 msgstr "TTY"
 
+msgid "No results matched search"
+msgstr "Otsingule ei olnud tulemusi"
+
 msgid "Suggestions"
 msgstr "Soovitused"
 
 msgid "Other Contacts"
 msgstr "Teised kontaktid"
+
+msgid "All Contacts"
+msgstr "Kõik kontaktid"
+
+msgid "Edit"
+msgstr "Muuda"
 
 msgid "First-time setup done."
 msgstr "Esmaseadistus on tehtud."
@@ -498,12 +504,37 @@ msgstr "Näida valikut"
 msgid "View contacts subset"
 msgstr "Näita valikut kontaktidest"
 
+#~ msgid "View"
+#~ msgstr "Vaade"
+
+#~ msgid "Main contacts"
+#~ msgstr "Peamised kontaktid"
+
+#~ msgid "Change Address Book"
+#~ msgstr "Aadressiraamatu muutmine"
+
+#~ msgid "New"
+#~ msgstr "Uus"
+
+#~ msgid ""
+#~ "Welcome to Contacts! Please select where you want to keep your address "
+#~ "book:"
+#~ msgstr ""
+#~ "Tere tulemast kontaktide rakendust kasutama! Palun vali, kus sa tahad oma "
+#~ "aadressiraamatut hoida:"
+
+#~ msgid "Online Account Settings"
+#~ msgstr "Veebikontode sätted"
+
+#~ msgid "Setup an online account or use a local address book"
+#~ msgstr "Veebikonto või kohaliku aadressiraamatu seadistamine"
+
+#~ msgid "Use Local Address Book"
+#~ msgstr "Kohaliku aadressiraamatu kasutamine"
+
 #~ msgctxt "contacts link action"
 #~ msgid "Link"
 #~ msgstr "Seo"
-
-#~ msgid "Undo"
-#~ msgstr "Võta tagasi"
 
 #~ msgid "Phone number"
 #~ msgstr "Telefoninumber"
@@ -542,9 +573,6 @@ msgstr "Näita valikut kontaktidest"
 
 #~ msgid "Select what to call"
 #~ msgstr "Vali, millele helistada"
-
-#~ msgid "Select chat account"
-#~ msgstr "Vali vestluskonto"
 
 #~ msgid "Add/Remove Linked Contacts..."
 #~ msgstr "Seotud kontaktide lisamine/eemaldamine..."
