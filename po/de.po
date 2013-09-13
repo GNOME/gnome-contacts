@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-19 13:09+0000\n"
-"PO-Revision-Date: 2013-08-19 19:49+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2013-08-31 04:54+0000\n"
+"PO-Revision-Date: 2013-09-13 19:47+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
@@ -49,7 +49,6 @@ msgid "_Quit"
 msgstr "_Beenden"
 
 #: ../src/contacts-accounts-list.vala:48
-#| msgid "Linked Accounts"
 msgid "Online Accounts"
 msgstr "Online-Konten"
 
@@ -110,57 +109,61 @@ msgstr "Auswählen"
 
 #: ../src/contacts-app.vala:259
 #, c-format
-#| msgid "Select"
+#| msgid "%d Selected"
 msgid "%d Selected"
-msgstr "%d ausgewählt"
+msgid_plural "%d Selected"
+msgstr[0] "%d ausgewählt"
+msgstr[1] "%d ausgewählt"
 
-#: ../src/contacts-app.vala:282
-msgid "Editing"
-msgstr "Bearbeiten"
+#: ../src/contacts-app.vala:288
+#, c-format
+#| msgid "Editing"
+msgid "Editing %s"
+msgstr "%s bearbeiten"
 
-#: ../src/contacts-app.vala:401
+#: ../src/contacts-app.vala:404
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d Kontakt verknüpft"
 msgstr[1] "%d Kontakte verknüpft"
 
-#: ../src/contacts-app.vala:405 ../src/contacts-app.vala:437
-#: ../src/contacts-app.vala:478 ../src/contacts-app.vala:523
+#: ../src/contacts-app.vala:408 ../src/contacts-app.vala:440
+#: ../src/contacts-app.vala:481 ../src/contacts-app.vala:526
 msgid "_Undo"
 msgstr "_Rückgängig"
 
-#: ../src/contacts-app.vala:433
+#: ../src/contacts-app.vala:436
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d Kontakt gelöscht"
 msgstr[1] "%d Kontakte gelöscht"
 
-#: ../src/contacts-app.vala:475
+#: ../src/contacts-app.vala:478
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Kontakt gelöscht: »%s«"
 
-#: ../src/contacts-app.vala:503
+#: ../src/contacts-app.vala:506
 msgid "Show contact with this individual id"
 msgstr "Kontakt mit dieser individuellen Kennung anzeigen"
 
-#: ../src/contacts-app.vala:505
+#: ../src/contacts-app.vala:508
 msgid "Show contact with this email address"
 msgstr "Kontakt mit dieser individuellen E-Mail-Adresse anzeigen"
 
-#: ../src/contacts-app.vala:519
+#: ../src/contacts-app.vala:522
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s verknüpft mit %s"
 
-#: ../src/contacts-app.vala:521
+#: ../src/contacts-app.vala:524
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s wurde mit dem Kontakt verknüpft"
 
-#: ../src/contacts-app.vala:538
+#: ../src/contacts-app.vala:541
 msgid "— contact management"
 msgstr "— Kontaktverwaltung"
 
@@ -242,14 +245,14 @@ msgstr "Webseite"
 
 #: ../src/contacts-contact-editor.vala:515
 #: ../src/contacts-contact-editor.vala:522
-#: ../src/contacts-contact-pane.vala:401
+#: ../src/contacts-contact-pane.vala:398
 #: ../src/contacts-contact-sheet.vala:191
 msgid "Nickname"
 msgstr "Spitzname"
 
 #: ../src/contacts-contact-editor.vala:542
 #: ../src/contacts-contact-editor.vala:549
-#: ../src/contacts-contact-pane.vala:406
+#: ../src/contacts-contact-pane.vala:403
 #: ../src/contacts-contact-sheet.vala:198
 msgid "Birthday"
 msgstr "Geburtstag"
@@ -260,74 +263,74 @@ msgstr "Geburtstag"
 msgid "Note"
 msgstr "Notiz"
 
-#: ../src/contacts-contact-pane.vala:189
+#: ../src/contacts-contact-pane.vala:186
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Gehört %s von %s hierher?"
 
-#: ../src/contacts-contact-pane.vala:191
+#: ../src/contacts-contact-pane.vala:188
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "Gehören diese Angaben zu %s?"
 
-#: ../src/contacts-contact-pane.vala:202
+#: ../src/contacts-contact-pane.vala:199
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/contacts-contact-pane.vala:203
+#: ../src/contacts-contact-pane.vala:200
 msgid "No"
 msgstr "Nein"
 
-#: ../src/contacts-contact-pane.vala:355
+#: ../src/contacts-contact-pane.vala:352
 msgid "New Detail"
 msgstr "Detail hinzufügen"
 
 #. building menu
-#: ../src/contacts-contact-pane.vala:369
+#: ../src/contacts-contact-pane.vala:366
 msgid "Personal email"
 msgstr "E-Mail (privat)"
 
-#: ../src/contacts-contact-pane.vala:374
+#: ../src/contacts-contact-pane.vala:371
 msgid "Work email"
 msgstr "E-Mail (geschäftlich)"
 
-#: ../src/contacts-contact-pane.vala:380
+#: ../src/contacts-contact-pane.vala:377
 msgid "Mobile phone"
 msgstr "Mobiltelefon"
 
-#: ../src/contacts-contact-pane.vala:385
+#: ../src/contacts-contact-pane.vala:382
 msgid "Home phone"
 msgstr "Telefon (privat)"
 
-#: ../src/contacts-contact-pane.vala:390
+#: ../src/contacts-contact-pane.vala:387
 msgid "Work phone"
 msgstr "Telefon (geschäftlich)"
 
-#: ../src/contacts-contact-pane.vala:396 ../src/contacts-list-pane.vala:124
+#: ../src/contacts-contact-pane.vala:393 ../src/contacts-list-pane.vala:125
 msgid "Link"
 msgstr "Verknüpfen"
 
-#: ../src/contacts-contact-pane.vala:412
+#: ../src/contacts-contact-pane.vala:409
 msgid "Home address"
 msgstr "Adresse (privat)"
 
-#: ../src/contacts-contact-pane.vala:417
+#: ../src/contacts-contact-pane.vala:414
 msgid "Work address"
 msgstr "Adresse (geschäftlich)"
 
-#: ../src/contacts-contact-pane.vala:423
+#: ../src/contacts-contact-pane.vala:420
 msgid "Notes"
 msgstr "Notizen"
 
-#: ../src/contacts-contact-pane.vala:440
+#: ../src/contacts-contact-pane.vala:436
 msgid "Linked Accounts"
 msgstr "Verknüpfte Online-Konten"
 
-#: ../src/contacts-contact-pane.vala:452
+#: ../src/contacts-contact-pane.vala:448
 msgid "Remove Contact"
 msgstr "Kontakt entfernen"
 
-#: ../src/contacts-contact-pane.vala:517
+#: ../src/contacts-contact-pane.vala:513
 #, c-format
 msgid "Select a contact"
 msgstr "Einen Kontakt auswählen"
@@ -501,7 +504,7 @@ msgstr "Entfernen"
 msgid "Type to search"
 msgstr "Tippen zum Suchen"
 
-#: ../src/contacts-list-pane.vala:127
+#: ../src/contacts-list-pane.vala:128
 msgid "Delete"
 msgstr "Löschen"
 
@@ -526,38 +529,38 @@ msgid "Contact Name"
 msgstr "Kontaktname"
 
 #: ../src/contacts-new-contact-dialog.vala:96
-#: ../src/contacts-new-contact-dialog.vala:131
+#: ../src/contacts-new-contact-dialog.vala:132
 msgid "Email"
 msgstr "E-Mail"
 
 #: ../src/contacts-new-contact-dialog.vala:105
-#: ../src/contacts-new-contact-dialog.vala:136
+#: ../src/contacts-new-contact-dialog.vala:137
 msgid "Phone"
 msgstr "Telefon"
 
 #: ../src/contacts-new-contact-dialog.vala:114
-#: ../src/contacts-new-contact-dialog.vala:141
+#: ../src/contacts-new-contact-dialog.vala:142
 msgid "Address"
 msgstr "Adresse"
 
-#: ../src/contacts-new-contact-dialog.vala:123
+#: ../src/contacts-new-contact-dialog.vala:124
 msgid "Add Detail"
 msgstr "Detail hinzufügen"
 
-#: ../src/contacts-new-contact-dialog.vala:222
+#: ../src/contacts-new-contact-dialog.vala:223
 msgid "You must specify a contact name"
 msgstr "Sie müssen einen Kontaktnamen angeben"
 
-#: ../src/contacts-new-contact-dialog.vala:332
+#: ../src/contacts-new-contact-dialog.vala:333
 msgid "No primary addressbook configured\n"
 msgstr "Es wurde kein primäres Adressbuch eingerichtet\n"
 
-#: ../src/contacts-new-contact-dialog.vala:353
+#: ../src/contacts-new-contact-dialog.vala:354
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "Neue Kontakte konnten nicht erstellt werden: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:364
+#: ../src/contacts-new-contact-dialog.vala:365
 msgid "Unable to find newly created contact\n"
 msgstr "Der neu erstellte Kontakt konnte nicht gefunden werden\n"
 
@@ -566,7 +569,6 @@ msgid "Contacts Setup"
 msgstr "Kontakte einrichten"
 
 #: ../src/contacts-setup-window.vala:69
-#| msgid "Please select your primary Contacts account"
 msgid "Please select your primary contacts account"
 msgstr "Bitte wählen Sie Ihr primäres Konto für Kontakte."
 
@@ -659,7 +661,6 @@ msgid "Other Contacts"
 msgstr "Weitere Kontakte"
 
 #: ../src/contacts-window.ui.h:1 ../src/contacts-window.vala:83
-#| msgid "All contacts"
 msgid "All Contacts"
 msgstr "Alle Kontakte"
 
