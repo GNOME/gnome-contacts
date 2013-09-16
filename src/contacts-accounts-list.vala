@@ -75,7 +75,10 @@ public class Contacts.AccountsList : Grid {
 
     var row_data = (row as Bin).get_child () as Grid;
     var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
-    checkmark.margin_right = 12;
+    if (checkmark.get_direction () == TextDirection.LTR)
+      checkmark.margin_right = 12;
+    else
+      checkmark.margin_left = 12;
     checkmark.set_valign (Align.CENTER);
     checkmark.set_halign (Align.END);
     checkmark.set_vexpand (true);
@@ -128,7 +131,10 @@ public class Contacts.AccountsList : Grid {
       var row_data = new Grid ();
       row_data.set_data ("store", persona_store);
       row_data.margin = 6;
-      row_data.margin_left = 5;
+      if (row_data.get_direction () == TextDirection.LTR)
+        row_data.margin_left = 5;
+      else
+        row_data.margin_right = 5;
       row_data.set_row_spacing (2);
       row_data.set_column_spacing (10);
 
@@ -166,7 +172,10 @@ public class Contacts.AccountsList : Grid {
 
     var local_data = new Grid ();
     local_data.margin = 6;
-    local_data.margin_left = 5;
+    if (local_data.get_direction () == TextDirection.LTR)
+      local_data.margin_left = 5;
+    else
+      local_data.margin_right = 5;
     local_data.set_column_spacing (10);
     local_data.set_data ("store", local_store);
     var provider_image = new Image.from_icon_name ("drive-harddisk-system-symbolic",

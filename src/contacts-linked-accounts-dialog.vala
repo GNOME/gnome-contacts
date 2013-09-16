@@ -77,7 +77,10 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
       image_frame.set_hexpand (false);
       image_frame.margin = 6;
-      image_frame.margin_right = 12;
+      if (image_frame.get_direction () == TextDirection.LTR)
+	image_frame.margin_right = 12;
+      else
+	image_frame.margin_left = 12;
       contact.keep_widget_uptodate (image_frame,  (w) => {
 	  (w as ContactFrame).set_image (contact.individual, contact);
 	});
@@ -101,7 +104,10 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
       var button = new Button.with_label (_("Remove"));
       button.margin = 6;
-      button.margin_left = 12;
+      if (button.get_direction () == TextDirection.LTR)
+	button.margin_left = 12;
+      else
+	button.margin_right = 12;
       button.set_valign (Align.CENTER);
       button.get_child ().margin = 6;
       row_grid.attach (button, 2, 0, 1, 2);
