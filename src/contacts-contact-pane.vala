@@ -396,7 +396,7 @@ public class Contacts.ContactPane : Notebook {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "WORK");
       });
 
-    item = new Gtk.MenuItem.with_label (_("Link"));
+    item = new Gtk.MenuItem.with_label (_("Website"));
     details_menu.append (item);
     item.activate.connect (() => {
 	editor.add_new_row_for_property (contact.find_primary_persona (), "urls");

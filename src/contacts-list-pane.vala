@@ -122,6 +122,7 @@ public class Contacts.ListPane : Frame {
     selection_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
     selection_toolbar.get_style_context ().add_class ("contacts-selection-toolbar");
 
+    /* To translators: Link refers to the verb, from linking contacts together */
     var link_selected_button = selection_toolbar.add_button (null, _("Link"), true) as Gtk.Button;
     link_selected_button.set_size_request (70, -1);
     link_selected_button.set_sensitive (false);
