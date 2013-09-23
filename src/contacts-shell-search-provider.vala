@@ -128,7 +128,7 @@ public class Contacts.SearchProvider : Object {
   }
 }
 
-public class Contacts.SearchProviderApp : GLib.Application {
+public class Contacts.SearchProviderApp : Gtk.Application {
   public SearchProviderApp () {
     Object (application_id: "org.gnome.Contacts.SearchProvider",
             flags: ApplicationFlags.IS_SERVICE,
