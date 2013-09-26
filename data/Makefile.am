@@ -21,8 +21,10 @@ service_DATA = $(service_in_files:.service.in=.service)
 	$(AM_V_GEN) [ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 	            sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
 
+@INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/appdata
-appdata_DATA = gnome-contacts.appdata.xml
+dist_appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+appdata_in_files = gnome-contacts.appdata.xml.in
 
 EXTRA_DIST = \
 	gnome-contacts.desktop.in.in	\
@@ -31,7 +33,8 @@ EXTRA_DIST = \
 	$(service_in_files)  \
 	$(NULL)
 
-CLEANFILES = $(service_DATA)
+CLEANFILES = $(service_DATA)	\
+	gnome-contacts.appdata.xml
 DISTCLEANFILES = \
 	gnome-contacts.desktop \
 	gnome-contacts.desktop.in
