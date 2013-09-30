@@ -105,11 +105,6 @@ public class Contacts.ContactSheet : Grid {
       });
     attach (name_label,  1, 0, 1, 3);
 
-    var merged_presence = c.create_merged_presence_widget ();
-    merged_presence.set_halign (Align.START);
-    merged_presence.set_valign (Align.START);
-    attach (merged_presence,  1, 1, 1, 1);
-
     int i = 3;
     int last_store_position = 0;
     bool is_first_persona = true;
