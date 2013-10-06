@@ -4,14 +4,15 @@
 # Gil Forcada <gilforcada@guifi.net>, 2011, 2012, 2013.
 # Pau Iranzo <paugnu@gmail.com>, 2012.
 # Jordi Serratosa <jordis@softcatala.cat>, 2012.
+# Josep Sànchez <papapep@gmx.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-31 21:34+0200\n"
-"PO-Revision-Date: 2013-03-31 21:33+0200\n"
-"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"POT-Creation-Date: 2013-10-06 22:14+0200\n"
+"PO-Revision-Date: 2013-09-14 23:38+0200\n"
+"Last-Translator: Josep Sànchez <papapep@gmx.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca-XV\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:285
-#: ../src/main.vala:28
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "Contactes"
 
@@ -29,138 +29,153 @@ msgid "friends;address book;"
 msgstr "amics;llibreta d'adreces;"
 
 #: ../src/app-menu.ui.h:1
-msgid "View"
-msgstr "Visualitza"
-
-#: ../src/app-menu.ui.h:2
-msgid "Main contacts"
-msgstr "Contactes principals"
-
-#: ../src/app-menu.ui.h:3
-msgid "All contacts"
-msgstr "Tots els contactes"
-
-#: ../src/app-menu.ui.h:4
 msgid "_Change Address Book..."
 msgstr "_Canvia la llibreta d'adreces..."
 
 # S'enten que «Contacts» és el nom del programa?
-#: ../src/app-menu.ui.h:5
+#: ../src/app-menu.ui.h:2
 msgid "_About Contacts"
 msgstr ""
 "_Quant al\n"
 " Contactes"
 
-#: ../src/app-menu.ui.h:6
+#: ../src/app-menu.ui.h:3
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: ../src/app-menu.ui.h:7
+#: ../src/app-menu.ui.h:4
 msgid "_Quit"
 msgstr "I_x"
 
-#: ../src/contacts-app.vala:108
+#: ../src/contacts-accounts-list.vala:48
+msgid "Online Accounts"
+msgstr "Comptes en línia"
+
+#: ../src/contacts-accounts-list.vala:184 ../src/contacts-esd-setup.c:118
+msgid "Local Address Book"
+msgstr "Llibreta d'adreces local"
+
+#: ../src/contacts-app.vala:98
 #, c-format
 msgid "No contact with id %s found"
 msgstr "No s'ha trobat cap contacte amb l'identificador %s"
 
-#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
+#: ../src/contacts-app.vala:99 ../src/contacts-app.vala:205
 msgid "Contact not found"
 msgstr "No s'ha trobat el contacte"
 
-#: ../src/contacts-app.vala:118
-msgid "Change Address Book"
-msgstr "Canvia la llibreta d'adreces"
+#: ../src/contacts-app.vala:116
+msgid "Primary Contacts Account"
+msgstr "Compte primari del contacte"
 
-#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
-msgid "Select"
-msgstr "Selecciona"
+#: ../src/contacts-app.vala:117 ../src/contacts-setup-window.vala:41
+msgid "Cancel"
+msgstr "Cancel·la"
 
-#: ../src/contacts-app.vala:211
+#: ../src/contacts-app.vala:127 ../src/contacts-setup-window.vala:55
+#: ../src/contacts-window.ui.h:3
+msgid "Done"
+msgstr "Fet"
+
+#: ../src/contacts-app.vala:184
 msgid "translator-credits"
 msgstr ""
 "Gil Forcada <gilforcada@guifi.net>\n"
 "Pau Iranzo <paugnu@gmail.com>"
 
 # Deixem el nom tal qual?
-#: ../src/contacts-app.vala:212
+#: ../src/contacts-app.vala:185
 msgid "GNOME Contacts"
 msgstr "Contactes del GNOME"
 
-#: ../src/contacts-app.vala:213
+#: ../src/contacts-app.vala:186
 msgid "About GNOME Contacts"
 msgstr "Quant al Contactes del GNOME"
 
-#: ../src/contacts-app.vala:214
+#: ../src/contacts-app.vala:187
 msgid "Contact Management Application"
 msgstr "Aplicació de gestió de contactes"
 
-#: ../src/contacts-app.vala:232
+#: ../src/contacts-app.vala:204
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "No s'ha trobat cap contacte amb l'adreça electrònica %s"
 
-#: ../src/contacts-app.vala:299
-msgid "New"
-msgstr "Nou"
+#: ../src/contacts-app.vala:259 ../src/contacts-window.vala:76
+msgid "Select"
+msgstr "Selecciona"
 
-#: ../src/contacts-app.vala:326
-msgid "Edit"
-msgstr "Edita"
+#: ../src/contacts-app.vala:261
+#, c-format
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "%d seleccionat"
+msgstr[1] "%d seleccionats"
 
-#: ../src/contacts-app.vala:332
-msgid "Done"
-msgstr "Fet"
+#: ../src/contacts-app.vala:290
+#, c-format
+msgid "Editing %s"
+msgstr "S'està editant %s"
 
-#: ../src/contacts-app.vala:381
-msgid "Editing"
-msgstr "S'està editant"
-
-#: ../src/contacts-app.vala:498
+#: ../src/contacts-app.vala:405
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d contacte enllaçat"
 msgstr[1] "%d contactes enllaçats"
 
-#: ../src/contacts-app.vala:529
+#: ../src/contacts-app.vala:409 ../src/contacts-app.vala:441
+#: ../src/contacts-app.vala:482 ../src/contacts-app.vala:527
+msgid "_Undo"
+msgstr "_Desfés"
+
+#: ../src/contacts-app.vala:437
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d contacte suprimit"
 msgstr[1] "%d contactes suprimits"
 
-#: ../src/contacts-app.vala:570
+#: ../src/contacts-app.vala:479
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "S'ha suprimit el contacte: «%s»"
 
-#: ../src/contacts-app.vala:596
+#: ../src/contacts-app.vala:507
 msgid "Show contact with this individual id"
 msgstr "Mostra el contacte amb este identificador individual"
 
-#: ../src/contacts-app.vala:598
+#: ../src/contacts-app.vala:509
 msgid "Show contact with this email address"
 msgstr "Mostra el contacte amb esta adreça electrònica"
 
-#: ../src/contacts-app.vala:611
+#: ../src/contacts-app.vala:523
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s està enllaçat amb %s"
 
 # Caldrà vore el context per veure si aquesta traducció és correcta
-#: ../src/contacts-app.vala:613
+#: ../src/contacts-app.vala:525
 #, c-format
 msgid "%s linked to the contact"
 msgstr "S'ha enllaçat %s al contacte"
 
-#: ../src/contacts-app.vala:630
+#: ../src/contacts-app.vala:542
 msgid "— contact management"
 msgstr "— gestor de contactes"
 
 #: ../src/contacts-avatar-dialog.vala:197
 msgid "Browse for more pictures"
 msgstr "Navega per més imatges"
+
+#: ../src/contacts-avatar-dialog.vala:200
+#: ../src/contacts-new-contact-dialog.vala:50
+msgid "_Cancel"
+msgstr "_Cancel·la"
+
+#: ../src/contacts-avatar-dialog.vala:201
+msgid "_Open"
+msgstr "_Obri"
 
 #: ../src/contacts-avatar-dialog.vala:244
 msgid "Select Picture"
@@ -171,306 +186,300 @@ msgstr "Seleccioneu una imatge"
 msgid "Close"
 msgstr "Tanca"
 
-#: ../src/contacts-contact-editor.vala:352
+#: ../src/contacts-contact-editor.vala:361
 msgid "January"
 msgstr "Gener"
 
-#: ../src/contacts-contact-editor.vala:353
+#: ../src/contacts-contact-editor.vala:362
 msgid "February"
 msgstr "Febrer"
 
-#: ../src/contacts-contact-editor.vala:354
+#: ../src/contacts-contact-editor.vala:363
 msgid "March"
 msgstr "Març"
 
-#: ../src/contacts-contact-editor.vala:355
+#: ../src/contacts-contact-editor.vala:364
 msgid "April"
 msgstr "Abril"
 
-#: ../src/contacts-contact-editor.vala:356
+#: ../src/contacts-contact-editor.vala:365
 msgid "May"
 msgstr "Maig"
 
-#: ../src/contacts-contact-editor.vala:357
+#: ../src/contacts-contact-editor.vala:366
 msgid "June"
 msgstr "Juny"
 
-#: ../src/contacts-contact-editor.vala:358
+#: ../src/contacts-contact-editor.vala:367
 msgid "July"
 msgstr "Juliol"
 
-#: ../src/contacts-contact-editor.vala:359
+#: ../src/contacts-contact-editor.vala:368
 msgid "August"
 msgstr "Agost"
 
-#: ../src/contacts-contact-editor.vala:360
+#: ../src/contacts-contact-editor.vala:369
 msgid "September"
 msgstr "Setembre"
 
-#: ../src/contacts-contact-editor.vala:361
+#: ../src/contacts-contact-editor.vala:370
 msgid "October"
 msgstr "Octubre"
 
-#: ../src/contacts-contact-editor.vala:362
+#: ../src/contacts-contact-editor.vala:371
 msgid "November"
 msgstr "Novembre"
 
-#: ../src/contacts-contact-editor.vala:363
+#: ../src/contacts-contact-editor.vala:372
 msgid "December"
 msgstr "Desembre"
 
-#: ../src/contacts-contact-editor.vala:489
-#: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:169
+#: ../src/contacts-contact-editor.vala:498
+#: ../src/contacts-contact-editor.vala:505
+#: ../src/contacts-contact-pane.vala:399
+#: ../src/contacts-contact-sheet.vala:181
 msgid "Website"
 msgstr "Pàgina web"
 
-#: ../src/contacts-contact-editor.vala:515
-#: ../src/contacts-contact-editor.vala:522
-#: ../src/contacts-contact-pane.vala:395
-#: ../src/contacts-contact-sheet.vala:179
+#: ../src/contacts-contact-editor.vala:524
+#: ../src/contacts-contact-editor.vala:531
+#: ../src/contacts-contact-pane.vala:404
+#: ../src/contacts-contact-sheet.vala:195
 msgid "Nickname"
 msgstr "Àlies"
 
-#: ../src/contacts-contact-editor.vala:542
-#: ../src/contacts-contact-editor.vala:549
-#: ../src/contacts-contact-pane.vala:400
-#: ../src/contacts-contact-sheet.vala:186
+#: ../src/contacts-contact-editor.vala:551
+#: ../src/contacts-contact-editor.vala:558
+#: ../src/contacts-contact-pane.vala:409
+#: ../src/contacts-contact-sheet.vala:202
 msgid "Birthday"
 msgstr "Aniversari"
 
-#: ../src/contacts-contact-editor.vala:569
-#: ../src/contacts-contact-editor.vala:576
-#: ../src/contacts-contact-sheet.vala:193
+#: ../src/contacts-contact-editor.vala:572
+#: ../src/contacts-contact-editor.vala:579
+#: ../src/contacts-contact-sheet.vala:209
 msgid "Note"
 msgstr "Nota"
 
-#: ../src/contacts-contact-pane.vala:183
+#: ../src/contacts-contact-pane.vala:189
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Pertany %s de %s ací?"
 
-#: ../src/contacts-contact-pane.vala:185
+#: ../src/contacts-contact-pane.vala:191
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "Pertanyen estes dades a %s?"
 
-#: ../src/contacts-contact-pane.vala:196
+#: ../src/contacts-contact-pane.vala:202
 msgid "Yes"
 msgstr "Sí"
 
-#: ../src/contacts-contact-pane.vala:197
+#: ../src/contacts-contact-pane.vala:203
 msgid "No"
 msgstr "No"
 
-#: ../src/contacts-contact-pane.vala:349
+#: ../src/contacts-contact-pane.vala:358
 msgid "New Detail"
 msgstr "Més dades"
 
 #. building menu
-#: ../src/contacts-contact-pane.vala:363
+#: ../src/contacts-contact-pane.vala:372
 msgid "Personal email"
 msgstr "Correu electrònic personal"
 
-#: ../src/contacts-contact-pane.vala:368
+#: ../src/contacts-contact-pane.vala:377
 msgid "Work email"
 msgstr "Correu electrònic de la faena"
 
-#: ../src/contacts-contact-pane.vala:374
+#: ../src/contacts-contact-pane.vala:383
 msgid "Mobile phone"
 msgstr "Mòbil"
 
-#: ../src/contacts-contact-pane.vala:379
+#: ../src/contacts-contact-pane.vala:388
 msgid "Home phone"
 msgstr "Telèfon fix"
 
-#: ../src/contacts-contact-pane.vala:384
+#: ../src/contacts-contact-pane.vala:393
 msgid "Work phone"
 msgstr "Telèfon de la faena"
 
-#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:140
-msgid "Link"
-msgstr "Enllaç"
-
-#: ../src/contacts-contact-pane.vala:406
+#: ../src/contacts-contact-pane.vala:415
 msgid "Home address"
 msgstr "Adreça de casa"
 
-#: ../src/contacts-contact-pane.vala:411
+#: ../src/contacts-contact-pane.vala:420
 msgid "Work address"
 msgstr "Adreça de la faena"
 
-#: ../src/contacts-contact-pane.vala:417
+#: ../src/contacts-contact-pane.vala:426
 msgid "Notes"
 msgstr "Notes"
 
-#: ../src/contacts-contact-pane.vala:434
+#: ../src/contacts-contact-pane.vala:445
 msgid "Linked Accounts"
 msgstr "Comptes enllaçats"
 
-#: ../src/contacts-contact-pane.vala:446
+#: ../src/contacts-contact-pane.vala:457
 msgid "Remove Contact"
 msgstr "Suprimeix el contacte"
 
-#: ../src/contacts-contact-pane.vala:505
+#: ../src/contacts-contact-pane.vala:522
+#, c-format
 msgid "Select a contact"
 msgstr "Seleccioneu un contacte"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Street"
 msgstr "Carrer"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Extension"
 msgstr "Extensió"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "City"
 msgstr "Ciutat"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "State/Province"
 msgstr "Estat/província"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Zip/Postal Code"
 msgstr "Codi postal"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "PO box"
 msgstr "Apartat de correus"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Country"
 msgstr "País"
 
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:730
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:731
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:733 ../src/contacts-contact.vala:1017
+#: ../src/contacts-contact.vala:732 ../src/contacts-contact.vala:1016
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:733
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:734
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:735
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:736
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:737
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:738
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:739
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:740
 msgid "Local network"
 msgstr "Xarxa local"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:741
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:742
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:743
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:744
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:745
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:746
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:747
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:748
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:749
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:751
+#: ../src/contacts-contact.vala:750
 msgid "Telephony"
 msgstr "Telefonia"
 
-#: ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:751
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:753 ../src/contacts-contact.vala:754
+#: ../src/contacts-contact.vala:752 ../src/contacts-contact.vala:753
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:755
+#: ../src/contacts-contact.vala:754
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1020
+#: ../src/contacts-contact.vala:1019
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../src/contacts-contact.vala:1023
+#: ../src/contacts-contact.vala:1022
 msgid "Google Profile"
 msgstr "Perfil del Google"
 
-#: ../src/contacts-contact.vala:1087
+#: ../src/contacts-contact.vala:1086
 msgid "Unexpected internal error: created contact was not found"
 msgstr ""
 "S'ha produït un error intern inesperat: no s'ha trobat el contacte que "
 "s'acaba de crear"
 
-#: ../src/contacts-contact.vala:1261
+#: ../src/contacts-contact.vala:1260
 msgid "Google Circles"
 msgstr "Cercles del Google"
 
-#: ../src/contacts-contact.vala:1263
+#: ../src/contacts-contact.vala:1262
 msgid "Google Other Contact"
 msgstr "Un altre contacte de Google"
 
-#: ../src/contacts-esd-setup.c:114
-msgid "Local Address Book"
-msgstr "Llibreta d'adreces local"
-
-#: ../src/contacts-esd-setup.c:117 ../src/contacts-esd-setup.c:145
+#: ../src/contacts-esd-setup.c:121 ../src/contacts-esd-setup.c:149
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:142
+#: ../src/contacts-esd-setup.c:146
 msgid "Local Contact"
 msgstr "Contacte local"
 
@@ -483,23 +492,32 @@ msgstr "%s - comptes enllaçats"
 msgid "You can manually link contacts from the contacts list"
 msgstr "Podeu enllaçar contactes manualment des de la llista de contactes"
 
-#: ../src/contacts-linked-accounts-dialog.vala:102
+#: ../src/contacts-linked-accounts-dialog.vala:105
 msgid "Remove"
 msgstr "Suprimeix"
 
-#: ../src/contacts-list-pane.vala:143
+#: ../src/contacts-list-pane.vala:84
+msgid "Type to search"
+msgstr "Teclegeu per començar la cerca"
+
+#. To translators: Link refers to the verb, from linking contacts together
+#: ../src/contacts-list-pane.vala:126
+msgid "Link"
+msgstr "Enllaç"
+
+#: ../src/contacts-list-pane.vala:129
 msgid "Delete"
 msgstr "Suprimeix"
 
-#: ../src/contacts-new-contact-dialog.vala:35
+#: ../src/contacts-new-contact-dialog.vala:45
 msgid "New contact"
 msgstr "Contacte nou"
 
-#: ../src/contacts-new-contact-dialog.vala:41
+#: ../src/contacts-new-contact-dialog.vala:51
 msgid "Create Contact"
 msgstr "Crea un contacte"
 
-#: ../src/contacts-new-contact-dialog.vala:67
+#: ../src/contacts-new-contact-dialog.vala:77
 msgid ""
 "Add or \n"
 "select a picture"
@@ -507,76 +525,53 @@ msgstr ""
 "Afegiu o\n"
 "seleccioneu una imatge"
 
-#: ../src/contacts-new-contact-dialog.vala:78
+#: ../src/contacts-new-contact-dialog.vala:88
 msgid "Contact Name"
 msgstr "Nom del contacte"
 
-#: ../src/contacts-new-contact-dialog.vala:86
-#: ../src/contacts-new-contact-dialog.vala:121
+#: ../src/contacts-new-contact-dialog.vala:96
+#: ../src/contacts-new-contact-dialog.vala:132
 msgid "Email"
 msgstr "Correu electrònic"
 
-#: ../src/contacts-new-contact-dialog.vala:95
-#: ../src/contacts-new-contact-dialog.vala:126
+#: ../src/contacts-new-contact-dialog.vala:105
+#: ../src/contacts-new-contact-dialog.vala:137
 msgid "Phone"
 msgstr "Telèfon"
 
-#: ../src/contacts-new-contact-dialog.vala:104
-#: ../src/contacts-new-contact-dialog.vala:131
+#: ../src/contacts-new-contact-dialog.vala:114
+#: ../src/contacts-new-contact-dialog.vala:142
 msgid "Address"
 msgstr "Adreça"
 
-#: ../src/contacts-new-contact-dialog.vala:113
+#: ../src/contacts-new-contact-dialog.vala:124
 msgid "Add Detail"
 msgstr "Afig dades"
 
-#: ../src/contacts-new-contact-dialog.vala:212
+#: ../src/contacts-new-contact-dialog.vala:223
 msgid "You must specify a contact name"
 msgstr "Heu d'especificar el nom del contacte"
 
-#: ../src/contacts-new-contact-dialog.vala:320
+#: ../src/contacts-new-contact-dialog.vala:333
 msgid "No primary addressbook configured\n"
 msgstr "No s'ha configurat cap llibreta d'adreces principal\n"
 
-#: ../src/contacts-new-contact-dialog.vala:341
+#: ../src/contacts-new-contact-dialog.vala:354
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "No s'han pogut crear els contactes nous: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:352
+#: ../src/contacts-new-contact-dialog.vala:365
 msgid "Unable to find newly created contact\n"
 msgstr "No s'ha pogut trobar el contacte que s'acaba de crear\n"
 
-#: ../src/contacts-setup-window.vala:36
-msgid ""
-"Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr ""
-"Vos donem la benvinguda al Contactes! Seleccioneu on voleu guardar la vostra "
-"llibreta d'adreces:"
-
-#: ../src/contacts-setup-window.vala:81
-msgid "Online Account Settings"
-msgstr "Paràmetres dels comptes en línia"
-
-#: ../src/contacts-setup-window.vala:86
-msgid "Setup an online account or use a local address book"
-msgstr "Configureu un compte en línia o utilitzeu una llibreta d'adreces local"
-
-#: ../src/contacts-setup-window.vala:89
-msgid "Online Accounts"
-msgstr "Comptes en línia"
-
-#: ../src/contacts-setup-window.vala:92
-msgid "Use Local Address Book"
-msgstr "Utilitza la llibreta d'adreces local"
-
-#: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
+#: ../src/contacts-setup-window.vala:38
 msgid "Contacts Setup"
 msgstr "Configuració del Contactes"
 
-#: ../src/contacts-setup-window.vala:137
-msgid "Cancel"
-msgstr "Cancel·la"
+#: ../src/contacts-setup-window.vala:71
+msgid "Please select your primary contacts account"
+msgstr "Seleccioneu el compte primari dels contactes"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -654,13 +649,25 @@ msgstr "Tèlex"
 msgid "TTY"
 msgstr "Teletip"
 
-#: ../src/contacts-view.vala:294
+#: ../src/contacts-view.vala:193
+msgid "No results matched search"
+msgstr "No s'han trobat resultats coincidents"
+
+#: ../src/contacts-view.vala:293
 msgid "Suggestions"
 msgstr "Suggeriments"
 
-#: ../src/contacts-view.vala:319
+#: ../src/contacts-view.vala:318
 msgid "Other Contacts"
 msgstr "Altres contactes"
+
+#: ../src/contacts-window.ui.h:1 ../src/contacts-window.vala:83
+msgid "All Contacts"
+msgstr "Tots els contactes"
+
+#: ../src/contacts-window.ui.h:2
+msgid "Edit"
+msgstr "Edita"
 
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:1
 msgid "First-time setup done."
@@ -679,134 +686,3 @@ msgstr "Visualitza el subconjunt"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "Visualitza el subconjunt de contactes"
-
-#~ msgctxt "Addresses on the Web"
-#~ msgid "Links"
-#~ msgstr "Enllaços"
-
-#~ msgctxt "Web address"
-#~ msgid "Link"
-#~ msgstr "Enllaç"
-
-#~ msgid "Phone number"
-#~ msgstr "Número de telèfon"
-
-#~ msgid "Chat"
-#~ msgstr "Xat"
-
-#~ msgid "Addresses"
-#~ msgstr "Adreces"
-
-#~ msgid "Add to My Contacts"
-#~ msgstr "Afegeix als meus contactes"
-
-#~ msgid "Unlink"
-#~ msgstr "Desenllaça"
-
-#~ msgid "Add detail..."
-#~ msgstr "Afegeix més dades..."
-
-#~ msgid "Select detail to add to %s"
-#~ msgstr "Seleccioneu la dada que voleu afegir a %s"
-
-#~ msgid "Select email address"
-#~ msgstr "Seleccioneu l'adreça electrònica"
-
-#~ msgid "Select what to call"
-#~ msgstr "Seleccioneu a qui trucar"
-
-#~ msgid "Add/Remove Linked Contacts..."
-#~ msgstr "Afegeix/suprimeix contactes enllaçats..."
-
-#~ msgctxt "contacts link action"
-#~ msgid "Link"
-#~ msgstr "Enllaç"
-
-#~ msgid "Undo"
-#~ msgstr "Desfés"
-
-#~ msgid "Link contacts to %s"
-#~ msgstr "Enllaça contactes amb %s"
-
-#~ msgid "Custom..."
-#~ msgstr "Personalitzat..."
-
-#~ msgid "Unknown status"
-#~ msgstr "Se'n desconeix l'estat"
-
-#~ msgid "Offline"
-#~ msgstr "Desconnectat"
-
-#~ msgid "Error"
-#~ msgstr "Error"
-
-#~ msgid "Available"
-#~ msgstr "Disponible"
-
-#~ msgid "Away"
-#~ msgstr "Absent"
-
-#~ msgid "Extended away"
-#~ msgstr "Absent de fa estona"
-
-#~ msgid "Busy"
-#~ msgstr "Ocupat"
-
-#~ msgid "Hidden"
-#~ msgstr "Ocult"
-
-#~ msgid "<span weight='bold'>Link contacts to %s</span>"
-#~ msgstr "<span weight='bold'>Enllaça els contactes amb %s</span>"
-
-#~ msgid "Enter nickname"
-#~ msgstr "Introduïu un àlies"
-
-#~ msgid "Alias"
-#~ msgstr "Àlies"
-
-#~ msgid "Enter alias"
-#~ msgstr "Introduïu un àlies"
-
-#~ msgid "Enter phone number"
-#~ msgstr "Introduïu el número de telèfon"
-
-#~ msgid "Browse for more pictures..."
-#~ msgstr "Navega per més imatges..."
-
-#~ msgid "Enter name"
-#~ msgstr "Introduïu un nom"
-
-#~ msgid "Address copied to clipboard"
-#~ msgstr "S'ha copiat l'adreça al porta-retalls"
-
-#~ msgid "Department"
-#~ msgstr "Departament"
-
-#~ msgid "Profession"
-#~ msgstr "Professió"
-
-#~ msgid "Title"
-#~ msgstr "Títol"
-
-#~ msgid "Manager"
-#~ msgstr "Director"
-
-#~ msgid "More"
-#~ msgstr "Més"
-
-#~ msgctxt "link-contacts-button"
-#~ msgid "Link"
-#~ msgstr "Enllaça"
-
-#~ msgid "Currently linked:"
-#~ msgstr "Enllaçats actuals:"
-
-#~ msgid ""
-#~ "Connect to an account,\n"
-#~ "import or add contacts"
-#~ msgstr ""
-#~ "Connecteu-vos a un compte,\n"
-#~ "importeu o afegiu contactes"
-
-#~ msgid "Send..."
-#~ msgstr "Envia..."
