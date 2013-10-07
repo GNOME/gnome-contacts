@@ -23,18 +23,18 @@ service_DATA = $(service_in_files:.service.in=.service)
 
 @INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/appdata
-dist_appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdata_in_files = gnome-contacts.appdata.xml.in
 
 EXTRA_DIST = \
 	gnome-contacts.desktop.in.in	\
-	gnome-contacts.appdata.xml	\
+	$(appdata_in_files)	\
 	$(searchprovider_DATA) 	\
 	$(service_in_files)  \
 	$(NULL)
 
 CLEANFILES = $(service_DATA)	\
-	gnome-contacts.appdata.xml
+	$(appdata_DATA)
 DISTCLEANFILES = \
 	gnome-contacts.desktop \
 	gnome-contacts.desktop.in
