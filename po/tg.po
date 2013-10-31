@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-31 04:54+0000\n"
-"PO-Revision-Date: 2013-09-02 15:26+0500\n"
+"POT-Creation-Date: 2013-10-01 14:31+0000\n"
+"PO-Revision-Date: 2013-10-31 12:35+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -19,11 +19,36 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "Plural-Forms: nplurals=2; plural=1;\n"
 
+#: ../data/gnome-contacts.appdata.xml.in.h:1
+msgid ""
+"Contacts keeps and organize your contacts information. You can create, edit, "
+"delete and link together pieces of information about your contacts. Contacts "
+"aggregates the details from all your sources providing a centralized place "
+"for managing your contacts."
+msgstr ""
+"Барномаи \"Тамосҳо\" маълумоти тамосҳои шуморо нигоҳ медорад ва мураттаб "
+"мекунад. Шумо метавонед қисмҳои маълумотро оид ба тамосҳои худ эҷод, таҳрир, "
+"нест ва пайваст кунед. Барномаи \"Тамосҳо\" тафсилотро аз ҳамаи манбаҳои "
+"шумо ҷамъ карда ҷои марказиро барои идоракунии тамосҳои шумо таъмин менамояд."
+
+#: ../data/gnome-contacts.appdata.xml.in.h:2
+msgid ""
+"Contacts will also integrate with online address books and automatically "
+"link contacts from different online sources."
+msgstr ""
+"Барномаи \"Тамосҳо\" инчунин бо китобҳои суроғаҳои онлан якҷоя кор мекунад "
+"ва тамосҳоро аз манбаҳои онлайни гуногун ба таври худкор пайваст мекунад."
+
 #: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "Тамосҳо"
 
 #: ../data/gnome-contacts.desktop.in.in.h:2
+#| msgid "— contact management"
+msgid "A contacts manager for GNOME"
+msgstr "Мудири тамосҳо барои GNOME"
+
+#: ../data/gnome-contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr "дӯстон;китоби суроғаҳо;"
 
@@ -47,7 +72,7 @@ msgstr "_Баромад"
 msgid "Online Accounts"
 msgstr "Ҳисобҳои онлайн"
 
-#: ../src/contacts-accounts-list.vala:175 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:184 ../src/contacts-esd-setup.c:118
 msgid "Local Address Book"
 msgstr "Китоби суроғаҳои маҳаллӣ"
 
@@ -56,7 +81,7 @@ msgstr "Китоби суроғаҳои маҳаллӣ"
 msgid "No contact with id %s found"
 msgstr "Ягон тамос бо рақами мушаххаси %s ёфт нашуд"
 
-#: ../src/contacts-app.vala:99 ../src/contacts-app.vala:203
+#: ../src/contacts-app.vala:99 ../src/contacts-app.vala:205
 msgid "Contact not found"
 msgstr "Ягон тамос ёфт нашуд"
 
@@ -68,92 +93,91 @@ msgstr "Ҳисоби тамосҳои асосӣ"
 msgid "Cancel"
 msgstr "Бекор кардан"
 
-#: ../src/contacts-app.vala:126 ../src/contacts-setup-window.vala:54
+#: ../src/contacts-app.vala:127 ../src/contacts-setup-window.vala:55
 #: ../src/contacts-window.ui.h:3
 msgid "Done"
 msgstr "Тайёр"
 
-#: ../src/contacts-app.vala:182
+#: ../src/contacts-app.vala:184
 msgid "translator-credits"
 msgstr "Victor Ibragimov"
 
-#: ../src/contacts-app.vala:183
+#: ../src/contacts-app.vala:185
 msgid "GNOME Contacts"
 msgstr "Тамосҳои GNOME"
 
-#: ../src/contacts-app.vala:184
+#: ../src/contacts-app.vala:186
 msgid "About GNOME Contacts"
-msgstr "Дар бораи Тамосҳои GNOME"
+msgstr "Дар бораи \"Тамосҳои GNOME\""
 
-#: ../src/contacts-app.vala:185
+#: ../src/contacts-app.vala:187
 msgid "Contact Management Application"
 msgstr "Барномаи идоракунии тамосҳо"
 
-#: ../src/contacts-app.vala:202
+#: ../src/contacts-app.vala:204
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Ягон тамос бо суроғаи почтаи электронии %s ёфт нашуд"
 
-#: ../src/contacts-app.vala:257 ../src/contacts-window.vala:76
+#: ../src/contacts-app.vala:259 ../src/contacts-window.vala:76
 msgid "Select"
 msgstr "Интихоб кардан"
 
-#: ../src/contacts-app.vala:259
+#: ../src/contacts-app.vala:261
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d интихобшуда"
 msgstr[1] "%d интихобшуда"
 
-#: ../src/contacts-app.vala:288
+#: ../src/contacts-app.vala:290
 #, c-format
-#| msgid "Editing"
 msgid "Editing %s"
 msgstr "Таҳриркунии %s"
 
-#: ../src/contacts-app.vala:404
+#: ../src/contacts-app.vala:405
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d тамос пайваст шудаанд"
 msgstr[1] "%d тамос пайваст шудаанд"
 
-#: ../src/contacts-app.vala:408 ../src/contacts-app.vala:440
-#: ../src/contacts-app.vala:481 ../src/contacts-app.vala:526
+#: ../src/contacts-app.vala:409 ../src/contacts-app.vala:441
+#: ../src/contacts-app.vala:482 ../src/contacts-app.vala:527
 msgid "_Undo"
 msgstr "_Ботил сохтан"
 
-#: ../src/contacts-app.vala:436
+#: ../src/contacts-app.vala:437
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d тамос нест шудааст"
 msgstr[1] "%d тамос нест шудаанд"
 
-#: ../src/contacts-app.vala:478
+#: ../src/contacts-app.vala:479
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Тамоси нест шуд: \"%s\""
 
-#: ../src/contacts-app.vala:506
+#: ../src/contacts-app.vala:507
 msgid "Show contact with this individual id"
 msgstr "Намоиши тамосҳо бо рақамҳои мушаххас"
 
-#: ../src/contacts-app.vala:508
+#: ../src/contacts-app.vala:509
 msgid "Show contact with this email address"
 msgstr "Намоиши тамосҳо бо суроғаҳои почтаи электронӣ"
 
-#: ../src/contacts-app.vala:522
+#: ../src/contacts-app.vala:523
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s ба %s пайваст шудааст"
 
-#: ../src/contacts-app.vala:524
+#: ../src/contacts-app.vala:525
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s ба тамос пайваст шудааст"
 
-#: ../src/contacts-app.vala:541
+#: ../src/contacts-app.vala:542
 msgid "— contact management"
 msgstr "— идоракунии тамосҳо"
 
@@ -179,149 +203,145 @@ msgstr "Интихоб кардани тасвир"
 msgid "Close"
 msgstr "Пӯшидан"
 
-#: ../src/contacts-contact-editor.vala:352
+#: ../src/contacts-contact-editor.vala:361
 msgid "January"
 msgstr "Январ"
 
-#: ../src/contacts-contact-editor.vala:353
+#: ../src/contacts-contact-editor.vala:362
 msgid "February"
 msgstr "Феврал"
 
-#: ../src/contacts-contact-editor.vala:354
+#: ../src/contacts-contact-editor.vala:363
 msgid "March"
 msgstr "Март"
 
-#: ../src/contacts-contact-editor.vala:355
+#: ../src/contacts-contact-editor.vala:364
 msgid "April"
 msgstr "Апрел"
 
-#: ../src/contacts-contact-editor.vala:356
+#: ../src/contacts-contact-editor.vala:365
 msgid "May"
 msgstr "Май"
 
-#: ../src/contacts-contact-editor.vala:357
+#: ../src/contacts-contact-editor.vala:366
 msgid "June"
 msgstr "Июн"
 
-#: ../src/contacts-contact-editor.vala:358
+#: ../src/contacts-contact-editor.vala:367
 msgid "July"
 msgstr "Июл"
 
-#: ../src/contacts-contact-editor.vala:359
+#: ../src/contacts-contact-editor.vala:368
 msgid "August"
 msgstr "Август"
 
-#: ../src/contacts-contact-editor.vala:360
+#: ../src/contacts-contact-editor.vala:369
 msgid "September"
 msgstr "Сентябр"
 
-#: ../src/contacts-contact-editor.vala:361
+#: ../src/contacts-contact-editor.vala:370
 msgid "October"
 msgstr "Октябр"
 
-#: ../src/contacts-contact-editor.vala:362
+#: ../src/contacts-contact-editor.vala:371
 msgid "November"
 msgstr "Ноябр"
 
-#: ../src/contacts-contact-editor.vala:363
+#: ../src/contacts-contact-editor.vala:372
 msgid "December"
 msgstr "Декабр"
 
-#: ../src/contacts-contact-editor.vala:489
-#: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:177
+#: ../src/contacts-contact-editor.vala:498
+#: ../src/contacts-contact-editor.vala:505
+#: ../src/contacts-contact-pane.vala:399
+#: ../src/contacts-contact-sheet.vala:181
 msgid "Website"
 msgstr "Вебсайт"
 
-#: ../src/contacts-contact-editor.vala:515
-#: ../src/contacts-contact-editor.vala:522
-#: ../src/contacts-contact-pane.vala:398
-#: ../src/contacts-contact-sheet.vala:191
+#: ../src/contacts-contact-editor.vala:524
+#: ../src/contacts-contact-editor.vala:531
+#: ../src/contacts-contact-pane.vala:404
+#: ../src/contacts-contact-sheet.vala:195
 msgid "Nickname"
 msgstr "Тахаллус"
 
-#: ../src/contacts-contact-editor.vala:542
-#: ../src/contacts-contact-editor.vala:549
-#: ../src/contacts-contact-pane.vala:403
-#: ../src/contacts-contact-sheet.vala:198
+#: ../src/contacts-contact-editor.vala:551
+#: ../src/contacts-contact-editor.vala:558
+#: ../src/contacts-contact-pane.vala:409
+#: ../src/contacts-contact-sheet.vala:202
 msgid "Birthday"
 msgstr "Зодрӯз"
 
-#: ../src/contacts-contact-editor.vala:563
-#: ../src/contacts-contact-editor.vala:570
-#: ../src/contacts-contact-sheet.vala:205
+#: ../src/contacts-contact-editor.vala:572
+#: ../src/contacts-contact-editor.vala:579
+#: ../src/contacts-contact-sheet.vala:209
 msgid "Note"
 msgstr "Тавзеҳ"
 
-#: ../src/contacts-contact-pane.vala:186
+#: ../src/contacts-contact-pane.vala:189
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Оё %s аз %s ба ин ҷо тааллуқ дорад?"
 
-#: ../src/contacts-contact-pane.vala:188
+#: ../src/contacts-contact-pane.vala:191
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "Оё ин тафсилот ба %s тааллуқ дорад?"
 
-#: ../src/contacts-contact-pane.vala:199
+#: ../src/contacts-contact-pane.vala:202
 msgid "Yes"
 msgstr "Ҳа"
 
-#: ../src/contacts-contact-pane.vala:200
+#: ../src/contacts-contact-pane.vala:203
 msgid "No"
 msgstr "Не"
 
-#: ../src/contacts-contact-pane.vala:352
+#: ../src/contacts-contact-pane.vala:358
 msgid "New Detail"
 msgstr "Тафсилоти нав"
 
 #. building menu
-#: ../src/contacts-contact-pane.vala:366
+#: ../src/contacts-contact-pane.vala:372
 msgid "Personal email"
 msgstr "Почтаи электронии шахсӣ"
 
-#: ../src/contacts-contact-pane.vala:371
+#: ../src/contacts-contact-pane.vala:377
 msgid "Work email"
 msgstr "Почтаи электронии корӣ"
 
-#: ../src/contacts-contact-pane.vala:377
+#: ../src/contacts-contact-pane.vala:383
 msgid "Mobile phone"
 msgstr "Телефони мобилӣ"
 
-#: ../src/contacts-contact-pane.vala:382
+#: ../src/contacts-contact-pane.vala:388
 msgid "Home phone"
 msgstr "Телефони хонагӣ"
 
-#: ../src/contacts-contact-pane.vala:387
+#: ../src/contacts-contact-pane.vala:393
 msgid "Work phone"
 msgstr "Телефони корӣ"
 
-#: ../src/contacts-contact-pane.vala:393 ../src/contacts-list-pane.vala:125
-msgid "Link"
-msgstr "Пайванд"
-
-#: ../src/contacts-contact-pane.vala:409
+#: ../src/contacts-contact-pane.vala:415
 msgid "Home address"
 msgstr "Суроғаи хона"
 
-#: ../src/contacts-contact-pane.vala:414
+#: ../src/contacts-contact-pane.vala:420
 msgid "Work address"
 msgstr "Суроғаи корхона"
 
-#: ../src/contacts-contact-pane.vala:420
+#: ../src/contacts-contact-pane.vala:426
 msgid "Notes"
 msgstr "Тавзеҳҳо"
 
-#: ../src/contacts-contact-pane.vala:436
+#: ../src/contacts-contact-pane.vala:445
 msgid "Linked Accounts"
 msgstr "Ҳисобҳои пайвандшуда"
 
-#: ../src/contacts-contact-pane.vala:448
+#: ../src/contacts-contact-pane.vala:457
 msgid "Remove Contact"
 msgstr "Тоза кардани тамос"
 
-#: ../src/contacts-contact-pane.vala:513
-#, c-format
+#: ../src/contacts-contact-pane.vala:522
 msgid "Select a contact"
 msgstr "Интихоб кардани тамос"
 
@@ -487,7 +507,7 @@ msgid "You can manually link contacts from the contacts list"
 msgstr ""
 "Шумо метавонед тамосҳоро аз рӯйхати тамосҳо ба таври дасти пайваст кунед"
 
-#: ../src/contacts-linked-accounts-dialog.vala:102
+#: ../src/contacts-linked-accounts-dialog.vala:105
 msgid "Remove"
 msgstr "Тоза кардан"
 
@@ -495,7 +515,12 @@ msgstr "Тоза кардан"
 msgid "Type to search"
 msgstr "Барои ҷустуҷӯ кардан чоп кунед"
 
-#: ../src/contacts-list-pane.vala:128
+#. To translators: Link refers to the verb, from linking contacts together
+#: ../src/contacts-list-pane.vala:126
+msgid "Link"
+msgstr "Пайванд"
+
+#: ../src/contacts-list-pane.vala:129
 msgid "Delete"
 msgstr "Нест кардан"
 
@@ -559,7 +584,7 @@ msgstr "Тамоси эҷодшудаи нав ёфт нашудааст\n"
 msgid "Contacts Setup"
 msgstr "Танзими тамосҳо"
 
-#: ../src/contacts-setup-window.vala:69
+#: ../src/contacts-setup-window.vala:71
 msgid "Please select your primary contacts account"
 msgstr "Лутфан, ҳисоби тамосҳои асосии худро интихоб кунед"
 
