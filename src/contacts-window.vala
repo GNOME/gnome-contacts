@@ -64,6 +64,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public Window (Gtk.Application app) {
     Object (application: app);
 
+    string layout_desc;
+    string[] tokens;
+
+    layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
+    tokens = layout_desc.split (":", 2);
+    if (tokens != null) {
+      right_toolbar.decoration_layout = ":%s".printf (tokens[1]);
+      left_toolbar.decoration_layout = tokens[0];
+    }
   }
 
   public void activate_selection_mode (bool active) {
