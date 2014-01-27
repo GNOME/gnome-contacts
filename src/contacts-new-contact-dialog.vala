@@ -98,7 +98,7 @@ public class Contacts.NewContactDialog : Dialog {
     email_entries = new Gee.ArrayList<Entry>();
     email_combos = new Gee.ArrayList<TypeCombo>();
 
-    pack_entry_combo (email_entries, email_combos, TypeSet.general, ref y);
+    pack_entry_combo (email_entries, email_combos, TypeSet.email, ref y);
 
     pack_spacing (12, ref y);
 
@@ -176,7 +176,11 @@ public class Contacts.NewContactDialog : Dialog {
     combos.add (combo);
     grid.attach (combo, 2, row, 1, 1);
 
-    combo.set_to ("HOME");
+    if ( type_set == TypeSet.email ) {
+       combo.set_to ("PERSONAL");
+    } else {
+       combo.set_to ("HOME");
+    }
 
     row++;
   }
