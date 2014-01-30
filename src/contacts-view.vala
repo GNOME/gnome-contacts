@@ -265,7 +265,11 @@ public class Contacts.View : ListBox {
     data.destroy ();
   }
 
+#if VALA_0_24
+  public override void row_selected (ListBoxRow? row) {
+#else
   public override void row_selected (ListBoxRow row) {
+#endif
     var data = row as ContactDataRow;
     var contact = data != null ? data.contact : null;
     selection_changed (contact);
