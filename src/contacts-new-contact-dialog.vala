@@ -131,7 +131,7 @@ public class Contacts.NewContactDialog : Dialog {
 
     Utils.add_menu_item (menu, _("Email")).activate.connect ( () => {
 	int row = row_after (email_entries.get (email_entries.size - 1));
-	pack_entry_combo (email_entries, email_combos, TypeSet.general, ref row);
+	pack_entry_combo (email_entries, email_combos, TypeSet.email, ref row);
 	grid.show_all ();
       });
     Utils.add_menu_item (menu, _("Phone")).activate.connect ( () => {
