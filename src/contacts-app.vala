@@ -30,6 +30,8 @@ public class Contacts.App : Gtk.Application {
   private ListPane list_pane;
   private ContactPane contacts_pane;
 
+  private bool app_menu_created;
+
   private bool window_delete_event (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
     contacts_pane.show_contact (null);
@@ -210,9 +212,9 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
-  private void create_window () {
+  private void create_app_menu () {
     var action = new GLib.SimpleAction ("quit", null);
-    action.activate.connect (() => { window.destroy (); });
+    action.activate.connect (() => { this.quit (); });
     this.add_action (action);
 
     action = new GLib.SimpleAction ("help", null);
@@ -235,7 +237,9 @@ public class Contacts.App : Gtk.Application {
 
     var builder = load_ui ("app-menu.ui");
     set_app_menu ((MenuModel)builder.get_object ("app-menu"));
+  }
 
+  private void create_window () {
     window = new Contacts.Window (this);
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);
@@ -306,24 +310,35 @@ public class Contacts.App : Gtk.Application {
   }
 
   public override void startup () {
+
     ensure_eds_accounts ();
     contacts_store = new Store ();
     base.startup ();
   }
 
   private void show_setup () {
+    var change_book_action = this.lookup_action ("change_book") as GLib.SimpleAction;
+    change_book_action.set_enabled (false);
+
     var setup = new SetupWindow ();
     setup.set_application (this);
     setup.destroy.connect ( () => {
         setup.destroy ();
-        if (setup.succeeded)
+        if (setup.succeeded) {
+          change_book_action.set_enabled (true);
           this.activate ();
+        }
       });
     setup.show ();
   }
 
   public override void activate () {
     if (window == null) {
+      if (!app_menu_created) {
+        create_app_menu ();
+        app_menu_created = true;
+      }
+
       if (!settings.get_boolean ("did-initial-setup")) {
         if (contacts_store.is_prepared)
           show_setup ();
@@ -580,5 +595,6 @@ public class Contacts.App : Gtk.Application {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
     app = this;
     settings = new GLib.Settings ("org.gnome.Contacts");
+    app_menu_created = false;
   }
 }
