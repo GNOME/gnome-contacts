@@ -45,7 +45,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_hexpand (true);
     scrolled.set_vexpand (true);
-    scrolled.set_shadow_type (ShadowType.NONE);
+    scrolled.set_shadow_type (ShadowType.IN);
 
     linked_accounts_view = new ListBox ();
     linked_accounts_view.set_selection_mode (SelectionMode.NONE);
