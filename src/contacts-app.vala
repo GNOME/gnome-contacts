@@ -116,11 +116,11 @@ public class Contacts.App : Gtk.Application {
 
     var header = new HeaderBar ();
     header.set_title (_("Primary Contacts Account"));
+    header.get_style_context ().add_class ("titlebar");
+
     var cancel_button = new Button.with_label (_("Cancel"));
     cancel_button.valign = Gtk.Align.CENTER;
-    cancel_button.get_child ().margin = 3;
-    cancel_button.get_child ().margin_start = 6;
-    cancel_button.get_child ().margin_end = 6;
+    cancel_button.get_style_context ().add_class ("text-button");
     cancel_button.clicked.connect (() => {
 	dialog.response (ResponseType.CANCEL);
       });
@@ -129,9 +129,7 @@ public class Contacts.App : Gtk.Application {
     var done_button = new Button.with_label (_("Done"));
     done_button.valign = Gtk.Align.CENTER;
     done_button.get_style_context ().add_class ("suggested-action");
-    done_button.get_child ().margin = 3;
-    done_button.get_child ().margin_start = 6;
-    done_button.get_child ().margin_end = 6;
+    done_button.get_style_context ().add_class ("text-button");
     done_button.clicked.connect (() => {
 	dialog.response (ResponseType.OK);
       });
