@@ -41,8 +41,8 @@ public class Contacts.SetupWindow : Gtk.Window {
     var cancel_button = new Button.with_label (_("Cancel"));
     cancel_button.valign = Gtk.Align.CENTER;
     cancel_button.get_child ().margin = 3;
-    cancel_button.get_child ().margin_left = 6;
-    cancel_button.get_child ().margin_right = 6;
+    cancel_button.get_child ().margin_start = 6;
+    cancel_button.get_child ().margin_end = 6;
     titlebar.pack_start (cancel_button);
     cancel_button.clicked.connect ( (button) => {
 	this.destroy ();
@@ -55,8 +55,8 @@ public class Contacts.SetupWindow : Gtk.Window {
     done_button = new Button.with_label (_("Done"));
     done_button.valign = Gtk.Align.CENTER;
     done_button.get_child ().margin = 3;
-    done_button.get_child ().margin_left = 6;
-    done_button.get_child ().margin_right = 6;
+    done_button.get_child ().margin_start = 6;
+    done_button.get_child ().margin_end = 6;
     done_button.set_sensitive (false);
     titlebar.pack_end (done_button);
 

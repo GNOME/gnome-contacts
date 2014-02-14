@@ -268,10 +268,7 @@ public class Contacts.ContactEditor : Grid {
     var title_label = new Label (title);
     title_label.set_hexpand (false);
     title_label.set_halign (Align.START);
-    if (title_label.get_direction () == TextDirection.LTR)
-      title_label.margin_right = 6;
-    else
-      title_label.margin_left = 6;
+    title_label.margin_end = 6;
     attach (title_label, 0, row, 1, 1);
 
     var value_entry = new Entry ();
@@ -304,10 +301,7 @@ public class Contacts.ContactEditor : Grid {
     title_label.set_halign (Align.START);
     title_label.set_valign (Align.START);
     title_label.margin_top = 3;
-    if (title_label.get_direction () == TextDirection.LTR)
-      title_label.margin_right = 6;
-    else
-      title_label.margin_left = 6;
+    title_label.margin_end = 6;
     attach (title_label, 0, row, 1, 1);
 
     var sw = new ScrolledWindow (null, null);
@@ -344,10 +338,7 @@ public class Contacts.ContactEditor : Grid {
     var title_label = new Label (title);
     title_label.set_hexpand (false);
     title_label.set_halign (Align.START);
-    if (title_label.get_direction () == TextDirection.LTR)
-      title_label.margin_right = 6;
-    else
-      title_label.margin_left = 6;
+    title_label.margin_end = 6;
     attach (title_label, 0, row, 1, 1);
 
     var box = new Grid ();
@@ -696,10 +687,7 @@ public class Contacts.ContactEditor : Grid {
 						      Contact.format_persona_store_name_for_contact (p)));
 	store_name.set_halign (Align.START);
 	store_name.xalign = 0.0f;
-	if (store_name.get_direction () == TextDirection.LTR)
-	  store_name.margin_left = 6;
-	else
-	  store_name.margin_right = 6;
+	store_name.margin_start = 6;
 	attach (store_name, 0, i, 2, 1);
 	last_store_position = ++i;
       }

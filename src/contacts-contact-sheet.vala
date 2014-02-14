@@ -61,10 +61,7 @@ public class Contacts.ContactSheet : Grid {
 
     /* FIXME: hardcode gap to match the button size */
     type_label.margin_top = 3;
-    if (value_label.get_direction () == TextDirection.LTR)
-      value_label.margin_left = 6;
-    else
-      value_label.margin_right = 6;
+    value_label.margin_start = 6;
     value_label.margin_top = 3;
     value_label.margin_bottom = 3;
 
@@ -93,10 +90,7 @@ public class Contacts.ContactSheet : Grid {
     name_label.set_hexpand (true);
     name_label.set_halign (Align.START);
     name_label.set_valign (Align.CENTER);
-    if (name_label.get_direction () == TextDirection.LTR)
-      name_label.margin_left = 6;
-    else
-      name_label.margin_right = 6;
+    name_label.margin_start = 6;
     name_label.set_ellipsize (Pango.EllipsizeMode.END);
     name_label.xalign = 0.0f;
 
@@ -118,10 +112,7 @@ public class Contacts.ContactSheet : Grid {
 						      Contact.format_persona_store_name_for_contact (p)));
 	store_name.set_halign (Align.START);
 	store_name.xalign = 0.0f;
-	if (store_name.get_direction () == TextDirection.LTR)
-	  store_name.margin_left = 6;
-	else
-	  store_name.margin_right = 6;
+	store_name.margin_start = 6;
 	attach (store_name, 0, i, 3, 1);
 	last_store_position = ++i;
       }

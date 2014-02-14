@@ -174,10 +174,7 @@ public class Contacts.ContactPane : Notebook {
     var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
     image_frame.set_hexpand (false);
     image_frame.margin = 24;
-    if (image_frame.get_direction () == TextDirection.LTR)
-      image_frame.margin_right = 12;
-    else
-      image_frame.margin_left = 12;
+    image_frame.margin_end = 12;
     c.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (c.individual, c);
       });
@@ -223,10 +220,7 @@ public class Contacts.ContactPane : Notebook {
     bbox.set_halign (Align.END);
     bbox.set_hexpand (true);
     bbox.margin = 24;
-    if (bbox.get_direction () == TextDirection.LTR)
-      bbox.margin_left = 12;
-    else
-      bbox.margin_right = 12;
+    bbox.margin_start = 12;
     suggestion_grid.attach (bbox, 2, 0, 1, 2);
     suggestion_grid.show_all ();
   }
@@ -435,10 +429,7 @@ public class Contacts.ContactPane : Notebook {
 
     var tool_item = new ToolItem ();
     tool_item.add (add_detail_button);
-    if (tool_item.get_direction () == TextDirection.LTR)
-      tool_item.margin_right = 12;
-    else
-      tool_item.margin_left = 12;
+    tool_item.margin_end = 12;
     edit_toolbar.insert (tool_item, -1);
 
     tool_item = new ToolItem ();
