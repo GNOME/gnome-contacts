@@ -68,7 +68,7 @@ public class Contacts.NewContactDialog : Dialog {
     grid.set_border_width (12);
     grid.set_column_spacing (10);
     grid.set_row_spacing (4);
-    scrolled.add_with_viewport (grid);
+    scrolled.add (grid);
 
     var frame = new Frame (null);
     frame.set_size_request (96, 96);

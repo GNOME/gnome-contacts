@@ -171,8 +171,8 @@ public class Contacts.AvatarDialog : Dialog {
       if (pixbuf != null)
 	preview.set_from_pixbuf (pixbuf);
       else
-	preview.set_from_stock ("dialog-question",
-				IconSize.DIALOG);
+	preview.set_from_icon_name ("dialog-question",
+				    IconSize.DIALOG);
     }
 
     chooser.set_preview_widget_active (true);
@@ -292,7 +292,7 @@ public class Contacts.AvatarDialog : Dialog {
     frame_grid.add (scrolled);
 
     view_grid = new Grid ();
-    scrolled.add_with_viewport (view_grid);
+    scrolled.add (view_grid);
 
     var toolbar = new Toolbar ();
     toolbar.get_style_context ().add_class (STYLE_CLASS_INLINE_TOOLBAR);

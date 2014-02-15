@@ -296,7 +296,7 @@ public class Contacts.ContactPane : Notebook {
     sheet.margin = 36;
     sheet.set_margin_bottom (24);
 
-    main_sw.add_with_viewport (hcenter);
+    main_sw.add (hcenter);
     sheet.set_focus_vadjustment (main_sw.get_vadjustment ());
 
     main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
@@ -334,7 +334,7 @@ public class Contacts.ContactPane : Notebook {
 
     editor.margin = 36;
     editor.set_margin_bottom (24);
-    main_sw.add_with_viewport (hcenter);
+    main_sw.add (hcenter);
     editor.set_focus_vadjustment (main_sw.get_vadjustment ());
 
     main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
@@ -486,9 +486,7 @@ public class Contacts.ContactPane : Notebook {
   }
 
   void show_no_selection_frame () {
-    if ( icon_size_from_name ("ULTRABIG") == 0) {
-      icon_size_register ("ULTRABIG", 144, 144);
-
+    if (no_selection_frame == null) {
       no_selection_frame = new Frame (null);
       no_selection_frame.set_shadow_type (ShadowType.NONE);
       no_selection_frame.set_size_request (500, -1);
@@ -505,7 +503,10 @@ public class Contacts.ContactPane : Notebook {
       box.set_hexpand (true);
       box.margin_bottom = 60;
 
-      var image = new Image.from_icon_name ("avatar-default-symbolic", icon_size_from_name ("ULTRABIG"));
+      var icon_theme = IconTheme.get_default ();
+      var pix = icon_theme.load_icon ("avatar-default-symbolic", 144, 0);
+
+      var image = new Image.from_pixbuf (pix);
       image.get_style_context ().add_class ("contacts-watermark");
       box.add (image);
 
