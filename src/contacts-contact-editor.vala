@@ -158,8 +158,10 @@ public class Contacts.ContactEditor : Grid {
       text.get_buffer ().get_start_iter (out start);
       text.get_buffer ().get_end_iter (out end);
       var value = text.get_buffer ().get_text (start, end, true);
-      var details = new NoteFieldDetails (value, row_entry.value.details.parameters);
-      new_details.add (details);
+      if (value != "") {
+        var details = new NoteFieldDetails (value, row_entry.value.details.parameters);
+        new_details.add (details);
+      }
     }
     var new_value = Value (new_details.get_type ());
     new_value.set_object (new_details);
