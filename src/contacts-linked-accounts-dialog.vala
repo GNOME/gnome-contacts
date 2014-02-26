@@ -99,7 +99,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       store_name.get_style_context ().add_class ("dim-label");
       row_grid.attach (store_name, 1, 1, 1, 1);
 
-      var button = new Button.with_label (_("Remove"));
+      var button = new Button.with_label (_("Unlink"));
       button.margin = 6;
       button.margin_start = 12;
       button.set_valign (Align.CENTER);
