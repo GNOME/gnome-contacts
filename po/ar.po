@@ -1,12 +1,12 @@
 # Abderrahim Kitouni <a.kitouni@gmail.com>, 2011.
 # Ibrahim Saed <ibraheem5000@gmail.com>, 2012.
-# Khaled Hosny <khaledhosny@eglug.org>, 2012, 2013.
+# Khaled Hosny <khaledhosny@eglug.org>, 2012, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-09 18:03+0200\n"
-"PO-Revision-Date: 2013-03-09 18:03+0200\n"
+"POT-Creation-Date: 2014-03-04 03:05+0200\n"
+"PO-Revision-Date: 2014-03-04 03:05+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -15,64 +15,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.7.0\n"
+"X-Generator: Virtaal 1.0.0-beta1\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:285
-#: ../src/main.vala:28
+#: ../data/gnome-contacts.appdata.xml.in.h:1
+msgid ""
+"Contacts keeps and organize your contacts information. You can create, edit, "
+"delete and link together pieces of information about your contacts. Contacts "
+"aggregates the details from all your sources providing a centralized place "
+"for managing your contacts."
+msgstr ""
+
+#: ../data/gnome-contacts.appdata.xml.in.h:2
+msgid ""
+"Contacts will also integrate with online address books and automatically "
+"link contacts from different online sources."
+msgstr ""
+
+#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "المتراسلين"
 
 #: ../data/gnome-contacts.desktop.in.in.h:2
+msgid "A contacts manager for GNOME"
+msgstr "مدير متراسلين لجنوم"
+
+#: ../data/gnome-contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr "أصدقاء;دفتر عناوين;"
 
 #: ../src/app-menu.ui.h:1
-msgid "View"
-msgstr "عرض"
-
-#: ../src/app-menu.ui.h:2
-msgid "Main contacts"
-msgstr "المتراسلين الرئيسيين"
-
-#: ../src/app-menu.ui.h:3
-msgid "All contacts"
-msgstr "كل المتراسلين"
-
-#: ../src/app-menu.ui.h:4
 msgid "_Change Address Book..."
 msgstr "_غيّر دفتر العناوين..."
 
-#: ../src/app-menu.ui.h:5
-msgid "_About Contacts"
-msgstr "_عَنْ المتراسلين"
-
-#: ../src/app-menu.ui.h:6
+#: ../src/app-menu.ui.h:2
 msgid "_Help"
 msgstr "_مساعدة"
 
-#: ../src/app-menu.ui.h:7
+#: ../src/app-menu.ui.h:3
+msgid "_About"
+msgstr "_عن"
+
+#: ../src/app-menu.ui.h:4
 msgid "_Quit"
 msgstr "أُ_خرج"
 
-#: ../src/contacts-app.vala:108
+#: ../src/contacts-accounts-list.vala:48
+msgid "Online Accounts"
+msgstr "حسابات الإنترنت"
+
+#: ../src/contacts-accounts-list.vala:175 ../src/contacts-esd-setup.c:118
+msgid "Local Address Book"
+msgstr "دفتر عناوين محلّي"
+
+#: ../src/contacts-app.vala:100
 #, c-format
 msgid "No contact with id %s found"
 msgstr "لم يُعثر على متراسل بالمعرف %s"
 
-#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
+#: ../src/contacts-app.vala:101 ../src/contacts-app.vala:207
 msgid "Contact not found"
 msgstr "لم يُعثر على المتراسل"
 
 #: ../src/contacts-app.vala:118
-msgid "Change Address Book"
-msgstr "غيّر دفتر العناوين"
+msgid "Primary Contacts Account"
+msgstr "حساب المتراسل الأساسي"
 
-#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
-msgid "Select"
-msgstr "اختر"
+#: ../src/contacts-app.vala:119 ../src/contacts-setup-window.vala:41
+msgid "Cancel"
+msgstr "ألغِ"
 
-#: ../src/contacts-app.vala:211
+#: ../src/contacts-app.vala:129 ../src/contacts-setup-window.vala:55
+#: ../src/contacts-window.ui.h:3
+msgid "Done"
+msgstr "تم"
+
+#: ../src/contacts-app.vala:186
 msgid "translator-credits"
 msgstr ""
 "فريق عربآيز للترجمة http://www.arabeyes.org :\n"
@@ -80,40 +98,44 @@ msgstr ""
 "إبراهيم سعيد\t\t<ibraheem5000@gmail.com>\n"
 "خالد حسني\t\t<khaledhosny@eglug.org>"
 
-#: ../src/contacts-app.vala:212
+#: ../src/contacts-app.vala:187
 msgid "GNOME Contacts"
 msgstr "متراسلي جنوم"
 
-#: ../src/contacts-app.vala:213
+#: ../src/contacts-app.vala:188
 msgid "About GNOME Contacts"
 msgstr "عَنْ متراسلي جنوم"
 
-#: ../src/contacts-app.vala:214
+#: ../src/contacts-app.vala:189
 msgid "Contact Management Application"
 msgstr "تطبيق لإدارة المتراسلين"
 
-#: ../src/contacts-app.vala:232
+#: ../src/contacts-app.vala:206
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "لم يُعثر على متراسل بعنوان البريد الإلكتروني %s"
 
-#: ../src/contacts-app.vala:299
-msgid "New"
-msgstr "جديد"
+#: ../src/contacts-app.vala:263 ../src/contacts-window.vala:85
+msgid "Select"
+msgstr "اختر"
 
-#: ../src/contacts-app.vala:326
-msgid "Edit"
-msgstr "حرّر"
+#: ../src/contacts-app.vala:265
+#, c-format
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "لا عناصر مُختارة"
+msgstr[1] "واحد مُختار"
+msgstr[2] "اثنين مُختارين"
+msgstr[3] "%d مُختارة"
+msgstr[4] "%d مُختارًا"
+msgstr[5] "%d مُختار"
 
-#: ../src/contacts-app.vala:332
-msgid "Done"
-msgstr "تم"
+#: ../src/contacts-app.vala:294
+#, c-format
+msgid "Editing %s"
+msgstr "يُحرر %s"
 
-#: ../src/contacts-app.vala:381
-msgid "Editing"
-msgstr "يُحرر"
-
-#: ../src/contacts-app.vala:498
+#: ../src/contacts-app.vala:420
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -124,7 +146,12 @@ msgstr[3] "رُبط %d متراسلين"
 msgstr[4] "رُبط %d متراسلا"
 msgstr[5] "رُبط %d متراسل"
 
-#: ../src/contacts-app.vala:529
+#: ../src/contacts-app.vala:424 ../src/contacts-app.vala:456
+#: ../src/contacts-app.vala:497 ../src/contacts-app.vala:542
+msgid "_Undo"
+msgstr "_تراجع"
+
+#: ../src/contacts-app.vala:452
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -135,36 +162,45 @@ msgstr[3] "حُذِفَ %d متراسلين"
 msgstr[4] "حُذِفَ %d متراسلا"
 msgstr[5] "حُذِفَ %d متراسل"
 
-#: ../src/contacts-app.vala:570
+#: ../src/contacts-app.vala:494
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "حُذِفَ المتراسل: \"%s\""
 
-#: ../src/contacts-app.vala:596
+#: ../src/contacts-app.vala:522
 msgid "Show contact with this individual id"
 msgstr "اعرض متراسلا بالمُعرّف المُفرد هذا"
 
-#: ../src/contacts-app.vala:598
+#: ../src/contacts-app.vala:524
 msgid "Show contact with this email address"
 msgstr "اعرض متراسلا بعنوان البريد الإلكتروني هذا"
 
-#: ../src/contacts-app.vala:611
+#: ../src/contacts-app.vala:538
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s مرتبط بـ %s"
 
-#: ../src/contacts-app.vala:613
+#: ../src/contacts-app.vala:540
 #, c-format
 msgid "%s linked to the contact"
 msgstr "‏%s مرتبط بالمتراسل"
 
-#: ../src/contacts-app.vala:630
+#: ../src/contacts-app.vala:557
 msgid "— contact management"
 msgstr "— إدارة المتراسلين"
 
 #: ../src/contacts-avatar-dialog.vala:197
 msgid "Browse for more pictures"
 msgstr "تصفّح لمزيد من الصور"
+
+#: ../src/contacts-avatar-dialog.vala:200
+#: ../src/contacts-new-contact-dialog.vala:50
+msgid "_Cancel"
+msgstr "أ_لغِ"
+
+#: ../src/contacts-avatar-dialog.vala:201
+msgid "_Open"
+msgstr "ا_فتح"
 
 #: ../src/contacts-avatar-dialog.vala:244
 msgid "Select Picture"
@@ -175,300 +211,297 @@ msgstr "اختر صورة"
 msgid "Close"
 msgstr "أغلق"
 
-#: ../src/contacts-contact-editor.vala:352
+#: ../src/contacts-contact-editor.vala:354
 msgid "January"
 msgstr "يناير"
 
-#: ../src/contacts-contact-editor.vala:353
+#: ../src/contacts-contact-editor.vala:355
 msgid "February"
 msgstr "فبراير"
 
-#: ../src/contacts-contact-editor.vala:354
+#: ../src/contacts-contact-editor.vala:356
 msgid "March"
 msgstr "مارس"
 
-#: ../src/contacts-contact-editor.vala:355
+#: ../src/contacts-contact-editor.vala:357
 msgid "April"
 msgstr "أبريل"
 
-#: ../src/contacts-contact-editor.vala:356
+#: ../src/contacts-contact-editor.vala:358
 msgid "May"
 msgstr "مايو"
 
-#: ../src/contacts-contact-editor.vala:357
+#: ../src/contacts-contact-editor.vala:359
 msgid "June"
 msgstr "يونيو"
 
-#: ../src/contacts-contact-editor.vala:358
+#: ../src/contacts-contact-editor.vala:360
 msgid "July"
 msgstr "يوليو"
 
-#: ../src/contacts-contact-editor.vala:359
+#: ../src/contacts-contact-editor.vala:361
 msgid "August"
 msgstr "أغسطس"
 
-#: ../src/contacts-contact-editor.vala:360
+#: ../src/contacts-contact-editor.vala:362
 msgid "September"
 msgstr "سبتمبر"
 
-#: ../src/contacts-contact-editor.vala:361
+#: ../src/contacts-contact-editor.vala:363
 msgid "October"
 msgstr "أكتوبر"
 
-#: ../src/contacts-contact-editor.vala:362
+#: ../src/contacts-contact-editor.vala:364
 msgid "November"
 msgstr "نوفمبر"
 
-#: ../src/contacts-contact-editor.vala:363
+#: ../src/contacts-contact-editor.vala:365
 msgid "December"
 msgstr "ديسمبر"
 
-#: ../src/contacts-contact-editor.vala:489
-#: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:169
+#: ../src/contacts-contact-editor.vala:491
+#: ../src/contacts-contact-editor.vala:498
+#: ../src/contacts-contact-pane.vala:393
+#: ../src/contacts-contact-sheet.vala:172
 msgid "Website"
 msgstr "الموقع"
 
-#: ../src/contacts-contact-editor.vala:515
-#: ../src/contacts-contact-editor.vala:522
-#: ../src/contacts-contact-pane.vala:395
-#: ../src/contacts-contact-sheet.vala:179
+#: ../src/contacts-contact-editor.vala:517
+#: ../src/contacts-contact-editor.vala:524
+#: ../src/contacts-contact-pane.vala:398
+#: ../src/contacts-contact-sheet.vala:186
 msgid "Nickname"
 msgstr "اللقب"
 
-#: ../src/contacts-contact-editor.vala:542
-#: ../src/contacts-contact-editor.vala:549
-#: ../src/contacts-contact-pane.vala:400
-#: ../src/contacts-contact-sheet.vala:186
+#: ../src/contacts-contact-editor.vala:544
+#: ../src/contacts-contact-editor.vala:551
+#: ../src/contacts-contact-pane.vala:403
+#: ../src/contacts-contact-sheet.vala:193
 msgid "Birthday"
 msgstr "تاريخ الميلاد"
 
-#: ../src/contacts-contact-editor.vala:569
-#: ../src/contacts-contact-editor.vala:576
-#: ../src/contacts-contact-sheet.vala:193
+#: ../src/contacts-contact-editor.vala:565
+#: ../src/contacts-contact-editor.vala:572
+#: ../src/contacts-contact-sheet.vala:200
 msgid "Note"
 msgstr "ملاحظة"
 
-#: ../src/contacts-contact-pane.vala:183
+#: ../src/contacts-contact-pane.vala:186
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "هل %s من %s هو نفسه هذا الشخص؟"
 
-#: ../src/contacts-contact-pane.vala:185
+#: ../src/contacts-contact-pane.vala:188
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "هل تخُص هذه المعلومات %s؟"
 
-#: ../src/contacts-contact-pane.vala:196
+#: ../src/contacts-contact-pane.vala:199
 msgid "Yes"
 msgstr "نعم"
 
-#: ../src/contacts-contact-pane.vala:197
+#: ../src/contacts-contact-pane.vala:200
 msgid "No"
 msgstr "لا"
 
-#: ../src/contacts-contact-pane.vala:349
+#: ../src/contacts-contact-pane.vala:352
 msgid "New Detail"
 msgstr "معلومة جديدة"
 
 #. building menu
-#: ../src/contacts-contact-pane.vala:363
+#: ../src/contacts-contact-pane.vala:366
 msgid "Personal email"
 msgstr "البريد الشخصي"
 
-#: ../src/contacts-contact-pane.vala:368
+#: ../src/contacts-contact-pane.vala:371
 msgid "Work email"
 msgstr "بريد العمل"
 
-#: ../src/contacts-contact-pane.vala:374
+#: ../src/contacts-contact-pane.vala:377
 msgid "Mobile phone"
 msgstr "الهاتف المحمول"
 
-#: ../src/contacts-contact-pane.vala:379
+#: ../src/contacts-contact-pane.vala:382
 msgid "Home phone"
 msgstr "هاتف المنزل"
 
-#: ../src/contacts-contact-pane.vala:384
+#: ../src/contacts-contact-pane.vala:387
 msgid "Work phone"
 msgstr "هاتف العمل"
 
-#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:140
-msgid "Link"
-msgstr "ربط"
-
-#: ../src/contacts-contact-pane.vala:406
+#: ../src/contacts-contact-pane.vala:409
 msgid "Home address"
 msgstr "عنوان المنزل"
 
-#: ../src/contacts-contact-pane.vala:411
+#: ../src/contacts-contact-pane.vala:414
 msgid "Work address"
 msgstr "عنوان العمل"
 
-#: ../src/contacts-contact-pane.vala:417
+#: ../src/contacts-contact-pane.vala:420
 msgid "Notes"
 msgstr "ملاحظات"
 
-#: ../src/contacts-contact-pane.vala:434
+#: ../src/contacts-contact-pane.vala:436
 msgid "Linked Accounts"
 msgstr "حسابات الإنترنت"
 
-#: ../src/contacts-contact-pane.vala:446
+#: ../src/contacts-contact-pane.vala:448
 msgid "Remove Contact"
 msgstr "احذف المتراسل"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact-pane.vala:514
+msgid "Select a contact"
+msgstr "اختر متراسلًا"
+
+#: ../src/contacts-contact.vala:674
 msgid "Street"
 msgstr "الشارع"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Extension"
 msgstr "الامتداد"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "City"
 msgstr "المدينة"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "State/Province"
 msgstr "الولاية/المحافظة"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Zip/Postal Code"
 msgstr "الرمز البريدي"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "PO box"
 msgstr "صندوق البريد"
 
-#: ../src/contacts-contact.vala:675
+#: ../src/contacts-contact.vala:674
 msgid "Country"
 msgstr "البلد"
 
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:730
 msgid "Google Talk"
 msgstr "محادثة جووجل"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:731
 msgid "Ovi Chat"
 msgstr "دردشة Ovi"
 
-#: ../src/contacts-contact.vala:733 ../src/contacts-contact.vala:1017
+#: ../src/contacts-contact.vala:732 ../src/contacts-contact.vala:1016
 msgid "Facebook"
 msgstr "فيس بوك"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:733
 msgid "Livejournal"
 msgstr "‏Livejournal"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:734
 msgid "AOL Instant Messenger"
 msgstr "مراسلة AOL الفورية"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:735
 msgid "Gadu-Gadu"
 msgstr "‏Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:736
 msgid "Novell Groupwise"
 msgstr "‏Novell Groupwise"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:737
 msgid "ICQ"
 msgstr "‏ICQ"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:738
 msgid "IRC"
 msgstr "‏IRC"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:739
 msgid "Jabber"
 msgstr "جابِّر"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:740
 msgid "Local network"
 msgstr "الشبكة المحلّية"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:741
 msgid "Windows Live Messenger"
 msgstr "مِرسال وندوز لايف"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:742
 msgid "MySpace"
 msgstr "‏MySpace"
 
-#: ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:743
 msgid "MXit"
 msgstr "‏MXit"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:744
 msgid "Napster"
 msgstr "‏Napster"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:745
 msgid "Tencent QQ"
 msgstr "‏Tencent QQ"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:746
 msgid "IBM Lotus Sametime"
 msgstr "‏IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:747
 msgid "SILC"
 msgstr "‏SILC"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:748
 msgid "sip"
 msgstr "‏sip"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:749
 msgid "Skype"
 msgstr "سكايب"
 
-#: ../src/contacts-contact.vala:751
+#: ../src/contacts-contact.vala:750
 msgid "Telephony"
 msgstr "الهاتف"
 
-#: ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:751
 msgid "Trepia"
 msgstr "‏Trepia"
 
-#: ../src/contacts-contact.vala:753 ../src/contacts-contact.vala:754
+#: ../src/contacts-contact.vala:752 ../src/contacts-contact.vala:753
 msgid "Yahoo! Messenger"
 msgstr "مِرسال Yahoo!"
 
-#: ../src/contacts-contact.vala:755
+#: ../src/contacts-contact.vala:754
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1020
+#: ../src/contacts-contact.vala:1019
 msgid "Twitter"
 msgstr "تويتر"
 
-#: ../src/contacts-contact.vala:1023
+#: ../src/contacts-contact.vala:1022
 msgid "Google Profile"
 msgstr "حساب جوجل"
 
-#: ../src/contacts-contact.vala:1087
+#: ../src/contacts-contact.vala:1086
 msgid "Unexpected internal error: created contact was not found"
 msgstr "خطأ داخلي غير مُتوقع: لم يُعثر على المتراسل المُنشأ"
 
-#: ../src/contacts-contact.vala:1261
+#: ../src/contacts-contact.vala:1260
 msgid "Google Circles"
 msgstr "دوائر جوجل"
 
-#: ../src/contacts-contact.vala:1263
+#: ../src/contacts-contact.vala:1262
 msgid "Google Other Contact"
 msgstr "متراسل جوجل آخر"
 
-#: ../src/contacts-esd-setup.c:114
-msgid "Local Address Book"
-msgstr "دفتر عناوين محلّي"
-
-#: ../src/contacts-esd-setup.c:117 ../src/contacts-esd-setup.c:145
+#: ../src/contacts-esd-setup.c:121 ../src/contacts-esd-setup.c:149
 msgid "Google"
 msgstr "جوجل"
 
-#: ../src/contacts-esd-setup.c:142
+#: ../src/contacts-esd-setup.c:146
 msgid "Local Contact"
 msgstr "متراسلا محلّيا"
 
@@ -482,22 +515,31 @@ msgid "You can manually link contacts from the contacts list"
 msgstr "يمكنك ربط الحسابات يدويا من قائمة الحسابات"
 
 #: ../src/contacts-linked-accounts-dialog.vala:102
-msgid "Remove"
-msgstr "احذف"
+msgid "Unlink"
+msgstr "فُك الارتباط"
 
-#: ../src/contacts-list-pane.vala:143
+#: ../src/contacts-list-pane.vala:84
+msgid "Type to search"
+msgstr "اكتب نصا للبحث عنه"
+
+#. To translators: Link refers to the verb, from linking contacts together
+#: ../src/contacts-list-pane.vala:126
+msgid "Link"
+msgstr "ربط"
+
+#: ../src/contacts-list-pane.vala:129
 msgid "Delete"
 msgstr "احذف"
 
-#: ../src/contacts-new-contact-dialog.vala:35
+#: ../src/contacts-new-contact-dialog.vala:45
 msgid "New contact"
 msgstr "متراسل جديد"
 
-#: ../src/contacts-new-contact-dialog.vala:41
+#: ../src/contacts-new-contact-dialog.vala:51
 msgid "Create Contact"
 msgstr "أنشئ متراسلا"
 
-#: ../src/contacts-new-contact-dialog.vala:67
+#: ../src/contacts-new-contact-dialog.vala:77
 msgid ""
 "Add or \n"
 "select a picture"
@@ -505,74 +547,53 @@ msgstr ""
 "أضِف أو \n"
 "اختر صورة"
 
-#: ../src/contacts-new-contact-dialog.vala:78
+#: ../src/contacts-new-contact-dialog.vala:88
 msgid "Contact Name"
 msgstr "اسم المتراسل"
 
-#: ../src/contacts-new-contact-dialog.vala:86
-#: ../src/contacts-new-contact-dialog.vala:121
+#: ../src/contacts-new-contact-dialog.vala:96
+#: ../src/contacts-new-contact-dialog.vala:132
 msgid "Email"
 msgstr "بريد إلكتروني"
 
-#: ../src/contacts-new-contact-dialog.vala:95
-#: ../src/contacts-new-contact-dialog.vala:126
+#: ../src/contacts-new-contact-dialog.vala:105
+#: ../src/contacts-new-contact-dialog.vala:137
 msgid "Phone"
 msgstr "هاتف"
 
-#: ../src/contacts-new-contact-dialog.vala:104
-#: ../src/contacts-new-contact-dialog.vala:131
+#: ../src/contacts-new-contact-dialog.vala:114
+#: ../src/contacts-new-contact-dialog.vala:142
 msgid "Address"
 msgstr "عنوان"
 
-#: ../src/contacts-new-contact-dialog.vala:113
+#: ../src/contacts-new-contact-dialog.vala:124
 msgid "Add Detail"
 msgstr "أضف معلومة"
 
-#: ../src/contacts-new-contact-dialog.vala:212
+#: ../src/contacts-new-contact-dialog.vala:227
 msgid "You must specify a contact name"
 msgstr "ينبغي عليك تعيين اسم للمتراسل"
 
-#: ../src/contacts-new-contact-dialog.vala:320
+#: ../src/contacts-new-contact-dialog.vala:337
 msgid "No primary addressbook configured\n"
 msgstr "لم يُضبط أي دفتر عناوين أساسي\n"
 
-#: ../src/contacts-new-contact-dialog.vala:341
+#: ../src/contacts-new-contact-dialog.vala:358
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "تعذّر إنشاء متراسل جديد: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:352
+#: ../src/contacts-new-contact-dialog.vala:369
 msgid "Unable to find newly created contact\n"
 msgstr "تعذّر العثور على المتراسل المُنشأ حديثا\n"
 
-#: ../src/contacts-setup-window.vala:36
-msgid ""
-"Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr "مرحبًا بك في المتراسلين! رجاءً اختر أين تريد حفظ دفتر عناوينك:"
-
-#: ../src/contacts-setup-window.vala:81
-msgid "Online Account Settings"
-msgstr "إعدادات حسابات الإنترنت"
-
-#: ../src/contacts-setup-window.vala:86
-msgid "Setup an online account or use a local address book"
-msgstr "اضبط حساب إنترنت أو استخدم دفتر عناوين محلّي"
-
-#: ../src/contacts-setup-window.vala:89
-msgid "Online Accounts"
-msgstr "حسابات الإنترنت"
-
-#: ../src/contacts-setup-window.vala:92
-msgid "Use Local Address Book"
-msgstr "استخدم دفتر عناوين محلّي"
-
-#: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
+#: ../src/contacts-setup-window.vala:38
 msgid "Contacts Setup"
 msgstr "إعداد المتراسلين"
 
-#: ../src/contacts-setup-window.vala:137
-msgid "Cancel"
-msgstr "ألغِ"
+#: ../src/contacts-setup-window.vala:71
+msgid "Please select your primary contacts account"
+msgstr "من فضلك اختر حساب المتراسل الأساسي"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -650,13 +671,25 @@ msgstr "تلكس"
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:294
+#: ../src/contacts-view.vala:193
+msgid "No results matched search"
+msgstr "لا نتائج تطابق البحث"
+
+#: ../src/contacts-view.vala:297
 msgid "Suggestions"
 msgstr "الاقتراحات"
 
-#: ../src/contacts-view.vala:319
+#: ../src/contacts-view.vala:322
 msgid "Other Contacts"
 msgstr "متراسلين آخرين"
+
+#: ../src/contacts-window.ui.h:1 ../src/contacts-window.vala:92
+msgid "All Contacts"
+msgstr "كل المتراسلين"
+
+#: ../src/contacts-window.ui.h:2
+msgid "Edit"
+msgstr "حرّر"
 
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:1
 msgid "First-time setup done."
@@ -673,6 +706,38 @@ msgstr "اعرض جزءًا"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "اعرض جزءًا من المتراسلين"
+
+#~ msgid "View"
+#~ msgstr "عرض"
+
+#~ msgid "Main contacts"
+#~ msgstr "المتراسلين الرئيسيين"
+
+#~ msgid "_About Contacts"
+#~ msgstr "_عَنْ المتراسلين"
+
+#~ msgid "Change Address Book"
+#~ msgstr "غيّر دفتر العناوين"
+
+#~ msgid "New"
+#~ msgstr "جديد"
+
+#~ msgid "Remove"
+#~ msgstr "احذف"
+
+#~ msgid ""
+#~ "Welcome to Contacts! Please select where you want to keep your address "
+#~ "book:"
+#~ msgstr "مرحبًا بك في المتراسلين! رجاءً اختر أين تريد حفظ دفتر عناوينك:"
+
+#~ msgid "Online Account Settings"
+#~ msgstr "إعدادات حسابات الإنترنت"
+
+#~ msgid "Setup an online account or use a local address book"
+#~ msgstr "اضبط حساب إنترنت أو استخدم دفتر عناوين محلّي"
+
+#~ msgid "Use Local Address Book"
+#~ msgstr "استخدم دفتر عناوين محلّي"
 
 #~ msgctxt "Addresses on the Web"
 #~ msgid "Links"
@@ -694,9 +759,6 @@ msgstr "اعرض جزءًا من المتراسلين"
 #~ msgid "Add to My Contacts"
 #~ msgstr "أضِف إلى متراسليَّ"
 
-#~ msgid "Unlink"
-#~ msgstr "فُك الارتباط"
-
 #~ msgid "Add detail..."
 #~ msgstr "أضف معلومة..."
 
@@ -709,18 +771,12 @@ msgstr "اعرض جزءًا من المتراسلين"
 #~ msgid "Select what to call"
 #~ msgstr "اختر بم تتصل"
 
-#~ msgid "Select chat account"
-#~ msgstr "اختر حساب دردشة"
-
 #~ msgid "Add/Remove Linked Contacts..."
 #~ msgstr "أضف/أزِل متراسلين مرطبتين..."
 
 #~ msgctxt "contacts link action"
 #~ msgid "Link"
 #~ msgstr "اربط"
-
-#~ msgid "Undo"
-#~ msgstr "تراجع"
 
 #~ msgid "Link contacts to %s"
 #~ msgstr "اربط المتراسل مع %s"
