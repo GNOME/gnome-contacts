@@ -4,14 +4,14 @@
 #
 # Amanpreet Singh Alam <amanliunx@netscapet.net>, 2004.
 # Amanpreet Singh Alam <aalam@users.sf.net>, 2005, 2007, 2008.
-# A S Alam <aalam@users.sf.net>, 2009, 2010, 2011, 2012, 2013.
+# A S Alam <aalam@users.sf.net>, 2009, 2010, 2011, 2012, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-session.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-31 04:54+0000\n"
-"PO-Revision-Date: 2013-09-17 22:34-0500\n"
+"POT-Creation-Date: 2014-03-19 07:17+0000\n"
+"PO-Revision-Date: 2014-03-19 16:10-0500\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "Language: pa\n"
@@ -21,11 +21,39 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
+#: ../data/gnome-contacts.appdata.xml.in.h:1
+msgid ""
+"Contacts keeps and organize your contacts information. You can create, edit, "
+"delete and link together pieces of information about your contacts. Contacts "
+"aggregates the details from all your sources providing a centralized place "
+"for managing your contacts."
+msgstr ""
+"ਸੰਪਰਕ ਤੁਹਾਡੇ ਸੰਪਰਕਾਂ ਦੀ ਜਾਣਕਾਰੀ ਨੂੰ ਸੰਭਾਲਦੀ ਅਤੇ ਉਹਨਾਂ ਦਾ ਪ੍ਰਬੰਧ ਕਰਦੀ ਹੈ। "
+"ਤੁਸੀਂ ਆਪਣੇ ਸੰਪਰਕਾਂ "
+"ਬਾਰੇ ਜਾਣਕਾਰੀ ਦੇ ਭਾਗਾਂ ਨੂੰ ਬਣਾਉਣ, ਸੋਧਣ, ਹਟਾਉਣ ਅਤੇ ਆਪਸ ਵਿੱਚ ਜੋੜ ਸਕਦੇ ਹੋ। ਸੰਪਰਕ "
+"ਤੁਹਾਡੇ "
+"ਸੰਪਰਕਾਂ ਦੇ ਪ੍ਰਬੰਧ ਲਈ ਇੱਕ ਸਾਂਝੀ ਥਾਂ ਉਪਲੱਬਧ ਕਰਵਾਉਣ ਤੁਹਾਡੇ ਸਭ ਸਰੋਤਾਂ ਤੋਂ ਵੇਰਵੇ "
+"ਨੂੰ ਇੱਕਠਾ ਕਰਦੇ ਹਨ।"
+
+#: ../data/gnome-contacts.appdata.xml.in.h:2
+msgid ""
+"Contacts will also integrate with online address books and automatically "
+"link contacts from different online sources."
+msgstr ""
+"ਸੰਪਰਕ ਆਨਲਾਈਨ ਸਿਰਨਾਵਾਂ ਕਿਤਾਬਾਂ ਨਾਲ ਜੁੜ ਸਕਦੀ ਹੈ ਅਤੇ ਸੰਪਰਕਾਂ ਨੂੰ ਵੱਖ-ਵੱਖ ਆਨਲਾਈਨ "
+"ਸਰੋਤਾਂ ਤੋਂ "
+"ਆਪਣੇ-ਆਪ ਲਿੰਕ ਕਰ ਸਕੇਗਾ।"
+
 #: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "ਸੰਪਰਕ"
 
 #: ../data/gnome-contacts.desktop.in.in.h:2
+#| msgid "— contact management"
+msgid "A contacts manager for GNOME"
+msgstr "ਗਨੋਮ ਲਈ ਸੰਪਰਕ ਮੈਨੇਜਰ"
+
+#: ../data/gnome-contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr "ਦੋਸਤ;ਮਿੱਤਰ;ਐਡਰੈਸਬੁੱਕ;ਸਿਰਨਾਵਾਂ;friends;address book;"
 
@@ -34,12 +62,12 @@ msgid "_Change Address Book..."
 msgstr "...ਐਡਰੈਸ ਬੁੱਕ ਬਦਲੋ(_C)"
 
 #: ../src/app-menu.ui.h:2
-msgid "_About Contacts"
-msgstr "ਸੰਪਰਕ ਬਾਰੇ(_A)"
-
-#: ../src/app-menu.ui.h:3
 msgid "_Help"
 msgstr "ਮੱਦਦ(_H)"
+
+#: ../src/app-menu.ui.h:3
+msgid "_About"
+msgstr "ਇਸ ਬਾਰੇ(_A)"
 
 #: ../src/app-menu.ui.h:4
 msgid "_Quit"
@@ -53,115 +81,112 @@ msgstr "ਆਨਲਾਈਨ ਅਕਾਊਂਟ"
 msgid "Local Address Book"
 msgstr "ਲੋਕਲ ਐਡਰੈਸ ਬੁੱਕ"
 
-#: ../src/contacts-app.vala:98
+#: ../src/contacts-app.vala:100
 #, c-format
 msgid "No contact with id %s found"
 msgstr "id %s ਨਾਲ ਕੋਈ ਸੰਪਰਕ ਨਹੀਂ ਲੱਭਿਆ"
 
-#: ../src/contacts-app.vala:99 ../src/contacts-app.vala:203
+#: ../src/contacts-app.vala:101 ../src/contacts-app.vala:207
 msgid "Contact not found"
 msgstr "ਸੰਪਰਕ ਨਹੀਂ ਲੱਭਿਆ"
 
-#: ../src/contacts-app.vala:116
+#: ../src/contacts-app.vala:118
 msgid "Primary Contacts Account"
 msgstr "ਮੁੱਢਲਾ (ਪ੍ਰਾਇਮਰੀ) ਸੰਪਰਕ ਅਕਾਊਂਟ"
 
 # gnome-session/splash.c:69
-#: ../src/contacts-app.vala:117 ../src/contacts-setup-window.vala:41
+#: ../src/contacts-app.vala:119 ../src/contacts-setup-window.vala:41
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../src/contacts-app.vala:126 ../src/contacts-setup-window.vala:54
+#: ../src/contacts-app.vala:129 ../src/contacts-setup-window.vala:55
 #: ../src/contacts-window.ui.h:3
 msgid "Done"
 msgstr "ਮੁਕੰਮਲ"
 
-#: ../src/contacts-app.vala:182
+#: ../src/contacts-app.vala:186
 msgid "translator-credits"
 msgstr ""
 "ਅਮਨਪਰੀਤ ਸਿੰਘ ਆਲਮ\n"
 "ਪੰਜਾਬੀ ਓਪਨਸੋਰਸ ਟੀਮ (POST)"
 
-#: ../src/contacts-app.vala:183
+#: ../src/contacts-app.vala:187
 msgid "GNOME Contacts"
 msgstr "ਗਨੋਮ ਸੰਪਰਕ"
 
-#: ../src/contacts-app.vala:184
+#: ../src/contacts-app.vala:188
 msgid "About GNOME Contacts"
 msgstr "ਗਨੋਮ ਸੰਪਰਕ ਬਾਰੇ"
 
 # gnome-session/session-properties-capplet.c:332
-#: ../src/contacts-app.vala:185
+#: ../src/contacts-app.vala:189
 msgid "Contact Management Application"
 msgstr "ਸੰਪਰਕ ਪਰਬੰਧ ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../src/contacts-app.vala:202
+#: ../src/contacts-app.vala:206
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "%s ਈਮੇਲ ਐਡਰੈਸ ਨਾਲ ਕੋਈ ਸੰਪਰਕ ਨਹੀਂ ਲੱਭਿਆ"
 
-#: ../src/contacts-app.vala:257 ../src/contacts-window.vala:76
+#: ../src/contacts-app.vala:263 ../src/contacts-window.vala:85
 msgid "Select"
 msgstr "ਚੁਣੋ"
 
-#: ../src/contacts-app.vala:259
+#: ../src/contacts-app.vala:265
 #, c-format
-#| msgid "Select"
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d ਚੁਣਿਆ"
 msgstr[1] "%d ਚੁਣੇ"
 
-#: ../src/contacts-app.vala:288
+#: ../src/contacts-app.vala:294
 #, c-format
-#| msgid "Editing"
 msgid "Editing %s"
 msgstr "%s ਸੋਧ ਜਾਰੀ"
 
-#: ../src/contacts-app.vala:404
+#: ../src/contacts-app.vala:420
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d ਸੰਪਰਕ ਲਿੰਕ ਕੀਤੇ"
 msgstr[1] "%d ਸੰਪਰਕ ਲਿੰਕ ਕੀਤੇ"
 
-#: ../src/contacts-app.vala:408 ../src/contacts-app.vala:440
-#: ../src/contacts-app.vala:481 ../src/contacts-app.vala:526
-#| msgid "Undo"
+#: ../src/contacts-app.vala:424 ../src/contacts-app.vala:456
+#: ../src/contacts-app.vala:497 ../src/contacts-app.vala:542
 msgid "_Undo"
 msgstr "ਵਾਪਸ(_U)"
 
-#: ../src/contacts-app.vala:436
+#: ../src/contacts-app.vala:452
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d ਸੰਪਰਕ ਹਟਾਇਆ"
 msgstr[1] "%d ਸੰਪਰਕ ਹਟਾਏ"
 
-#: ../src/contacts-app.vala:478
+#: ../src/contacts-app.vala:494
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "ਸੰਪਰਕ ਹਟਾਇਆ ਗਿਆ: \"%s\""
 
-#: ../src/contacts-app.vala:506
+#: ../src/contacts-app.vala:522
 msgid "Show contact with this individual id"
 msgstr "ਇਹ ਵਿਲੱਖਣ id ਨਾਲ ਸੰਪਰਕ ਵੇਖਾਓ"
 
-#: ../src/contacts-app.vala:508
+#: ../src/contacts-app.vala:524
 msgid "Show contact with this email address"
 msgstr "ਇਸ ਈਮੇਲ ਐਡਰੈਸ ਨਾਲ ਸੰਪਰਕ ਵੇਖਾਓ"
 
-#: ../src/contacts-app.vala:522
+#: ../src/contacts-app.vala:538
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s %s ਨਾਲ ਲਿੰਕ ਹੈ"
 
-#: ../src/contacts-app.vala:524
+#: ../src/contacts-app.vala:540
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s ਸੰਪਰਕ ਨਾਲ ਲਿੰਕ ਹੈ"
 
-#: ../src/contacts-app.vala:541
+#: ../src/contacts-app.vala:557
 msgid "— contact management"
 msgstr "— ਸੰਪਰਕ ਮੈਨਜੇਮੈਂਟ"
 
@@ -172,7 +197,6 @@ msgstr "ਹੋਰ ਤਸਵੀਰਾਂ ਵੇਖੋ"
 # gnome-session/splash.c:69
 #: ../src/contacts-avatar-dialog.vala:200
 #: ../src/contacts-new-contact-dialog.vala:50
-#| msgid "Cancel"
 msgid "_Cancel"
 msgstr "ਰੱਦ ਕਰੋ(_C)"
 
@@ -189,77 +213,78 @@ msgstr "ਤਸਵੀਰ ਚੁਣੋ"
 msgid "Close"
 msgstr "ਬੰਦ ਕਰੋ"
 
-#: ../src/contacts-contact-editor.vala:352
+#: ../src/contacts-contact-editor.vala:354
 msgid "January"
 msgstr "ਜਨਵਰੀ"
 
-#: ../src/contacts-contact-editor.vala:353
+#: ../src/contacts-contact-editor.vala:355
 msgid "February"
 msgstr "ਫਰਵਰੀ"
 
-#: ../src/contacts-contact-editor.vala:354
+#: ../src/contacts-contact-editor.vala:356
 msgid "March"
 msgstr "ਮਾਰਚ"
 
-#: ../src/contacts-contact-editor.vala:355
+#: ../src/contacts-contact-editor.vala:357
 msgid "April"
 msgstr "ਅਪਰੈਲ"
 
-#: ../src/contacts-contact-editor.vala:356
+#: ../src/contacts-contact-editor.vala:358
 msgid "May"
 msgstr "ਮਈ"
 
-#: ../src/contacts-contact-editor.vala:357
+#: ../src/contacts-contact-editor.vala:359
 msgid "June"
 msgstr "ਜੂਨ"
 
-#: ../src/contacts-contact-editor.vala:358
+#: ../src/contacts-contact-editor.vala:360
 msgid "July"
 msgstr "ਜੁਲਾਈ"
 
-#: ../src/contacts-contact-editor.vala:359
+#: ../src/contacts-contact-editor.vala:361
 msgid "August"
 msgstr "ਅਗਸਤ"
 
-#: ../src/contacts-contact-editor.vala:360
+#: ../src/contacts-contact-editor.vala:362
 msgid "September"
 msgstr "ਸਤੰਬਰ"
 
-#: ../src/contacts-contact-editor.vala:361
+#: ../src/contacts-contact-editor.vala:363
 msgid "October"
 msgstr "ਅਕਤੂਬਰ"
 
-#: ../src/contacts-contact-editor.vala:362
+#: ../src/contacts-contact-editor.vala:364
 msgid "November"
 msgstr "ਨਵੰਬਰ"
 
-#: ../src/contacts-contact-editor.vala:363
+#: ../src/contacts-contact-editor.vala:365
 msgid "December"
 msgstr "ਦਸੰਬਰ"
 
-#: ../src/contacts-contact-editor.vala:489
-#: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:177
+#: ../src/contacts-contact-editor.vala:491
+#: ../src/contacts-contact-editor.vala:498
+#: ../src/contacts-contact-pane.vala:393
+#: ../src/contacts-contact-sheet.vala:172
 msgid "Website"
 msgstr "ਵੈੱਬਸਾਈਟ"
 
-#: ../src/contacts-contact-editor.vala:515
-#: ../src/contacts-contact-editor.vala:522
+#: ../src/contacts-contact-editor.vala:517
+#: ../src/contacts-contact-editor.vala:524
 #: ../src/contacts-contact-pane.vala:398
-#: ../src/contacts-contact-sheet.vala:191
+#: ../src/contacts-contact-sheet.vala:186
 msgid "Nickname"
 msgstr "ਆਮ ਨਾਂ"
 
-#: ../src/contacts-contact-editor.vala:542
-#: ../src/contacts-contact-editor.vala:549
+#: ../src/contacts-contact-editor.vala:544
+#: ../src/contacts-contact-editor.vala:551
 #: ../src/contacts-contact-pane.vala:403
-#: ../src/contacts-contact-sheet.vala:198
+#: ../src/contacts-contact-sheet.vala:193
 msgid "Birthday"
 msgstr "ਜਨਮਦਿਨ"
 
-#: ../src/contacts-contact-editor.vala:563
-#: ../src/contacts-contact-editor.vala:570
-#: ../src/contacts-contact-sheet.vala:205
+#: ../src/contacts-contact-editor.vala:565
+#: ../src/contacts-contact-editor.vala:572
+#: ../src/contacts-contact-sheet.vala:200
 msgid "Note"
 msgstr "ਨੋਟ"
 
@@ -306,10 +331,6 @@ msgstr "ਘਰ ਫੋਨ"
 msgid "Work phone"
 msgstr "ਕੰਮ ਫੋਨ"
 
-#: ../src/contacts-contact-pane.vala:393 ../src/contacts-list-pane.vala:125
-msgid "Link"
-msgstr "ਲਿੰਕ"
-
 #: ../src/contacts-contact-pane.vala:409
 msgid "Home address"
 msgstr "ਘਰ ਐਡਰੈੱਸ"
@@ -330,9 +351,7 @@ msgstr "ਲਿੰਕ ਕੀਤੇ ਅਕਾਊਂਟ"
 msgid "Remove Contact"
 msgstr "ਸੰਪਰਕ ਹਟਾਓ"
 
-#: ../src/contacts-contact-pane.vala:513
-#, c-format
-#| msgid "Select chat account"
+#: ../src/contacts-contact-pane.vala:514
 msgid "Select a contact"
 msgstr "ਸੰਪਰਕ ਚੁਣੋ"
 
@@ -499,14 +518,19 @@ msgid "You can manually link contacts from the contacts list"
 msgstr "ਤੁਸੀਂ ਸੰਪਰਕ ਸੂਚੀ ਵਿੱਚੋਂ ਖੁਦ ਸੰਪਰਕਾਂ ਨੂੰ ਲਿੰਕ ਕਰ ਸਕਦੇ ਹੋ"
 
 #: ../src/contacts-linked-accounts-dialog.vala:102
-msgid "Remove"
-msgstr "ਹਟਾਓ"
+msgid "Unlink"
+msgstr "ਅਣ-ਲਿੰਕ"
 
 #: ../src/contacts-list-pane.vala:84
 msgid "Type to search"
 msgstr "ਲੱਭਣ ਲਈ ਲਿਖੋ"
 
-#: ../src/contacts-list-pane.vala:128
+#. To translators: Link refers to the verb, from linking contacts together
+#: ../src/contacts-list-pane.vala:126
+msgid "Link"
+msgstr "ਲਿੰਕ"
+
+#: ../src/contacts-list-pane.vala:129
 msgid "Delete"
 msgstr "ਹਟਾਓ"
 
@@ -549,20 +573,20 @@ msgstr "ਐਡਰੈੱਸ"
 msgid "Add Detail"
 msgstr "ਵੇਰਵਾ ਸ਼ਾਮਲ"
 
-#: ../src/contacts-new-contact-dialog.vala:223
+#: ../src/contacts-new-contact-dialog.vala:227
 msgid "You must specify a contact name"
 msgstr "ਤੁਹਾਨੂੰ ਸੰਪਰਕ ਨਾਂ ਦੇਣਾ ਪਵੇਗਾ"
 
-#: ../src/contacts-new-contact-dialog.vala:333
+#: ../src/contacts-new-contact-dialog.vala:337
 msgid "No primary addressbook configured\n"
 msgstr "ਕੋਈ ਪ੍ਰਾਇਮਰੀ ਐਡਰੈਸ ਬੁੱਕ ਸੰਰਚਿਤ ਨਹੀਂ ਕੀਤੀ ਹੈ\n"
 
-#: ../src/contacts-new-contact-dialog.vala:354
+#: ../src/contacts-new-contact-dialog.vala:358
 #, c-format
 msgid "Unable to create new contacts: %s\n"
 msgstr "ਨਵੇਂ ਸੰਪਰਕ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ: %s\n"
 
-#: ../src/contacts-new-contact-dialog.vala:365
+#: ../src/contacts-new-contact-dialog.vala:369
 msgid "Unable to find newly created contact\n"
 msgstr "ਨਵਾਂ ਬਣਾਇਆ ਸੰਪਰਕ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ\n"
 
@@ -570,7 +594,7 @@ msgstr "ਨਵਾਂ ਬਣਾਇਆ ਸੰਪਰਕ ਲੱਭਣ ਲਈ ਅਸ�
 msgid "Contacts Setup"
 msgstr "ਸੰਪਰਕ ਸੈਟਅੱਪ"
 
-#: ../src/contacts-setup-window.vala:69
+#: ../src/contacts-setup-window.vala:71
 msgid "Please select your primary contacts account"
 msgstr "ਆਪਣਾ ਮੁੱਢਲਾ ਸੰਪਰਕ ਅਕਾਊਂਟ ਚੁਣੀ ਜੀ"
 
@@ -656,16 +680,15 @@ msgstr "TTY"
 msgid "No results matched search"
 msgstr "ਕੋਈ ਨਤੀਜਾ ਖੋਜ ਨਾਲ ਨਹੀਂ ਮਿਲਦਾ"
 
-#: ../src/contacts-view.vala:293
+#: ../src/contacts-view.vala:297
 msgid "Suggestions"
 msgstr "ਸੁਝਾਅ"
 
-#: ../src/contacts-view.vala:318
+#: ../src/contacts-view.vala:322
 msgid "Other Contacts"
 msgstr "ਹੋਰ ਸੰਪਰਕ"
 
-#: ../src/contacts-window.ui.h:1 ../src/contacts-window.vala:83
-#| msgid "All contacts"
+#: ../src/contacts-window.ui.h:1 ../src/contacts-window.vala:92
 msgid "All Contacts"
 msgstr "ਸਭ ਸੰਪਰਕ"
 
@@ -688,6 +711,12 @@ msgstr "ਸਬ-ਸੈੱਟ ਵੇਖੋ"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "ਸੰਪਰਕ ਸਬ-ਸੈੱਟ ਵੇਖੋ"
+
+#~ msgid "_About Contacts"
+#~ msgstr "ਸੰਪਰਕ ਬਾਰੇ(_A)"
+
+#~ msgid "Remove"
+#~ msgstr "ਹਟਾਓ"
 
 #~ msgid "View"
 #~ msgstr "ਵੇਖੋ"
@@ -736,9 +765,6 @@ msgstr "ਸੰਪਰਕ ਸਬ-ਸੈੱਟ ਵੇਖੋ"
 
 #~ msgid "Add to My Contacts"
 #~ msgstr "ਮੇਰੇ ਸੰਪਰਕਾਂ ਵਿੱਚ ਸ਼ਾਮਿਲ"
-
-#~ msgid "Unlink"
-#~ msgstr "ਅਣ-ਲਿੰਕ"
 
 #~ msgid "Add detail..."
 #~ msgstr "ਵੇਰਵਾ ਸ਼ਾਮਲ..."
@@ -1378,5 +1404,5 @@ msgstr "ਸੰਪਰਕ ਸਬ-ਸੈੱਟ ਵੇਖੋ"
 #~ "gnome-session must be restarted for this to take effect."
 #~ msgstr ""
 #~ "ਸੁਰੱਖਿਆ ਕਾਰਨਾਂ ਕਰਕੇ , ਪਲੇਟਫਾਰਮ ਜੋ ਕਿ IceTcpTransNoListen() (XFree86 ਸਿਸਟਮ) ਹਨ, "
-#~ "ਗਨੋਮ-ਸ਼ੈਸ਼ਨ TCP ਪੋਰਟ ਤੇ ਸਬੰਧ ਨਹੀ ਸੁਣਦਾ। ਇਸ ਚੋਣ ਰਿਮੋਟ ਮੇਜ਼ਬਾਨ ਤੋ ਸਬੰਧ ਦੀ ਇਜ਼ਾਜਤ (ਪ੍ਰਮਾਣਿਕ)"
-#~ "ਦਿੰਦੀ ਹੈ। ਗਨੋਮ-ਸ਼ੈਸ਼ਨ ਇਸ ਨੂੰ ਲਾਗੂ ਕਰਨ ਲਈ ਮੁੜ ਚਾਲੂ ਹੋ ਰਿਹਾ ਹੈ।"
+#~ "ਗਨੋਮ-ਸ਼ੈਸ਼ਨ TCP ਪੋਰਟ ਤੇ ਸਬੰਧ ਨਹੀ ਸੁਣਦਾ। ਇਸ ਚੋਣ ਰਿਮੋਟ ਮੇਜ਼ਬਾਨ ਤੋ ਸਬੰਧ ਦੀ ਇਜ਼ਾਜਤ "
+#~ "(ਪ੍ਰਮਾਣਿਕ)ਦਿੰਦੀ ਹੈ। ਗਨੋਮ-ਸ਼ੈਸ਼ਨ ਇਸ ਨੂੰ ਲਾਗੂ ਕਰਨ ਲਈ ਮੁੜ ਚਾਲੂ ਹੋ ਰਿਹਾ ਹੈ।"
