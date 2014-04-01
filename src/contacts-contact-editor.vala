@@ -245,6 +245,7 @@ public class Contacts.ContactEditor : Grid {
     attach (value_entry, 1, row, 1, 1);
 
     var delete_button = new Button ();
+    delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     attach (delete_button, 3, row, 1, 1);
@@ -279,6 +280,7 @@ public class Contacts.ContactEditor : Grid {
     attach (value_entry, 1, row, 1, 1);
 
     var delete_button = new Button ();
+    delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     attach (delete_button, 3, row, 1, 1);
@@ -317,6 +319,7 @@ public class Contacts.ContactEditor : Grid {
     attach (sw, 1, row, 1, 1);
 
     var delete_button = new Button ();
+    delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     delete_button.set_valign (Align.START);
@@ -375,6 +378,7 @@ public class Contacts.ContactEditor : Grid {
     attach (box, 1, row, 1, 1);
 
     var delete_button = new Button ();
+    delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     attach (delete_button, 3, row, 1, 1);
@@ -403,6 +407,7 @@ public class Contacts.ContactEditor : Grid {
     attach (value_address, 1, row, 1, 1);
 
     var delete_button = new Button ();
+    delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     delete_button.set_valign (Align.START);
