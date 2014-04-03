@@ -40,8 +40,26 @@ public class Contacts.ContactSheet : Grid {
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
     (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
 
-
     return value_button;
+  }
+
+  void add_row_with_link_button (ref int row, string label_value, string value) {
+    var type_label = new Label (label_value);
+    type_label.xalign = 1.0f;
+    type_label.set_halign (Align.END);
+    type_label.get_style_context ().add_class ("dim-label");
+    attach (type_label, 0, row, 1, 1);
+
+    var value_button = new LinkButton (value);
+    value_button.focus_on_click = false;
+    value_button.relief = ReliefStyle.NONE;
+    value_button.xalign = 0.0f;
+    value_button.set_hexpand (true);
+    attach (value_button, 1, row, 1, 1);
+    row++;
+
+    (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
+    (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
   }
 
   void add_row_with_label (ref int row, string label_value, string value) {
@@ -168,16 +186,8 @@ public class Contacts.ContactSheet : Grid {
 
       var url_details = p as UrlDetails;
       if (url_details != null) {
-	foreach (var url in url_details.urls) {
-	  var button = add_row_with_button (ref i, _("Website"), Contact.format_uri_link_text (url));
-	  button.clicked.connect (() => {
-	      try {
-	        Gtk.show_uri (null, url.value, 0);
-	      } catch (GLib.Error e1) {
-	        warning ("Error opening website ‘%s’: %s", url.value, e1.message);
-	      }
-	    });
-	}
+	foreach (var url in url_details.urls)
+	  add_row_with_link_button (ref i, _("Website"), url.value);
       }
 
       var name_details = p as NameDetails;
