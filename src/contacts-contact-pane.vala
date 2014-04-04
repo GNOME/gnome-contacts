@@ -225,7 +225,7 @@ public class Contacts.ContactPane : Notebook {
     suggestion_grid.show_all ();
   }
 
-  public void show_contact (Contact? new_contact, bool edit = false, bool show_matches = true) {
+  public void show_contact (Contact? new_contact, bool show_matches = true) {
     if (contact == new_contact)
       return;
 

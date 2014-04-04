@@ -71,7 +71,7 @@ public class Contacts.App : Gtk.Application {
       window.done_button.hide ();
     }
 
-    contacts_pane.show_contact (new_selection, false, false);
+    contacts_pane.show_contact (new_selection, false);
 
     /* clearing right_toolbar */
     if (new_selection != null) {
