@@ -291,58 +291,31 @@ public class Contacts.ContactPane : Notebook {
     main_sw.get_child ().get_style_context ().add_class ("view");
 
     on_edit_mode = false;
-    var edit_toolbar = new Toolbar ();
-    edit_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    edit_toolbar.get_style_context ().add_class ("contacts-edit-toolbar");
-    edit_toolbar.set_vexpand (false);
-
-    var add_detail_button = new Gtk.MenuButton ();
-    /* FIXME: this set_vexpand is unnecesary here, or should be */
-    add_detail_button.set_vexpand (true);
-
-    var box = new Grid ();
-    var w = new Label (_("New Detail")) as Widget;
-    w.set_valign (Align.CENTER);
-    w.set_vexpand (true);
-    box.set_column_spacing (4);
-    box.add (w);
-    w = new Arrow (ArrowType.DOWN, ShadowType.OUT) as Widget;
-    w.set_valign (Align.CENTER);
-    w.set_vexpand (true);
-    box.add (w);
-    add_detail_button.add (box);
+    var edit_toolbar = new ActionBar ();
 
     var builder = load_ui ("app-menu.ui");
     var gmenu = builder.get_object ("edit-contact") as MenuModel;
 
+    var add_detail_button = new Gtk.MenuButton ();
     add_detail_button.use_popover = true;
     add_detail_button.set_menu_model (gmenu);
     add_detail_button.set_direction (ArrowType.UP);
     add_detail_button.get_popover ().insert_action_group ("edit", this.edit_contact_actions);
 
-    var tool_item = new ToolItem ();
-    tool_item.add (add_detail_button);
-    tool_item.margin_end = 12;
-    edit_toolbar.insert (tool_item, -1);
+    var box = new Box (Orientation.HORIZONTAL, 6);
+    box.add (new Label (_("New Detail")));
+    box.add (new Image.from_icon_name ("go-down-symbolic", IconSize.BUTTON));
+    add_detail_button.add (box);
 
-    tool_item = new ToolItem ();
+    edit_toolbar.pack_start (add_detail_button);
+
     linked_button = new Button.with_label (_("Linked Accounts"));
-    linked_button.set_vexpand (true);
-    tool_item.add (linked_button);
-    edit_toolbar.insert (tool_item, -1);
     linked_button.clicked.connect (linked_accounts);
+    edit_toolbar.pack_start (linked_button);
 
-    tool_item = new SeparatorToolItem ();
-    tool_item.set_expand (true);
-    (tool_item as SeparatorToolItem).set_draw (false);
-    edit_toolbar.insert (tool_item, -1);
-
-    tool_item = new ToolItem ();
     remove_button = new Button.with_label (_("Remove Contact"));
-    remove_button.set_vexpand (true);
-    tool_item.add (remove_button);
-    edit_toolbar.insert (tool_item, -1);
     remove_button.clicked.connect (delete_contact);
+    edit_toolbar.pack_end (remove_button);
 
     edit_toolbar.show_all ();
     top_grid.add (edit_toolbar);
