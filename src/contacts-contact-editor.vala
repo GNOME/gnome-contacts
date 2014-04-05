@@ -78,6 +78,18 @@ public class Contacts.ContactEditor : Grid {
   private int last_row;
   private HashMap<Persona, HashMap<string, Field?> > writable_personas;
 
+  public bool has_birthday_row {
+    get; private set; default = false;
+  }
+
+  public bool has_nickname_row {
+    get; private set; default = false;
+  }
+
+  public bool has_notes_row {
+    get; private set; default = false;
+  }
+
   Value get_value_from_emails (HashMap<int, RowData?> rows) {
     var new_details = new HashSet<EmailFieldDetails>();
 
@@ -291,6 +303,13 @@ public class Contacts.ContactEditor : Grid {
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
+
+	/* hacky, ugly way of doing this */
+	/* because this func is called with details = null */
+	/* only when setting a nickname field */
+	if (details == null) {
+	  has_nickname_row = false;
+	}
       });
 
     value_entry.map.connect (() => {
@@ -331,6 +350,8 @@ public class Contacts.ContactEditor : Grid {
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
+	/* eventually will need to check against the details type */
+	has_notes_row = false;
       });
 
     value_text.map.connect (() => {
@@ -392,6 +413,7 @@ public class Contacts.ContactEditor : Grid {
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
+	has_birthday_row = false;
       });
   }
 
@@ -533,6 +555,7 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
+	has_nickname_row = true;
 	if (writable_personas[p].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
 	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
@@ -560,6 +583,7 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
+	has_birthday_row = true;
 	writable_personas[p].set (prop_name, { add_empty, rows });
       }
       break;
@@ -581,6 +605,7 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
+	has_notes_row = true;
 	if (writable_personas[p].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
 	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
@@ -728,6 +753,9 @@ public class Contacts.ContactEditor : Grid {
     }
 
     /* clean metadata as well */
+    has_birthday_row = false;
+    has_nickname_row = false;
+    has_notes_row = false;
   }
 
   public HashMap<string, PropertyData?> properties_changed () {
