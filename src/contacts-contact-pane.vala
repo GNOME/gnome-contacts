@@ -80,7 +80,7 @@ public class Contacts.ContactPane : Notebook {
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
   public signal void will_delete (Contact contact);
 
-  public void update_sheet (bool show_matches = true) {
+  public void update_sheet () {
     if (on_edit_mode) {
       /* this was triggered by some signal, do nothing */
       return;
@@ -94,13 +94,11 @@ public class Contacts.ContactPane : Notebook {
     sheet.update (contact);
     set_current_page (1);
 
-    if (show_matches) {
-      var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
-      foreach (var ind in matches.keys) {
-	var c = Contact.from_individual (ind);
-	if (c != null && contact.suggest_link_to (c)) {
-	  add_suggestion (c);
-	}
+    var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
+    foreach (var ind in matches.keys) {
+      var c = Contact.from_individual (ind);
+      if (c != null && contact.suggest_link_to (c)) {
+	add_suggestion (c);
       }
     }
   }
@@ -194,8 +192,8 @@ public class Contacts.ContactPane : Notebook {
     }
 
     if (contact != null) {
-      contact.personas_changed.disconnect (personas_changed_cb);
-      contact.changed.disconnect (contact_changed_cb);
+      contact.personas_changed.disconnect (update_sheet);
+      contact.changed.disconnect (update_sheet);
     }
 
     contact = new_contact;
@@ -206,8 +204,8 @@ public class Contacts.ContactPane : Notebook {
     bool has_links = false;
 
     if (contact != null) {
-      contact.personas_changed.connect (personas_changed_cb);
-      contact.changed.connect (contact_changed_cb);
+      contact.personas_changed.connect (update_sheet);
+      contact.changed.connect (update_sheet);
 
       can_remove = contact.can_remove_personas ();
       has_links = contact.individual.personas.size > 1;
@@ -218,14 +216,6 @@ public class Contacts.ContactPane : Notebook {
 
     if (contact == null)
       show_no_selection_frame ();
-  }
-
-  private void personas_changed_cb (Contact contact) {
-    update_sheet ();
-  }
-
-  private void contact_changed_cb (Contact contact) {
-    update_sheet ();
   }
 
   public ContactPane (Store contacts_store) {
@@ -267,11 +257,9 @@ public class Contacts.ContactPane : Notebook {
     main_sw.show_all ();
     insert_page (main_sw, null, 1);
 
-    contacts_store.quiescent.connect (() => {
-      // Refresh the view when the store is quiescent as we may have missed
-      // some potential matches while the store was still preparing.
-      update_sheet ();
-    });
+    // Refresh the view when the store is quiescent as we may have missed
+    // some potential matches while the store was still preparing.
+    contacts_store.quiescent.connect (update_sheet);
 
     suggestion_grid = null;
 
