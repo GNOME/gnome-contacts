@@ -326,6 +326,28 @@ public class Contacts.ContactPane : Notebook {
     main_sw.show ();
     top_grid.show_all ();
     insert_page (top_grid, null, 2);
+
+    /* enable/disable actions*/
+    var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
+    editor.bind_property ("has-birthday-row",
+			  birthday_action, "enabled",
+			  BindingFlags.SYNC_CREATE |
+			  BindingFlags.INVERT_BOOLEAN);
+
+    var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
+    editor.bind_property ("has-nickname-row",
+			  nickname_action, "enabled",
+			  BindingFlags.DEFAULT |
+			  BindingFlags.SYNC_CREATE |
+			  BindingFlags.INVERT_BOOLEAN);
+
+    var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
+    editor.bind_property ("has-notes-row",
+			  notes_action, "enabled",
+			  BindingFlags.DEFAULT |
+			  BindingFlags.SYNC_CREATE |
+			  BindingFlags.INVERT_BOOLEAN);
+
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
@@ -411,16 +433,6 @@ public class Contacts.ContactPane : Notebook {
       }
 
       on_edit_mode = true;
-
-      /* enable/disable actions*/
-      var action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
-      action.set_enabled (! contact.has_birthday ());
-
-      action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
-      action.set_enabled (! contact.has_nickname ());
-
-      action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
-      action.set_enabled (! contact.has_notes ());
 
       sheet.clear ();
 
