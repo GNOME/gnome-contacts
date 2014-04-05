@@ -43,57 +43,6 @@ namespace Contacts {
   }
 }
 
-public class Center : Bin {
-  public int max_width { get; set; }
-  public double xalign { get; set; }
-
-  public Center () {
-    this.xalign = 0.5;
-  }
-
-  public override void get_preferred_height (out int minimum_height, out int natural_height) {
-    var child = get_child ();
-    if (child != null) {
-      int min;
-      int nat;
-      child.get_preferred_height (out min, out nat);
-      minimum_height = min;
-      natural_height = nat;
-    } else {
-      minimum_height = -1;
-      natural_height = -1;
-    }
-  }
-
-  public override void get_preferred_width (out int minimum_width, out int natural_width) {
-    var child = get_child ();
-    if (child != null) {
-      int min;
-      int nat;
-      child.get_preferred_width (out min, out nat);
-      minimum_width = min;
-      natural_width = nat;
-    } else {
-      minimum_width = -1;
-      natural_width = -1;
-    }
-  }
-
-  public override void size_allocate (Gtk.Allocation allocation) {
-    Gtk.Allocation new_alloc;
-
-    set_allocation (allocation);
-    new_alloc = allocation;
-    if (allocation.width > this.max_width) {
-      new_alloc.width = this.max_width;
-      new_alloc.x = (int) ((allocation.width - this.max_width) * this.xalign) + allocation.x;
-    }
-
-    var child = get_child ();
-    child.size_allocate (new_alloc);
-  }
-}
-
 public class Contacts.ContactPane : Notebook {
   private Store contacts_store;
   public Contact? contact;
