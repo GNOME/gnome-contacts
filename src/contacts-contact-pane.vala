@@ -351,8 +351,6 @@ public class Contacts.ContactPane : Notebook {
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
-    print ("activated %s\n", action.name);
-
     var tok = action.name.split (".");
 
     if (tok[0] == "add") {
