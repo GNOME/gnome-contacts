@@ -104,15 +104,25 @@ public class Contacts.ContactPane : Notebook {
   /* second page */
   private ContactSheet sheet;
 
-  /* thrid page */
+  /* third page */
   private ContactEditor editor;
   private Button linked_button;
   private Button remove_button;
 
-  /* single value details */
-  private Gtk.MenuItem nickname_item;
-  private Gtk.MenuItem birthday_item;
-  private Gtk.MenuItem notes_item;
+  private SimpleActionGroup edit_contact_actions;
+  private const GLib.ActionEntry[] action_entries = {
+    { "add.email-addresses.personal", on_add_detail },
+    { "add.email-addresses.work", on_add_detail },
+    { "add.phone-numbers.cell", on_add_detail },
+    { "add.phone-numbers.home", on_add_detail },
+    { "add.phone-numbers.work", on_add_detail },
+    { "add.urls", on_add_detail },
+    { "add.nickname", on_add_detail },
+    { "add.birthday", on_add_detail },
+    { "add.postal-addresses.home", on_add_detail },
+    { "add.postal-addresses.work", on_add_detail },
+    { "add.notes", on_add_detail },
+  };
 
   public bool on_edit_mode;
   public Grid suggestion_grid;
@@ -274,6 +284,9 @@ public class Contacts.ContactPane : Notebook {
 
     this.contacts_store = contacts_store;
 
+    this.edit_contact_actions = new SimpleActionGroup ();
+    this.edit_contact_actions.add_action_entries (action_entries, this);
+
     /* starts with no_selection_frame 'til someone select something */
     show_no_selection_frame ();
 
@@ -347,7 +360,9 @@ public class Contacts.ContactPane : Notebook {
     edit_toolbar.set_vexpand (false);
 
     var add_detail_button = new Gtk.MenuButton ();
+    /* FIXME: this set_vexpand is unnecesary here, or should be */
     add_detail_button.set_vexpand (true);
+
     var box = new Grid ();
     var w = new Label (_("New Detail")) as Widget;
     w.set_valign (Align.CENTER);
@@ -359,73 +374,14 @@ public class Contacts.ContactPane : Notebook {
     w.set_vexpand (true);
     box.add (w);
     add_detail_button.add (box);
-    var details_menu = new Gtk.Menu ();
-    details_menu.set_halign (Align.START);
 
-    /* building menu */
-    var item = new Gtk.MenuItem.with_label (_("Personal email"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "email-addresses", "PERSONAL");
-      });
-    item = new Gtk.MenuItem.with_label (_("Work email"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "email-addresses", "WORK");
-      });
+    var builder = load_ui ("app-menu.ui");
+    var gmenu = builder.get_object ("edit-contact") as MenuModel;
 
-    item = new Gtk.MenuItem.with_label (_("Mobile phone"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "CELL");
-      });
-    item = new Gtk.MenuItem.with_label (_("Home phone"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "HOME");
-      });
-    item = new Gtk.MenuItem.with_label (_("Work phone"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "phone-numbers", "WORK");
-      });
-
-    item = new Gtk.MenuItem.with_label (_("Website"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "urls");
-      });
-    nickname_item = new Gtk.MenuItem.with_label (_("Nickname"));
-    details_menu.append (nickname_item);
-    nickname_item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "nickname");
-      });
-    birthday_item = new Gtk.MenuItem.with_label (_("Birthday"));
-    details_menu.append (birthday_item);
-    birthday_item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "birthday");
-      });
-
-    item = new Gtk.MenuItem.with_label (_("Home address"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-addresses", "HOME");
-      });
-    item = new Gtk.MenuItem.with_label (_("Work address"));
-    details_menu.append (item);
-    item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "postal-addresses", "WORK");
-      });
-
-    notes_item = new Gtk.MenuItem.with_label (_("Notes"));
-    details_menu.append (notes_item);
-    notes_item.activate.connect (() => {
-	editor.add_new_row_for_property (contact.find_primary_persona (), "notes");
-      });
-    details_menu.show_all ();
-
-    add_detail_button.set_popup (details_menu);
+    add_detail_button.use_popover = true;
+    add_detail_button.set_menu_model (gmenu);
     add_detail_button.set_direction (ArrowType.UP);
+    add_detail_button.get_popover ().insert_action_group ("edit", this.edit_contact_actions);
 
     var tool_item = new ToolItem ();
     tool_item.add (add_detail_button);
@@ -460,6 +416,18 @@ public class Contacts.ContactPane : Notebook {
     main_sw.show ();
     top_grid.show_all ();
     insert_page (top_grid, null, 2);
+  }
+
+  void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
+    print ("activated %s\n", action.name);
+
+    var tok = action.name.split (".");
+
+    if (tok[0] == "add") {
+      editor.add_new_row_for_property (contact.find_primary_persona (),
+				       tok[1],
+				       tok.length > 2 ? tok[2].up () : null);
+    }
   }
 
   void linked_accounts () {
@@ -534,20 +502,15 @@ public class Contacts.ContactPane : Notebook {
 
       on_edit_mode = true;
 
-      if (contact.has_birthday ())
-	birthday_item.hide ();
-      else
-	birthday_item.show ();
+      /* enable/disable actions*/
+      var action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
+      action.set_enabled (! contact.has_birthday ());
 
-      if (contact.has_nickname ())
-	nickname_item.hide ();
-      else
-	nickname_item.show ();
+      action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
+      action.set_enabled (! contact.has_nickname ());
 
-      if (contact.has_notes ())
-	notes_item.hide ();
-      else
-	notes_item.show ();
+      action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
+      action.set_enabled (! contact.has_notes ());
 
       sheet.clear ();
 
