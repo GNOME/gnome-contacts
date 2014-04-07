@@ -42,7 +42,7 @@ public class Contacts.NewContactDialog : Dialog {
   }
 
   private NewContactDialog (Store contacts_store, Window? parent) {
-    set_title (_("New contact"));
+    set_title (_("New Contact"));
     this.contacts_store = contacts_store;
     set_destroy_with_parent (true);
     set_transient_for (parent);
