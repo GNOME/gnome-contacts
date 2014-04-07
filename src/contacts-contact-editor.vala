@@ -301,15 +301,8 @@ public class Contacts.ContactEditor : Grid {
     value_entry.changed.connect (() => {
 	set_field_changed (row);
       });
-    delete_button.clicked.connect (() => {
+    delete_button.clicked.connect_after (() => {
 	remove_row (row);
-
-	/* hacky, ugly way of doing this */
-	/* because this func is called with details = null */
-	/* only when setting a nickname field */
-	if (details == null) {
-	  has_nickname_row = false;
-	}
       });
 
     value_entry.map.connect (() => {
@@ -556,6 +549,11 @@ public class Contacts.ContactEditor : Grid {
       }
       if (! rows.is_empty) {
 	has_nickname_row = true;
+	var delete_button = get_child_at (3, row - 1) as Button;
+	delete_button.clicked.connect (() => {
+	    has_nickname_row = false;
+	  });
+
 	if (writable_personas[p].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
 	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
