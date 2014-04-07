@@ -61,6 +61,8 @@ public class Contacts.AddressEditor : Box {
 public class Contacts.ContactEditor : Grid {
   Contact contact;
 
+  weak Widget focus_widget;
+
   public struct PropertyData {
     Persona persona;
     Value value;
@@ -273,10 +275,8 @@ public class Contacts.ContactEditor : Grid {
 	remove_row (row);
       });
 
-    value_entry.map.connect (() => {
-	if (value == "")
-	  value_entry.grab_focus ();
-      });
+    if (value == "")
+      focus_widget = value_entry;
   }
 
   void attach_row_with_entry_labeled (string title, AbstractFieldDetails? details, string value, int row) {
@@ -305,10 +305,8 @@ public class Contacts.ContactEditor : Grid {
 	remove_row (row);
       });
 
-    value_entry.map.connect (() => {
-	if (value == "")
-	  value_entry.grab_focus ();
-      });
+    if (value == "")
+      focus_widget = value_entry;
   }
 
   void attach_row_with_text_labeled (string title, AbstractFieldDetails? details, string value, int row) {
@@ -347,10 +345,8 @@ public class Contacts.ContactEditor : Grid {
 	has_notes_row = false;
       });
 
-    value_text.map.connect (() => {
-	if (value == "")
-	  value_text.grab_focus ();
-      });
+    if (value == "")
+      focus_widget = value_text;
   }
 
   void attach_row_for_birthday (string title, AbstractFieldDetails? details, DateTime birthday, int row) {
@@ -439,9 +435,7 @@ public class Contacts.ContactEditor : Grid {
 	remove_row (row);
       });
 
-    value_address.map.connect (() => {
-	value_address.grab_focus ();
-      });
+    focus_widget = value_address;
   }
 
   void add_edit_row (Persona p, string prop_name, ref int row, bool add_empty = false, string? type = null) {
@@ -671,11 +665,21 @@ public class Contacts.ContactEditor : Grid {
     insert_row (idx);
   }
 
+  void size_allocate_cb (Allocation alloc) {
+    if (focus_widget != null &&
+        focus_widget is Widget) {
+      focus_widget.grab_focus ();
+      focus_widget = null;
+    }
+  }
+
   public ContactEditor () {
     set_row_spacing (12);
     set_column_spacing (12);
 
     writable_personas = new HashMap<Persona, HashMap<string, Field?> > ();
+
+    size_allocate.connect_after (size_allocate_cb);
   }
 
   public void update (Contact c) {
