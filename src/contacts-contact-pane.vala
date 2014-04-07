@@ -146,6 +146,7 @@ public class Contacts.ContactPane : Notebook {
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_line_wrap (true);
+    label.width_chars = 20;
     label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
     label.set_hexpand (true);
     label.margin_top = 24;
