@@ -26,15 +26,18 @@ public class Contacts.LinkedAccountsDialog : Dialog {
   public bool any_unlinked;
 
   public LinkedAccountsDialog (Contact contact) {
+    Object (use_header_bar: 1);
+
     this.contact = contact;
     any_unlinked = false;
 
-    set_title (_("%s - Linked Accounts").printf (contact.display_name));
+    var headerbar = get_header_bar () as Gtk.HeaderBar;
+    headerbar.set_title (_("%s").printf (contact.display_name));
+    headerbar.set_subtitle (_("Linked Accounts"));
+
     set_transient_for (App.app.window);
     set_modal (true);
     set_default_size (600, 400);
-
-    add_buttons (_("Close"), ResponseType.CLOSE, null);
 
     var grid = new Grid ();
     grid.set_orientation (Orientation.VERTICAL);
