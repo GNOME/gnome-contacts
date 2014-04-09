@@ -239,12 +239,13 @@ public class Contacts.AvatarDialog : Dialog {
   }
 
   public AvatarDialog (Contact contact) {
+    Object (use_header_bar: 1);
+
     thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
     this.contact = contact;
     set_title (_("Select Picture"));
     set_transient_for (App.app.window);
     set_modal (true);
-    add_buttons (_("Close"), ResponseType.CLOSE, null);
 
     var grid = new Grid ();
     grid.set_border_width (8);
