@@ -107,38 +107,33 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void change_address_book () {
-    var dialog = new Dialog.with_buttons ("",
+    var dialog = new Dialog.with_buttons (_("Change Address Book"),
 					  (Window) window,
-					  DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT,
+					  DialogFlags.MODAL |
+					  DialogFlags.DESTROY_WITH_PARENT |
+					  DialogFlags.USE_HEADER_BAR,
+					  _("Done"), ResponseType.OK,
+					  _("Cancel"), ResponseType.CANCEL,
 					  null);
+
+    var ok_button = dialog.get_widget_for_response (ResponseType.OK);
+    ok_button.sensitive = false;
+    ok_button.get_style_context ().add_class ("suggested-action");
     dialog.set_resizable (false);
-    dialog.set_border_width (36);
+    dialog.set_border_width (12);
 
-    var header = new HeaderBar ();
-    header.set_title (_("Primary Contacts Account"));
-    header.get_style_context ().add_class ("titlebar");
-
-    var cancel_button = new Button.with_label (_("Cancel"));
-    cancel_button.valign = Gtk.Align.CENTER;
-    cancel_button.get_style_context ().add_class ("text-button");
-    cancel_button.clicked.connect (() => {
-	dialog.response (ResponseType.CANCEL);
-      });
-    header.pack_start (cancel_button);
-
-    var done_button = new Button.with_label (_("Done"));
-    done_button.valign = Gtk.Align.CENTER;
-    done_button.get_style_context ().add_class ("suggested-action");
-    done_button.get_style_context ().add_class ("text-button");
-    done_button.clicked.connect (() => {
-	dialog.response (ResponseType.OK);
-      });
-    header.pack_end (done_button);
-
-    dialog.set_titlebar (header);
+    var explanation_label = new Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
+    (dialog.get_content_area () as Box).add (explanation_label);
+    (dialog.get_content_area () as Box).set_spacing (12);
 
     var acc = new AccountsList ();
     acc.update_contents (true);
+
+    ulong active_button_once = 0;
+    active_button_once = acc.account_selected.connect (() => {
+	ok_button.sensitive = true;
+	acc.disconnect (active_button_once);
+      });
 
     ulong stores_changed_id = contacts_store.eds_persona_store_changed.connect  ( () => {
     	acc.update_contents (true);

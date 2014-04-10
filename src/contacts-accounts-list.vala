@@ -30,17 +30,17 @@ public class Contacts.AccountsList : Grid {
 
   public AccountsList () {
     set_orientation (Orientation.VERTICAL);
-    set_row_spacing (22);
+    set_row_spacing (12);
 
     selected_store = null;
 
     accounts_view = new ListBox ();
     accounts_view.set_selection_mode (SelectionMode.NONE);
-    accounts_view.set_size_request (400, -1);
+    accounts_view.set_size_request (372, -1);
     accounts_view.set_header_func (update_header_func);
 
     var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_min_content_height (260);
+    scrolled.set_min_content_height (210);
     scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
     scrolled.set_shadow_type (ShadowType.IN);
     scrolled.add (accounts_view);
@@ -73,13 +73,18 @@ public class Contacts.AccountsList : Grid {
     if (row == null)
       return;
 
+    if (last_selected_row != null &&
+        last_selected_row == row) {
+      return;
+    }
+
     var row_data = (row as Bin).get_child () as Grid;
     var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
-    checkmark.margin_end = 12;
-    checkmark.set_valign (Align.CENTER);
-    checkmark.set_halign (Align.END);
-    checkmark.set_vexpand (true);
-    checkmark.set_hexpand (true);
+    checkmark.set ("margin-end", 12,
+                   "valign", Align.CENTER,
+                   "halign", Align.END,
+                   "vexpand", true,
+                   "hexpand", true);
     checkmark.show ();
     row_data.attach (checkmark, 2, 0, 1, 2);
 
@@ -129,14 +134,14 @@ public class Contacts.AccountsList : Grid {
       row_data.set_data ("store", persona_store);
       row_data.margin = 6;
       row_data.margin_start = 5;
-      row_data.set_row_spacing (2);
+      row_data.set_row_spacing (1);
       row_data.set_column_spacing (10);
 
       if (source_account_id != "") {
         var provider_image = Contacts.get_icon_for_goa_account (source_account_id);
         row_data.attach (provider_image, 0, 0, 1, 2);
       } else {
-        var provider_image = new Image.from_icon_name ("drive-harddisk-system-symbolic",
+        var provider_image = new Image.from_icon_name ("x-office-address-book",
                                                        IconSize.DIALOG);
         row_data.attach (provider_image, 0, 0, 1, 2);
       }
@@ -169,7 +174,7 @@ public class Contacts.AccountsList : Grid {
     local_data.margin_start = 5;
     local_data.set_column_spacing (10);
     local_data.set_data ("store", local_store);
-    var provider_image = new Image.from_icon_name ("drive-harddisk-system-symbolic",
+    var provider_image = new Image.from_icon_name ("x-office-address-book",
                                                    IconSize.DIALOG);
     local_data.add (provider_image);
     var local_label = new Label (_("Local Address Book"));
