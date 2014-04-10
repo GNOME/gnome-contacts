@@ -112,7 +112,7 @@ public class Contacts.App : Gtk.Application {
 					  DialogFlags.MODAL |
 					  DialogFlags.DESTROY_WITH_PARENT |
 					  DialogFlags.USE_HEADER_BAR,
-					  _("Done"), ResponseType.OK,
+					  _("Change"), ResponseType.OK,
 					  _("Cancel"), ResponseType.CANCEL,
 					  null);
 
