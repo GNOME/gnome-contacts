@@ -100,4 +100,36 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void add_notification (Widget notification) {
     overlay.add_overlay (notification);
   }
+
+  [GtkCallback]
+  bool key_press_event_cb (Gdk.EventKey event) {
+    if ((event.keyval == Gdk.keyval_from_name ("q")) &&
+        ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
+      // Clear the contacts so any changed information is stored
+      contacts_pane.show_contact (null);
+      destroy ();
+    } else if (((event.keyval == Gdk.Key.s) ||
+                (event.keyval == Gdk.Key.f)) &&
+               ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
+      Utils.grab_entry_focus_no_select (list_pane.filter_entry);
+    } else if (event.length >= 1 &&
+               Gdk.keyval_to_unicode (event.keyval) != 0 &&
+               (event.state & Gdk.ModifierType.CONTROL_MASK) == 0 &&
+               (event.state & Gdk.ModifierType.MOD1_MASK) == 0 &&
+               (event.keyval != Gdk.Key.Escape) &&
+               (event.keyval != Gdk.Key.Tab) &&
+               (event.keyval != Gdk.Key.BackSpace) ) {
+      Utils.grab_entry_focus_no_select (list_pane.filter_entry);
+      propagate_key_event (event);
+    }
+
+    return false;
+  }
+
+  [GtkCallback]
+  bool delete_event_cb (Gdk.EventAny event) {
+    // Clear the contacts so any changed information is stored
+    contacts_pane.show_contact (null);
+    return false;
+  }
 }

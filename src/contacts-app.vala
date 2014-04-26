@@ -34,35 +34,6 @@ public class Contacts.App : Gtk.Application {
 
   private bool app_menu_created;
 
-  private bool window_delete_event (Gdk.EventAny event) {
-    // Clear the contacts so any changed information is stored
-    contacts_pane.show_contact (null);
-    return false;
-  }
-
-  private bool window_key_press_event (Gdk.EventKey event) {
-    if ((event.keyval == Gdk.keyval_from_name ("q")) &&
-        ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
-      // Clear the contacts so any changed information is stored
-      contacts_pane.show_contact (null);
-      window.destroy ();
-    } else if (((event.keyval == Gdk.Key.s) ||
-                (event.keyval == Gdk.Key.f)) &&
-               ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
-      Utils.grab_entry_focus_no_select (list_pane.filter_entry);
-    } else if (event.length >= 1 &&
-               Gdk.keyval_to_unicode (event.keyval) != 0 &&
-               (event.state & Gdk.ModifierType.CONTROL_MASK) == 0 &&
-               (event.state & Gdk.ModifierType.MOD1_MASK) == 0 &&
-               (event.keyval != Gdk.Key.Escape) &&
-               (event.keyval != Gdk.Key.Tab) &&
-               (event.keyval != Gdk.Key.BackSpace) ) {
-      Utils.grab_entry_focus_no_select (list_pane.filter_entry);
-      window.propagate_key_event (event);
-    }
-
-    return false;
-  }
 
   private void selection_changed (Contact? new_selection) {
     /* FIXME: ask the user lo teave edit-mode and act accordingly */
@@ -238,9 +209,6 @@ public class Contacts.App : Gtk.Application {
     window = new Contacts.Window (this);
 
     contacts_store = window.contacts_store;
-
-    window.delete_event.connect (window_delete_event);
-    window.key_press_event.connect_after (window_key_press_event);
 
     list_pane = window.list_pane;
     list_pane.selection_changed.connect (selection_changed);

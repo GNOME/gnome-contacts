@@ -8,6 +8,8 @@
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <property name="icon_name">x-office-address-book</property>
+    <signal name="key-press-event" handler="key_press_event_cb" object="ContactsWindow" after="yes" swapped="no"/>
+    <signal name="delete-event" handler="delete_event_cb" object="ContactsWindow" after="no" swapped="no"/>
     <child type="titlebar">
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
