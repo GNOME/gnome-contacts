@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.15.2 on Thu Aug 15 15:33:02 2013 -->
 <interface>
+  <object class="ContactsStore" id="contacts_store" />
   <!-- interface-requires gtk+ 3.10 -->
   <template class="ContactsWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
@@ -152,14 +153,24 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="ContactsListPane" id="list_pane">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="store">contacts_store</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
             </child>
           </object>
         </child>
       </object>
     </child>
   </template>
-  <object class="GtkSizeGroup" id="sizegroup1">
+  <object class="GtkSizeGroup">
     <property name="mode">vertical</property>
     <widgets>
       <widget name="add_button"/>
@@ -167,5 +178,11 @@
       <widget name="done_button"/>
     </widgets>
   </object>
-  <object class="ContactsStore" id="contacts_store" />
+  <object class="GtkSizeGroup">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="left_toolbar"/>
+      <widget name="list_pane"/>
+    </widgets>
+  </object>
 </interface>

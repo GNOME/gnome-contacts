@@ -27,14 +27,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private HeaderBar right_toolbar;
   [GtkChild]
   private Overlay overlay;
-  [GtkChild]
-  private Grid grid;
-  [GtkChild]
-  private Overlay right_overlay;
 
   [GtkChild]
   public Store contacts_store;
 
+  [GtkChild]
+  public ListPane list_pane;
   [GtkChild]
   public ContactPane contacts_pane;
 
@@ -97,16 +95,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
       left_toolbar.set_title (_("All Contacts"));
     }
-  }
-
-  public void add_left_child (Widget child) {
-    grid.attach (child, 0, 0, 1, 1);
-
-    /* horizontal size group, for the splitted headerbar */
-    var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
-    hsize_group.add_widget (left_toolbar);
-    hsize_group.add_widget (child);
-    child.show ();
   }
 
   public void add_notification (Widget notification) {

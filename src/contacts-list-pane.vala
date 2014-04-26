@@ -22,7 +22,16 @@ using Folks;
 
 [GtkTemplate (ui = "/org/gnome/contacts/contacts-list-pane.ui")]
 public class Contacts.ListPane : Frame {
-  private Store contacts_store;
+  private Store _store;
+  public Store store {
+    get {
+      return _store;
+    }
+    set {
+      _store = value;
+      contacts_view.store = _store;
+    }
+  }
 
   [GtkChild]
   private View contacts_view;
@@ -84,11 +93,9 @@ public class Contacts.ListPane : Frame {
     filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
   }
 
-  public ListPane (Store contacts_store) {
+  construct {
     search_tool_item.set_expand (true);
     filter_entry.changed.connect (filter_entry_changed);
-
-    contacts_view.store = contacts_store;
 
     contacts_view.set_show_subset (View.Subset.ALL);
     contacts_view.selection_changed.connect( (l, contact) => {
