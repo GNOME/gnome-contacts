@@ -30,6 +30,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private Overlay overlay;
   [GtkChild]
   private ListPane list_pane;
+  [GtkChild]
+  private Button edit_button;
+  [GtkChild]
+  private Button done_button;
 
   [GtkChild]
   public Store contacts_store;
@@ -42,11 +46,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public Button add_button;
   [GtkChild]
   public ToggleButton select_button;
-
-  [GtkChild]
-  public Button edit_button;
-  [GtkChild]
-  public Button done_button;
 
   public string left_title {
     get {
@@ -78,6 +77,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       right_toolbar.decoration_layout = ":%s".printf (tokens[1]);
       left_toolbar.decoration_layout = tokens[0];
     }
+
+    connect_content_widgets ();
   }
 
   public void activate_selection_mode (bool active) {
@@ -103,13 +104,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public void set_shown_contact (Contact? c) {
-    /* FIXME: ask the user lo teave edit-mode and act accordingly */
+    /* FIXME: ask the user to leave edit-mode and act accordingly */
     if (contacts_pane.on_edit_mode) {
       contacts_pane.set_edit_mode (false);
 
       right_title = "";
-      done_button.hide ();
     }
+    done_button.hide ();
 
     contacts_pane.show_contact (c, false);
 
@@ -142,6 +143,31 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
 	  /* Update UI */
 	  activate_selection_mode (false);
+	}
+      });
+
+    edit_button.clicked.connect (() => {
+	if (contacts_pane.contact == null)
+	  return;
+
+	if (select_button.active)
+	  select_button.set_active (false);
+
+	var name = contacts_pane.contact.display_name;
+	right_title = _("Editing %s").printf (name);
+
+	edit_button.hide ();
+	done_button.show ();
+	contacts_pane.set_edit_mode (true);
+      });
+
+    done_button.clicked.connect (() => {
+	done_button.hide ();
+	edit_button.show ();
+	contacts_pane.set_edit_mode (false);
+
+	if (contacts_pane.contact != null) {
+	  right_title = contacts_pane.contact.display_name;
 	}
       });
   }

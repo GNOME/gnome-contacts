@@ -34,26 +34,6 @@ public class Contacts.App : Gtk.Application {
 
   private bool app_menu_created;
 
-  private void selection_changed (Contact? new_selection) {
-    /* FIXME: ask the user lo teave edit-mode and act accordingly */
-    if (contacts_pane.on_edit_mode) {
-      contacts_pane.set_edit_mode (false);
-
-      window.right_title = "";
-      window.done_button.hide ();
-    }
-
-    contacts_pane.show_contact (new_selection, false);
-
-    /* clearing right_toolbar */
-    if (new_selection != null) {
-      window.right_title = new_selection.display_name;
-      window.edit_button.show ();
-    } else {
-      window.edit_button.hide ();
-    }
-  }
-
   public void show_contact (Contact? contact) {
     window.set_shown_contact (contact);
   }
@@ -212,31 +192,6 @@ public class Contacts.App : Gtk.Application {
     contacts_pane.contacts_linked.connect (contacts_linked);
 
     window.add_button.clicked.connect (app.new_contact);
-
-    window.edit_button.clicked.connect (() => {
-	if (contacts_pane.contact == null)
-	  return;
-
-        if (window.select_button.active)
-          window.select_button.set_active (false);
-
-	var name = contacts_pane.contact.display_name;
-        window.right_title = _("Editing %s").printf (name);
-
-        window.edit_button.hide ();
-        window.done_button.show ();
-        contacts_pane.set_edit_mode (true);
-      });
-
-    window.done_button.clicked.connect (() => {
-        window.done_button.hide ();
-        window.edit_button.show ();
-        contacts_pane.set_edit_mode (false);
-
-        if (contacts_pane.contact != null) {
-	  window.right_title = contacts_pane.contact.display_name;
-        }
-      });
   }
 
   public override void startup () {
@@ -331,9 +286,7 @@ public class Contacts.App : Gtk.Application {
 
   private void delete_contact (Contact contact) {
     /* unsetting edit-mode */
-    window.right_title = "";
-    window.done_button.hide ();
-    contacts_pane.set_edit_mode (false);
+    window.set_shown_contact (null);
 
     var notification = new Gd.Notification ();
     notification.timeout = 5;
