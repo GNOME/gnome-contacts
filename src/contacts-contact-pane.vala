@@ -383,11 +383,8 @@ public class Contacts.ContactPane : Notebook {
   void delete_contact () {
     if (contact != null) {
       contact.hide ();
-      set_edit_mode (false);
 
       this.will_delete (contact);
-
-      show_contact (null);
     }
   }
 
