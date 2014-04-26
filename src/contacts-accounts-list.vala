@@ -28,7 +28,7 @@ public class Contacts.AccountsList : Grid {
 
   public signal void account_selected ();
 
-  public AccountsList () {
+  construct {
     set_orientation (Orientation.VERTICAL);
     set_row_spacing (12);
 
