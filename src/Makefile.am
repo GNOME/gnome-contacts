@@ -59,7 +59,7 @@ gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
 
 @GSETTINGS_RULES@
 
-contact-resources.c: contacts.gresource.xml app-menu.ui contacts-window.ui
+contact-resources.c: contacts.gresource.xml app-menu.ui contacts-window.ui contacts-list-pane.ui
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/contacts.gresource.xml \
 		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
 
@@ -103,6 +103,7 @@ EXTRA_DIST = \
 	contacts.gresource.xml \
 	app-menu.ui \
 	contacts-window.ui \
+	contacts-list-pane.ui \
 	$(gsettingsschema_in_files)     \
 	contacts-esd-setup.h \
 	$(NULL)

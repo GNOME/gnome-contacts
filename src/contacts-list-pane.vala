@@ -20,12 +20,28 @@ using Gee;
 using Gtk;
 using Folks;
 
+[GtkTemplate (ui = "/org/gnome/contacts/contacts-list-pane.ui")]
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
-
-  public SearchEntry filter_entry;
   private View contacts_view;
-  private Revealer selection_revealer;
+
+  [GtkChild]
+  public ToolItem search_tool_item;
+
+  [GtkChild]
+  public SearchEntry filter_entry;
+
+  [GtkChild]
+  public Button link_button;
+
+  [GtkChild]
+  public Button delete_button;
+
+  [GtkChild]
+  public ScrolledWindow scrolled;
+
+  [GtkChild]
+  public ActionBar actions_bar;
 
   private uint filter_entry_changed_id;
   private bool ignore_selection_change;
@@ -70,93 +86,42 @@ public class Contacts.ListPane : Frame {
   }
 
   public ListPane (Store contacts_store) {
-    this.contacts_store = contacts_store;
-    this.contacts_view = new View (contacts_store);
-    var toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
-    toolbar.set_icon_size (IconSize.MENU);
-    toolbar.set_vexpand (false);
-    toolbar.set_hexpand (true);
-
-    contacts_view.set_show_subset (View.Subset.ALL);
-
-    filter_entry = new SearchEntry ();
-    filter_entry.set_placeholder_text (_("Type to search"));
+    search_tool_item.set_expand (true);
     filter_entry.changed.connect (filter_entry_changed);
 
-    var search_entry_item = new ToolItem ();
-    search_entry_item.is_important = false;
-    search_entry_item.set_expand (true);
-    search_entry_item.add (filter_entry);
-    toolbar.add (search_entry_item);
+    this.contacts_store = contacts_store;
+    this.contacts_view = new View (contacts_store);
 
-    this.set_hexpand (false);
-
-    var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_vexpand (true);
-    scrolled.set_hexpand (true);
-    scrolled.set_shadow_type (ShadowType.NONE);
-
-    var grid = new Grid ();
-    grid.set_orientation (Orientation.VERTICAL);
-    this.add (grid);
-
+    contacts_view.set_show_subset (View.Subset.ALL);
     contacts_view.selection_changed.connect( (l, contact) => {
         if (!ignore_selection_change)
           selection_changed (contact);
       });
-
-    contacts_view.show_all ();
     scrolled.add (contacts_view);
-    scrolled.set_no_show_all (true);
-    scrolled.show ();
-
-    grid.add (toolbar);
-    grid.add (scrolled);
-
-    selection_revealer = new Revealer ();
-    selection_revealer.set_transition_type (RevealerTransitionType.SLIDE_UP);
-
-    var selection_toolbar = new Gd.MainToolbar ();
-    selection_toolbar.get_style_context ().add_class (STYLE_CLASS_MENUBAR);
-    selection_toolbar.get_style_context ().add_class ("contacts-selection-toolbar");
-
-    /* To translators: Link refers to the verb, from linking contacts together */
-    var link_selected_button = selection_toolbar.add_button (null, _("Link"), true) as Gtk.Button;
-    link_selected_button.set_size_request (70, -1);
-    link_selected_button.set_sensitive (false);
-    var delete_selected_button = selection_toolbar.add_button (null, _("Delete"), false) as Gtk.Button;
-    delete_selected_button.set_size_request (70, -1);
-    delete_selected_button.set_sensitive (false);
-
-    selection_revealer.add (selection_toolbar);
-    grid.add (selection_revealer);
-
-    this.show_all ();
+    contacts_view.show_all ();
 
     /* contact mark handling */
     contacts_view.contacts_marked.connect ((nr_contacts_marked) => {
         if (nr_contacts_marked > 0)
-          delete_selected_button.set_sensitive (true);
+          delete_button.set_sensitive (true);
         else
-          delete_selected_button.set_sensitive (false);
+          delete_button.set_sensitive (false);
 
         if (nr_contacts_marked > 1)
-          link_selected_button.set_sensitive (true);
+          link_button.set_sensitive (true);
         else
-          link_selected_button.set_sensitive (false);
+          link_button.set_sensitive (false);
 
 	contacts_marked (nr_contacts_marked);
       });
 
-    link_selected_button.clicked.connect (() => {
+    link_button.clicked.connect (() => {
         var marked_contacts = contacts_view.get_marked_contacts ();
 
 	link_contacts (marked_contacts);
       });
 
-    delete_selected_button.clicked.connect (() => {
+    delete_button.clicked.connect (() => {
         var marked_contacts = contacts_view.get_marked_contacts ();
         foreach (var c in marked_contacts) {
 	  c.hide ();
@@ -175,12 +140,12 @@ public class Contacts.ListPane : Frame {
 
   public void show_selection () {
     contacts_view.show_selectors ();
-    selection_revealer.set_reveal_child (true);
+    actions_bar.show ();
   }
 
   public void hide_selection () {
     contacts_view.hide_selectors ();
-    selection_revealer.set_reveal_child (false);
+    actions_bar.hide ();
   }
 
   /* Limiting width hack */
