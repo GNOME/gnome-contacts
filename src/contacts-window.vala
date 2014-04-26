@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Gee;
 using Gtk;
 using Folks;
 
@@ -27,12 +28,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private HeaderBar right_toolbar;
   [GtkChild]
   private Overlay overlay;
+  [GtkChild]
+  private ListPane list_pane;
 
   [GtkChild]
   public Store contacts_store;
 
-  [GtkChild]
-  public ListPane list_pane;
   [GtkChild]
   public ContactPane contacts_pane;
 
@@ -101,6 +102,50 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     overlay.add_overlay (notification);
   }
 
+  public void set_shown_contact (Contact? c) {
+    /* FIXME: ask the user lo teave edit-mode and act accordingly */
+    if (contacts_pane.on_edit_mode) {
+      contacts_pane.set_edit_mode (false);
+
+      right_title = "";
+      done_button.hide ();
+    }
+
+    contacts_pane.show_contact (c, false);
+
+    /* clearing right_toolbar */
+    if (c != null) {
+      right_title = c.display_name;
+    }
+    edit_button.visible = (c != null);
+  }
+
+  /* internal API */
+  void connect_content_widgets () {
+    list_pane.contacts_marked.connect ((nr_contacts) => {
+	if (nr_contacts == 0) {
+	  left_title = _("Select");
+	} else {
+	  left_title = ngettext ("%d Selected",
+				 "%d Selected", nr_contacts).printf (nr_contacts);
+	}
+      });
+
+    select_button.toggled.connect (() => {
+        if (select_button.active) {
+	  /* Update UI */
+	  activate_selection_mode (true);
+
+          list_pane.show_selection ();
+	} else {
+          list_pane.hide_selection ();
+
+	  /* Update UI */
+	  activate_selection_mode (false);
+	}
+      });
+  }
+
   [GtkCallback]
   bool key_press_event_cb (Gdk.EventKey event) {
     if ((event.keyval == Gdk.keyval_from_name ("q")) &&
@@ -131,5 +176,91 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // Clear the contacts so any changed information is stored
     contacts_pane.show_contact (null);
     return false;
+  }
+
+  [GtkCallback]
+  void list_pane_selection_changed_cb (Contact? new_selection) {
+    set_shown_contact (new_selection);
+  }
+
+  [GtkCallback]
+  void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {
+    /* getting out of selection mode */
+    set_shown_contact (null);
+    select_button.set_active (false);
+
+    LinkOperation2 operation = null;
+    link_contacts_list.begin (contact_list, (obj, result) => {
+        operation = link_contacts_list.end (result);
+      });
+
+    var notification = new Gd.Notification ();
+    notification.timeout = 5;
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg = ngettext ("%d contacts linked",
+                           "%d contacts linked",
+                           contact_list.size).printf (contact_list.size);
+
+    var b = new Button.with_mnemonic (_("_Undo"));
+    g.add (new Label (msg));
+    g.add (b);
+
+    notification.show_all ();
+    add_notification (notification);
+
+    /* signal handlers */
+    b.clicked.connect ( () => {
+        /* here, we will unlink the thing in question */
+        operation.undo.begin ();
+
+        notification.dismiss ();
+      });
+  }
+
+  [GtkCallback]
+  void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
+    /* getting out of selection mode */
+    set_shown_contact (null);
+    select_button.set_active (false);
+
+    var notification = new Gd.Notification ();
+    notification.timeout = 5;
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg = ngettext ("%d contact deleted",
+                           "%d contacts deleted",
+                           contact_list.size).printf (contact_list.size);
+
+    var b = new Button.with_mnemonic (_("_Undo"));
+    g.add (new Label (msg));
+    g.add (b);
+
+    notification.show_all ();
+    add_notification (notification);
+
+    /* signal handlers */
+    bool really_delete = true;
+    notification.dismissed.connect ( () => {
+        if (really_delete) {
+          foreach (var c in contact_list) {
+            c.remove_personas.begin ();
+          }
+        }
+      });
+    b.clicked.connect ( () => {
+        really_delete = false;
+        notification.dismiss ();
+	foreach (var c in contact_list) {
+	  c.show ();
+	}
+	set_shown_contact (contact_list.last ());
+      });
   }
 }

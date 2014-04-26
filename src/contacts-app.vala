@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* FIXME: remove using Gee if not needed */
 using Gee;
 using Gtk;
 using Folks;
@@ -29,11 +30,9 @@ public class Contacts.App : Gtk.Application {
 
   public Contacts.Window window;
 
-  private weak ListPane list_pane;
   private weak ContactPane contacts_pane;
 
   private bool app_menu_created;
-
 
   private void selection_changed (Contact? new_selection) {
     /* FIXME: ask the user lo teave edit-mode and act accordingly */
@@ -56,10 +55,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void show_contact (Contact? contact) {
-    list_pane.select_contact (contact);
-
-    /* hack for showing contact */
-    selection_changed (contact);
+    window.set_shown_contact (contact);
   }
 
   public async void show_individual (string id) {
@@ -210,40 +206,12 @@ public class Contacts.App : Gtk.Application {
 
     contacts_store = window.contacts_store;
 
-    list_pane = window.list_pane;
-    list_pane.selection_changed.connect (selection_changed);
-    list_pane.link_contacts.connect (link_contacts);
-    list_pane.delete_contacts.connect (delete_contacts);
-
     contacts_pane = window.contacts_pane;
 
     contacts_pane.will_delete.connect (delete_contact);
     contacts_pane.contacts_linked.connect (contacts_linked);
 
-    list_pane.contacts_marked.connect ((nr_contacts) => {
-	if (nr_contacts == 0) {
-	  window.left_title = _("Select");
-	} else {
-	  window.left_title = ngettext ("%d Selected",
-					"%d Selected", nr_contacts).printf (nr_contacts);
-	}
-      });
-
     window.add_button.clicked.connect (app.new_contact);
-
-    window.select_button.toggled.connect (() => {
-        if (window.select_button.active) {
-	  /* Update UI */
-	  window.activate_selection_mode (true);
-
-          list_pane.show_selection ();
-	} else {
-          list_pane.hide_selection ();
-
-	  /* Update UI */
-	  window.activate_selection_mode (false);
-	}
-      });
 
     window.edit_button.clicked.connect (() => {
 	if (contacts_pane.contact == null)
@@ -359,84 +327,6 @@ public class Contacts.App : Gtk.Application {
   public void new_contact () {
     var dialog = NewContactDialog.get_default (contacts_store, window);
     dialog.show_all ();
-  }
-
-  private void link_contacts (LinkedList<Contact> contact_list) {
-    /* getting out of selection mode */
-    show_contact (null);
-    window.select_button.set_active (false);
-
-    LinkOperation2 operation = null;
-    link_contacts_list.begin (contact_list, (obj, result) => {
-        operation = link_contacts_list.end (result);
-      });
-
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
-    string msg = ngettext ("%d contacts linked",
-                           "%d contacts linked",
-                           contact_list.size).printf (contact_list.size);
-
-    var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (new Label (msg));
-    g.add (b);
-
-    notification.show_all ();
-    window.add_notification (notification);
-
-    /* signal handlers */
-    b.clicked.connect ( () => {
-        /* here, we will unlink the thing in question */
-        operation.undo.begin ();
-
-        notification.dismiss ();
-      });
-  }
-
-  private void delete_contacts (LinkedList<Contact> contact_list) {
-    /* getting out of selection mode */
-    show_contact (null);
-    window.select_button.set_active (false);
-
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
-    string msg = ngettext ("%d contact deleted",
-                           "%d contacts deleted",
-                           contact_list.size).printf (contact_list.size);
-
-    var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (new Label (msg));
-    g.add (b);
-
-    notification.show_all ();
-    window.add_notification (notification);
-
-    /* signal handlers */
-    bool really_delete = true;
-    notification.dismissed.connect ( () => {
-        if (really_delete) {
-          foreach (var c in contact_list) {
-            c.remove_personas.begin ();
-          }
-        }
-      });
-    b.clicked.connect ( () => {
-        really_delete = false;
-        notification.dismiss ();
-	foreach (var c in contact_list) {
-	  c.show ();
-	}
-      });
   }
 
   private void delete_contact (Contact contact) {

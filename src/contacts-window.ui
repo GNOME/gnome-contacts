@@ -160,6 +160,9 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="store">contacts_store</property>
+                <signal name="selection-changed" handler="list_pane_selection_changed_cb" object="ContactsWindow" after="no" swapped="no"/>
+                <signal name="link-contacts" handler="list_pane_link_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
+                <signal name="delete-contacts" handler="list_pane_delete_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
