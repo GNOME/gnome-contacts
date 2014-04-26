@@ -23,6 +23,8 @@ using Folks;
 [GtkTemplate (ui = "/org/gnome/contacts/contacts-list-pane.ui")]
 public class Contacts.ListPane : Frame {
   private Store contacts_store;
+
+  [GtkChild]
   private View contacts_view;
 
   [GtkChild]
@@ -36,9 +38,6 @@ public class Contacts.ListPane : Frame {
 
   [GtkChild]
   public Button delete_button;
-
-  [GtkChild]
-  public ScrolledWindow scrolled;
 
   [GtkChild]
   public ActionBar actions_bar;
@@ -89,16 +88,13 @@ public class Contacts.ListPane : Frame {
     search_tool_item.set_expand (true);
     filter_entry.changed.connect (filter_entry_changed);
 
-    this.contacts_store = contacts_store;
-    this.contacts_view = new View (contacts_store);
+    contacts_view.store = contacts_store;
 
     contacts_view.set_show_subset (View.Subset.ALL);
     contacts_view.selection_changed.connect( (l, contact) => {
         if (!ignore_selection_change)
           selection_changed (contact);
       });
-    scrolled.add (contacts_view);
-    contacts_view.show_all ();
 
     /* contact mark handling */
     contacts_view.contacts_marked.connect ((nr_contacts_marked) => {

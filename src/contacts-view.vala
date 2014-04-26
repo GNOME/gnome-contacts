@@ -77,7 +77,6 @@ public class Contacts.View : ListBox {
   public signal void selection_changed (Contact? contact);
   public signal void contacts_marked (int contacts_marked);
 
-  Store contacts_store;
   Subset show_subset;
   HashMap<Contact,ContactDataRow> contacts;
   HashSet<Contact> hidden_contacts;
@@ -87,13 +86,28 @@ public class Contacts.View : ListBox {
   TextDisplay text_display;
   bool selectors_visible;
 
-  public View (Store store, TextDisplay text_display = TextDisplay.PRESENCE) {
-    set_selection_mode (SelectionMode.BROWSE);
-    contacts_store = store;
+  private Store _store;
+
+  public Store store {
+    get {
+      return _store;
+    }
+    set {
+      _store = value;
+
+      _store.added.connect (contact_added_cb);
+      _store.removed.connect (contact_removed_cb);
+      _store.changed.connect (contact_changed_cb);
+      foreach (var c in _store.get_contacts ())
+        contact_added_cb (_store, c);
+    }
+  }
+
+  construct {
     hidden_contacts = new HashSet<Contact>();
     nr_contacts_marked = 0;
     show_subset = Subset.ALL;
-    this.text_display = text_display;
+    text_display = TextDisplay.PRESENCE;
 
     contacts = new HashMap<Contact,ContactDataRow> ();
 
@@ -107,13 +121,7 @@ public class Contacts.View : ListBox {
 
     selectors_visible = false;
 
-    contacts_store.added.connect (contact_added_cb);
-    contacts_store.removed.connect (contact_removed_cb);
-    contacts_store.changed.connect (contact_changed_cb);
-    foreach (var c in store.get_contacts ())
-      contact_added_cb (store, c);
-
-    /* background color */
+    /* FIXME: remove hardcoded background color */
     var color = Gdk.RGBA ();
     color.parse ("#ebedeb");
     override_background_color (0, color);
