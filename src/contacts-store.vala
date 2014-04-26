@@ -136,7 +136,7 @@ public class Contacts.Store : GLib.Object {
     write_dont_suggest_db ();
   }
 
-  public Store () {
+  construct {
     contacts = new Gee.ArrayList<Contact>();
 
     dont_suggest_link = new Gee.HashMultiMap<string, string> ();

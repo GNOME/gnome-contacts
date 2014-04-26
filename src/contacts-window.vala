@@ -32,6 +32,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Overlay right_overlay;
 
+  [GtkChild]
+  public Store contacts_store;
+
   /* FIXME: remove from public what it is not needed */
   [GtkChild]
   public Button add_button;

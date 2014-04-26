@@ -23,7 +23,9 @@ using Folks;
 public class Contacts.App : Gtk.Application {
   public static App app;
   public GLib.Settings settings;
-  public Store contacts_store;
+
+  /* moving creation to Window */
+  public weak Store contacts_store;
 
   public Contacts.Window window;
 
@@ -234,6 +236,9 @@ public class Contacts.App : Gtk.Application {
 
   private void create_window () {
     window = new Contacts.Window (this);
+
+    contacts_store = window.contacts_store;
+
     window.delete_event.connect (window_delete_event);
     window.key_press_event.connect_after (window_key_press_event);
 
@@ -303,9 +308,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public override void startup () {
-
     ensure_eds_accounts ();
-    contacts_store = new Store ();
     base.startup ();
   }
 
@@ -332,6 +335,7 @@ public class Contacts.App : Gtk.Application {
         app_menu_created = true;
       }
 
+      /* FIXME: setup code won't work for now */
       if (!settings.get_boolean ("did-initial-setup")) {
         if (contacts_store.is_prepared)
           show_setup ();
