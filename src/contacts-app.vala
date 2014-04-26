@@ -16,8 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* FIXME: remove using Gee if not needed */
-using Gee;
 using Gtk;
 using Folks;
 
