@@ -84,11 +84,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void activate_selection_mode (bool active) {
     if (active) {
       add_button.hide ();
+      edit_button.hide ();
 
       left_toolbar.get_style_context ().add_class ("selection-mode");
       right_toolbar.get_style_context ().add_class ("selection-mode");
 
       left_toolbar.set_title (_("Select"));
+      right_toolbar.show_close_button = false;
+
+      list_pane.show_selection ();
     } else {
       add_button.show ();
 
@@ -96,7 +100,47 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       right_toolbar.get_style_context ().remove_class ("selection-mode");
 
       left_toolbar.set_title (_("All Contacts"));
+      right_toolbar.show_close_button = true;
+
+      list_pane.hide_selection ();
+
+      /* could be no contact selected whatsoever */
+      if (contact_pane.contact != null)
+	edit_button.show ();
     }
+  }
+
+  public void activate_edit_mode (bool active) {
+    if (active) {
+	if (contact_pane.contact == null)
+	  return;
+
+	var name = contact_pane.contact.display_name;
+	right_title = _("Editing %s").printf (name);
+
+	left_toolbar.get_style_context ().add_class ("selection-mode");
+	right_toolbar.get_style_context ().add_class ("selection-mode");
+
+	edit_button.hide ();
+	done_button.show ();
+	contact_pane.set_edit_mode (true);
+    } else {
+	done_button.hide ();
+	edit_button.show ();
+	contact_pane.set_edit_mode (false);
+
+	left_toolbar.get_style_context ().remove_class ("selection-mode");
+	right_toolbar.get_style_context ().remove_class ("selection-mode");
+
+	if (contact_pane.contact != null)
+	  right_title = contact_pane.contact.display_name;
+	else
+	  right_title = "";
+    }
+
+    add_button.visible = !active;
+    select_button.visible = !active;
+    right_toolbar.show_close_button = !active;
   }
 
   public void add_notification (Widget notification) {
@@ -106,19 +150,18 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void set_shown_contact (Contact? c) {
     /* FIXME: ask the user to leave edit-mode and act accordingly */
     if (contact_pane.on_edit_mode) {
-      contact_pane.set_edit_mode (false);
-
-      right_title = "";
+      activate_edit_mode (false);
     }
-    done_button.hide ();
 
     contact_pane.show_contact (c, false);
 
     /* clearing right_toolbar */
-    if (c != null) {
+    if (c != null)
       right_title = c.display_name;
-    }
-    edit_button.visible = (c != null);
+    else
+      right_title = "";
+
+    edit_button.visible = (c != null) && !select_button.active;
   }
 
   /* internal API */
@@ -133,42 +176,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
 
     select_button.toggled.connect (() => {
-        if (select_button.active) {
-	  /* Update UI */
-	  activate_selection_mode (true);
-
-          list_pane.show_selection ();
-	} else {
-          list_pane.hide_selection ();
-
-	  /* Update UI */
-	  activate_selection_mode (false);
-	}
+	activate_selection_mode (select_button.active);
       });
 
     edit_button.clicked.connect (() => {
-	if (contact_pane.contact == null)
-	  return;
-
-	if (select_button.active)
-	  select_button.set_active (false);
-
-	var name = contact_pane.contact.display_name;
-	right_title = _("Editing %s").printf (name);
-
-	edit_button.hide ();
-	done_button.show ();
-	contact_pane.set_edit_mode (true);
+	activate_edit_mode (true);
       });
 
     done_button.clicked.connect (() => {
-	done_button.hide ();
-	edit_button.show ();
-	contact_pane.set_edit_mode (false);
-
-	if (contact_pane.contact != null) {
-	  right_title = contact_pane.contact.display_name;
-	}
+	activate_edit_mode (false);
       });
   }
 
@@ -294,6 +310,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   void contact_pane_delete_contact_cb (Contact contact) {
     /* unsetting edit-mode */
     set_shown_contact (null);
+    select_button.set_active (false);
 
     var notification = new Gd.Notification ();
     notification.timeout = 5;
