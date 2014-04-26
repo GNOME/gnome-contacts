@@ -30,7 +30,7 @@ public class Contacts.App : Gtk.Application {
   public Contacts.Window window;
 
   private ListPane list_pane;
-  private ContactPane contacts_pane;
+  private weak ContactPane contacts_pane;
 
   private bool app_menu_created;
 
@@ -249,12 +249,10 @@ public class Contacts.App : Gtk.Application {
 
     window.add_left_child (list_pane);
 
-    contacts_pane = new ContactPane (contacts_store);
-    contacts_pane.set_hexpand (true);
+    contacts_pane = window.contacts_pane;
+
     contacts_pane.will_delete.connect (delete_contact);
     contacts_pane.contacts_linked.connect (contacts_linked);
-
-    window.add_right_child (contacts_pane);
 
     list_pane.contacts_marked.connect ((nr_contacts) => {
 	if (nr_contacts == 0) {

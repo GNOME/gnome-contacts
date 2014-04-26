@@ -44,7 +44,21 @@ namespace Contacts {
 }
 
 public class Contacts.ContactPane : Notebook {
-  private Store contacts_store;
+  private Store _store;
+
+  public Store store {
+    get {
+      return _store;
+    }
+    set {
+      _store = value;
+
+      // Refresh the view when the store is quiescent as we may have missed
+      // some potential matches while the store was still preparing.
+      _store.quiescent.connect (update_sheet);
+    }
+  }
+
   public Contact? contact;
 
   /* 3 pages, first */
@@ -167,7 +181,7 @@ public class Contacts.ContactPane : Notebook {
     });
 
     no.clicked.connect ( () => {
-	contacts_store.add_no_suggest_link (contact, c);
+	store.add_no_suggest_link (contact, c);
 	/* TODO: Add undo */
 	suggestion_grid.destroy ();
       });
@@ -219,10 +233,8 @@ public class Contacts.ContactPane : Notebook {
       show_no_selection_frame ();
   }
 
-  public ContactPane (Store contacts_store) {
+  construct {
     this.show_tabs = false;
-
-    this.contacts_store = contacts_store;
 
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
@@ -257,10 +269,6 @@ public class Contacts.ContactPane : Notebook {
 
     main_sw.show_all ();
     insert_page (main_sw, null, 1);
-
-    // Refresh the view when the store is quiescent as we may have missed
-    // some potential matches while the store was still preparing.
-    contacts_store.quiescent.connect (update_sheet);
 
     suggestion_grid = null;
 

@@ -35,6 +35,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   public Store contacts_store;
 
+  [GtkChild]
+  public ContactPane contacts_pane;
+
   /* FIXME: remove from public what it is not needed */
   [GtkChild]
   public Button add_button;
@@ -103,11 +106,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     var hsize_group = new SizeGroup (SizeGroupMode.HORIZONTAL);
     hsize_group.add_widget (left_toolbar);
     hsize_group.add_widget (child);
-    child.show ();
-  }
-
-  public void add_right_child (Widget child) {
-    right_overlay.add (child);
     child.show ();
   }
 
