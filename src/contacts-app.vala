@@ -30,8 +30,6 @@ public class Contacts.App : Gtk.Application {
 
   public Contacts.Window window;
 
-  private weak ContactPane contacts_pane;
-
   private bool app_menu_created;
 
   public void show_contact (Contact? contact) {
@@ -186,11 +184,6 @@ public class Contacts.App : Gtk.Application {
 
     contacts_store = window.contacts_store;
 
-    contacts_pane = window.contacts_pane;
-
-    contacts_pane.will_delete.connect (delete_contact);
-    contacts_pane.contacts_linked.connect (contacts_linked);
-
     window.add_button.clicked.connect (app.new_contact);
   }
 
@@ -284,41 +277,6 @@ public class Contacts.App : Gtk.Application {
     dialog.show_all ();
   }
 
-  private void delete_contact (Contact contact) {
-    /* unsetting edit-mode */
-    window.set_shown_contact (null);
-
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
-    var label = new Label (_("Contact deleted: \"%s\"").printf (contact.display_name));
-    label.set_max_width_chars (45);
-    label.set_ellipsize (Pango.EllipsizeMode.END);
-    var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (label);
-    g.add (b);
-
-    bool really_delete = true;
-    notification.show_all ();
-    notification.dismissed.connect ( () => {
-        if (really_delete)
-          contact.remove_personas.begin ( () => {
-              contact.show ();
-            });
-      });
-    b.clicked.connect ( () => {
-        really_delete = false;
-        notification.dismiss ();
-        contact.show ();
-        show_contact (contact);
-      });
-    window.add_notification (notification);
-  }
-
   private static string individual_id = null;
   private static string email_address = null;
   private static const OptionEntry[] options = {
@@ -328,32 +286,6 @@ public class Contacts.App : Gtk.Application {
       N_("Show contact with this email address"), null },
     { null }
   };
-
-  private void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation) {
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
-    string msg;
-    if (main_contact != null)
-      msg = _("%s linked to %s").printf (main_contact, linked_contact);
-    else
-      msg = _("%s linked to the contact").printf (linked_contact);
-
-    var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (new Label (msg));
-    g.add (b);
-
-    notification.show_all ();
-    b.clicked.connect ( () => {
-	notification.dismiss ();
-	operation.undo.begin ();
-      });
-    window.add_notification (notification);
-  }
 
   public override int command_line (ApplicationCommandLine command_line) {
     var args = command_line.get_arguments ();

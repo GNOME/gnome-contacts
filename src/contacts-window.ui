@@ -140,11 +140,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="ContactsContactPane" id="contacts_pane">
+                  <object class="ContactsContactPane" id="contact_pane">
                     <property name="store">contacts_store</property>
                     <property name="show_tabs">False</property>
                     <property name="visible">True</property>
                     <property name="hexpand">True</property>
+                    <signal name="will-delete" handler="contact_pane_delete_contact_cb" object="ContactsWindow" after="no" swapped="no"/>
+                    <signal name="contacts-linked" handler="contact_pane_contacts_linked_cb" object="ContactsWindow" after="no" swapped="no"/>
                   </object>
                 </child>
               </object>

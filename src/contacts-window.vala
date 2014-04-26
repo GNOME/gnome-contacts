@@ -31,6 +31,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private ListPane list_pane;
   [GtkChild]
+  private ContactPane contact_pane;
+  [GtkChild]
   private Button edit_button;
   [GtkChild]
   private Button done_button;
@@ -38,8 +40,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   public Store contacts_store;
 
-  [GtkChild]
-  public ContactPane contacts_pane;
 
   /* FIXME: remove from public what it is not needed */
   [GtkChild]
@@ -105,14 +105,14 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public void set_shown_contact (Contact? c) {
     /* FIXME: ask the user to leave edit-mode and act accordingly */
-    if (contacts_pane.on_edit_mode) {
-      contacts_pane.set_edit_mode (false);
+    if (contact_pane.on_edit_mode) {
+      contact_pane.set_edit_mode (false);
 
       right_title = "";
     }
     done_button.hide ();
 
-    contacts_pane.show_contact (c, false);
+    contact_pane.show_contact (c, false);
 
     /* clearing right_toolbar */
     if (c != null) {
@@ -147,27 +147,27 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
 
     edit_button.clicked.connect (() => {
-	if (contacts_pane.contact == null)
+	if (contact_pane.contact == null)
 	  return;
 
 	if (select_button.active)
 	  select_button.set_active (false);
 
-	var name = contacts_pane.contact.display_name;
+	var name = contact_pane.contact.display_name;
 	right_title = _("Editing %s").printf (name);
 
 	edit_button.hide ();
 	done_button.show ();
-	contacts_pane.set_edit_mode (true);
+	contact_pane.set_edit_mode (true);
       });
 
     done_button.clicked.connect (() => {
 	done_button.hide ();
 	edit_button.show ();
-	contacts_pane.set_edit_mode (false);
+	contact_pane.set_edit_mode (false);
 
-	if (contacts_pane.contact != null) {
-	  right_title = contacts_pane.contact.display_name;
+	if (contact_pane.contact != null) {
+	  right_title = contact_pane.contact.display_name;
 	}
       });
   }
@@ -177,7 +177,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if ((event.keyval == Gdk.keyval_from_name ("q")) &&
         ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
       // Clear the contacts so any changed information is stored
-      contacts_pane.show_contact (null);
+      contact_pane.show_contact (null);
       destroy ();
     } else if (((event.keyval == Gdk.Key.s) ||
                 (event.keyval == Gdk.Key.f)) &&
@@ -200,7 +200,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkCallback]
   bool delete_event_cb (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
-    contacts_pane.show_contact (null);
+    contact_pane.show_contact (null);
     return false;
   }
 
@@ -288,5 +288,68 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 	}
 	set_shown_contact (contact_list.last ());
       });
+  }
+
+  [GtkCallback]
+  void contact_pane_delete_contact_cb (Contact contact) {
+    /* unsetting edit-mode */
+    set_shown_contact (null);
+
+    var notification = new Gd.Notification ();
+    notification.timeout = 5;
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    var label = new Label (_("Contact deleted: \"%s\"").printf (contact.display_name));
+    label.set_max_width_chars (45);
+    label.set_ellipsize (Pango.EllipsizeMode.END);
+    var b = new Button.with_mnemonic (_("_Undo"));
+    g.add (label);
+    g.add (b);
+
+    bool really_delete = true;
+    notification.show_all ();
+    notification.dismissed.connect ( () => {
+        if (really_delete)
+          contact.remove_personas.begin ( () => {
+              contact.show ();
+            });
+      });
+    b.clicked.connect ( () => {
+        really_delete = false;
+        notification.dismiss ();
+        contact.show ();
+        set_shown_contact (contact);
+      });
+    add_notification (notification);
+  }
+
+  [GtkCallback]
+  void contact_pane_contacts_linked_cb (string? main_contact, string linked_contact, LinkOperation operation) {
+    var notification = new Gd.Notification ();
+    notification.timeout = 5;
+
+    var g = new Grid ();
+    g.set_column_spacing (8);
+    notification.add (g);
+
+    string msg;
+    if (main_contact != null)
+      msg = _("%s linked to %s").printf (main_contact, linked_contact);
+    else
+      msg = _("%s linked to the contact").printf (linked_contact);
+
+    var b = new Button.with_mnemonic (_("_Undo"));
+    g.add (new Label (msg));
+    g.add (b);
+
+    notification.show_all ();
+    b.clicked.connect ( () => {
+	notification.dismiss ();
+	operation.undo.begin ();
+      });
+    add_notification (notification);
   }
 }
