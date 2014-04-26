@@ -33,6 +33,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private ContactPane contact_pane;
   [GtkChild]
+  private ToggleButton select_button;
+  [GtkChild]
   private Button edit_button;
   [GtkChild]
   private Button done_button;
@@ -40,12 +42,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   public Store contacts_store;
 
-
   /* FIXME: remove from public what it is not needed */
   [GtkChild]
   public Button add_button;
-  [GtkChild]
-  public ToggleButton select_button;
 
   public string left_title {
     get {
