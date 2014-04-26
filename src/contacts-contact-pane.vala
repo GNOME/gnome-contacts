@@ -234,7 +234,6 @@ public class Contacts.ContactPane : Notebook {
   }
 
   construct {
-    this.show_tabs = false;
 
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
