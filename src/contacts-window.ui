@@ -11,160 +11,78 @@
     <signal name="key-press-event" handler="key_press_event_cb" object="ContactsWindow" after="yes" swapped="no"/>
     <signal name="delete-event" handler="delete_event_cb" object="ContactsWindow" after="no" swapped="no"/>
     <child type="titlebar">
-      <object class="GtkBox" id="box1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkHeaderBar" id="left_toolbar">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="title" translatable="yes">All Contacts</property>
-            <property name="show_close_button">True</property>
-            <style>
-              <class name="contacts-left-header-bar"/>
-              <class name="titlebar"/>
-            </style>
-            <child>
-              <object class="GtkButton" id="add_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="add_button_atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes">Add contact</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">list-add-symbolic</property>
-                    <property name="icon_size">1</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="pack_type">start</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="select_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="select_button_atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes">Selection mode</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage" id="image2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">object-select-symbolic</property>
-                    <property name="icon_size">1</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-              </packing>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkHeaderBar" id="right_toolbar">
-            <property name="visible">True</property>
-            <property name="hexpand">True</property>
-            <property name="show_close_button">True</property>
-            <style>
-              <class name="contacts-right-header-bar"/>
-              <class name="titlebar"/>
-            </style>
-            <child>
-              <object class="GtkButton" id="edit_button">
-                <property name="visible">False</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="label" translatable="yes">Edit</property>
-                <property name="width_request">70</property>
-                <property name="valign">center</property>
-                <style>
-                  <class name="text-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="done_button">
-                <property name="visible">False</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="label" translatable="yes">Done</property>
-                <property name="width_request">70</property>
-                <property name="valign">center</property>
-                <style>
-                  <class name="text-button"/>
-                  <class name="suggested-action"/>
-                </style>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-              </packing>
-            </child>
-          </object>
-        </child>
-      </object>
+      <placeholder />
     </child>
     <child>
-      <object class="GtkOverlay" id="overlay">
+      <object class="GtkStack" id="view_switcher">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkGrid" id="grid">
+          <object class="GtkOverlay" id="overlay">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkOverlay" id="right_overlay">
+              <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="ContactsContactPane" id="contact_pane">
-                    <property name="store">contacts_store</property>
-                    <property name="show_tabs">False</property>
+                  <object class="GtkOverlay">
                     <property name="visible">True</property>
-                    <property name="hexpand">True</property>
-                    <signal name="will-delete" handler="contact_pane_delete_contact_cb" object="ContactsWindow" after="no" swapped="no"/>
-                    <signal name="contacts-linked" handler="contact_pane_contacts_linked_cb" object="ContactsWindow" after="no" swapped="no"/>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="ContactsContactPane" id="contact_pane">
+                        <property name="store">contacts_store</property>
+                        <property name="show_tabs">False</property>
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <signal name="will-delete" handler="contact_pane_delete_contact_cb" object="ContactsWindow" after="no" swapped="no"/>
+                        <signal name="contacts-linked" handler="contact_pane_contacts_linked_cb" object="ContactsWindow" after="no" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="ContactsListPane" id="list_pane">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="store">contacts_store</property>
+                    <signal name="selection-changed" handler="list_pane_selection_changed_cb" object="ContactsWindow" after="no" swapped="no"/>
+                    <signal name="link-contacts" handler="list_pane_link_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
+                    <signal name="delete-contacts" handler="list_pane_delete_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
                 </child>
               </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
             </child>
+          </object>
+          <packing>
+            <property name="name">content-view</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">True</property>
+            <property name="border_width">12</property>
+            <property name="row_spacing">24</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="ContactsListPane" id="list_pane">
+              <object class="GtkLabel" id="setup_explanation_label">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="store">contacts_store</property>
-                <signal name="selection-changed" handler="list_pane_selection_changed_cb" object="ContactsWindow" after="no" swapped="no"/>
-                <signal name="link-contacts" handler="list_pane_link_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
-                <signal name="delete-contacts" handler="list_pane_delete_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
+                <property name="halign">center</property>
+                <property name="wrap">True</property>
+                <property name="max_width_chars">25</property>
+                <property name="label">New contacts will be added to the selected address book. You are able to view and edit contacts from other address books.</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -173,7 +91,23 @@
                 <property name="height">1</property>
               </packing>
             </child>
+            <child>
+              <object class="ContactsAccountsList" id="setup_accounts_list">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
           </object>
+          <packing>
+            <property name="name">setup-view</property>
+          </packing>
         </child>
       </object>
     </child>
@@ -186,11 +120,181 @@
       <widget name="done_button"/>
     </widgets>
   </object>
+  <object class="GtkBox" id="content_header_bar">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkHeaderBar" id="left_toolbar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title" translatable="yes">All Contacts</property>
+        <property name="show_close_button">True</property>
+        <style>
+          <class name="contacts-left-header-bar"/>
+          <class name="titlebar"/>
+        </style>
+        <child>
+          <object class="GtkButton" id="add_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="add_button_atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes">Add contact</property>
+              </object>
+            </child>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">list-add-symbolic</property>
+                <property name="icon_size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="select_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="select_button_atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes">Selection mode</property>
+              </object>
+            </child>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">object-select-symbolic</property>
+                <property name="icon_size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkHeaderBar" id="right_toolbar">
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="show_close_button">True</property>
+        <style>
+          <class name="contacts-right-header-bar"/>
+          <class name="titlebar"/>
+        </style>
+        <child>
+          <object class="GtkButton" id="edit_button">
+            <property name="visible">False</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="label" translatable="yes">Edit</property>
+            <property name="width_request">70</property>
+            <property name="valign">center</property>
+            <style>
+              <class name="text-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="done_button">
+            <property name="visible">False</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="label" translatable="yes">Done</property>
+            <property name="width_request">70</property>
+            <property name="valign">center</property>
+            <style>
+              <class name="text-button"/>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkHeaderBar" id="setup_header_bar">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Select Address Book</property>
+    <property name="show_close_button">False</property>
+    <style>
+      <class name="titlebar"/>
+    </style>
+    <child>
+      <object class="GtkButton" id="setup_cancel_button">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="label" translatable="yes">Cancel</property>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="setup_cancel_button_atkobject">
+            <property name="AtkObject::accessible-name" translatable="yes">Cancel setup</property>
+          </object>
+        </child>
+        <style>
+          <class name="text-button"/>
+        </style>
+      </object>
+      <packing>
+        <property name="pack_type">start</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="setup_done_button">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">True</property>
+        <property name="focus_on_click">False</property>
+        <property name="label" translatable="yes">Done</property>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="setup_done_button_atkobject">
+            <property name="AtkObject::accessible-name" translatable="yes">Setup complete</property>
+          </object>
+        </child>
+        <style>
+          <class name="text-button"/>
+          <class name="suggested-action"/>
+        </style>
+      </object>
+      <packing>
+        <property name="pack_type">end</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkSizeGroup">
     <property name="mode">horizontal</property>
     <widgets>
       <widget name="left_toolbar"/>
       <widget name="list_pane"/>
+    </widgets>
+  </object>
+  <object class="GtkSizeGroup">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="setup_explanation_label"/>
+      <widget name="setup_accounts_list"/>
     </widgets>
   </object>
 </interface>

@@ -40,6 +40,22 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private Button done_button;
 
   [GtkChild]
+  private Stack view_switcher;
+
+  [GtkChild]
+  private Box content_header_bar;
+
+  [GtkChild]
+  private HeaderBar setup_header_bar;
+  [GtkChild]
+  private Button setup_done_button;
+  [GtkChild]
+  private Button setup_cancel_button;
+  [GtkChild]
+  private AccountsList setup_accounts_list;
+
+
+  [GtkChild]
   public Store contacts_store;
 
   /* FIXME: remove from public what it is not needed */
@@ -66,18 +82,30 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public Window (Gtk.Application app) {
     Object (application: app);
+    App.app.contacts_store = contacts_store;
 
-    string layout_desc;
-    string[] tokens;
+    /* FIXME: order me, debug code */
+    if (true) { /* setup is done ? */
+      view_switcher.visible_child_name = "content-view";
+      set_titlebar (content_header_bar);
+    } else {
+      /* here we need to wait for Store::prepare */
+      view_switcher.visible_child_name = "setup-view";
+      set_titlebar (setup_header_bar);
 
-    layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
-    tokens = layout_desc.split (":", 2);
-    if (tokens != null) {
-      right_toolbar.decoration_layout = ":%s".printf (tokens[1]);
-      left_toolbar.decoration_layout = tokens[0];
+      setup_accounts_list.update_contents (false);
+
+      setup_done_button.clicked.connect (() => {
+	  /* Here we need to wait for Store::quiescent */
+	  view_switcher.visible_child_name = "content-view";
+	  set_titlebar (content_header_bar);
+	});
+      setup_cancel_button.clicked.connect (() => {
+	  destroy ();
+	});
     }
 
-    connect_content_widgets ();
+    init_content_widgets ();
   }
 
   public void activate_selection_mode (bool active) {
@@ -164,7 +192,17 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   /* internal API */
-  void connect_content_widgets () {
+  void init_content_widgets () {
+    string layout_desc;
+    string[] tokens;
+
+    layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
+    tokens = layout_desc.split (":", 2);
+    if (tokens != null) {
+      right_toolbar.decoration_layout = ":%s".printf (tokens[1]);
+      left_toolbar.decoration_layout = tokens[0];
+    }
+
     list_pane.contacts_marked.connect ((nr_contacts) => {
 	if (nr_contacts == 0) {
 	  left_title = _("Select");

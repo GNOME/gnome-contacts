@@ -180,7 +180,8 @@ public class Contacts.App : Gtk.Application {
   private void create_window () {
     window = new Contacts.Window (this);
 
-    contacts_store = window.contacts_store;
+    /* FIXME: place where it should be placed */
+    //contacts_store = window.contacts_store;
 
     window.add_button.clicked.connect (app.new_contact);
   }
