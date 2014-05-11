@@ -73,11 +73,6 @@ public class Contacts.ListPane : Frame {
     }
 
     contacts_view.set_filter_values (values);
-
-    if (values == null)
-      contacts_view.set_show_subset (View.Subset.ALL);
-    else
-      contacts_view.set_show_subset (View.Subset.ALL_SEPARATED);
   }
 
   private bool filter_entry_changed_timeout () {
@@ -97,7 +92,6 @@ public class Contacts.ListPane : Frame {
     search_tool_item.set_expand (true);
     filter_entry.changed.connect (filter_entry_changed);
 
-    contacts_view.set_show_subset (View.Subset.ALL);
     contacts_view.selection_changed.connect( (l, contact) => {
         if (!ignore_selection_change)
           selection_changed (contact);
