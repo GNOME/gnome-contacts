@@ -80,9 +80,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  public Window (Gtk.Application app) {
-    Object (application: app);
-    App.app.contacts_store = contacts_store;
+  public Store store {
+    get; construct set;
+  }
+
+  public Window (Gtk.Application app, Store contacts_store) {
+    Object (application: app, store: contacts_store);
+    debug ("everyone creation: finalized already!!!");
+
+    contact_pane.store = contacts_store;
 
     /* FIXME: order me, debug code */
     if (true) { /* setup is done ? */

@@ -55,8 +55,11 @@ public class Contacts.ContactPane : Notebook {
 
       // Refresh the view when the store is quiescent as we may have missed
       // some potential matches while the store was still preparing.
-      _store.quiescent.connect (update_sheet);
+      if (value != null) {
+	_store.quiescent.connect (update_sheet);
+      }
     }
+    default = null;
   }
 
   public Contact? contact;
