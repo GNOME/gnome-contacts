@@ -23,13 +23,17 @@ using Folks;
 [GtkTemplate (ui = "/org/gnome/contacts/contacts-window.ui")]
 public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
+  private Grid content_grid;
+  [GtkChild]
+  private Box loading_box;
+  [GtkChild]
+  private SizeGroup left_pane_size_group;
+  [GtkChild]
   private HeaderBar left_toolbar;
   [GtkChild]
   private HeaderBar right_toolbar;
   [GtkChild]
   private Overlay overlay;
-  [GtkChild]
-  private ListPane list_pane;
   [GtkChild]
   private ContactPane contact_pane;
   [GtkChild]
@@ -57,6 +61,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   [GtkChild]
   public Store contacts_store;
+  private ListPane list_pane;
 
   /* FIXME: remove from public what it is not needed */
   [GtkChild]
@@ -105,6 +110,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 	  /* Here we need to wait for Store::quiescent */
 	  view_switcher.visible_child_name = "content-view";
 	  set_titlebar (content_header_bar);
+
+          Timeout.add (5000, () => {
+	      this.set_list_pane ();
+	      return false;
+	    });
 	});
       setup_cancel_button.clicked.connect (() => {
 	  destroy ();
@@ -112,6 +122,20 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
 
     init_content_widgets ();
+  }
+
+  public void set_list_pane () {
+    list_pane = new ListPane (store);
+    list_pane.selection_changed.connect (list_pane_selection_changed_cb);
+    list_pane.link_contacts.connect (list_pane_link_contacts_cb);
+    list_pane.delete_contacts.connect (list_pane_delete_contacts_cb);
+
+    left_pane_size_group.add_widget (list_pane);
+    left_pane_size_group.remove_widget (loading_box);
+    loading_box.destroy ();
+
+    content_grid.attach (list_pane, 0, 0, 1, 1);
+    list_pane.show ();
   }
 
   public void activate_selection_mode (bool active) {
@@ -263,12 +287,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     return false;
   }
 
-  [GtkCallback]
   void list_pane_selection_changed_cb (Contact? new_selection) {
     set_shown_contact (new_selection);
   }
 
-  [GtkCallback]
   void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);
@@ -306,7 +328,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
   }
 
-  [GtkCallback]
   void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);

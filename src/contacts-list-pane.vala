@@ -88,6 +88,10 @@ public class Contacts.ListPane : Frame {
     filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
   }
 
+  public ListPane (Store contacts_store) {
+    Object (store: contacts_store);
+  }
+
   construct {
     search_tool_item.set_expand (true);
     filter_entry.changed.connect (filter_entry_changed);

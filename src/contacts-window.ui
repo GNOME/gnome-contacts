@@ -22,7 +22,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkGrid" id="content_grid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -47,14 +47,44 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="ContactsListPane" id="list_pane">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="store">contacts_store</property>
-                    <signal name="selection-changed" handler="list_pane_selection_changed_cb" object="ContactsWindow" after="no" swapped="no"/>
-                    <signal name="link-contacts" handler="list_pane_link_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
-                    <signal name="delete-contacts" handler="list_pane_delete_contacts_cb" object="ContactsWindow" after="no" swapped="no"/>
-                  </object>
+		  <object class="GtkBox" id="loading_box">
+		    <property name="visible">True</property>
+		    <property name="can_focus">False</property>
+	            <property name="valign">center</property>
+		    <property name="hexpand">True</property>
+		    <property name="vexpand">True</property>
+		    <property name="orientation">vertical</property>
+		    <property name="width_request">300</property>
+		    <child>
+		      <object class="GtkSpinner">
+			<property name="visible">True</property>
+			<property name="can_focus">False</property>
+			<property name="active">True</property>
+			<style>
+			  <class name="contacts-watermark"/>
+			</style>
+		      </object>
+		      <packing>
+			<property name="expand">False</property>
+			<property name="fill">True</property>
+			<property name="position">0</property>
+		      </packing>
+		    </child>
+		    <child>
+		      <object class="GtkLabel" id="label1">
+			<property name="visible">True</property>
+			<property name="can_focus">False</property>
+			<property name="valign">start</property>
+			<property name="vexpand">True</property>
+			<property name="label" translatable="yes">Loading</property>
+		      </object>
+		      <packing>
+			<property name="expand">False</property>
+			<property name="fill">True</property>
+			<property name="position">1</property>
+		      </packing>
+		    </child>
+		  </object>
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
@@ -282,11 +312,11 @@
       </packing>
     </child>
   </object>
-  <object class="GtkSizeGroup">
+  <object class="GtkSizeGroup" id="left_pane_size_group">
     <property name="mode">horizontal</property>
     <widgets>
       <widget name="left_toolbar"/>
-      <widget name="list_pane"/>
+      <widget name="loading_box"/>
     </widgets>
   </object>
   <object class="GtkSizeGroup">
