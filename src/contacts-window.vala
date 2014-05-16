@@ -58,9 +58,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private AccountsList setup_accounts_list;
 
-
-  [GtkChild]
-  public Store contacts_store;
   private ListPane list_pane;
 
   /* FIXME: remove from public what it is not needed */

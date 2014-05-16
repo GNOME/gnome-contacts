@@ -24,7 +24,7 @@ public class Contacts.App : Gtk.Application {
   public GLib.Settings settings;
 
   /* moving creation to Window */
-  public weak Store contacts_store;
+  public Store contacts_store;
 
   public Contacts.Window window;
 
@@ -178,16 +178,14 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_window () {
-    window = new Contacts.Window (this);
-
-    /* FIXME: place where it should be placed */
-    //contacts_store = window.contacts_store;
+    window = new Contacts.Window (this, contacts_store);
 
     window.add_button.clicked.connect (app.new_contact);
   }
 
   public override void startup () {
     ensure_eds_accounts ();
+    contacts_store = new Store ();
     base.startup ();
   }
 
