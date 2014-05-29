@@ -122,10 +122,24 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public void set_list_pane () {
+    /* FIXME: if no contact is loaded per backend, I must place a sign
+     * saying "import your contacts/add online account" */
+    if (list_pane != null)
+      return;
+
     list_pane = new ListPane (store);
     list_pane.selection_changed.connect (list_pane_selection_changed_cb);
     list_pane.link_contacts.connect (list_pane_link_contacts_cb);
     list_pane.delete_contacts.connect (list_pane_delete_contacts_cb);
+
+    list_pane.contacts_marked.connect ((nr_contacts) => {
+	if (nr_contacts == 0) {
+	  left_title = _("Select");
+	} else {
+	  left_title = ngettext ("%d Selected",
+				 "%d Selected", nr_contacts).printf (nr_contacts);
+	}
+      });
 
     left_pane_size_group.add_widget (list_pane);
     left_pane_size_group.remove_widget (loading_box);
@@ -229,15 +243,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       right_toolbar.decoration_layout = ":%s".printf (tokens[1]);
       left_toolbar.decoration_layout = tokens[0];
     }
-
-    list_pane.contacts_marked.connect ((nr_contacts) => {
-	if (nr_contacts == 0) {
-	  left_title = _("Select");
-	} else {
-	  left_title = ngettext ("%d Selected",
-				 "%d Selected", nr_contacts).printf (nr_contacts);
-	}
-      });
 
     select_button.toggled.connect (() => {
 	activate_selection_mode (select_button.active);
