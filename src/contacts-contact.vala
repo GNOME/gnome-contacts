@@ -1227,7 +1227,7 @@ public class Contacts.Contact : GLib.Object  {
       if (persona_is_google_profile (persona))
 	return _("Google Circles");
       else if (persona_is_google_other (persona))
-	return _("Google Other Contact");
+	return _("Google");
 
       unowned string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
       if (eds_name != null)
