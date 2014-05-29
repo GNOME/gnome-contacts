@@ -25,7 +25,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Grid content_grid;
   [GtkChild]
-  private Box loading_box;
+  private Grid loading_box;
   [GtkChild]
   private SizeGroup left_pane_size_group;
   [GtkChild]
