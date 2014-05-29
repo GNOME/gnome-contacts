@@ -90,7 +90,8 @@ public class Contacts.AccountsList : Grid {
 
     if (last_selected_row != null) {
       var last_row_data = (last_selected_row as Bin).get_child () as Grid;
-      last_row_data.get_child_at (2, 0).destroy ();
+      if (last_row_data != null)
+        last_row_data.get_child_at (2, 0).destroy ();
     }
 
     last_selected_row = row;

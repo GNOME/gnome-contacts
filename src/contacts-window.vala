@@ -60,11 +60,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   private ListPane list_pane;
 
-  /* FIXME: remove from public what it is not needed */
-  [GtkChild]
-  public Button add_button;
-
-  public string left_title {
+  private string left_title {
     get {
       return left_toolbar.get_title ();
     }
@@ -73,7 +69,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  public string right_title {
+  private string right_title {
     get {
       return right_toolbar.get_title ();
     }
@@ -81,6 +77,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       right_toolbar.set_title (value);
     }
   }
+
+  [GtkChild]
+  public Button add_button;
 
   public Store store {
     get; construct set;
