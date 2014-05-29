@@ -28,7 +28,8 @@ public class Contacts.App : Gtk.Application {
 
   public Contacts.Window window;
 
-  private bool app_menu_created;
+  private bool is_prepare_scheluded = false;
+  private bool is_quiescent_scheduled = false;
 
   public void show_contact (Contact? contact) {
     window.set_shown_contact (contact);
@@ -183,75 +184,94 @@ public class Contacts.App : Gtk.Application {
     window.add_button.clicked.connect (app.new_contact);
   }
 
+  private void schedule_window_creation () {
+    /* window creation code is run after Store::prepare */
+    hold ();
+    ulong id = 0;
+    uint id2 = 0;
+    id = contacts_store.prepared.connect (() => {
+	contacts_store.disconnect (id);
+	Source.remove (id2);
+
+	create_app_menu ();
+	create_window ();
+	window.show ();
+
+	schedule_window_finish_ui ();
+
+	release ();
+      });
+    // Wait at most 0.5 seconds to show the window
+    id2 = Timeout.add (500, () => {
+	contacts_store.disconnect (id);
+
+	create_app_menu ();
+	create_window ();
+	window.show ();
+
+	schedule_window_finish_ui ();
+
+	release ();
+	return false;
+      });
+
+    is_prepare_scheluded = true;
+  }
+
+  private void schedule_window_finish_ui () {
+    /* make window swap spinner out and init Contacts.ListView */
+    // We delay the initial show a tiny bit so most contacts are loaded when we show
+    ulong id = 0;
+    uint id2 = 0;
+    id = contacts_store.quiescent.connect (() => {
+	Source.remove (id2);
+	contacts_store.disconnect (id);
+
+	debug ("callign set_list_pane from quiescent.connect");
+	window.set_list_pane ();
+      });
+    // Wait at most 0.5 seconds to show the window
+    id2 = Timeout.add (500, () => {
+	contacts_store.disconnect (id);
+
+	debug ("callign set_list_pane from 500.timeout");
+	window.set_list_pane ();
+	return false;
+      });
+
+    is_quiescent_scheduled = true;
+  }
+
   public override void startup () {
     ensure_eds_accounts ();
     contacts_store = new Store ();
     base.startup ();
   }
 
-  private void show_setup () {
-    var change_book_action = this.lookup_action ("change_book") as GLib.SimpleAction;
-    change_book_action.set_enabled (false);
-
-    var setup = new SetupWindow ();
-    setup.set_application (this);
-    setup.destroy.connect ( () => {
-        setup.destroy ();
-        if (setup.succeeded) {
-          change_book_action.set_enabled (true);
-          this.activate ();
-        }
-      });
-    setup.show ();
-  }
-
   public override void activate () {
+    /* window creation code */
     if (window == null) {
-      if (!app_menu_created) {
-        create_app_menu ();
-        app_menu_created = true;
+      if (!contacts_store.is_prepared) {
+	if (!is_prepare_scheluded) {
+	  schedule_window_creation ();
+	  return;
+	}
       }
 
-      /* FIXME: setup code won't work for now */
-      if (!settings.get_boolean ("did-initial-setup")) {
-        if (contacts_store.is_prepared)
-          show_setup ();
-        else {
-          hold ();
-          ulong id = 0;
-          uint id2 = 0;
-          id = contacts_store.prepared.connect (() => {
-              show_setup ();
-              contacts_store.disconnect (id);
-              Source.remove (id2);
-              release ();
-            });
-          // Wait at most 0.5 seconds to show the window
-          id2 = Timeout.add (500, () => {
-              show_setup ();
-              contacts_store.disconnect (id);
-              release ();
-              return false;
-	    });
-        }
-
-        return;
-      }
-
+      create_app_menu ();
       create_window ();
-
-      // We delay the initial show a tiny bit so most contacts are loaded when we show
-      contacts_store.quiescent.connect (() => {
-          app.window.show ();
-        });
-      // Wait at most 0.5 seconds to show the window
-      Timeout.add (500, () => {
-          app.window.show ();
-          return false;
-        });
-    } else {
-      window.present ();
+      window.show ();
     }
+
+    if (contacts_store.is_quiescent) {
+      debug ("callign set_list_pane cause store is already quiescent");
+      window.set_list_pane ();
+    } else if (!is_quiescent_scheduled) {
+      schedule_window_finish_ui ();
+    }
+
+    if (window != null)
+      window.present ();
   }
 
   public void show_message (string message) {
@@ -328,6 +348,5 @@ public class Contacts.App : Gtk.Application {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
     app = this;
     settings = new GLib.Settings ("org.gnome.Contacts");
-    app_menu_created = false;
   }
 }
