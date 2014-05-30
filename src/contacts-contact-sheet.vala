@@ -200,7 +200,7 @@ public class Contacts.ContactSheet : Grid {
       var birthday_details = p as BirthdayDetails;
       if (birthday_details != null) {
 	if (birthday_details.birthday != null) {
-	  add_row_with_label (ref i, _("Birthday"), birthday_details.birthday.to_local ().format ("%d %B"));
+	  add_row_with_label (ref i, _("Birthday"), birthday_details.birthday.to_local ().format ("%x"));
 	}
       }
 

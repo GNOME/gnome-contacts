@@ -151,10 +151,11 @@ public class Contacts.ContactEditor : Grid {
       var box = get_child_at (1, row_entry.key) as Grid;
       var day_spin  = box.get_child_at (0, 0) as SpinButton;
       var combo  = box.get_child_at (1, 0) as ComboBoxText;
+      var year_spin  = box.get_child_at (2, 0) as SpinButton;
 
-      var bday = new DateTime.local ((int)box.get_data<int> ("year"),
+      var bday = new DateTime.local (year_spin.get_value_as_int (),
 				     combo.get_active () + 1,
-				     (int)day_spin.get_value (),
+				     day_spin.get_value_as_int (),
 				     0, 0, 0);
       bday = bday.to_utc ();
 
@@ -349,6 +350,8 @@ public class Contacts.ContactEditor : Grid {
       focus_widget = value_text;
   }
 
+  delegate void AdjustingDateFn();
+
   void attach_row_for_birthday (string title, AbstractFieldDetails? details, DateTime birthday, int row) {
     var title_label = new Label (title);
     title_label.set_hexpand (false);
@@ -380,10 +383,14 @@ public class Contacts.ContactEditor : Grid {
     combo.get_style_context ().add_class ("contacts-combo");
     combo.set_hexpand (true);
 
-    /* hack to preserver year in order to compare latter full date */
-    box.set_data ("year", birthday.to_local ().get_year ());
+    var year_spin = new SpinButton.with_range (1800, 3000, 1);
+    year_spin.set_digits (0);
+    year_spin.numeric = true;
+    year_spin.set_value ((double)birthday.to_local ().get_year ());
+
     box.add (day_spin);
     box.add (combo);
+    box.add (year_spin);
 
     attach (box, 1, row, 1, 1);
 
@@ -393,12 +400,34 @@ public class Contacts.ContactEditor : Grid {
     delete_button.add (image);
     attach (delete_button, 3, row, 1, 1);
 
+    AdjustingDateFn fn = () => {
+      int[] month_of_31 = {3, 5, 8, 10};
+      if (combo.get_active () in month_of_31) {
+	day_spin.set_range (1, 30);
+      } else if (combo.get_active () == 1) {
+	if (year_spin.get_value_as_int () % 4 == 0 &&
+	    year_spin.get_value_as_int () % 100 != 0) {
+	  day_spin.set_range (1, 29);
+	} else {
+	  day_spin.set_range (1, 28);
+	}
+      }
+    };
+
     /* Notify change to upper layer */
     day_spin.changed.connect (() => {
 	set_field_changed (row);
       });
     combo.changed.connect (() => {
 	set_field_changed (row);
+
+	/* adjusting day_spin value using selected month constraints*/
+	fn ();
+      });
+    year_spin.changed.connect (() => {
+	set_field_changed (row);
+
+	fn ();
       });
     delete_button.clicked.connect (() => {
 	remove_row (row);
