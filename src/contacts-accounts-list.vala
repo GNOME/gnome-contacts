@@ -37,7 +37,7 @@ public class Contacts.AccountsList : Grid {
     accounts_view = new ListBox ();
     accounts_view.set_selection_mode (SelectionMode.NONE);
     accounts_view.set_size_request (372, -1);
-    accounts_view.set_header_func (update_header_func);
+    accounts_view.set_header_func (add_separator);
 
     var scrolled = new ScrolledWindow(null, null);
     scrolled.set_min_content_height (210);
@@ -99,14 +99,6 @@ public class Contacts.AccountsList : Grid {
     selected_store = row_data.get_data<PersonaStore> ("store");
 
     account_selected ();
-  }
-
-  private void update_header_func (ListBoxRow row, ListBoxRow? before) {
-    if (row.get_header () == null) {
-      row.set_header (new Separator (Orientation.HORIZONTAL));
-      return;
-    }
-    row.set_header (null);
   }
 
   public void update_contents (bool select_active) {
