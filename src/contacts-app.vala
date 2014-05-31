@@ -246,6 +246,12 @@ public class Contacts.App : Gtk.Application {
     ensure_eds_accounts ();
     contacts_store = new Store ();
     base.startup ();
+
+    var css_provider = load_css ("style.css");
+    Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
+					      css_provider,
+					      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
   }
 
   public override void activate () {

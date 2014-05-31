@@ -32,6 +32,7 @@ EXTRA_DIST = \
 	ui/app-menu.ui \
 	ui/contacts-window.ui \
 	ui/contacts-list-pane.ui \
+	ui/style.css \
 	$(appdata_in_files)	\
 	$(searchprovider_DATA) 	\
 	$(service_in_files)  \

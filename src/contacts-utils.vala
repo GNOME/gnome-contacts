@@ -36,6 +36,17 @@ namespace Contacts {
     return builder;
   }
 
+  public Gtk.CssProvider load_css (string css) {
+    var provider = new Gtk.CssProvider ();
+    try {
+      var file = File.new_for_uri("resource:///org/gnome/contacts/ui/" + css);
+      provider.load_from_file (file);
+    } catch (GLib.Error e) {
+      warning ("loading css: %s", e.message);
+    }
+    return provider;
+  }
+
   public void add_separator (ListBoxRow row,
 			     ListBoxRow? before_row) {
     row.set_header (new Separator (Orientation.HORIZONTAL));
