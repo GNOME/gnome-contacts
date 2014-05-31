@@ -38,6 +38,9 @@ public class Contacts.View : ListBox {
       grid.margin = 6;
       grid.set_column_spacing (10);
       image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
+      image_frame.set_shadow_type (ShadowType.IN);
+      image_frame.get_style_context ().add_class ("main-avatar-frame");
+
       label = new Label ("");
       label.set_ellipsize (Pango.EllipsizeMode.END);
       label.set_valign (Align.CENTER);
