@@ -56,7 +56,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
     scrolled.add (linked_accounts_view);
     grid.add (scrolled);
 
-    var label = new Label (_("You can manually link contacts from the contacts list"));
+    var label = new Label (_("You can link contacts by selecting them from the contacts list"));
     label.set_halign (Align.CENTER);
     grid.add (label);
 
