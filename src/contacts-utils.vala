@@ -29,7 +29,7 @@ namespace Contacts {
   public Gtk.Builder load_ui (string ui) {
     var builder = new Gtk.Builder ();
     try {
-        builder.add_from_resource ("/org/gnome/contacts/".concat (ui, null));
+        builder.add_from_resource ("/org/gnome/contacts/ui/".concat (ui, null));
     } catch (GLib.Error e) {
         error ("loading ui file: %s", e.message);
     }

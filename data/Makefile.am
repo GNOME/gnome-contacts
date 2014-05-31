@@ -28,6 +28,10 @@ appdata_in_files = gnome-contacts.appdata.xml.in
 
 EXTRA_DIST = \
 	gnome-contacts.desktop.in.in	\
+	contacts.gresource.xml \
+	ui/app-menu.ui \
+	ui/contacts-window.ui \
+	ui/contacts-list-pane.ui \
 	$(appdata_in_files)	\
 	$(searchprovider_DATA) 	\
 	$(service_in_files)  \
@@ -35,6 +39,7 @@ EXTRA_DIST = \
 
 CLEANFILES = $(service_DATA)	\
 	$(appdata_DATA)
+
 DISTCLEANFILES = \
 	gnome-contacts.desktop \
 	gnome-contacts.desktop.in

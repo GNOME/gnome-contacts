@@ -13,7 +13,7 @@ AM_CPPFLAGS = \
 AM_VALAFLAGS = \
 	--vapidir=../vapi --vapidir=../libgd --pkg config --pkg custom --pkg gd-1.0 \
 	@CONTACTS_PACKAGES@ \
-	--target-glib=2.38 --gresources=$(srcdir)/contacts.gresource.xml \
+	--target-glib=2.38 --gresources=$(top_srcdir)/data/contacts.gresource.xml \
 	$(NULL)
 
 if BUILD_CHEESE
@@ -59,9 +59,9 @@ gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
 
 @GSETTINGS_RULES@
 
-contact-resources.c: contacts.gresource.xml app-menu.ui contacts-window.ui contacts-list-pane.ui
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/contacts.gresource.xml \
-		--target=$@ --sourcedir=$(srcdir) --c-name contacts --generate-source
+resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir)/data $(top_srcdir)/data/contacts.gresource.xml)
+contact-resources.c: $(top_srcdir)/data/contacts.gresource.xml $(resource_files)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-source $<
 
 gnome_contacts_SOURCES = \
 	$(vala_sources) \
@@ -100,10 +100,6 @@ CLEANFILES = \
 EXTRA_DIST = \
 	cheese-flash.h \
 	um-crop-area.h \
-	contacts.gresource.xml \
-	app-menu.ui \
-	contacts-window.ui \
-	contacts-list-pane.ui \
 	$(gsettingsschema_in_files)     \
 	contacts-esd-setup.h \
 	$(NULL)
