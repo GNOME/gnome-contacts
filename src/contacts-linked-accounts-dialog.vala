@@ -52,6 +52,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
     linked_accounts_view = new ListBox ();
     linked_accounts_view.set_selection_mode (SelectionMode.NONE);
+    linked_accounts_view.set_header_func (add_separator);
 
     scrolled.add (linked_accounts_view);
     grid.add (scrolled);
@@ -67,7 +68,6 @@ public class Contacts.LinkedAccountsDialog : Dialog {
     var personas = contact.get_personas_for_display ();
     /* Cause personas are sorted properly I can do this */
     bool is_first = true;
-    int counter = 1;
     foreach (var p in personas) {
       if (is_first) {
 	is_first = false;
@@ -75,13 +75,12 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       }
 
       var row_grid = new Grid ();
-      row_grid.set_row_spacing (6);
 
       var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
       image_frame.set_hexpand (false);
       image_frame.margin = 6;
       image_frame.margin_end = 12;
-      contact.keep_widget_uptodate (image_frame,  (w) => {
+      contact.keep_widget_uptodate (image_frame, (w) => {
 	  (w as ContactFrame).set_image (contact.individual, contact);
 	});
       row_grid.attach (image_frame, 0, 0, 1, 2);
@@ -90,7 +89,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       display_name.set_halign (Align.START);
       display_name.set_valign (Align.END);
       display_name.set_hexpand (true);
-      display_name.set_markup (Markup.printf_escaped ("<span font='12px bold'>%s</span>",
+      display_name.set_markup (Markup.printf_escaped ("<span font='bold'>%s</span>",
 						      p.display_id));
 
       row_grid.attach (display_name, 1, 0, 1, 1);
@@ -103,19 +102,15 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       row_grid.attach (store_name, 1, 1, 1, 1);
 
       var button = new Button.with_label (_("Unlink"));
-      button.margin = 6;
-      button.margin_start = 12;
+      button.margin_end = 6;
       button.set_valign (Align.CENTER);
-      button.get_child ().margin = 6;
+      button.get_child ().margin = 1;
       row_grid.attach (button, 2, 0, 1, 2);
 
       /* signal */
       button.clicked.connect (() => {
 	  unlink_persona.begin (contact, p, (obj, result) => {
 	      unlink_persona.end (result);
-	      var sep = row_grid.get_data<Widget> ("separator");
-	      if (sep != null)
-		sep.destroy ();
 
 	      row_grid.destroy ();
 
@@ -127,13 +122,6 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
       row_grid.show_all ();
       linked_accounts_view.add (row_grid);
-
-      if (counter != personas.size - 1) {
-	var sep = new Separator (Orientation.HORIZONTAL);
-	linked_accounts_view.add (sep);
-	counter++;
-	row_grid.set_data ("separator", sep);
-      }
     }
   }
 }

@@ -35,6 +35,11 @@ namespace Contacts {
     }
     return builder;
   }
+
+  public void add_separator (ListBoxRow row,
+			     ListBoxRow? before_row) {
+    row.set_header (new Separator (Orientation.HORIZONTAL));
+  }
 }
 
 public class Center : Bin {
