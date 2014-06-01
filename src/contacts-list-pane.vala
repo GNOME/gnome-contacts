@@ -81,6 +81,7 @@ public class Contacts.ListPane : Frame {
     return false;
   }
 
+  [GtkCallback]
   private void filter_entry_changed (Editable editable) {
     if (filter_entry_changed_id != 0)
       Source.remove (filter_entry_changed_id);
@@ -94,7 +95,6 @@ public class Contacts.ListPane : Frame {
 
   construct {
     search_tool_item.set_expand (true);
-    filter_entry.changed.connect (filter_entry_changed);
 
     contacts_view.selection_changed.connect( (l, contact) => {
         if (!ignore_selection_change)
