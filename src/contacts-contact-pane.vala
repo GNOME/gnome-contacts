@@ -65,7 +65,7 @@ public class Contacts.ContactPane : Notebook {
   public Contact? contact;
 
   /* 3 pages, first */
-  private Frame no_selection_frame;
+  private Grid none_selected_view;
 
   /* second page */
   private ContactSheet sheet;
@@ -233,16 +233,17 @@ public class Contacts.ContactPane : Notebook {
     linked_button.set_sensitive (has_links);
 
     if (contact == null)
-      show_no_selection_frame ();
+      show_none_selected_view ();
   }
 
   construct {
+    this.show_border = false;
 
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
 
-    /* starts with no_selection_frame 'til someone select something */
-    show_no_selection_frame ();
+    /* starts with none_selected_view 'til someone select something */
+    show_none_selected_view ();
 
     var main_sw = new ScrolledWindow (null, null);
 
@@ -391,39 +392,34 @@ public class Contacts.ContactPane : Notebook {
     }
   }
 
-  void show_no_selection_frame () {
-    if (no_selection_frame == null) {
-      no_selection_frame = new Frame (null);
-      no_selection_frame.set_shadow_type (ShadowType.NONE);
-      no_selection_frame.set_size_request (500, -1);
-
-      var color = Gdk.RGBA ();
-      color.parse ("#f1f2f1");
-      no_selection_frame.override_background_color (0, color);
-
-      var box = new Grid ();
-      box.set_orientation (Orientation.VERTICAL);
-      box.set_valign (Align.CENTER);
-      box.set_halign (Align.CENTER);
-      box.set_vexpand (true);
-      box.set_hexpand (true);
-      box.margin_bottom = 60;
+  void show_none_selected_view () {
+    if (none_selected_view == null) {
+      none_selected_view = new Grid ();
+      none_selected_view.set_size_request (500, -1);
+      none_selected_view.set_orientation (Orientation.VERTICAL);
+      none_selected_view.set_vexpand (true);
+      none_selected_view.set_hexpand (true);
 
       var icon_theme = IconTheme.get_default ();
       var pix = icon_theme.load_icon ("avatar-default-symbolic", 144, 0);
 
       var image = new Image.from_pixbuf (pix);
       image.get_style_context ().add_class ("contacts-watermark");
-      box.add (image);
+      image.set_vexpand (true);
+      image.set_valign (Align.END);
+      none_selected_view.add (image);
 
       var label = new Gtk.Label ("");
       label.set_markup ("<span font=\"12\">%s</span>".printf (_("Select a contact")));
       label.get_style_context ().add_class ("contacts-watermark");
-      box.add (label);
+      label.set_vexpand (true);
+      label.set_hexpand (true);
+      label.set_valign (Align.START);
+      label.margin_bottom = 70;
+      none_selected_view.add (label);
 
-      no_selection_frame.add (box);
-      no_selection_frame.show_all ();
-      insert_page (no_selection_frame, null, 0);
+      none_selected_view.show_all ();
+      insert_page (none_selected_view, null, 0);
     }
 
     set_current_page (0);
