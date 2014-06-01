@@ -2,18 +2,12 @@
  * GNOME Contacts
  */
 
-ContactsListPane.frame {
+ContactsListPane.frame:dir(ltr) {
   border-width: 0 1px 0 0;
 }
 
-/* Line at top in contacts pane, similar to .documents-scrolledwin.frame */
-.contacts-spinner.frame {
- border-width: 0 1px 0 0;
- border-style: solid;
- border-color: @borders;
- border-image: none;
- border-radius: 0;
- padding: 0;
+ContactsListPane.frame:dir(rtl) {
+  border-width: 0 0 0 1px;
 }
 
 /* Background color in contacts pane, similar to .documents-main-view.view */
@@ -66,11 +60,6 @@ ContactsWindow .primary-toolbar.toolbar {
  border-width: 0 0 1px 0;
 }
 
-.contacts-button:active {
- border-color: #000000;
- border-image: none;
-}
-
 .contacts-entry {
  box-shadow: none;
  border-image: none;
@@ -113,27 +102,6 @@ ContactsWindow .primary-toolbar.toolbar {
  border-color: #bbbeb7;
  background-image: none;
  background-color: #ffffff;
-}
-
-.toolbar.contacts-edit-toolbar {
-  padding: 6px;
-  background-color: #E2E4E2;
-  border-width: 1px 0 0 0;
-  border-style: solid;
-  border-color: @borders;
-  border-image: none;
-}
-
-.toolbar.contacts-edit-toolbar .button {
-  padding-left: 6px;
-  padding-right: 6px;
-}
-
-.toolbar.contacts-selection-toolbar {
-  border-width: 1px 0 0 0;
-  border-style: solid;
-  border-color: @borders;
-  border-image: none;
 }
 
 .contacts-watermark {
