@@ -1005,38 +1005,6 @@ public class Contacts.Contact : GLib.Object  {
     return Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
   }
 
-  public static string format_uri_link_text (UrlFieldDetails detail) {
-    // TODO: Detect link type, possibly using types parameter (to be standardized bz#653623)
-    // TODO: Add more custom url matches
-
-    string uri = detail.value;
-
-    if (/https?:\/\/www.facebook.com\/profile\.php\?id=[0-9]+$/.match(uri) ||
-	/https?:\/\/www.facebook.com\/[a-zA-Z0-9.]+$/.match(uri))
-      return _("Facebook");
-
-    if (/https?:\/\/twitter.com\/#!\/[a-zA-Z0-9]+$/.match(uri))
-      return _("Twitter");
-
-    if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(uri))
-      return _("Google Profile");
-
-    if (uri.ascii_ncasecmp ("http:", 5) == 0 ||
-	uri.ascii_ncasecmp ("https:", 5) == 0) {
-      var start = uri.index_of (":");
-      start++;
-      while (uri[start] == '/')
-	start++;
-      var last = uri.index_of ("/", start);
-      if (last < 0)
-	last = uri.length;
-
-      return uri[start:last];
-    }
-
-    return uri;
-  }
-
   /* We claim something is "removable" if at least one persona is removable,
      that will typically unlink the rest. */
   public bool can_remove_personas () {
