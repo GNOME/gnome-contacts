@@ -100,7 +100,6 @@ AM_CONDITIONAL(BUILD_MAN_PAGES, test x$enable_man_pages = xyes)
 dnl libgd
 LIBGD_INIT([
   gtk-hacks
-  main-toolbar
   notification
   static
   vapi
