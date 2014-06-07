@@ -425,7 +425,7 @@ public class Contacts.ContactPane : Notebook {
     set_current_page (0);
   }
 
-  public void set_edit_mode (bool on_edit) {
+  public void set_edit_mode (bool on_edit, bool drop_changes = false) {
     if (on_edit == on_edit_mode)
       return;
 
@@ -450,31 +450,33 @@ public class Contacts.ContactPane : Notebook {
     } else {
       on_edit_mode = false;
       /* saving changes */
-      foreach (var prop in editor.properties_changed ().entries) {
-	Contact.set_persona_property.begin (prop.value.persona, prop.key, prop.value.value,
-					    (obj, result) => {
-					      try {
-						Contact.set_persona_property.end (result);
-					      } catch (Error e2) {
-						App.app.show_message (e2.message);
-						update_sheet ();
-					      }
-					    });
-      }
+      if (!drop_changes) {
+	foreach (var prop in editor.properties_changed ().entries) {
+	  Contact.set_persona_property.begin (prop.value.persona, prop.key, prop.value.value,
+					      (obj, result) => {
+						try {
+						  Contact.set_persona_property.end (result);
+						} catch (Error e2) {
+						  App.app.show_message (e2.message);
+						  update_sheet ();
+						}
+					      });
+	}
 
-      if (editor.name_changed ()) {
-	var v = editor.get_full_name_value ();
-	Contact.set_individual_property.begin (contact,
-					       "full-name", v,
-					       (obj, result) => {
-						 try {
-						   Contact.set_individual_property.end (result);
-						 } catch (Error e) {
-						   App.app.show_message (e.message);
-						   /* FIXME: add this back */
-						   /* l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name)); */
-						 }
-					       });
+	if (editor.name_changed ()) {
+	  var v = editor.get_full_name_value ();
+	  Contact.set_individual_property.begin (contact,
+						 "full-name", v,
+						 (obj, result) => {
+						   try {
+						     Contact.set_individual_property.end (result);
+						   } catch (Error e) {
+						     App.app.show_message (e.message);
+						     /* FIXME: add this back */
+						     /* l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name)); */
+						   }
+						 });
+	}
       }
 
       editor.clear ();

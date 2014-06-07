@@ -41,6 +41,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Button edit_button;
   [GtkChild]
+  private Button cancel_button;
+  [GtkChild]
   private Button done_button;
 
   [GtkChild]
@@ -85,11 +87,56 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     get; construct set;
   }
 
+  public bool selection_mode {
+    get; set;
+  }
+
+  public bool edit_mode {
+    get; set;
+  }
+
   public Window (Gtk.Application app, Store contacts_store) {
     Object (application: app, store: contacts_store);
     debug ("everyone creation: finalized already!!!");
 
     contact_pane.store = contacts_store;
+
+    /* stablishing constraints */
+    this.bind_property ("selection-mode",
+			right_toolbar, "show-close-button",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
+    this.bind_property ("selection-mode",
+			add_button, "visible",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
+    this.bind_property ("selection-mode",
+			edit_button, "visible",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
+
+    this.bind_property ("edit-mode",
+			edit_button, "visible",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
+    this.bind_property ("edit-mode",
+			done_button, "visible",
+			BindingFlags.DEFAULT);
+    this.bind_property ("edit-mode",
+			cancel_button, "visible",
+			BindingFlags.DEFAULT);
+    this.bind_property ("edit-mode",
+			add_button, "visible",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
+    this.bind_property ("edit-mode",
+			select_button, "visible",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
+    this.bind_property ("edit-mode",
+			right_toolbar, "show-close-button",
+			BindingFlags.DEFAULT |
+			BindingFlags.INVERT_BOOLEAN);
 
     if ((app as App).settings.get_boolean ("did-initial-setup")) {
       view_switcher.visible_child_name = "content-view";
@@ -164,64 +211,57 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public void activate_selection_mode (bool active) {
     if (active) {
-      add_button.hide ();
-      edit_button.hide ();
+      selection_mode = true;
 
       left_toolbar.get_style_context ().add_class ("selection-mode");
       right_toolbar.get_style_context ().add_class ("selection-mode");
 
       left_toolbar.set_title (_("Select"));
-      right_toolbar.show_close_button = false;
 
       list_pane.show_selection ();
     } else {
-      add_button.show ();
+      selection_mode = false;
 
       left_toolbar.get_style_context ().remove_class ("selection-mode");
       right_toolbar.get_style_context ().remove_class ("selection-mode");
 
       left_toolbar.set_title (_("All Contacts"));
-      right_toolbar.show_close_button = true;
 
       list_pane.hide_selection ();
 
       /* could be no contact selected whatsoever */
-      if (contact_pane.contact != null)
-	edit_button.show ();
+      if (contact_pane.contact == null)
+	edit_button.hide ();
     }
   }
 
-  public void activate_edit_mode (bool active) {
-    if (active) {
-	if (contact_pane.contact == null)
-	  return;
+  public void enter_edit_mode () {
+    if (contact_pane.contact == null)
+      return;
 
-	var name = contact_pane.contact.display_name;
-	right_title = _("Editing %s").printf (name);
+    edit_mode = true;
 
-	left_toolbar.get_style_context ().add_class ("selection-mode");
-	right_toolbar.get_style_context ().add_class ("selection-mode");
+    var name = contact_pane.contact.display_name;
+    right_title = _("Editing %s").printf (name);
 
-	edit_button.hide ();
-	done_button.show ();
-	contact_pane.set_edit_mode (true);
-    } else {
-	done_button.hide ();
-	edit_button.show ();
-	contact_pane.set_edit_mode (false);
+    left_toolbar.get_style_context ().add_class ("selection-mode");
+    right_toolbar.get_style_context ().add_class ("selection-mode");
 
-	left_toolbar.get_style_context ().remove_class ("selection-mode");
-	right_toolbar.get_style_context ().remove_class ("selection-mode");
+    contact_pane.set_edit_mode (true);
+  }
 
-	if (contact_pane.contact != null)
-	  right_title = contact_pane.contact.display_name;
-	else
-	  right_title = "";
-    }
+  public void leave_edit_mode (bool drop_changes = false) {
+    edit_mode = false;
 
-    add_button.visible = !active;
-    select_button.visible = !active;
-    right_toolbar.show_close_button = !active;
+    contact_pane.set_edit_mode (false, drop_changes);
+
+    left_toolbar.get_style_context ().remove_class ("selection-mode");
+    right_toolbar.get_style_context ().remove_class ("selection-mode");
+
+    if (contact_pane.contact != null)
+      right_title = contact_pane.contact.display_name;
+    else
+      right_title = "";
   }
 
   public void add_notification (Widget notification) {
@@ -231,7 +271,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void set_shown_contact (Contact? c) {
     /* FIXME: ask the user to leave edit-mode and act accordingly */
     if (contact_pane.on_edit_mode) {
-      activate_edit_mode (false);
+      leave_edit_mode ();
     }
 
     contact_pane.show_contact (c, false);
@@ -262,11 +302,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
 
     edit_button.clicked.connect (() => {
-	activate_edit_mode (true);
+	enter_edit_mode ();
       });
 
     done_button.clicked.connect (() => {
-	activate_edit_mode (false);
+	leave_edit_mode ();
+      });
+
+    cancel_button.clicked.connect (() => {
+	leave_edit_mode (true);
       });
   }
 
