@@ -322,6 +322,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     contact_pane.new_contact ();
   }
 
+  public void show_search (string query) {
+    list_pane.filter_entry.set_text (query);
+  }
+
   /* internal API */
   void init_content_widgets () {
     string layout_desc;

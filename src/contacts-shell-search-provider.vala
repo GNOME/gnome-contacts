@@ -1,6 +1,7 @@
+/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 using Gee;
 
-[DBus (name = "org.gnome.Shell.SearchProvider")]
+[DBus (name = "org.gnome.Shell.SearchProvider2")]
 public class Contacts.SearchProvider : Object {
   SearchProviderApp app;
   Store store;
@@ -15,16 +16,16 @@ public class Contacts.SearchProvider : Object {
     next_id = 0;
 
     store.changed.connect ( (c) => {
-      contacts_map.set(c.get_data<string> ("search-id"), c);
-    });
+	contacts_map.set(c.get_data<string> ("search-id"), c);
+      });
     store.added.connect ( (c) => {
-      var id = next_id++.to_string ();
-      c.set_data ("search-id", id);
-      contacts_map.set(id, c);
-    });
+	var id = next_id++.to_string ();
+	c.set_data ("search-id", id);
+	contacts_map.set(id, c);
+      });
     store.removed.connect ( (c) => {
-      contacts_map.unset(c.get_data<string> ("search-id"));
-    });
+	contacts_map.unset(c.get_data<string> ("search-id"));
+      });
   }
 
   private static int compare_contacts (Contact a, Contact b) {
@@ -32,9 +33,9 @@ public class Contacts.SearchProvider : Object {
     int b_prio = b.is_main ? 0 : -1;
 
     if (a_prio > b_prio)
-        return -1;
+      return -1;
     if (a_prio < b_prio)
-        return 1;
+      return 1;
 
     if (is_set (a.display_name) && is_set (b.display_name))
       return a.display_name.collate (b.display_name);
@@ -48,39 +49,41 @@ public class Contacts.SearchProvider : Object {
     return 0;
   }
 
-  private string[] do_search (string[] terms) {
+  private async string[] do_search (string[] terms) {
     app.hold ();
     string[] normalized_terms =
-        Utils.canonicalize_for_search (string.joinv(" ", terms)).split(" ");
+    Utils.canonicalize_for_search (string.joinv(" ", terms)).split(" ");
 
     var matches = new ArrayList<Contact> ();
     foreach (var c in store.get_contacts ()) {
       if (c.is_hidden)
-          continue;
+	continue;
 
       if (c.contains_strings (normalized_terms))
-          matches.add (c);
+	matches.add (c);
     }
 
     matches.sort((CompareDataFunc<Contact>) compare_contacts);
 
     var results = new string[matches.size];
     for (int i = 0; i < matches.size; i++)
-        results[i] = matches[i].get_data ("search-id");
+      results[i] = matches[i].get_data ("search-id");
     app.release ();
     return results;
   }
 
-  public string[] GetInitialResultSet (string[] terms) {
-    return do_search (terms);
+  public async string[] GetInitialResultSet (string[] terms) {
+    warning ("GetInitialResultSet %s", string.joinv ("; ", terms));
+    return yield do_search (terms);
   }
 
-  public string[] GetSubsearchResultSet (string[] previous_results,
-                                         string[] new_terms) {
-    return do_search (new_terms);
+  public async string[] GetSubsearchResultSet (string[] previous_results,
+					       string[] new_terms) {
+    warning ("GetSubsearchResultSet %s", string.joinv ("; ", new_terms));
+    return yield do_search (new_terms);
   }
 
-  public HashTable<string, Variant>[] GetResultMetas (string[] ids) {
+  private async HashTable<string, Variant>[] get_metas (owned string[] ids) {
     app.hold ();
     var results = new ArrayList<HashTable> ();
     foreach (var id in ids) {
@@ -103,11 +106,19 @@ public class Contacts.SearchProvider : Object {
       results.add (meta);
     }
     app.release ();
+    warning ("GetResultMetas: RETURNED");
     return results.to_array ();
   }
 
-  public void ActivateResult (string search_id) {
+  public async HashTable<string, Variant>[] GetResultMetas (string[] ids) {
+    warning ("GetResultMetas: %s", string.joinv ("; ", ids));
+    return yield get_metas (ids);
+  }
+
+  public void ActivateResult (string search_id, string[] terms, uint32 timestamp) {
     app.hold ();
+
+    warning ("ActivateResult: %s", search_id);
 
     var contact = contacts_map.get (search_id);
 
@@ -126,9 +137,29 @@ public class Contacts.SearchProvider : Object {
 
     app.release ();
   }
+
+  public void LaunchSearch (string[] terms, uint32 timestamp) {
+    app.hold ();
+
+    debug ("LaunchSearch (%s)", string.joinv (", ", terms));
+
+    try {
+      string[] args = {};
+      args += "gnome-contacts";
+      args += "--search";
+      args += string.joinv (" ", terms);
+      if (!Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null))
+	stderr.printf ("Failed to launch Contacts for search\n");
+    } catch (SpawnError error) {
+      stderr.printf ("Failed to launch Contacts for search\n");
+      warning (error.message);
+    }
+
+    app.release ();
+  }
 }
 
-public class Contacts.SearchProviderApp : Gtk.Application {
+public class Contacts.SearchProviderApp : GLib.Application {
   public SearchProviderApp () {
     Object (application_id: "org.gnome.Contacts.SearchProvider",
             flags: ApplicationFlags.IS_SERVICE,

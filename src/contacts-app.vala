@@ -154,6 +154,16 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
+  public void show_search (string query) {
+    if (contacts_store.is_quiescent) {
+      window.show_search (query);
+    } else {
+      contacts_store.quiescent.connect_after (() => {
+	  window.show_search (query);
+	});
+    }
+  }
+
   private void create_app_menu () {
     var action = new GLib.SimpleAction ("quit", null);
     action.activate.connect (() => { this.quit (); });
@@ -302,11 +312,14 @@ public class Contacts.App : Gtk.Application {
 
   private static string individual_id = null;
   private static string email_address = null;
+  private static string search_terms = null;
   private static const OptionEntry[] options = {
     { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
       N_("Show contact with this individual id"), null },
     { "email", 'e', 0, OptionArg.STRING, ref email_address,
       N_("Show contact with this email address"), null },
+    { "search", 's', 0, OptionArg.STRING, ref search_terms,
+      null, null },
     { null }
   };
 
@@ -320,6 +333,7 @@ public class Contacts.App : Gtk.Application {
 
     individual_id = null;
     email_address = null;
+    search_terms = null;
 
     try {
       context.parse (ref _args);
@@ -334,6 +348,8 @@ public class Contacts.App : Gtk.Application {
       app.show_individual.begin (individual_id);
     if (email_address != null)
       app.show_by_email.begin (email_address);
+    if (search_terms != null)
+      app.show_search (search_terms);
 
     return 0;
   }
