@@ -1,7 +1,7 @@
 NULL=
 
 desktopdir = $(datadir)/applications
-desktop_in_files = gnome-contacts.desktop.in
+desktop_in_files = org.gnome.Contacts.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
 searchproviderdir = $(datadir)/gnome-shell/search-providers
@@ -15,11 +15,17 @@ searchprovider_DATA = gnome-contacts-search-provider.ini
 service_in_files = org.gnome.Contacts.SearchProvider.service.in
 
 servicedir = $(datadir)/dbus-1/services
-service_DATA = $(service_in_files:.service.in=.service)
+service_DATA = $(service_in_files:.service.in=.service) org.gnome.Contacts.service
 
 %.service: %.service.in Makefile
 	$(AM_V_GEN) [ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 	            sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
+
+org.gnome.Contacts.service:
+	$(AM_V_GEN) (echo '[D-BUS Service]'; \
+	            echo 'Name=org.gnome.Contacts'; \
+	            echo 'Exec=${bindir}/gnome-contacts --gapplication-service') > $@.tmp && \
+	            mv $@.tmp $@
 
 @INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/appdata
@@ -27,7 +33,7 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdata_in_files = gnome-contacts.appdata.xml.in
 
 EXTRA_DIST = \
-	gnome-contacts.desktop.in.in	\
+	org.gnome.Contacts.desktop.in.in	\
 	contacts.gresource.xml \
 	ui/app-menu.ui \
 	ui/contacts-window.ui \

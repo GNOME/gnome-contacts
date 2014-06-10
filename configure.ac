@@ -14,8 +14,8 @@ AC_CONFIG_FILES([Makefile
 		src/Makefile
 		man/Makefile
 		data/Makefile
+		data/org.gnome.Contacts.desktop.in
 		po/Makefile.in
-		data/gnome-contacts.desktop.in
 		])
 
 LT_INIT
