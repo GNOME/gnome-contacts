@@ -206,6 +206,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     loading_box.destroy ();
 
     content_grid.attach (list_pane, 0, 0, 1, 1);
+
+    if (contact_pane.contact != null)
+      list_pane.select_contact (contact_pane.contact);
+
     list_pane.show ();
   }
 
@@ -275,6 +279,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
 
     contact_pane.show_contact (c, false);
+    if (list_pane != null)
+      list_pane.select_contact (c);
 
     /* clearing right_toolbar */
     if (c != null)
