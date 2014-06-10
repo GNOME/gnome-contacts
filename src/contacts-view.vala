@@ -80,14 +80,14 @@ public class Contacts.View : ListBox {
   public signal void selection_changed (Contact? contact);
   public signal void contacts_marked (int contacts_marked);
 
-  Subset show_subset;
+  Subset show_subset = Subset.ALL;
   HashMap<Contact,ContactDataRow> contacts;
   HashSet<Contact> hidden_contacts;
-  int nr_contacts_marked;
+  int nr_contacts_marked = 0;
 
   string []? filter_values;
-  TextDisplay text_display;
-  bool selectors_visible;
+  TextDisplay text_display = TextDisplay.PRESENCE;
+  bool selectors_visible = false;
 
   private Store _store;
 
@@ -108,9 +108,6 @@ public class Contacts.View : ListBox {
 
   construct {
     hidden_contacts = new HashSet<Contact>();
-    nr_contacts_marked = 0;
-    show_subset = Subset.ALL;
-    text_display = TextDisplay.PRESENCE;
 
     contacts = new HashMap<Contact,ContactDataRow> ();
 
@@ -121,8 +118,6 @@ public class Contacts.View : ListBox {
       });
     this.set_filter_func (filter);
     this.set_header_func (update_header);
-
-    selectors_visible = false;
 
     /* FIXME: remove hardcoded background color */
     var color = Gdk.RGBA ();
