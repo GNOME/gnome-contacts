@@ -30,7 +30,7 @@ org.gnome.Contacts.service:
 @INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/appdata
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
-appdata_in_files = gnome-contacts.appdata.xml.in
+appdata_in_files = org.gnome.Contacts.appdata.xml.in
 
 EXTRA_DIST = \
 	org.gnome.Contacts.desktop.in.in	\
