@@ -162,21 +162,23 @@ public class Contacts.AccountsList : Grid {
       }
     }
 
-    var local_data = new Grid ();
-    local_data.margin = 6;
-    local_data.margin_start = 5;
-    local_data.set_column_spacing (10);
-    local_data.set_data ("store", local_store);
-    var provider_image = new Image.from_icon_name ("x-office-address-book",
-                                                   IconSize.DIALOG);
-    local_data.add (provider_image);
-    var local_label = new Label (_("Local Address Book"));
-    local_data.add (local_label);
-    accounts_view.add (local_data);
-    if (select_active &&
-        local_store == App.app.contacts_store.aggregator.primary_store) {
-      var row = local_data.get_parent () as ListBoxRow;
-      row_activated (row);
+    if (local_store != null) {
+      var local_data = new Grid ();
+      local_data.margin = 6;
+      local_data.margin_start = 5;
+      local_data.set_column_spacing (10);
+      local_data.set_data ("store", local_store);
+      var provider_image = new Image.from_icon_name ("x-office-address-book",
+                                                     IconSize.DIALOG);
+      local_data.add (provider_image);
+      var local_label = new Label (_("Local Address Book"));
+      local_data.add (local_label);
+      accounts_view.add (local_data);
+      if (select_active &&
+          local_store == App.app.contacts_store.aggregator.primary_store) {
+        var row = local_data.get_parent () as ListBoxRow;
+        row_activated (row);
+      }
     }
 
     accounts_view.show_all ();
