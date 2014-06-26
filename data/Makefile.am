@@ -48,5 +48,6 @@ CLEANFILES = $(service_DATA)	\
 	$(appdata_DATA)
 
 DISTCLEANFILES = \
+	org.gnome.Contacts.desktop \
 	gnome-contacts.desktop \
 	gnome-contacts.desktop.in
