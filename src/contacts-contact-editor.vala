@@ -20,6 +20,27 @@ using Gtk;
 using Folks;
 using Gee;
 
+namespace Contacts {
+  public static void change_avatar (Contact contact, ContactFrame image_frame) {
+    var dialog = new AvatarDialog (contact);
+    dialog.show ();
+    dialog.set_avatar.connect ( (icon) =>  {
+	Value v = Value (icon.get_type ());
+	v.set_object (icon);
+	Contact.set_individual_property.begin (contact,
+					       "avatar", v,
+					       (obj, result) => {
+						 try {
+						   Contact.set_individual_property.end (result);
+						 } catch (GLib.Error e) {
+						   App.app.show_message (e.message);
+						   image_frame.set_image (contact.individual, contact);
+					       }
+					       });
+      });
+  }
+}
+
 public class Contacts.AddressEditor : Box {
   public Entry? entries[7];
   public PostalAddressFieldDetails details;
