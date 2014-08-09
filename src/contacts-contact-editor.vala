@@ -257,6 +257,7 @@ public class Contacts.ContactEditor : Grid {
     combo.set_active (details);
     if (type != null)
       combo.set_to (type);
+    combo.set_valign (Align.CENTER);
     container_grid.attach (combo, 0, row, 1, 1);
 
     var value_entry = new Entry ();
@@ -264,10 +265,8 @@ public class Contacts.ContactEditor : Grid {
     value_entry.set_hexpand (true);
     container_grid.attach (value_entry, 1, row, 1, 1);
 
-    var delete_button = new Button ();
+    var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
-    delete_button.add (image);
     container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
@@ -297,10 +296,8 @@ public class Contacts.ContactEditor : Grid {
     value_entry.set_hexpand (true);
     container_grid.attach (value_entry, 1, row, 1, 1);
 
-    var delete_button = new Button ();
+    var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
-    delete_button.add (image);
     container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
@@ -334,10 +331,8 @@ public class Contacts.ContactEditor : Grid {
     sw.add (value_text);
     container_grid.attach (sw, 1, row, 1, 1);
 
-    var delete_button = new Button ();
+    var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
-    delete_button.add (image);
     delete_button.set_valign (Align.START);
     container_grid.attach (delete_button, 3, row, 1, 1);
 
@@ -399,10 +394,8 @@ public class Contacts.ContactEditor : Grid {
 
     container_grid.attach (box, 1, row, 1, 1);
 
-    var delete_button = new Button ();
+    var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
-    delete_button.add (image);
     container_grid.attach (delete_button, 3, row, 1, 1);
 
     AdjustingDateFn fn = () => {
@@ -451,10 +444,8 @@ public class Contacts.ContactEditor : Grid {
     var value_address = new AddressEditor (details);
     container_grid.attach (value_address, 1, row, 1, 1);
 
-    var delete_button = new Button ();
+    var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
-    delete_button.add (image);
     delete_button.set_valign (Align.START);
     container_grid.attach (delete_button, 3, row, 1, 1);
 
