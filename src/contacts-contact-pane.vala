@@ -72,8 +72,6 @@ public class Contacts.ContactPane : Notebook {
 
   /* third page */
   private ContactEditor editor;
-  private Button linked_button;
-  private Button remove_button;
 
   private SimpleActionGroup edit_contact_actions;
   private const GLib.ActionEntry[] action_entries = {
@@ -218,19 +216,10 @@ public class Contacts.ContactPane : Notebook {
 
     update_sheet ();
 
-    bool can_remove = false;
-    bool has_links = false;
-
     if (contact != null) {
       contact.personas_changed.connect (update_sheet);
       contact.changed.connect (update_sheet);
-
-      can_remove = contact.can_remove_personas ();
-      has_links = contact.individual.personas.size > 1;
     }
-
-    remove_button.set_sensitive (can_remove);
-    linked_button.set_sensitive (has_links);
 
     if (contact == null)
       show_none_selected_view ();
@@ -276,68 +265,11 @@ public class Contacts.ContactPane : Notebook {
     suggestion_grid = null;
 
     /* edit mode widgetry, third page */
-    var top_grid = new Grid ();
-    top_grid.set_orientation (Orientation.VERTICAL);
-
-    main_sw = new ScrolledWindow (null, null);
-    top_grid.add (main_sw);
-
-    main_sw.set_shadow_type (ShadowType.NONE);
-    main_sw.set_hexpand (true);
-    main_sw.set_vexpand (true);
-    main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-
-    hcenter = new Center ();
-    hcenter.max_width = 600;
-    hcenter.xalign = 0.0;
-
-    editor = new ContactEditor ();
-    hcenter.add (editor);
-
-    editor.margin = 36;
-    editor.set_margin_bottom (24);
-    main_sw.add (hcenter);
-    editor.set_focus_vadjustment (main_sw.get_vadjustment ());
-
-    main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
-    main_sw.get_child ().get_style_context ().add_class ("view");
-
     on_edit_mode = false;
-    var edit_toolbar = new ActionBar ();
-
-    var builder = load_ui ("app-menu.ui");
-    var gmenu = builder.get_object ("edit-contact") as MenuModel;
-
-    var add_detail_button = new Gtk.MenuButton ();
-    add_detail_button.use_popover = true;
-    add_detail_button.set_menu_model (gmenu);
-    add_detail_button.set_direction (ArrowType.UP);
-    add_detail_button.get_popover ().insert_action_group ("edit", this.edit_contact_actions);
-
-    var box = new Box (Orientation.HORIZONTAL, 6);
-    box.add (new Label (_("New Detail")));
-    box.add (new Image.from_icon_name ("go-down-symbolic", IconSize.BUTTON));
-    add_detail_button.add (box);
-
-    edit_toolbar.pack_start (add_detail_button);
-
-    linked_button = new Button.with_label (_("Linked Accounts"));
-    linked_button.clicked.connect (linked_accounts);
-    edit_toolbar.pack_start (linked_button);
-
-    remove_button = new Button.with_label (_("Remove Contact"));
-    remove_button.clicked.connect (delete_contact);
-    edit_toolbar.pack_end (remove_button);
-
-    edit_toolbar.show_all ();
-    top_grid.add (edit_toolbar);
-
-    editor.set_vexpand (true);
-    editor.set_hexpand (true);
-    editor.show_all ();
-    main_sw.show ();
-    top_grid.show_all ();
-    insert_page (top_grid, null, 2);
+    editor = new ContactEditor (this.edit_contact_actions);
+    editor.linked_button.clicked.connect (linked_accounts);
+    editor.remove_button.clicked.connect (delete_contact);
+    insert_page (editor, null, 2);
 
     /* enable/disable actions*/
     var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
@@ -359,7 +291,6 @@ public class Contacts.ContactPane : Notebook {
 			  BindingFlags.DEFAULT |
 			  BindingFlags.SYNC_CREATE |
 			  BindingFlags.INVERT_BOOLEAN);
-
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {

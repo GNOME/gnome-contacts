@@ -61,7 +61,12 @@ public class Contacts.AddressEditor : Box {
 public class Contacts.ContactEditor : Grid {
   Contact contact;
 
+  Grid container_grid;
   weak Widget focus_widget;
+
+  public Button linked_button;
+
+  public Button remove_button;
 
   public struct PropertyData {
     Persona persona;
@@ -96,8 +101,8 @@ public class Contacts.ContactEditor : Grid {
     var new_details = new HashSet<EmailFieldDetails>();
 
     foreach (var row_entry in rows.entries) {
-      var combo = get_child_at (0, row_entry.key) as TypeCombo;
-      var entry = get_child_at (1, row_entry.key) as Entry;
+      var combo = container_grid.get_child_at (0, row_entry.key) as TypeCombo;
+      var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
       combo.update_details (row_entry.value.details);
       var details = new EmailFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
@@ -112,8 +117,8 @@ public class Contacts.ContactEditor : Grid {
     var new_details = new HashSet<PhoneFieldDetails>();
 
     foreach (var row_entry in rows.entries) {
-      var combo = get_child_at (0, row_entry.key) as TypeCombo;
-      var entry = get_child_at (1, row_entry.key) as Entry;
+      var combo = container_grid.get_child_at (0, row_entry.key) as TypeCombo;
+      var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
       combo.update_details (row_entry.value.details);
       var details = new PhoneFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
@@ -127,7 +132,7 @@ public class Contacts.ContactEditor : Grid {
     var new_details = new HashSet<UrlFieldDetails>();
 
     foreach (var row_entry in rows.entries) {
-      var entry = get_child_at (1, row_entry.key) as Entry;
+      var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
       var details = new UrlFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
     }
@@ -139,7 +144,7 @@ public class Contacts.ContactEditor : Grid {
   Value get_value_from_nickname (HashMap<int, RowData?> rows) {
     var new_value = Value (typeof (string));
     foreach (var row_entry in rows.entries) {
-      var entry = get_child_at (1, row_entry.key) as Entry;
+      var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
       new_value.set_string (entry.get_text ());
     }
     return new_value;
@@ -148,7 +153,7 @@ public class Contacts.ContactEditor : Grid {
   Value get_value_from_birthday (HashMap<int, RowData?> rows) {
     var new_value = Value (typeof (DateTime));
     foreach (var row_entry in rows.entries) {
-      var box = get_child_at (1, row_entry.key) as Grid;
+      var box = container_grid.get_child_at (1, row_entry.key) as Grid;
       var day_spin  = box.get_child_at (0, 0) as SpinButton;
       var combo  = box.get_child_at (1, 0) as ComboBoxText;
       var year_spin  = box.get_child_at (2, 0) as SpinButton;
@@ -168,7 +173,7 @@ public class Contacts.ContactEditor : Grid {
     var new_details = new HashSet<NoteFieldDetails>();
 
     foreach (var row_entry in rows.entries) {
-      var text = (get_child_at (1, row_entry.key) as Bin).get_child () as TextView;
+      var text = (container_grid.get_child_at (1, row_entry.key) as Bin).get_child () as TextView;
       TextIter start, end;
       text.get_buffer ().get_start_iter (out start);
       text.get_buffer ().get_end_iter (out end);
@@ -187,8 +192,8 @@ public class Contacts.ContactEditor : Grid {
     var new_details = new HashSet<PostalAddressFieldDetails>();
 
     foreach (var row_entry in rows.entries) {
-      var combo = get_child_at (0, row_entry.key) as TypeCombo;
-      var addr_editor = get_child_at (1, row_entry.key) as AddressEditor;
+      var combo = container_grid.get_child_at (0, row_entry.key) as TypeCombo;
+      var addr_editor = container_grid.get_child_at (1, row_entry.key) as AddressEditor;
       combo.update_details (row_entry.value.details);
 
       var new_value = new PostalAddress (addr_editor.details.value.po_box,
@@ -230,11 +235,11 @@ public class Contacts.ContactEditor : Grid {
       foreach (var field_entry in fields.entries) {
 	foreach (var idx in field_entry.value.rows.keys) {
 	  if (idx == row) {
-	    var child = get_child_at (0, row);
+	    var child = container_grid.get_child_at (0, row);
 	    child.destroy ();
-	    child = get_child_at (1, row);
+	    child = container_grid.get_child_at (1, row);
 	    child.destroy ();
-	    child = get_child_at (3, row);
+	    child = container_grid.get_child_at (3, row);
 	    child.destroy ();
 
 	    field_entry.value.changed = true;
@@ -252,18 +257,18 @@ public class Contacts.ContactEditor : Grid {
     combo.set_active (details);
     if (type != null)
       combo.set_to (type);
-    attach (combo, 0, row, 1, 1);
+    container_grid.attach (combo, 0, row, 1, 1);
 
     var value_entry = new Entry ();
     value_entry.set_text (value);
     value_entry.set_hexpand (true);
-    attach (value_entry, 1, row, 1, 1);
+    container_grid.attach (value_entry, 1, row, 1, 1);
 
     var delete_button = new Button ();
     delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
-    attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
     combo.changed.connect (() => {
@@ -285,18 +290,18 @@ public class Contacts.ContactEditor : Grid {
     title_label.set_hexpand (false);
     title_label.set_halign (Align.START);
     title_label.margin_end = 6;
-    attach (title_label, 0, row, 1, 1);
+    container_grid.attach (title_label, 0, row, 1, 1);
 
     var value_entry = new Entry ();
     value_entry.set_text (value);
     value_entry.set_hexpand (true);
-    attach (value_entry, 1, row, 1, 1);
+    container_grid.attach (value_entry, 1, row, 1, 1);
 
     var delete_button = new Button ();
     delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
-    attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
     value_entry.changed.connect (() => {
@@ -317,7 +322,7 @@ public class Contacts.ContactEditor : Grid {
     title_label.set_valign (Align.START);
     title_label.margin_top = 3;
     title_label.margin_end = 6;
-    attach (title_label, 0, row, 1, 1);
+    container_grid.attach (title_label, 0, row, 1, 1);
 
     var sw = new ScrolledWindow (null, null);
     sw.set_shadow_type (ShadowType.OUT);
@@ -327,14 +332,14 @@ public class Contacts.ContactEditor : Grid {
     value_text.set_hexpand (true);
     value_text.get_style_context ().add_class ("contacts-entry");
     sw.add (value_text);
-    attach (sw, 1, row, 1, 1);
+    container_grid.attach (sw, 1, row, 1, 1);
 
     var delete_button = new Button ();
     delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     delete_button.set_valign (Align.START);
-    attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
     value_text.get_buffer ().changed.connect (() => {
@@ -357,7 +362,7 @@ public class Contacts.ContactEditor : Grid {
     title_label.set_hexpand (false);
     title_label.set_halign (Align.START);
     title_label.margin_end = 6;
-    attach (title_label, 0, row, 1, 1);
+    container_grid.attach (title_label, 0, row, 1, 1);
 
     var box = new Grid ();
     box.set_column_spacing (12);
@@ -392,13 +397,13 @@ public class Contacts.ContactEditor : Grid {
     box.add (combo);
     box.add (year_spin);
 
-    attach (box, 1, row, 1, 1);
+    container_grid.attach (box, 1, row, 1, 1);
 
     var delete_button = new Button ();
     delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
-    attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 3, row, 1, 1);
 
     AdjustingDateFn fn = () => {
       int[] month_of_31 = {3, 5, 8, 10};
@@ -441,17 +446,17 @@ public class Contacts.ContactEditor : Grid {
     combo.set_active (details);
     if (type != null)
       combo.set_to (type);
-    attach (combo, 0, row, 1, 1);
+    container_grid.attach (combo, 0, row, 1, 1);
 
     var value_address = new AddressEditor (details);
-    attach (value_address, 1, row, 1, 1);
+    container_grid.attach (value_address, 1, row, 1, 1);
 
     var delete_button = new Button ();
     delete_button.get_accessible ().set_name (_("Delete field"));
     var image = new Image.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.add (image);
     delete_button.set_valign (Align.START);
-    attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
     combo.changed.connect (() => {
@@ -572,7 +577,7 @@ public class Contacts.ContactEditor : Grid {
       }
       if (! rows.is_empty) {
 	has_nickname_row = true;
-	var delete_button = get_child_at (3, row - 1) as Button;
+	var delete_button = container_grid.get_child_at (3, row - 1) as Button;
 	delete_button.clicked.connect (() => {
 	    has_nickname_row = false;
 	  });
@@ -691,7 +696,7 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
     }
-    insert_row (idx);
+    container_grid.insert_row (idx);
   }
 
   void size_allocate_cb (Allocation alloc) {
@@ -702,17 +707,77 @@ public class Contacts.ContactEditor : Grid {
     }
   }
 
-  public ContactEditor () {
-    set_row_spacing (12);
-    set_column_spacing (12);
+  public ContactEditor (SimpleActionGroup editor_actions) {
+    set_orientation (Orientation.VERTICAL);
+
+    var main_sw = new ScrolledWindow (null, null);
+    add (main_sw);
+
+    main_sw.set_shadow_type (ShadowType.NONE);
+    main_sw.set_hexpand (true);
+    main_sw.set_vexpand (true);
+    main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+
+    var hcenter = new Center ();
+    hcenter.max_width = 600;
+    hcenter.xalign = 0.0;
+
+    container_grid = new Grid ();
+    container_grid.set_row_spacing (12);
+    container_grid.set_column_spacing (12);
+    container_grid.set_vexpand (true);
+    container_grid.set_hexpand (true);
+    container_grid.margin = 36;
+    container_grid.set_margin_bottom (24);
+
+    hcenter.add (container_grid);
+    main_sw.add (hcenter);
+    container_grid.set_focus_vadjustment (main_sw.get_vadjustment ());
+
+    main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
+    main_sw.get_child ().get_style_context ().add_class ("view");
+
+    var edit_toolbar = new ActionBar ();
+
+    var builder = load_ui ("app-menu.ui");
+    var gmenu = builder.get_object ("edit-contact") as MenuModel;
+
+    var add_detail_button = new Gtk.MenuButton ();
+    add_detail_button.use_popover = true;
+    add_detail_button.set_menu_model (gmenu);
+    add_detail_button.set_direction (ArrowType.UP);
+    add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
+
+    var box = new Box (Orientation.HORIZONTAL, 6);
+    box.add (new Label (_("New Detail")));
+    box.add (new Image.from_icon_name ("go-down-symbolic", IconSize.BUTTON));
+    add_detail_button.add (box);
+
+    edit_toolbar.pack_start (add_detail_button);
+
+    linked_button = new Button.with_label (_("Linked Accounts"));
+    edit_toolbar.pack_start (linked_button);
+
+    remove_button = new Button.with_label (_("Remove Contact"));
+    edit_toolbar.pack_end (remove_button);
+
+    edit_toolbar.show_all ();
+    add (edit_toolbar);
+
+    container_grid.show_all ();
+    main_sw.show ();
+    show_all ();
 
     writable_personas = new HashMap<Persona, HashMap<string, Field?> > ();
 
-    size_allocate.connect_after (size_allocate_cb);
+    container_grid.size_allocate.connect_after (size_allocate_cb);
   }
 
   public void update (Contact c) {
     contact = c;
+
+    remove_button.sensitive = contact.can_remove_personas ();
+    linked_button.sensitive = contact.individual.personas.size > 1;
 
     var image_frame = new ContactFrame (PROFILE_SIZE, true);
     image_frame.set_vexpand (false);
@@ -724,14 +789,14 @@ public class Contacts.ContactEditor : Grid {
     c.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (c.individual, c);
       });
-    attach (image_frame,  0, 0, 1, 3);
+    container_grid.attach (image_frame,  0, 0, 1, 3);
 
     var name_entry = new Entry ();
     name_entry.set_hexpand (true);
     name_entry.set_valign (Align.CENTER);
     name_entry.set_text (c.display_name);
     name_entry.set_data ("changed", false);
-    attach (name_entry,  1, 0, 3, 3);
+    container_grid.attach (name_entry,  1, 0, 3, 3);
 
     /* structured name change */
     name_entry.changed.connect (() => {
@@ -751,7 +816,7 @@ public class Contacts.ContactEditor : Grid {
 	store_name.set_halign (Align.START);
 	store_name.xalign = 0.0f;
 	store_name.margin_start = 6;
-	attach (store_name, 0, i, 2, 1);
+	container_grid.attach (store_name, 0, i, 2, 1);
 	last_store_position = ++i;
       }
 
@@ -773,15 +838,18 @@ public class Contacts.ContactEditor : Grid {
 
       if (i == last_store_position) {
 	i--;
-	get_child_at (0, i).destroy ();
+	container_grid.get_child_at (0, i).destroy ();
       }
     }
   }
 
   public void clear () {
-    foreach (var w in get_children ()) {
+    foreach (var w in container_grid.get_children ()) {
       w.destroy ();
     }
+
+    remove_button.set_sensitive (false);
+    linked_button.set_sensitive (false);
 
     /* clean metadata as well */
     has_birthday_row = false;
@@ -831,13 +899,13 @@ public class Contacts.ContactEditor : Grid {
   }
 
   public bool name_changed () {
-    var name_entry = get_child_at (1, 0) as Entry;
+    var name_entry = container_grid.get_child_at (1, 0) as Entry;
     return name_entry.get_data<bool> ("changed");
   }
 
   public Value get_full_name_value () {
     Value v = Value (typeof (string));
-    var name_entry = get_child_at (1, 0) as Entry;
+    var name_entry = container_grid.get_child_at (1, 0) as Entry;
     v.set_string (name_entry.get_text ());
     return v;
   }
@@ -866,6 +934,6 @@ public class Contacts.ContactEditor : Grid {
     insert_row_at (next_idx);
     add_edit_row (persona, prop_name, ref next_idx, true, type);
     last_row++;
-    show_all ();
+    container_grid.show_all ();
   }
 }
