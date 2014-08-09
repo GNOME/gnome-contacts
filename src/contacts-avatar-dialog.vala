@@ -25,7 +25,7 @@ public class Contacts.AvatarDialog : Dialog {
   const int icons_size = 64;
   const int n_columns = 6;
   private Contact contact;
-  private Notebook notebook;
+  private Stack views_stack;
   private Um.CropArea crop_area;
   private Grid view_grid;
   private ContactFrame main_frame;
@@ -101,6 +101,7 @@ public class Contacts.AvatarDialog : Dialog {
     main_frame.set_pixbuf (p);
 
     new_pixbuf = pixbuf;
+    set_response_sensitive (ResponseType.OK, true);
   }
 
   private void update_grid () {
@@ -179,7 +180,7 @@ public class Contacts.AvatarDialog : Dialog {
   }
 
   private void set_crop_widget (Gdk.Pixbuf pixbuf) {
-    var frame_grid = notebook.get_nth_page (1) as Grid;
+    var frame_grid = views_stack.get_child_by_name ("crop-page") as Grid;
     crop_area = new Um.CropArea ();
     crop_area.set_vexpand (true);
     crop_area.set_hexpand (true);
@@ -190,7 +191,7 @@ public class Contacts.AvatarDialog : Dialog {
     frame_grid.attach (crop_area, 0, 0, 1, 1);
     frame_grid.show_all ();
 
-    notebook.set_current_page (1);
+    views_stack.set_visible_child_name ("crop-page");
   }
 
   private void select_avatar_file_cb () {
@@ -247,6 +248,13 @@ public class Contacts.AvatarDialog : Dialog {
     set_transient_for (App.app.window);
     set_modal (true);
 
+    var btn = add_button (_("Select"), ResponseType.OK);
+    btn.get_style_context ().add_class ("suggested-action");
+    add_button (_("Cancel"), ResponseType.CANCEL);
+
+    set_default_response (ResponseType.OK);
+    set_response_sensitive (ResponseType.OK, false);
+
     var grid = new Grid ();
     grid.set_border_width (8);
     grid.set_column_spacing (16);
@@ -276,9 +284,9 @@ public class Contacts.AvatarDialog : Dialog {
     frame.get_style_context ().add_class ("contacts-avatar-frame");
     grid.attach (frame, 0, 1, 2, 1);
 
-    notebook = new Gtk.Notebook ();
-    notebook.show_tabs = false;
-    frame.add (notebook);
+    views_stack = new Stack ();
+
+    frame.add (views_stack);
 
     var frame_grid = new Grid ();
     frame_grid.set_orientation (Orientation.VERTICAL);
@@ -295,26 +303,17 @@ public class Contacts.AvatarDialog : Dialog {
     view_grid = new Grid ();
     scrolled.add (view_grid);
 
-    var toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_INLINE_TOOLBAR);
-    toolbar.set_icon_size (IconSize.MENU);
-    toolbar.set_vexpand (false);
-    frame_grid.add (toolbar);
+    var actionbar = new ActionBar ();
+    frame_grid.add (actionbar);
 
-    var the_add_button = new ToolButton (null, null);
-    the_add_button.set_icon_name ("list-add-symbolic");
-    the_add_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    the_add_button.is_important = true;
-    toolbar.add (the_add_button);
+    var the_add_button = new Button.from_icon_name ("list-add-symbolic",
+						    IconSize.MENU);
     the_add_button.clicked.connect (select_avatar_file_cb);
 
 #if HAVE_CHEESE
-    var webcam_button = new ToolButton (null, null);
-    webcam_button.set_icon_name ("camera-photo-symbolic");
-    webcam_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    webcam_button.is_important = true;
+    var webcam_button = new Button.from_icon_name ("camera-photo-symbolic",
+						    IconSize.MENU);
     webcam_button.sensitive = false;
-    toolbar.add (webcam_button);
 
     camera_monitor = new Cheese.CameraDeviceMonitor ();
     camera_monitor.added.connect ( () => {
@@ -328,48 +327,55 @@ public class Contacts.AvatarDialog : Dialog {
     camera_monitor.coldplug ();
 
     webcam_button.clicked.connect ( (button) => {
-	notebook.set_current_page (2);
+	views_stack.set_current_page (2);
+	views_stack.set_visible_child_name ("photobooth-page");
 	cheese.show ();
       });
+
+    var bbox = new Box (Orientation.HORIZONTAL, 0);
+    bbox.get_style_context ().add_class ("linked");
+    bbox.add (the_add_button);
+    bbox.add (webcam_button);
+    actionbar.pack_start (bbox);
+
+#else
+    actionbar.pack_start (the_add_button);
 #endif
 
     frame_grid.show_all ();
-    notebook.append_page (frame_grid, null);
+    views_stack.add_named (frame_grid, "thumbnail-factory");
 
     /* crop page */
     frame_grid = new Grid ();
     frame_grid.set_orientation (Orientation.VERTICAL);
 
-    toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_INLINE_TOOLBAR);
-    toolbar.set_icon_size (IconSize.MENU);
-    toolbar.set_vexpand (false);
-    frame_grid.attach (toolbar, 0, 1, 1, 1);
+    actionbar = new ActionBar ();
+    frame_grid.attach (actionbar, 0, 1, 1, 1);
 
-    var accept_button = new ToolButton (null, null);
-    accept_button.set_icon_name ("object-select-symbolic");
-    accept_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    accept_button.is_important = true;
-    toolbar.add (accept_button);
+    var accept_button = new Button.from_icon_name ("object-select-symbolic",
+						   IconSize.MENU);
     accept_button.clicked.connect ( (button) => {
       var pix = crop_area.get_picture ();
       selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
       crop_area.destroy ();
-      notebook.set_current_page (0);
+      views_stack.set_visible_child_name ("thumbnail-factory");
     });
 
-    var cancel_button = new ToolButton (null, null);
-    cancel_button.set_icon_name ("edit-undo-symbolic");
-    cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    cancel_button.is_important = true;
-    toolbar.add (cancel_button);
+    var cancel_button = new Button.from_icon_name ("edit-undo-symbolic",
+						   IconSize.MENU);
     cancel_button.clicked.connect ( (button) => {
 	crop_area.destroy ();
-	notebook.set_current_page (0);
+	views_stack.set_visible_child_name ("thumbnail-factory");
     });
 
+    var bbox1 = new Box (Orientation.HORIZONTAL, 0);
+    bbox1.get_style_context ().add_class ("linked");
+    bbox1.add (accept_button);
+    bbox1.add (cancel_button);
+    actionbar.pack_start (bbox1);
+
     frame_grid.show_all ();
-    notebook.append_page (frame_grid, null);
+    views_stack.add_named (frame_grid, "crop-page");
 
 #if HAVE_CHEESE
     /* photobooth page */
@@ -384,17 +390,11 @@ public class Contacts.AvatarDialog : Dialog {
 
     flash = new Cheese.Flash (this);
 
-    toolbar = new Toolbar ();
-    toolbar.get_style_context ().add_class (STYLE_CLASS_INLINE_TOOLBAR);
-    toolbar.set_icon_size (IconSize.MENU);
-    toolbar.set_vexpand (false);
-    frame_grid.attach (toolbar, 0, 1, 1, 1);
+    actionbar = new ActionBar ();
+    frame_grid.attach (actionbar, 0, 1, 1, 1);
 
-    accept_button = new ToolButton (null, null);
-    accept_button.set_icon_name ("object-select-symbolic");
-    accept_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    accept_button.is_important = true;
-    toolbar.add (accept_button);
+    accept_button = new Button.from_icon_name ("object-select-symbolic",
+					       IconSize.MENU);
 
     accept_button.clicked.connect ( (button) => {
 	var camera = cheese.get_camera () as Cheese.Camera;
@@ -411,21 +411,24 @@ public class Contacts.AvatarDialog : Dialog {
 	}
       });
 
-    cancel_button = new ToolButton (null, null);
-    cancel_button.set_icon_name ("edit-undo-symbolic");
-    cancel_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    cancel_button.is_important = true;
-    toolbar.add (cancel_button);
+    cancel_button = new Button.from_icon_name ("edit-undo-symbolic",
+					       IconSize.MENU);
     cancel_button.clicked.connect ( (button) => {
-        notebook.set_current_page (0);
+	views_stack.set_visible_child_name ("thumbnail-factory");
 	cheese.hide ();
     });
 
+    bbox1 = new Box (Orientation.HORIZONTAL, 0);
+    bbox1.get_style_context ().add_class ("linked");
+    bbox1.add (accept_button);
+    bbox1.add (cancel_button);
+    actionbar.pack_start (bbox1);
+
     frame_grid.show_all ();
-    notebook.append_page (frame_grid, null);
+    views_stack.add_named (frame_grid, "photobooth-page");
 #endif
 
-    notebook.set_current_page (0);
+    views_stack.set_visible_child_name ("thumbnail-factory");
     /*
     var remove_button = new ToolButton (null, null);
     remove_button.set_icon_name ("list-remove-symbolic");
@@ -437,7 +440,7 @@ public class Contacts.AvatarDialog : Dialog {
     */
 
     response.connect ( (response_id) => {
-	if (response_id == ResponseType.CLOSE) {
+	if (response_id == ResponseType.OK) {
 	  if (new_pixbuf != null) {
 	    try {
 	      uint8[] buffer;
