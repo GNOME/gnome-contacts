@@ -258,21 +258,21 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void leave_edit_mode (bool drop_changes = false) {
     edit_mode = false;
 
-
     left_toolbar.get_style_context ().remove_class ("selection-mode");
     right_toolbar.get_style_context ().remove_class ("selection-mode");
 
-
     if (new_contact_mode) {
       done_button.label = _("Done");
-    }
 
-    if (drop_changes) {
+      if (drop_changes) {
+	contact_pane.set_edit_mode (false, drop_changes);
+      } else {
+	contact_pane.create_contact ();
+      }
+      new_contact_mode = false;
+    } else {
       contact_pane.set_edit_mode (false, drop_changes);
-    } else if (new_contact_mode) {
-      contact_pane.create_contact ();
     }
-    new_contact_mode = false;
 
     if (contact_pane.contact != null) {
       right_title = contact_pane.contact.display_name;
