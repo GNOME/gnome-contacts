@@ -787,7 +787,7 @@ public class Contacts.ContactEditor : Grid {
     container_grid.size_allocate.connect_after (size_allocate_cb);
   }
 
-  public void update (Contact c) {
+  public void edit (Contact c) {
     contact = c;
 
     remove_button.show ();

@@ -354,7 +354,7 @@ public class Contacts.ContactPane : Notebook {
       }
 
       editor.clear ();
-      editor.update (contact);
+      editor.edit (contact);
       editor.show_all ();
       set_current_page (2);
     } else {
