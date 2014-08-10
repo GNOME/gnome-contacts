@@ -391,9 +391,13 @@ public class Contacts.ContactPane : Notebook {
 
       editor.clear ();
 
-      sheet.clear ();
-      sheet.update (contact);
-      set_current_page (1);
+      if (contact != null) {
+	sheet.clear ();
+	sheet.update (contact);
+	set_current_page (1);
+      } else {
+	show_none_selected_view ();
+      }
     }
   }
 
