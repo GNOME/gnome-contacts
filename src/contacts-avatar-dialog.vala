@@ -108,14 +108,16 @@ public class Contacts.AvatarDialog : Dialog {
     int i = 0;
     int j = 0;
 
-    foreach (var p in contact.individual.personas) {
-      ContactFrame? frame = frame_for_persona (p);
-      if (frame != null) {
-	view_grid.attach (frame, i, j, 1, 1);
-	i++;
-	if (i >= n_columns) {
-	  i -= n_columns;
-	  j++;
+    if (contact != null) {
+      foreach (var p in contact.individual.personas) {
+	ContactFrame? frame = frame_for_persona (p);
+	if (frame != null) {
+	  view_grid.attach (frame, i, j, 1, 1);
+	  i++;
+	  if (i >= n_columns) {
+	    i -= n_columns;
+	    j++;
+	  }
 	}
       }
     }
@@ -239,7 +241,7 @@ public class Contacts.AvatarDialog : Dialog {
     chooser.present ();
   }
 
-  public AvatarDialog (Contact contact) {
+  public AvatarDialog (Contact? contact) {
     Object (use_header_bar: 1);
 
     thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
@@ -262,14 +264,22 @@ public class Contacts.AvatarDialog : Dialog {
     container.add (grid);
 
     main_frame = new ContactFrame (main_size);
-    contact.keep_widget_uptodate (main_frame, (w) => {
-	(w as ContactFrame).set_image (contact.individual, contact);
-      });
+    if (contact != null) {
+      contact.keep_widget_uptodate (main_frame, (w) => {
+	  (w as ContactFrame).set_image (contact.individual, contact);
+	});
+    } else {
+      main_frame.set_image (null, null);
+    }
     main_frame.set_hexpand (false);
     grid.attach (main_frame, 0, 0, 1, 1);
 
     var label = new Label ("");
-    label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
+    if (contact != null) {
+      label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
+    } else {
+      label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", _("New Contact")));
+    }
     label.set_valign (Align.START);
     label.set_halign (Align.START);
     label.set_hexpand (true);
