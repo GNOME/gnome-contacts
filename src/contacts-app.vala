@@ -180,8 +180,6 @@ public class Contacts.App : Gtk.Application {
 
   private void create_window () {
     window = new Contacts.Window (this, contacts_store);
-
-    window.add_button.clicked.connect (app.new_contact);
   }
 
   private void schedule_window_creation () {

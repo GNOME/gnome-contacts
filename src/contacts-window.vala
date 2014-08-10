@@ -37,6 +37,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private ContactPane contact_pane;
   [GtkChild]
+  private Button add_button;
+  [GtkChild]
   private ToggleButton select_button;
   [GtkChild]
   private Button edit_button;
@@ -80,8 +82,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  [GtkChild]
-  public Button add_button;
+  private bool new_contact_mode = false;
 
   public Store store {
     get; construct set;
@@ -257,15 +258,28 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void leave_edit_mode (bool drop_changes = false) {
     edit_mode = false;
 
-    contact_pane.set_edit_mode (false, drop_changes);
 
     left_toolbar.get_style_context ().remove_class ("selection-mode");
     right_toolbar.get_style_context ().remove_class ("selection-mode");
 
-    if (contact_pane.contact != null)
+
+    if (new_contact_mode) {
+      done_button.label = _("Done");
+    }
+
+    if (drop_changes) {
+      contact_pane.set_edit_mode (false, drop_changes);
+    } else if (new_contact_mode) {
+      contact_pane.create_contact ();
+    }
+    new_contact_mode = false;
+
+    if (contact_pane.contact != null) {
       right_title = contact_pane.contact.display_name;
-    else
+    } else {
       right_title = "";
+      edit_button.hide ();
+    }
   }
 
   public void add_notification (Widget notification) {
@@ -318,6 +332,23 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     cancel_button.clicked.connect (() => {
 	leave_edit_mode (true);
       });
+  }
+
+  [GtkCallback]
+  void add_button_clicked_cb (Button button) {
+    /* FIXME: eventually ContactPane will become just a skeleton and
+     * this call will go through to ContactEditor */
+    edit_mode = true;
+    new_contact_mode = true;
+
+    right_title = _("New Contact");
+
+    left_toolbar.get_style_context ().add_class ("selection-mode");
+    right_toolbar.get_style_context ().add_class ("selection-mode");
+
+    done_button.label = _("Add");
+
+    contact_pane.new_contact ();
   }
 
   [GtkCallback]
