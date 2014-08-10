@@ -294,8 +294,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void new_contact () {
-    var dialog = NewContactDialog.get_default (contacts_store, window);
-    dialog.show_all ();
+    window.new_contact ();
   }
 
   private static string individual_id = null;

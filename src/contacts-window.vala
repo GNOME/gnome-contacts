@@ -305,6 +305,23 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     edit_button.visible = (c != null) && !select_button.active;
   }
 
+  [GtkCallback]
+  public void new_contact () {
+    /* FIXME: eventually ContactPane will become just a skeleton and
+     * this call will go through to ContactEditor */
+    edit_mode = true;
+    new_contact_mode = true;
+
+    right_title = _("New Contact");
+
+    left_toolbar.get_style_context ().add_class ("selection-mode");
+    right_toolbar.get_style_context ().add_class ("selection-mode");
+
+    done_button.label = _("Add");
+
+    contact_pane.new_contact ();
+  }
+
   /* internal API */
   void init_content_widgets () {
     string layout_desc;
@@ -332,23 +349,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     cancel_button.clicked.connect (() => {
 	leave_edit_mode (true);
       });
-  }
-
-  [GtkCallback]
-  void add_button_clicked_cb (Button button) {
-    /* FIXME: eventually ContactPane will become just a skeleton and
-     * this call will go through to ContactEditor */
-    edit_mode = true;
-    new_contact_mode = true;
-
-    right_title = _("New Contact");
-
-    left_toolbar.get_style_context ().add_class ("selection-mode");
-    right_toolbar.get_style_context ().add_class ("selection-mode");
-
-    done_button.label = _("Add");
-
-    contact_pane.new_contact ();
   }
 
   [GtkCallback]
