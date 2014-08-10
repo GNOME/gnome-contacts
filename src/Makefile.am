@@ -33,16 +33,12 @@ vala_sources = \
 	contacts-list-pane.vala \
 	contacts-linked-accounts-dialog.vala \
 	contacts-linking.vala \
-	contacts-row.vala \
 	contacts-store.vala \
 	contacts-view.vala \
 	contacts-utils.vala \
-	contacts-clickable.vala \
-	contacts-new-contact-dialog.vala \
 	contacts-avatar-dialog.vala \
 	contacts-accounts-list.vala \
 	contacts-contact-frame.vala \
-	contacts-setup-window.vala \
 	contacts-window.vala \
 	main.vala \
 	$(NULL)
