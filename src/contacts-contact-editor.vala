@@ -867,6 +867,8 @@ public class Contacts.ContactEditor : Grid {
     has_birthday_row = false;
     has_nickname_row = false;
     has_notes_row = false;
+
+    writable_personas.clear ();
   }
 
   public HashMap<string, PropertyData?> properties_changed () {
