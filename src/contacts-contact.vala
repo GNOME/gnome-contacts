@@ -1122,6 +1122,14 @@ public class Contacts.Contact : GLib.Object  {
     return find_persona_from_store (store.aggregator.primary_store);
   }
 
+  public Persona? find_persona_from_uid (string uid) {
+    foreach (var p in individual.personas) {
+      if (p.uid == uid)
+	return p;
+    }
+    return null;
+  }
+
   public string format_persona_stores () {
     string stores = "";
     bool first = true;

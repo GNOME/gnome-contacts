@@ -90,7 +90,7 @@ public class Contacts.ContactEditor : Grid {
   public Button remove_button;
 
   public struct PropertyData {
-    Persona persona;
+    Persona? persona;
     Value value;
   }
 
@@ -104,7 +104,8 @@ public class Contacts.ContactEditor : Grid {
   }
 
   private int last_row;
-  private HashMap<Persona, HashMap<string, Field?> > writable_personas;
+  /* the key of the hash_map is the uid of the persona */
+  private HashMap<string, HashMap<string, Field?> > writable_personas;
 
   public bool has_birthday_row {
     get; private set; default = false;
@@ -484,9 +485,10 @@ public class Contacts.ContactEditor : Grid {
     focus_widget = value_address;
   }
 
-  void add_edit_row (Persona p, string prop_name, ref int row, bool add_empty = false, string? type = null) {
+  void add_edit_row (Persona? p, string prop_name, ref int row, bool add_empty = false, string? type = null) {
     /* Here, we will need to add manually every type of field,
      * we're planning to allow editing on */
+    string persona_uid = p != null ? p.uid : "null-persona.hack";
     switch (prop_name) {
     case "email-addresses":
       var rows = new HashMap<int, RowData?> ();
@@ -507,12 +509,12 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
-	if (writable_personas[p].has_key (prop_name)) {
+	if (writable_personas[persona_uid].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	    writable_personas[persona_uid][prop_name].rows.set (entry.key, entry.value);
 	  }
 	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
+	  writable_personas[persona_uid].set (prop_name, { false, rows });
 	}
       }
       break;
@@ -535,12 +537,12 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
-	if (writable_personas[p].has_key (prop_name)) {
+	if (writable_personas[persona_uid].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	    writable_personas[persona_uid][prop_name].rows.set (entry.key, entry.value);
 	  }
 	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
+	  writable_personas[persona_uid].set (prop_name, { false, rows });
 	}
       }
       break;
@@ -562,12 +564,12 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
-	if (writable_personas[p].has_key (prop_name)) {
+	if (writable_personas[persona_uid].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	    writable_personas[persona_uid][prop_name].rows.set (entry.key, entry.value);
 	  }
 	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
+	  writable_personas[persona_uid].set (prop_name, { false, rows });
 	}
       }
       break;
@@ -594,12 +596,12 @@ public class Contacts.ContactEditor : Grid {
 	    has_nickname_row = false;
 	  });
 
-	if (writable_personas[p].has_key (prop_name)) {
+	if (writable_personas[persona_uid].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	    writable_personas[persona_uid][prop_name].rows.set (entry.key, entry.value);
 	  }
 	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
+	  writable_personas[persona_uid].set (prop_name, { false, rows });
 	}
       }
       break;
@@ -622,7 +624,7 @@ public class Contacts.ContactEditor : Grid {
       }
       if (! rows.is_empty) {
 	has_birthday_row = true;
-	writable_personas[p].set (prop_name, { add_empty, rows });
+	writable_personas[persona_uid].set (prop_name, { add_empty, rows });
       }
       break;
     case "notes":
@@ -644,12 +646,12 @@ public class Contacts.ContactEditor : Grid {
       }
       if (! rows.is_empty) {
 	has_notes_row = true;
-	if (writable_personas[p].has_key (prop_name)) {
+	if (writable_personas[persona_uid].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	    writable_personas[persona_uid][prop_name].rows.set (entry.key, entry.value);
 	  }
 	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
+	  writable_personas[persona_uid].set (prop_name, { false, rows });
 	}
       }
       break;
@@ -680,12 +682,12 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
       if (! rows.is_empty) {
-	if (writable_personas[p].has_key (prop_name)) {
+	if (writable_personas[persona_uid].has_key (prop_name)) {
 	  foreach (var entry in rows.entries) {
-	    writable_personas[p][prop_name].rows.set (entry.key, entry.value);
+	    writable_personas[persona_uid][prop_name].rows.set (entry.key, entry.value);
 	  }
 	} else {
-	  writable_personas[p].set (prop_name, { false, rows });
+	  writable_personas[persona_uid].set (prop_name, { false, rows });
 	}
       }
       break;
@@ -780,7 +782,7 @@ public class Contacts.ContactEditor : Grid {
     main_sw.show ();
     show_all ();
 
-    writable_personas = new HashMap<Persona, HashMap<string, Field?> > ();
+    writable_personas = new HashMap<string, HashMap<string, Field?> > ();
 
     container_grid.size_allocate.connect_after (size_allocate_cb);
   }
@@ -788,7 +790,9 @@ public class Contacts.ContactEditor : Grid {
   public void update (Contact c) {
     contact = c;
 
+    remove_button.show ();
     remove_button.sensitive = contact.can_remove_personas ();
+    linked_button.show ();
     linked_button.sensitive = contact.individual.personas.size > 1;
 
     var image_frame = new ContactFrame (PROFILE_SIZE, true);
@@ -834,10 +838,10 @@ public class Contacts.ContactEditor : Grid {
 
       var rw_props = Contact.sort_persona_properties (p.writeable_properties);
       if (rw_props.length != 0) {
-	writable_personas.set (p, new HashMap<string, Field?> ());
-	foreach (var prop in rw_props) {
-	  add_edit_row (p, prop, ref i);
-	}
+  	writable_personas.set (p.uid, new HashMap<string, Field?> ());
+  	foreach (var prop in rw_props) {
+  	  add_edit_row (p, prop, ref i);
+  	}
       }
 
       if (is_first_persona) {
@@ -878,7 +882,10 @@ public class Contacts.ContactEditor : Grid {
       foreach (var field_entry in entry.value.entries) {
 	if (field_entry.value.changed && !props_set.has_key (field_entry.key)) {
 	  PropertyData p = PropertyData ();
-	  p.persona = entry.key;
+	  p.persona = null;
+	  if (contact != null) {
+	    p.persona = contact.find_persona_from_uid (entry.key);
+	  }
 
 	  switch (field_entry.key) {
 	    case "email-addresses":
@@ -926,12 +933,15 @@ public class Contacts.ContactEditor : Grid {
 
   public void add_new_row_for_property (Persona? p, string prop_name, string? type = null) {
     /* Somehow, I need to ensure that p is the main/default/first persona */
-    Persona persona;
-    if (p == null) {
-      persona = new FakePersona (contact);
-      writable_personas.set (persona, new HashMap<string, Field?> ());
-    } else {
-      persona = p;
+    Persona persona = null;
+    if (contact != null) {
+      if (p == null) {
+  	persona = new FakePersona (contact);
+  	writable_personas.set (persona.uid,
+			       new HashMap<string, Field?> ());
+      } else {
+	persona = p;
+      }
     }
 
     int next_idx = 0;
@@ -949,5 +959,43 @@ public class Contacts.ContactEditor : Grid {
     add_edit_row (persona, prop_name, ref next_idx, true, type);
     last_row++;
     container_grid.show_all ();
+  }
+
+  public void set_new_contact () {
+    remove_button.hide ();
+    linked_button.hide ();
+
+    var image_frame = new ContactFrame (PROFILE_SIZE, true);
+    image_frame.set_vexpand (false);
+    image_frame.set_valign (Align.START);
+    image_frame.set_image (null, null);
+    (image_frame.get_child () as Button).set_relief (ReliefStyle.NORMAL);
+    container_grid.attach (image_frame,  0, 0, 1, 3);
+
+    var name_entry = new Entry ();
+    name_entry.set_hexpand (true);
+    name_entry.set_valign (Align.CENTER);
+    name_entry.set_data ("changed", false);
+    name_entry.placeholder_text = _("Add name");
+    container_grid.attach (name_entry,  1, 0, 3, 3);
+
+    /* structured name change */
+    name_entry.changed.connect (() => {
+	name_entry.set_data ("changed", true);
+      });
+
+    last_row = 2;
+    string[] rw_props = {
+      "email-addresses.personal",
+      "phone-numbers.cell",
+      "postal-addresses.home" };
+    writable_personas.set ("null-persona.hack",
+			   new HashMap<string, Field?> ());
+    foreach (var prop in rw_props) {
+      var tok = prop.split (".");
+      add_new_row_for_property (null, tok[0], tok[1].up ());
+    }
+
+    focus_widget = name_entry;
   }
 }
