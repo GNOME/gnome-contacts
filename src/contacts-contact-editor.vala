@@ -287,6 +287,12 @@ public class Contacts.ContactEditor : Grid {
     value_entry.set_hexpand (true);
     container_grid.attach (value_entry, 1, row, 1, 1);
 
+    if (type_set == TypeSet.email) {
+      value_entry.placeholder_text = _("Add email");
+    } else if (type_set == TypeSet.phone) {
+      value_entry.placeholder_text = _("Add number");
+    }
+
     var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
     container_grid.attach (delete_button, 3, row, 1, 1);
@@ -812,11 +818,12 @@ public class Contacts.ContactEditor : Grid {
     name_entry.set_valign (Align.CENTER);
     name_entry.set_text (c.display_name);
     name_entry.set_data ("changed", false);
+    name_entry.placeholder_text = _("Add name");
     container_grid.attach (name_entry,  1, 0, 3, 3);
 
     /* structured name change */
     name_entry.changed.connect (() => {
-	name_entry.set_data ("changed", true);
+  	name_entry.set_data ("changed", true);
       });
 
     int i = 3;
