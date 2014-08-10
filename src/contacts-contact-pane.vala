@@ -387,6 +387,18 @@ public class Contacts.ContactPane : Notebook {
 						   }
 						 });
 	}
+	if (editor.avatar_changed ()) {
+	  var v = editor.get_avatar_value ();
+	  Contact.set_individual_property.begin (contact,
+						 "avatar", v,
+						 (obj, result) => {
+						   try {
+						     Contact.set_individual_property.end (result);
+						   } catch (GLib.Error e) {
+						     App.app.show_message (e.message);
+						   }
+						 });
+	}
       }
 
       editor.clear ();
@@ -422,6 +434,11 @@ public class Contacts.ContactPane : Notebook {
     if (editor.name_changed ()) {
       var v = editor.get_full_name_value ();
       details.set ("full-name", v);
+    }
+
+    if (editor.avatar_changed ()) {
+      var v = editor.get_avatar_value ();
+      details.set ("avatar", v);
     }
 
     foreach (var prop in editor.properties_changed ().entries) {
