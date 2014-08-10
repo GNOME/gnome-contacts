@@ -880,6 +880,7 @@ public class Contacts.ContactEditor : Grid {
     has_notes_row = false;
 
     writable_personas.clear ();
+    contact = null;
   }
 
   public HashMap<string, PropertyData?> properties_changed () {
