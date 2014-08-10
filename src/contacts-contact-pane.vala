@@ -396,4 +396,25 @@ public class Contacts.ContactPane : Notebook {
       set_current_page (1);
     }
   }
+
+  public void new_contact () {
+    on_edit_mode = true;
+
+    sheet.clear ();
+
+    if (suggestion_grid != null) {
+      suggestion_grid.destroy ();
+      suggestion_grid = null;
+    }
+
+    editor.set_new_contact ();
+
+    set_current_page (2);
+  }
+
+  public void create_contact () {
+    on_edit_mode = false;
+    set_current_page (1);
+    debug ("called contact creation statement");
+  }
 }
