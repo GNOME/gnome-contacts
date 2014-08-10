@@ -20,27 +20,6 @@ using Gtk;
 using Folks;
 using Gee;
 
-namespace Contacts {
-  public static void change_avatar (Contact contact, ContactFrame image_frame) {
-    var dialog = new AvatarDialog (contact);
-    dialog.show ();
-    dialog.set_avatar.connect ( (icon) =>  {
-	Value v = Value (icon.get_type ());
-	v.set_object (icon);
-	Contact.set_individual_property.begin (contact,
-					       "avatar", v,
-					       (obj, result) => {
-						 try {
-						   Contact.set_individual_property.end (result);
-						 } catch (GLib.Error e) {
-						   App.app.show_message (e.message);
-						   image_frame.set_image (contact.individual, contact);
-					       }
-					       });
-      });
-  }
-}
-
 public class Contacts.AddressEditor : Box {
   public Entry? entries[7];
   public PostalAddressFieldDetails details;
@@ -806,7 +785,25 @@ public class Contacts.ContactEditor : Grid {
     image_frame.set_valign (Align.START);
     (image_frame.get_child () as Button).set_relief (ReliefStyle.NORMAL);
     image_frame.clicked.connect ( () => {
-	change_avatar (c, image_frame);
+	var dialog = new AvatarDialog (contact);
+	dialog.set_avatar.connect ( (icon) =>  {
+	    image_frame.set_data ("value", icon);
+	    image_frame.set_data ("changed", true);
+
+	    Gdk.Pixbuf? a_pixbuf = null;
+	    try {
+	      var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null);
+	      a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream,
+							      PROFILE_SIZE,
+							      PROFILE_SIZE,
+							      true);
+	    }
+	    catch {
+	    }
+
+	    image_frame.set_pixbuf (a_pixbuf);
+	  });
+	dialog.show ();
       });
     c.keep_widget_uptodate (image_frame,  (w) => {
 	(w as ContactFrame).set_image (c.individual, c);
@@ -939,6 +936,19 @@ public class Contacts.ContactEditor : Grid {
     return v;
   }
 
+  public bool avatar_changed () {
+    var image_frame = container_grid.get_child_at (0, 0) as ContactFrame;
+    return image_frame.get_data<bool> ("changed");
+  }
+
+  public Value get_avatar_value () {
+    var image_frame = container_grid.get_child_at (0, 0) as ContactFrame;
+    GLib.Icon icon = image_frame.get_data<GLib.Icon> ("value");
+    Value v = Value (icon.get_type ());
+    v.set_object (icon);
+    return v;
+  }
+
   public void add_new_row_for_property (Persona? p, string prop_name, string? type = null) {
     /* Somehow, I need to ensure that p is the main/default/first persona */
     Persona persona = null;
@@ -978,6 +988,27 @@ public class Contacts.ContactEditor : Grid {
     image_frame.set_valign (Align.START);
     image_frame.set_image (null, null);
     (image_frame.get_child () as Button).set_relief (ReliefStyle.NORMAL);
+    image_frame.clicked.connect ( () => {
+	var dialog = new AvatarDialog (null);
+	dialog.set_avatar.connect ( (icon) =>  {
+	    image_frame.set_data ("value", icon);
+	    image_frame.set_data ("changed", true);
+
+	    Gdk.Pixbuf? a_pixbuf = null;
+	    try {
+	      var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null);
+	      a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream,
+							      PROFILE_SIZE,
+							      PROFILE_SIZE,
+							      true);
+	    }
+	    catch {
+	    }
+
+	    image_frame.set_pixbuf (a_pixbuf);
+	  });
+	dialog.show ();
+      });
     container_grid.attach (image_frame,  0, 0, 1, 3);
 
     var name_entry = new Entry ();
