@@ -417,8 +417,84 @@ public class Contacts.ContactPane : Notebook {
   }
 
   public void create_contact () {
-    on_edit_mode = false;
-    set_current_page (1);
-    debug ("called contact creation statement");
+    var details = new HashTable<string, Value?> (str_hash, str_equal);
+
+    if (editor.name_changed ()) {
+      var v = editor.get_full_name_value ();
+      details.set ("full-name", v);
+    }
+
+    foreach (var prop in editor.properties_changed ().entries) {
+      details.set (prop.key, prop.value.value);
+    }
+
+    if (details.size () == 0) {
+      Dialog dialog = new MessageDialog (this.get_toplevel () as Window,
+					 DialogFlags.DESTROY_WITH_PARENT |
+					 DialogFlags.MODAL,
+					 MessageType.ERROR,
+					 ButtonsType.OK,
+					 "%s",
+					 _("You need to enter some data"));
+      dialog.show ();
+      dialog.response.connect ( () => {
+	  dialog.destroy ();
+	});
+    } else if (App.app.contacts_store.aggregator.primary_store == null) {
+      Dialog dialog = new MessageDialog (this.get_toplevel () as Window,
+					 DialogFlags.DESTROY_WITH_PARENT |
+					 DialogFlags.MODAL,
+					 MessageType.ERROR,
+					 ButtonsType.OK,
+					 "%s",
+					 _("No primary addressbook configured"));
+      dialog.show ();
+      dialog.response.connect ( () => {
+	  dialog.destroy ();
+	});
+    } else {
+      Contact.create_primary_persona_for_details.begin (App.app.contacts_store.aggregator.primary_store, details, (obj, res) => {
+	  Persona? persona = null;
+	  Dialog dialog = null;
+
+	  try {
+	    persona = Contact.create_primary_persona_for_details.end (res);
+	  } catch (Error e) {
+	    dialog = new MessageDialog (this.get_toplevel () as Window,
+					DialogFlags.DESTROY_WITH_PARENT |
+					DialogFlags.MODAL,
+					MessageType.ERROR,
+					ButtonsType.OK,
+					"%s",
+					_("Unable to create new contacts: %s"), e.message);
+	  }
+
+	  var contact = App.app.contacts_store.find_contact_with_persona (persona);
+	  if (contact == null) {
+	    dialog = new MessageDialog (this.get_toplevel () as Window,
+					DialogFlags.DESTROY_WITH_PARENT |
+					DialogFlags.MODAL,
+					MessageType.ERROR,
+					ButtonsType.OK,
+					"%s",
+					_("Unable to find newly created contact"));
+	  }
+
+	  set_edit_mode (false, true);
+
+	  if (dialog != null) {
+	    dialog.response.connect ( () => {
+		dialog.destroy ();
+	      });
+	    dialog.show ();
+
+	    return;
+	  }
+
+	  App.app.show_contact (contact);
+	  return;
+	});
+    }
+    set_edit_mode (false, true);
   }
 }
