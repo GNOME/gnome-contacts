@@ -118,11 +118,6 @@ public class Contacts.View : ListBox {
       });
     this.set_filter_func (filter);
     this.set_header_func (update_header);
-
-    /* FIXME: remove hardcoded background color */
-    var color = Gdk.RGBA ();
-    color.parse ("#ebedeb");
-    override_background_color (0, color);
   }
 
   private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
