@@ -17,11 +17,11 @@ ContactsListPane.frame:dir(rtl) {
 
 /* Background color in contacts pane, similar to .documents-main-view.view */
 .contacts-main-view.view {
- background-color: #f1f2f1;
+  background-color: mix(@theme_bg_color, @theme_base_color, 0.2);
 }
 
 .contacts-suggestion {
- background-color: #D3D7CF;
+  background-color: darker(@theme_bg_color);
 }
 
 /* Border on the right in the left menu toolbar */
@@ -61,7 +61,10 @@ ContactsListPane.frame:dir(rtl) {
 
 /* Primary toolbar with no line at top to avoid conflicts with frame border */
 ContactsWindow .primary-toolbar.toolbar {
- border-width: 0 0 1px 0;
+ border-width: 0;
+ border-bottom-width: 1px;
+ border-style: solid;
+ border-color: @borders;
 }
 
 .contacts-entry {
@@ -70,9 +73,7 @@ ContactsWindow .primary-toolbar.toolbar {
  border-width: 1px;
  border-radius: 4px;
  border-style: solid;
- border-color: #bbbeb7;
- background-image: none;
- background-color: #ffffff;
+ border-color: @borders;
 }
 
 .contacts-entry:selected,
@@ -103,12 +104,12 @@ ContactsWindow .primary-toolbar.toolbar {
  border-image: none;
  border-width: 1px;
  border-style: solid;
- border-color: #bbbeb7;
+ border-color: @borders;
  background-image: none;
- background-color: #ffffff;
+ background-color: @theme_base_color;
 }
 
 .contacts-watermark {
   color: #bebebe;
-  text-shadow: 1px 1px alpha(white, 0.6);
+  text-shadow: 1px 1px alpha(@theme_base_color, 0.6);
 }
