@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 3.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-08 10:55+0200\n"
-"PO-Revision-Date: 2014-06-08 10:57+0200\n"
+"POT-Creation-Date: 2014-08-16 11:46+0200\n"
+"PO-Revision-Date: 2014-08-16 11:48+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: Norwegian bokmål\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/gnome-contacts.appdata.xml.in.h:1
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:1
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
@@ -29,7 +29,7 @@ msgstr ""
 "Kontakter sammenstiller detaljene fra alle kilder og gir deg et sentralisert "
 "sted å håndtere dine kontakter."
 
-#: ../data/gnome-contacts.appdata.xml.in.h:2
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
@@ -37,15 +37,15 @@ msgstr ""
 "Kontakter integrerer også med adressebøker på nettet og lenker kontakter fra "
 "forskjellige kilder på nettet sammen automatisk."
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/main.vala:28
+#: ../data/org.gnome.Contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "Kontakter"
 
-#: ../data/gnome-contacts.desktop.in.in.h:2
+#: ../data/org.gnome.Contacts.desktop.in.in.h:2
 msgid "A contacts manager for GNOME"
 msgstr "Håndtering av kontakter for GNOME"
 
-#: ../data/gnome-contacts.desktop.in.in.h:3
+#: ../data/org.gnome.Contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr "venner;adressebok;"
 
@@ -53,7 +53,7 @@ msgstr "venner;adressebok;"
 msgid "Online Accounts"
 msgstr "Kontoer på nettet"
 
-#: ../src/contacts-accounts-list.vala:173 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
 msgid "Local Address Book"
 msgstr "Lokal adressebok"
 
@@ -74,7 +74,7 @@ msgstr "Bytt adressebok"
 msgid "Change"
 msgstr "Bytt"
 
-#: ../src/contacts-app.vala:62 ../src/contacts-setup-window.vala:41
+#: ../src/contacts-app.vala:62 ../src/contacts-avatar-dialog.vala:255
 #: ../data/ui/contacts-window.ui.h:5
 msgid "Cancel"
 msgstr "Avbryt"
@@ -108,149 +108,187 @@ msgstr "Håndtering av kontakter"
 msgid "No contact with email address %s found"
 msgstr "Fant ingen kontakt med e-postadresse %s"
 
-#: ../src/contacts-app.vala:307
+#: ../src/contacts-app.vala:304
 msgid "Show contact with this individual id"
 msgstr "Vis kontakt med denne individuelle IDen"
 
-#: ../src/contacts-app.vala:309
+#: ../src/contacts-app.vala:306
 msgid "Show contact with this email address"
 msgstr "Vis kontakt med denne e-postadressen"
 
-#: ../src/contacts-app.vala:316
+#: ../src/contacts-app.vala:313
 msgid "— contact management"
 msgstr "– håndtering av kontakter"
 
-#: ../src/contacts-avatar-dialog.vala:197
+#: ../src/contacts-avatar-dialog.vala:200
 msgid "Browse for more pictures"
 msgstr "Se etter flere bilder"
 
-#: ../src/contacts-avatar-dialog.vala:200
-#: ../src/contacts-new-contact-dialog.vala:50
+#: ../src/contacts-avatar-dialog.vala:203
 msgid "_Cancel"
 msgstr "A_vbryt"
 
-#: ../src/contacts-avatar-dialog.vala:201
+#: ../src/contacts-avatar-dialog.vala:204
 msgid "_Open"
 msgstr "_Åpne"
 
-#: ../src/contacts-avatar-dialog.vala:246
+#: ../src/contacts-avatar-dialog.vala:249
 msgid "Select Picture"
 msgstr "Velg bilde"
 
-#: ../src/contacts-contact-editor.vala:263
-#: ../src/contacts-contact-editor.vala:296
-#: ../src/contacts-contact-editor.vala:333
-#: ../src/contacts-contact-editor.vala:398
-#: ../src/contacts-contact-editor.vala:450
+#: ../src/contacts-avatar-dialog.vala:253 ../src/contacts-window.vala:198
+#: ../src/contacts-window.vala:224
+msgid "Select"
+msgstr "Velg"
+
+#: ../src/contacts-avatar-dialog.vala:281 ../src/contacts-window.vala:315
+msgid "New Contact"
+msgstr "Ny kontakt"
+
+#: ../src/contacts-contact-editor.vala:270
+msgid "Add email"
+msgstr "Legg til e-post"
+
+#: ../src/contacts-contact-editor.vala:272
+msgid "Add number"
+msgstr "Legg til nummer"
+
+#: ../src/contacts-contact-editor.vala:276
+#: ../src/contacts-contact-editor.vala:307
+#: ../src/contacts-contact-editor.vala:342
+#: ../src/contacts-contact-editor.vala:405
+#: ../src/contacts-contact-editor.vala:455
 msgid "Delete field"
 msgstr "Slett felt"
 
-#: ../src/contacts-contact-editor.vala:370
+#: ../src/contacts-contact-editor.vala:377
 msgid "January"
 msgstr "Januar"
 
-#: ../src/contacts-contact-editor.vala:371
+#: ../src/contacts-contact-editor.vala:378
 msgid "February"
 msgstr "Februar"
 
-#: ../src/contacts-contact-editor.vala:372
+#: ../src/contacts-contact-editor.vala:379
 msgid "March"
 msgstr "Mars"
 
-#: ../src/contacts-contact-editor.vala:373
+#: ../src/contacts-contact-editor.vala:380
 msgid "April"
 msgstr "April"
 
-#: ../src/contacts-contact-editor.vala:374
+#: ../src/contacts-contact-editor.vala:381
 msgid "May"
 msgstr "Mai"
 
-#: ../src/contacts-contact-editor.vala:375
+#: ../src/contacts-contact-editor.vala:382
 msgid "June"
 msgstr "Juni"
 
-#: ../src/contacts-contact-editor.vala:376
+#: ../src/contacts-contact-editor.vala:383
 msgid "July"
 msgstr "Juli"
 
-#: ../src/contacts-contact-editor.vala:377
+#: ../src/contacts-contact-editor.vala:384
 msgid "August"
 msgstr "August"
 
-#: ../src/contacts-contact-editor.vala:378
+#: ../src/contacts-contact-editor.vala:385
 msgid "September"
 msgstr "September"
 
-#: ../src/contacts-contact-editor.vala:379
+#: ../src/contacts-contact-editor.vala:386
 msgid "October"
 msgstr "Oktober"
 
-#: ../src/contacts-contact-editor.vala:380
+#: ../src/contacts-contact-editor.vala:387
 msgid "November"
 msgstr "November"
 
-#: ../src/contacts-contact-editor.vala:381
+#: ../src/contacts-contact-editor.vala:388
 msgid "December"
 msgstr "Desember"
 
-#: ../src/contacts-contact-editor.vala:534
-#: ../src/contacts-contact-editor.vala:541
+#: ../src/contacts-contact-editor.vala:538
+#: ../src/contacts-contact-editor.vala:545
 #: ../src/contacts-contact-sheet.vala:190 ../data/ui/app-menu.ui.h:10
 msgid "Website"
 msgstr "Nettsted"
 
-#: ../src/contacts-contact-editor.vala:560
-#: ../src/contacts-contact-editor.vala:567
+#: ../src/contacts-contact-editor.vala:564
+#: ../src/contacts-contact-editor.vala:571
 #: ../src/contacts-contact-sheet.vala:196 ../data/ui/app-menu.ui.h:11
 msgid "Nickname"
 msgstr "Kallenavn"
 
-#: ../src/contacts-contact-editor.vala:593
-#: ../src/contacts-contact-editor.vala:600
+#: ../src/contacts-contact-editor.vala:597
+#: ../src/contacts-contact-editor.vala:604
 #: ../src/contacts-contact-sheet.vala:203 ../data/ui/app-menu.ui.h:12
 msgid "Birthday"
 msgstr "Fødselsdag"
 
-#: ../src/contacts-contact-editor.vala:615
-#: ../src/contacts-contact-editor.vala:622
+#: ../src/contacts-contact-editor.vala:619
+#: ../src/contacts-contact-editor.vala:626
 #: ../src/contacts-contact-sheet.vala:210
 msgid "Note"
 msgstr "Notat"
 
-#: ../src/contacts-contact-pane.vala:160
-#, c-format
-msgid "Does %s from %s belong here?"
-msgstr "Hører %s fra %s til her?"
-
-#: ../src/contacts-contact-pane.vala:162
-#, c-format
-msgid "Do these details belong to %s?"
-msgstr "Tilhører disse detaljene til %s?"
-
-#: ../src/contacts-contact-pane.vala:174
-msgid "Yes"
-msgstr "Ja"
-
-#: ../src/contacts-contact-pane.vala:175
-msgid "No"
-msgstr "Nei"
-
-#: ../src/contacts-contact-pane.vala:318
+#: ../src/contacts-contact-editor.vala:751
 msgid "New Detail"
 msgstr "Ny detalj"
 
-#: ../src/contacts-contact-pane.vala:324
+#: ../src/contacts-contact-editor.vala:757
 #: ../src/contacts-linked-accounts-dialog.vala:36
 msgid "Linked Accounts"
 msgstr "Koblede kontoer"
 
-#: ../src/contacts-contact-pane.vala:328
+#: ../src/contacts-contact-editor.vala:760
 msgid "Remove Contact"
 msgstr "Fjern kontakt"
 
-#: ../src/contacts-contact-pane.vala:413
+#: ../src/contacts-contact-editor.vala:818
+#: ../src/contacts-contact-editor.vala:1018
+msgid "Add name"
+msgstr "Legg til navn"
+
+#: ../src/contacts-contact-pane.vala:137
+#, c-format
+msgid "Does %s from %s belong here?"
+msgstr "Hører %s fra %s til her?"
+
+#: ../src/contacts-contact-pane.vala:139
+#, c-format
+msgid "Do these details belong to %s?"
+msgstr "Tilhører disse detaljene til %s?"
+
+#: ../src/contacts-contact-pane.vala:151
+msgid "Yes"
+msgstr "Ja"
+
+#: ../src/contacts-contact-pane.vala:152
+msgid "No"
+msgstr "Nei"
+
+#: ../src/contacts-contact-pane.vala:323
 msgid "Select a contact"
 msgstr "Velg en kontakt"
+
+#: ../src/contacts-contact-pane.vala:455
+msgid "You need to enter some data"
+msgstr "Du må legge inn data"
+
+#: ../src/contacts-contact-pane.vala:467
+msgid "No primary addressbook configured"
+msgstr "Primær adressebok er ikke satt opp"
+
+#: ../src/contacts-contact-pane.vala:486
+#, c-format
+msgid "Unable to create new contacts: %s"
+msgstr "Kan ikke lage nye kontakter: %s"
+
+#: ../src/contacts-contact-pane.vala:497
+msgid "Unable to find newly created contact"
+msgstr "Kan ikke finne nylig laget kontakt"
 
 #: ../src/contacts-contact-frame.vala:40
 msgid "Change avatar"
@@ -384,11 +422,11 @@ msgstr "Zephyr"
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Uventet intern feil: opprettet kontakt ble ikke funnet"
 
-#: ../src/contacts-contact.vala:1228
+#: ../src/contacts-contact.vala:1236
 msgid "Google Circles"
 msgstr "Google-sirkler"
 
-#: ../src/contacts-contact.vala:1230 ../src/contacts-esd-setup.c:121
+#: ../src/contacts-contact.vala:1238 ../src/contacts-esd-setup.c:121
 #: ../src/contacts-esd-setup.c:149
 msgid "Google"
 msgstr "Google"
@@ -409,74 +447,6 @@ msgstr "Du kan koble kontakter ved å velge dem fra kontaktlisten"
 #: ../src/contacts-linked-accounts-dialog.vala:104
 msgid "Unlink"
 msgstr "Fjern lenke"
-
-#: ../src/contacts-new-contact-dialog.vala:45
-msgid "New Contact"
-msgstr "Ny kontakt"
-
-#: ../src/contacts-new-contact-dialog.vala:51
-msgid "Create Contact"
-msgstr "Lag kontakt"
-
-#: ../src/contacts-new-contact-dialog.vala:77
-msgid ""
-"Add or \n"
-"select a picture"
-msgstr ""
-"Legg til eller\n"
-"velg et bilde"
-
-#: ../src/contacts-new-contact-dialog.vala:88
-msgid "Contact Name"
-msgstr "Navn på kontakt"
-
-#: ../src/contacts-new-contact-dialog.vala:96
-#: ../src/contacts-new-contact-dialog.vala:132
-msgid "Email"
-msgstr "E-post"
-
-#: ../src/contacts-new-contact-dialog.vala:105
-#: ../src/contacts-new-contact-dialog.vala:137
-msgid "Phone"
-msgstr "Telefon"
-
-#: ../src/contacts-new-contact-dialog.vala:114
-#: ../src/contacts-new-contact-dialog.vala:142
-msgid "Address"
-msgstr "Adresse"
-
-#: ../src/contacts-new-contact-dialog.vala:124
-msgid "Add Detail"
-msgstr "Legg til detalj"
-
-#: ../src/contacts-new-contact-dialog.vala:227
-msgid "You must specify a contact name"
-msgstr "Du må oppgi et navn på kontakten"
-
-#: ../src/contacts-new-contact-dialog.vala:337
-msgid "No primary addressbook configured\n"
-msgstr "Primær adressebok er ikke satt opp\n"
-
-#: ../src/contacts-new-contact-dialog.vala:358
-#, c-format
-msgid "Unable to create new contacts: %s\n"
-msgstr "Kan ikke opprette nye kontakter: %s\n"
-
-#: ../src/contacts-new-contact-dialog.vala:369
-msgid "Unable to find newly created contact\n"
-msgstr "Kan ikke finne nylig opprettet kontakt\n"
-
-#: ../src/contacts-setup-window.vala:38
-msgid "Contacts Setup"
-msgstr "Oppsett av kontakter"
-
-#: ../src/contacts-setup-window.vala:55 ../data/ui/contacts-window.ui.h:7
-msgid "Done"
-msgstr "Ferdig"
-
-#: ../src/contacts-setup-window.vala:71
-msgid "Please select your primary contacts account"
-msgstr "Vennligst velg din primære kontaktkonto"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -554,68 +524,72 @@ msgstr "Teleks"
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:204
+#: ../src/contacts-view.vala:194
 msgid "No results matched search"
 msgstr "Søket ga ingen treff"
 
-#: ../src/contacts-view.vala:308
+#: ../src/contacts-view.vala:298
 msgid "Suggestions"
 msgstr "Forslag"
 
-#: ../src/contacts-view.vala:333
+#: ../src/contacts-view.vala:323
 msgid "Other Contacts"
 msgstr "Andre kontakter"
 
-#: ../src/contacts-window.vala:197 ../src/contacts-window.vala:219
-msgid "Select"
-msgstr "Velg"
-
-#: ../src/contacts-window.vala:199
+#: ../src/contacts-window.vala:200
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d valgt"
 msgstr[1] "%d valgt"
 
-#: ../src/contacts-window.vala:228 ../data/ui/contacts-window.ui.h:2
+#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:2
 msgid "All Contacts"
 msgstr "Alle kontakter"
 
-#: ../src/contacts-window.vala:245
+#: ../src/contacts-window.vala:250
 #, c-format
 msgid "Editing %s"
 msgstr "Redigerer %s"
 
-#: ../src/contacts-window.vala:370
+#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:7
+msgid "Done"
+msgstr "Ferdig"
+
+#: ../src/contacts-window.vala:320
+msgid "Add"
+msgstr "Legg til"
+
+#: ../src/contacts-window.vala:407
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d kontakter koblet sammen"
 msgstr[1] "%d kontakter koblet sammen"
 
-#: ../src/contacts-window.vala:374 ../src/contacts-window.vala:406
-#: ../src/contacts-window.vala:448 ../src/contacts-window.vala:484
+#: ../src/contacts-window.vala:411 ../src/contacts-window.vala:443
+#: ../src/contacts-window.vala:485 ../src/contacts-window.vala:521
 msgid "_Undo"
 msgstr "_Angre"
 
-#: ../src/contacts-window.vala:402
+#: ../src/contacts-window.vala:439
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d kontakt slettet"
 msgstr[1] "%d kontakter slettet"
 
-#: ../src/contacts-window.vala:445
+#: ../src/contacts-window.vala:482
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Kontakt slettet: «%s»"
 
-#: ../src/contacts-window.vala:480
+#: ../src/contacts-window.vala:517
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s lenket til %s"
 
-#: ../src/contacts-window.vala:482
+#: ../src/contacts-window.vala:519
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s lenket til kontakten"
