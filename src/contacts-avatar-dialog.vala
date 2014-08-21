@@ -337,7 +337,6 @@ public class Contacts.AvatarDialog : Dialog {
     camera_monitor.coldplug ();
 
     webcam_button.clicked.connect ( (button) => {
-	views_stack.set_current_page (2);
 	views_stack.set_visible_child_name ("photobooth-page");
 	cheese.show ();
       });
