@@ -104,6 +104,11 @@ public class Contacts.ContactEditor : Grid {
     foreach (var row_entry in rows.entries) {
       var combo = container_grid.get_child_at (0, row_entry.key) as TypeCombo;
       var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
+
+      /* Ignore empty entries. */
+      if (entry.get_text () == "")
+        continue;
+
       combo.update_details (row_entry.value.details);
       var details = new EmailFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
@@ -120,6 +125,11 @@ public class Contacts.ContactEditor : Grid {
     foreach (var row_entry in rows.entries) {
       var combo = container_grid.get_child_at (0, row_entry.key) as TypeCombo;
       var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
+
+      /* Ignore empty entries. */
+      if (entry.get_text () == "")
+        continue;
+
       combo.update_details (row_entry.value.details);
       var details = new PhoneFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
@@ -134,6 +144,11 @@ public class Contacts.ContactEditor : Grid {
 
     foreach (var row_entry in rows.entries) {
       var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
+
+      /* Ignore empty entries. */
+      if (entry.get_text () == "")
+        continue;
+
       var details = new UrlFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
     }
@@ -146,6 +161,11 @@ public class Contacts.ContactEditor : Grid {
     var new_value = Value (typeof (string));
     foreach (var row_entry in rows.entries) {
       var entry = container_grid.get_child_at (1, row_entry.key) as Entry;
+
+      /* Ignore empty entries. */
+      if (entry.get_text () == "")
+        continue;
+
       new_value.set_string (entry.get_text ());
     }
     return new_value;
