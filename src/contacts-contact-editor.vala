@@ -21,8 +21,11 @@ using Folks;
 using Gee;
 
 public class Contacts.AddressEditor : Box {
-  public Entry? entries[7];
+  public Entry? entries[7];  /* must be the number of elements in postal_element_props */
   public PostalAddressFieldDetails details;
+
+  public static const string[] postal_element_props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
+  public static string[] postal_element_names = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
 
   public signal void changed ();
 
@@ -34,11 +37,11 @@ public class Contacts.AddressEditor : Box {
 
     for (int i = 0; i < entries.length; i++) {
       string postal_part;
-      details.value.get (Contact.postal_element_props[i], out postal_part);
+      details.value.get (AddressEditor.postal_element_props[i], out postal_part);
 
       entries[i] = new Entry ();
       entries[i].set_hexpand (true);
-      entries[i].set ("placeholder-text", Contact.postal_element_names[i]);
+      entries[i].set ("placeholder-text", AddressEditor.postal_element_names[i]);
 
       if (postal_part != null)
 	entries[i].set_text (postal_part);
@@ -227,7 +230,7 @@ public class Contacts.ContactEditor : Grid {
 					 addr_editor.details.value.address_format,
 					 addr_editor.details.id);
       for (int i = 0; i < addr_editor.entries.length; i++)
-	new_value.set (Contact.postal_element_props[i], addr_editor.entries[i].get_text ());
+	new_value.set (AddressEditor.postal_element_props[i], addr_editor.entries[i].get_text ());
 
       var details = new PostalAddressFieldDetails(new_value, row_entry.value.details.parameters);
       new_details.add (details);

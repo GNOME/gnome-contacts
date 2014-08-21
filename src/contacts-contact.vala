@@ -670,9 +670,6 @@ public class Contacts.Contact : GLib.Object  {
     return res;
   }
 
-  public static string[] postal_element_props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
-  public static string[] postal_element_names = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
-
   public static string[] format_address (PostalAddress addr) {
     string[] lines = {};
 
