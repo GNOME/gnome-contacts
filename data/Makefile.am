@@ -5,7 +5,7 @@ desktop_in_files = org.gnome.Contacts.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
 searchproviderdir = $(datadir)/gnome-shell/search-providers
-searchprovider_DATA = gnome-contacts-search-provider.ini
+searchprovider_DATA = org.gnome.Contacts.search-provider.ini
 
 %.ini: %.ini.in
 	LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
