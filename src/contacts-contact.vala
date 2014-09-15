@@ -130,6 +130,8 @@ public class Contacts.Contact : GLib.Object  {
   uint changed_id;
   bool changed_personas;
 
+  public Persona? fake_persona = null;
+
   private Gdk.Pixbuf? _small_avatar;
   public Gdk.Pixbuf small_avatar {
     get {
@@ -1124,6 +1126,9 @@ public class Contacts.Contact : GLib.Object  {
       if (p.uid == uid)
 	return p;
     }
+    if (uid == "uid-fake-persona" && this.fake_persona != null)
+      return this.fake_persona;
+
     return null;
   }
 
@@ -1527,10 +1532,11 @@ public class Contacts.FakePersona : Persona {
 
   public FakePersona (Contact contact) {
     Object (display_id: "display_id",
-	    uid: "uid",
+	    uid: "uid-fake-persona",
 	    iid: "iid",
 	    store: contact.store.aggregator.primary_store ?? FakePersonaStore.the_store(),
 	    is_user: false);
     this.contact = contact;
+    this.contact.fake_persona = this;
   }
 }
