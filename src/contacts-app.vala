@@ -93,6 +93,9 @@ public class Contacts.App : Gtk.Application {
 	  var e_store = acc.selected_store as Edsf.PersonaStore;
 	  if (e_store != null) {
 	    eds_source_registry.set_default_address_book (e_store.source);
+	    var settings = new GLib.Settings ("org.freedesktop.folks");
+	    settings.set_string ("primary-store",
+				 "eds:%s".printf(e_store.id));
 	    contacts_store.refresh ();
 	  }
 	}
