@@ -2,14 +2,14 @@
 # Copyright (C) 2011 gnome-contacts's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-contacts package.
 #
-# Manoj Kumar Giri <mgiri@redhat.com>, 2011, 2012, 2013.
+# Manoj Kumar Giri <mgiri@redhat.com>, 2011, 2012, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-31 15:20+0000\n"
-"PO-Revision-Date: 2013-04-01 16:15+0530\n"
+"POT-Creation-Date: 2014-09-15 06:18+0000\n"
+"PO-Revision-Date: 2014-09-18 17:39+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "Language: or\n"
@@ -19,556 +19,438 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: ../data/gnome-contacts.desktop.in.in.h:1 ../src/contacts-app.vala:285
-#: ../src/main.vala:28
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:1
+msgid ""
+"Contacts keeps and organize your contacts information. You can create, edit, "
+"delete and link together pieces of information about your contacts. Contacts "
+"aggregates the details from all your sources providing a centralized place "
+"for managing your contacts."
+msgstr ""
+
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
+msgid ""
+"Contacts will also integrate with online address books and automatically "
+"link contacts from different online sources."
+msgstr ""
+
+#: ../data/org.gnome.Contacts.desktop.in.in.h:1 ../src/main.vala:28
 msgid "Contacts"
 msgstr "ସମ୍ପର୍କଗୁଡ଼ିକ"
 
-#: ../data/gnome-contacts.desktop.in.in.h:2
+#: ../data/org.gnome.Contacts.desktop.in.in.h:2
+#| msgid "— contact management"
+msgid "A contacts manager for GNOME"
+msgstr "GNOME ପାଇଁ ଏକ ସମ୍ପର୍କ ପରିଚାଳକ"
+
+#: ../data/org.gnome.Contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr "ସାଙ୍ଗ ସାଥୀ;ଠିକଣା ପୁସ୍ତକ;"
 
-#: ../src/app-menu.ui.h:1
-msgid "View"
-msgstr "ଦୃଶ୍ଯ"
+#: ../src/contacts-accounts-list.vala:48
+msgid "Online Accounts"
+msgstr "ଅନଲାଇନ ଖାତାଗୁଡ଼ିକ"
 
-#: ../src/app-menu.ui.h:2
-msgid "Main contacts"
-msgstr "ମୂଖ୍ୟ ସମ୍ପର୍କଗୁଡ଼ିକ"
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+msgid "Local Address Book"
+msgstr "ସ୍ଥାନୀୟ ଠିକଣା ପୁସ୍ତକ"
 
-#: ../src/app-menu.ui.h:3
-msgid "All contacts"
-msgstr "ସମସ୍ତ ସମ୍ପର୍କଗୁଡ଼ିକ"
-
-#: ../src/app-menu.ui.h:4
-msgid "_Change Address Book..."
-msgstr "ଠିକଣା ପୁସ୍ତକ ପରିବର୍ତ୍ତନ କରନ୍ତୁ (_C)..."
-
-#: ../src/app-menu.ui.h:5
-msgid "_About Contacts"
-msgstr "ସମ୍ପର୍କଗୁଡ଼ିକ ବିଷୟରେ (_A)"
-
-#: ../src/app-menu.ui.h:6
-msgid "_Help"
-msgstr "ସହାୟତା (_H)"
-
-#: ../src/app-menu.ui.h:7
-msgid "_Quit"
-msgstr "ବିଦାୟ ନିଅନ୍ତୁ (_Q)"
-
-#: ../src/contacts-app.vala:108
+#: ../src/contacts-app.vala:46
 #, c-format
 msgid "No contact with id %s found"
 msgstr "id %s ବିଶିଷ୍ଟ କୌଣସି ସମ୍ପର୍କ ମିଳିଲା ନାହିଁ"
 
-#: ../src/contacts-app.vala:109 ../src/contacts-app.vala:233
+#: ../src/contacts-app.vala:47 ../src/contacts-app.vala:146
 msgid "Contact not found"
 msgstr "ସମ୍ପର୍କ ମିଳିଲା ନାହିଁ"
 
-#: ../src/contacts-app.vala:118
+#: ../src/contacts-app.vala:56
 msgid "Change Address Book"
 msgstr "ଠିକଣା ପୁସ୍ତକ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
 
-#: ../src/contacts-app.vala:123 ../src/contacts-setup-window.vala:152
-msgid "Select"
-msgstr "ବାଛନ୍ତୁ"
+#: ../src/contacts-app.vala:61
+msgid "Change"
+msgstr "ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
 
-#: ../src/contacts-app.vala:211
+#: ../src/contacts-app.vala:62 ../src/contacts-avatar-dialog.vala:255
+#: ../data/ui/contacts-window.ui.h:5
+msgid "Cancel"
+msgstr "ବାତିଲ କରନ୍ତୁ"
+
+#: ../src/contacts-app.vala:71
+msgid ""
+"New contacts will be added to the selected address book.\n"
+"You are able to view and edit contacts from other address books."
+msgstr ""
+
+#: ../src/contacts-app.vala:125
 msgid "translator-credits"
 msgstr "ମନୋଜ କୁମାର ଗିରି <mgiri@redhat.com>"
 
-#: ../src/contacts-app.vala:212
+#: ../src/contacts-app.vala:126
 msgid "GNOME Contacts"
 msgstr "GNOME ସମ୍ପର୍କଗୁଡ଼ିକ"
 
-#: ../src/contacts-app.vala:213
+#: ../src/contacts-app.vala:127
 msgid "About GNOME Contacts"
 msgstr "GNOME ସମ୍ପର୍କଗୁଡ଼ିକ ବିଷୟରେ"
 
-#: ../src/contacts-app.vala:214
+#: ../src/contacts-app.vala:128
 msgid "Contact Management Application"
 msgstr "ସମ୍ପର୍କ ପରିଚାଳନା ପ୍ରୟୋଗ"
 
-#: ../src/contacts-app.vala:232
+#: ../src/contacts-app.vala:145
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "ଇମେଲ ଠିକଣା %s ବିଶିଷ୍ଟ କୌଣସି ସମ୍ପର୍କ ମିଳିଲା ନାହିଁ"
 
-#: ../src/contacts-app.vala:299
-msgid "New"
-msgstr "ନୂଆ"
-
-#: ../src/contacts-app.vala:326
-msgid "Edit"
-msgstr "ସମ୍ପାଦନ କରନ୍ତୁ"
-
-#: ../src/contacts-app.vala:332
-msgid "Done"
-msgstr "ସମାପ୍ତ"
-
-#: ../src/contacts-app.vala:381
-msgid "Editing"
-msgstr "ସମ୍ପାଦନ କରୁଅଛି"
-
-#: ../src/contacts-app.vala:498
-#, c-format
-msgid "%d contacts linked"
-msgid_plural "%d contacts linked"
-msgstr[0] "%dସମ୍ପର୍କ  ସଂଯୁକ୍ତ ହୋଇଛି"
-msgstr[1] "%d ସମ୍ପର୍କ  ସଂଯୁକ୍ତ ହୋଇଛି"
-
-#: ../src/contacts-app.vala:529
-#, c-format
-msgid "%d contact deleted"
-msgid_plural "%d contacts deleted"
-msgstr[0] "%d ସମ୍ପର୍କ ଅପସାରିତ"
-msgstr[1] "%d ସମ୍ପର୍କ ଅପସାରିତ"
-
-#: ../src/contacts-app.vala:570
-#, c-format
-msgid "Contact deleted: \"%s\""
-msgstr "ଅପସାରିତ ସମ୍ପର୍କ: \"%s\""
-
-#: ../src/contacts-app.vala:596
+#: ../src/contacts-app.vala:304
 msgid "Show contact with this individual id"
 msgstr "ଏହି ବ୍ୟକ୍ତିଗତ id ବିଶିଷ୍ଟ ସମ୍ପର୍କକୁ ଦର୍ଶାନ୍ତୁ"
 
-#: ../src/contacts-app.vala:598
+#: ../src/contacts-app.vala:306
 msgid "Show contact with this email address"
 msgstr "ଏହି ଇମେଲ ଠିକଣା ବିଶିଷ୍ଟ ସମ୍ପର୍କକୁ ଦର୍ଶାନ୍ତୁ"
 
-#: ../src/contacts-app.vala:611
-#, c-format
-msgid "%s linked to %s"
-msgstr "%s ସହିତ %s ସଂଯୁକ୍ତ"
-
-#: ../src/contacts-app.vala:613
-#, c-format
-msgid "%s linked to the contact"
-msgstr "%s ସମ୍ପର୍କ ସହିତ ସଂଯୁକ୍ତ"
-
-#: ../src/contacts-app.vala:630
+#: ../src/contacts-app.vala:313
 msgid "— contact management"
 msgstr "— ସମ୍ପର୍କ ପରିଚାଳନା"
 
-#: ../src/contacts-avatar-dialog.vala:197
+#: ../src/contacts-avatar-dialog.vala:200
 msgid "Browse for more pictures"
 msgstr "ଅଧିକ ଛବିଗୁଡ଼ିକ ପାଇଁ ବ୍ରାଉଜ କରନ୍ତୁ"
 
-#: ../src/contacts-avatar-dialog.vala:244
+#: ../src/contacts-avatar-dialog.vala:203
+#| msgid "Cancel"
+msgid "_Cancel"
+msgstr "ବାତିଲ (_C)"
+
+#: ../src/contacts-avatar-dialog.vala:204
+msgid "_Open"
+msgstr "ଖୋଲନ୍ତୁ (_O)"
+
+#: ../src/contacts-avatar-dialog.vala:249
 msgid "Select Picture"
 msgstr "ଚିତ୍ର ବାଛନ୍ତୁ"
 
-#: ../src/contacts-avatar-dialog.vala:247
-#: ../src/contacts-linked-accounts-dialog.vala:37
-msgid "Close"
-msgstr "ବନ୍ଦ କରନ୍ତୁ"
+#: ../src/contacts-avatar-dialog.vala:253 ../src/contacts-window.vala:198
+#: ../src/contacts-window.vala:224
+msgid "Select"
+msgstr "ବାଛନ୍ତୁ"
 
-#: ../src/contacts-contact-editor.vala:352
+#: ../src/contacts-avatar-dialog.vala:281 ../src/contacts-window.vala:315
+#| msgid "New contact"
+msgid "New Contact"
+msgstr "ନୂତନ ସମ୍ପର୍କ"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "Street"
+msgstr "ରାସ୍ତା"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "Extension"
+msgstr "ବିସ୍ତାର"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "City"
+msgstr "ସହର"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "State/Province"
+msgstr "ରାଜ୍ଯ/ପ୍ରଦେଶ"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "Zip/Postal Code"
+msgstr "ଜିପ/ପୋଷ୍ଟାଲ କୋଡ"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "PO box"
+msgstr "PO ବାକ୍ସ"
+
+#: ../src/contacts-contact-editor.vala:28
+msgid "Country"
+msgstr "ଦେଶ"
+
+#: ../src/contacts-contact-editor.vala:293
+#| msgid "Add Detail"
+msgid "Add email"
+msgstr "ଇମେଲ ଯୋଗ କରନ୍ତୁ"
+
+#: ../src/contacts-contact-editor.vala:295
+#| msgid "Phone number"
+msgid "Add number"
+msgstr "ନମ୍ବର ଯୋଗ କରନ୍ତୁ"
+
+#: ../src/contacts-contact-editor.vala:299
+#: ../src/contacts-contact-editor.vala:330
+#: ../src/contacts-contact-editor.vala:365
+#: ../src/contacts-contact-editor.vala:428
+#: ../src/contacts-contact-editor.vala:478
+#| msgid "Delete"
+msgid "Delete field"
+msgstr "ସ୍ଥାନ ଅପସାରଣ କରନ୍ତୁ"
+
+#: ../src/contacts-contact-editor.vala:400
 msgid "January"
 msgstr "ଜାନୁଆରୀ"
 
-#: ../src/contacts-contact-editor.vala:353
+#: ../src/contacts-contact-editor.vala:401
 msgid "February"
 msgstr "ଫେବ୍ରୁଆରୀ"
 
-#: ../src/contacts-contact-editor.vala:354
+#: ../src/contacts-contact-editor.vala:402
 msgid "March"
 msgstr "ମାର୍ଚ୍ଚ"
 
-#: ../src/contacts-contact-editor.vala:355
+#: ../src/contacts-contact-editor.vala:403
 msgid "April"
 msgstr "ଅପ୍ରେଲ"
 
-#: ../src/contacts-contact-editor.vala:356
+#: ../src/contacts-contact-editor.vala:404
 msgid "May"
 msgstr "ମଇ"
 
-#: ../src/contacts-contact-editor.vala:357
+#: ../src/contacts-contact-editor.vala:405
 msgid "June"
 msgstr "ଜୁନ"
 
-#: ../src/contacts-contact-editor.vala:358
+#: ../src/contacts-contact-editor.vala:406
 msgid "July"
 msgstr "ଜୁଲାଇ"
 
-#: ../src/contacts-contact-editor.vala:359
+#: ../src/contacts-contact-editor.vala:407
 msgid "August"
 msgstr "ଅଗଷ୍ଟ"
 
-#: ../src/contacts-contact-editor.vala:360
+#: ../src/contacts-contact-editor.vala:408
 msgid "September"
 msgstr "ସେପ୍ଟେମ୍ବର"
 
-#: ../src/contacts-contact-editor.vala:361
+#: ../src/contacts-contact-editor.vala:409
 msgid "October"
 msgstr "ଅକ୍ଟୋବର"
 
-#: ../src/contacts-contact-editor.vala:362
+#: ../src/contacts-contact-editor.vala:410
 msgid "November"
 msgstr "ନଭେମ୍ବର"
 
-#: ../src/contacts-contact-editor.vala:363
+#: ../src/contacts-contact-editor.vala:411
 msgid "December"
 msgstr "ଡିସେମ୍ବର"
 
-#: ../src/contacts-contact-editor.vala:489
-#: ../src/contacts-contact-editor.vala:496
-#: ../src/contacts-contact-sheet.vala:169
+#: ../src/contacts-contact-editor.vala:561
+#: ../src/contacts-contact-editor.vala:568
+#: ../src/contacts-contact-sheet.vala:190 ../data/ui/app-menu.ui.h:10
 msgid "Website"
 msgstr "ୱେବସାଇଟ"
 
-#: ../src/contacts-contact-editor.vala:515
-#: ../src/contacts-contact-editor.vala:522
-#: ../src/contacts-contact-pane.vala:395
-#: ../src/contacts-contact-sheet.vala:179
+#: ../src/contacts-contact-editor.vala:587
+#: ../src/contacts-contact-editor.vala:594
+#: ../src/contacts-contact-sheet.vala:196 ../data/ui/app-menu.ui.h:11
 msgid "Nickname"
 msgstr "ଡାକନାମ"
 
-#: ../src/contacts-contact-editor.vala:542
-#: ../src/contacts-contact-editor.vala:549
-#: ../src/contacts-contact-pane.vala:400
-#: ../src/contacts-contact-sheet.vala:186
+#: ../src/contacts-contact-editor.vala:620
+#: ../src/contacts-contact-editor.vala:627
+#: ../src/contacts-contact-sheet.vala:203 ../data/ui/app-menu.ui.h:12
 msgid "Birthday"
 msgstr "ଜନ୍ମଦିନ"
 
-#: ../src/contacts-contact-editor.vala:569
-#: ../src/contacts-contact-editor.vala:576
-#: ../src/contacts-contact-sheet.vala:193
+#: ../src/contacts-contact-editor.vala:642
+#: ../src/contacts-contact-editor.vala:649
+#: ../src/contacts-contact-sheet.vala:210
 msgid "Note"
 msgstr "ଟିପ୍ପଣୀ"
 
-#: ../src/contacts-contact-pane.vala:183
+#: ../src/contacts-contact-editor.vala:774
+msgid "New Detail"
+msgstr "ନୂତନ ବିବରଣୀ"
+
+#: ../src/contacts-contact-editor.vala:780
+#: ../src/contacts-linked-accounts-dialog.vala:36
+msgid "Linked Accounts"
+msgstr "ସଂଯୁକ୍ତ ଖାତାଗୁଡ଼ିକ"
+
+#: ../src/contacts-contact-editor.vala:783
+msgid "Remove Contact"
+msgstr "ସମ୍ପର୍କକୁ ବାହାର କରନ୍ତୁ"
+
+#: ../src/contacts-contact-editor.vala:841
+#: ../src/contacts-contact-editor.vala:1041
+msgid "Add name"
+msgstr "ନାମ ଯୋଡ଼ନ୍ତୁ"
+
+#: ../src/contacts-contact-pane.vala:137
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "%s ଏଠାରେ %s ର ଅନ୍ତର୍ଗତ କି?"
 
-#: ../src/contacts-contact-pane.vala:185
+#: ../src/contacts-contact-pane.vala:139
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "ଏହି ବିବରଣୀଗୁଡ଼ିକ %s ର ଅନ୍ତର୍ଗତ କି?"
 
-#: ../src/contacts-contact-pane.vala:196
+#: ../src/contacts-contact-pane.vala:151
 msgid "Yes"
 msgstr "ହଁ"
 
-#: ../src/contacts-contact-pane.vala:197
+#: ../src/contacts-contact-pane.vala:152
 msgid "No"
 msgstr "ନାଁ"
 
-#: ../src/contacts-contact-pane.vala:349
-msgid "New Detail"
-msgstr "ନୂତନ ବିବରଣୀ"
-
-#. building menu
-#: ../src/contacts-contact-pane.vala:363
-msgid "Personal email"
-msgstr "ବ୍ୟକ୍ତିଗତ ଇମେଲ"
-
-#: ../src/contacts-contact-pane.vala:368
-msgid "Work email"
-msgstr "କାର୍ଯ୍ଯ ସ୍ଥଳ  ଇମେଲ"
-
-#: ../src/contacts-contact-pane.vala:374
-msgid "Mobile phone"
-msgstr "ମୋବାଇଲ ଫୋନ"
-
-#: ../src/contacts-contact-pane.vala:379
-msgid "Home phone"
-msgstr "ଘର ଫୋନ"
-
-#: ../src/contacts-contact-pane.vala:384
-msgid "Work phone"
-msgstr "କାର୍ଯ୍ୟସ୍ଥଳ ଫୋନ"
-
-#: ../src/contacts-contact-pane.vala:390 ../src/contacts-list-pane.vala:140
-msgid "Link"
-msgstr "ଲିଙ୍କ"
-
-#: ../src/contacts-contact-pane.vala:406
-msgid "Home address"
-msgstr "ଘର ଠିକଣା"
-
-#: ../src/contacts-contact-pane.vala:411
-msgid "Work address"
-msgstr "କାର୍ଯ୍ଯସ୍ଥଳ ଠିକଣା"
-
-#: ../src/contacts-contact-pane.vala:417
-msgid "Notes"
-msgstr "ଟିପ୍ପଣୀ"
-
-#: ../src/contacts-contact-pane.vala:434
-msgid "Linked Accounts"
-msgstr "ସଂଯୁକ୍ତ ଖାତାଗୁଡ଼ିକ"
-
-#: ../src/contacts-contact-pane.vala:446
-msgid "Remove Contact"
-msgstr "ସମ୍ପର୍କକୁ ବାହାର କରନ୍ତୁ"
-
-#: ../src/contacts-contact-pane.vala:505
-#| msgid "Select chat account"
+#: ../src/contacts-contact-pane.vala:323
 msgid "Select a contact"
 msgstr "ଏକ ସମ୍ପର୍କ ଚୟନ କରନ୍ତୁ"
 
-#: ../src/contacts-contact.vala:675
-msgid "Street"
-msgstr "ରାସ୍ତା"
+#: ../src/contacts-contact-pane.vala:455
+msgid "You need to enter some data"
+msgstr "ଆପଣଙ୍କୁ କିଛି ତଥ୍ୟ ଭରଣ କରିବାକୁ ହେବ"
 
-#: ../src/contacts-contact.vala:675
-msgid "Extension"
-msgstr "ବିସ୍ତାର"
+#: ../src/contacts-contact-pane.vala:467
+#| msgid "No primary addressbook configured\n"
+msgid "No primary addressbook configured"
+msgstr "କୌଣସି ପ୍ରାଥମିକ ଠିକଣା ପୁସ୍ତକ ବିନ୍ୟାସିତ ହୋଇ ନାହିଁ"
 
-#: ../src/contacts-contact.vala:675
-msgid "City"
-msgstr "ସହର"
+#: ../src/contacts-contact-pane.vala:486
+#, c-format
+#| msgid "Unable to create new contacts: %s\n"
+msgid "Unable to create new contacts: %s"
+msgstr "ନୂତନ ସମ୍ପର୍କଗୁଡ଼ିକୁ ସୃଷ୍ଟିକରିବାରେ ଅସମର୍ଥ: %s"
 
-#: ../src/contacts-contact.vala:675
-msgid "State/Province"
-msgstr "ରାଜ୍ଯ/ପ୍ରଦେଶ"
+#: ../src/contacts-contact-pane.vala:497
+#| msgid "Unable to find newly created contact\n"
+msgid "Unable to find newly created contact"
+msgstr "ନୂତନ ଭାବରେ ସୃଷ୍ଟିହୋଇଥିବା ସମ୍ପର୍କକୁ ପାଇବାରେ ଅସମର୍ଥ"
 
-#: ../src/contacts-contact.vala:675
-msgid "Zip/Postal Code"
-msgstr "ଜିପ/ପୋଷ୍ଟାଲ କୋଡ"
+#: ../src/contacts-contact-frame.vala:40
+msgid "Change avatar"
+msgstr "ଅବତାର୍‌ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
 
-#: ../src/contacts-contact.vala:675
-msgid "PO box"
-msgstr "PO ବାକ୍ସ"
-
-#: ../src/contacts-contact.vala:675
-msgid "Country"
-msgstr "ଦେଶ"
-
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:727
 msgid "Google Talk"
 msgstr "Google ବାର୍ତ୍ତାଳାପ"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:728
 msgid "Ovi Chat"
 msgstr "Ovi ବାର୍ତ୍ତାଳାପ"
 
-#: ../src/contacts-contact.vala:733 ../src/contacts-contact.vala:1017
+#: ../src/contacts-contact.vala:729
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:730
 msgid "Livejournal"
 msgstr "ଜୀବନ୍ତ ପତ୍ରିକା"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:731
 msgid "AOL Instant Messenger"
 msgstr "AOL ତୁରନ୍ତ ଖବରକାରୀ"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:732
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:733
 msgid "Novell Groupwise"
 msgstr "Novell ଶ୍ରେଣୀ ଅନୁଯାୟୀ"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:734
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:735
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:736
 msgid "Jabber"
 msgstr "ଜବ୍ବର"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:737
 msgid "Local network"
 msgstr "ସ୍ଥାନିୟ ନେଟୱର୍କ"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:738
 msgid "Windows Live Messenger"
 msgstr "Window ର ଜୀବନ୍ତ ସନ୍ଦେଶପ୍ରେରକ"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:739
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:740
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:741
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:742
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:743
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:744
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:745
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:746
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:751
+#: ../src/contacts-contact.vala:747
 msgid "Telephony"
 msgstr "ଟେଲିଫୋନୀ"
 
-#: ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:748
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:753 ../src/contacts-contact.vala:754
+#: ../src/contacts-contact.vala:749 ../src/contacts-contact.vala:750
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! ସନ୍ଦେଶ ପ୍ରେରକ"
 
-#: ../src/contacts-contact.vala:755
+#: ../src/contacts-contact.vala:751
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1020
-msgid "Twitter"
-msgstr "Twitter"
-
-#: ../src/contacts-contact.vala:1023
-msgid "Google Profile"
-msgstr "Google ରୂପରେଖା"
-
-#: ../src/contacts-contact.vala:1087
+#: ../src/contacts-contact.vala:1051
 msgid "Unexpected internal error: created contact was not found"
 msgstr "ଅପ୍ରତ୍ୟାଶିତ ଆଭ୍ୟନ୍ତରୀଣ ତ୍ରୁଟି: ନିର୍ମିତ ସମ୍ପର୍କଟି ମିଳୁ ନାହିଁ"
 
-#: ../src/contacts-contact.vala:1261
+#: ../src/contacts-contact.vala:1233
 msgid "Google Circles"
 msgstr "Google ବୃତ୍ତଗୁଡିକ"
 
-#: ../src/contacts-contact.vala:1263
-msgid "Google Other Contact"
-msgstr "Google ଅନ୍ୟାନ୍ୟ ସମ୍ପର୍କ"
-
-#: ../src/contacts-esd-setup.c:114
-msgid "Local Address Book"
-msgstr "ସ୍ଥାନୀୟ ଠିକଣା ପୁସ୍ତକ"
-
-#: ../src/contacts-esd-setup.c:117 ../src/contacts-esd-setup.c:145
+#: ../src/contacts-contact.vala:1235 ../src/contacts-esd-setup.c:121
+#: ../src/contacts-esd-setup.c:149
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:142
+#: ../src/contacts-esd-setup.c:146
 msgid "Local Contact"
 msgstr "ସ୍ଥାନୀୟ ସମ୍ପର୍କ"
 
-#: ../src/contacts-linked-accounts-dialog.vala:32
+#: ../src/contacts-linked-accounts-dialog.vala:35
 #, c-format
-msgid "%s - Linked Accounts"
-msgstr "%s - ସଂଯୁକ୍ତ ଖାତାଗୁଡ଼ିକ"
+msgid "%s"
+msgstr "%s"
 
-#: ../src/contacts-linked-accounts-dialog.vala:56
-msgid "You can manually link contacts from the contacts list"
+#: ../src/contacts-linked-accounts-dialog.vala:60
+#| msgid "You can manually link contacts from the contacts list"
+msgid "You can link contacts by selecting them from the contacts list"
 msgstr "ଆପଣ ହସ୍ତକୃତ ଭାବରେ ସମ୍ପର୍କ ତାଲିକାରୁ ସମ୍ପର୍କଗୁଡ଼ିକୁ ସଂଯୋଗ କରିପାରିବେ"
 
-#: ../src/contacts-linked-accounts-dialog.vala:102
-msgid "Remove"
-msgstr "ଅପସାରଣ କରନ୍ତୁ"
-
-#: ../src/contacts-list-pane.vala:143
-msgid "Delete"
-msgstr "ଅପସାରଣ କରନ୍ତୁ"
-
-#: ../src/contacts-new-contact-dialog.vala:35
-msgid "New contact"
-msgstr "ନୂତନ ସମ୍ପର୍କ"
-
-#: ../src/contacts-new-contact-dialog.vala:41
-msgid "Create Contact"
-msgstr "ସମ୍ପର୍କ ସୃଷ୍ଟି କରନ୍ତୁ"
-
-#: ../src/contacts-new-contact-dialog.vala:67
-msgid ""
-"Add or \n"
-"select a picture"
-msgstr ""
-"ଗୋଟିଏ ଛବି ଯୋଗକରନ୍ତୁ \n"
-"କିମ୍ବା ବାଛନ୍ତୁ"
-
-#: ../src/contacts-new-contact-dialog.vala:78
-msgid "Contact Name"
-msgstr "ସମ୍ପର୍କ ନାମ"
-
-#: ../src/contacts-new-contact-dialog.vala:86
-#: ../src/contacts-new-contact-dialog.vala:121
-msgid "Email"
-msgstr "ଇମେଲ"
-
-#: ../src/contacts-new-contact-dialog.vala:95
-#: ../src/contacts-new-contact-dialog.vala:126
-msgid "Phone"
-msgstr "ଫୋନ"
-
-#: ../src/contacts-new-contact-dialog.vala:104
-#: ../src/contacts-new-contact-dialog.vala:131
-msgid "Address"
-msgstr "ଠିକଣା"
-
-#: ../src/contacts-new-contact-dialog.vala:113
-msgid "Add Detail"
-msgstr "ବିସ୍ତୃତ ବିବରଣୀ ଯୋଗକରନ୍ତୁ"
-
-#: ../src/contacts-new-contact-dialog.vala:212
-msgid "You must specify a contact name"
-msgstr "ଆପଣଙ୍କୁ ଗୋଟିଏ ସମ୍ପର୍କ ନାମ ବାଛିବାକୁ ହେବ"
-
-#: ../src/contacts-new-contact-dialog.vala:320
-msgid "No primary addressbook configured\n"
-msgstr "କୌଣସି ପ୍ରାଥମିକ ଠିକଣା ପୁସ୍ତକ ବିନ୍ୟାସିତ ହୋଇ ନାହିଁ\n"
-
-#: ../src/contacts-new-contact-dialog.vala:341
-#, c-format
-msgid "Unable to create new contacts: %s\n"
-msgstr "ନୂତନ ସମ୍ପର୍କଗୁଡ଼ିକୁ ସୃଷ୍ଟିକରିବାରେ ଅସମର୍ଥ: %s\n"
-
-#: ../src/contacts-new-contact-dialog.vala:352
-msgid "Unable to find newly created contact\n"
-msgstr "ନୂତନ ଭାବରେ ସୃଷ୍ଟିହୋଇଥିବା ସମ୍ପର୍କକୁ ପାଇବାରେ ଅସମର୍ଥ\n"
-
-#: ../src/contacts-setup-window.vala:36
-msgid ""
-"Welcome to Contacts! Please select where you want to keep your address book:"
-msgstr ""
-"ସମ୍ପର୍କ ତାଲିକାରେ ସ୍ୱାଗତ! ଆପଣ କେଉଁଠି ଠିକଣା ପୁସ୍ତକକୁ ରଖିବାକୁ ଚାହୁଁଛନ୍ତି ଦୟାକରି "
-"ବାଛନ୍ତୁ:"
-
-#: ../src/contacts-setup-window.vala:81
-msgid "Online Account Settings"
-msgstr "ଅନଲାଇନ ଖାତା ବିନ୍ୟାସ"
-
-#: ../src/contacts-setup-window.vala:86
-msgid "Setup an online account or use a local address book"
-msgstr "ଏକ ଅନଲାଇନ ଖାତା ସେଟ କରନ୍ତୁ କିମ୍ବା ସ୍ଥାନୀୟ ଠିକଣା ପୁସ୍ତକ ବ୍ୟବହାର କରନ୍ତୁ"
-
-#: ../src/contacts-setup-window.vala:89
-msgid "Online Accounts"
-msgstr "ଅନଲାଇନ ଖାତାଗୁଡ଼ିକ"
-
-#: ../src/contacts-setup-window.vala:92
-msgid "Use Local Address Book"
-msgstr "ସ୍ଥାନୀୟ ଠିକଣା ପୁସ୍ତକ ବ୍ୟବହାର କରନ୍ତୁ"
-
-#: ../src/contacts-setup-window.vala:125 ../src/contacts-setup-window.vala:146
-msgid "Contacts Setup"
-msgstr "ସମ୍ପର୍କ ବ୍ୟବସ୍ଥା"
-
-#: ../src/contacts-setup-window.vala:137
-msgid "Cancel"
-msgstr "ବାତିଲ କରନ୍ତୁ"
+#: ../src/contacts-linked-accounts-dialog.vala:104
+msgid "Unlink"
+msgstr "ଲିଙ୍କ କରନ୍ତୁ ନାହିଁ"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -646,13 +528,173 @@ msgstr "ଟେଲେକ୍ସ"
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:294
+#: ../src/contacts-view.vala:194
+msgid "No results matched search"
+msgstr "ସନ୍ଧାନ ସହିତ କୌଣସି ଫଳାଫଳ ମିଶିଲା ନାହିଁ"
+
+#: ../src/contacts-view.vala:298
 msgid "Suggestions"
 msgstr "ପ୍ରସ୍ତାବଗୁଡ଼ିକ"
 
-#: ../src/contacts-view.vala:319
+#: ../src/contacts-view.vala:323
 msgid "Other Contacts"
 msgstr "ଅନ୍ୟାନ୍ୟ ସମ୍ପର୍କଗୁଡ଼ିକ"
+
+#: ../src/contacts-window.vala:200
+#, c-format
+#| msgid "Select"
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "%d ବଚ୍ଛିତ"
+msgstr[1] "%d ବଚ୍ଛିତ"
+
+#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:2
+#| msgid "All contacts"
+msgid "All Contacts"
+msgstr "ସମସ୍ତ ସମ୍ପର୍କଗୁଡ଼ିକ"
+
+#: ../src/contacts-window.vala:250
+#, c-format
+#| msgid "Editing"
+msgid "Editing %s"
+msgstr "ସମ୍ପାଦନ କରୁଅଛି %s"
+
+#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:7
+msgid "Done"
+msgstr "ସମାପ୍ତ"
+
+#: ../src/contacts-window.vala:320
+#| msgid "Address"
+msgid "Add"
+msgstr "ଯୋଗ କରନ୍ତୁ"
+
+#: ../src/contacts-window.vala:407
+#, c-format
+msgid "%d contacts linked"
+msgid_plural "%d contacts linked"
+msgstr[0] "%dସମ୍ପର୍କ  ସଂଯୁକ୍ତ ହୋଇଛି"
+msgstr[1] "%d ସମ୍ପର୍କ  ସଂଯୁକ୍ତ ହୋଇଛି"
+
+#: ../src/contacts-window.vala:411 ../src/contacts-window.vala:443
+#: ../src/contacts-window.vala:485 ../src/contacts-window.vala:521
+#| msgid "Undo"
+msgid "_Undo"
+msgstr "ପଦକ୍ଷେପ ବାତିଲ (_U)"
+
+#: ../src/contacts-window.vala:439
+#, c-format
+msgid "%d contact deleted"
+msgid_plural "%d contacts deleted"
+msgstr[0] "%d ସମ୍ପର୍କ ଅପସାରିତ"
+msgstr[1] "%d ସମ୍ପର୍କ ଅପସାରିତ"
+
+#: ../src/contacts-window.vala:482
+#, c-format
+msgid "Contact deleted: \"%s\""
+msgstr "ଅପସାରିତ ସମ୍ପର୍କ: \"%s\""
+
+#: ../src/contacts-window.vala:517
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s ସହିତ %s ସଂଯୁକ୍ତ"
+
+#: ../src/contacts-window.vala:519
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s ସମ୍ପର୍କ ସହିତ ସଂଯୁକ୍ତ"
+
+#: ../data/ui/app-menu.ui.h:1
+msgid "_Change Address Book..."
+msgstr "ଠିକଣା ପୁସ୍ତକ ପରିବର୍ତ୍ତନ କରନ୍ତୁ (_C)..."
+
+#: ../data/ui/app-menu.ui.h:2
+msgid "_Help"
+msgstr "ସହାୟତା (_H)"
+
+#: ../data/ui/app-menu.ui.h:3
+msgid "_About"
+msgstr "ବିବରଣୀ (_A)"
+
+#: ../data/ui/app-menu.ui.h:4
+msgid "_Quit"
+msgstr "ବିଦାୟ ନିଅନ୍ତୁ (_Q)"
+
+#: ../data/ui/app-menu.ui.h:5
+msgid "Personal email"
+msgstr "ବ୍ୟକ୍ତିଗତ ଇମେଲ"
+
+#: ../data/ui/app-menu.ui.h:6
+msgid "Work email"
+msgstr "କାର୍ଯ୍ଯ ସ୍ଥଳ  ଇମେଲ"
+
+#: ../data/ui/app-menu.ui.h:7
+msgid "Mobile phone"
+msgstr "ମୋବାଇଲ ଫୋନ"
+
+#: ../data/ui/app-menu.ui.h:8
+msgid "Home phone"
+msgstr "ଘର ଫୋନ"
+
+#: ../data/ui/app-menu.ui.h:9
+msgid "Work phone"
+msgstr "କାର୍ଯ୍ୟସ୍ଥଳ ଫୋନ"
+
+#: ../data/ui/app-menu.ui.h:13
+msgid "Home address"
+msgstr "ଘର ଠିକଣା"
+
+#: ../data/ui/app-menu.ui.h:14
+msgid "Work address"
+msgstr "କାର୍ଯ୍ଯସ୍ଥଳ ଠିକଣା"
+
+#: ../data/ui/app-menu.ui.h:15
+msgid "Notes"
+msgstr "ଟିପ୍ପଣୀ"
+
+#: ../data/ui/contacts-list-pane.ui.h:1
+msgid "Type to search"
+msgstr "ସନ୍ଧାନ କରିବା ପାଇଁ ଲେଖନ୍ତୁ"
+
+#. Link refers to the verb, from linking contacts together
+#: ../data/ui/contacts-list-pane.ui.h:3
+msgid "Link"
+msgstr "ଲିଙ୍କ"
+
+#: ../data/ui/contacts-list-pane.ui.h:4
+msgid "Delete"
+msgstr "ଅପସାରଣ କରନ୍ତୁ"
+
+#: ../data/ui/contacts-window.ui.h:1
+msgid "Loading"
+msgstr "ଧାରଣ କରୁଅଛି"
+
+#: ../data/ui/contacts-window.ui.h:3
+#| msgid "All contacts"
+msgid "Add contact"
+msgstr "ସମ୍ପର୍କ ଯୋଗ କରନ୍ତୁ"
+
+#: ../data/ui/contacts-window.ui.h:4
+#| msgid "Select"
+msgid "Selection mode"
+msgstr "ଚୟନ ପ୍ରକାର"
+
+#: ../data/ui/contacts-window.ui.h:6
+msgid "Edit"
+msgstr "ସମ୍ପାଦନ କରନ୍ତୁ"
+
+#: ../data/ui/contacts-window.ui.h:8
+#| msgid "Local Address Book"
+msgid "Select Address Book"
+msgstr "ଠିକଣା ପୁସ୍ତିକାକୁ ଚୟନ କରନ୍ତୁ"
+
+#: ../data/ui/contacts-window.ui.h:9
+#| msgid "Cancel"
+msgid "Cancel setup"
+msgstr "ବ୍ୟବସ୍ଥାକୁ ବାତିଲ କରନ୍ତୁ"
+
+#: ../data/ui/contacts-window.ui.h:10
+msgid "Setup complete"
+msgstr "ସେଟ ଅପ ସଂପୂର୍ଣ୍ଣ ହୋଇଛି"
 
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:1
 msgid "First-time setup done."
@@ -671,6 +713,75 @@ msgstr "ଦୃଶ୍ୟ ଉପସେଟ"
 msgid "View contacts subset"
 msgstr "ସମ୍ପର୍କ ଉପସେଟକୁ ଦେଖନ୍ତୁ"
 
+#~ msgid "View"
+#~ msgstr "ଦୃଶ୍ଯ"
+
+#~ msgid "Main contacts"
+#~ msgstr "ମୂଖ୍ୟ ସମ୍ପର୍କଗୁଡ଼ିକ"
+
+#~ msgid "_About Contacts"
+#~ msgstr "ସମ୍ପର୍କଗୁଡ଼ିକ ବିଷୟରେ (_A)"
+
+#~ msgid "New"
+#~ msgstr "ନୂଆ"
+
+#~ msgid "Close"
+#~ msgstr "ବନ୍ଦ କରନ୍ତୁ"
+
+#~ msgid "Twitter"
+#~ msgstr "Twitter"
+
+#~ msgid "Google Profile"
+#~ msgstr "Google ରୂପରେଖା"
+
+#~ msgid "Google Other Contact"
+#~ msgstr "Google ଅନ୍ୟାନ୍ୟ ସମ୍ପର୍କ"
+
+#~ msgid "%s - Linked Accounts"
+#~ msgstr "%s - ସଂଯୁକ୍ତ ଖାତାଗୁଡ଼ିକ"
+
+#~ msgid "Remove"
+#~ msgstr "ଅପସାରଣ କରନ୍ତୁ"
+
+#~ msgid "Create Contact"
+#~ msgstr "ସମ୍ପର୍କ ସୃଷ୍ଟି କରନ୍ତୁ"
+
+#~ msgid ""
+#~ "Add or \n"
+#~ "select a picture"
+#~ msgstr ""
+#~ "ଗୋଟିଏ ଛବି ଯୋଗକରନ୍ତୁ \n"
+#~ "କିମ୍ବା ବାଛନ୍ତୁ"
+
+#~ msgid "Contact Name"
+#~ msgstr "ସମ୍ପର୍କ ନାମ"
+
+#~ msgid "Email"
+#~ msgstr "ଇମେଲ"
+
+#~ msgid "Phone"
+#~ msgstr "ଫୋନ"
+
+#~ msgid "You must specify a contact name"
+#~ msgstr "ଆପଣଙ୍କୁ ଗୋଟିଏ ସମ୍ପର୍କ ନାମ ବାଛିବାକୁ ହେବ"
+
+#~ msgid ""
+#~ "Welcome to Contacts! Please select where you want to keep your address "
+#~ "book:"
+#~ msgstr "ସମ୍ପର୍କ ତାଲିକାରେ ସ୍ୱାଗତ! ଆପଣ କେଉଁଠି ଠିକଣା ପୁସ୍ତକକୁ ରଖିବାକୁ ଚାହୁଁଛନ୍ତି ଦୟାକରି ବାଛନ୍ତୁ:"
+
+#~ msgid "Online Account Settings"
+#~ msgstr "ଅନଲାଇନ ଖାତା ବିନ୍ୟାସ"
+
+#~ msgid "Setup an online account or use a local address book"
+#~ msgstr "ଏକ ଅନଲାଇନ ଖାତା ସେଟ କରନ୍ତୁ କିମ୍ବା ସ୍ଥାନୀୟ ଠିକଣା ପୁସ୍ତକ ବ୍ୟବହାର କରନ୍ତୁ"
+
+#~ msgid "Use Local Address Book"
+#~ msgstr "ସ୍ଥାନୀୟ ଠିକଣା ପୁସ୍ତକ ବ୍ୟବହାର କରନ୍ତୁ"
+
+#~ msgid "Contacts Setup"
+#~ msgstr "ସମ୍ପର୍କ ବ୍ୟବସ୍ଥା"
+
 #~ msgctxt "Addresses on the Web"
 #~ msgid "Links"
 #~ msgstr "ଲିଙ୍କଗୁଡିକ"
@@ -678,9 +789,6 @@ msgstr "ସମ୍ପର୍କ ଉପସେଟକୁ ଦେଖନ୍ତୁ"
 #~ msgctxt "Web address"
 #~ msgid "Link"
 #~ msgstr "ଲିଙ୍କ"
-
-#~ msgid "Phone number"
-#~ msgstr "ଫୋନ ନମ୍ବର"
 
 #~ msgid "Chat"
 #~ msgstr "ବାର୍ତ୍ତାଳାପ"
@@ -690,9 +798,6 @@ msgstr "ସମ୍ପର୍କ ଉପସେଟକୁ ଦେଖନ୍ତୁ"
 
 #~ msgid "Add to My Contacts"
 #~ msgstr "ମୋର ସମ୍ପର୍କ ତାଲିକାରେ ଯୋଗ କରନ୍ତୁ"
-
-#~ msgid "Unlink"
-#~ msgstr "ଲିଙ୍କ କରନ୍ତୁ ନାହିଁ"
 
 #~ msgid "Add detail..."
 #~ msgstr "ବିସ୍ତୃତ ବିବରଣୀ ଯୋଗକରନ୍ତୁ..."
@@ -712,9 +817,6 @@ msgstr "ସମ୍ପର୍କ ଉପସେଟକୁ ଦେଖନ୍ତୁ"
 #~ msgctxt "contacts link action"
 #~ msgid "Link"
 #~ msgstr "ଲିଙ୍କ"
-
-#~ msgid "Undo"
-#~ msgstr "ପଦକ୍ଷେପ ବାତିଲ"
 
 #~ msgid "Link contacts to %s"
 #~ msgstr "%s ରେ ସମ୍ପର୍କଗୁଡ଼ିକୁ ସଂଯୋଗ କରନ୍ତୁ"
