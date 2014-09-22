@@ -15,6 +15,7 @@ AC_CONFIG_FILES([Makefile
 		man/Makefile
 		data/Makefile
 		data/org.gnome.Contacts.desktop.in
+		data/org.gnome.Contacts.search-provider.ini.in
 		po/Makefile.in
 		])
 
