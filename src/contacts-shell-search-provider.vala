@@ -73,7 +73,6 @@ public class Contacts.SearchProvider : Object {
   }
 
   public async string[] GetInitialResultSet (string[] terms) {
-    warning ("GetInitialResultSet %s", string.joinv ("; ", terms));
     return yield do_search (terms);
   }
 
