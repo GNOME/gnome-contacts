@@ -78,7 +78,6 @@ public class Contacts.SearchProvider : Object {
 
   public async string[] GetSubsearchResultSet (string[] previous_results,
 					       string[] new_terms) {
-    warning ("GetSubsearchResultSet %s", string.joinv ("; ", new_terms));
     return yield do_search (new_terms);
   }
 
@@ -105,19 +104,15 @@ public class Contacts.SearchProvider : Object {
       results.add (meta);
     }
     app.release ();
-    warning ("GetResultMetas: RETURNED");
     return results.to_array ();
   }
 
   public async HashTable<string, Variant>[] GetResultMetas (string[] ids) {
-    warning ("GetResultMetas: %s", string.joinv ("; ", ids));
     return yield get_metas (ids);
   }
 
   public void ActivateResult (string search_id, string[] terms, uint32 timestamp) {
     app.hold ();
-
-    warning ("ActivateResult: %s", search_id);
 
     var contact = contacts_map.get (search_id);
 
@@ -151,7 +146,6 @@ public class Contacts.SearchProvider : Object {
 	stderr.printf ("Failed to launch Contacts for search\n");
     } catch (SpawnError error) {
       stderr.printf ("Failed to launch Contacts for search\n");
-      warning (error.message);
     }
 
     app.release ();
