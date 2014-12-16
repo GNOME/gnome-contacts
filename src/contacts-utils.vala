@@ -20,6 +20,9 @@ using Gtk;
 using Folks;
 using Gee;
 using TelepathyGLib;
+using DBus;
+using GLib;
+using Gdk;
 
 namespace Contacts {
   private static bool is_set (string? str) {
@@ -50,6 +53,44 @@ namespace Contacts {
   public void add_separator (ListBoxRow row,
 			     ListBoxRow? before_row) {
     row.set_header (new Separator (Orientation.HORIZONTAL));
+  }
+
+  [DBus (name = "org.freedesktop.Application")]
+  interface FreedesktopApplication : Object {
+    [DBus (name = "ActivateAction")]
+    public abstract void ActivateAction (string action,
+					 Variant[] parameter,
+					 HashTable<string, Variant> data) throws IOError;
+  }
+
+  public void activate_action (string app_id,
+                               string action,
+                               Variant? parameter,
+                               uint32 timestamp) {
+    FreedesktopApplication? con = null;
+
+    try {
+      string object_path = "/" + app_id.replace(".", "/");
+      Display display = Display.get_default ();
+      DesktopAppInfo info = new DesktopAppInfo (app_id + ".desktop");
+      Gdk.AppLaunchContext context = display.get_app_launch_context ();
+
+      con = Bus.get_proxy_sync (BusType.SESSION, app_id, object_path);
+      context.set_timestamp (timestamp);
+
+      Variant[] param_array = {};
+      if (parameter != null) {
+        param_array += parameter;
+      }
+      
+      var startup_id = context.get_startup_notify_id (info,
+                                                      new GLib.List<File>());
+      var data = new HashTable<string, Variant>(str_hash, str_equal);
+      data.insert ("desktop-startup-id", new Variant.string (startup_id));
+        con.ActivateAction (action, param_array, data);
+    } catch (IOError e) {
+      debug ("Failed to activate action" + action);
+    }
   }
 }
 
