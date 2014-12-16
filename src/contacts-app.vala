@@ -266,6 +266,9 @@ public class Contacts.App : Gtk.Application {
   }
 
   public override void activate () {
+    var icon_theme = IconTheme.get_default ();
+    icon_theme.append_search_path (Config.PKGDATADIR + "/icons");
+
     /* window creation code */
     if (window == null) {
       if (!contacts_store.is_prepared) {
