@@ -52,3 +52,29 @@ DISTCLEANFILES = \
 	org.gnome.Contacts.search-provider.ini \
 	gnome-contacts.desktop \
 	gnome-contacts.desktop.in
+
+private_icons =								\
+	hicolor_apps_32x32_maps-pin.svg					\
+	$(NULL)
+
+
+install-icons:
+	for icon in $(private_icons); do \
+		THEME=`echo $$icon | cut -d_ -f1`; \
+		CONTEXT=`echo $$icon | cut -d_ -f2`; \
+		SIZE=`echo $$icon | cut -d_ -f3`; \
+		ICONFILE=`echo $$icon | cut -d_ -f4`; \
+		mkdir -p $(DESTDIR)$(datadir)/gnome-contacts/icons/$$THEME/$$SIZE/$$CONTEXT; \
+		$(INSTALL_DATA) $(srcdir)/icons/$$icon $(DESTDIR)$(datadir)/gnome-contacts/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
+	done
+
+uninstall-icons:
+	-for icon in $(private_icons); do \
+		THEME=`echo $$icon | cut -d_ -f1`; \
+		CONTEXT=`echo $$icon | cut -d_ -f2`; \
+		SIZE=`echo $$icon | cut -d_ -f3`; \
+		ICONFILE=`echo $$icon | cut -d_ -f4`; \
+		rm -f $(DESTDIR)$(datadir)/gnome-contacts/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
+	done
+
+install-data-local: install-icons
