@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.10 -->
+  <template class="ContactsAddressMap" parent="GtkFrame">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="hexpand">False</property>
+    <property name="hexpand_set">True</property>
+    <property name="shadow_type">in</property>
+    <property name="width_request">300</property>
+    <property name="height_request">300</property>
+    <style>
+      <class name="contacts-map"/>
+    </style>
+    <child>
+      <object class="GtkStack" id="map_stack">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkImage" id="map_icon">
+            <property name="name">mark-location-image</property>
+            <property name="visible">True</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="icon-name">mark-location-symbolic</property>
+            <property name="pixel-size">48</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkGrid" id="map_grid">
+            <property name="orientation">vertical</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

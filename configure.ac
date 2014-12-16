@@ -50,10 +50,12 @@ pkg_modules="gtk+-3.0 >= 3.12.0
 	     libedataserver-1.2 >= 3.5.3
 	     goa-1.0
 	     gee-0.8
+	     champlain-gtk-0.12
+	     geocode-glib-1.0
 	     "
 PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 
-CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg gio-unix-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg libnotify"
+CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg gio-unix-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg libnotify --pkg clutter-1.0 --pkg champlain-0.12 --pkg champlain-gtk-0.12 --pkg geocode-glib-1.0"
 AC_SUBST(CONTACTS_PACKAGES)
 
 # Optional dependency for the user accounts panel
