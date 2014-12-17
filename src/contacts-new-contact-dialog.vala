@@ -176,6 +176,14 @@ public class Contacts.NewContactDialog : Dialog {
     sub_grid.set_hexpand (true);
     entries.add (sub_grid);
 
+    /* Ensure that class_init() of Contact has been called, to initialize the
+     * static members, including postal_element_props. */
+    var contact_type = Type.from_name ("ContactsContact");
+    if (contact_type != 0) {
+      // Type has been registered, make sure that class_init() has been called.
+      contact_type.class_ref ();
+    }
+
     for (int i = 0; i < Contact.postal_element_props.length; i++) {
       var entry = new Entry ();
       entry.set ("placeholder-text", Contact.postal_element_names[i]);
