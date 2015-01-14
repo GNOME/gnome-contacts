@@ -46,6 +46,8 @@ public class Contacts.AddressMap : Frame {
 
   public AddressMap (Contact c, Set<PostalAddressFieldDetails> postal_addresses) {
     var map = new Embed ();
+    var maps_id = "org.gnome.Maps";
+    var maps_info = new DesktopAppInfo (maps_id + ".desktop");
     var map_factory = MapSourceFactory.dup_default ();
     map_grid.add (map);
 
@@ -59,6 +61,24 @@ public class Contacts.AddressMap : Frame {
 
     /* Disable all events for the map */
     map.get_stage ().captured_event.connect (() => { return true; });
+
+    if (maps_info != null) {
+      /* Set cursor as HAND1 to indicate the map is clickable */
+      map.realize.connect (() => {
+          map.get_window ().set_cursor (new Cursor (CursorType.HAND1));
+        });
+
+      map.button_press_event.connect(() => {
+          activate_action (maps_id,
+                           "show-contact",
+                           new Variant ("s", c.individual.id),
+                           Gtk.get_current_event_time ());
+          return true;
+      });
+
+    } else {
+      map.set_tooltip_text (_("Install GNOME Maps to open location."));
+    }
 
     addresses = postal_addresses;
     found_places = new GLib.List<Place> ();
