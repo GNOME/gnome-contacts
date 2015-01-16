@@ -301,13 +301,13 @@ public class Contacts.ContactEditor : Grid {
 
     /* Notify change to upper layer */
     combo.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (combo));
       });
     value_entry.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (value_entry));
       });
     delete_button.clicked.connect (() => {
-	remove_row (row);
+	remove_row (get_current_row (delete_button));
       });
 
     if (value == "")
@@ -332,10 +332,10 @@ public class Contacts.ContactEditor : Grid {
 
     /* Notify change to upper layer */
     value_entry.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (value_entry));
       });
     delete_button.clicked.connect_after (() => {
-	remove_row (row);
+	remove_row (get_current_row (delete_button));
       });
 
     if (value == "")
@@ -368,10 +368,10 @@ public class Contacts.ContactEditor : Grid {
 
     /* Notify change to upper layer */
     value_text.get_buffer ().changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (value_text));
       });
     delete_button.clicked.connect (() => {
-	remove_row (row);
+	remove_row (get_current_row (delete_button));
 	/* eventually will need to check against the details type */
 	has_notes_row = false;
       });
@@ -444,21 +444,21 @@ public class Contacts.ContactEditor : Grid {
 
     /* Notify change to upper layer */
     day_spin.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (day_spin));
       });
     combo.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (combo));
 
 	/* adjusting day_spin value using selected month constraints*/
 	fn ();
       });
     year_spin.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (year_spin));
 
 	fn ();
       });
     delete_button.clicked.connect (() => {
-	remove_row (row);
+	remove_row (get_current_row (delete_button));
 	has_birthday_row = false;
       });
   }
@@ -481,13 +481,13 @@ public class Contacts.ContactEditor : Grid {
 
     /* Notify change to upper layer */
     combo.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (combo));
       });
     value_address.changed.connect (() => {
-	set_field_changed (row);
+	set_field_changed (get_current_row (value_address));
       });
     delete_button.clicked.connect (() => {
-	remove_row (row);
+	remove_row (get_current_row (delete_button));
       });
 
     focus_widget = value_address;
@@ -700,6 +700,13 @@ public class Contacts.ContactEditor : Grid {
       }
       break;
     }
+  }
+
+  int get_current_row (Widget child) {
+    int row;
+
+    container_grid.child_get (child, "top-attach", out row);
+    return row;
   }
 
   void insert_row_at (int idx) {
