@@ -725,6 +725,20 @@ public class Contacts.ContactEditor : Grid {
 	}
       }
     }
+    foreach (var entry in writable_personas.entries) {
+      foreach (var field_entry in entry.value.entries) {
+	foreach (var row in field_entry.value.rows.keys) {
+	  if (row >= idx) {
+	    var new_rows = new HashMap <int, RowData?> ();
+	    foreach (var old_row in field_entry.value.rows.keys) {
+	      new_rows.set (old_row + 1, field_entry.value.rows[old_row]);
+	    }
+	    field_entry.value.rows = new_rows;
+	    break;
+	  }
+	}
+      }
+    }
     container_grid.insert_row (idx);
   }
 
