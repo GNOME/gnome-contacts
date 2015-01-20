@@ -95,8 +95,14 @@ AS_IF([test "x$enable_man_pages" != "xno"],
       [AC_PATH_PROG([XSLTPROC], [xsltproc])
        AS_IF([test "xac_cv_path_XSLTPROC" = "x"], [have_xsltproc=no],
              [have_xsltproc=yes])
-dnl TODO: Also check for the required stylesheets.
-       AS_IF([test "x$have_xsltproc" = "xyes"],
+       JH_CHECK_XML_CATALOG([-//OASIS//DTD DocBook XML V4.2//EN],
+                            [DocBook XML DTD V4.2], [have_docbookdtd=yes],
+                            [have_docbookdtd=no])
+       JH_CHECK_XML_CATALOG([http://docbook.sourceforge.net/release/xsl/current/html/refentry.xsl],
+                            [DocBook XSL Stylesheets], [have_docbookxsl=yes],
+                            [have_docbookxsl=no])
+       AS_IF([test "x$have_xsltproc" = "xyes" -a "x$have_docbookdtd" = "xyes" \
+              -a "x$have_docbookxsl" = "xyes"],
              [have_manutils=yes],
              [AS_IF([test "x$enable_man_pages" = "xyes"],
                     [AC_MSG_ERROR([man page requested but required utilities were not found])])
