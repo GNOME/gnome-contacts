@@ -88,17 +88,22 @@ AC_SUBST(GLIB_COMPILE_RESOURCES)
 # Documentation #
 #################
 
-AC_ARG_ENABLE(man-pages,
-              AC_HELP_STRING([--enable-man-pages],
-                             [build man pages]),,
-              enable_documentation=yes)
-if test x$enable_man_pages = xyes; then
-   AC_PATH_PROG([XSLTPROC], [xsltproc])
-   if test x$XSLTPROC = x; then
-      AC_MSG_ERROR([xsltproc is required to build man pages])
-   fi
-fi
-AM_CONDITIONAL(BUILD_MAN_PAGES, test x$enable_man_pages = xyes)
+AC_ARG_ENABLE([man-pages],
+              [AS_HELP_STRING([--disable-man-pages],
+                              [disable building man pages])])
+AS_IF([test "x$enable_man_pages" != "xno"],
+      [AC_PATH_PROG([XSLTPROC], [xsltproc])
+       AS_IF([test "xac_cv_path_XSLTPROC" = "x"], [have_xsltproc=no],
+             [have_xsltproc=yes])
+dnl TODO: Also check for the required stylesheets.
+       AS_IF([test "x$have_xsltproc" = "xyes"],
+             [have_manutils=yes],
+             [AS_IF([test "x$enable_man_pages" = "xyes"],
+                    [AC_MSG_ERROR([man page requested but required utilities were not found])])
+              have_manutils=no])],
+      [have_manutils=no])
+
+AM_CONDITIONAL([BUILD_MAN_PAGES], [test "x$have_manutils" = "xyes"])
 
 
 dnl libgd
