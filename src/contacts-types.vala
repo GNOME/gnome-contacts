@@ -47,7 +47,7 @@ public class Contacts.TypeSet : Object  {
   // Map from display name to TreeIter for all custom types
   private HashTable<string, TreeIter?> custom_hash;
 
-  public ListStore store;
+  public Gtk.ListStore store;
   private TreeIter other_iter;
   private TreeIter custom_iter;
 
@@ -56,11 +56,11 @@ public class Contacts.TypeSet : Object  {
     vcard_lookup_hash = new HashTable<unowned string, GLib.List<InitData*> > (str_hash, str_equal);
     custom_hash = new HashTable<unowned string, TreeIter? > (str_hash, str_equal);
 
-    store = new ListStore (2,
-			   // Display name or null for separator
-			   typeof(string?),
-			   // Data for standard types, null for custom
-			   typeof (Data));
+    store = new Gtk.ListStore (2,
+                               // Display name or null for separator
+                               typeof(string?),
+                               // Data for standard types, null for custom
+                               typeof (Data));
   }
 
   private void add_data_to_store (Data data, bool is_custom) {
