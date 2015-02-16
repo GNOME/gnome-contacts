@@ -18,17 +18,93 @@
 
 #include "config.h"
 #include <libebook/libebook.h>
+#include <libedataserverui/libedataserverui.h>
 #include <glib/gi18n-lib.h>
 
 #define GOA_API_IS_SUBJECT_TO_CHANGE
 #include <goa/goa.h>
 #include <gtk/gtk.h>
 
+static void
+eds_show_source_error (const gchar *where,
+		       const gchar *what,
+		       ESource *source,
+		       const GError *error)
+{
+  if (!error || g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    return;
+
+  /* TODO Show the error in UI, somehow */
+  g_warning ("%s: %s '%s': %s", where, what, e_source_get_display_name (source), error->message);
+}
+
+static void
+eds_source_invoke_authenticate_cb (GObject *source_object,
+				   GAsyncResult *result,
+				   gpointer user_data)
+{
+  ESource *source = E_SOURCE (source_object);
+  GError *error = NULL;
+
+  if (!e_source_invoke_authenticate_finish (source, result, &error) &&
+      !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
+    eds_show_source_error (G_STRFUNC, "Failed to invoke authenticate", source, error);
+  }
+
+  g_clear_error (&error);
+}
+
+static void
+eds_source_trust_prompt_done_cb (GObject *source_object,
+				 GAsyncResult *result,
+				 gpointer user_data)
+{
+  ETrustPromptResponse response = E_TRUST_PROMPT_RESPONSE_UNKNOWN;
+  ESource *source = E_SOURCE (source_object);
+  GError *error = NULL;
+
+  if (!e_trust_prompt_run_for_source_finish (source, result, &response, &error)) {
+    eds_show_source_error (G_STRFUNC, "Failed to prompt for trust for", source, error);
+  } else if (response == E_TRUST_PROMPT_RESPONSE_ACCEPT || response == E_TRUST_PROMPT_RESPONSE_ACCEPT_TEMPORARILY) {
+    /* Use NULL credentials to reuse those from the last time. */
+    e_source_invoke_authenticate (source, NULL, NULL /* cancellable */, eds_source_invoke_authenticate_cb, NULL);
+  }
+
+  g_clear_error (&error);
+}
+
+static void
+eds_source_credentials_required_cb (ESourceRegistry *registry,
+				    ESource *source,
+				    ESourceCredentialsReason reason,
+				    const gchar *certificate_pem,
+				    GTlsCertificateFlags certificate_errors,
+				    const GError *op_error,
+				    ECredentialsPrompter *credentials_prompter)
+{
+  if (e_credentials_prompter_get_auto_prompt_disabled_for (credentials_prompter, source))
+    return;
+
+  if (reason == E_SOURCE_CREDENTIALS_REASON_SSL_FAILED) {
+    e_trust_prompt_run_for_source (e_credentials_prompter_get_dialog_parent (credentials_prompter),
+	source, certificate_pem, certificate_errors, op_error ? op_error->message : NULL,
+	TRUE /* allow_source_save */, NULL /* cancellable */, eds_source_trust_prompt_done_cb, NULL);
+  } else if (reason == E_SOURCE_CREDENTIALS_REASON_ERROR && op_error) {
+    eds_show_source_error (G_STRFUNC, "Failed to authenticate", source, op_error);
+  }
+}
+
 ESourceRegistry *eds_source_registry = NULL;
+static ECredentialsPrompter *eds_credentials_prompter = NULL;
 
 void contacts_ensure_eds_accounts (void)
 {
+  ESourceCredentialsProvider *credentials_provider;
+  GList *list, *link;
   GError *error = NULL;
+
+  if (eds_source_registry)
+    return;
 
   /* XXX This blocks while connecting to the D-Bus service.
    *     Maybe it should be created in the Contacts class
@@ -39,6 +115,45 @@ void contacts_ensure_eds_accounts (void)
   /* If this fails it's game over. */
   if (error != NULL)
     g_error ("%s: %s", G_STRFUNC, error->message);
+
+  eds_credentials_prompter = e_credentials_prompter_new (eds_source_registry);
+
+  /* First disable credentials prompt for all but addressbook sources... */
+  list = e_source_registry_list_sources (eds_source_registry, NULL);
+
+  for (link = list; link != NULL; link = g_list_next (link)) {
+    ESource *source = E_SOURCE (link->data);
+
+    /* Mark for skip also currently disabled sources */
+    if (!e_source_has_extension (source, E_SOURCE_EXTENSION_ADDRESS_BOOK))
+      e_credentials_prompter_set_auto_prompt_disabled_for (eds_credentials_prompter, source, TRUE);
+  }
+
+  g_list_free_full (list, g_object_unref);
+
+  credentials_provider = e_credentials_prompter_get_provider (eds_credentials_prompter);
+
+  /* ...then enable credentials prompt for credential source of the addressbook sources,
+     which can be a collection source.  */
+  list = e_source_registry_list_sources (eds_source_registry, E_SOURCE_EXTENSION_ADDRESS_BOOK);
+
+  for (link = list; link != NULL; link = g_list_next (link)) {
+    ESource *source = E_SOURCE (link->data), *cred_source;
+
+    cred_source = e_source_credentials_provider_ref_credentials_source (credentials_provider, source);
+    if (cred_source && !e_source_equal (source, cred_source))
+      e_credentials_prompter_set_auto_prompt_disabled_for (eds_credentials_prompter, cred_source, FALSE);
+    g_clear_object (&cred_source);
+  }
+
+  g_list_free_full (list, g_object_unref);
+
+  /* The eds_credentials_prompter responses to REQUIRED and REJECTED reasons,
+     the SSL_FAILED should be handled elsewhere. */
+  g_signal_connect (eds_source_registry, "credentials-required",
+     G_CALLBACK (eds_source_credentials_required_cb), eds_credentials_prompter);
+
+  e_credentials_prompter_process_awaiting_credentials (eds_credentials_prompter);
 }
 
 gboolean contacts_has_goa_account (void)

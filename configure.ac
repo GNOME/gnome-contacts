@@ -46,8 +46,9 @@ pkg_modules="gtk+-3.0 >= 3.12.0
 	     folks-eds
 	     libnotify
 	     telepathy-glib >= 0.17.5
-	     libebook-1.2 >= 3.5.3
-	     libedataserver-1.2 >= 3.5.3
+	     libebook-1.2 >= 3.13.90
+	     libedataserver-1.2 >= 3.13.90
+	     libedataserverui-1.2 >= 3.13.90
 	     goa-1.0
 	     gee-0.8
 	     champlain-0.12
