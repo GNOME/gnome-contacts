@@ -3,14 +3,14 @@
 #
 #
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012, 2013.
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2013, 2014.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2013, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-06 18:23+0000\n"
-"PO-Revision-Date: 2014-10-07 21:34+0300\n"
+"POT-Creation-Date: 2015-03-08 07:17+0000\n"
+"PO-Revision-Date: 2015-03-12 21:50+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -62,9 +62,13 @@ msgstr "GNOME Kontakti"
 msgid "Online Accounts"
 msgstr "Tiešsaistes konti"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:233
 msgid "Local Address Book"
 msgstr "Lokālā adrešu grāmata"
+
+#: ../src/contacts-address-map.vala:80
+msgid "Install GNOME Maps to open location."
+msgstr "Instalējiet GNOME Kartes, lai atvērtu atrašanās vietu."
 
 #: ../src/contacts-app.vala:46
 #, c-format
@@ -149,7 +153,6 @@ msgid "Select"
 msgstr "Izvēlēties"
 
 #: ../src/contacts-avatar-dialog.vala:281 ../src/contacts-window.vala:315
-#| msgid "New contact"
 msgid "New Contact"
 msgstr "Jauns kontakts"
 
@@ -182,12 +185,10 @@ msgid "Country"
 msgstr "Valsts"
 
 #: ../src/contacts-contact-editor.vala:293
-#| msgid "Add Detail"
 msgid "Add email"
 msgstr "Pievienot e-pastu"
 
 #: ../src/contacts-contact-editor.vala:295
-#| msgid "Phone number"
 msgid "Add number"
 msgstr "Pievienot numuru"
 
@@ -196,7 +197,6 @@ msgstr "Pievienot numuru"
 #: ../src/contacts-contact-editor.vala:365
 #: ../src/contacts-contact-editor.vala:428
 #: ../src/contacts-contact-editor.vala:478
-#| msgid "Delete"
 msgid "Delete field"
 msgstr "Dzēst lauku"
 
@@ -272,21 +272,21 @@ msgstr "Dzimšanas diena"
 msgid "Note"
 msgstr "Piezīme"
 
-#: ../src/contacts-contact-editor.vala:774
+#: ../src/contacts-contact-editor.vala:795
 msgid "New Detail"
 msgstr "Jauna informācija"
 
-#: ../src/contacts-contact-editor.vala:780
+#: ../src/contacts-contact-editor.vala:801
 #: ../src/contacts-linked-accounts-dialog.vala:36
 msgid "Linked Accounts"
 msgstr "Saistītie konti"
 
-#: ../src/contacts-contact-editor.vala:783
+#: ../src/contacts-contact-editor.vala:804
 msgid "Remove Contact"
 msgstr "Izņemt kontaktu"
 
-#: ../src/contacts-contact-editor.vala:841
-#: ../src/contacts-contact-editor.vala:1041
+#: ../src/contacts-contact-editor.vala:862
+#: ../src/contacts-contact-editor.vala:1062
 msgid "Add name"
 msgstr "Pievienot vārdu"
 
@@ -317,18 +317,15 @@ msgid "You need to enter some data"
 msgstr "Jums jāievada kādi dati"
 
 #: ../src/contacts-contact-pane.vala:467
-#| msgid "No primary addressbook configured\n"
 msgid "No primary addressbook configured"
 msgstr "Nav iestatīta primārā adrešu grāmata"
 
 #: ../src/contacts-contact-pane.vala:486
 #, c-format
-#| msgid "Unable to create new contacts: %s\n"
 msgid "Unable to create new contacts: %s"
 msgstr "Neizdevās izveidot jaunus kontaktus — %s"
 
 #: ../src/contacts-contact-pane.vala:497
-#| msgid "Unable to find newly created contact\n"
 msgid "Unable to find newly created contact"
 msgstr "Neizdevās atrast tikko izveidoto kontaktu"
 
@@ -336,116 +333,116 @@ msgstr "Neizdevās atrast tikko izveidoto kontaktu"
 msgid "Change avatar"
 msgstr "Mainīt attēlu"
 
-#: ../src/contacts-contact.vala:729
+#: ../src/contacts-contact.vala:763
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:730
+#: ../src/contacts-contact.vala:764
 msgid "Ovi Chat"
 msgstr "Ovi tērzēšana"
 
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:765
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:766
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:733
+#: ../src/contacts-contact.vala:767
 msgid "AOL Instant Messenger"
 msgstr "AOL tūlītējā ziņojumapmaiņa"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:768
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:769
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:770
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:771
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:772
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:773
 msgid "Local network"
 msgstr "Lokālais tīkls"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:774
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:775
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:776
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:777
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:778
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:779
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:780
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:781
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:782
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:783
 msgid "Telephony"
 msgstr "Telefonija"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:784
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:751 ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:785 ../src/contacts-contact.vala:786
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:753
+#: ../src/contacts-contact.vala:787
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1053
+#: ../src/contacts-contact.vala:1087
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Negaidīta iekšējā kļūda — izveidotais kontakts nav atrasts"
 
-#: ../src/contacts-contact.vala:1238
+#: ../src/contacts-contact.vala:1272
 msgid "Google Circles"
 msgstr "Google Circles"
 
-#: ../src/contacts-contact.vala:1240 ../src/contacts-esd-setup.c:121
-#: ../src/contacts-esd-setup.c:149
+#: ../src/contacts-contact.vala:1274 ../src/contacts-esd-setup.c:236
+#: ../src/contacts-esd-setup.c:264
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:146
+#: ../src/contacts-esd-setup.c:261
 msgid "Local Contact"
 msgstr "Lokālais kontakts"
 
@@ -455,7 +452,6 @@ msgid "%s"
 msgstr "%s"
 
 #: ../src/contacts-linked-accounts-dialog.vala:60
-#| msgid "You can manually link contacts from the contacts list"
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "Jūs varat saistīt kontaktus, izvēloties tos no savu kontaktu saraksta"
 
@@ -573,7 +569,6 @@ msgid "Done"
 msgstr "Pabeigts"
 
 #: ../src/contacts-window.vala:320
-#| msgid "Address"
 msgid "Add"
 msgstr "Pievienot"
 
@@ -679,12 +674,10 @@ msgid "Loading"
 msgstr "Ielādē"
 
 #: ../data/ui/contacts-window.ui.h:3
-#| msgid "New contact"
 msgid "Add contact"
 msgstr "Pievienot kontaktu"
 
 #: ../data/ui/contacts-window.ui.h:4
-#| msgid "Select"
 msgid "Selection mode"
 msgstr "Izvēlēšanās režīms"
 
@@ -693,12 +686,10 @@ msgid "Edit"
 msgstr "Rediģēt"
 
 #: ../data/ui/contacts-window.ui.h:8
-#| msgid "Local Address Book"
 msgid "Select Address Book"
 msgstr "Izvēlieties adrešu grāmatu"
 
 #: ../data/ui/contacts-window.ui.h:9
-#| msgid "Cancel"
 msgid "Cancel setup"
 msgstr "Atcelt iestatīšanu"
 
