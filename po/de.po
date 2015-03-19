@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-21 15:38+0000\n"
-"PO-Revision-Date: 2014-09-02 16:08+0100\n"
-"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
+"POT-Creation-Date: 2015-03-19 19:13+0000\n"
+"PO-Revision-Date: 2015-03-19 22:42+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.7.1\n"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:1
 msgid ""
@@ -31,16 +31,16 @@ msgid ""
 "aggregates the details from all your sources providing a centralized place "
 "for managing your contacts."
 msgstr ""
-"Die Kontaktverwaltung speichert und organisiert Informationen Ihrer "
-"Kontakte. Sie können Kontaktinformationen erstellen, bearbeiten, löschen und "
+"Die Kontaktverwaltung speichert und organisiert Informationen Ihrer Kontakte. "
+"Sie können Kontaktinformationen erstellen, bearbeiten, löschen und "
 "miteinander verknüpfen. Die Kontaktverwaltung fasst die Details aus Ihren "
 "Quellen zusammen und bietet einen zentralen Ort, um Ihre Kontakte zu "
 "verwalten."
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:2
 msgid ""
-"Contacts will also integrate with online address books and automatically "
-"link contacts from different online sources."
+"Contacts will also integrate with online address books and automatically link "
+"contacts from different online sources."
 msgstr ""
 "Die Kontaktverwaltung integriert sich auch in Ihre Online-Adressbücher und "
 "verknüpft Kontakte aus verschiedenen Online-Quellen."
@@ -57,20 +57,29 @@ msgstr "Eine Kontaktverwaltung für GNOME"
 msgid "friends;address book;"
 msgstr "Freunde;Adressbuch;Kontakte;"
 
+#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
+#: ../src/contacts-app.vala:129
+msgid "GNOME Contacts"
+msgstr "GNOME Kontakte"
+
 #: ../src/contacts-accounts-list.vala:48
 msgid "Online Accounts"
 msgstr "Online-Konten"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:233
 msgid "Local Address Book"
 msgstr "Lokales Adressbuch"
+
+#: ../src/contacts-address-map.vala:80
+msgid "Install GNOME Maps to open location."
+msgstr "﻿Installieren Sie GNOME-Karten, um den Ort anzuzeigen."
 
 #: ../src/contacts-app.vala:46
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Kein Kontakt mit Kennung %s gefunden"
 
-#: ../src/contacts-app.vala:47 ../src/contacts-app.vala:146
+#: ../src/contacts-app.vala:47 ../src/contacts-app.vala:149
 msgid "Contact not found"
 msgstr "Kontakt nicht gefunden"
 
@@ -95,7 +104,7 @@ msgstr ""
 "Neue Kontakte werden dem gewählten Adressbuch hinzugefügt.\n"
 "Sie können Kontakte aus anderen Adressbüchern ansehen und bearbeiten."
 
-#: ../src/contacts-app.vala:125
+#: ../src/contacts-app.vala:128
 msgid "translator-credits"
 msgstr ""
 "Mario Blättermann <mario.blaettermann@gmail.com>\n"
@@ -103,32 +112,28 @@ msgstr ""
 "Benjamin Steinwender <b@stbe.at>\n"
 "Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>"
 
-#: ../src/contacts-app.vala:126
-msgid "GNOME Contacts"
-msgstr "GNOME Kontakte"
-
-#: ../src/contacts-app.vala:127
+#: ../src/contacts-app.vala:130
 msgid "About GNOME Contacts"
 msgstr "Info zu GNOME Kontakte"
 
-#: ../src/contacts-app.vala:128
+#: ../src/contacts-app.vala:131
 msgid "Contact Management Application"
 msgstr "Anwendung zur Kontaktverwaltung"
 
-#: ../src/contacts-app.vala:145
+#: ../src/contacts-app.vala:148
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Kein Kontakt mit E-Mail-Adresse %s gefunden"
 
-#: ../src/contacts-app.vala:304
+#: ../src/contacts-app.vala:318
 msgid "Show contact with this individual id"
 msgstr "Kontakt mit dieser individuellen Kennung anzeigen"
 
-#: ../src/contacts-app.vala:306
+#: ../src/contacts-app.vala:320
 msgid "Show contact with this email address"
 msgstr "Kontakt mit dieser individuellen E-Mail-Adresse anzeigen"
 
-#: ../src/contacts-app.vala:313
+#: ../src/contacts-app.vala:329
 msgid "— contact management"
 msgstr "— Kontaktverwaltung"
 
@@ -273,21 +278,21 @@ msgstr "Geburtstag"
 msgid "Note"
 msgstr "Notiz"
 
-#: ../src/contacts-contact-editor.vala:774
+#: ../src/contacts-contact-editor.vala:795
 msgid "New Detail"
 msgstr "Detail hinzufügen"
 
-#: ../src/contacts-contact-editor.vala:780
+#: ../src/contacts-contact-editor.vala:801
 #: ../src/contacts-linked-accounts-dialog.vala:36
 msgid "Linked Accounts"
 msgstr "Verknüpfte Online-Konten"
 
-#: ../src/contacts-contact-editor.vala:783
+#: ../src/contacts-contact-editor.vala:804
 msgid "Remove Contact"
 msgstr "Kontakt entfernen"
 
-#: ../src/contacts-contact-editor.vala:841
-#: ../src/contacts-contact-editor.vala:1041
+#: ../src/contacts-contact-editor.vala:862
+#: ../src/contacts-contact-editor.vala:1062
 msgid "Add name"
 msgstr "Name hinzufügen"
 
@@ -334,116 +339,116 @@ msgstr "Der neu erstellte Kontakt konnte nicht gefunden werden"
 msgid "Change avatar"
 msgstr "Benutzerbild ändern"
 
-#: ../src/contacts-contact.vala:727
+#: ../src/contacts-contact.vala:763
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:728
+#: ../src/contacts-contact.vala:764
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:729
+#: ../src/contacts-contact.vala:765
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:730
+#: ../src/contacts-contact.vala:766
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:767
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:768
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:733
+#: ../src/contacts-contact.vala:769
 msgid "Novell Groupwise"
 msgstr "Novell GroupWise"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:770
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:771
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:772
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:773
 msgid "Local network"
 msgstr "Lokales Netzwerk"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:774
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:775
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:776
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:777
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:778
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:779
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:780
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:781
 msgid "sip"
 msgstr "SIP"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:782
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:783
 msgid "Telephony"
 msgstr "Telefon"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:784
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:749 ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:785 ../src/contacts-contact.vala:786
 msgid "Yahoo! Messenger"
 msgstr "Yahoo Messenger"
 
-#: ../src/contacts-contact.vala:751
+#: ../src/contacts-contact.vala:787
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1051
+#: ../src/contacts-contact.vala:1087
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Unerwarteter interner Fehler: Erstellter Kontakt wurde nicht gefunden"
 
-#: ../src/contacts-contact.vala:1233
+#: ../src/contacts-contact.vala:1272
 msgid "Google Circles"
 msgstr "Google-Kreise"
 
-#: ../src/contacts-contact.vala:1235 ../src/contacts-esd-setup.c:121
-#: ../src/contacts-esd-setup.c:149
+#: ../src/contacts-contact.vala:1274 ../src/contacts-esd-setup.c:236
+#: ../src/contacts-esd-setup.c:264
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:146
+#: ../src/contacts-esd-setup.c:261
 msgid "Local Contact"
 msgstr "Lokaler Kontakt"
 
@@ -573,36 +578,36 @@ msgstr "Fertig"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: ../src/contacts-window.vala:407
+#: ../src/contacts-window.vala:411
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d Kontakt verknüpft"
 msgstr[1] "%d Kontakte verknüpft"
 
-#: ../src/contacts-window.vala:411 ../src/contacts-window.vala:443
-#: ../src/contacts-window.vala:485 ../src/contacts-window.vala:521
+#: ../src/contacts-window.vala:415 ../src/contacts-window.vala:447
+#: ../src/contacts-window.vala:489 ../src/contacts-window.vala:525
 msgid "_Undo"
 msgstr "_Rückgängig"
 
-#: ../src/contacts-window.vala:439
+#: ../src/contacts-window.vala:443
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d Kontakt gelöscht"
 msgstr[1] "%d Kontakte gelöscht"
 
-#: ../src/contacts-window.vala:482
+#: ../src/contacts-window.vala:486
 #, c-format
 msgid "Contact deleted: \"%s\""
 msgstr "Kontakt gelöscht: »%s«"
 
-#: ../src/contacts-window.vala:517
+#: ../src/contacts-window.vala:521
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s verknüpft mit %s"
 
-#: ../src/contacts-window.vala:519
+#: ../src/contacts-window.vala:523
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s wurde mit dem Kontakt verknüpft"
@@ -703,8 +708,7 @@ msgstr "Ersteinrichtung wurde abgeschlossen."
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:2
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr ""
-"Auf wahr setzen, wenn der Benutzer den Einrichtungsassistenten ausgeführt "
-"hat."
+"Auf wahr setzen, wenn der Benutzer den Einrichtungsassistenten ausgeführt hat."
 
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:3
 msgid "View subset"
