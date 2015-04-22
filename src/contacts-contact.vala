@@ -948,6 +948,11 @@ public class Contacts.Contact : GLib.Object  {
       builder.append (email.value.casefold ());
       builder.append_unichar (' ');
     }
+    var phone_numbers = individual.phone_numbers;
+    foreach (var phone in phone_numbers) {
+      builder.append (phone.value.casefold ());
+      builder.append_unichar (' ');
+    }
     filter_data = builder.str;
   }
 
