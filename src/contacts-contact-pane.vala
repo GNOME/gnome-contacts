@@ -54,7 +54,7 @@ public class Contacts.ContactPane : Notebook {
 
   private SimpleActionGroup edit_contact_actions;
   private const GLib.ActionEntry[] action_entries = {
-    { "add.email-addresses.personal", on_add_detail },
+    { "add.email-addresses.home", on_add_detail },
     { "add.email-addresses.work", on_add_detail },
     { "add.phone-numbers.cell", on_add_detail },
     { "add.phone-numbers.home", on_add_detail },
