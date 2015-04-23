@@ -304,12 +304,13 @@ public class Contacts.TypeSet : Object  {
   private const InitData[] email_data = {
     // List most specific first, always in upper case
     { N_("Personal"), { "PERSONAL" } },
+    { N_("Home"), { "HOME" } },
     { N_("Work"), { "WORK" } }
   };
   public static TypeSet email {
     get {
       string[] standard = {
-	"Personal", "Work"
+	"Personal", "Home", "Work"
       };
 
       if (_email == null) {
