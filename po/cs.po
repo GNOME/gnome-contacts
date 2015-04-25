@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-03 07:16+0000\n"
+"POT-Creation-Date: 2015-04-24 18:30+0000\n"
 "PO-Revision-Date: 2015-02-03 19:45+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -64,7 +64,7 @@ msgstr "Kontakty GNOME"
 msgid "Online Accounts"
 msgstr "Účty on-line"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:233
 msgid "Local Address Book"
 msgstr "Místní adresář"
 
@@ -431,20 +431,20 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1087
+#: ../src/contacts-contact.vala:1092
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Neočekávaná vnitřní chyba: vytvořený kontakt nebyl nalezen"
 
-#: ../src/contacts-contact.vala:1272
+#: ../src/contacts-contact.vala:1277
 msgid "Google Circles"
 msgstr "Kruhy Google"
 
-#: ../src/contacts-contact.vala:1274 ../src/contacts-esd-setup.c:121
-#: ../src/contacts-esd-setup.c:149
+#: ../src/contacts-contact.vala:1279 ../src/contacts-esd-setup.c:236
+#: ../src/contacts-esd-setup.c:264
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:146
+#: ../src/contacts-esd-setup.c:261
 msgid "Local Contact"
 msgstr "Lokálně uložený"
 
@@ -464,17 +464,18 @@ msgstr "Rozpojit"
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
 #: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
-#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:341
+#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:342
 msgid "Other"
 msgstr "Jiný"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:337
+#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:338
 msgid "Home"
 msgstr "Domů"
 
-#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:307
-#: ../src/contacts-types.vala:332
+#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:308
+#: ../src/contacts-types.vala:333
 msgid "Work"
 msgstr "Pracovní"
 
@@ -484,56 +485,56 @@ msgid "Personal"
 msgstr "Osobní"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:331
+#: ../src/contacts-types.vala:332
 msgid "Assistant"
 msgstr "Asistent(ka)"
 
-#: ../src/contacts-types.vala:333
+#: ../src/contacts-types.vala:334
 msgid "Work Fax"
 msgstr "Fax do práce"
 
-#: ../src/contacts-types.vala:334
+#: ../src/contacts-types.vala:335
 msgid "Callback"
 msgstr "Zpětné zavolání"
 
-#: ../src/contacts-types.vala:335
+#: ../src/contacts-types.vala:336
 msgid "Car"
 msgstr "Do auta"
 
-#: ../src/contacts-types.vala:336
+#: ../src/contacts-types.vala:337
 msgid "Company"
 msgstr "Společnost"
 
-#: ../src/contacts-types.vala:338
+#: ../src/contacts-types.vala:339
 msgid "Home Fax"
 msgstr "Fax domů"
 
-#: ../src/contacts-types.vala:339
+#: ../src/contacts-types.vala:340
 msgid "ISDN"
 msgstr "Telefon ISDN"
 
-#: ../src/contacts-types.vala:340
+#: ../src/contacts-types.vala:341
 msgid "Mobile"
 msgstr "Mobil"
 
-#: ../src/contacts-types.vala:342
+#: ../src/contacts-types.vala:343
 msgid "Fax"
 msgstr "Fax"
 
-#: ../src/contacts-types.vala:343
+#: ../src/contacts-types.vala:344
 msgid "Pager"
 msgstr "Pager"
 
-#: ../src/contacts-types.vala:344
+#: ../src/contacts-types.vala:345
 msgid "Radio"
 msgstr "Radiostanice"
 
-#: ../src/contacts-types.vala:345
+#: ../src/contacts-types.vala:346
 msgid "Telex"
 msgstr "Dálnopis"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:347
+#: ../src/contacts-types.vala:348
 msgid "TTY"
 msgstr "TTY"
 
@@ -627,8 +628,8 @@ msgid "_Quit"
 msgstr "U_končit"
 
 #: ../data/ui/app-menu.ui.h:5
-msgid "Personal email"
-msgstr "Osobní e-mail"
+msgid "Home email"
+msgstr "E-mail domů"
 
 #: ../data/ui/app-menu.ui.h:6
 msgid "Work email"
@@ -716,3 +717,6 @@ msgstr "Zobrazovat podmnožinu"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "Zobrazovat podmnožinu kontaktů"
+
+#~ msgid "Personal email"
+#~ msgstr "Osobní e-mail"
