@@ -97,14 +97,14 @@ eds_source_credentials_required_cb (ESourceRegistry *registry,
 ESourceRegistry *eds_source_registry = NULL;
 static ECredentialsPrompter *eds_credentials_prompter = NULL;
 
-void contacts_ensure_eds_accounts (void)
+gboolean contacts_ensure_eds_accounts (void)
 {
   ESourceCredentialsProvider *credentials_provider;
   GList *list, *link;
   GError *error = NULL;
 
   if (eds_source_registry)
-    return;
+    return TRUE;
 
   /* XXX This blocks while connecting to the D-Bus service.
    *     Maybe it should be created in the Contacts class
@@ -114,7 +114,10 @@ void contacts_ensure_eds_accounts (void)
 
   /* If this fails it's game over. */
   if (error != NULL)
-    g_error ("%s: %s", G_STRFUNC, error->message);
+    {
+      g_error ("%s: %s", G_STRFUNC, error->message);
+      return FALSE;
+    }
 
   eds_credentials_prompter = e_credentials_prompter_new (eds_source_registry);
 
@@ -154,6 +157,8 @@ void contacts_ensure_eds_accounts (void)
      G_CALLBACK (eds_source_credentials_required_cb), eds_credentials_prompter);
 
   e_credentials_prompter_process_awaiting_credentials (eds_credentials_prompter);
+
+  return TRUE;
 }
 
 gboolean contacts_has_goa_account (void)

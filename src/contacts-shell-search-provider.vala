@@ -10,7 +10,8 @@ public class Contacts.SearchProvider : Object {
 
   public SearchProvider (SearchProviderApp app) {
     this.app = app;
-    ensure_eds_accounts ();
+    if (!ensure_eds_accounts ())
+      app.quit ();
     store = new Store ();
     contacts_map = new Gee.HashMap<string, Contact> ();
     next_id = 0;
