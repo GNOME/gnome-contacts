@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-22 14:35+0000\n"
-"PO-Revision-Date: 2014-08-17 23:50+0800\n"
-"Last-Translator: irisgyq <gouyingqiyanxuan321@gmail.com>\n"
+"POT-Creation-Date: 2015-05-02 18:29+0000\n"
+"PO-Revision-Date: 2015-05-03 14:19+0800\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.6\n"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:1
 msgid ""
@@ -32,14 +32,13 @@ msgid ""
 "aggregates the details from all your sources providing a centralized place "
 "for managing your contacts."
 msgstr ""
-"联系人可以保存和管理您的联系人信息。您可以创建、编辑、删除联系人，以及将您联"
-"系人的各种信息归拢在一起。联系人可以整合各方面的联系人资料，集中管理您的联系"
-"人。"
+"联系人可以保存和管理您的联系人信息。您可以创建、编辑、删除联系人，以及将您联系"
+"人的各种信息归拢在一起。联系人可以整合各方面的联系人资料，集中管理您的联系人。"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:2
 msgid ""
-"Contacts will also integrate with online address books and automatically "
-"link contacts from different online sources."
+"Contacts will also integrate with online address books and automatically link "
+"contacts from different online sources."
 msgstr "联系人也可以整合在线地址簿，并自动链接到各种在线帐号的联系人。"
 
 #: ../data/org.gnome.Contacts.desktop.in.in.h:1 ../src/main.vala:28
@@ -64,9 +63,13 @@ msgstr "GNOME 联系人"
 msgid "Online Accounts"
 msgstr "在线帐号"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:238
 msgid "Local Address Book"
 msgstr "本地通讯录"
+
+#: ../src/contacts-address-map.vala:80
+msgid "Install GNOME Maps to open location."
+msgstr "安装 GNOME 地图来打开位置。"
 
 #: ../src/contacts-app.vala:46
 #, c-format
@@ -119,15 +122,15 @@ msgstr "联系人管理应用程序"
 msgid "No contact with email address %s found"
 msgstr "未找到电子邮件地址为 %s 的联系人"
 
-#: ../src/contacts-app.vala:318
+#: ../src/contacts-app.vala:320
 msgid "Show contact with this individual id"
 msgstr "显示此 ID 的联系人"
 
-#: ../src/contacts-app.vala:320
+#: ../src/contacts-app.vala:322
 msgid "Show contact with this email address"
 msgstr "显示此电子邮件地址的联系人"
 
-#: ../src/contacts-app.vala:329
+#: ../src/contacts-app.vala:331
 msgid "— contact management"
 msgstr "— 联系人管理"
 
@@ -272,21 +275,21 @@ msgstr "生日"
 msgid "Note"
 msgstr "注释"
 
-#: ../src/contacts-contact-editor.vala:774
+#: ../src/contacts-contact-editor.vala:795
 msgid "New Detail"
 msgstr "新建详细信息"
 
-#: ../src/contacts-contact-editor.vala:780
+#: ../src/contacts-contact-editor.vala:801
 #: ../src/contacts-linked-accounts-dialog.vala:36
 msgid "Linked Accounts"
 msgstr "已绑定帐号"
 
-#: ../src/contacts-contact-editor.vala:783
+#: ../src/contacts-contact-editor.vala:804
 msgid "Remove Contact"
 msgstr "移除联系人"
 
-#: ../src/contacts-contact-editor.vala:841
-#: ../src/contacts-contact-editor.vala:1041
+#: ../src/contacts-contact-editor.vala:862
+#: ../src/contacts-contact-editor.vala:1062
 msgid "Add name"
 msgstr "添加姓名"
 
@@ -333,116 +336,116 @@ msgstr "无法找到新建的联系人"
 msgid "Change avatar"
 msgstr "更换头像"
 
-#: ../src/contacts-contact.vala:729
+#: ../src/contacts-contact.vala:763
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:730
+#: ../src/contacts-contact.vala:764
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:731
+#: ../src/contacts-contact.vala:765
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:732
+#: ../src/contacts-contact.vala:766
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:733
+#: ../src/contacts-contact.vala:767
 msgid "AOL Instant Messenger"
 msgstr "AOL 即时消息"
 
-#: ../src/contacts-contact.vala:734
+#: ../src/contacts-contact.vala:768
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:735
+#: ../src/contacts-contact.vala:769
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:736
+#: ../src/contacts-contact.vala:770
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:737
+#: ../src/contacts-contact.vala:771
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:738
+#: ../src/contacts-contact.vala:772
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:739
+#: ../src/contacts-contact.vala:773
 msgid "Local network"
 msgstr "本地网络"
 
-#: ../src/contacts-contact.vala:740
+#: ../src/contacts-contact.vala:774
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:741
+#: ../src/contacts-contact.vala:775
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:742
+#: ../src/contacts-contact.vala:776
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:743
+#: ../src/contacts-contact.vala:777
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:744
+#: ../src/contacts-contact.vala:778
 msgid "Tencent QQ"
 msgstr "腾讯 QQ"
 
-#: ../src/contacts-contact.vala:745
+#: ../src/contacts-contact.vala:779
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:746
+#: ../src/contacts-contact.vala:780
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:747
+#: ../src/contacts-contact.vala:781
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:748
+#: ../src/contacts-contact.vala:782
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:749
+#: ../src/contacts-contact.vala:783
 msgid "Telephony"
 msgstr "Telephony"
 
-#: ../src/contacts-contact.vala:750
+#: ../src/contacts-contact.vala:784
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:751 ../src/contacts-contact.vala:752
+#: ../src/contacts-contact.vala:785 ../src/contacts-contact.vala:786
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:753
+#: ../src/contacts-contact.vala:787
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1053
+#: ../src/contacts-contact.vala:1087
 msgid "Unexpected internal error: created contact was not found"
 msgstr "未预料的内部错误：无法找到新建的联系人"
 
-#: ../src/contacts-contact.vala:1238
+#: ../src/contacts-contact.vala:1272
 msgid "Google Circles"
 msgstr "Google 圈子"
 
-#: ../src/contacts-contact.vala:1240 ../src/contacts-esd-setup.c:121
-#: ../src/contacts-esd-setup.c:149
+#: ../src/contacts-contact.vala:1274 ../src/contacts-esd-setup.c:241
+#: ../src/contacts-esd-setup.c:269
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:146
+#: ../src/contacts-esd-setup.c:266
 msgid "Local Contact"
 msgstr "本地联系人"
 
