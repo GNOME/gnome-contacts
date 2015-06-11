@@ -97,7 +97,7 @@ eds_source_credentials_required_cb (ESourceRegistry *registry,
 ESourceRegistry *eds_source_registry = NULL;
 static ECredentialsPrompter *eds_credentials_prompter = NULL;
 
-gboolean contacts_ensure_eds_accounts (void)
+gboolean contacts_ensure_eds_accounts (gboolean allow_interaction)
 {
   ESourceCredentialsProvider *credentials_provider;
   GList *list, *link;
@@ -120,6 +120,9 @@ gboolean contacts_ensure_eds_accounts (void)
     }
 
   eds_credentials_prompter = e_credentials_prompter_new (eds_source_registry);
+
+  if (!allow_interaction)
+      e_credentials_prompter_set_auto_prompt (eds_credentials_prompter, FALSE);
 
   /* First disable credentials prompt for all but addressbook sources... */
   list = e_source_registry_list_sources (eds_source_registry, NULL);

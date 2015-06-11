@@ -20,7 +20,7 @@ namespace Gnome {
 [CCode (cprefix = "Contacts", lower_case_cprefix = "contacts_", cheader_filename = "contacts-esd-setup.h")]
 namespace Contacts {
 	[CCode (cname = "contacts_ensure_eds_accounts")]
-	public static bool ensure_eds_accounts ();
+	public static bool ensure_eds_accounts (bool allow_interaction);
 	[CCode (cname = "contacts_lookup_esource_name_by_uid")]
 	public static unowned string? lookup_esource_name_by_uid (string uid);
 	[CCode (cname = "contacts_lookup_esource_name_by_uid_for_contact")]
