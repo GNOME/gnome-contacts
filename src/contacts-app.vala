@@ -254,7 +254,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public override void startup () {
-    if (!ensure_eds_accounts ())
+    if (!ensure_eds_accounts (true))
       quit ();
 
     contacts_store = new Store ();
