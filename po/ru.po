@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-02 19:15+0000\n"
-"PO-Revision-Date: 2015-02-04 15:05+0300\n"
+"POT-Creation-Date: 2015-06-23 18:25+0000\n"
+"PO-Revision-Date: 2015-06-24 00:49+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:1
 msgid ""
@@ -63,7 +63,7 @@ msgstr "Контакты GNOME"
 msgid "Online Accounts"
 msgstr "Сетевые учётные записи"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:238
 msgid "Local Address Book"
 msgstr "Локальная адресная книга"
 
@@ -120,15 +120,15 @@ msgstr "Приложение для управления контактами"
 msgid "No contact with email address %s found"
 msgstr "Контакт с адресом электронной почты %s не найден"
 
-#: ../src/contacts-app.vala:318
+#: ../src/contacts-app.vala:320
 msgid "Show contact with this individual id"
 msgstr "Показать контакт с этим идентификатором"
 
-#: ../src/contacts-app.vala:320
+#: ../src/contacts-app.vala:322
 msgid "Show contact with this email address"
 msgstr "Показать контакт с этим адресом электронной почты"
 
-#: ../src/contacts-app.vala:329
+#: ../src/contacts-app.vala:331
 msgid "— contact management"
 msgstr "— управление контактами"
 
@@ -430,21 +430,21 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1087
+#: ../src/contacts-contact.vala:1092
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Неожиданная внутренняя ошибка: созданный контакт не найден"
 
-#: ../src/contacts-contact.vala:1272
+#: ../src/contacts-contact.vala:1277
 msgid "Google Circles"
 msgstr "Круги Google"
 
 # msgstr "Местный контакт"
-#: ../src/contacts-contact.vala:1274 ../src/contacts-esd-setup.c:121
-#: ../src/contacts-esd-setup.c:149
+#: ../src/contacts-contact.vala:1279 ../src/contacts-esd-setup.c:241
+#: ../src/contacts-esd-setup.c:269
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:146
+#: ../src/contacts-esd-setup.c:266
 msgid "Local Contact"
 msgstr "Локальный контакт"
 
@@ -464,18 +464,19 @@ msgstr "Отвязать"
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
 #: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
-#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:341
+#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:342
 msgid "Other"
 msgstr "Другой"
 
 # msgstr "Свой..."
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:337
+#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:338
 msgid "Home"
 msgstr "Дом"
 
-#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:307
-#: ../src/contacts-types.vala:332
+#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:308
+#: ../src/contacts-types.vala:333
 msgid "Work"
 msgstr "Работа"
 
@@ -485,58 +486,58 @@ msgid "Personal"
 msgstr "Личные"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:331
+#: ../src/contacts-types.vala:332
 msgid "Assistant"
 msgstr "Помощник"
 
-#: ../src/contacts-types.vala:333
+#: ../src/contacts-types.vala:334
 msgid "Work Fax"
 msgstr "Рабочий факс"
 
-#: ../src/contacts-types.vala:334
+#: ../src/contacts-types.vala:335
 msgid "Callback"
 msgstr "Обратная связь"
 
-#: ../src/contacts-types.vala:335
+#: ../src/contacts-types.vala:336
 msgid "Car"
 msgstr "Машина"
 
-#: ../src/contacts-types.vala:336
+#: ../src/contacts-types.vala:337
 msgid "Company"
 msgstr "Компания"
 
-#: ../src/contacts-types.vala:338
+#: ../src/contacts-types.vala:339
 msgid "Home Fax"
 msgstr "Домашний факс"
 
 # msgstr "Основной факс"
-#: ../src/contacts-types.vala:339
+#: ../src/contacts-types.vala:340
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:340
+#: ../src/contacts-types.vala:341
 msgid "Mobile"
 msgstr "Мобильный"
 
-#: ../src/contacts-types.vala:342
+#: ../src/contacts-types.vala:343
 msgid "Fax"
 msgstr "Факс"
 
-#: ../src/contacts-types.vala:343
+#: ../src/contacts-types.vala:344
 msgid "Pager"
 msgstr "Пейджер"
 
-#: ../src/contacts-types.vala:344
+#: ../src/contacts-types.vala:345
 msgid "Radio"
 msgstr "Радио"
 
-#: ../src/contacts-types.vala:345
+#: ../src/contacts-types.vala:346
 msgid "Telex"
 msgstr "Telex"
 
 # msgstr "Телекс"
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:347
+#: ../src/contacts-types.vala:348
 msgid "TTY"
 msgstr "TTY"
 
@@ -630,8 +631,9 @@ msgid "_Quit"
 msgstr "_Завершить"
 
 #: ../data/ui/app-menu.ui.h:5
-msgid "Personal email"
-msgstr "Личная эл. почта"
+#| msgid "Work email"
+msgid "Home email"
+msgstr "Домашняя эл. почта"
 
 #: ../data/ui/app-menu.ui.h:6
 msgid "Work email"
@@ -719,3 +721,6 @@ msgstr "Просмотр подгруппы"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "Просмотр подгруппы контактов"
+
+#~ msgid "Personal email"
+#~ msgstr "Личная эл. почта"
