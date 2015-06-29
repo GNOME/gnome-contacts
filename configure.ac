@@ -37,7 +37,7 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
 AC_SUBST(GETTEXT_PACKAGE)
 
 
-pkg_modules="gtk+-3.0 >= 3.12.0
+pkg_modules="gtk+-3.0 >= 3.16.0
 	     glib-2.0 >= 2.37.6
 	     gmodule-export-2.0
 	     gnome-desktop-3.0
