@@ -8,22 +8,23 @@
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 # Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2013.
 # Enrico Nicoletto <liverig@gmail.com>, 2011, 2013, 2014.
-#
+# Felipe Braga <fbobraga@gmail.com>, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-02 07:16+0000\n"
-"PO-Revision-Date: 2015-02-02 05:54-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2015-05-13 06:31+0000\n"
+"PO-Revision-Date: 2015-05-13 15:14-0200\n"
+"Last-Translator: Felipe Braga <fbobraga@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:1
 msgid ""
@@ -33,14 +34,15 @@ msgid ""
 "for managing your contacts."
 msgstr ""
 "O aplicativo Contatos mantém e organiza as informações dos seus contatos. "
-"Você pode criar, editar, excluir ou vincular porções de informação sobre seus "
-"contatos. O aplicativo Contatos agrega os detalhes de todas as suas fontes, "
-"fornecendo um local centralizado para o gerenciamento de seus contatos."
+"Você pode criar, editar, excluir ou vincular porções de informação sobre "
+"seus contatos. O aplicativo Contatos agrega os detalhes de todas as suas "
+"fontes, fornecendo um local centralizado para o gerenciamento de seus "
+"contatos."
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:2
 msgid ""
-"Contacts will also integrate with online address books and automatically link "
-"contacts from different online sources."
+"Contacts will also integrate with online address books and automatically "
+"link contacts from different online sources."
 msgstr ""
 "O aplicativo Contatos também se integra aos catálogos de endereços on-line e "
 "automaticamente vincula contatos de diferentes fontes on-line."
@@ -66,7 +68,7 @@ msgstr "Contatos do GNOME"
 msgid "Online Accounts"
 msgstr "Contas on-line"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:118
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:238
 msgid "Local Address Book"
 msgstr "Catálogo de endereços local"
 
@@ -126,15 +128,15 @@ msgstr "Aplicativo de gerenciamento de contato"
 msgid "No contact with email address %s found"
 msgstr "Nenhum contato com o endereço de e-mail %s foi localizado"
 
-#: ../src/contacts-app.vala:318
+#: ../src/contacts-app.vala:320
 msgid "Show contact with this individual id"
 msgstr "Mostrar contato com esta id individual"
 
-#: ../src/contacts-app.vala:320
+#: ../src/contacts-app.vala:322
 msgid "Show contact with this email address"
 msgstr "Mostrar contato com seu endereço de e-mail"
 
-#: ../src/contacts-app.vala:329
+#: ../src/contacts-app.vala:331
 msgid "— contact management"
 msgstr "— gerenciamento de contato"
 
@@ -436,20 +438,20 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1087
+#: ../src/contacts-contact.vala:1092
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Erro interno inesperado: contato criado não foi encontrado"
 
-#: ../src/contacts-contact.vala:1272
+#: ../src/contacts-contact.vala:1277
 msgid "Google Circles"
 msgstr "Círculo do Google"
 
-#: ../src/contacts-contact.vala:1274 ../src/contacts-esd-setup.c:121
-#: ../src/contacts-esd-setup.c:149
+#: ../src/contacts-contact.vala:1279 ../src/contacts-esd-setup.c:241
+#: ../src/contacts-esd-setup.c:269
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:146
+#: ../src/contacts-esd-setup.c:266
 msgid "Local Contact"
 msgstr "Contato local"
 
@@ -469,17 +471,18 @@ msgstr "Desvincular"
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
 #: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
-#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:341
+#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:342
 msgid "Other"
 msgstr "Outros"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:337
+#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:307
+#: ../src/contacts-types.vala:338
 msgid "Home"
 msgstr "Casa"
 
-#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:307
-#: ../src/contacts-types.vala:332
+#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:308
+#: ../src/contacts-types.vala:333
 msgid "Work"
 msgstr "Escritório"
 
@@ -489,56 +492,56 @@ msgid "Personal"
 msgstr "Pessoal"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:331
+#: ../src/contacts-types.vala:332
 msgid "Assistant"
 msgstr "Secretária/Assistente"
 
-#: ../src/contacts-types.vala:333
+#: ../src/contacts-types.vala:334
 msgid "Work Fax"
 msgstr "Fax de trabalho"
 
-#: ../src/contacts-types.vala:334
+#: ../src/contacts-types.vala:335
 msgid "Callback"
 msgstr "Retorno de chamada"
 
-#: ../src/contacts-types.vala:335
+#: ../src/contacts-types.vala:336
 msgid "Car"
 msgstr "Carro"
 
-#: ../src/contacts-types.vala:336
+#: ../src/contacts-types.vala:337
 msgid "Company"
 msgstr "Empresa"
 
-#: ../src/contacts-types.vala:338
+#: ../src/contacts-types.vala:339
 msgid "Home Fax"
 msgstr "Fax de residência"
 
-#: ../src/contacts-types.vala:339
+#: ../src/contacts-types.vala:340
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:340
+#: ../src/contacts-types.vala:341
 msgid "Mobile"
 msgstr "Celular"
 
-#: ../src/contacts-types.vala:342
+#: ../src/contacts-types.vala:343
 msgid "Fax"
 msgstr "Fax"
 
-#: ../src/contacts-types.vala:343
+#: ../src/contacts-types.vala:344
 msgid "Pager"
 msgstr "Pager"
 
-#: ../src/contacts-types.vala:344
+#: ../src/contacts-types.vala:345
 msgid "Radio"
 msgstr "Rádio"
 
-#: ../src/contacts-types.vala:345
+#: ../src/contacts-types.vala:346
 msgid "Telex"
 msgstr "Telex"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:347
+#: ../src/contacts-types.vala:348
 msgid "TTY"
 msgstr "Teletipo"
 
@@ -629,8 +632,9 @@ msgid "_Quit"
 msgstr "Sai_r"
 
 #: ../data/ui/app-menu.ui.h:5
-msgid "Personal email"
-msgstr "E-mail pessoal"
+#| msgid "Work email"
+msgid "Home email"
+msgstr "E-mail particular"
 
 #: ../data/ui/app-menu.ui.h:6
 msgid "Work email"
@@ -719,6 +723,9 @@ msgstr "Ver subconjunto"
 #: ../src/org.gnome.Contacts.gschema.xml.in.h:4
 msgid "View contacts subset"
 msgstr "Ver subconjunto de contatos"
+
+#~ msgid "Personal email"
+#~ msgstr "E-mail pessoal"
 
 #~ msgid "Google Other Contact"
 #~ msgstr "Outro contato do Google"
