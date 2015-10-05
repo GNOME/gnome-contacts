@@ -161,25 +161,12 @@ public class Contacts.Contact : GLib.Object  {
       if (individual.avatar == null)
         return null;
 
-      if (individual.avatar.to_string () != null)
-        return null;
-
       if (_avatar_icon_data == null) {
 
         if (small_avatar == null)
           return null;
 
-        var pixel_data = Variant.new_from_data (VariantType.BYTESTRING,
-                                                small_avatar.get_pixels_with_length (),
-                                                true, small_avatar);
-        _avatar_icon_data = new Variant ("(iiibii@ay)",
-                                         small_avatar.get_width (),
-                                         small_avatar.get_height (),
-                                         small_avatar.get_rowstride (),
-                                         small_avatar.get_has_alpha (),
-                                         small_avatar.get_bits_per_sample (),
-                                         small_avatar.get_n_channels (),
-                                         pixel_data);
+        _avatar_icon_data = small_avatar.serialize ();
       }
       return _avatar_icon_data;
     }

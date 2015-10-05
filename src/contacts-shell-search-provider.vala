@@ -96,12 +96,10 @@ public class Contacts.SearchProvider : Object {
 
       meta.insert ("name", new Variant.string (contact.display_name));
 
-      if (contact.serializable_avatar_icon != null)
-        meta.insert ("gicon", new Variant.string (contact.serializable_avatar_icon.to_string ()));
-      else if (contact.avatar_icon_data != null)
-        meta.insert ("icon-data", contact.avatar_icon_data);
+      if (contact.avatar_icon_data != null)
+        meta.insert ("icon", contact.avatar_icon_data);
       else
-        meta.insert ("gicon", new Variant.string (new ThemedIcon ("avatar-default").to_string ()));
+        meta.insert ("icon", new ThemedIcon ("avatar-default").serialize ());
       results.add (meta);
     }
     app.release ();
