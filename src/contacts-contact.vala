@@ -146,15 +146,6 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  public Icon? serializable_avatar_icon {
-    get {
-      if (individual.avatar != null && individual.avatar.to_string () != null)
-        return individual.avatar;
-
-      return null;
-    }
-  }
-
   private Variant? _avatar_icon_data;
   public Variant? avatar_icon_data {
     get {
