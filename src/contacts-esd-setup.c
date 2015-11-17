@@ -115,7 +115,7 @@ gboolean contacts_ensure_eds_accounts (gboolean allow_interaction)
   /* If this fails it's game over. */
   if (error != NULL)
     {
-      g_error ("%s: %s", G_STRFUNC, error->message);
+      g_warning ("%s: %s", G_STRFUNC, error->message);
       return FALSE;
     }
 
