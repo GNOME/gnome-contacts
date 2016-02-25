@@ -51,7 +51,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private Stack view_switcher;
 
   [GtkChild]
-  private Box content_header_bar;
+  private Grid  content_header_bar;
 
   [GtkChild]
   private HeaderBar setup_header_bar;
