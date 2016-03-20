@@ -3,25 +3,36 @@
 # This file is distributed under the same license as the gnome-contacts package.
 #
 # n0m4dm4n <n0m4dm4n at gmail dot com>, 2011.
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2011, 2012.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2011, 2012, 2016.
 # Balázs Úr <urbalazs at gmail dot com>, 2012, 2013, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-22 18:28+0000\n"
-"PO-Revision-Date: 2015-06-22 23:04+0200\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2016-03-20 20:23+0000\n"
+"PO-Revision-Date: 2016-03-20 23:43+0100\n"
+"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:1
+#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
+#: ../src/contacts-app.vala:129
+msgid "GNOME Contacts"
+msgstr "GNOME Névjegyek"
+
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
+#: ../data/org.gnome.Contacts.desktop.in.in.h:2
+msgid "A contacts manager for GNOME"
+msgstr "Egy névjegykezelő a GNOME-hoz"
+
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:3
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
@@ -33,7 +44,7 @@ msgstr ""
 "kapcsolatban. A Névjegyek összegyűjti minden forrás részleteit egy központi "
 "helyet biztosítva azok kezeléséhez."
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:4
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
@@ -41,28 +52,19 @@ msgstr ""
 "A Névjegyek egyesülni fog az online címjegyzékekkel és automatikusan "
 "összekapcsolja a különböző online forrásokból származó névjegyeket."
 
-#: ../data/org.gnome.Contacts.desktop.in.in.h:1 ../src/main.vala:28
+#: ../data/org.gnome.Contacts.desktop.in.in.h:1
 msgid "Contacts"
 msgstr "Névjegyek"
-
-#: ../data/org.gnome.Contacts.desktop.in.in.h:2
-msgid "A contacts manager for GNOME"
-msgstr "Egy névjegykezelő a GNOME-hoz"
 
 #: ../data/org.gnome.Contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr "barátok;címjegyzék;"
 
-#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
-#: ../src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "GNOME Névjegyek"
-
 #: ../src/contacts-accounts-list.vala:48
 msgid "Online Accounts"
 msgstr "Online fiókok"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:238
+#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:241
 msgid "Local Address Book"
 msgstr "Helyi címjegyzék"
 
@@ -97,8 +99,8 @@ msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
 msgstr ""
-"Az új névjegyek hozzá lesznek adva a kijelölt címjegyzékhez.\n"
-"Ön képes névjegyeket megtekinteni és szerkeszteni más címjegyzékekből."
+"Az új névjegyek a kijelölt címjegyzékhez lesznek adva.\n"
+"Megtekinthet és szerkeszthet más címjegyzékekben lévő névjegyeket."
 
 #: ../src/contacts-app.vala:128
 msgid "translator-credits"
@@ -148,7 +150,7 @@ msgstr "Válasszon egy képet"
 #: ../src/contacts-avatar-dialog.vala:253 ../src/contacts-window.vala:198
 #: ../src/contacts-window.vala:224
 msgid "Select"
-msgstr "Válasszon"
+msgstr "Kiválasztás"
 
 #: ../src/contacts-avatar-dialog.vala:281 ../src/contacts-window.vala:315
 msgid "New Contact"
@@ -160,7 +162,7 @@ msgstr "Utca"
 
 #: ../src/contacts-contact-editor.vala:28
 msgid "Extension"
-msgstr "Kiterjesztés"
+msgstr "Házszám"
 
 #: ../src/contacts-contact-editor.vala:28
 msgid "City"
@@ -272,7 +274,7 @@ msgstr "Jegyzet"
 
 #: ../src/contacts-contact-editor.vala:795
 msgid "New Detail"
-msgstr "Új részlet"
+msgstr "Új adat"
 
 #: ../src/contacts-contact-editor.vala:801
 #: ../src/contacts-linked-accounts-dialog.vala:36
@@ -331,116 +333,116 @@ msgstr "Nem található az újonnan létrejött névjegy"
 msgid "Change avatar"
 msgstr "Avatar megváltoztatása"
 
-#: ../src/contacts-contact.vala:763
+#: ../src/contacts-contact.vala:741
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:764
+#: ../src/contacts-contact.vala:742
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:765
+#: ../src/contacts-contact.vala:743
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:766
+#: ../src/contacts-contact.vala:744
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:767
+#: ../src/contacts-contact.vala:745
 msgid "AOL Instant Messenger"
 msgstr "AOL Azonnali üzenetküldő"
 
-#: ../src/contacts-contact.vala:768
+#: ../src/contacts-contact.vala:746
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:769
+#: ../src/contacts-contact.vala:747
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:770
+#: ../src/contacts-contact.vala:748
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:771
+#: ../src/contacts-contact.vala:749
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:772
+#: ../src/contacts-contact.vala:750
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:773
+#: ../src/contacts-contact.vala:751
 msgid "Local network"
 msgstr "Helyi hálózat"
 
-#: ../src/contacts-contact.vala:774
+#: ../src/contacts-contact.vala:752
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:775
+#: ../src/contacts-contact.vala:753
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:776
+#: ../src/contacts-contact.vala:754
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:777
+#: ../src/contacts-contact.vala:755
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:778
+#: ../src/contacts-contact.vala:756
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:779
+#: ../src/contacts-contact.vala:757
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:780
+#: ../src/contacts-contact.vala:758
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:781
+#: ../src/contacts-contact.vala:759
 msgid "sip"
 msgstr "SIP"
 
-#: ../src/contacts-contact.vala:782
+#: ../src/contacts-contact.vala:760
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:783
+#: ../src/contacts-contact.vala:761
 msgid "Telephony"
 msgstr "Telephony"
 
-#: ../src/contacts-contact.vala:784
+#: ../src/contacts-contact.vala:762
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:785 ../src/contacts-contact.vala:786
+#: ../src/contacts-contact.vala:763 ../src/contacts-contact.vala:764
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:787
+#: ../src/contacts-contact.vala:765
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1092
+#: ../src/contacts-contact.vala:1070
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Váratlan belső hiba: a létrehozott névjegy nem található"
 
-#: ../src/contacts-contact.vala:1277
+#: ../src/contacts-contact.vala:1255
 msgid "Google Circles"
 msgstr "Google körök"
 
-#: ../src/contacts-contact.vala:1279 ../src/contacts-esd-setup.c:241
-#: ../src/contacts-esd-setup.c:269
+#: ../src/contacts-contact.vala:1257 ../src/contacts-esd-setup.c:244
+#: ../src/contacts-esd-setup.c:272
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:266
+#: ../src/contacts-esd-setup.c:269
 msgid "Local Contact"
 msgstr "Helyi névjegy"
 
@@ -622,7 +624,6 @@ msgid "_Quit"
 msgstr "_Kilépés"
 
 #: ../data/ui/app-menu.ui.h:5
-#| msgid "Work email"
 msgid "Home email"
 msgstr "Otthoni e-mail"
 
@@ -632,7 +633,7 @@ msgstr "Munkahelyi e-mail"
 
 #: ../data/ui/app-menu.ui.h:7
 msgid "Mobile phone"
-msgstr "Rádiótelefon"
+msgstr "Mobiltelefon"
 
 #: ../data/ui/app-menu.ui.h:8
 msgid "Home phone"
