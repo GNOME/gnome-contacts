@@ -2,14 +2,14 @@
 # Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the gnome-contacts package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
-# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2015.
+# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-16 08:19+0000\n"
-"PO-Revision-Date: 2015-11-16 16:11+0100\n"
+"POT-Creation-Date: 2016-04-29 07:42+0000\n"
+"PO-Revision-Date: 2016-04-29 11:30+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -23,6 +23,17 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: ../data/org.gnome.Contacts.appdata.xml.in.h:1
+#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
+#: ../src/contacts-app.vala:129
+msgid "GNOME Contacts"
+msgstr "Luchd-aithne GNOME"
+
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
+#: ../data/org.gnome.Contacts.desktop.in.in.h:2
+msgid "A contacts manager for GNOME"
+msgstr "Manaidsear luchd-aithne airson GNOME"
+
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:3
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
@@ -32,10 +43,10 @@ msgstr ""
 "Cumaidh Luchd-aithne fiosrachadh mun luchd-aithne agad an rian. 'S urrainn "
 "dhut bloighean fiosrachaidh mun luchd-aithne agad a chruthachadh, a "
 "dheasachadh, a sguabadh às agus a cheangal ri chèile. Cuiridh Luchd-aithne a "
-"h-uile fiosrachadh o na tùsan agad ri chèile gus prìomh ionad a "
-"chruthachadh gus an luchd-aithne agad a stiùireadh."
+"h-uile fiosrachadh o na tùsan agad ri chèile gus prìomh ionad a chruthachadh "
+"gus an luchd-aithne agad a stiùireadh."
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
+#: ../data/org.gnome.Contacts.appdata.xml.in.h:4
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
@@ -48,20 +59,11 @@ msgstr ""
 msgid "Contacts"
 msgstr "Luchd-aithne"
 
-#: ../data/org.gnome.Contacts.desktop.in.in.h:2
-msgid "A contacts manager for GNOME"
-msgstr "Manaidsear luchd-aithne airson GNOME"
-
 #: ../data/org.gnome.Contacts.desktop.in.in.h:3
 msgid "friends;address book;"
 msgstr ""
 "friends;address book;caraidean;leabhar sheòlaidhean;leabhar nan seòladh;"
 "seòlaidhean;"
-
-#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
-#: ../src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "Luchd-aithne GNOME"
 
 #: ../src/contacts-accounts-list.vala:48
 msgid "Online Accounts"
@@ -93,7 +95,7 @@ msgid "Change"
 msgstr "Atharraich"
 
 #: ../src/contacts-app.vala:62 ../src/contacts-avatar-dialog.vala:255
-#: ../data/ui/contacts-window.ui.h:5
+#: ../data/ui/contacts-window.ui.h:6
 msgid "Cancel"
 msgstr "Sguir dheth"
 
@@ -568,7 +570,7 @@ msgstr[1] "%d air a thaghadh"
 msgstr[2] "%d air an taghadh"
 msgstr[3] "%d air a thaghadh"
 
-#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:2
+#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:3
 msgid "All Contacts"
 msgstr "A h-uile neach-aithne"
 
@@ -577,7 +579,7 @@ msgstr "A h-uile neach-aithne"
 msgid "Editing %s"
 msgstr "A' deasachadh %s"
 
-#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:7
+#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:8
 msgid "Done"
 msgstr "Deiseil"
 
@@ -640,7 +642,6 @@ msgid "_Quit"
 msgstr "_Fàg an-seo"
 
 #: ../data/ui/app-menu.ui.h:5
-#| msgid "Work email"
 msgid "Home email"
 msgstr "Post-d na dachaighe"
 
@@ -689,27 +690,39 @@ msgstr "Sguab às"
 msgid "Loading"
 msgstr "'Ga luchdadh"
 
-#: ../data/ui/contacts-window.ui.h:3
+#: ../data/ui/contacts-window.ui.h:2
+#| msgid ""
+#| "New contacts will be added to the selected address book.\n"
+#| "You are able to view and edit contacts from other address books."
+msgid ""
+"New contacts will be added to the selected address book. You are able to "
+"view and edit contacts from other address books."
+msgstr ""
+"Thèid luchd-aithne ùr a chur ris an leabhar sheòlaidhean a thagh thu. 'S "
+"urrainn dhut luchd-aithne o leabhraichean sheòlaidhean eile a shealltainn 's "
+"a dheasachadh."
+
+#: ../data/ui/contacts-window.ui.h:4
 msgid "Add contact"
 msgstr "Cuir ris neach-aithne ùr"
 
-#: ../data/ui/contacts-window.ui.h:4
+#: ../data/ui/contacts-window.ui.h:5
 msgid "Selection mode"
 msgstr "Am modh taghaidh"
 
-#: ../data/ui/contacts-window.ui.h:6
+#: ../data/ui/contacts-window.ui.h:7
 msgid "Edit"
 msgstr "Deasaich"
 
-#: ../data/ui/contacts-window.ui.h:8
+#: ../data/ui/contacts-window.ui.h:9
 msgid "Select Address Book"
 msgstr "Tagh leabhar sheòlaidhean"
 
-#: ../data/ui/contacts-window.ui.h:9
+#: ../data/ui/contacts-window.ui.h:10
 msgid "Cancel setup"
 msgstr "Sguir dhen rèiteachadh"
 
-#: ../data/ui/contacts-window.ui.h:10
+#: ../data/ui/contacts-window.ui.h:11
 msgid "Setup complete"
 msgstr "Tha an rèiteachadh coileanta"
 
