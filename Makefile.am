@@ -1,16 +1,13 @@
 ACLOCAL_AMFLAGS = -I m4 -I libgd ${ACLOCAL_FLAGS}
 NULL=
-SUBDIRS = libgd src vapi data po
+SUBDIRS = libgd vapi src data po
 if BUILD_MAN_PAGES
 SUBDIRS += man
 endif
-DIST_SUBDIRS = libgd src vapi data po man
+DIST_SUBDIRS = libgd vapi src data po man
 
 EXTRA_DIST = \
 	autogen.sh \
-	intltool-extract.in \
-	intltool-merge.in \
-	intltool-update.in \
 	$(NULL)
 
 ChangeLog:
@@ -31,12 +28,6 @@ distclean-local:
 	if test "$(srcdir)" = "."; then :; else \
 		rm -f ChangeLog; \
 	fi
-
-
-DISTCLEANFILES = \
-intltool-extract \
-intltool-merge \
-intltool-update
 
 MAINTAINERCLEANFILES = \
 	$(srcdir)/aclocal.m4 \

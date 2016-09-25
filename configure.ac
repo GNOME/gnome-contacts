@@ -3,39 +3,26 @@ AC_INIT([gnome-contacts],[3.22.1],[http://bugzilla.gnome.org/enter_bug.cgi?produ
 AC_CONFIG_SRCDIR([src/main.vala])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([tar-ustar dist-xz no-dist-gzip])
+AM_INIT_AUTOMAKE([tar-ustar dist-xz no-dist-gzip -Wno-portability])
 
 # Enable silent rules is available
 AM_SILENT_RULES([yes])
-
-AC_CONFIG_FILES([Makefile
-		libgd/Makefile
-		vapi/Makefile
-		src/Makefile
-		man/Makefile
-		data/Makefile
-		data/org.gnome.Contacts.desktop.in
-		data/org.gnome.Contacts.search-provider.ini.in
-		po/Makefile.in
-		])
-
-LT_INIT
-AC_PROG_CC
-AM_PROG_VALAC([0.24.0])
-AC_PROG_INSTALL
-
-GLIB_GSETTINGS
-
-# i18n stuff
-IT_PROG_INTLTOOL([0.40])
-
-AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.17])
 
 GETTEXT_PACKAGE=gnome-contacts
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
 AC_SUBST(GETTEXT_PACKAGE)
 
+AM_GNU_GETTEXT_VERSION([0.19.7])
+AM_GNU_GETTEXT([external])
+
+LT_INIT
+AC_PROG_CC
+AM_PROG_VALAC([0.24.0])
+AC_PROG_INSTALL
+AC_PATH_PROG([GLIB_GENMARSHAL],[glib-genmarshal])
+AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
+AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources])
+GLIB_GSETTINGS
 
 pkg_modules="gtk+-3.0 >= 3.20.0
 	     glib-2.0 >= 2.37.6
@@ -112,6 +99,14 @@ AS_IF([test "x$enable_man_pages" != "xno"],
 
 AM_CONDITIONAL([BUILD_MAN_PAGES], [test "x$have_manutils" = "xyes"])
 
+AC_CONFIG_FILES([Makefile
+		libgd/Makefile
+		vapi/Makefile
+		src/Makefile
+		man/Makefile
+		data/Makefile
+		po/Makefile.in
+		])
 
 dnl libgd
 LIBGD_INIT([

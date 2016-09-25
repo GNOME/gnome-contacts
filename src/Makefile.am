@@ -48,11 +48,7 @@ gsettings_ENUM_NAMESPACE = org.gnome.Contacts
 gsettings_ENUM_FILES = \
         contacts-view.c
 
-gsettingsschema_in_files = org.gnome.Contacts.gschema.xml.in
-gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
-.PRECIOUS: $(gsettings_SCHEMAS)
-
-@INTLTOOL_XML_NOMERGE_RULE@
+gsettings_SCHEMAS = org.gnome.Contacts.gschema.xml
 
 @GSETTINGS_RULES@
 
@@ -91,12 +87,11 @@ gnome_contacts_search_provider_LDADD = $(CONTACTS_LIBS)
 
 CLEANFILES = \
 	$(vala_sources:.vala=.c) \
-	$(gsettings_SCHEMAS) \
 	*.vapi *.stamp
 
 EXTRA_DIST = \
+	org.gnome.Contacts.gschema.xml \
 	cheese-flash.h \
 	um-crop-area.h \
-	$(gsettingsschema_in_files)     \
 	contacts-esd-setup.h \
 	$(NULL)
