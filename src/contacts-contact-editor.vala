@@ -77,7 +77,7 @@ public class Contacts.ContactEditor : Grid {
   }
 
   struct RowData {
-    AbstractFieldDetails<string> details;
+    AbstractFieldDetails details;
   }
 
   struct Field {
