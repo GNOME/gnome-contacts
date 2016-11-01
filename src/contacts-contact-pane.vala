@@ -482,7 +482,6 @@ public class Contacts.ContactPane : Notebook {
 					DialogFlags.MODAL,
 					MessageType.ERROR,
 					ButtonsType.OK,
-					"%s",
 					_("Unable to create new contacts: %s"), e.message);
 	  }
 
