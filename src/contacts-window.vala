@@ -483,7 +483,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     g.set_column_spacing (8);
     notification.add (g);
 
-    var label = new Label (_("Contact deleted: \"%s\"").printf (contact.display_name));
+    var label = new Label (_("Contact deleted: “%s”").printf (contact.display_name));
     label.set_max_width_chars (45);
     label.set_ellipsize (Pango.EllipsizeMode.END);
     var b = new Button.with_mnemonic (_("_Undo"));
