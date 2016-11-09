@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-25 17:38+0000\n"
-"PO-Revision-Date: 2016-10-25 22:34+0200\n"
+"POT-Creation-Date: 2016-11-07 09:29+0000\n"
+"PO-Revision-Date: 2016-11-09 11:29+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -19,9 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.8\n"
 
-#: data/org.gnome.Contacts.appdata.xml.in:6 src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "Contats di GNOME"
+#: data/org.gnome.Contacts.appdata.xml.in:6
+#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
+msgid "Contacts"
+msgstr "Contats"
 
 #: data/org.gnome.Contacts.appdata.xml.in:7
 #: data/org.gnome.Contacts.desktop.in:4
@@ -48,10 +49,6 @@ msgstr ""
 "In plui a vegnaran integradis lis rubrichis in-linie e a vegnaran unîts in "
 "maniere automatiche i contats di diviersis sorzints in-linie."
 
-#: data/org.gnome.Contacts.desktop.in:3
-msgid "Contacts"
-msgstr "Contats"
-
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
@@ -59,12 +56,11 @@ msgstr "amîs;rubriche;"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Contacts.desktop.in:8
-#| msgid "friends;address book;"
 msgid "x-office-address-book"
 msgstr "x-office-address-book"
 
 #: data/ui/app-menu.ui:6
-msgid "_Change Address Book..."
+msgid "_Change Address Book…"
 msgstr "_Cambie rubriche..."
 
 #: data/ui/app-menu.ui:12
@@ -139,11 +135,11 @@ msgstr "Unìs"
 msgid "Delete"
 msgstr "Elimine"
 
-#: data/ui/contacts-window.ui:83
+#: data/ui/contacts-window.ui:84
 msgid "Loading"
 msgstr "Cjariament in vore"
 
-#: data/ui/contacts-window.ui:122
+#: data/ui/contacts-window.ui:123
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -151,41 +147,41 @@ msgstr ""
 "I gnûfs contats a vegnaran zontâts inte rubriche selezionade. Tu podarâs in "
 "ogni câs viodi e modificâ i contats di altris rubrichis."
 
-#: data/ui/contacts-window.ui:167 src/contacts-window.vala:233
+#: data/ui/contacts-window.ui:168 src/contacts-window.vala:233
 msgid "All Contacts"
 msgstr "Ducj i contats"
 
-#: data/ui/contacts-window.ui:182
+#: data/ui/contacts-window.ui:183
 msgid "Add contact"
 msgstr "Zonte contat"
 
-#: data/ui/contacts-window.ui:210
+#: data/ui/contacts-window.ui:211
 msgid "Selection mode"
 msgstr "Modalitât di selezion"
 
-#: data/ui/contacts-window.ui:245 data/ui/contacts-window.ui:303
+#: data/ui/contacts-window.ui:246 data/ui/contacts-window.ui:304
 #: src/contacts-app.vala:62 src/contacts-avatar-dialog.vala:255
 msgid "Cancel"
 msgstr "Anule"
 
-#: data/ui/contacts-window.ui:261
+#: data/ui/contacts-window.ui:262
 msgid "Edit"
 msgstr "Cambie"
 
-#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
+#: data/ui/contacts-window.ui:278 data/ui/contacts-window.ui:324
 #: src/contacts-window.vala:265
 msgid "Done"
 msgstr "Fat"
 
-#: data/ui/contacts-window.ui:294
+#: data/ui/contacts-window.ui:295
 msgid "Select Address Book"
 msgstr "Selezione rubriche"
 
-#: data/ui/contacts-window.ui:306
+#: data/ui/contacts-window.ui:307
 msgid "Cancel setup"
 msgstr "Anule impostazions"
 
-#: data/ui/contacts-window.ui:326
+#: data/ui/contacts-window.ui:327
 msgid "Setup complete"
 msgstr "Impostazions completadis"
 
@@ -229,6 +225,10 @@ msgstr ""
 #: src/contacts-app.vala:128
 msgid "translator-credits"
 msgstr "Fabio Tomat <f.t.public at gmail.com>"
+
+#: src/contacts-app.vala:129
+msgid "GNOME Contacts"
+msgstr "Contats di GNOME"
 
 #: src/contacts-app.vala:130
 msgid "About GNOME Contacts"
@@ -426,12 +426,12 @@ msgstr "Tu scugnis meti cualchi dât"
 msgid "No primary addressbook configured"
 msgstr "Nissune rubriche principâl configurade"
 
-#: src/contacts-contact-pane.vala:486
+#: src/contacts-contact-pane.vala:485
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Impussibil creâ gnûfs contats: %s"
 
-#: src/contacts-contact-pane.vala:497
+#: src/contacts-contact-pane.vala:496
 msgid "Unable to find newly created contact"
 msgstr "Impussibil cjatâ il contat creât cumò denant"
 
@@ -687,8 +687,8 @@ msgstr[1] "%d contats eliminâts"
 
 #: src/contacts-window.vala:486
 #, c-format
-msgid "Contact deleted: \"%s\""
-msgstr "Contat eliminât: \"%s\""
+msgid "Contact deleted: “%s”"
+msgstr "Contat eliminât: “%s”"
 
 #: src/contacts-window.vala:521
 #, c-format
@@ -717,6 +717,9 @@ msgstr "Mostre sotinsiemi"
 #: src/org.gnome.Contacts.gschema.xml:11
 msgid "View contacts subset"
 msgstr "Mostre sotinsiemi dai contats"
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "_Cambie rubriche..."
 
 #~ msgid "Personal email"
 #~ msgstr "Email personâl"
