@@ -31,6 +31,14 @@ public class Contacts.App : Gtk.Application {
   private bool is_prepare_scheluded = false;
   private bool is_quiescent_scheduled = false;
 
+  private const GLib.ActionEntry[] action_entries = {
+    { "quit",        quit                },
+    { "help",        show_help           },
+    { "about",       show_about          },
+    { "change-book", change_address_book },
+    { "new-contact", new_contact         }
+  };
+
   public void show_contact (Contact? contact) {
     window.set_shown_contact (contact);
   }
@@ -165,27 +173,10 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_app_menu () {
-    var action = new GLib.SimpleAction ("quit", null);
-    action.activate.connect (() => { this.quit (); });
-    this.add_action (action);
+    this.add_action_entries (this.action_entries, this);
 
-    action = new GLib.SimpleAction ("help", null);
-    action.activate.connect (() => { show_help (); });
-    this.add_action (action);
-    this.add_accelerator ("F1", "app.help", null);
-
-    action = new GLib.SimpleAction ("about", null);
-    action.activate.connect (() => { show_about (); });
-    this.add_action (action);
-
-    action = new GLib.SimpleAction ("change_book", null);
-    action.activate.connect (() => { change_address_book (); });
-    this.add_action (action);
-
-    action = new GLib.SimpleAction ("new_contact", null);
-    action.activate.connect (() => { new_contact (); });
-    this.add_action (action);
-    this.add_accelerator ("<Primary>n", "app.new_contact", null);
+    this.set_accels_for_action ("app.help", {"F1"});
+    this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
 
     var builder = load_ui ("app-menu.ui");
     set_app_menu ((MenuModel)builder.get_object ("app-menu"));
