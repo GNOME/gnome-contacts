@@ -1,63 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016.
+# Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-05 07:45+0000\n"
-"PO-Revision-Date: 2016-09-17 16:22+0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-21 11:37+0200\n"
+"PO-Revision-Date: 2017-02-21 11:37+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
-
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:1
-#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
-#: ../src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "Контакти GNOME"
-
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
-#: ../data/org.gnome.Contacts.desktop.in.in.h:2
-msgid "A contacts manager for GNOME"
-msgstr "Керування контактами для GNOME"
-
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:3
-msgid ""
-"Contacts keeps and organize your contacts information. You can create, edit, "
-"delete and link together pieces of information about your contacts. Contacts "
-"aggregates the details from all your sources providing a centralized place "
-"for managing your contacts."
-msgstr ""
-"Контакти зберігають і впорядковують вашу контактну інформацію. Можете "
-"створювати, редагувати і сполучати інформацію про ваші контакти. Контакти "
-"збирають подробиці з усіх джерел в одне ціле, надаючи центральне місце для "
-"організування ваших контактів."
-
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:4
-msgid ""
-"Contacts will also integrate with online address books and automatically "
-"link contacts from different online sources."
-msgstr ""
-"Контакти також інтегровані з мережевими адресними книгами і автоматично "
-"сполучать контакти з різних джерел."
-
-#: ../data/org.gnome.Contacts.desktop.in.in.h:1
-msgid "Contacts"
-msgstr "Контакти"
-
-#: ../data/org.gnome.Contacts.desktop.in.in.h:3
-msgid "friends;address book;"
-msgstr "друзі;адресна книга;"
 
 #: ../src/contacts-accounts-list.vala:48
 msgid "Online Accounts"
@@ -89,7 +49,6 @@ msgid "Change"
 msgstr "Змінити"
 
 #: ../src/contacts-app.vala:62 ../src/contacts-avatar-dialog.vala:255
-#: ../data/ui/contacts-window.ui.h:6
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -104,6 +63,10 @@ msgstr ""
 #: ../src/contacts-app.vala:128
 msgid "translator-credits"
 msgstr "Daniel Korostil <ted.korostiled@gmail.com>"
+
+#: ../src/contacts-app.vala:129
+msgid "GNOME Contacts"
+msgstr "Контакти GNOME"
 
 #: ../src/contacts-app.vala:130
 msgid "About GNOME Contacts"
@@ -249,19 +212,19 @@ msgstr "Грудень"
 
 #: ../src/contacts-contact-editor.vala:561
 #: ../src/contacts-contact-editor.vala:568
-#: ../src/contacts-contact-sheet.vala:190 ../data/ui/app-menu.ui.h:10
+#: ../src/contacts-contact-sheet.vala:190
 msgid "Website"
 msgstr "Сайт"
 
 #: ../src/contacts-contact-editor.vala:587
 #: ../src/contacts-contact-editor.vala:594
-#: ../src/contacts-contact-sheet.vala:196 ../data/ui/app-menu.ui.h:11
+#: ../src/contacts-contact-sheet.vala:196
 msgid "Nickname"
 msgstr "Прізвисько"
 
 #: ../src/contacts-contact-editor.vala:620
 #: ../src/contacts-contact-editor.vala:627
-#: ../src/contacts-contact-sheet.vala:203 ../data/ui/app-menu.ui.h:12
+#: ../src/contacts-contact-sheet.vala:203
 msgid "Birthday"
 msgstr "День народження"
 
@@ -288,6 +251,10 @@ msgstr "Вилучити контакт"
 #: ../src/contacts-contact-editor.vala:1062
 msgid "Add name"
 msgstr "Додати ім'я"
+
+#: ../src/contacts-contact-frame.vala:40
+msgid "Change avatar"
+msgstr "Змінити аватар"
 
 #: ../src/contacts-contact-pane.vala:137
 #, c-format
@@ -319,18 +286,14 @@ msgstr "Потрібно ввести хоч якісь дані"
 msgid "No primary addressbook configured"
 msgstr "Не налаштовано основну адресну книгу"
 
-#: ../src/contacts-contact-pane.vala:486
+#: ../src/contacts-contact-pane.vala:485
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Неможливо створити нові контакти: %s"
 
-#: ../src/contacts-contact-pane.vala:497
+#: ../src/contacts-contact-pane.vala:496
 msgid "Unable to find newly created contact"
 msgstr "Неможливо знайти новостворений контакт"
-
-#: ../src/contacts-contact-frame.vala:40
-msgid "Change avatar"
-msgstr "Змінити аватар"
 
 #: ../src/contacts-contact.vala:741
 msgid "Google Talk"
@@ -555,7 +518,7 @@ msgstr[0] "%d вибрано"
 msgstr[1] "%d вибрано"
 msgstr[2] "%d вибрано"
 
-#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:3
+#: ../src/contacts-window.vala:233
 msgid "All Contacts"
 msgstr "Усі контакти"
 
@@ -564,7 +527,7 @@ msgstr "Усі контакти"
 msgid "Editing %s"
 msgstr "Редагування %s"
 
-#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:8
+#: ../src/contacts-window.vala:265
 msgid "Done"
 msgstr "Завершено"
 
@@ -595,7 +558,7 @@ msgstr[2] "%d контактів вилучено"
 
 #: ../src/contacts-window.vala:486
 #, c-format
-msgid "Contact deleted: \"%s\""
+msgid "Contact deleted: “%s”"
 msgstr "Контакт вилучено: «%s»"
 
 #: ../src/contacts-window.vala:521
@@ -608,121 +571,124 @@ msgstr "%s сполучений з %s"
 msgid "%s linked to the contact"
 msgstr "%s сполучений з контактом"
 
-#: ../data/ui/app-menu.ui.h:1
-msgid "_Change Address Book..."
-msgstr "_Змінити адресну книжку…"
-
-#: ../data/ui/app-menu.ui.h:2
-msgid "_Help"
-msgstr "_Довідка"
-
-#: ../data/ui/app-menu.ui.h:3
-msgid "_About"
-msgstr "_Про програму"
-
-#: ../data/ui/app-menu.ui.h:4
-msgid "_Quit"
-msgstr "Ви_йти"
-
-#: ../data/ui/app-menu.ui.h:5
-msgid "Home email"
-msgstr "Домашня пошта"
-
-#: ../data/ui/app-menu.ui.h:6
-msgid "Work email"
-msgstr "Службова пошта"
-
-#: ../data/ui/app-menu.ui.h:7
-msgid "Mobile phone"
-msgstr "Мобільний номер"
-
-#: ../data/ui/app-menu.ui.h:8
-msgid "Home phone"
-msgstr "Домашній номер"
-
-#: ../data/ui/app-menu.ui.h:9
-msgid "Work phone"
-msgstr "Службовий номер"
-
-#: ../data/ui/app-menu.ui.h:13
-msgid "Home address"
-msgstr "Домашня адреса"
-
-#: ../data/ui/app-menu.ui.h:14
-msgid "Work address"
-msgstr "Робоча адреса"
-
-#: ../data/ui/app-menu.ui.h:15
-msgid "Notes"
-msgstr "Примітки"
-
-#: ../data/ui/contacts-list-pane.ui.h:1
-msgid "Type to search"
-msgstr "Введіть для пошуку…"
-
-#. Link refers to the verb, from linking contacts together
-#: ../data/ui/contacts-list-pane.ui.h:3
-msgid "Link"
-msgstr "Посилання"
-
-#: ../data/ui/contacts-list-pane.ui.h:4
-msgid "Delete"
-msgstr "Вилучити"
-
-#: ../data/ui/contacts-window.ui.h:1
-msgid "Loading"
-msgstr "Завантаження"
-
-#: ../data/ui/contacts-window.ui.h:2
-#| msgid ""
-#| "New contacts will be added to the selected address book.\n"
-#| "You are able to view and edit contacts from other address books."
-msgid ""
-"New contacts will be added to the selected address book. You are able to "
-"view and edit contacts from other address books."
-msgstr ""
-"Нові контакти буде додано до вибраної адресної книги. Можна переглядати і "
-"редагувати контакти з інших адресних книги."
-
-#: ../data/ui/contacts-window.ui.h:4
-msgid "Add contact"
-msgstr "Додати контакт"
-
-#: ../data/ui/contacts-window.ui.h:5
-msgid "Selection mode"
-msgstr "Режим вибору"
-
-#: ../data/ui/contacts-window.ui.h:7
-msgid "Edit"
-msgstr "Змінити"
-
-#: ../data/ui/contacts-window.ui.h:9
-msgid "Select Address Book"
-msgstr "Вибрати адресну книга"
-
-#: ../data/ui/contacts-window.ui.h:10
-msgid "Cancel setup"
-msgstr "Скасувати налаштування"
-
-#: ../data/ui/contacts-window.ui.h:11
-msgid "Setup complete"
-msgstr "Налаштування завершено"
-
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+#: ../src/org.gnome.Contacts.gschema.xml.h:1
 msgid "First-time setup done."
 msgstr "Перше налаштування виконано."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+#: ../src/org.gnome.Contacts.gschema.xml.h:2
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr "Вказати true, коли користувач запустив уперше майстра налаштувань."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:3
+#: ../src/org.gnome.Contacts.gschema.xml.h:3
 msgid "View subset"
 msgstr "Переглянути підмножину"
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:4
+#: ../src/org.gnome.Contacts.gschema.xml.h:4
 msgid "View contacts subset"
 msgstr "Переглянути підмножину контактів"
+
+#~ msgid "A contacts manager for GNOME"
+#~ msgstr "Керування контактами для GNOME"
+
+#~ msgid ""
+#~ "Contacts keeps and organize your contacts information. You can create, "
+#~ "edit, delete and link together pieces of information about your contacts. "
+#~ "Contacts aggregates the details from all your sources providing a "
+#~ "centralized place for managing your contacts."
+#~ msgstr ""
+#~ "Контакти зберігають і впорядковують вашу контактну інформацію. Можете "
+#~ "створювати, редагувати і сполучати інформацію про ваші контакти. Контакти "
+#~ "збирають подробиці з усіх джерел в одне ціле, надаючи центральне місце "
+#~ "для організування ваших контактів."
+
+#~ msgid ""
+#~ "Contacts will also integrate with online address books and automatically "
+#~ "link contacts from different online sources."
+#~ msgstr ""
+#~ "Контакти також інтегровані з мережевими адресними книгами і автоматично "
+#~ "сполучать контакти з різних джерел."
+
+#~ msgid "Contacts"
+#~ msgstr "Контакти"
+
+#~ msgid "friends;address book;"
+#~ msgstr "друзі;адресна книга;"
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "_Змінити адресну книжку…"
+
+#~ msgid "_Help"
+#~ msgstr "_Довідка"
+
+#~ msgid "_About"
+#~ msgstr "_Про програму"
+
+#~ msgid "_Quit"
+#~ msgstr "Ви_йти"
+
+#~ msgid "Home email"
+#~ msgstr "Домашня пошта"
+
+#~ msgid "Work email"
+#~ msgstr "Службова пошта"
+
+#~ msgid "Mobile phone"
+#~ msgstr "Мобільний номер"
+
+#~ msgid "Home phone"
+#~ msgstr "Домашній номер"
+
+#~ msgid "Work phone"
+#~ msgstr "Службовий номер"
+
+#~ msgid "Home address"
+#~ msgstr "Домашня адреса"
+
+#~ msgid "Work address"
+#~ msgstr "Робоча адреса"
+
+#~ msgid "Notes"
+#~ msgstr "Примітки"
+
+#~ msgid "Type to search"
+#~ msgstr "Введіть для пошуку…"
+
+#~ msgid "Link"
+#~ msgstr "Посилання"
+
+#~ msgid "Delete"
+#~ msgstr "Вилучити"
+
+#~ msgid "Loading"
+#~ msgstr "Завантаження"
+
+#~| msgid ""
+#~| "New contacts will be added to the selected address book.\n"
+#~| "You are able to view and edit contacts from other address books."
+#~ msgid ""
+#~ "New contacts will be added to the selected address book. You are able to "
+#~ "view and edit contacts from other address books."
+#~ msgstr ""
+#~ "Нові контакти буде додано до вибраної адресної книги. Можна переглядати і "
+#~ "редагувати контакти з інших адресних книги."
+
+#~ msgid "Add contact"
+#~ msgstr "Додати контакт"
+
+#~ msgid "Selection mode"
+#~ msgstr "Режим вибору"
+
+#~ msgid "Edit"
+#~ msgstr "Змінити"
+
+#~ msgid "Select Address Book"
+#~ msgstr "Вибрати адресну книга"
+
+#~ msgid "Cancel setup"
+#~ msgstr "Скасувати налаштування"
+
+#~ msgid "Setup complete"
+#~ msgstr "Налаштування завершено"
 
 #~ msgid "Personal email"
 #~ msgstr "Особиста пошта"
