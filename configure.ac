@@ -107,6 +107,7 @@ AC_CONFIG_FILES([Makefile
 		src/Makefile
 		man/Makefile
 		data/Makefile
+		data/icons/Makefile
 		po/Makefile.in
 		])
 

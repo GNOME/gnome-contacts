@@ -1,5 +1,7 @@
 NULL =
 
+SUBDIRS = icons
+
 org.gnome.Contacts.desktop: org.gnome.Contacts.desktop.in
 	$(AM_V_GEN)$(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 desktopdir = $(datadir)/applications
