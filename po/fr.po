@@ -5,15 +5,15 @@
 # Bruno Brouard <annoa.b@gmail.com>, 2011-12.
 # naybnet <naybnet@gmail.com>, 2014.
 # Guillaume Bernard <filorin@gmx.com>, 2014.
-# Charles Monzat <superboa@hotmail.fr>, 2016.
+# Charles Monzat <superboa@hotmail.fr>, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-25 17:38+0000\n"
-"PO-Revision-Date: 2016-10-23 10:26+0200\n"
+"POT-Creation-Date: 2017-01-18 21:56+0000\n"
+"PO-Revision-Date: 2017-02-23 15:36+0100\n"
 "Last-Translator: Charles Monzat <superboa@hotmail.fr>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -21,11 +21,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
-#: data/org.gnome.Contacts.appdata.xml.in:6 src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "GNOME Contacts"
+#: data/org.gnome.Contacts.appdata.xml.in:6
+#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
+msgid "Contacts"
+msgstr "Contacts"
 
 #: data/org.gnome.Contacts.appdata.xml.in:7
 #: data/org.gnome.Contacts.desktop.in:4
@@ -52,10 +53,6 @@ msgstr ""
 "Contacts permet également l'intégration de carnets d'adresses en ligne et "
 "relie automatiquement les contacts de différentes sources en ligne."
 
-#: data/org.gnome.Contacts.desktop.in:3
-msgid "Contacts"
-msgstr "Contacts"
-
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
@@ -67,8 +64,9 @@ msgid "x-office-address-book"
 msgstr "x-office-address-book"
 
 #: data/ui/app-menu.ui:6
-msgid "_Change Address Book..."
-msgstr "_Changer le carnet d'adresses..."
+#| msgid "Change Address Book"
+msgid "_Change Address Book…"
+msgstr "_Changement de carnet d'adresses…"
 
 #: data/ui/app-menu.ui:12
 msgid "_Help"
@@ -142,11 +140,11 @@ msgstr "Lier"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: data/ui/contacts-window.ui:83
+#: data/ui/contacts-window.ui:84
 msgid "Loading"
 msgstr "Chargement"
 
-#: data/ui/contacts-window.ui:122
+#: data/ui/contacts-window.ui:123
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -155,41 +153,41 @@ msgstr ""
 "avez la possibilité de parcourir et modifier les contacts de votre carnet "
 "d'adresse."
 
-#: data/ui/contacts-window.ui:167 src/contacts-window.vala:233
+#: data/ui/contacts-window.ui:168 src/contacts-window.vala:233
 msgid "All Contacts"
 msgstr "Tous les contacts"
 
-#: data/ui/contacts-window.ui:182
+#: data/ui/contacts-window.ui:183
 msgid "Add contact"
 msgstr "Ajouter un contact"
 
-#: data/ui/contacts-window.ui:210
+#: data/ui/contacts-window.ui:211
 msgid "Selection mode"
 msgstr "Mode de sélection"
 
-#: data/ui/contacts-window.ui:245 data/ui/contacts-window.ui:303
+#: data/ui/contacts-window.ui:246 data/ui/contacts-window.ui:304
 #: src/contacts-app.vala:62 src/contacts-avatar-dialog.vala:255
 msgid "Cancel"
 msgstr "Annuler"
 
-#: data/ui/contacts-window.ui:261
+#: data/ui/contacts-window.ui:262
 msgid "Edit"
 msgstr "Modifier"
 
-#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
+#: data/ui/contacts-window.ui:278 data/ui/contacts-window.ui:324
 #: src/contacts-window.vala:265
 msgid "Done"
 msgstr "Terminé"
 
-#: data/ui/contacts-window.ui:294
+#: data/ui/contacts-window.ui:295
 msgid "Select Address Book"
 msgstr "Choisir le carnet d'adresses"
 
-#: data/ui/contacts-window.ui:306
+#: data/ui/contacts-window.ui:307
 msgid "Cancel setup"
 msgstr "Annuler la configuration initiale"
 
-#: data/ui/contacts-window.ui:326
+#: data/ui/contacts-window.ui:327
 msgid "Setup complete"
 msgstr "Configuration initiale terminée"
 
@@ -236,6 +234,10 @@ msgid "translator-credits"
 msgstr ""
 "Alexandre Daubois <alex.daubois@gmail.com>,\n"
 "Bruno Brouard <annoa.b@gmail.com>."
+
+#: src/contacts-app.vala:129
+msgid "GNOME Contacts"
+msgstr "GNOME Contacts"
 
 #: src/contacts-app.vala:130
 msgid "About GNOME Contacts"
@@ -433,12 +435,12 @@ msgstr "Vous devez saisir des données"
 msgid "No primary addressbook configured"
 msgstr "Aucun carnet d'adresses principal configuré"
 
-#: src/contacts-contact-pane.vala:486
+#: src/contacts-contact-pane.vala:485
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Impossible de créer les nouveaux contacts : %s"
 
-#: src/contacts-contact-pane.vala:497
+#: src/contacts-contact-pane.vala:496
 msgid "Unable to find newly created contact"
 msgstr "Impossible de trouver les contacts récemment ajoutés"
 
@@ -696,7 +698,8 @@ msgstr[1] "%d contacts supprimés"
 
 #: src/contacts-window.vala:486
 #, c-format
-msgid "Contact deleted: \"%s\""
+#| msgid "Contact deleted: \"%s\""
+msgid "Contact deleted: “%s”"
 msgstr "Contact supprimé : « %s »"
 
 #: src/contacts-window.vala:521
@@ -726,6 +729,9 @@ msgstr "Afficher le sous-ensemble"
 #: src/org.gnome.Contacts.gschema.xml:11
 msgid "View contacts subset"
 msgstr "Afficher le sous-ensemble de contacts"
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "_Changer le carnet d'adresses..."
 
 #~ msgid "Personal email"
 #~ msgstr "Courriel personnel"
