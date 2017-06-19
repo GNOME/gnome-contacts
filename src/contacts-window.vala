@@ -143,7 +143,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       view_switcher.visible_child_name = "content-view";
       set_titlebar (content_header_bar);
     } else {
-      var change_book_action = app.lookup_action ("change_book") as GLib.SimpleAction;
+      var change_book_action = app.lookup_action ("change-book") as GLib.SimpleAction;
       if (change_book_action != null) {
 	change_book_action.set_enabled (false);
       }
