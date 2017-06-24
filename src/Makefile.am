@@ -3,7 +3,6 @@ NULL =
 AM_CPPFLAGS = \
 	-include config.h \
 	$(CONTACTS_CFLAGS) \
-	-I$(top_srcdir)/libgd \
 	-DLOCALEDIR=\""$(localedir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\" \
@@ -11,7 +10,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 AM_VALAFLAGS = \
-	--vapidir=../vapi --vapidir=../libgd --pkg config --pkg custom --pkg gd-1.0 \
+	--vapidir=../vapi --pkg config --pkg custom \
 	@CONTACTS_PACKAGES@ \
 	--target-glib=2.38 --gresources=$(top_srcdir)/data/contacts.gresource.xml \
 	$(NULL)
@@ -31,6 +30,7 @@ vala_sources = \
 	contacts-contact-editor.vala \
 	contacts-contact-pane.vala \
 	contacts-types.vala \
+	contacts-in-app-notification.vala \
 	contacts-list-pane.vala \
 	contacts-linked-accounts-dialog.vala \
 	contacts-linking.vala \
@@ -63,7 +63,7 @@ gnome_contacts_SOURCES = \
 	contacts-esd-setup.c \
 	$(NULL)
 
-gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm $(top_builddir)/libgd/libgd.la
+gnome_contacts_LDADD = $(CONTACTS_LIBS) -lm
 
 if BUILD_CHEESE
 gnome_contacts_LDADD += $(CHEESE_LIBS)

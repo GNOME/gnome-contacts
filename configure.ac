@@ -100,20 +100,11 @@ AS_IF([test "x$enable_man_pages" != "xno"],
 AM_CONDITIONAL([BUILD_MAN_PAGES], [test "x$have_manutils" = "xyes"])
 
 AC_CONFIG_FILES([Makefile
-		libgd/Makefile
 		vapi/Makefile
 		src/Makefile
 		man/Makefile
 		data/Makefile
 		po/Makefile.in
 		])
-
-dnl libgd
-LIBGD_INIT([
-  gtk-hacks
-  notification
-  static
-  vapi
-])
 
 AC_OUTPUT

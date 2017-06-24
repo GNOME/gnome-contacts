@@ -36,8 +36,9 @@ EXTRA_DIST = \
 	contacts.gresource.xml \
 	ui/app-menu.ui \
 	ui/contacts-address-map.ui \
-	ui/contacts-window.ui \
+	ui/contacts-in-app-notification.ui \
 	ui/contacts-list-pane.ui \
+	ui/contacts-window.ui \
 	ui/style.css \
 	$(NULL)
 

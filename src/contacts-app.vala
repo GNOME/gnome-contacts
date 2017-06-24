@@ -285,17 +285,8 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void show_message (string message) {
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    var l = new Label (message);
-    l.set_line_wrap (true);
-    l.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
-    notification.add (l);
-
-    notification.show_all ();
+    var notification = new InAppNotification (message);
+    notification.show ();
     window.add_notification (notification);
   }
 

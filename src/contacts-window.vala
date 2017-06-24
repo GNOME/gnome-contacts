@@ -282,8 +282,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  public void add_notification (Widget notification) {
-    overlay.add_overlay (notification);
+  public void add_notification (InAppNotification notification) {
+    this.overlay.add_overlay (notification);
+    notification.show ();
   }
 
   public void set_shown_contact (Contact? c) {
@@ -401,31 +402,21 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         operation = link_contacts_list.end (result);
       });
 
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
     string msg = ngettext ("%d contacts linked",
                            "%d contacts linked",
                            contact_list.size).printf (contact_list.size);
 
     var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (new Label (msg));
-    g.add (b);
 
-    notification.show_all ();
-    add_notification (notification);
-
+    var notification = new InAppNotification (msg);
     /* signal handlers */
     b.clicked.connect ( () => {
         /* here, we will unlink the thing in question */
         operation.undo.begin ();
-
         notification.dismiss ();
       });
+
+    add_notification (notification);
   }
 
   void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
@@ -433,89 +424,68 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     set_shown_contact (null);
     select_button.set_active (false);
 
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
     string msg = ngettext ("%d contact deleted",
                            "%d contacts deleted",
                            contact_list.size).printf (contact_list.size);
 
     var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (new Label (msg));
-    g.add (b);
 
-    notification.show_all ();
-    add_notification (notification);
+    var notification = new InAppNotification (msg, b);
 
     /* signal handlers */
     bool really_delete = true;
-    notification.dismissed.connect ( () => {
-        if (really_delete) {
-          foreach (var c in contact_list) {
-            c.remove_personas.begin ();
-          }
-        }
-      });
     b.clicked.connect ( () => {
         really_delete = false;
         notification.dismiss ();
+      });
+    notification.dismissed.connect ( () => {
+        if (really_delete)
+          foreach (var c in contact_list)
+            c.remove_personas.begin ();
+      });
+
+    add_notification (notification);
+
 	foreach (var c in contact_list) {
 	  c.show ();
 	}
 	set_shown_contact (contact_list.last ());
-      });
   }
 
   [GtkCallback]
   void contact_pane_delete_contact_cb (Contact contact) {
     /* unsetting edit-mode */
     set_shown_contact (null);
-    select_button.set_active (false);
+    this.select_button.active = false;
 
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
-    var label = new Label (_("Contact deleted: “%s”").printf (contact.display_name));
-    label.set_max_width_chars (45);
-    label.set_ellipsize (Pango.EllipsizeMode.END);
+    // XXX
+    var msg = _("Contact deleted: “%s”").printf (contact.display_name);
     var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (label);
-    g.add (b);
+
+    var notification = new InAppNotification (msg, b);
+    // Don't wrap (default), but ellipsize
+    notification.message_label.wrap = false;
+    notification.message_label.max_width_chars = 45;
+    notification.message_label.ellipsize = Pango.EllipsizeMode.END;
 
     bool really_delete = true;
-    notification.show_all ();
     notification.dismissed.connect ( () => {
         if (really_delete)
           contact.remove_personas.begin ( () => {
               contact.show ();
             });
       });
+    add_notification (notification);
     b.clicked.connect ( () => {
         really_delete = false;
         notification.dismiss ();
         contact.show ();
         set_shown_contact (contact);
       });
-    add_notification (notification);
   }
 
   [GtkCallback]
   void contact_pane_contacts_linked_cb (string? main_contact, string linked_contact, LinkOperation operation) {
-    var notification = new Gd.Notification ();
-    notification.timeout = 5;
-
-    var g = new Grid ();
-    g.set_column_spacing (8);
-    notification.add (g);
-
     string msg;
     if (main_contact != null)
       msg = _("%s linked to %s").printf (main_contact, linked_contact);
@@ -523,14 +493,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       msg = _("%s linked to the contact").printf (linked_contact);
 
     var b = new Button.with_mnemonic (_("_Undo"));
-    g.add (new Label (msg));
-    g.add (b);
+    var notification = new InAppNotification (msg, b);
 
-    notification.show_all ();
     b.clicked.connect ( () => {
-	notification.dismiss ();
-	operation.undo.begin ();
+        notification.dismiss ();
+        operation.undo.begin ();
       });
+
     add_notification (notification);
   }
 }
