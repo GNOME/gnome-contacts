@@ -458,7 +458,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     set_shown_contact (null);
     this.select_button.active = false;
 
-    // XXX
     var msg = _("Contact deleted: “%s”").printf (contact.display_name);
     var b = new Button.with_mnemonic (_("_Undo"));
 
