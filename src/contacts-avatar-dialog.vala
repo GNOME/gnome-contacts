@@ -19,16 +19,42 @@
 using Gtk;
 using Folks;
 
+/**
+ * The AvatarDialog can be used to choose the avatar for a contact.
+ * This can be done by either choosing a stock thumbnail, an image file
+ * provided by the user, or -if cheese is enabled- by using a webcam.
+ *
+ * After a user has initially chosen an avatar, we provide a cropping tool.
+ */
+[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-avatar-dialog.ui")]
 public class Contacts.AvatarDialog : Dialog {
-  private Gnome.DesktopThumbnailFactory thumbnail_factory;
-  const int main_size = 128;
-  const int icons_size = 64;
-  const int n_columns = 6;
+  const int MAIN_SIZE = 128;
+  const int ICONS_SIZE = 64;
+
   private Contact contact;
+
+  // This will provide the default thumbnails
+  private Gnome.DesktopThumbnailFactory thumbnail_factory;
+
+  [GtkChild]
+  private Grid grid;
+  [GtkChild]
+  private Label contact_name_label;
+  [GtkChild]
   private Stack views_stack;
+  [GtkChild]
+  private FlowBox thumbnail_grid;
+  [GtkChild]
+  private Grid crop_page;
   private Um.CropArea crop_area;
-  private Grid view_grid;
-  private ContactFrame main_frame;
+  [GtkChild]
+  private Grid photobooth_page;
+  [GtkChild]
+  private Button webcam_button;
+  [GtkChild]
+  private Box webcam_button_box;
+
+  private ContactFrame current_avatar;
 
 #if HAVE_CHEESE
   private Cheese.Flash flash;
@@ -39,9 +65,86 @@ public class Contacts.AvatarDialog : Dialog {
 
   private Gdk.Pixbuf? new_pixbuf;
 
+  /**
+   * Fired after the user has definitely chosen a new avatar.
+   */
   public signal void set_avatar (GLib.Icon avatar_icon);
 
-  Gdk.Pixbuf scale_pixbuf_for_avatar_use (Gdk.Pixbuf pixbuf) {
+  public AvatarDialog (Contact? contact) {
+    Object (
+      transient_for: App.app.window,
+      use_header_bar: 1
+    );
+
+    this.thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
+    this.contact = contact;
+
+    // Load the current avatar
+    this.current_avatar = new ContactFrame (MAIN_SIZE);
+    if (contact != null) {
+      contact.keep_widget_uptodate (this.current_avatar, (w) => {
+          (w as ContactFrame).set_image (contact.individual, contact);
+        });
+    } else {
+      this.current_avatar.set_image (null, null);
+    }
+    this.current_avatar.set_hexpand (false);
+    this.current_avatar.show ();
+    this.grid.attach (this.current_avatar, 0, 0);
+
+    if (contact != null)
+      this.contact_name_label.label = contact.display_name;
+
+#if HAVE_CHEESE
+    this.webcam_button_box.show ();
+
+    // Look for camera devices.
+    this.camera_monitor = new Cheese.CameraDeviceMonitor ();
+    this.camera_monitor.added.connect ( () => {
+        this.num_cameras++;
+        this.webcam_button.sensitive = (this.num_cameras > 0);
+      });
+    this.camera_monitor.removed.connect ( () => {
+        this.num_cameras--;
+        this.webcam_button.sensitive = (this.num_cameras > 0);
+      });
+    // Do this in idle, or it blocks the whole UI
+    Idle.add ( () => {
+        this.camera_monitor.coldplug ();
+        return false;
+      });
+#else
+    // Don't show the camera button
+    this.webcam_button_box.hide ();
+#endif
+
+#if HAVE_CHEESE
+    // Photobooth page
+    this.cheese = new Cheese.Widget ();
+    this.cheese.set_vexpand (true);
+    this.cheese.set_hexpand (true);
+    this.cheese.set_no_show_all (true);
+    this.photobooth_page.attach (cheese, 0, 0);
+    this.photobooth_page.show ();
+
+    this.flash = new Cheese.Flash (this);
+#endif
+
+    this.views_stack.set_visible_child_name ("thumbnail-page");
+    /*
+    var remove_button = new ToolButton (null, null);
+    remove_button.set_icon_name ("list-remove-symbolic");
+    remove_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
+    remove_button.is_important = true;
+    toolbar.add (remove_button);
+    remove_button.clicked.connect ( (button) => {
+       });
+    */
+
+    update_thumbnail_grid ();
+  }
+
+  private Gdk.Pixbuf scale_pixbuf_for_avatar_use (Gdk.Pixbuf pixbuf) {
     int w = pixbuf.get_width ();
     int h = pixbuf.get_height ();
 
@@ -60,12 +163,12 @@ public class Contacts.AvatarDialog : Dialog {
   }
 
   private ContactFrame create_frame (Gdk.Pixbuf source_pixbuf) {
-    var image_frame = new ContactFrame (icons_size, true);
-    var pixbuf = source_pixbuf.scale_simple (icons_size, icons_size, Gdk.InterpType.HYPER);
+    var image_frame = new ContactFrame (ICONS_SIZE, true);
+    var pixbuf = source_pixbuf.scale_simple (ICONS_SIZE, ICONS_SIZE, Gdk.InterpType.HYPER);
     image_frame.set_pixbuf (pixbuf);
     var avatar_pixbuf = scale_pixbuf_for_avatar_use (source_pixbuf);
     image_frame.clicked.connect ( () => {
-	selected_pixbuf (avatar_pixbuf);
+        selected_pixbuf (avatar_pixbuf);
       });
     return image_frame;
   }
@@ -97,55 +200,30 @@ public class Contacts.AvatarDialog : Dialog {
   }
 
   private void selected_pixbuf (Gdk.Pixbuf pixbuf) {
-    var p = pixbuf.scale_simple (main_size, main_size, Gdk.InterpType.HYPER);
-    main_frame.set_pixbuf (p);
+    var p = pixbuf.scale_simple (MAIN_SIZE, MAIN_SIZE, Gdk.InterpType.HYPER);
+    this.current_avatar.set_pixbuf (p);
 
-    new_pixbuf = pixbuf;
+    this.new_pixbuf = pixbuf;
     set_response_sensitive (ResponseType.OK, true);
   }
 
-  private void update_grid () {
-    int i = 0;
-    int j = 0;
-
-    if (contact != null) {
+  private void update_thumbnail_grid () {
+    if (this.contact != null) {
       foreach (var p in contact.individual.personas) {
-	ContactFrame? frame = frame_for_persona (p);
-	if (frame != null) {
-	  view_grid.attach (frame, i, j, 1, 1);
-	  i++;
-	  if (i >= n_columns) {
-	    i -= n_columns;
-	    j++;
-	  }
-	}
+        ContactFrame? frame = frame_for_persona (p);
+        if (frame != null)
+          this.thumbnail_grid.add (frame);
       }
-    }
-
-    if (i != 0) {
-      i = 0;
-      j++;
-    }
-
-    if (j != 0) {
-      var s = new Separator (Orientation.HORIZONTAL);
-      view_grid.attach (s, 0, j++, n_columns, 1);
     }
 
     var stock_files = Utils.get_stock_avatars ();
     foreach (var file_name in stock_files) {
       ContactFrame? frame = frame_for_filename (file_name);
-      if (frame != null) {
-	view_grid.attach (frame, i, j, 1, 1);
-	i++;
-	if (i >= n_columns) {
-	  i -= n_columns;
-	  j++;
-	}
-      }
+      if (frame != null)
+        this.thumbnail_grid.add (frame);
     }
 
-    view_grid.show_all ();
+    this.thumbnail_grid.show_all ();
   }
 
   public void update_preview (FileChooser chooser) {
@@ -157,51 +235,74 @@ public class Contacts.AvatarDialog : Dialog {
 
       var file = File.new_for_uri (uri);
       try {
-	var file_info = file.query_info (FileAttribute.STANDARD_CONTENT_TYPE,
-					 FileQueryInfoFlags.NONE, null);
-	if (file_info != null) {
-	  var mime_type = file_info.get_content_type ();
+        var file_info = file.query_info (FileAttribute.STANDARD_CONTENT_TYPE,
+                         FileQueryInfoFlags.NONE, null);
+        if (file_info != null) {
+          var mime_type = file_info.get_content_type ();
 
-	  if (mime_type != null)
-	    pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
-	}
+          if (mime_type != null)
+            pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
+        }
       } catch (GLib.Error e) {
       }
 
-      (chooser as Dialog).set_response_sensitive (ResponseType.ACCEPT,
-						  (pixbuf != null));
+      (chooser as Dialog).set_response_sensitive (ResponseType.ACCEPT, (pixbuf != null));
 
       if (pixbuf != null)
-	preview.set_from_pixbuf (pixbuf);
+        preview.set_from_pixbuf (pixbuf);
       else
-	preview.set_from_icon_name ("dialog-question",
-				    IconSize.DIALOG);
+        preview.set_from_icon_name ("dialog-question", IconSize.DIALOG);
     }
 
     chooser.set_preview_widget_active (true);
   }
 
   private void set_crop_widget (Gdk.Pixbuf pixbuf) {
-    var frame_grid = views_stack.get_child_by_name ("crop-page") as Grid;
-    crop_area = new Um.CropArea ();
-    crop_area.set_vexpand (true);
-    crop_area.set_hexpand (true);
-    crop_area.set_min_size (48, 48);
-    crop_area.set_constrain_aspect (true);
-    crop_area.set_picture (pixbuf);
+    this.crop_area = new Um.CropArea ();
+    this.crop_area.set_vexpand (true);
+    this.crop_area.set_hexpand (true);
+    this.crop_area.set_min_size (48, 48);
+    this.crop_area.set_constrain_aspect (true);
+    this.crop_area.set_picture (pixbuf);
 
-    frame_grid.attach (crop_area, 0, 0, 1, 1);
-    frame_grid.show_all ();
+    this.crop_page.attach (this.crop_area, 0, 0);
+    this.crop_page.show_all ();
 
-    views_stack.set_visible_child_name ("crop-page");
+    this.views_stack.set_visible_child_name ("crop-page");
   }
 
-  private void select_avatar_file_cb () {
+  public override void response (int response_id) {
+    if (response_id == ResponseType.OK && this.new_pixbuf != null) {
+      try {
+        uint8[] buffer;
+        if (this.new_pixbuf.save_to_buffer (out buffer, "png", null)) {
+          var icon = new BytesIcon (new Bytes (buffer));
+          set_avatar (icon);
+        } else {
+          /* Failure. Fall through. */
+        }
+      } catch {
+      }
+    }
+
+#if HAVE_CHEESE
+    /* Ensure the Vala garbage collector disposes of the Cheese widget.
+     * This prevents the 'Device or resource busy' warnings, see:
+     *   https://bugzilla.gnome.org/show_bug.cgi?id=700959
+     */
+    this.cheese = null;
+#endif
+
+    this.destroy ();
+  }
+
+  [GtkCallback]
+  private void select_avatar_file_cb (Button button) {
     var chooser = new FileChooserDialog (_("Browse for more pictures"),
-					 (Gtk.Window)this.get_toplevel (),
-					 FileChooserAction.OPEN,
-					 _("_Cancel"), ResponseType.CANCEL,
-					 _("_Open"), ResponseType.ACCEPT);
+                                         (Gtk.Window)this.get_toplevel (),
+                                         FileChooserAction.OPEN,
+                                         _("_Cancel"), ResponseType.CANCEL,
+                                         _("_Open"), ResponseType.ACCEPT);
     chooser.set_modal (true);
     chooser.set_local_only (false);
     var preview = new Image ();
@@ -217,266 +318,72 @@ public class Contacts.AvatarDialog : Dialog {
       chooser.set_current_folder (folder);
 
     chooser.response.connect ( (response) => {
-	if (response != ResponseType.ACCEPT) {
-	  chooser.destroy ();
-	  return;
-	}
-	try {
-	  var file = File.new_for_uri (chooser.get_uri ());
-	  var in_stream = file.read ();
-	  var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
-	  in_stream.close ();
-	  if (pixbuf.get_width () > 128 || pixbuf.get_height () > 128) {
-          set_crop_widget (pixbuf);
-	  } else
-	    selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
+        if (response != ResponseType.ACCEPT) {
+          chooser.destroy ();
+          return;
+        }
+        try {
+          var file = File.new_for_uri (chooser.get_uri ());
+          var in_stream = file.read ();
+          var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
+          in_stream.close ();
+          if (pixbuf.get_width () > 128 || pixbuf.get_height () > 128)
+            set_crop_widget (pixbuf);
+          else
+            selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
 
-	  update_grid ();
-	} catch {
-	}
+          update_thumbnail_grid ();
+        } catch {
+        }
 
-	chooser.destroy ();
+        chooser.destroy ();
       });
 
     chooser.present ();
   }
 
-  public AvatarDialog (Contact? contact) {
-    Object (use_header_bar: 1);
-
-    thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
-    this.contact = contact;
-    set_title (_("Select Picture"));
-    set_transient_for (App.app.window);
-    set_modal (true);
-
-    var btn = add_button (_("Select"), ResponseType.OK);
-    btn.get_style_context ().add_class ("suggested-action");
-    add_button (_("Cancel"), ResponseType.CANCEL);
-
-    set_default_response (ResponseType.OK);
-    set_response_sensitive (ResponseType.OK, false);
-
-    var grid = new Grid ();
-    grid.set_border_width (8);
-    grid.set_column_spacing (16);
-    var container = (get_content_area () as Container);
-    container.add (grid);
-
-    main_frame = new ContactFrame (main_size);
-    if (contact != null) {
-      contact.keep_widget_uptodate (main_frame, (w) => {
-	  (w as ContactFrame).set_image (contact.individual, contact);
-	});
-    } else {
-      main_frame.set_image (null, null);
-    }
-    main_frame.set_hexpand (false);
-    grid.attach (main_frame, 0, 0, 1, 1);
-
-    var label = new Label ("");
-    if (contact != null) {
-      label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name));
-    } else {
-      label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", _("New Contact")));
-    }
-    label.set_valign (Align.START);
-    label.set_halign (Align.START);
-    label.set_hexpand (true);
-    label.set_margin_top (4);
-    label.xalign = 0.0f;
-    label.set_ellipsize (Pango.EllipsizeMode.END);
-    grid.attach (label, 1, 0, 1, 1);
-
-    grid.set_row_spacing (11);
-
-    var frame = new Frame (null);
-    frame.get_style_context ().add_class ("contacts-avatar-frame");
-    grid.attach (frame, 0, 1, 2, 1);
-
-    views_stack = new Stack ();
-
-    frame.add (views_stack);
-
-    var frame_grid = new Grid ();
-    frame_grid.set_orientation (Orientation.VERTICAL);
-
-    /* main view */
-    var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_vexpand (true);
-    scrolled.set_hexpand (true);
-    scrolled.set_size_request (-1, 300);
-
-    frame_grid.add (scrolled);
-
-    view_grid = new Grid ();
-    scrolled.add (view_grid);
-
-    var actionbar = new ActionBar ();
-    frame_grid.add (actionbar);
-
-    var the_add_button = new Button.from_icon_name ("list-add-symbolic",
-						    IconSize.MENU);
-    the_add_button.clicked.connect (select_avatar_file_cb);
-
+  [GtkCallback]
+  private void on_webcam_button_clicked (Button button) {
 #if HAVE_CHEESE
-    var webcam_button = new Button.from_icon_name ("camera-photo-symbolic",
-						    IconSize.MENU);
-    webcam_button.sensitive = false;
+    this.views_stack.set_visible_child_name ("photobooth-page");
+    this.cheese.show ();
+#endif
+  }
 
-    camera_monitor = new Cheese.CameraDeviceMonitor ();
-    camera_monitor.added.connect ( () => {
-	num_cameras++;
-	webcam_button.sensitive = num_cameras > 0;
-    });
-    camera_monitor.removed.connect ( () => {
-	num_cameras--;
-	webcam_button.sensitive = num_cameras > 0;
-    });
-    camera_monitor.coldplug ();
-
-    webcam_button.clicked.connect ( (button) => {
-	views_stack.set_visible_child_name ("photobooth-page");
-	cheese.show ();
+  [GtkCallback]
+  private void on_photobooth_page_select_button_clicked (Button button) {
+#if HAVE_CHEESE
+    var camera = this.cheese.get_camera () as Cheese.Camera;
+    this.flash.fire ();
+    camera.photo_taken.connect ( (pix) => {
+        set_crop_widget (pix);
+        this.cheese.hide ();
       });
 
-    var bbox = new Box (Orientation.HORIZONTAL, 0);
-    bbox.get_style_context ().add_class ("linked");
-    bbox.add (the_add_button);
-    bbox.add (webcam_button);
-    actionbar.pack_start (bbox);
-
-#else
-    actionbar.pack_start (the_add_button);
+    if (!camera.take_photo_pixbuf ())
+      warning ("Unable to take photo");
 #endif
+  }
 
-    frame_grid.show_all ();
-    views_stack.add_named (frame_grid, "thumbnail-factory");
-
-    /* crop page */
-    frame_grid = new Grid ();
-    frame_grid.set_orientation (Orientation.VERTICAL);
-
-    actionbar = new ActionBar ();
-    frame_grid.attach (actionbar, 0, 1, 1, 1);
-
-    var accept_button = new Button.from_icon_name ("object-select-symbolic",
-						   IconSize.MENU);
-    accept_button.clicked.connect ( (button) => {
-      var pix = crop_area.get_picture ();
-      selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
-      crop_area.destroy ();
-      views_stack.set_visible_child_name ("thumbnail-factory");
-    });
-
-    var cancel_button = new Button.from_icon_name ("edit-undo-symbolic",
-						   IconSize.MENU);
-    cancel_button.clicked.connect ( (button) => {
-	crop_area.destroy ();
-	views_stack.set_visible_child_name ("thumbnail-factory");
-    });
-
-    var bbox1 = new Box (Orientation.HORIZONTAL, 0);
-    bbox1.get_style_context ().add_class ("linked");
-    bbox1.add (accept_button);
-    bbox1.add (cancel_button);
-    actionbar.pack_start (bbox1);
-
-    frame_grid.show_all ();
-    views_stack.add_named (frame_grid, "crop-page");
-
+  [GtkCallback]
+  private void on_photobooth_page_cancel_button_clicked (Button button) {
 #if HAVE_CHEESE
-    /* photobooth page */
-    frame_grid = new Grid ();
-    frame_grid.set_orientation (Orientation.VERTICAL);
-
-    cheese = new Cheese.Widget ();
-    cheese.set_vexpand (true);
-    cheese.set_hexpand (true);
-    cheese.set_no_show_all (true);
-    frame_grid.add (cheese);
-
-    flash = new Cheese.Flash (this);
-
-    actionbar = new ActionBar ();
-    frame_grid.attach (actionbar, 0, 1, 1, 1);
-
-    accept_button = new Button.from_icon_name ("object-select-symbolic",
-					       IconSize.MENU);
-
-    accept_button.clicked.connect ( (button) => {
-	var camera = cheese.get_camera () as Cheese.Camera;
-
-        flash.fire ();
-
-	camera.photo_taken.connect ( (pix) => {
-	    set_crop_widget (pix);
-	    cheese.hide ();
-	  });
-
-	if (!camera.take_photo_pixbuf ()) {
-	    warning ("Unable to take photo");
-	}
-      });
-
-    cancel_button = new Button.from_icon_name ("edit-undo-symbolic",
-					       IconSize.MENU);
-    cancel_button.clicked.connect ( (button) => {
-	views_stack.set_visible_child_name ("thumbnail-factory");
-	cheese.hide ();
-    });
-
-    bbox1 = new Box (Orientation.HORIZONTAL, 0);
-    bbox1.get_style_context ().add_class ("linked");
-    bbox1.add (accept_button);
-    bbox1.add (cancel_button);
-    actionbar.pack_start (bbox1);
-
-    frame_grid.show_all ();
-    views_stack.add_named (frame_grid, "photobooth-page");
+    this.views_stack.set_visible_child_name ("thumbnail-page");
+    this.cheese.hide ();
 #endif
+  }
 
-    views_stack.set_visible_child_name ("thumbnail-factory");
-    /*
-    var remove_button = new ToolButton (null, null);
-    remove_button.set_icon_name ("list-remove-symbolic");
-    remove_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    remove_button.is_important = true;
-    toolbar.add (remove_button);
-    remove_button.clicked.connect ( (button) => {
-		});
-    */
+  [GtkCallback]
+  private void on_crop_page_select_button_clicked (Button button) {
+    var pix = crop_area.get_picture ();
+    selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
+    this.crop_area.destroy ();
+    this.views_stack.set_visible_child_name ("thumbnail-page");
+  }
 
-    response.connect ( (response_id) => {
-	if (response_id == ResponseType.OK) {
-	  if (new_pixbuf != null) {
-	    try {
-	      uint8[] buffer;
-	      if (new_pixbuf.save_to_buffer (out buffer, "png", null)) {
-	        var icon = new BytesIcon (new Bytes (buffer));
-	        set_avatar (icon);
-	      } else {
-	        /* Failure. Fall through. */
-	      }
-	    } catch {
-	    }
-	  }
-	}
-
-#if HAVE_CHEESE
-	/* Ensure the Vala garbage collector disposes of the Cheese widget.
-	 * This prevents the 'Device or resource busy' warnings, see:
-	 *   https://bugzilla.gnome.org/show_bug.cgi?id=700959
-	 */
-	cheese = null;
-#endif
-
-	this.destroy ();
-      });
-
-    update_grid ();
-
-    grid.show_all ();
+  [GtkCallback]
+  private void on_crop_page_cancel_button_clicked (Button button) {
+    this.crop_area.destroy ();
+    this.views_stack.set_visible_child_name ("thumbnail-page");
   }
 }
