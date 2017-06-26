@@ -802,6 +802,7 @@ public class Contacts.ContactEditor : Grid {
     edit_toolbar.pack_start (linked_button);
 
     remove_button = new Button.with_label (_("Remove Contact"));
+    remove_button.get_style_context ().add_class ("destructive-action");
     edit_toolbar.pack_end (remove_button);
 
     edit_toolbar.show_all ();
