@@ -61,14 +61,23 @@ public class Contacts.AddressEditor : Box {
   }
 }
 
+[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-editor.ui")]
 public class Contacts.ContactEditor : Grid {
-  Contact contact;
+  private Contact contact;
 
-  Grid container_grid;
-  weak Widget focus_widget;
+  private Grid container_grid;
+  private weak Widget focus_widget;
 
+  [GtkChild]
+  private ScrolledWindow main_sw;
+
+  [GtkChild]
+  private MenuButton add_detail_button;
+
+  [GtkChild]
   public Button linked_button;
 
+  [GtkChild]
   public Button remove_button;
 
   public struct PropertyData {
@@ -751,70 +760,32 @@ public class Contacts.ContactEditor : Grid {
   }
 
   public ContactEditor (SimpleActionGroup editor_actions) {
-    set_orientation (Orientation.VERTICAL);
-
-    var main_sw = new ScrolledWindow (null, null);
-    add (main_sw);
-
-    main_sw.set_shadow_type (ShadowType.NONE);
-    main_sw.set_hexpand (true);
-    main_sw.set_vexpand (true);
-    main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-
     var hcenter = new Center ();
     hcenter.max_width = 600;
     hcenter.xalign = 0.0;
 
-    container_grid = new Grid ();
-    container_grid.set_row_spacing (12);
-    container_grid.set_column_spacing (12);
-    container_grid.set_vexpand (true);
-    container_grid.set_hexpand (true);
-    container_grid.margin = 36;
-    container_grid.set_margin_bottom (24);
+    this.container_grid = new Grid ();
+    this.container_grid.set_row_spacing (12);
+    this.container_grid.set_column_spacing (12);
+    this.container_grid.set_vexpand (true);
+    this.container_grid.set_hexpand (true);
+    this.container_grid.margin = 36;
+    this.container_grid.set_margin_bottom (24);
 
-    hcenter.add (container_grid);
-    main_sw.add (hcenter);
-    container_grid.set_focus_vadjustment (main_sw.get_vadjustment ());
+    hcenter.add (this.container_grid);
+    this.main_sw.add (hcenter);
+    this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
 
-    main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
-    main_sw.get_child ().get_style_context ().add_class ("view");
+    this.main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
+    this.main_sw.get_child ().get_style_context ().add_class ("view");
 
-    var edit_toolbar = new ActionBar ();
+    this.main_sw.show_all ();
 
-    var builder = load_ui ("app-menu.ui");
-    var gmenu = builder.get_object ("edit-contact") as MenuModel;
+    this.add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
 
-    var add_detail_button = new Gtk.MenuButton ();
-    add_detail_button.use_popover = true;
-    add_detail_button.set_menu_model (gmenu);
-    add_detail_button.set_direction (ArrowType.UP);
-    add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
+    this.writable_personas = new HashMap<string, HashMap<string, Field?>> ();
 
-    var box = new Box (Orientation.HORIZONTAL, 6);
-    box.add (new Label (_("New Detail")));
-    box.add (new Image.from_icon_name ("go-down-symbolic", IconSize.BUTTON));
-    add_detail_button.add (box);
-
-    edit_toolbar.pack_start (add_detail_button);
-
-    linked_button = new Button.with_label (_("Linked Accounts"));
-    edit_toolbar.pack_start (linked_button);
-
-    remove_button = new Button.with_label (_("Remove Contact"));
-    remove_button.get_style_context ().add_class ("destructive-action");
-    edit_toolbar.pack_end (remove_button);
-
-    edit_toolbar.show_all ();
-    add (edit_toolbar);
-
-    container_grid.show_all ();
-    main_sw.show ();
-    show_all ();
-
-    writable_personas = new HashMap<string, HashMap<string, Field?> > ();
-
-    container_grid.size_allocate.connect_after (size_allocate_cb);
+    this.container_grid.size_allocate.connect_after (size_allocate_cb);
   }
 
   public void edit (Contact c) {

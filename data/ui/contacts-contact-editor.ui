@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+
+  <menu id="edit-contact-menu">
+    <item>
+      <attribute name="action">edit.add.email-addresses.home</attribute>
+      <attribute name="label" translatable="yes">Home email</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.email-addresses.work</attribute>
+      <attribute name="label" translatable="yes">Work email</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.phone-numbers.cell</attribute>
+      <attribute name="label" translatable="yes">Mobile phone</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.phone-numbers.home</attribute>
+      <attribute name="label" translatable="yes">Home phone</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.phone-numbers.work</attribute>
+      <attribute name="label" translatable="yes">Work phone</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.urls</attribute>
+      <attribute name="label" translatable="yes">Website</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.nickname</attribute>
+      <attribute name="label" translatable="yes">Nickname</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.birthday</attribute>
+      <attribute name="label" translatable="yes">Birthday</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.postal-addresses.home</attribute>
+      <attribute name="label" translatable="yes">Home address</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.postal-addresses.work</attribute>
+      <attribute name="label" translatable="yes">Work address</attribute>
+    </item>
+    <item>
+      <attribute name="action">edit.add.notes</attribute>
+      <attribute name="label" translatable="yes">Notes</attribute>
+    </item>
+  </menu>
+
+  <template class="ContactsContactEditor" parent="GtkGrid">
+    <property name="visible">True</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkScrolledWindow" id="main_sw">
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="shadow_type">none</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="vscrollbar_policy">automatic</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkActionBar">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkMenuButton" id="add_detail_button">
+            <property name="visible">True</property>
+            <property name="menu_model">edit-contact-menu</property>
+            <property name="use_popover">True</property>
+            <property name="direction">up</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="spacing">6</property>
+                <property name="orientation">horizontal</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">New Detail</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">go-down-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="linked_button">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Linked Accounts</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="remove_button">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Remove Contact</property>
+            <style>
+              <class name="destructive-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
