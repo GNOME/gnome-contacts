@@ -43,7 +43,9 @@ public class Contacts.AvatarDialog : Dialog {
   [GtkChild]
   private Stack views_stack;
   [GtkChild]
-  private FlowBox thumbnail_grid;
+  private FlowBox personas_thumbnail_grid;
+  [GtkChild]
+  private FlowBox stock_thumbnail_grid;
   [GtkChild]
   private Grid crop_page;
   private Um.CropArea crop_area;
@@ -141,7 +143,7 @@ public class Contacts.AvatarDialog : Dialog {
        });
     */
 
-    update_thumbnail_grid ();
+    update_thumbnail_grids ();
   }
 
   private Gdk.Pixbuf scale_pixbuf_for_avatar_use (Gdk.Pixbuf pixbuf) {
@@ -207,23 +209,23 @@ public class Contacts.AvatarDialog : Dialog {
     set_response_sensitive (ResponseType.OK, true);
   }
 
-  private void update_thumbnail_grid () {
+  private void update_thumbnail_grids () {
     if (this.contact != null) {
       foreach (var p in contact.individual.personas) {
         ContactFrame? frame = frame_for_persona (p);
         if (frame != null)
-          this.thumbnail_grid.add (frame);
+          this.personas_thumbnail_grid.add (frame);
       }
     }
+    this.personas_thumbnail_grid.show_all ();
 
     var stock_files = Utils.get_stock_avatars ();
     foreach (var file_name in stock_files) {
       ContactFrame? frame = frame_for_filename (file_name);
       if (frame != null)
-        this.thumbnail_grid.add (frame);
+        this.stock_thumbnail_grid.add (frame);
     }
-
-    this.thumbnail_grid.show_all ();
+    this.stock_thumbnail_grid.show_all ();
   }
 
   public void update_preview (FileChooser chooser) {
@@ -332,7 +334,7 @@ public class Contacts.AvatarDialog : Dialog {
           else
             selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
 
-          update_thumbnail_grid ();
+          update_thumbnail_grids ();
         } catch {
         }
 
