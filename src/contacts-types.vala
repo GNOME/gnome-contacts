@@ -49,7 +49,6 @@ public class Contacts.TypeSet : Object  {
 
   public Gtk.ListStore store;
   private TreeIter other_iter;
-  private TreeIter custom_iter;
 
   private TypeSet () {
     display_name_hash = new HashTable<unowned string, Data> (str_hash, str_equal);
@@ -69,7 +68,7 @@ public class Contacts.TypeSet : Object  {
 
     data.in_store = true;
     if (is_custom)
-      store.insert_before (out data.iter, custom_iter);
+      store.insert_before (out data.iter, null);
     else
       store.append (out data.iter);
 
@@ -135,7 +134,7 @@ public class Contacts.TypeSet : Object  {
       return;
     }
 
-    store.insert_before (out iter, custom_iter);
+    store.insert_before (out iter, null);
     store.set (iter, 0, label, 1, null);
     custom_hash.insert (label, iter);
   }
