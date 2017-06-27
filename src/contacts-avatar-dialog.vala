@@ -48,7 +48,7 @@ public class Contacts.AvatarDialog : Dialog {
   private FlowBox stock_thumbnail_grid;
   [GtkChild]
   private Grid crop_page;
-  private Um.CropArea crop_area;
+  private Cc.CropArea crop_area;
   [GtkChild]
   private Grid photobooth_page;
   [GtkChild]
@@ -260,7 +260,7 @@ public class Contacts.AvatarDialog : Dialog {
   }
 
   private void set_crop_widget (Gdk.Pixbuf pixbuf) {
-    this.crop_area = new Um.CropArea ();
+    this.crop_area = new Cc.CropArea ();
     this.crop_area.set_vexpand (true);
     this.crop_area.set_hexpand (true);
     this.crop_area.set_min_size (48, 48);

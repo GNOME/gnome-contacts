@@ -58,7 +58,7 @@ contact-resources.c: $(top_srcdir)/data/contacts.gresource.xml $(resource_files)
 
 gnome_contacts_SOURCES = \
 	$(vala_sources) \
-	um-crop-area.c \
+	cc-crop-area.c \
 	contact-resources.c \
 	contacts-esd-setup.c \
 	$(NULL)
@@ -92,6 +92,6 @@ CLEANFILES = \
 EXTRA_DIST = \
 	org.gnome.Contacts.gschema.xml \
 	cheese-flash.h \
-	um-crop-area.h \
+	cc-crop-area.h \
 	contacts-esd-setup.h \
 	$(NULL)

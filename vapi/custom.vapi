@@ -35,8 +35,8 @@ namespace Contacts {
 	public static unowned Gtk.Widget get_icon_for_goa_account (string goa_id);
 }
 
-[CCode (cprefix = "Um", lower_case_cprefix = "um_", cheader_filename = "um-crop-area.h")]
-namespace Um {
+[CCode (cprefix = "Cc", lower_case_cprefix = "cc_", cheader_filename = "cc-crop-area.h")]
+namespace Cc {
 	public class CropArea : Gtk.DrawingArea {
 		[CCode (has_construct_function = false, type = "GtkWidget*")]
 		public CropArea ();
