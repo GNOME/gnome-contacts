@@ -42,6 +42,7 @@ vala_sources = \
 	contacts-contact-frame.vala \
 	contacts-window.vala \
 	main.vala \
+	contact-resources.c \
 	$(NULL)
 
 gsettings_ENUM_NAMESPACE = org.gnome.Contacts
@@ -59,7 +60,6 @@ contact-resources.c: $(top_srcdir)/data/contacts.gresource.xml $(resource_files)
 gnome_contacts_SOURCES = \
 	$(vala_sources) \
 	cc-crop-area.c \
-	contact-resources.c \
 	contacts-esd-setup.c \
 	$(NULL)
 
