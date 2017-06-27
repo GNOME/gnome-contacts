@@ -55,10 +55,6 @@ static const guint FLASH_ANIMATION_RATE = 50;
 /* When to consider the flash finished so we can stop fading */
 static const gdouble FLASH_LOW_THRESHOLD = 0.01;
 
-G_DEFINE_TYPE (CheeseFlash, cheese_flash, GTK_TYPE_WINDOW);
-
-#define CHEESE_FLASH_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CHEESE_TYPE_FLASH, CheeseFlashPrivate))
-
 /*
  * CheeseFlashPrivate:
  * @parent: the parent #GtkWidget, for choosing on which display to fire the
@@ -68,40 +64,28 @@ G_DEFINE_TYPE (CheeseFlash, cheese_flash, GTK_TYPE_WINDOW);
  *
  * Private data for #CheeseFlash.
  */
-struct _CheeseFlashPrivate
+typedef struct
 {
   /*< private >*/
   GtkWidget *parent;
   guint flash_timeout_tag;
   guint fade_timeout_tag;
-};
+  gdouble opacity;
+} CheeseFlashPrivate;
 
-/*
- * cheese_flash_draw_event_cb:
- * @widget: the #CheeseFlash
- * @cr: the Cairo context
- * @user_data: the user data of the signal
- *
- * Draw the flash.
- *
- * Returns: %TRUE
- */
-static gboolean
-cheese_flash_draw_event_cb (GtkWidget *widget, cairo_t *cr, gpointer user_data)
-{
-  cairo_fill (cr);
-  return TRUE;
-}
+G_DEFINE_TYPE_WITH_PRIVATE (CheeseFlash, cheese_flash, GTK_TYPE_WINDOW)
 
 static void
 cheese_flash_init (CheeseFlash *self)
 {
-  CheeseFlashPrivate *priv = self->priv = CHEESE_FLASH_GET_PRIVATE (self);
+    CheeseFlashPrivate *priv = cheese_flash_get_instance_private (self);
   cairo_region_t *input_region;
   GtkWindow *window = GTK_WINDOW (self);
+  const GdkRGBA white = { 1.0, 1.0, 1.0, 1.0 };
 
   priv->flash_timeout_tag = 0;
   priv->fade_timeout_tag  = 0;
+  priv->opacity = 1.0;
 
   /* make it so it doesn't look like a window on the desktop (+fullscreen) */
   gtk_window_set_decorated (window, FALSE);
@@ -113,31 +97,25 @@ cheese_flash_init (CheeseFlash *self)
   gtk_window_set_accept_focus (window, FALSE);
   gtk_window_set_focus_on_map (window, FALSE);
 
+  /* Make it white */
+  gtk_widget_override_background_color (GTK_WIDGET (window), GTK_STATE_NORMAL,
+                                        &white);
+
   /* Don't consume input */
   gtk_widget_realize (GTK_WIDGET (window));
   input_region = cairo_region_create ();
   gdk_window_input_shape_combine_region (gtk_widget_get_window (GTK_WIDGET (window)), input_region, 0, 0);
   cairo_region_destroy (input_region);
-
-  g_signal_connect (G_OBJECT (window), "draw", G_CALLBACK (cheese_flash_draw_event_cb), NULL);
 }
 
 static void
 cheese_flash_dispose (GObject *object)
 {
-  CheeseFlashPrivate *priv = CHEESE_FLASH (object)->priv;
+    CheeseFlashPrivate *priv = cheese_flash_get_instance_private (CHEESE_FLASH (object));
 
   g_clear_object (&priv->parent);
 
-  if (G_OBJECT_CLASS (cheese_flash_parent_class)->dispose)
     G_OBJECT_CLASS (cheese_flash_parent_class)->dispose (object);
-}
-
-static void
-cheese_flash_finalize (GObject *object)
-{
-  if (G_OBJECT_CLASS (cheese_flash_parent_class)->finalize)
-    G_OBJECT_CLASS (cheese_flash_parent_class)->finalize (object);
 }
 
 static void
@@ -146,15 +124,15 @@ cheese_flash_set_property (GObject      *object,
                            const GValue *value,
                            GParamSpec   *pspec)
 {
-  CheeseFlashPrivate *priv = CHEESE_FLASH (object)->priv;
+    CheeseFlashPrivate *priv = cheese_flash_get_instance_private (CHEESE_FLASH (object));
 
   switch (prop_id)
   {
     case PROP_PARENT: {
-      GObject *object;
-      object = g_value_get_object (value);
+      GObject *parent;
+      parent = g_value_get_object (value);
       if (object != NULL)
-        priv->parent = g_object_ref (object);
+        priv->parent = g_object_ref (parent);
       else
         priv->parent = NULL;
     }
@@ -170,11 +148,8 @@ cheese_flash_class_init (CheeseFlashClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (CheeseFlashPrivate));
-
   object_class->set_property = cheese_flash_set_property;
   object_class->dispose      = cheese_flash_dispose;
-  object_class->finalize     = cheese_flash_finalize;
 
   /**
    * CheeseFlash:parent:
@@ -204,17 +179,25 @@ cheese_flash_class_init (CheeseFlashClass *klass)
 static gboolean
 cheese_flash_opacity_fade (gpointer data)
 {
-  GtkWindow *flash_window = GTK_WINDOW (data);
-  gdouble opacity = gtk_window_get_opacity (flash_window);
+  CheeseFlashPrivate *priv;
+  GtkWidget *flash_window;
+
+  flash_window = GTK_WIDGET (data);
+  priv = cheese_flash_get_instance_private (CHEESE_FLASH (data));
 
   /* exponentially decrease */
-  gtk_window_set_opacity (flash_window, opacity * FLASH_FADE_FACTOR);
+  priv->opacity *= FLASH_FADE_FACTOR;
 
-  if (opacity <= FLASH_LOW_THRESHOLD)
+  if (priv->opacity <= FLASH_LOW_THRESHOLD)
   {
     /* the flasher has finished when we reach the quit value */
-    gtk_widget_hide (GTK_WIDGET (flash_window));
+    gtk_widget_hide (flash_window);
+    priv->fade_timeout_tag = 0;
     return G_SOURCE_REMOVE;
+  }
+  else
+  {
+    gtk_widget_set_opacity (flash_window, priv->opacity);
   }
 
   return G_SOURCE_CONTINUE;
@@ -231,7 +214,7 @@ cheese_flash_opacity_fade (gpointer data)
 static gboolean
 cheese_flash_start_fade (gpointer data)
 {
-  CheeseFlashPrivate *flash_priv = CHEESE_FLASH (data)->priv;
+    CheeseFlashPrivate *priv = cheese_flash_get_instance_private (CHEESE_FLASH (data));
 
   GtkWindow *flash_window = GTK_WINDOW (data);
 
@@ -242,7 +225,8 @@ cheese_flash_start_fade (gpointer data)
     return G_SOURCE_REMOVE;
   }
 
-  flash_priv->fade_timeout_tag = g_timeout_add (1000.0 / FLASH_ANIMATION_RATE, cheese_flash_opacity_fade, data);
+    priv->fade_timeout_tag = g_timeout_add (1000.0 / FLASH_ANIMATION_RATE, cheese_flash_opacity_fade, data);
+    priv->flash_timeout_tag = 0;
   return G_SOURCE_REMOVE;
 }
 
@@ -255,7 +239,7 @@ cheese_flash_start_fade (gpointer data)
 void
 cheese_flash_fire (CheeseFlash *flash)
 {
-  CheeseFlashPrivate *flash_priv;
+    CheeseFlashPrivate *priv;
   GtkWidget          *parent;
   GdkScreen          *screen;
   GdkRectangle        rect, work_rect;
@@ -264,18 +248,27 @@ cheese_flash_fire (CheeseFlash *flash)
 
   g_return_if_fail (CHEESE_IS_FLASH (flash));
 
-  flash_priv = flash->priv;
+    priv = cheese_flash_get_instance_private (flash);
 
-  g_return_if_fail (flash_priv->parent != NULL);
+    g_return_if_fail (priv->parent != NULL);
 
   flash_window = GTK_WINDOW (flash);
 
-  if (flash_priv->flash_timeout_tag > 0)
-    g_source_remove (flash_priv->flash_timeout_tag);
-  if (flash_priv->fade_timeout_tag > 0)
-    g_source_remove (flash_priv->fade_timeout_tag);
+    if (priv->flash_timeout_tag > 0)
+    {
+        g_source_remove (priv->flash_timeout_tag);
+        priv->flash_timeout_tag = 0;
+    }
 
-  parent  = gtk_widget_get_toplevel (flash_priv->parent);
+    if (priv->fade_timeout_tag > 0)
+    {
+        g_source_remove (priv->fade_timeout_tag);
+        priv->fade_timeout_tag = 0;
+    }
+
+    priv->opacity = 1.0;
+
+    parent = gtk_widget_get_toplevel (priv->parent);
   screen  = gtk_widget_get_screen (parent);
   monitor = gdk_screen_get_monitor_at_window (screen,
 					      gtk_widget_get_window (parent));
@@ -288,9 +281,9 @@ cheese_flash_fire (CheeseFlash *flash)
   gtk_window_resize (flash_window, rect.width, rect.height);
   gtk_window_move (flash_window, rect.x, rect.y);
 
-  gtk_window_set_opacity (flash_window, 1);
+  gtk_widget_set_opacity (GTK_WIDGET (flash_window), 1);
   gtk_widget_show_all (GTK_WIDGET (flash_window));
-  flash_priv->flash_timeout_tag = g_timeout_add (FLASH_DURATION, cheese_flash_start_fade, (gpointer) flash);
+    priv->flash_timeout_tag = g_timeout_add (FLASH_DURATION, cheese_flash_start_fade, (gpointer) flash);
 }
 
 /**
