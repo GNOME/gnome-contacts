@@ -56,3 +56,5 @@ DISTCLEANFILES = \
 	org.gnome.Contacts.appdata.xml \
 	org.gnome.Contacts.SearchProvider.service
 
+
+-include $(top_srcdir)/git.mk

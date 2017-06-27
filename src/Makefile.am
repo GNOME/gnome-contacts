@@ -95,3 +95,5 @@ EXTRA_DIST = \
 	cc-crop-area.h \
 	contacts-esd-setup.h \
 	$(NULL)
+
+-include $(top_srcdir)/git.mk

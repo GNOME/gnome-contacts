@@ -42,3 +42,5 @@ MAINTAINERCLEANFILES = \
 	$(srcdir)/missing \
 	$(srcdir)/ChangeLog \
 	`find "$(srcdir)" -type f -name Makefile.in -print`
+
+-include $(top_srcdir)/git.mk
