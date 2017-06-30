@@ -26,7 +26,7 @@ main (string[] args) {
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
 #if HAVE_CHEESE
-  Cheese.gtk_init (ref args);
+  GtkCheese.init (ref args);
 #else
   GtkClutter.init (ref args);
 #endif

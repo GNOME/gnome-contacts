@@ -44,8 +44,7 @@ pkg_modules="gtk+-3.0 >= 3.20.0
 	     "
 PKG_CHECK_MODULES(CONTACTS, [$pkg_modules])
 
-CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg gio-unix-2.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg clutter-1.0 --pkg clutter-gtk-1.0 --pkg champlain-0.12 --pkg geocode-glib-1.0"
-AC_SUBST(CONTACTS_PACKAGES)
+CONTACTS_PACKAGES="--pkg gtk+-3.0 --pkg gio-2.0 --pkg gio-unix-2.0 --pkg gnome-desktop-3.0 --pkg folks --pkg folks-telepathy --pkg folks-eds --pkg clutter-1.0 --pkg clutter-gtk-1.0 --pkg champlain-0.12 --pkg geocode-glib-1.0"
 
 # Optional dependency for the user accounts panel
 AC_ARG_WITH([cheese],
@@ -56,6 +55,7 @@ if test x"$with_cheese" != x"no" ; then
    PKG_CHECK_MODULES(CHEESE, cheese-gtk >= 3.3.91 cheese, [have_cheese=yes], [have_cheese=no])
    if test x${have_cheese} = xyes; then
      AC_DEFINE(HAVE_CHEESE, 1, [Define to 1 to enable cheese webcam support])
+     CONTACTS_PACKAGES+=" --pkg cheese --pkg cheese-gtk"
    fi
    if test x${with_cheese} = xyes && test x${have_cheese} = xno; then
      AC_MSG_ERROR([Cheese configured but not found])
@@ -64,6 +64,9 @@ else
    have_cheese=no
 fi
 AM_CONDITIONAL(BUILD_CHEESE, test x${have_cheese} = xyes)
+
+
+AC_SUBST(CONTACTS_PACKAGES)
 
 #############
 # Resources #
