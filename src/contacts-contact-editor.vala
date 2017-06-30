@@ -405,22 +405,15 @@ public class Contacts.ContactEditor : Grid {
     day_spin.numeric = true;
     day_spin.set_value ((double)birthday.to_local ().get_day_of_month ());
 
-    var combo = new ComboBoxText ();
-    combo.append_text (_("January"));
-    combo.append_text (_("February"));
-    combo.append_text (_("March"));
-    combo.append_text (_("April"));
-    combo.append_text (_("May"));
-    combo.append_text (_("June"));
-    combo.append_text (_("July"));
-    combo.append_text (_("August"));
-    combo.append_text (_("September"));
-    combo.append_text (_("October"));
-    combo.append_text (_("November"));
-    combo.append_text (_("December"));
-    combo.set_active (birthday.to_local ().get_month () - 1);
-    combo.get_style_context ().add_class ("contacts-combo");
-    combo.set_hexpand (true);
+    var month_combo = new ComboBoxText ();
+    var january = new DateTime.local (1, 1, 1, 1, 1, 1);
+    for (int i = 0; i < 12; i++) {
+        var month = january.add_months (i);
+        month_combo.append_text (month.format ("%B"));
+    }
+    month_combo.set_active (birthday.to_local ().get_month () - 1);
+    month_combo.get_style_context ().add_class ("contacts-combo");
+    month_combo.hexpand = true;
 
     var year_spin = new SpinButton.with_range (1800, 3000, 1);
     year_spin.set_digits (0);
@@ -428,7 +421,7 @@ public class Contacts.ContactEditor : Grid {
     year_spin.set_value ((double)birthday.to_local ().get_year ());
 
     box.add (day_spin);
-    box.add (combo);
+    box.add (month_combo);
     box.add (year_spin);
 
     container_grid.attach (box, 1, row, 1, 1);
@@ -439,36 +432,36 @@ public class Contacts.ContactEditor : Grid {
 
     AdjustingDateFn fn = () => {
       int[] month_of_31 = {3, 5, 8, 10};
-      if (combo.get_active () in month_of_31) {
-	day_spin.set_range (1, 30);
-      } else if (combo.get_active () == 1) {
-	if (year_spin.get_value_as_int () % 4 == 0 &&
-	    year_spin.get_value_as_int () % 100 != 0) {
-	  day_spin.set_range (1, 29);
-	} else {
-	  day_spin.set_range (1, 28);
-	}
+      if (month_combo.get_active () in month_of_31) {
+        day_spin.set_range (1, 30);
+      } else if (month_combo.get_active () == 1) {
+        if (year_spin.get_value_as_int () % 4 == 0 &&
+            year_spin.get_value_as_int () % 100 != 0) {
+          day_spin.set_range (1, 29);
+        } else {
+          day_spin.set_range (1, 28);
+        }
       }
     };
 
     /* Notify change to upper layer */
     day_spin.changed.connect (() => {
-	set_field_changed (get_current_row (day_spin));
+        set_field_changed (get_current_row (day_spin));
       });
-    combo.changed.connect (() => {
-	set_field_changed (get_current_row (combo));
+    month_combo.changed.connect (() => {
+        set_field_changed (get_current_row (month_combo));
 
-	/* adjusting day_spin value using selected month constraints*/
-	fn ();
+        /* adjusting day_spin value using selected month constraints*/
+        fn ();
       });
     year_spin.changed.connect (() => {
-	set_field_changed (get_current_row (year_spin));
+        set_field_changed (get_current_row (year_spin));
 
-	fn ();
+        fn ();
       });
     delete_button.clicked.connect (() => {
-	remove_row (get_current_row (delete_button));
-	has_birthday_row = false;
+        remove_row (get_current_row (delete_button));
+        has_birthday_row = false;
       });
   }
 
