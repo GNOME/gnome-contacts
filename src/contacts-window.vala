@@ -97,7 +97,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public Window (Gtk.Application app, Store contacts_store) {
-    Object (application: app, store: contacts_store);
+    Object (
+      application: app,
+      show_menubar: false,
+      store: contacts_store
+    );
     debug ("everyone creation: finalized already!!!");
 
     contact_pane.store = contacts_store;
