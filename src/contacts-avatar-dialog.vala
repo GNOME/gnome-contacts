@@ -110,18 +110,13 @@ public class Contacts.AvatarDialog : Dialog {
         this.num_cameras--;
         this.webcam_button.sensitive = (this.num_cameras > 0);
       });
-    // Do this in idle, or it blocks the whole UI
-    Idle.add ( () => {
+    // Do this in a separate thread, or it blocks the whole UI
+    new Thread<void*> ("camera-loader", () => {
         this.camera_monitor.coldplug ();
-        return false;
+        return null;
       });
-#else
-    // Don't show the camera button
-    this.webcam_button_box.hide ();
-#endif
 
-#if HAVE_CHEESE
-    // Photobooth page
+    // Create a photobooth page
     this.cheese = new Cheese.Widget ();
     this.cheese.set_vexpand (true);
     this.cheese.set_hexpand (true);
@@ -130,6 +125,9 @@ public class Contacts.AvatarDialog : Dialog {
     this.photobooth_page.show ();
 
     this.flash = new Cheese.Flash (this);
+#else
+    // Don't show the camera button
+    this.webcam_button_box.hide ();
 #endif
 
     this.views_stack.set_visible_child_name ("thumbnail-page");
