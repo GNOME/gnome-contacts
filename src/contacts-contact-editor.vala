@@ -63,10 +63,21 @@ public class Contacts.AddressEditor : Box {
 
 [GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-editor.ui")]
 public class Contacts.ContactEditor : Grid {
+
+  private const string[] DEFAULT_PROPS_NEW_CONTACT = {
+    "email-addresses.personal",
+    "phone-numbers.cell",
+    "postal-addresses.home"
+  };
+
   private Contact contact;
 
   private Grid container_grid;
   private weak Widget focus_widget;
+
+  private Entry name_entry;
+
+  private ContactFrame avatar_frame;
 
   [GtkChild]
   private ScrolledWindow main_sw;
@@ -781,6 +792,10 @@ public class Contacts.ContactEditor : Grid {
     this.container_grid.size_allocate.connect_after (size_allocate_cb);
   }
 
+  /**
+   * Adjusts the ContactEditor to the given contact.
+   * Use clear() to make sure nothing is lingering from the previous one.
+   */
   public void edit (Contact c) {
     contact = c;
 
@@ -789,48 +804,8 @@ public class Contacts.ContactEditor : Grid {
     linked_button.show ();
     linked_button.sensitive = contact.individual.personas.size > 1;
 
-    var image_frame = new ContactFrame (PROFILE_SIZE, true);
-    image_frame.set_vexpand (false);
-    image_frame.set_valign (Align.START);
-    (image_frame.get_child () as Button).set_relief (ReliefStyle.NORMAL);
-    image_frame.clicked.connect ( () => {
-	var dialog = new AvatarDialog (contact);
-	dialog.set_avatar.connect ( (icon) =>  {
-	    image_frame.set_data ("value", icon);
-	    image_frame.set_data ("changed", true);
-
-	    Gdk.Pixbuf? a_pixbuf = null;
-	    try {
-	      var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null);
-	      a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream,
-							      PROFILE_SIZE,
-							      PROFILE_SIZE,
-							      true);
-	    }
-	    catch {
-	    }
-
-	    image_frame.set_pixbuf (a_pixbuf);
-	  });
-	dialog.show ();
-      });
-    c.keep_widget_uptodate (image_frame,  (w) => {
-	(w as ContactFrame).set_image (c.individual, c);
-      });
-    container_grid.attach (image_frame,  0, 0, 1, 3);
-
-    var name_entry = new Entry ();
-    name_entry.set_hexpand (true);
-    name_entry.set_valign (Align.CENTER);
-    name_entry.set_text (c.display_name);
-    name_entry.set_data ("changed", false);
-    name_entry.placeholder_text = _("Add name");
-    container_grid.attach (name_entry,  1, 0, 3, 3);
-
-    /* structured name change */
-    name_entry.changed.connect (() => {
-  	name_entry.set_data ("changed", true);
-      });
+    create_avatar_frame ();
+    create_name_entry ();
 
     int i = 3;
     int last_store_position = 0;
@@ -870,6 +845,27 @@ public class Contacts.ContactEditor : Grid {
 	container_grid.get_child_at (0, i).destroy ();
       }
     }
+  }
+
+  /**
+   * Adjusts the ContactEditor for a new contact.
+   * Use clear() to make sure nothing is lingering from the previous one.
+   */
+  public void set_new_contact () {
+    remove_button.hide ();
+    linked_button.hide ();
+
+    create_avatar_frame ();
+    create_name_entry ();
+    this.last_row = 2;
+
+    writable_personas["null-persona.hack"] = new HashMap<string, Field?> ();
+    foreach (var prop in DEFAULT_PROPS_NEW_CONTACT) {
+      var tok = prop.split (".");
+      add_new_row_for_property (null, tok[0], tok[1].up ());
+    }
+
+    this.focus_widget = this.name_entry;
   }
 
   public void clear () {
@@ -933,31 +929,6 @@ public class Contacts.ContactEditor : Grid {
     return props_set;
   }
 
-  public bool name_changed () {
-    var name_entry = container_grid.get_child_at (1, 0) as Entry;
-    return name_entry.get_data<bool> ("changed");
-  }
-
-  public Value get_full_name_value () {
-    Value v = Value (typeof (string));
-    var name_entry = container_grid.get_child_at (1, 0) as Entry;
-    v.set_string (name_entry.get_text ());
-    return v;
-  }
-
-  public bool avatar_changed () {
-    var image_frame = container_grid.get_child_at (0, 0) as ContactFrame;
-    return image_frame.get_data<bool> ("changed");
-  }
-
-  public Value get_avatar_value () {
-    var image_frame = container_grid.get_child_at (0, 0) as ContactFrame;
-    GLib.Icon icon = image_frame.get_data<GLib.Icon> ("value");
-    Value v = Value (icon.get_type ());
-    v.set_object (icon);
-    return v;
-  }
-
   public void add_new_row_for_property (Persona? p, string prop_name, string? type = null) {
     /* Somehow, I need to ensure that p is the main/default/first persona */
     Persona persona = null;
@@ -988,62 +959,81 @@ public class Contacts.ContactEditor : Grid {
     container_grid.show_all ();
   }
 
-  public void set_new_contact () {
-    remove_button.hide ();
-    linked_button.hide ();
+  // Creates the contact's current avatar, the big frame on top of the Editor
+  private void create_avatar_frame () {
+    this.avatar_frame = new ContactFrame (PROFILE_SIZE, true);
+    this.avatar_frame.vexpand = false;
+    this.avatar_frame.valign = Align.START;
+    (this.avatar_frame.get_child () as Button).relief = ReliefStyle.NORMAL;
+    this.avatar_frame.clicked.connect (on_avatar_frame_clicked);
 
-    var image_frame = new ContactFrame (PROFILE_SIZE, true);
-    image_frame.set_vexpand (false);
-    image_frame.set_valign (Align.START);
-    image_frame.set_image (null, null);
-    (image_frame.get_child () as Button).set_relief (ReliefStyle.NORMAL);
-    image_frame.clicked.connect ( () => {
-	var dialog = new AvatarDialog (null);
-	dialog.set_avatar.connect ( (icon) =>  {
-	    image_frame.set_data ("value", icon);
-	    image_frame.set_data ("changed", true);
-
-	    Gdk.Pixbuf? a_pixbuf = null;
-	    try {
-	      var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null);
-	      a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream,
-							      PROFILE_SIZE,
-							      PROFILE_SIZE,
-							      true);
-	    }
-	    catch {
-	    }
-
-	    image_frame.set_pixbuf (a_pixbuf);
-	  });
-	dialog.show ();
-      });
-    container_grid.attach (image_frame,  0, 0, 1, 3);
-
-    var name_entry = new Entry ();
-    name_entry.set_hexpand (true);
-    name_entry.set_valign (Align.CENTER);
-    name_entry.set_data ("changed", false);
-    name_entry.placeholder_text = _("Add name");
-    container_grid.attach (name_entry,  1, 0, 3, 3);
-
-    /* structured name change */
-    name_entry.changed.connect (() => {
-	name_entry.set_data ("changed", true);
-      });
-
-    last_row = 2;
-    string[] rw_props = {
-      "email-addresses.personal",
-      "phone-numbers.cell",
-      "postal-addresses.home" };
-    writable_personas.set ("null-persona.hack",
-			   new HashMap<string, Field?> ());
-    foreach (var prop in rw_props) {
-      var tok = prop.split (".");
-      add_new_row_for_property (null, tok[0], tok[1].up ());
+    if (this.contact != null) {
+      this.contact.keep_widget_uptodate (this.avatar_frame,  (w) => {
+          this.avatar_frame.set_image (this.contact.individual, this.contact);
+        });
+    } else {
+      this.avatar_frame.set_image (null, null);
     }
 
-    focus_widget = name_entry;
+    this.container_grid.attach (this.avatar_frame, 0, 0, 1, 3);
+  }
+
+  // Show the avatar dialog when the avatar is clicked
+  private void on_avatar_frame_clicked () {
+    var dialog = new AvatarDialog (this.contact);
+    dialog.set_avatar.connect ( (icon) =>  {
+        this.avatar_frame.set_data ("value", icon);
+        this.avatar_frame.set_data ("changed", true);
+
+        Gdk.Pixbuf? a_pixbuf = null;
+        try {
+          var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null);
+          a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, PROFILE_SIZE, PROFILE_SIZE, true);
+        } catch {
+        }
+
+        this.avatar_frame.set_pixbuf (a_pixbuf);
+      });
+    dialog.run ();
+  }
+
+  public bool avatar_changed () {
+    return this.avatar_frame.get_data<bool> ("changed");
+  }
+
+  public Value get_avatar_value () {
+    GLib.Icon icon = this.avatar_frame.get_data<GLib.Icon> ("value");
+    Value v = Value (icon.get_type ());
+    v.set_object (icon);
+    return v;
+  }
+
+  // Creates the big name entry on the top
+  private void create_name_entry () {
+    this.name_entry = new Entry ();
+    this.name_entry.hexpand = true;
+    this.name_entry.valign = Align.CENTER;
+    this.name_entry.placeholder_text = _("Add name");
+    this.name_entry.set_data ("changed", false);
+
+    if (this.contact != null)
+        this.name_entry.text = this.contact.display_name;
+
+    /* structured name change */
+    this.name_entry.changed.connect (() => {
+        this.name_entry.set_data ("changed", true);
+      });
+
+    this.container_grid.attach (this.name_entry, 1, 0, 3, 3);
+  }
+
+  public bool name_changed () {
+    return this.name_entry.get_data<bool> ("changed");
+  }
+
+  public Value get_full_name_value () {
+    Value v = Value (typeof (string));
+    v.set_string (this.name_entry.get_text ());
+    return v;
   }
 }
