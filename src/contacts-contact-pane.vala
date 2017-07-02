@@ -388,89 +388,60 @@ public class Contacts.ContactPane : Stack {
     set_visible_child (this.contact_editor_page);
   }
 
-  public void create_contact () {
+  // Creates a new contact from the details in the ContactEditor
+  public async void create_contact () {
     var details = new HashTable<string, Value?> (str_hash, str_equal);
+    var contacts_store = App.app.contacts_store;
 
-    if (editor.name_changed ()) {
-      var v = editor.get_full_name_value ();
-      details.set ("full-name", v);
-    }
+    // Collect the details from the editor
+    if (editor.name_changed ())
+      details["full-name"] = this.editor.get_full_name_value ();
 
-    if (editor.avatar_changed ()) {
-      var v = editor.get_avatar_value ();
-      details.set ("avatar", v);
-    }
+    if (editor.avatar_changed ())
+      details["avatar"] = this.editor.get_avatar_value ();
 
-    foreach (var prop in editor.properties_changed ().entries) {
-      details.set (prop.key, prop.value.value);
-    }
+    foreach (var prop in this.editor.properties_changed ().entries)
+      details[prop.key] = prop.value.value;
+
+    // Leave edit mode
+    set_edit_mode (false, true);
 
     if (details.size () == 0) {
-      Dialog dialog = new MessageDialog (this.get_toplevel () as Window,
-					 DialogFlags.DESTROY_WITH_PARENT |
-					 DialogFlags.MODAL,
-					 MessageType.ERROR,
-					 ButtonsType.OK,
-					 "%s",
-					 _("You need to enter some data"));
-      dialog.show ();
-      dialog.response.connect ( () => {
-	  dialog.destroy ();
-	});
-    } else if (App.app.contacts_store.aggregator.primary_store == null) {
-      Dialog dialog = new MessageDialog (this.get_toplevel () as Window,
-					 DialogFlags.DESTROY_WITH_PARENT |
-					 DialogFlags.MODAL,
-					 MessageType.ERROR,
-					 ButtonsType.OK,
-					 "%s",
-					 _("No primary addressbook configured"));
-      dialog.show ();
-      dialog.response.connect ( () => {
-	  dialog.destroy ();
-	});
-    } else {
-      Contact.create_primary_persona_for_details.begin (App.app.contacts_store.aggregator.primary_store, details, (obj, res) => {
-	  Persona? persona = null;
-	  Dialog dialog = null;
-
-	  try {
-	    persona = Contact.create_primary_persona_for_details.end (res);
-	  } catch (Error e) {
-	    dialog = new MessageDialog (this.get_toplevel () as Window,
-					DialogFlags.DESTROY_WITH_PARENT |
-					DialogFlags.MODAL,
-					MessageType.ERROR,
-					ButtonsType.OK,
-					_("Unable to create new contacts: %s"), e.message);
-	  }
-
-	  var contact = App.app.contacts_store.find_contact_with_persona (persona);
-	  if (contact == null) {
-	    dialog = new MessageDialog (this.get_toplevel () as Window,
-					DialogFlags.DESTROY_WITH_PARENT |
-					DialogFlags.MODAL,
-					MessageType.ERROR,
-					ButtonsType.OK,
-					"%s",
-					_("Unable to find newly created contact"));
-	  }
-
-	  set_edit_mode (false, true);
-
-	  if (dialog != null) {
-	    dialog.response.connect ( () => {
-		dialog.destroy ();
-	      });
-	    dialog.show ();
-
-	    return;
-	  }
-
-	  App.app.show_contact (contact);
-	  return;
-	});
+      show_message_dialog (_("You need to enter some data"));
+      return;
     }
-    set_edit_mode (false, true);
+
+    if (contacts_store.aggregator.primary_store == null) {
+      show_message_dialog (_("No primary addressbook configured"));
+      return;
+    }
+
+    // Create the contact
+    var primary_store = contacts_store.aggregator.primary_store;
+    Persona? persona = null;
+    try {
+      persona = yield Contact.create_primary_persona_for_details (primary_store, details);
+    } catch (Error e) {
+      show_message_dialog (_("Unable to create new contacts: %s").printf (e.message));
+      return;
+    }
+
+    // Now show it to the user
+    var contact = contacts_store.find_contact_with_persona (persona);
+    if (contact != null)
+      App.app.show_contact (contact);
+    else
+      show_message_dialog (_("Unable to find newly created contact"));
+  }
+
+  private void show_message_dialog (string message) {
+    var dialog =
+        new MessageDialog (this.get_toplevel () as Window,
+                           DialogFlags.DESTROY_WITH_PARENT | DialogFlags.MODAL,
+                           MessageType.ERROR,
+                           ButtonsType.OK,
+                           message);
+    dialog.run ();
+    dialog.destroy ();
   }
 }

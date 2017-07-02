@@ -271,7 +271,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       if (drop_changes) {
 	contact_pane.set_edit_mode (false, drop_changes);
       } else {
-	contact_pane.create_contact ();
+	contact_pane.create_contact.begin ();
       }
       new_contact_mode = false;
     } else {
