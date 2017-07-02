@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -22,9 +21,15 @@ using Gee;
 
 const int PROFILE_SIZE = 96;
 
-public class Contacts.ContactPane : Notebook {
-  private Store _store;
+/**
+ * The ContactPage is the right pane. It consists of 3 possible pages:
+ * a page if nothing is selected, a ContactSheet to view contact information,
+ * and a ContactEditor to edit contact information.
+ */
+[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-pane.ui")]
+public class Contacts.ContactPane : Stack {
 
+  private Store _store;
   public Store store {
     get {
       return _store;
@@ -43,13 +48,15 @@ public class Contacts.ContactPane : Notebook {
 
   public Contact? contact;
 
-  /* 3 pages, first */
-  private Grid none_selected_view;
+  [GtkChild]
+  private Grid none_selected_page;
 
-  /* second page */
+  [GtkChild]
+  private ScrolledWindow contact_sheet_page;
   private ContactSheet sheet;
 
-  /* third page */
+  [GtkChild]
+  private Box contact_editor_page;
   private ContactEditor editor;
 
   private SimpleActionGroup edit_contact_actions;
@@ -86,7 +93,7 @@ public class Contacts.ContactPane : Notebook {
       return;
 
     sheet.update (contact);
-    set_current_page (1);
+    set_visible_child (this.contact_sheet_page);
 
     var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
     foreach (var ind in matches.keys) {
@@ -201,75 +208,61 @@ public class Contacts.ContactPane : Notebook {
     }
 
     if (contact == null)
-      show_none_selected_view ();
+      set_visible_child (this.none_selected_page);
   }
 
   construct {
-    this.show_border = false;
-
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
 
-    /* starts with none_selected_view 'til someone select something */
-    show_none_selected_view ();
-
-    var main_sw = new ScrolledWindow (null, null);
-
-    main_sw.set_shadow_type (ShadowType.NONE);
-    main_sw.set_hexpand (true);
-    main_sw.set_vexpand (true);
-    main_sw.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
+    // contact editor page
+    sheet = new ContactSheet ();
+    sheet.hexpand = true;
+    sheet.vexpand = true;
+    sheet.margin = 36;
+    sheet.set_margin_bottom (24);
 
     var hcenter = new Center ();
     hcenter.max_width = 600;
     hcenter.xalign = 0.0;
-
-    sheet = new ContactSheet ();
+    hcenter.show ();
     hcenter.add (sheet);
 
-    sheet.set_hexpand (true);
-    sheet.set_vexpand (true);
-    sheet.margin = 36;
-    sheet.set_margin_bottom (24);
+    this.contact_sheet_page.add (hcenter);
+    sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
 
-    main_sw.add (hcenter);
-    sheet.set_focus_vadjustment (main_sw.get_vadjustment ());
+    this.contact_sheet_page.get_child ().get_style_context ().add_class ("contacts-main-view");
+    this.contact_sheet_page.get_child ().get_style_context ().add_class ("view");
 
-    main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
-    main_sw.get_child ().get_style_context ().add_class ("view");
-
-    main_sw.show_all ();
-    insert_page (main_sw, null, 1);
-
-    suggestion_grid = null;
+    this.suggestion_grid = null;
 
     /* edit mode widgetry, third page */
-    on_edit_mode = false;
-    editor = new ContactEditor (this.edit_contact_actions);
-    editor.linked_button.clicked.connect (linked_accounts);
-    editor.remove_button.clicked.connect (delete_contact);
-    insert_page (editor, null, 2);
+    this.on_edit_mode = false;
+    this.editor = new ContactEditor (this.edit_contact_actions);
+    this.editor.linked_button.clicked.connect (linked_accounts);
+    this.editor.remove_button.clicked.connect (delete_contact);
+    this.contact_editor_page.add (this.editor);
 
     /* enable/disable actions*/
     var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
-    editor.bind_property ("has-birthday-row",
-			  birthday_action, "enabled",
-			  BindingFlags.SYNC_CREATE |
-			  BindingFlags.INVERT_BOOLEAN);
+    this.editor.bind_property ("has-birthday-row",
+                               birthday_action, "enabled",
+                               BindingFlags.SYNC_CREATE |
+                               BindingFlags.INVERT_BOOLEAN);
 
     var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
-    editor.bind_property ("has-nickname-row",
-			  nickname_action, "enabled",
-			  BindingFlags.DEFAULT |
-			  BindingFlags.SYNC_CREATE |
-			  BindingFlags.INVERT_BOOLEAN);
+    this.editor.bind_property ("has-nickname-row",
+                               nickname_action, "enabled",
+                               BindingFlags.DEFAULT |
+                               BindingFlags.SYNC_CREATE |
+                               BindingFlags.INVERT_BOOLEAN);
 
     var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
-    editor.bind_property ("has-notes-row",
-			  notes_action, "enabled",
-			  BindingFlags.DEFAULT |
-			  BindingFlags.SYNC_CREATE |
-			  BindingFlags.INVERT_BOOLEAN);
+    this.editor.bind_property ("has-notes-row",
+                               notes_action, "enabled",
+                               BindingFlags.DEFAULT |
+                               BindingFlags.SYNC_CREATE |
+                               BindingFlags.INVERT_BOOLEAN);
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
@@ -302,39 +295,6 @@ public class Contacts.ContactPane : Notebook {
     }
   }
 
-  void show_none_selected_view () {
-    if (none_selected_view == null) {
-      none_selected_view = new Grid ();
-      none_selected_view.set_size_request (500, -1);
-      none_selected_view.set_orientation (Orientation.VERTICAL);
-      none_selected_view.set_vexpand (true);
-      none_selected_view.set_hexpand (true);
-
-      var icon_theme = IconTheme.get_default ();
-      var pix = icon_theme.load_icon ("avatar-default-symbolic", 144, 0);
-
-      var image = new Image.from_pixbuf (pix);
-      image.get_style_context ().add_class ("contacts-watermark");
-      image.set_vexpand (true);
-      image.set_valign (Align.END);
-      none_selected_view.add (image);
-
-      var label = new Gtk.Label ("");
-      label.set_markup ("<span font=\"12\">%s</span>".printf (_("Select a contact")));
-      label.get_style_context ().add_class ("contacts-watermark");
-      label.set_vexpand (true);
-      label.set_hexpand (true);
-      label.set_valign (Align.START);
-      label.margin_bottom = 70;
-      none_selected_view.add (label);
-
-      none_selected_view.show_all ();
-      insert_page (none_selected_view, null, 0);
-    }
-
-    set_current_page (0);
-  }
-
   public void set_edit_mode (bool on_edit, bool drop_changes = false) {
     if (on_edit == on_edit_mode)
       return;
@@ -356,7 +316,7 @@ public class Contacts.ContactPane : Notebook {
       editor.clear ();
       editor.edit (contact);
       editor.show_all ();
-      set_current_page (2);
+      set_visible_child (this.contact_editor_page);
     } else {
       on_edit_mode = false;
       /* saving changes */
@@ -404,11 +364,11 @@ public class Contacts.ContactPane : Notebook {
       editor.clear ();
 
       if (contact != null) {
-	sheet.clear ();
-	sheet.update (contact);
-	set_current_page (1);
+        sheet.clear ();
+        sheet.update (contact);
+        set_visible_child (this.contact_sheet_page);
       } else {
-	show_none_selected_view ();
+        set_visible_child (this.none_selected_page);
       }
     }
   }
@@ -425,7 +385,7 @@ public class Contacts.ContactPane : Notebook {
 
     editor.set_new_contact ();
 
-    set_current_page (2);
+    set_visible_child (this.contact_editor_page);
   }
 
   public void create_contact () {

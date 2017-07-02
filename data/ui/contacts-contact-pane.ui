@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="ContactsContactPane" parent="GtkStack">
+    <property name="visible">True</property>
+    <property name="visible-child">none_selected_page</property>
+    <child>
+      <object class="GtkGrid" id="none_selected_page">
+        <property name="visible">True</property>
+        <property name="width_request">500</property>
+        <property name="orientation">vertical</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="icon_name">avatar-default-symbolic</property>
+            <property name="vexpand">True</property>
+            <property name="valign">end</property>
+            <property name="pixel_size">144</property>
+            <style>
+              <class name="contacts-watermark"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Select a contact</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="valign">start</property>
+            <property name="margin_bottom">70</property>
+            <style>
+              <class name="contacts-watermark"/>
+            </style>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="name">none-selected-page</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="contact_sheet_page">
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="shadow_type">none</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="vscrollbar_policy">automatic</property>
+      </object>
+      <packing>
+        <property name="name">contact-sheet-page</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="contact_editor_page">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="name">contact-editor-page</property>
+      </packing>
+    </child>
+  </template>
+</interface>

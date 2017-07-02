@@ -40,6 +40,7 @@ EXTRA_DIST = \
 	ui/contacts-address-map.ui \
 	ui/contacts-avatar-dialog.ui \
 	ui/contacts-contact-editor.ui \
+	ui/contacts-contact-pane.ui \
 	ui/contacts-in-app-notification.ui \
 	ui/contacts-list-pane.ui \
 	ui/contacts-window.ui \
