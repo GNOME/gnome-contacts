@@ -29,7 +29,7 @@ pkg_modules="gtk+-3.0 >= 3.20.0
 	     gmodule-export-2.0
 	     gnome-desktop-3.0
 	     gio-unix-2.0
-	     folks >= 0.9.5
+	     folks >= 0.11.4
 	     folks-telepathy
 	     folks-eds
 	     telepathy-glib >= 0.17.5
