@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -86,7 +85,6 @@ public class Contacts.View : ListBox {
   int nr_contacts_marked = 0;
 
   string []? filter_values;
-  TextDisplay text_display = TextDisplay.PRESENCE;
   bool selectors_visible = false;
 
   private Store _store;

@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  *
  * This program is free software; you can redistribute it and/or modify
@@ -65,7 +64,8 @@ public class Contacts.AddressMap : Frame {
     if (maps_info != null) {
       /* Set cursor as HAND1 to indicate the map is clickable */
       map.realize.connect (() => {
-          map.get_window ().set_cursor (new Cursor (CursorType.HAND1));
+          var hand_cursor = new Cursor.for_display (Display.get_default (), CursorType.HAND1);
+          map.get_window ().set_cursor (hand_cursor);
         });
 
       map.button_press_event.connect(() => {

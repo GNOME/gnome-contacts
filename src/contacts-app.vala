@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -114,9 +113,7 @@ public class Contacts.App : Gtk.Application {
 
   public void show_help () {
     try {
-      Gtk.show_uri (window.get_screen (),
-		    "help:gnome-help/contacts",
-		    Gtk.get_current_event_time ());
+      Gtk.show_uri_on_window (window, "help:gnome-help/contacts", Gtk.get_current_event_time ());
     } catch (GLib.Error e1) {
       warning ("Error showing help: %s", e1.message);
     }
@@ -173,7 +170,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_app_menu () {
-    this.add_action_entries (this.action_entries, this);
+    this.add_action_entries (action_entries, this);
 
     this.set_accels_for_action ("app.help", {"F1"});
     this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
@@ -297,7 +294,7 @@ public class Contacts.App : Gtk.Application {
   private static string individual_id = null;
   private static string email_address = null;
   private static string search_terms = null;
-  private static const OptionEntry[] options = {
+  private const OptionEntry[] options = {
     { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
       N_("Show contact with this individual id"), null },
     { "email", 'e', 0, OptionArg.STRING, ref email_address,

@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -148,7 +147,7 @@ public class Center : Bin {
 public class Contacts.Utils : Object {
   public static void compose_mail (string email) {
     try {
-      Gtk.show_uri (null, "mailto:" + Uri.escape_string (email, "@" , false), 0);
+      Gtk.show_uri_on_window (null, "mailto:" + Uri.escape_string (email, "@" , false), 0);
     } catch {
     }
   }
