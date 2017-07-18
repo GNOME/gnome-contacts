@@ -328,9 +328,8 @@ public class Contacts.Store : GLib.Object {
       account_manager.account_enabled.connect (this.check_account_caps);
       account_manager.account_disabled.connect (this.check_account_caps);
 
-      foreach (var account in account_manager.get_valid_accounts ()) {
-	yield this.check_account_caps (account);
-      }
+      foreach (var account in account_manager.dup_valid_accounts ())
+        yield this.check_account_caps (account);
     } catch (GLib.Error e) {
       warning ("Unable to check accounts caps %s", e.message);
     }

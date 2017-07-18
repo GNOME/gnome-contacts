@@ -32,7 +32,7 @@ pkg_modules="gtk+-3.0 >= 3.20.0
 	     folks >= 0.11.4
 	     folks-telepathy
 	     folks-eds
-	     telepathy-glib >= 0.17.5
+	     telepathy-glib >= 0.22.0
 	     libebook-1.2 >= 3.13.90
 	     libedataserver-1.2 >= 3.13.90
 	     libedataserverui-1.2 >= 3.13.90
