@@ -24,11 +24,14 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources])
 GLIB_GSETTINGS
 
-pkg_modules="gtk+-3.0 >= 3.20.0
-	     glib-2.0 >= 2.37.6
+GLIB_REQUIRED=2.44.0
+AC_SUBST(GLIB_REQUIRED)
+
+pkg_modules="gtk+-3.0 >= 3.22.0
+	     glib-2.0 >= $GLIB_REQUIRED
 	     gmodule-export-2.0
 	     gnome-desktop-3.0
-	     gio-unix-2.0
+	     gio-unix-2.0 >= $GLIB_REQUIRED
 	     folks >= 0.11.4
 	     folks-telepathy
 	     folks-eds

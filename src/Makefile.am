@@ -12,7 +12,7 @@ AM_CPPFLAGS = \
 AM_VALAFLAGS = \
 	--vapidir=../vapi --pkg config --pkg custom \
 	@CONTACTS_PACKAGES@ \
-	--target-glib=2.38 --gresources=$(top_srcdir)/data/contacts.gresource.xml \
+	--target-glib=$(GLIB_REQUIRED) --gresources=$(top_srcdir)/data/contacts.gresource.xml \
 	$(NULL)
 
 if BUILD_CHEESE
