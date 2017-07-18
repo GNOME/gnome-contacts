@@ -18,7 +18,6 @@
 using Gtk;
 using Folks;
 using Gee;
-using TelepathyGLib;
 using DBus;
 using GLib;
 using Gdk;
@@ -49,8 +48,7 @@ namespace Contacts {
     return provider;
   }
 
-  public void add_separator (ListBoxRow row,
-			     ListBoxRow? before_row) {
+  public void add_separator (ListBoxRow row, ListBoxRow? before_row) {
     row.set_header (new Separator (Orientation.HORIZONTAL));
   }
 
@@ -58,8 +56,8 @@ namespace Contacts {
   interface FreedesktopApplication : Object {
     [DBus (name = "ActivateAction")]
     public abstract void ActivateAction (string action,
-					 Variant[] parameter,
-					 HashTable<string, Variant> data) throws IOError;
+                                         Variant[] parameter,
+                                         HashTable<string, Variant> data) throws IOError;
   }
 
   public void activate_action (string app_id,
@@ -78,10 +76,9 @@ namespace Contacts {
       context.set_timestamp (timestamp);
 
       Variant[] param_array = {};
-      if (parameter != null) {
+      if (parameter != null)
         param_array += parameter;
-      }
-      
+
       var startup_id = context.get_startup_notify_id (info,
                                                       new GLib.List<File>());
       var data = new HashTable<string, Variant>(str_hash, str_equal);
@@ -146,19 +143,24 @@ public class Center : Bin {
 
 public class Contacts.Utils : Object {
   public static void compose_mail (string email) {
+    var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
     try {
-      Gtk.show_uri_on_window (null, "mailto:" + Uri.escape_string (email, "@" , false), 0);
-    } catch {
+      Gtk.show_uri_on_window (null, mailto_uri, 0);
+    } catch (Error e) {
+      debug ("Couldn't launch URI \"%s\": %s", mailto_uri, e.message);
     }
   }
 
   public static void start_chat (Contact contact, string protocol, string id) {
     var im_persona = contact.find_im_persona (protocol, id);
     var account = (im_persona.store as Tpf.PersonaStore).account;
-    var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE, TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE, (int) TelepathyGLib.HandleType.CONTACT);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, id);
+    var request_dict = new HashTable<weak string, Value?>(str_hash, str_equal);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
+                         TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
+                         (int) TelepathyGLib.HandleType.CONTACT);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID,
+                         id);
 
     // TODO: Should really use the event time like:
     // tp_user_action_time_from_x11(gtk_get_current_event_time())
@@ -167,30 +169,26 @@ public class Contacts.Utils : Object {
   }
 
   public static void start_call (string contact_id,
-      Gee.HashMap<string, Account> accounts) {
+                                 Gee.HashMap<string, TelepathyGLib.Account> accounts) {
     // TODO: prompt for which account to use
     var account = accounts.values.to_array ()[0];
     Utils.start_call_with_account (contact_id, account);
   }
 
-  public static void start_call_with_account (string contact_id,
-      Account account) {
-    var request_dict = new HashTable<weak string,GLib.Value?>(str_hash,
-	str_equal);
+  public static void start_call_with_account (string contact_id, TelepathyGLib.Account account) {
+    var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
 
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
-	TelepathyGLib.IFACE_CHANNEL_TYPE_CALL);
+                         TelepathyGLib.IFACE_CHANNEL_TYPE_CALL);
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
-	(int) TelepathyGLib.HandleType.CONTACT);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID, contact_id);
-    request_dict.insert (
-	TelepathyGLib.PROP_CHANNEL_TYPE_CALL_INITIAL_AUDIO,
-	true);
+                         (int) TelepathyGLib.HandleType.CONTACT);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID,
+                         contact_id);
+    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TYPE_CALL_INITIAL_AUDIO,
+                         true);
 
-    var request = new TelepathyGLib.AccountChannelRequest(account,
-	request_dict, int64.MAX);
-    request.ensure_channel_async.begin (
-	"org.freedesktop.Telepathy.Client.Empathy.Call", null);
+    var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
+    request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Call", null);
   }
 
   public static T? get_first<T> (Collection<T> collection) {
@@ -198,33 +196,6 @@ public class Contacts.Utils : Object {
     if (i.next())
       return i.get();
     return null;
-  }
-
-  public static Gtk.MenuItem add_menu_item (Gtk.Menu menu, string label) {
-    var mi = new Gtk.MenuItem.with_label (label);
-    menu.append (mi);
-    mi.show ();
-    return mi;
-  }
-
-  public static void grid_insert_row_after (Grid grid, Widget widget, bool expand_intersecting) {
-    int y, h;
-    grid.child_get (widget,
-		    "top-attach", out y,
-		    "height", out h);
-    int start = y + h;
-    foreach (var child in grid.get_children ()) {
-      grid.child_get (child,
-		      "top-attach", out y,
-		      "height", out h);
-      if (y >= start) {
-	grid.child_set (child,
-			"top-attach", y + 1);
-      } else if (y + h > start && expand_intersecting) {
-	grid.child_set (child,
-			"height", h + 1);
-      }
-    }
   }
 
   public static void cairo_ellipsis (Cairo.Context cr,
@@ -298,7 +269,7 @@ public class Contacts.Utils : Object {
 
     for (int i = 0; str.get_next_char (ref i, out c);) {
       if (!c.isspace ())
-	return false;
+        return false;
     }
 
     return true;
@@ -311,20 +282,12 @@ public class Contacts.Utils : Object {
     for (s = str; s[0] != 0; s = s.next_char ()) {
       var c = strip_char (s.get_char ());
       if (c != 0) {
-	var size = c.fully_decompose (false, buf);
-	if (size > 0)
-	  res.append_unichar (buf[0]);
+        var size = c.fully_decompose (false, buf);
+        if (size > 0)
+          res.append_unichar (buf[0]);
       }
     }
     return res.str;
-  }
-
-  public static void grab_widget_later (Widget widget) {
-      ulong id = 0;
-      id = widget.size_allocate.connect ( () => {
-	  widget.grab_focus ();
-	  widget.disconnect (id);
-	});
   }
 
   public static void grab_entry_focus_no_select (Entry entry) {
@@ -345,9 +308,9 @@ public class Contacts.Utils : Object {
       var arg = terminal_settings.get_string("exec-arg");
       string[] args;
       if (arg != "")
-	args = {term, arg, exec, null};
+        args = {term, arg, exec, null};
       else
-	args = {term, exec, null};
+        args = {term, exec, null};
 
       Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
     } else {
@@ -362,21 +325,21 @@ public class Contacts.Utils : Object {
       string[] args = {"evolution", "-c", "calendar", null, null};
 
       if (day != null) {
-	var d = day.to_local ();
-	var today = new DateTime.now_local ();
-	args[3] = "calendar:///?startdate=%.4d%.2d%.2d".printf (today.get_year (), d.get_month (), d.get_day_of_month ());
+        var d = day.to_local ();
+        var today = new DateTime.now_local ();
+        args[3] = "calendar:///?startdate=%.4d%.2d%.2d".printf (today.get_year (), d.get_month (), d.get_day_of_month ());
       }
 
       try {
-	Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
-      }
-      catch {
+        Process.spawn_async (null, args, null, SpawnFlags.SEARCH_PATH, null, null);
+      } catch (Error e) {
+        debug ("Couldn't spawn process \"%s\": %s", string.joinv(" ", args), e.message);
       }
     } else {
       try {
-	spawn_app (calendar_settings);
-      }
-      catch {
+        spawn_app (calendar_settings);
+      } catch (Error e) {
+        debug ("Couldn't spawn calendar app: %s", e.message);
       }
     }
   }
@@ -388,15 +351,16 @@ public class Contacts.Utils : Object {
       var path = Path.build_filename (data_dir, "pixmaps", "faces");
       Dir? dir = null;
       try {
-	dir = Dir.open (path);
-      }	catch {
+        dir = Dir.open (path);
+      } catch (Error e) {
+        debug ("Couldn't open stock avatars folder \"%s\": %s", path, e.message);
       }
       if (dir != null) {
-	string? face;
-	while ((face = dir.read_name ()) != null) {
-	  var filename = Path.build_filename (path, face);
-	  files += filename;
-	}
+        string? face;
+        while ((face = dir.read_name ()) != null) {
+          var filename = Path.build_filename (path, face);
+          files += filename;
+        }
       }
     };
     return files;
