@@ -388,7 +388,7 @@ public class Contacts.ContactEditor : Grid {
 
     /* Notify change to upper layer */
     value_text.get_buffer ().changed.connect (() => {
-	set_field_changed (get_current_row (value_text));
+	set_field_changed (get_current_row (sw));
       });
     delete_button.clicked.connect (() => {
 	remove_row (get_current_row (delete_button));
