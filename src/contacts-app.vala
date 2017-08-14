@@ -136,7 +136,7 @@ public class Contacts.App : Gtk.Application {
                            "comments", _("Contact Management Application"),
                            "copyright", "Copyright 2011 Red Hat, Inc.\nCopyright 2014 The Contacts Developers",
                            "license-type", Gtk.License.GPL_2_0,
-                           "logo-icon-name", "x-office-address-book",
+                           "logo-icon-name", "gnome-contacts",
                            "version", Config.PACKAGE_VERSION,
                            "website", "https://wiki.gnome.org/Apps/Contacts",
                            "wrap-license", true);
