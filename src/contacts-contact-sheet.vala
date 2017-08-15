@@ -76,6 +76,7 @@ public class Contacts.ContactSheet : Grid {
     value_label.set_halign (Align.START);
     value_label.set_ellipsize (Pango.EllipsizeMode.END);
     value_label.wrap_mode = Pango.WrapMode.CHAR;
+    value_label.set_selectable (true);
 
     /* FIXME: hardcode gap to match the button size */
     type_label.margin_top = 3;
@@ -111,6 +112,7 @@ public class Contacts.ContactSheet : Grid {
     name_label.margin_start = 6;
     name_label.set_ellipsize (Pango.EllipsizeMode.END);
     name_label.xalign = 0.0f;
+    name_label.set_selectable (true);
 
     c.keep_widget_uptodate (name_label, (w) => {
 	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", c.display_name));
