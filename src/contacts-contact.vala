@@ -344,6 +344,21 @@ public class Contacts.Contact : GLib.Object  {
     }
     return false;
   }
+  
+  private static int compare_fields_type (TypeSet type_set, AbstractFieldDetails a, AbstractFieldDetails b) {
+    string a_type = type_set.format_type (a);
+    string b_type = type_set.format_type (b);
+    return a_type.ascii_casecmp (b_type);
+  }
+  
+  private static TypeSet select_typeset_from_fielddetails (AbstractFieldDetails a) {
+    if (a is EmailFieldDetails)
+      return TypeSet.email;
+    else if (a is PhoneFieldDetails)
+      return TypeSet.phone;
+    else
+      return TypeSet.general; 
+  }
 
   public static int compare_fields (void *_a, void *_b) {
     AbstractFieldDetails *a = (AbstractFieldDetails *)_a;
@@ -358,7 +373,15 @@ public class Contacts.Contact : GLib.Object  {
       else
 	return 1;
     }
-
+    
+    // compare by type
+    TypeSet field_type_set = select_typeset_from_fielddetails (a);    
+    int result = compare_fields_type (field_type_set, a, b);
+    if (result != 0) {
+      return result;
+    }
+    
+    // compare by value if types are equal
     if (a is EmailFieldDetails || a is PhoneFieldDetails) {
       var aa = a as AbstractFieldDetails<string>;
       var bb = b as AbstractFieldDetails<string>;
