@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	org.gnome.Contacts.SearchProvider.service.in \
 	contacts.gresource.xml \
 	ui/app-menu.ui \
+	ui/contacts-accounts-list.ui \
 	ui/contacts-address-map.ui \
 	ui/contacts-avatar-dialog.ui \
 	ui/contacts-contact-editor.ui \

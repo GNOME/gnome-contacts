@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Erick Pérez Castellanos <erick.red@gmail.com>
  *
@@ -19,54 +18,22 @@
 using Gtk;
 using Folks;
 
-public class Contacts.AccountsList : Grid {
-  ListBox accounts_view;
-  ListBoxRow last_selected_row;
-  Button add_account_button;
+[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-accounts-list.ui")]
+public class Contacts.AccountsList : Box {
+  [GtkChild]
+  private ListBox accounts_view;
+
+  private ListBoxRow last_selected_row;
 
   public PersonaStore selected_store;
 
   public signal void account_selected ();
 
   construct {
-    set_orientation (Orientation.VERTICAL);
-    set_row_spacing (12);
+    this.selected_store = null;
 
-    selected_store = null;
-
-    accounts_view = new ListBox ();
-    accounts_view.set_selection_mode (SelectionMode.NONE);
-    accounts_view.set_size_request (372, -1);
-    accounts_view.set_header_func (add_separator);
-
-    var scrolled = new ScrolledWindow(null, null);
-    scrolled.set_min_content_height (210);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_shadow_type (ShadowType.IN);
-    scrolled.add (accounts_view);
-
-    add_account_button = new Button.with_label (_("Online Accounts"));
-    add_account_button.get_style_context ().add_class (STYLE_CLASS_RAISED);
-    add_account_button.get_child ().margin_start = 6;
-    add_account_button.get_child ().margin_end = 6;
-    add_account_button.get_child ().margin_top = 3;
-    add_account_button.get_child ().margin_bottom = 3;
-    add_account_button.clicked.connect (() => {
-        try {
-          Process.spawn_command_line_async ("gnome-control-center online-accounts");
-        }
-        catch (Error e) {
-          // TODO: Show error dialog
-        }
-      });
-
-    add (scrolled);
-    add (add_account_button);
-
-    show_all ();
-
-    /* signal handling */
-    accounts_view.row_activated.connect (row_activated);
+    this.accounts_view.set_header_func (add_separator);
+    this.accounts_view.row_activated.connect (row_activated);
   }
 
   private void row_activated (ListBoxRow? row) {
@@ -182,5 +149,15 @@ public class Contacts.AccountsList : Grid {
     }
 
     accounts_view.show_all ();
+  }
+
+  [GtkCallback]
+  private void on_goa_button_clicked () {
+    try {
+      Process.spawn_command_line_async ("gnome-control-center online-accounts");
+    } catch (Error e) {
+      // TODO: Show error dialog
+      warning ("Couldn't open GOA: %s", e.message);
+    }
   }
 }
