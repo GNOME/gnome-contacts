@@ -50,7 +50,7 @@ public class Contacts.App : Gtk.Application {
     if (contact != null) {
       show_contact (contact);
     } else {
-      var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
+      var dialog = new MessageDialog (this.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
                                       _("No contact with id %s found"), id);
       dialog.set_title(_("Contact not found"));
       dialog.show ();
@@ -150,7 +150,7 @@ public class Contacts.App : Gtk.Application {
     if (contact != null) {
       show_contact (contact);
     } else {
-      var dialog = new MessageDialog (App.app.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
+      var dialog = new MessageDialog (this.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
                                       _("No contact with email address %s found"), email_address);
       dialog.set_title(_("Contact not found"));
       dialog.show ();
@@ -327,11 +327,11 @@ public class Contacts.App : Gtk.Application {
     activate ();
 
     if (individual_id != null)
-      app.show_individual.begin (individual_id);
+      show_individual.begin (individual_id);
     if (email_address != null)
-      app.show_by_email.begin (email_address);
+      show_by_email.begin (email_address);
     if (search_terms != null)
-      app.show_search (search_terms);
+      show_search (search_terms);
 
     return 0;
   }
