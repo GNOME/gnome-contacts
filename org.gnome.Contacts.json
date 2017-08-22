@@ -1,0 +1,237 @@
+{
+    "app-id": "org.gnome.Contacts",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "master",
+    "sdk": "org.gnome.Sdk",
+    "command": "gnome-contacts",
+    "tags": ["devel"],
+    "desktop-file-name-prefix": "(Development) ",
+    "rename-icon": "gnome-contacts",
+    "copy-icon": true,
+    "finish-args": [
+        /* X11 + XShm access */
+        "--share=ipc", "--socket=x11",
+        /* Wayland access */
+        "--socket=wayland",
+        "--device=dri",
+        /* Notification access */
+        "--talk-name=org.freedesktop.Notifications",
+        /* GNOME Online Accounts */
+        "--talk-name=org.gnome.OnlineAccounts",
+        /* Evolution Data server */
+        "--talk-name=org.gnome.evolution.dataserver.AddressBook9",
+        "--talk-name=org.gnome.evolution.dataserver.Sources5",
+        "--talk-name=org.gnome.evolution.dataserver.Subprocess.Backend.*",
+        /* Telepathy */
+        "--talk-name=org.freedesktop.Telepathy.AccountManager",
+        /* Allow avatars from $HOME */
+        "--filesystem=home:ro",
+        /* Needed for dconf to work */
+        "--filesystem=xdg-run/dconf", "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf", "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+    ],
+    "build-options" : {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "cleanup": ["/include", "/lib/pkgconfig",
+                "/share/pkgconfig", "/share/aclocal",
+                "/man", "/share/man", "/share/gtk-doc",
+                "/share/vala",
+                "*.la", "*.a"],
+    "modules": [
+        {
+            "name": "gnome-doc-utils",
+            "build-options": {
+                "arch" : {
+                    /* Lie about our arch - no actual compilation happens here. */
+                    "arm": {
+                        "config-opts": [ "--build=amd64" ]
+                    },
+                    "aarch64": {
+                        "config-opts": [ "--build=amd64" ]
+                    }
+                }            },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/gnome-doc-utils/0.20/gnome-doc-utils-0.20.10.tar.xz",
+                    "sha256": "cb0639ffa9550b6ddf3b62f3b1add92fb92ab4690d351f2353cffe668be8c4a6"
+                }
+            ]
+        },
+        {
+            "name": "telepathy-glib",
+            "config-opts": [
+              "--disable-static",
+              "--enable-vala-bindings=yes"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://telepathy.freedesktop.org/releases/telepathy-glib/telepathy-glib-0.24.1.tar.gz",
+                    "sha256": "9e0df1d8f857e0270cf0b32e2d1ca5a24aa7282873361785d573f72ad7f7d5eb"
+                }
+            ]
+        },
+        {
+            "name": "libgee",
+            "build-options" : {
+                "env": {
+                    "PKG_CONFIG_GOBJECT_INTROSPECTION_1_0_GIRDIR": "/app/share/gir-1.0",
+                    "PKG_CONFIG_GOBJECT_INTROSPECTION_1_0_TYPELIBDIR": "/app/lib/girepository-1.0"
+                }
+            },
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/libgee"
+                }
+            ]
+        },
+        {
+            /* Needed by g-o-a */
+            /* we need rest-0.7 so we use a tarball for it */
+            "name": "librest",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://git.gnome.org/browse/librest/snapshot/librest-librest-0.7.12.tar.xz",
+                    "sha256": "570917e570e6e8bf55572eb04902d4cf3975c2629df9df96c21be2059d71dab9"
+                }
+            ]
+        },
+        {
+            "name": "gnome-online-accounts",
+            "cleanup": [ "/bin", "/share/GConf" ],
+            "config-opts": ["--disable-telepathy", "--disable-documentation", "--disable-backend"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/gnome-online-accounts"
+                }
+            ]
+        },
+        {
+            "name": "libical",
+            "cleanup": [ "/lib/cmake"],
+            "buildsystem": "cmake",
+            "config-opts": [ "-DCMAKE_INSTALL_LIBDIR:PATH=/app/lib",
+                             "-DBUILD_SHARED_LIBS:BOOL=ON" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/libical/libical/releases/download/v2.0.0/libical-2.0.0.tar.gz",
+                    "sha256": "654c11f759c19237be39f6ad401d917e5a05f36f1736385ed958e60cf21456da"
+                }
+            ]
+        },
+        {
+            "name": "liboauth",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://netix.dl.sourceforge.net/project/liboauth/liboauth-1.0.3.tar.gz",
+                    "sha256": "0df60157b052f0e774ade8a8bac59d6e8d4b464058cc55f9208d72e41156811f"
+                }
+            ]
+        },
+        {
+            "name": "libgdata",
+            "config-opts": [
+                "--disable-always-build-tests",
+                "--disable-Werror",
+                "--disable-static"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/libgdata"
+                }
+            ]
+        },
+        {
+            "name": "evolution-data-server",
+            "cleanup": [
+                "/lib/cmake",
+                "/lib/evolution-data-server/*-backends",
+                "/libexec",
+                "/share/dbus-1/services"
+            ],
+            "config-opts": [
+                "-DENABLE_GTK=ON",
+                "-DENABLE_GOA=ON",
+                "-DENABLE_UOA=OFF",
+                "-DENABLE_GOOGLE_AUTH=ON",
+                "-DENABLE_GOOGLE=ON",
+                "-DENABLE_WITH_PHONENUMBER=ON",
+                "-DENABLE_VALA_BINDINGS=ON",
+                "-DENABLE_WEATHER=OFF",
+                "-DWITH_OPENLDAP=OFF",
+                "-DENABLE_INTROSPECTION=ON",
+                "-DENABLE_INSTALLED_TESTS=OFF",
+                "-DENABLE_GTK_DOC=OFF",
+                "-DENABLE_EXAMPLES=OFF"
+            ],
+            "buildsystem": "cmake",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/evolution-data-server"
+                }
+            ]
+        },
+        {
+            "name": "folks",
+            "cleanup": [ "/bin", "/share/GConf" ],
+            "config-opts": [ "--disable-fatal-warnings" ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/folks"
+                }
+            ]
+        },
+        {
+            "name": "libchamplain",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/libchamplain"
+                }
+            ]
+        },
+        {
+            "name": "geocode-glib",
+            "config-opts": ["--disable-static"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/geocode-glib"
+                }
+            ]
+        },
+        {
+            "name": "gnome-desktop",
+            "config-opts": ["--disable-debug-tools", "--disable-udev"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/gnome-desktop"
+                }
+            ]
+        },
+        {
+            "name": "gnome-contacts",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://git.gnome.org/gnome-contacts"
+                }
+            ]
+        }
+    ]
+}
