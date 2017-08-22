@@ -20,7 +20,8 @@ using Folks;
 
 public class Contacts.App : Gtk.Application {
   public static App app;
-  public GLib.Settings settings;
+
+  private Settings settings;
 
   /* moving creation to Window */
   public Store contacts_store;
@@ -180,7 +181,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_window () {
-    window = new Contacts.Window (this, contacts_store);
+    this.window = new Contacts.Window (this, this.contacts_store, this.settings);
   }
 
   private void schedule_window_creation () {
@@ -350,6 +351,6 @@ public class Contacts.App : Gtk.Application {
   public App () {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
     app = this;
-    settings = new GLib.Settings ("org.gnome.Contacts");
+    this.settings = new Settings (this);
   }
 }

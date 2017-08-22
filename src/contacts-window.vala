@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -96,7 +95,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     get; set;
   }
 
-  public Window (Gtk.Application app, Store contacts_store) {
+  public Window (App app, Store contacts_store, Settings settings) {
     Object (
       application: app,
       show_menubar: false,
@@ -143,14 +142,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 			BindingFlags.DEFAULT |
 			BindingFlags.INVERT_BOOLEAN);
 
-    if ((app as App).settings.get_boolean ("did-initial-setup")) {
+    if (settings.did_initial_setup) {
       view_switcher.visible_child_name = "content-view";
       set_titlebar (content_header_bar);
     } else {
       var change_book_action = app.lookup_action ("change-book") as GLib.SimpleAction;
-      if (change_book_action != null) {
-	change_book_action.set_enabled (false);
-      }
+      if (change_book_action != null)
+        change_book_action.set_enabled (false);
 
       store.eds_persona_store_changed.connect  ( () => {
 	  setup_accounts_list.update_contents (false);
@@ -172,7 +170,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
 	  var e_store = setup_accounts_list.selected_store as Edsf.PersonaStore;
 	  eds_source_registry.set_default_address_book (e_store.source);
-	  (app as App).settings.set_boolean ("did-initial-setup", true);
+	  settings.did_initial_setup = true;
 
 	  if (change_book_action != null) {
 	    change_book_action.set_enabled (true);
