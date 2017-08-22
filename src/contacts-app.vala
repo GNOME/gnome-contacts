@@ -123,7 +123,8 @@ public class Contacts.App : Gtk.Application {
   public void show_about () {
     string[] authors = {
       "Alexander Larsson <alexl@redhat.com>",
-      "Erick Pérez Castellanos <erick.red@gmail.com>"
+      "Erick Pérez Castellanos <erick.red@gmail.com>",
+      "Niels De Graef <nielsdegraef@gmail.com>"
     };
     string[] artists = {
       "Allan Day <allanpday@gmail.com>"
