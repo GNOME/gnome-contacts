@@ -154,10 +154,27 @@ public class Contacts.AccountsList : Box {
   [GtkCallback]
   private void on_goa_button_clicked () {
     try {
-      Process.spawn_command_line_async ("gnome-control-center online-accounts");
+      var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
+                                              DBusProxyFlags.NONE,
+                                              null,
+                                              "org.gnome.ControlCenter",
+                                              "/org/gnome/ControlCenter",
+                                              "org.gtk.Actions");
+
+      var builder = new VariantBuilder (new VariantType ("av") );
+      builder.add ("v", new Variant.string (""));
+      var param = new Variant.tuple ({
+        new Variant.string ("launch-panel"),
+        new Variant.array (new VariantType ("v"), {
+          new Variant ("v", new Variant ("(sav)", "online-accounts", builder))
+        }),
+        new Variant.array (new VariantType ("{sv}"), {})
+      });
+
+      proxy.call_sync ("Activate", param, DBusCallFlags.NONE, -1);
     } catch (Error e) {
       // TODO: Show error dialog
-      warning ("Couldn't open GOA: %s", e.message);
+      warning ("Couldn't open online-accounts: %s", e.message);
     }
   }
 }
