@@ -60,6 +60,10 @@ conf.set_quoted('PKGLIBDIR', pkglibdir)
 conf.set_quoted('VERSION', meson.project_version())
 configure_file(output: 'config.h', configuration: conf)
 
+# Post-install scripts
+meson.add_install_script('meson_post_install.py')
+
+# Subfolders
 subdir('data')
 subdir('po')
 subdir('src')
