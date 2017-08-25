@@ -28,6 +28,8 @@
         "--talk-name=org.freedesktop.Telepathy.AccountManager",
         /* Allow avatars from $HOME */
         "--filesystem=home:ro",
+        /* Access for the default avatars */
+        "--filesystem=xdg-data/pixmaps/faces:ro",
         /* Needed for dconf to work */
         "--filesystem=xdg-run/dconf", "--filesystem=~/.config/dconf:ro",
         "--talk-name=ca.desrt.dconf", "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
