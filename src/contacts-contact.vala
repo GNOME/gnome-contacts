@@ -424,97 +424,6 @@ public class Contacts.Contact : GLib.Object  {
     return true;
   }
 
-  public static string presence_to_icon_symbolic (PresenceType presence) {
-    string? iconname = null;
-    switch (presence) {
-    default:
-    case PresenceType.OFFLINE:
-    case PresenceType.UNSET:
-    case PresenceType.ERROR:
-    case PresenceType.UNKNOWN:
-      break;
-    case PresenceType.AVAILABLE:
-      iconname = "user-available-symbolic";
-      break;
-    case PresenceType.AWAY:
-    case PresenceType.EXTENDED_AWAY:
-      iconname = "user-away-symbolic";
-      break;
-    case PresenceType.BUSY:
-      iconname = "user-busy-symbolic";
-      break;
-    case PresenceType.HIDDEN:
-      iconname = "user-invisible-symbolic";
-      break;
-    }
-    return iconname;
-  }
-
-  public static string presence_to_icon_symbolic_full (PresenceType presence) {
-    string? iconname = presence_to_icon_symbolic (presence);
-    if (iconname != null)
-      return iconname;
-    return "user-offline-symbolic";
-  }
-
-  public static string presence_to_icon (PresenceType presence) {
-    string? iconname = null;
-    switch (presence) {
-    default:
-    case PresenceType.OFFLINE:
-    case PresenceType.UNSET:
-    case PresenceType.ERROR:
-    case PresenceType.UNKNOWN:
-      break;
-    case PresenceType.AVAILABLE:
-      iconname = "user-available";
-      break;
-    case PresenceType.AWAY:
-    case PresenceType.EXTENDED_AWAY:
-      iconname = "user-away";
-      break;
-    case PresenceType.BUSY:
-      iconname = "user-busy";
-      break;
-    case PresenceType.HIDDEN:
-      iconname = "user-invisible";
-      break;
-    }
-    return iconname;
-  }
-
-  public static string presence_to_icon_full (PresenceType presence) {
-    string? iconname = presence_to_icon (presence);
-    if (iconname != null)
-      return iconname;
-    return "user-offline";
-  }
-
-  public static string presence_to_class (PresenceType presence) {
-    string? classname = null;
-    switch (presence) {
-    default:
-    case PresenceType.HIDDEN:
-    case PresenceType.OFFLINE:
-    case PresenceType.UNSET:
-    case PresenceType.ERROR:
-      classname = "presence-icon-offline";
-      break;
-    case PresenceType.AVAILABLE:
-    case PresenceType.UNKNOWN:
-      classname = "presence-icon-available";
-      break;
-    case PresenceType.AWAY:
-    case PresenceType.EXTENDED_AWAY:
-      classname = "presence-icon-away";
-      break;
-    case PresenceType.BUSY:
-      classname = "presence-icon-busy";
-      break;
-    }
-    return classname;
-  }
-
   static string? get_first_string (Collection<string>? collection) {
     if (collection != null) {
       var i = collection.iterator();
@@ -689,55 +598,6 @@ public class Contacts.Contact : GLib.Object  {
 
     display = ImDisplay.DEFAULT;
     return service;
-  }
-
-  public static string format_im_name (Tpf.Persona? persona,
-				       string protocol, string id) {
-    string? service = null;
-    if (persona != null) {
-      var account = (persona.store as Tpf.PersonaStore).account;
-      service = account.service;
-    }
-    if (service == null || service == "")
-      service = protocol;
-
-    ImDisplay display;
-    var display_name = format_im_service (service, out display);
-
-    switch (display) {
-    default:
-    case ImDisplay.DEFAULT:
-      return id + " (" + display_name + ")";
-    case ImDisplay.ALIAS_SERVICE:
-      return persona.alias + " (" + display_name + ")";
-    }
-  }
-
-  public Widget? create_presence_widget (string protocol, string im_address) {
-    var tp = find_im_persona (protocol, im_address);
-    if (tp == null)
-      return null;
-
-    var i = new Image ();
-    i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
-    string last_class = Contact.presence_to_class (tp.presence_type);
-    i.get_style_context ().add_class (last_class);
-    i.set_tooltip_text (tp.presence_message);
-
-    var id1 = tp.notify["presence-type"].connect ((pspec) => {
-      i.set_from_icon_name (presence_to_icon_full (tp.presence_type), IconSize.MENU);
-      i.get_style_context ().remove_class (last_class);
-      last_class = Contact.presence_to_class (tp.presence_type);
-      i.get_style_context ().add_class (last_class);
-     });
-    var id2 = tp.notify["presence-message"].connect ( (pspec) => {
-	i.set_tooltip_text (tp.presence_message);
-      });
-    i.destroy.connect (() => {
-	tp.disconnect(id1);
-	tp.disconnect(id2);
-      });
-    return i;
   }
 
   private bool changed_cb () {
@@ -982,7 +842,6 @@ public class Contacts.Contact : GLib.Object  {
 
     return p;
   }
-
 
   public Persona? find_persona_from_store (PersonaStore store) {
     foreach (var p in individual.personas) {
