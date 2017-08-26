@@ -25,8 +25,12 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
   public bool any_unlinked;
 
-  public LinkedAccountsDialog (Contact contact) {
-    Object (use_header_bar: 1);
+  public LinkedAccountsDialog (Window main_win, Contact contact) {
+    Object (
+      use_header_bar: 1,
+      transient_for: main_win,
+      modal: true
+    );
 
     this.contact = contact;
     any_unlinked = false;
@@ -35,8 +39,6 @@ public class Contacts.LinkedAccountsDialog : Dialog {
     headerbar.set_title (_("%s").printf (contact.display_name));
     headerbar.set_subtitle (_("Linked Accounts"));
 
-    set_transient_for (App.app.window);
-    set_modal (true);
     set_default_size (600, 400);
 
     var grid = new Grid ();

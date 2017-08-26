@@ -26,7 +26,7 @@ public class Contacts.App : Gtk.Application {
   /* moving creation to Window */
   public Store contacts_store;
 
-  public Contacts.Window window;
+  private Window window;
 
   private bool is_prepare_scheluded = false;
   private bool is_quiescent_scheduled = false;

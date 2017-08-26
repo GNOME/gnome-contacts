@@ -72,9 +72,9 @@ public class Contacts.AvatarDialog : Dialog {
    */
   public signal void set_avatar (GLib.Icon avatar_icon);
 
-  public AvatarDialog (Contact? contact) {
+  public AvatarDialog (Window main_window, Contact? contact) {
     Object (
-      transient_for: App.app.window,
+      transient_for: main_window,
       use_header_bar: 1
     );
 

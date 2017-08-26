@@ -275,8 +275,8 @@ public class Contacts.ContactPane : Stack {
     }
   }
 
-  void linked_accounts () {
-    var dialog = new LinkedAccountsDialog (contact);
+  private void linked_accounts () {
+    var dialog = new LinkedAccountsDialog ((Window) get_toplevel (), contact);
     var result = dialog.run ();
     if (result == ResponseType.CLOSE &&
 	dialog.any_unlinked) {
