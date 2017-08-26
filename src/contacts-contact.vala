@@ -33,14 +33,6 @@ public class Contacts.Contact : GLib.Object  {
 
   public Store store;
   public bool is_main;
-  public PresenceType presence_type;
-  public string presence_message;
-  public bool is_phone;
-  struct ContactDataRef {
-    void *key;
-    void *data;
-  }
-  private ContactDataRef[] refs;
 
   public Individual individual;
   uint changed_id;
@@ -195,7 +187,6 @@ public class Contacts.Contact : GLib.Object  {
 
   private string filter_data;
 
-  public signal void presence_changed ();
   public signal void changed ();
   public signal void personas_changed ();
 
@@ -261,13 +252,10 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void persona_notify_cb (ParamSpec pspec) {
-    this.presence_changed ();
     queue_changed (false);
   }
 
   private void connect_persona (Persona p) {
-    p.notify["presence-type"].connect (persona_notify_cb);
-    p.notify["presence-message"].connect (persona_notify_cb);
     var tp = p as Tpf.Persona;
     if (tp != null && tp.contact != null)
       tp.contact.notify["client-types"].connect (persona_notify_cb);
@@ -278,41 +266,6 @@ public class Contacts.Contact : GLib.Object  {
     var tp = p as Tpf.Persona;
     if (tp != null && tp.contact != null)
       SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
-  }
-
-  public unowned T lookup<T> (void *key) {
-    foreach (unowned ContactDataRef? data_ref in refs) {
-      if (data_ref.key == key)
-	return (T*)data_ref.data;
-    }
-    return null;
-  }
-
-  public void set_lookup<T> (void *key, owned T data) {
-    int i = refs.length;
-    refs.resize(i+1);
-    refs[i].key = key;
-    // Transfer ownership to the array
-    refs[i].data = (void *)(owned)data;
-  }
-
-  public void remove_lookup<T> (void *key) {
-    int i;
-
-    for (i = 0; i < refs.length; i++) {
-      if (refs[i].key == key) {
-	// We need to unref the data so we take a local
-	// owned copy and let it go out of scope
-	T old_val = (owned)refs[i].data;
-	// Reference the variable to avoid warning
-	(void)old_val;
-	for (int j = i + 1; j < refs.length; j++) {
-	  refs[j-1] = refs[j];
-	}
-	refs.resize(refs.length-1);
-	return;
-      }
-    }
   }
 
   public static bool persona_is_main (Persona persona) {
@@ -341,7 +294,6 @@ public class Contacts.Contact : GLib.Object  {
     this.store = store;
     individual = i;
     individual.set_data ("contact", this);
-    this.refs = new ContactDataRef[0];
 
     is_main = calc_is_main ();
     foreach (var p in individual.personas) {
@@ -637,41 +589,6 @@ public class Contacts.Contact : GLib.Object  {
     queue_changed (false);
   }
 
-  private static bool get_is_phone (Persona persona) {
-    var tp = persona as Tpf.Persona;
-    if (tp == null || tp.contact == null)
-      return false;
-
-    unowned string[] types = tp.contact.client_types;
-
-    return (types != null && types[0] == "phone");
-  }
-
-  private void update_presence () {
-    presence_message = null;
-    presence_type = Folks.PresenceType.UNSET;
-    is_phone = false;
-
-    /* Choose the most available presence from our personas */
-    foreach (var p in individual.personas) {
-      if (p is PresenceDetails) {
-	unowned PresenceDetails presence = (PresenceDetails) p;
-	var p_is_phone = get_is_phone (p);
-	if (PresenceDetails.typecmp (presence.presence_type,
-				     presence_type) > 0 ||
-	    (presence.presence_type == presence_type &&
-	     is_phone && !p_is_phone)) {
-	  presence_type = presence.presence_type;
-	  presence_message = presence.presence_message;
-	  is_phone = p_is_phone;
-	}
-      }
-    }
-
-    if (presence_message == null)
-      presence_message = "";
-  }
-
   private void update_filter_data () {
     var builder = new StringBuilder ();
     if (individual.alias != null) {
@@ -714,7 +631,6 @@ public class Contacts.Contact : GLib.Object  {
       TypeSet.phone.type_seen (phone);
     }
 
-    update_presence ();
     update_filter_data ();
   }
 
