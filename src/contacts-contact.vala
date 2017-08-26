@@ -27,91 +27,6 @@ public errordomain ContactError {
   NO_PRIMARY
 }
 
-public class Contacts.ContactPresence : Grid {
-  Contact contact;
-  Image image;
-  Image phone_image;
-  Label label;
-  string last_class;
-
-  private void update_presence_widgets () {
-    PresenceType type;
-    string message;
-    bool is_phone;
-
-    type = contact.presence_type;
-    message = contact.presence_message;
-    is_phone = contact.is_phone;
-
-    if (type == PresenceType.UNSET ||
-	type == PresenceType.ERROR ||
-	type == PresenceType.OFFLINE ||
-	type == PresenceType.UNKNOWN) {
-      image.clear ();
-      image.hide ();
-      label.hide ();
-      label.set_text ("");
-      phone_image.hide ();
-      return;
-    }
-
-    image.set_from_icon_name (Contact.presence_to_icon_full (type), IconSize.MENU);
-    if (last_class != null)
-      image.get_style_context ().remove_class (last_class);
-    last_class = Contact.presence_to_class (type);
-    image.get_style_context ().add_class (last_class);
-    image.show ();
-    label.show ();
-    phone_image.show ();
-    if (message.length == 0)
-      message = PresenceDetails.get_default_message_from_type (type);
-
-    label.set_markup (Markup.printf_escaped ("<span font='11px'>%s</span>", message));
-    label.set_margin_bottom (3);
-
-    if (is_phone)
-      phone_image.show ();
-    else
-      phone_image.hide ();
-  }
-
-  public ContactPresence (Contact contact) {
-    this.contact = contact;
-
-    this.set_column_spacing (4);
-    image = new Image ();
-    image.set_no_show_all (true);
-    this.add (image);
-    label = new Label ("");
-    label.set_no_show_all (true);
-    label.set_ellipsize (Pango.EllipsizeMode.END);
-    label.xalign = 0.0f;
-
-    this.add (label);
-
-    phone_image = new Image ();
-    phone_image.set_no_show_all (true);
-    phone_image.set_from_icon_name ("phone-symbolic", IconSize.MENU);
-    this.add (phone_image);
-
-    update_presence_widgets ();
-
-    var id = contact.presence_changed.connect ( () => {
-	update_presence_widgets ();
-      });
-
-    var id2 = contact.personas_changed.connect ( () => {
-	update_presence_widgets ();
-      });
-
-    this.destroy.connect (() => {
-	contact.disconnect (id);
-	contact.disconnect (id2);
-      });
-  }
-}
-
-
 public class Contacts.Contact : GLib.Object  {
   public const int LIST_AVATAR_SIZE = 48;
   public const int SMALL_AVATAR_SIZE = 54;
@@ -796,10 +711,6 @@ public class Contacts.Contact : GLib.Object  {
     case ImDisplay.ALIAS_SERVICE:
       return persona.alias + " (" + display_name + ")";
     }
-  }
-
-  public Widget? create_merged_presence_widget () {
-    return new ContactPresence (this);
   }
 
   public Widget? create_presence_widget (string protocol, string im_address) {
