@@ -12,9 +12,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-26 01:40+0000\n"
+"Report-Msgid-Bugs-To: "
+"https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-08-20 14:50+0000\n"
 "PO-Revision-Date: 2017-03-05 21:46+0200\n"
 "Last-Translator: Kenneth Nielsen <k.nielsen81@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -61,8 +61,10 @@ msgstr "venner;adressebog;"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Contacts.desktop.in:8
-msgid "x-office-address-book"
-msgstr "x-office-address-book"
+#, fuzzy
+#| msgid "Main contacts"
+msgid "gnome-contacts"
+msgstr "Primære kontakter"
 
 #: data/ui/app-menu.ui:6
 msgid "_Change Address Book…"
@@ -80,52 +82,87 @@ msgstr "_Om"
 msgid "_Quit"
 msgstr "_Afslut"
 
-#: data/ui/app-menu.ui:28
+#: data/ui/contacts-avatar-dialog.ui:6
+msgid "Select Picture"
+msgstr "Vælg billede"
+
+#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:320
+msgid "New Contact"
+msgstr "Ny kontakt"
+
+#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:202
+#: src/contacts-window.vala:228
+msgid "Select"
+msgstr "Vælg"
+
+#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:245
+#: data/ui/contacts-window.ui:303 src/contacts-app.vala:69
+msgid "Cancel"
+msgstr "Annuller"
+
+#: data/ui/contacts-contact-editor.ui:8
 msgid "Home email"
 msgstr "Hjemme-e-mail"
 
-#: data/ui/app-menu.ui:32
+#: data/ui/contacts-contact-editor.ui:12
 msgid "Work email"
 msgstr "Arbejds-e-mail"
 
-#: data/ui/app-menu.ui:36
+#: data/ui/contacts-contact-editor.ui:16
 msgid "Mobile phone"
 msgstr "Mobiltelefon"
 
-#: data/ui/app-menu.ui:40
+#: data/ui/contacts-contact-editor.ui:20
 msgid "Home phone"
 msgstr "Hjemmetelefon"
 
-#: data/ui/app-menu.ui:44
+#: data/ui/contacts-contact-editor.ui:24
 msgid "Work phone"
 msgstr "Arbejdstelefon"
 
-#: data/ui/app-menu.ui:48 src/contacts-contact-editor.vala:561
-#: src/contacts-contact-editor.vala:568 src/contacts-contact-sheet.vala:190
+#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:574
+#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:192
 msgid "Website"
 msgstr "Webside"
 
-#: data/ui/app-menu.ui:52 src/contacts-contact-editor.vala:587
-#: src/contacts-contact-editor.vala:594 src/contacts-contact-sheet.vala:196
+#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:600
+#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:198
 msgid "Nickname"
 msgstr "Kaldenavn"
 
-#: data/ui/app-menu.ui:56 src/contacts-contact-editor.vala:620
-#: src/contacts-contact-editor.vala:627 src/contacts-contact-sheet.vala:203
+#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:633
+#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:205
 msgid "Birthday"
 msgstr "Fødselsdag"
 
-#: data/ui/app-menu.ui:60
+#: data/ui/contacts-contact-editor.ui:40
 msgid "Home address"
 msgstr "Hjemmeadresse"
 
-#: data/ui/app-menu.ui:64
+#: data/ui/contacts-contact-editor.ui:44
 msgid "Work address"
 msgstr "Arbejdsadresse"
 
-#: data/ui/app-menu.ui:68
+#: data/ui/contacts-contact-editor.ui:48
 msgid "Notes"
 msgstr "Noter"
+
+#: data/ui/contacts-contact-editor.ui:82
+msgid "New Detail"
+msgstr "Ny detalje"
+
+#: data/ui/contacts-contact-editor.ui:100
+#: src/contacts-linked-accounts-dialog.vala:36
+msgid "Linked Accounts"
+msgstr "Sammenkædede konti"
+
+#: data/ui/contacts-contact-editor.ui:106
+msgid "Remove Contact"
+msgstr "Fjern kontakt"
+
+#: data/ui/contacts-contact-pane.ui:29
+msgid "Select a contact"
+msgstr "Vælg en kontakt"
 
 #: data/ui/contacts-list-pane.ui:33
 msgid "Type to search"
@@ -137,14 +174,14 @@ msgid "Link"
 msgstr "Henvisning"
 
 #: data/ui/contacts-list-pane.ui:93
-msgid "Delete"
-msgstr "Slet"
+msgid "Remove"
+msgstr "Fjern"
 
-#: data/ui/contacts-window.ui:84
+#: data/ui/contacts-window.ui:83
 msgid "Loading"
 msgstr "Indlæser"
 
-#: data/ui/contacts-window.ui:123
+#: data/ui/contacts-window.ui:122
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -152,41 +189,36 @@ msgstr ""
 "Nye kontakter vil blive tilføjet den valgte adressebog. Du kan se og "
 "redigere kontakter fra andre adressebøger."
 
-#: data/ui/contacts-window.ui:168 src/contacts-window.vala:233
+#: data/ui/contacts-window.ui:167 src/contacts-window.vala:237
 msgid "All Contacts"
 msgstr "Alle kontakter"
 
-#: data/ui/contacts-window.ui:183
+#: data/ui/contacts-window.ui:182
 msgid "Add contact"
 msgstr "Tilføj kontakt"
 
-#: data/ui/contacts-window.ui:211
+#: data/ui/contacts-window.ui:210
 msgid "Selection mode"
 msgstr "Markeringstilstand"
 
-#: data/ui/contacts-window.ui:246 data/ui/contacts-window.ui:304
-#: src/contacts-app.vala:62 src/contacts-avatar-dialog.vala:255
-msgid "Cancel"
-msgstr "Annuller"
-
-#: data/ui/contacts-window.ui:262
+#: data/ui/contacts-window.ui:261
 msgid "Edit"
 msgstr "Redigér"
 
-#: data/ui/contacts-window.ui:278 data/ui/contacts-window.ui:324
-#: src/contacts-window.vala:265
+#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
+#: src/contacts-window.vala:269
 msgid "Done"
 msgstr "Udført"
 
-#: data/ui/contacts-window.ui:295
+#: data/ui/contacts-window.ui:294
 msgid "Select Address Book"
 msgstr "Vælg adressebog"
 
-#: data/ui/contacts-window.ui:307
+#: data/ui/contacts-window.ui:306
 msgid "Cancel setup"
 msgstr "Afbryd opsætning"
 
-#: data/ui/contacts-window.ui:327
+#: data/ui/contacts-window.ui:326
 msgid "Setup complete"
 msgstr "Opsætning færdiggjort"
 
@@ -202,24 +234,24 @@ msgstr "Lokal adressebog"
 msgid "Install GNOME Maps to open location."
 msgstr "Installér GNOME Kort for at åbne stedet."
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:53
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Ingen kontakt med id %s fundet"
 
-#: src/contacts-app.vala:47 src/contacts-app.vala:149
+#: src/contacts-app.vala:54 src/contacts-app.vala:154
 msgid "Contact not found"
 msgstr "Kontakt ikke fundet"
 
-#: src/contacts-app.vala:56
+#: src/contacts-app.vala:63
 msgid "Change Address Book"
 msgstr "Skift adressebog"
 
-#: src/contacts-app.vala:61
+#: src/contacts-app.vala:68
 msgid "Change"
 msgstr "Ændr"
 
-#: src/contacts-app.vala:71
+#: src/contacts-app.vala:78
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -227,7 +259,7 @@ msgstr ""
 "Nye kontakter vil blive tilføjet den valgte adressebog.\n"
 "Du kan se og redigere kontakter fra andre adressebøger."
 
-#: src/contacts-app.vala:128
+#: src/contacts-app.vala:133
 msgid "translator-credits"
 msgstr ""
 "Kris Thomsen\n"
@@ -236,59 +268,46 @@ msgstr ""
 "Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
 "Mere info: http://www.dansk-gruppen.dk"
 
-#: src/contacts-app.vala:129
+#: src/contacts-app.vala:134
 msgid "GNOME Contacts"
 msgstr "GNOME Kontakter"
 
-#: src/contacts-app.vala:130
+#: src/contacts-app.vala:135
 msgid "About GNOME Contacts"
 msgstr "Om GNOME Kontakter"
 
-#: src/contacts-app.vala:131
+#: src/contacts-app.vala:136
 msgid "Contact Management Application"
 msgstr "Kontakthåndteringsprogram"
 
-#: src/contacts-app.vala:148
+#: src/contacts-app.vala:153
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Ingen kontakt med e-mailadressen %s fundet"
 
-#: src/contacts-app.vala:320
+#: src/contacts-app.vala:299
 msgid "Show contact with this individual id"
 msgstr "Vis kontakt med dette individuelle id"
 
-#: src/contacts-app.vala:322
+#: src/contacts-app.vala:301
 msgid "Show contact with this email address"
 msgstr "Vis kontakt med denne e-mailadresse"
 
-#: src/contacts-app.vala:331
+#: src/contacts-app.vala:310
 msgid "— contact management"
 msgstr "— kontakthåndtering"
 
-#: src/contacts-avatar-dialog.vala:200
+#: src/contacts-avatar-dialog.vala:301
 msgid "Browse for more pictures"
 msgstr "Gennemse for flere billeder"
 
-#: src/contacts-avatar-dialog.vala:203
+#: src/contacts-avatar-dialog.vala:304
 msgid "_Cancel"
 msgstr "_Annullér"
 
-#: src/contacts-avatar-dialog.vala:204
+#: src/contacts-avatar-dialog.vala:305
 msgid "_Open"
 msgstr "_Åbn"
-
-#: src/contacts-avatar-dialog.vala:249
-msgid "Select Picture"
-msgstr "Vælg billede"
-
-#: src/contacts-avatar-dialog.vala:253 src/contacts-window.vala:198
-#: src/contacts-window.vala:224
-msgid "Select"
-msgstr "Vælg"
-
-#: src/contacts-avatar-dialog.vala:281 src/contacts-window.vala:315
-msgid "New Contact"
-msgstr "Ny kontakt"
 
 #: src/contacts-contact-editor.vala:28
 msgid "Street"
@@ -318,87 +337,26 @@ msgstr "Postboks"
 msgid "Country"
 msgstr "Land"
 
-#: src/contacts-contact-editor.vala:293
+#: src/contacts-contact-editor.vala:313
 msgid "Add email"
 msgstr "Tilføj e-mail"
 
-#: src/contacts-contact-editor.vala:295
+#: src/contacts-contact-editor.vala:315
 msgid "Add number"
 msgstr "Tilføj telefonnummer"
 
-#: src/contacts-contact-editor.vala:299 src/contacts-contact-editor.vala:330
-#: src/contacts-contact-editor.vala:365 src/contacts-contact-editor.vala:428
-#: src/contacts-contact-editor.vala:478
+#: src/contacts-contact-editor.vala:319 src/contacts-contact-editor.vala:350
+#: src/contacts-contact-editor.vala:385 src/contacts-contact-editor.vala:441
+#: src/contacts-contact-editor.vala:491
 msgid "Delete field"
 msgstr "Slet felt"
 
-#: src/contacts-contact-editor.vala:400
-msgid "January"
-msgstr "Januar"
-
-#: src/contacts-contact-editor.vala:401
-msgid "February"
-msgstr "Februar"
-
-#: src/contacts-contact-editor.vala:402
-msgid "March"
-msgstr "Marts"
-
-#: src/contacts-contact-editor.vala:403
-msgid "April"
-msgstr "April"
-
-#: src/contacts-contact-editor.vala:404
-msgid "May"
-msgstr "Maj"
-
-#: src/contacts-contact-editor.vala:405
-msgid "June"
-msgstr "Juni"
-
-#: src/contacts-contact-editor.vala:406
-msgid "July"
-msgstr "Juli"
-
-#: src/contacts-contact-editor.vala:407
-msgid "August"
-msgstr "August"
-
-#: src/contacts-contact-editor.vala:408
-msgid "September"
-msgstr "September"
-
-#: src/contacts-contact-editor.vala:409
-msgid "October"
-msgstr "Oktober"
-
-#: src/contacts-contact-editor.vala:410
-msgid "November"
-msgstr "November"
-
-#: src/contacts-contact-editor.vala:411
-msgid "December"
-msgstr "December"
-
-#: src/contacts-contact-editor.vala:642 src/contacts-contact-editor.vala:649
-#: src/contacts-contact-sheet.vala:210
+#: src/contacts-contact-editor.vala:655 src/contacts-contact-editor.vala:662
+#: src/contacts-contact-sheet.vala:212
 msgid "Note"
 msgstr "Note"
 
-#: src/contacts-contact-editor.vala:795
-msgid "New Detail"
-msgstr "Ny detalje"
-
-#: src/contacts-contact-editor.vala:801
-#: src/contacts-linked-accounts-dialog.vala:36
-msgid "Linked Accounts"
-msgstr "Sammenkædede konti"
-
-#: src/contacts-contact-editor.vala:804
-msgid "Remove Contact"
-msgstr "Fjern kontakt"
-
-#: src/contacts-contact-editor.vala:862 src/contacts-contact-editor.vala:1062
+#: src/contacts-contact-editor.vala:1016
 msgid "Add name"
 msgstr "Tilføj navn"
 
@@ -407,42 +365,38 @@ msgid "Change avatar"
 msgstr "Ændr profilbillede"
 
 # _("Does %s from %s belong here?").printf (c.display_name, c.format_persona_stores ());
-#: src/contacts-contact-pane.vala:137
+#: src/contacts-contact-pane.vala:144
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Hører %s fra %s hjemme her?"
 
-#: src/contacts-contact-pane.vala:139
+#: src/contacts-contact-pane.vala:146
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "Tilhører disse detaljer %s?"
 
-#: src/contacts-contact-pane.vala:151
+#: src/contacts-contact-pane.vala:158
 msgid "Yes"
 msgstr "Ja"
 
-#: src/contacts-contact-pane.vala:152
+#: src/contacts-contact-pane.vala:159
 msgid "No"
 msgstr "Nej"
 
-#: src/contacts-contact-pane.vala:323
-msgid "Select a contact"
-msgstr "Vælg en kontakt"
-
-#: src/contacts-contact-pane.vala:455
+#: src/contacts-contact-pane.vala:410
 msgid "You need to enter some data"
 msgstr "Du er nødt til at indtaste nogle data"
 
-#: src/contacts-contact-pane.vala:467
+#: src/contacts-contact-pane.vala:415
 msgid "No primary addressbook configured"
 msgstr "Ingen primær adressebog konfigureret"
 
-#: src/contacts-contact-pane.vala:485
+#: src/contacts-contact-pane.vala:425
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Kunne ikke oprette nye kontakter: %s"
 
-#: src/contacts-contact-pane.vala:496
+#: src/contacts-contact-pane.vala:434
 msgid "Unable to find newly created contact"
 msgstr "Kunne ikke finde nyligt oprettet kontakt"
 
@@ -574,139 +528,139 @@ msgstr "Fjern sammenkædning"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
-#: src/contacts-types.vala:115 src/contacts-types.vala:127
-#: src/contacts-types.vala:228 src/contacts-types.vala:342
+#: src/contacts-types.vala:114 src/contacts-types.vala:126
+#: src/contacts-types.vala:227 src/contacts-types.vala:341
 msgid "Other"
 msgstr "Andet"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:283 src/contacts-types.vala:307
-#: src/contacts-types.vala:338
+#: src/contacts-types.vala:282 src/contacts-types.vala:306
+#: src/contacts-types.vala:337
 msgid "Home"
 msgstr "Hjem"
 
-#: src/contacts-types.vala:284 src/contacts-types.vala:308
-#: src/contacts-types.vala:333
+#: src/contacts-types.vala:283 src/contacts-types.vala:307
+#: src/contacts-types.vala:332
 msgid "Work"
 msgstr "Arbejde"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:306
+#: src/contacts-types.vala:305
 msgid "Personal"
 msgstr "Personlig"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:332
+#: src/contacts-types.vala:331
 msgid "Assistant"
 msgstr "Assistent"
 
-#: src/contacts-types.vala:334
+#: src/contacts-types.vala:333
 msgid "Work Fax"
 msgstr "Arbejdsfax"
 
-#: src/contacts-types.vala:335
+#: src/contacts-types.vala:334
 msgid "Callback"
 msgstr "Tilbagekald"
 
-#: src/contacts-types.vala:336
+#: src/contacts-types.vala:335
 msgid "Car"
 msgstr "Bil"
 
-#: src/contacts-types.vala:337
+#: src/contacts-types.vala:336
 msgid "Company"
 msgstr "Firma"
 
-#: src/contacts-types.vala:339
+#: src/contacts-types.vala:338
 msgid "Home Fax"
 msgstr "Hjemmefax"
 
-#: src/contacts-types.vala:340
+#: src/contacts-types.vala:339
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/contacts-types.vala:341
+#: src/contacts-types.vala:340
 msgid "Mobile"
 msgstr "Mobil"
 
-#: src/contacts-types.vala:343
+#: src/contacts-types.vala:342
 msgid "Fax"
 msgstr "Fax"
 
-#: src/contacts-types.vala:344
+#: src/contacts-types.vala:343
 msgid "Pager"
 msgstr "Personsøger"
 
-#: src/contacts-types.vala:345
+#: src/contacts-types.vala:344
 msgid "Radio"
 msgstr "Radio"
 
-#: src/contacts-types.vala:346
+#: src/contacts-types.vala:345
 msgid "Telex"
 msgstr "Telex"
 
 #. To translators: TTY is Teletypewriter
-#: src/contacts-types.vala:348
+#: src/contacts-types.vala:347
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-view.vala:194
+#: src/contacts-view.vala:192
 msgid "No results matched search"
 msgstr "Ingen resultater matchede søgningen"
 
-#: src/contacts-view.vala:298
+#: src/contacts-view.vala:296
 msgid "Suggestions"
 msgstr "Forslag"
 
-#: src/contacts-view.vala:323
+#: src/contacts-view.vala:321
 msgid "Other Contacts"
 msgstr "Andre Kontakter"
 
-#: src/contacts-window.vala:200
+#: src/contacts-window.vala:204
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d valgt"
 msgstr[1] "%d valgte"
 
-#: src/contacts-window.vala:250
+#: src/contacts-window.vala:254
 #, c-format
 msgid "Editing %s"
 msgstr "Redigerer %s"
 
-#: src/contacts-window.vala:320
+#: src/contacts-window.vala:325
 msgid "Add"
 msgstr "Tilføj"
 
-#: src/contacts-window.vala:411
+#: src/contacts-window.vala:409
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d kontakt sammenkædet"
 msgstr[1] "%d kontakter sammenkædet"
 
-#: src/contacts-window.vala:415 src/contacts-window.vala:447
-#: src/contacts-window.vala:489 src/contacts-window.vala:525
+#: src/contacts-window.vala:413 src/contacts-window.vala:435
+#: src/contacts-window.vala:466 src/contacts-window.vala:498
 msgid "_Undo"
 msgstr "_Fortryd"
 
-#: src/contacts-window.vala:443
+#: src/contacts-window.vala:431
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d kontakt slettet"
 msgstr[1] "%d kontakter slettet"
 
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:465
 #, c-format
 msgid "Contact deleted: “%s”"
-msgstr "Kontakt slettet: \"%s\""
+msgstr "Kontakt slettet: “%s”"
 
-#: src/contacts-window.vala:521
+#: src/contacts-window.vala:494
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s sammenkædet til %s"
 
-#: src/contacts-window.vala:523
+#: src/contacts-window.vala:496
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s sammenkædet til kontakten"
@@ -726,6 +680,48 @@ msgstr "Vis delmængde"
 #: src/org.gnome.Contacts.gschema.xml:11
 msgid "View contacts subset"
 msgstr "Vis kontaktdelmængde"
+
+#~ msgid "x-office-address-book"
+#~ msgstr "x-office-address-book"
+
+#~ msgid "Delete"
+#~ msgstr "Slet"
+
+#~ msgid "January"
+#~ msgstr "Januar"
+
+#~ msgid "February"
+#~ msgstr "Februar"
+
+#~ msgid "March"
+#~ msgstr "Marts"
+
+#~ msgid "April"
+#~ msgstr "April"
+
+#~ msgid "May"
+#~ msgstr "Maj"
+
+#~ msgid "June"
+#~ msgstr "Juni"
+
+#~ msgid "July"
+#~ msgstr "Juli"
+
+#~ msgid "August"
+#~ msgstr "August"
+
+#~ msgid "September"
+#~ msgstr "September"
+
+#~ msgid "October"
+#~ msgstr "Oktober"
+
+#~ msgid "November"
+#~ msgstr "November"
+
+#~ msgid "December"
+#~ msgstr "December"
 
 #~ msgid "_Change Address Book..."
 #~ msgstr "_Skift adressebog …"
@@ -782,22 +778,15 @@ msgstr "Vis kontaktdelmængde"
 #~ msgid "_About Contacts"
 #~ msgstr "_Om Kontakter"
 
-#~ msgid "Remove"
-#~ msgstr "Fjern"
-
 #~ msgid "View"
 #~ msgstr "Vis"
 
-#~ msgid "Main contacts"
-#~ msgstr "Primære kontakter"
-
-# Koden antyder at der åbnes en dialog til an ny kontakt
+#~ # Koden antyder at der åbnes en dialog til an ny kontakt
 #~ msgid "New"
 #~ msgstr "Ny"
 
 #~ msgid ""
-#~ "Welcome to Contacts! Please select where you want to keep your address "
-#~ "book:"
+#~ "Welcome to Contacts! Please select where you want to keep your address book:"
 #~ msgstr ""
 #~ "Velkomment til Kontakter! Vælg venligst hvor du ønsker at opbevare din "
 #~ "adressebog:"
@@ -935,3 +924,5 @@ msgstr "Vis kontaktdelmængde"
 
 #~ msgid "Send..."
 #~ msgstr "Send …"
+
+
