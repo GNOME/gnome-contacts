@@ -203,24 +203,7 @@ public class Contacts.ContactPane : Stack {
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
 
-    // contact editor page
-    sheet = new ContactSheet ();
-    sheet.hexpand = true;
-    sheet.vexpand = true;
-    sheet.margin = 36;
-    sheet.set_margin_bottom (24);
-
-    var hcenter = new Center ();
-    hcenter.max_width = 600;
-    hcenter.xalign = 0.0;
-    hcenter.show ();
-    hcenter.add (sheet);
-
-    this.contact_sheet_page.add (hcenter);
-    sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
-
-    this.contact_sheet_page.get_child ().get_style_context ().add_class ("contacts-main-view");
-    this.contact_sheet_page.get_child ().get_style_context ().add_class ("view");
+    create_contact_sheet ();
 
     this.suggestion_grid = null;
 
@@ -251,6 +234,26 @@ public class Contacts.ContactPane : Stack {
                                BindingFlags.DEFAULT |
                                BindingFlags.SYNC_CREATE |
                                BindingFlags.INVERT_BOOLEAN);
+  }
+
+  private void create_contact_sheet () {
+    this.sheet = new ContactSheet (this.store);
+    this.sheet.hexpand = true;
+    this.sheet.vexpand = true;
+    this.sheet.margin = 36;
+    this.sheet.set_margin_bottom (24);
+
+    var hcenter = new Center ();
+    hcenter.max_width = 600;
+    hcenter.xalign = 0.0;
+    hcenter.show ();
+    hcenter.add (this.sheet);
+
+    this.contact_sheet_page.add (hcenter);
+    this.sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
+
+    this.contact_sheet_page.get_child ().get_style_context ().add_class ("contacts-main-view");
+    this.contact_sheet_page.get_child ().get_style_context ().add_class ("view");
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
