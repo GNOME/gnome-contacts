@@ -23,7 +23,7 @@ using GLib;
 using Gdk;
 
 namespace Contacts {
-  private static bool is_set (string? str) {
+  private bool is_set (string? str) {
     return str != null && str != "";
   }
 
@@ -141,8 +141,8 @@ public class Center : Bin {
   }
 }
 
-public class Contacts.Utils : Object {
-  public static void compose_mail (string email) {
+namespace Contacts.Utils {
+  public void compose_mail (string email) {
     var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
     try {
       Gtk.show_uri_on_window (null, mailto_uri, 0);
@@ -151,7 +151,7 @@ public class Contacts.Utils : Object {
     }
   }
 
-  public static void start_chat (Contact contact, string protocol, string id) {
+  public void start_chat (Contact contact, string protocol, string id) {
     var im_persona = contact.find_im_persona (protocol, id);
     var account = (im_persona.store as Tpf.PersonaStore).account;
     var request_dict = new HashTable<weak string, Value?>(str_hash, str_equal);
@@ -168,14 +168,13 @@ public class Contacts.Utils : Object {
     request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
   }
 
-  public static void start_call (string contact_id,
-                                 Gee.HashMap<string, TelepathyGLib.Account> accounts) {
+  public void start_call (string contact_id, Gee.HashMap<string, TelepathyGLib.Account> accounts) {
     // TODO: prompt for which account to use
     var account = accounts.values.to_array ()[0];
     Utils.start_call_with_account (contact_id, account);
   }
 
-  public static void start_call_with_account (string contact_id, TelepathyGLib.Account account) {
+  public void start_call_with_account (string contact_id, TelepathyGLib.Account account) {
     var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
 
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
@@ -191,17 +190,17 @@ public class Contacts.Utils : Object {
     request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Call", null);
   }
 
-  public static T? get_first<T> (Collection<T> collection) {
+  public T? get_first<T> (Collection<T> collection) {
     var i = collection.iterator();
     if (i.next())
       return i.get();
     return null;
   }
 
-  public static void cairo_ellipsis (Cairo.Context cr,
-				     double xc, double yc,
-				     double xradius, double yradius,
-				     double angle1 ,double angle2) {
+  public void cairo_ellipsis (Cairo.Context cr,
+                              double xc, double yc,
+                              double xradius, double yradius,
+                              double angle1 ,double angle2) {
     if (xradius <= 0.0 || yradius <= 0.0) {
       cr.line_to (xc, yc);
       return;
@@ -214,10 +213,10 @@ public class Contacts.Utils : Object {
     cr.restore ();
   }
 
-  public static void cairo_rounded_box (Cairo.Context cr,
-					int x, int y,
-					int width, int height,
-					int radius) {
+  public void cairo_rounded_box (Cairo.Context cr,
+                                 int x, int y,
+                                 int width, int height,
+                                 int radius) {
     cr.new_sub_path ();
 
     cairo_ellipsis (cr,
@@ -246,7 +245,7 @@ public class Contacts.Utils : Object {
 		    Math.PI / 2, Math.PI);
   }
 
-  private static unichar strip_char (unichar ch) {
+  private unichar strip_char (unichar ch) {
     switch (ch.type ()) {
     case UnicodeType.CONTROL:
     case UnicodeType.FORMAT:
@@ -264,7 +263,7 @@ public class Contacts.Utils : Object {
   /* Returns false if the given string contains at least one non-"space"
    * character.
    */
-  public static bool string_is_empty (string str) {
+  public bool string_is_empty (string str) {
     unichar c;
 
     for (int i = 0; str.get_next_char (ref i, out c);) {
@@ -275,7 +274,7 @@ public class Contacts.Utils : Object {
     return true;
   }
 
-  public static string canonicalize_for_search (string str) {
+  public string canonicalize_for_search (string str) {
     unowned string s;
     var buf = new unichar[18];
     var res = new StringBuilder ();
@@ -290,7 +289,7 @@ public class Contacts.Utils : Object {
     return res.str;
   }
 
-  public static void grab_entry_focus_no_select (Entry entry) {
+  public void grab_entry_focus_no_select (Entry entry) {
     int start, end;
     if (!entry.get_selection_bounds (out start, out end)) {
       start = end = entry.get_position ();
@@ -299,7 +298,7 @@ public class Contacts.Utils : Object {
     entry.select_region (start, end);
   }
 
-  public static string[] get_stock_avatars () {
+  public string[] get_stock_avatars () {
     string[] files = {};
     var system_data_dirs = Environment.get_system_data_dirs ();
     foreach (var data_dir in system_data_dirs) {
@@ -321,7 +320,7 @@ public class Contacts.Utils : Object {
     return files;
   }
 
-  public static PersonaStore[] get_eds_address_books (Store contacts_store) {
+  public PersonaStore[] get_eds_address_books (Store contacts_store) {
     PersonaStore[] stores = {};
     foreach (var backend in contacts_store.backend_store.enabled_backends.values) {
       foreach (var persona_store in backend.persona_stores.values) {
