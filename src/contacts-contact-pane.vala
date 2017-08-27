@@ -29,6 +29,8 @@ const int PROFILE_SIZE = 96;
 [GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-pane.ui")]
 public class Contacts.ContactPane : Stack {
 
+  private Window parent_window;
+
   private Store store;
 
   public Contact? contact;
@@ -196,7 +198,8 @@ public class Contacts.ContactPane : Stack {
       set_visible_child (this.none_selected_page);
   }
 
-  public ContactPane (Store contacts_store) {
+  public ContactPane (Window parent_window, Store contacts_store) {
+    this.parent_window = parent_window;
     this.store = contacts_store;
 	this.store.quiescent.connect (update_sheet);
 
@@ -267,7 +270,7 @@ public class Contacts.ContactPane : Stack {
   }
 
   private void linked_accounts () {
-    var dialog = new LinkedAccountsDialog ((Window) get_toplevel (), contact);
+    var dialog = new LinkedAccountsDialog (this.parent_window, contact);
     var result = dialog.run ();
     if (result == ResponseType.CLOSE &&
 	dialog.any_unlinked) {
@@ -318,7 +321,7 @@ public class Contacts.ContactPane : Stack {
 						try {
 						  Contact.set_persona_property.end (result);
 						} catch (Error e2) {
-						  App.app.show_message (e2.message);
+						  show_message (e2.message);
 						  update_sheet ();
 						}
 					      });
@@ -332,7 +335,7 @@ public class Contacts.ContactPane : Stack {
 						   try {
 						     Contact.set_individual_property.end (result);
 						   } catch (Error e) {
-						     App.app.show_message (e.message);
+						     show_message (e.message);
 						     /* FIXME: add this back */
 						     /* l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name)); */
 						   }
@@ -346,7 +349,7 @@ public class Contacts.ContactPane : Stack {
 						   try {
 						     Contact.set_individual_property.end (result);
 						   } catch (GLib.Error e) {
-						     App.app.show_message (e.message);
+						     show_message (e.message);
 						   }
 						 });
 	}
@@ -426,12 +429,18 @@ public class Contacts.ContactPane : Stack {
 
   private void show_message_dialog (string message) {
     var dialog =
-        new MessageDialog (this.get_toplevel () as Window,
+        new MessageDialog (this.parent_window,
                            DialogFlags.DESTROY_WITH_PARENT | DialogFlags.MODAL,
                            MessageType.ERROR,
                            ButtonsType.OK,
                            message);
     dialog.run ();
     dialog.destroy ();
+  }
+
+  private void show_message (string message) {
+    var notification = new InAppNotification (message);
+    notification.show ();
+    this.parent_window.add_notification (notification);
   }
 }

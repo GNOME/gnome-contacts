@@ -282,12 +282,6 @@ public class Contacts.App : Gtk.Application {
       window.present ();
   }
 
-  public void show_message (string message) {
-    var notification = new InAppNotification (message);
-    notification.show ();
-    window.add_notification (notification);
-  }
-
   public void new_contact () {
     window.new_contact ();
   }

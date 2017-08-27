@@ -187,7 +187,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   private void create_contact_pane () {
-    this.contact_pane = new ContactPane (this.store);
+    this.contact_pane = new ContactPane (this, this.store);
     this.contact_pane.visible = true;
     this.contact_pane.hexpand = true;
     this.contact_pane.will_delete.connect (contact_pane_delete_contact_cb);
