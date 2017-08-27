@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-c"
 "ontacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-26 01:40+0000\n"
-"PO-Revision-Date: 2017-03-18 14:35+0200\n"
+"POT-Creation-Date: 2017-08-20 14:50+0000\n"
+"PO-Revision-Date: 2017-08-27 23:29+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -58,12 +58,11 @@ msgstr "draugi;adrešu grāmata;"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Contacts.desktop.in:8
-#| msgid "friends;address book;"
-msgid "x-office-address-book"
-msgstr "x-office-address-book"
+#| msgid "Contacts"
+msgid "gnome-contacts"
+msgstr "gnome-contacts"
 
 #: data/ui/app-menu.ui:6
-#| msgid "Change Address Book"
 msgid "_Change Address Book…"
 msgstr "_Mainīt adrešu grāmatu…"
 
@@ -79,52 +78,87 @@ msgstr "P_ar"
 msgid "_Quit"
 msgstr "_Iziet"
 
-#: data/ui/app-menu.ui:28
+#: data/ui/contacts-avatar-dialog.ui:6
+msgid "Select Picture"
+msgstr "Izvēlēties attēlu"
+
+#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:320
+msgid "New Contact"
+msgstr "Jauns kontakts"
+
+#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:202
+#: src/contacts-window.vala:228
+msgid "Select"
+msgstr "Izvēlēties"
+
+#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:245
+#: data/ui/contacts-window.ui:303 src/contacts-app.vala:69
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: data/ui/contacts-contact-editor.ui:8
 msgid "Home email"
 msgstr "Mājas e-pasts"
 
-#: data/ui/app-menu.ui:32
+#: data/ui/contacts-contact-editor.ui:12
 msgid "Work email"
 msgstr "Darba e-pasts"
 
-#: data/ui/app-menu.ui:36
+#: data/ui/contacts-contact-editor.ui:16
 msgid "Mobile phone"
 msgstr "Mobilais tālrunis"
 
-#: data/ui/app-menu.ui:40
+#: data/ui/contacts-contact-editor.ui:20
 msgid "Home phone"
 msgstr "Mājas tālrunis"
 
-#: data/ui/app-menu.ui:44
+#: data/ui/contacts-contact-editor.ui:24
 msgid "Work phone"
 msgstr "Darba tālrunis"
 
-#: data/ui/app-menu.ui:48 src/contacts-contact-editor.vala:561
-#: src/contacts-contact-editor.vala:568 src/contacts-contact-sheet.vala:190
+#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:574
+#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:192
 msgid "Website"
 msgstr "Tīmekļa vietne"
 
-#: data/ui/app-menu.ui:52 src/contacts-contact-editor.vala:587
-#: src/contacts-contact-editor.vala:594 src/contacts-contact-sheet.vala:196
+#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:600
+#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:198
 msgid "Nickname"
 msgstr "Iesauka"
 
-#: data/ui/app-menu.ui:56 src/contacts-contact-editor.vala:620
-#: src/contacts-contact-editor.vala:627 src/contacts-contact-sheet.vala:203
+#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:633
+#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:205
 msgid "Birthday"
 msgstr "Dzimšanas diena"
 
-#: data/ui/app-menu.ui:60
+#: data/ui/contacts-contact-editor.ui:40
 msgid "Home address"
 msgstr "Mājas adrese"
 
-#: data/ui/app-menu.ui:64
+#: data/ui/contacts-contact-editor.ui:44
 msgid "Work address"
 msgstr "Darba adrese"
 
-#: data/ui/app-menu.ui:68
+#: data/ui/contacts-contact-editor.ui:48
 msgid "Notes"
 msgstr "Piezīmes"
+
+#: data/ui/contacts-contact-editor.ui:82
+msgid "New Detail"
+msgstr "Jauna informācija"
+
+#: data/ui/contacts-contact-editor.ui:100
+#: src/contacts-linked-accounts-dialog.vala:36
+msgid "Linked Accounts"
+msgstr "Saistītie konti"
+
+#: data/ui/contacts-contact-editor.ui:106
+msgid "Remove Contact"
+msgstr "Izņemt kontaktu"
+
+#: data/ui/contacts-contact-pane.ui:29
+msgid "Select a contact"
+msgstr "Izvēlieties kontaktu"
 
 #: data/ui/contacts-list-pane.ui:33
 msgid "Type to search"
@@ -136,14 +170,15 @@ msgid "Link"
 msgstr "Piesaistīt"
 
 #: data/ui/contacts-list-pane.ui:93
-msgid "Delete"
-msgstr "Dzēst"
+#| msgid "Remove Contact"
+msgid "Remove"
+msgstr "Izņemt"
 
-#: data/ui/contacts-window.ui:84
+#: data/ui/contacts-window.ui:83
 msgid "Loading"
 msgstr "Ielādē"
 
-#: data/ui/contacts-window.ui:123
+#: data/ui/contacts-window.ui:122
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -151,41 +186,36 @@ msgstr ""
 "Jaunie kontakti tiks pievienoti izvēlētajai adrešu grāmatai. Jūs varat "
 "skatīt un rediģēt kontaktus no citām adrešu grāmatām."
 
-#: data/ui/contacts-window.ui:168 src/contacts-window.vala:233
+#: data/ui/contacts-window.ui:167 src/contacts-window.vala:237
 msgid "All Contacts"
 msgstr "Visi kontakti"
 
-#: data/ui/contacts-window.ui:183
+#: data/ui/contacts-window.ui:182
 msgid "Add contact"
 msgstr "Pievienot kontaktu"
 
-#: data/ui/contacts-window.ui:211
+#: data/ui/contacts-window.ui:210
 msgid "Selection mode"
 msgstr "Izvēlēšanās režīms"
 
-#: data/ui/contacts-window.ui:246 data/ui/contacts-window.ui:304
-#: src/contacts-app.vala:62 src/contacts-avatar-dialog.vala:255
-msgid "Cancel"
-msgstr "Atcelt"
-
-#: data/ui/contacts-window.ui:262
+#: data/ui/contacts-window.ui:261
 msgid "Edit"
 msgstr "Rediģēt"
 
-#: data/ui/contacts-window.ui:278 data/ui/contacts-window.ui:324
-#: src/contacts-window.vala:265
+#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
+#: src/contacts-window.vala:269
 msgid "Done"
 msgstr "Pabeigts"
 
-#: data/ui/contacts-window.ui:295
+#: data/ui/contacts-window.ui:294
 msgid "Select Address Book"
 msgstr "Izvēlieties adrešu grāmatu"
 
-#: data/ui/contacts-window.ui:307
+#: data/ui/contacts-window.ui:306
 msgid "Cancel setup"
 msgstr "Atcelt iestatīšanu"
 
-#: data/ui/contacts-window.ui:327
+#: data/ui/contacts-window.ui:326
 msgid "Setup complete"
 msgstr "Iestatīšana ir pabeigta"
 
@@ -201,24 +231,24 @@ msgstr "Lokālā adrešu grāmata"
 msgid "Install GNOME Maps to open location."
 msgstr "Instalējiet GNOME Kartes, lai atvērtu atrašanās vietu."
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:53
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Nav atrasts kontakts ar id %s"
 
-#: src/contacts-app.vala:47 src/contacts-app.vala:149
+#: src/contacts-app.vala:54 src/contacts-app.vala:154
 msgid "Contact not found"
 msgstr "Kontakts nav atrasts"
 
-#: src/contacts-app.vala:56
+#: src/contacts-app.vala:63
 msgid "Change Address Book"
 msgstr "Mainīt adrešu grāmatu"
 
-#: src/contacts-app.vala:61
+#: src/contacts-app.vala:68
 msgid "Change"
 msgstr "Mainīt"
 
-#: src/contacts-app.vala:71
+#: src/contacts-app.vala:78
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -226,65 +256,52 @@ msgstr ""
 "Jaunie kontakti tiks pievienoti izvēlētajai adrešu grāmatai.\n"
 "Jūs varat skatīt un rediģēt kontaktus no citām adrešu grāmatām."
 
-#: src/contacts-app.vala:128
+#: src/contacts-app.vala:133
 msgid "translator-credits"
 msgstr ""
 "Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Anita Reitere <nitalynx@gmail.com>"
 
-#: src/contacts-app.vala:129
+#: src/contacts-app.vala:134
 msgid "GNOME Contacts"
 msgstr "GNOME Kontakti"
 
-#: src/contacts-app.vala:130
+#: src/contacts-app.vala:135
 msgid "About GNOME Contacts"
 msgstr "Par GNOME Kontaktiem"
 
-#: src/contacts-app.vala:131
+#: src/contacts-app.vala:136
 msgid "Contact Management Application"
 msgstr "Kontaktu pārvaldnieks"
 
-#: src/contacts-app.vala:148
+#: src/contacts-app.vala:153
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Nav atrasti kontakti ar e-pasta adresi %s"
 
-#: src/contacts-app.vala:320
+#: src/contacts-app.vala:299
 msgid "Show contact with this individual id"
 msgstr "Rādīt kontaktu ar šo individuālo id"
 
-#: src/contacts-app.vala:322
+#: src/contacts-app.vala:301
 msgid "Show contact with this email address"
 msgstr "Rādīt kontaktus ar šo e-pasta adresi"
 
-#: src/contacts-app.vala:331
+#: src/contacts-app.vala:310
 msgid "— contact management"
 msgstr "— kontaktu pārvaldnieks"
 
-#: src/contacts-avatar-dialog.vala:200
+#: src/contacts-avatar-dialog.vala:301
 msgid "Browse for more pictures"
 msgstr "Pārlūkot, lai iegūtu vairāk attēlu"
 
-#: src/contacts-avatar-dialog.vala:203
+#: src/contacts-avatar-dialog.vala:304
 msgid "_Cancel"
 msgstr "At_celt"
 
-#: src/contacts-avatar-dialog.vala:204
+#: src/contacts-avatar-dialog.vala:305
 msgid "_Open"
 msgstr "_Atvērt"
-
-#: src/contacts-avatar-dialog.vala:249
-msgid "Select Picture"
-msgstr "Izvēlēties attēlu"
-
-#: src/contacts-avatar-dialog.vala:253 src/contacts-window.vala:198
-#: src/contacts-window.vala:224
-msgid "Select"
-msgstr "Izvēlēties"
-
-#: src/contacts-avatar-dialog.vala:281 src/contacts-window.vala:315
-msgid "New Contact"
-msgstr "Jauns kontakts"
 
 #: src/contacts-contact-editor.vala:28
 msgid "Street"
@@ -314,87 +331,26 @@ msgstr "Abonenta kastīte"
 msgid "Country"
 msgstr "Valsts"
 
-#: src/contacts-contact-editor.vala:293
+#: src/contacts-contact-editor.vala:313
 msgid "Add email"
 msgstr "Pievienot e-pastu"
 
-#: src/contacts-contact-editor.vala:295
+#: src/contacts-contact-editor.vala:315
 msgid "Add number"
 msgstr "Pievienot numuru"
 
-#: src/contacts-contact-editor.vala:299 src/contacts-contact-editor.vala:330
-#: src/contacts-contact-editor.vala:365 src/contacts-contact-editor.vala:428
-#: src/contacts-contact-editor.vala:478
+#: src/contacts-contact-editor.vala:319 src/contacts-contact-editor.vala:350
+#: src/contacts-contact-editor.vala:385 src/contacts-contact-editor.vala:441
+#: src/contacts-contact-editor.vala:491
 msgid "Delete field"
 msgstr "Dzēst lauku"
 
-#: src/contacts-contact-editor.vala:400
-msgid "January"
-msgstr "Janvāris"
-
-#: src/contacts-contact-editor.vala:401
-msgid "February"
-msgstr "Februāris"
-
-#: src/contacts-contact-editor.vala:402
-msgid "March"
-msgstr "Marts"
-
-#: src/contacts-contact-editor.vala:403
-msgid "April"
-msgstr "Aprīlis"
-
-#: src/contacts-contact-editor.vala:404
-msgid "May"
-msgstr "Maijs"
-
-#: src/contacts-contact-editor.vala:405
-msgid "June"
-msgstr "Jūnijs"
-
-#: src/contacts-contact-editor.vala:406
-msgid "July"
-msgstr "Jūlijs"
-
-#: src/contacts-contact-editor.vala:407
-msgid "August"
-msgstr "Augusts"
-
-#: src/contacts-contact-editor.vala:408
-msgid "September"
-msgstr "Septembris"
-
-#: src/contacts-contact-editor.vala:409
-msgid "October"
-msgstr "Oktobris"
-
-#: src/contacts-contact-editor.vala:410
-msgid "November"
-msgstr "Novembris"
-
-#: src/contacts-contact-editor.vala:411
-msgid "December"
-msgstr "Decembris"
-
-#: src/contacts-contact-editor.vala:642 src/contacts-contact-editor.vala:649
-#: src/contacts-contact-sheet.vala:210
+#: src/contacts-contact-editor.vala:655 src/contacts-contact-editor.vala:662
+#: src/contacts-contact-sheet.vala:212
 msgid "Note"
 msgstr "Piezīme"
 
-#: src/contacts-contact-editor.vala:795
-msgid "New Detail"
-msgstr "Jauna informācija"
-
-#: src/contacts-contact-editor.vala:801
-#: src/contacts-linked-accounts-dialog.vala:36
-msgid "Linked Accounts"
-msgstr "Saistītie konti"
-
-#: src/contacts-contact-editor.vala:804
-msgid "Remove Contact"
-msgstr "Izņemt kontaktu"
-
-#: src/contacts-contact-editor.vala:862 src/contacts-contact-editor.vala:1062
+#: src/contacts-contact-editor.vala:1016
 msgid "Add name"
 msgstr "Pievienot vārdu"
 
@@ -402,42 +358,38 @@ msgstr "Pievienot vārdu"
 msgid "Change avatar"
 msgstr "Mainīt attēlu"
 
-#: src/contacts-contact-pane.vala:137
+#: src/contacts-contact-pane.vala:144
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Vai šeit iederas %s no %s?"
 
-#: src/contacts-contact-pane.vala:139
+#: src/contacts-contact-pane.vala:146
 #, c-format
 msgid "Do these details belong to %s?"
 msgstr "Vai šī informācija ir par kontaktu %s?"
 
-#: src/contacts-contact-pane.vala:151
+#: src/contacts-contact-pane.vala:158
 msgid "Yes"
 msgstr "Jā"
 
-#: src/contacts-contact-pane.vala:152
+#: src/contacts-contact-pane.vala:159
 msgid "No"
 msgstr "Nē"
 
-#: src/contacts-contact-pane.vala:323
-msgid "Select a contact"
-msgstr "Izvēlieties kontaktu"
-
-#: src/contacts-contact-pane.vala:455
+#: src/contacts-contact-pane.vala:410
 msgid "You need to enter some data"
 msgstr "Jums jāievada kādi dati"
 
-#: src/contacts-contact-pane.vala:467
+#: src/contacts-contact-pane.vala:415
 msgid "No primary addressbook configured"
 msgstr "Nav iestatīta primārā adrešu grāmata"
 
-#: src/contacts-contact-pane.vala:485
+#: src/contacts-contact-pane.vala:425
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Neizdevās izveidot jaunus kontaktus — %s"
 
-#: src/contacts-contact-pane.vala:496
+#: src/contacts-contact-pane.vala:434
 msgid "Unable to find newly created contact"
 msgstr "Neizdevās atrast tikko izveidoto kontaktu"
 
@@ -569,94 +521,94 @@ msgstr "Dzēst saiti"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
-#: src/contacts-types.vala:115 src/contacts-types.vala:127
-#: src/contacts-types.vala:228 src/contacts-types.vala:342
+#: src/contacts-types.vala:114 src/contacts-types.vala:126
+#: src/contacts-types.vala:227 src/contacts-types.vala:341
 msgid "Other"
 msgstr "Citi"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:283 src/contacts-types.vala:307
-#: src/contacts-types.vala:338
+#: src/contacts-types.vala:282 src/contacts-types.vala:306
+#: src/contacts-types.vala:337
 msgid "Home"
 msgstr "Mājas"
 
-#: src/contacts-types.vala:284 src/contacts-types.vala:308
-#: src/contacts-types.vala:333
+#: src/contacts-types.vala:283 src/contacts-types.vala:307
+#: src/contacts-types.vala:332
 msgid "Work"
 msgstr "Darbs"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:306
+#: src/contacts-types.vala:305
 msgid "Personal"
 msgstr "Personiskie"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:332
+#: src/contacts-types.vala:331
 msgid "Assistant"
 msgstr "Asistents"
 
-#: src/contacts-types.vala:334
+#: src/contacts-types.vala:333
 msgid "Work Fax"
 msgstr "Darba fakss"
 
-#: src/contacts-types.vala:335
+#: src/contacts-types.vala:334
 msgid "Callback"
 msgstr "Atzvanīšana"
 
-#: src/contacts-types.vala:336
+#: src/contacts-types.vala:335
 msgid "Car"
 msgstr "Automašīna"
 
-#: src/contacts-types.vala:337
+#: src/contacts-types.vala:336
 msgid "Company"
 msgstr "Uzņēmums"
 
-#: src/contacts-types.vala:339
+#: src/contacts-types.vala:338
 msgid "Home Fax"
 msgstr "Mājas fakss"
 
-#: src/contacts-types.vala:340
+#: src/contacts-types.vala:339
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/contacts-types.vala:341
+#: src/contacts-types.vala:340
 msgid "Mobile"
 msgstr "Mob. tālr."
 
-#: src/contacts-types.vala:343
+#: src/contacts-types.vala:342
 msgid "Fax"
 msgstr "Fakss"
 
-#: src/contacts-types.vala:344
+#: src/contacts-types.vala:343
 msgid "Pager"
 msgstr "Peidžeris"
 
-#: src/contacts-types.vala:345
+#: src/contacts-types.vala:344
 msgid "Radio"
 msgstr "Radio"
 
-#: src/contacts-types.vala:346
+#: src/contacts-types.vala:345
 msgid "Telex"
 msgstr "Telekss"
 
 #. To translators: TTY is Teletypewriter
-#: src/contacts-types.vala:348
+#: src/contacts-types.vala:347
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-view.vala:194
+#: src/contacts-view.vala:192
 msgid "No results matched search"
 msgstr "Meklējumam nav atbilstošu rezultātu"
 
-#: src/contacts-view.vala:298
+#: src/contacts-view.vala:296
 msgid "Suggestions"
 msgstr "Ieteikumi"
 
-#: src/contacts-view.vala:323
+#: src/contacts-view.vala:321
 msgid "Other Contacts"
 msgstr "Citi kontakti"
 
-#: src/contacts-window.vala:200
+#: src/contacts-window.vala:204
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -664,16 +616,16 @@ msgstr[0] "%d izvēlēts"
 msgstr[1] "%d izvēlēti"
 msgstr[2] "%d izvēlētu"
 
-#: src/contacts-window.vala:250
+#: src/contacts-window.vala:254
 #, c-format
 msgid "Editing %s"
 msgstr "Rediģē %s"
 
-#: src/contacts-window.vala:320
+#: src/contacts-window.vala:325
 msgid "Add"
 msgstr "Pievienot"
 
-#: src/contacts-window.vala:411
+#: src/contacts-window.vala:409
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -681,12 +633,12 @@ msgstr[0] "Saistīts %d kontakts"
 msgstr[1] "Saistīti %d kontakti"
 msgstr[2] "Saistītu %d kontaktu"
 
-#: src/contacts-window.vala:415 src/contacts-window.vala:447
-#: src/contacts-window.vala:489 src/contacts-window.vala:525
+#: src/contacts-window.vala:413 src/contacts-window.vala:435
+#: src/contacts-window.vala:466 src/contacts-window.vala:498
 msgid "_Undo"
 msgstr "_Atsaukt"
 
-#: src/contacts-window.vala:443
+#: src/contacts-window.vala:431
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -694,18 +646,17 @@ msgstr[0] "Dzēsts %d kontakts"
 msgstr[1] "Dzēsti %d kontakti"
 msgstr[2] "Dzēstu %d kontaktu"
 
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:465
 #, c-format
-#| msgid "Contact deleted: \"%s\""
 msgid "Contact deleted: “%s”"
 msgstr "Kontakts dzēsts — “%s”"
 
-#: src/contacts-window.vala:521
+#: src/contacts-window.vala:494
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s sasaistīts ar %s"
 
-#: src/contacts-window.vala:523
+#: src/contacts-window.vala:496
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s piesaistīts kontaktam"
@@ -727,6 +678,49 @@ msgstr "Skatīt apakškopu"
 #: src/org.gnome.Contacts.gschema.xml:11
 msgid "View contacts subset"
 msgstr "Skatīt kontaktu apakškopu"
+
+#~| msgid "friends;address book;"
+#~ msgid "x-office-address-book"
+#~ msgstr "x-office-address-book"
+
+#~ msgid "Delete"
+#~ msgstr "Dzēst"
+
+#~ msgid "January"
+#~ msgstr "Janvāris"
+
+#~ msgid "February"
+#~ msgstr "Februāris"
+
+#~ msgid "March"
+#~ msgstr "Marts"
+
+#~ msgid "April"
+#~ msgstr "Aprīlis"
+
+#~ msgid "May"
+#~ msgstr "Maijs"
+
+#~ msgid "June"
+#~ msgstr "Jūnijs"
+
+#~ msgid "July"
+#~ msgstr "Jūlijs"
+
+#~ msgid "August"
+#~ msgstr "Augusts"
+
+#~ msgid "September"
+#~ msgstr "Septembris"
+
+#~ msgid "October"
+#~ msgstr "Oktobris"
+
+#~ msgid "November"
+#~ msgstr "Novembris"
+
+#~ msgid "December"
+#~ msgstr "Decembris"
 
 #~ msgid "_Change Address Book..."
 #~ msgstr "_Mainīt adrešu grāmatu..."
