@@ -410,7 +410,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     select_button.set_active (false);
 
     LinkOperation2 operation = null;
-    link_contacts_list.begin (contact_list, (obj, result) => {
+    link_contacts_list.begin (contact_list, this.store, (obj, result) => {
         operation = link_contacts_list.end (result);
       });
 

@@ -23,7 +23,7 @@ public class Contacts.App : Gtk.Application {
 
   private Settings settings;
 
-  public Store contacts_store;
+  private Store contacts_store;
 
   private Window window;
 

@@ -145,7 +145,7 @@ public class Contacts.ContactPane : Stack {
 
     yes.clicked.connect ( () => {
       var linked_contact = c.display_name;
-      link_contacts.begin (contact, c, (obj, result) => {
+      link_contacts.begin (contact, c, this.store, (obj, result) => {
 	var operation = link_contacts.end (result);
 	this.contacts_linked (null, linked_contact, operation);
       });

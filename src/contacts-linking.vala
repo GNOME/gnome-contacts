@@ -529,7 +529,7 @@ namespace Contacts {
     }
   }
 
-  public async LinkOperation link_contacts (Contact main, Contact? other) {
+  public async LinkOperation link_contacts (Contact main, Contact? other, Store contacts_store) {
     // This should not be used as being replaced with the new individual
     // instead we should always pick this contact to keep around
     main.set_data ("contacts-master-at-join", true);
@@ -581,7 +581,7 @@ namespace Contacts {
 	var v = Value (typeof (string));
 	v.set_string (main.display_name);
 	details.set ("full-name", v);
-	write_persona = yield Contact.create_primary_persona_for_details (App.app.contacts_store.aggregator.primary_store, details);
+	write_persona = yield Contact.create_primary_persona_for_details (contacts_store.aggregator.primary_store, details);
 	operation.added_persona (write_persona);
 	linkables = main_linkables;
 	if (other_linkables != null)
@@ -711,11 +711,15 @@ namespace Contacts {
   }
 
   public class LinkOperation2 : Object {
+    private Store contacts_store;
+
     /* One Set<Persona> per individual linked, with the intention
      * of restore the old perosonas set on undo operation */
     LinkedList< HashSet<Persona> > old_personas_distribution;
 
-    public LinkOperation2 () {
+    public LinkOperation2 (Store contacts_store) {
+      this.contacts_store = contacts_store;
+
       old_personas_distribution = new  LinkedList< HashSet<Persona> > ();
     }
 
@@ -740,24 +744,24 @@ namespace Contacts {
       }
       if (ind != null) {
         try {
-	  yield App.app.contacts_store.aggregator.unlink_individual (ind);
-	} catch (GLib.Error e1) {
-	  warning ("Error unlinking individual ‘%s’: %s", ind.id, e1.message);
-	}
+          yield this.contacts_store.aggregator.unlink_individual (ind);
+        } catch (GLib.Error e1) {
+          warning ("Error unlinking individual ‘%s’: %s", ind.id, e1.message);
+        }
       }
 
       foreach (var ps in old_personas_distribution) {
         try {
-	  yield App.app.contacts_store.aggregator.link_personas (ps);
-	} catch (GLib.Error e1) {
-	  warning ("Error linking personas: %s", e1.message);
-	}
+          yield this.contacts_store.aggregator.link_personas (ps);
+        } catch (GLib.Error e1) {
+          warning ("Error linking personas: %s", e1.message);
+        }
       }
     }
   }
 
-  public async LinkOperation2 link_contacts_list (LinkedList<Contact> contact_list) {
-    var operation = new LinkOperation2 ();
+  public async LinkOperation2 link_contacts_list (LinkedList<Contact> contact_list, Store contacts_store) {
+    var operation = new LinkOperation2 (contacts_store);
 
     var all_personas = new HashSet<Persona> ();
     foreach (var c in contact_list) {
@@ -767,7 +771,7 @@ namespace Contacts {
     }
 
     try {
-      yield App.app.contacts_store.aggregator.link_personas (all_personas);
+      yield contacts_store.aggregator.link_personas (all_personas);
     } catch (GLib.Error e1) {
       warning ("Error linking personas: %s", e1.message);
     }
