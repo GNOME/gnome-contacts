@@ -24,6 +24,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Grid content_grid;
   [GtkChild]
+  private Container contact_pane_container;
+  [GtkChild]
   private Grid loading_box;
   [GtkChild]
   private SizeGroup left_pane_size_group;
@@ -33,8 +35,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private HeaderBar right_toolbar;
   [GtkChild]
   private Overlay overlay;
-  [GtkChild]
-  private ContactPane contact_pane;
   [GtkChild]
   private Button add_button;
   [GtkChild]
@@ -61,7 +61,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private AccountsList setup_accounts_list;
 
+  // The 2 panes the window consists of
   private ListPane list_pane;
+  private ContactPane contact_pane;
 
   private string left_title {
     get {
@@ -103,8 +105,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     );
     debug ("everyone creation: finalized already!!!");
 
-    contact_pane.store = contacts_store;
-
     /* stablishing constraints */
     this.bind_property ("selection-mode",
 			right_toolbar, "show-close-button",
@@ -141,6 +141,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 			right_toolbar, "show-close-button",
 			BindingFlags.DEFAULT |
 			BindingFlags.INVERT_BOOLEAN);
+
+    create_contact_pane ();
 
     if (settings.did_initial_setup) {
       view_switcher.visible_child_name = "content-view";
@@ -184,6 +186,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     init_content_widgets ();
   }
 
+  private void create_contact_pane () {
+    this.contact_pane = new ContactPane (this.store);
+    this.contact_pane.visible = true;
+    this.contact_pane.hexpand = true;
+    this.contact_pane.will_delete.connect (contact_pane_delete_contact_cb);
+    this.contact_pane.contacts_linked.connect (contact_pane_contacts_linked_cb);
+    this.contact_pane_container.add (this.contact_pane);
+  }
+
   public void set_list_pane () {
     /* FIXME: if no contact is loaded per backend, I must place a sign
      * saying "import your contacts/add online account" */
@@ -210,8 +221,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     content_grid.attach (list_pane, 0, 0, 1, 1);
 
-    if (contact_pane.contact != null)
-      list_pane.select_contact (contact_pane.contact);
+    if (this.contact_pane.contact != null)
+      list_pane.select_contact (this.contact_pane.contact);
 
     list_pane.show ();
   }
@@ -237,24 +248,24 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       list_pane.hide_selection ();
 
       /* could be no contact selected whatsoever */
-      if (contact_pane.contact == null)
-	edit_button.hide ();
+      if (this.contact_pane.contact == null)
+        edit_button.hide ();
     }
   }
 
   public void enter_edit_mode () {
-    if (contact_pane.contact == null)
+    if (this.contact_pane.contact == null)
       return;
 
     edit_mode = true;
 
-    var name = contact_pane.contact.display_name;
+    var name = this.contact_pane.contact.display_name;
     right_title = _("Editing %s").printf (name);
 
     left_toolbar.get_style_context ().add_class ("selection-mode");
     right_toolbar.get_style_context ().add_class ("selection-mode");
 
-    contact_pane.set_edit_mode (true);
+    this.contact_pane.set_edit_mode (true);
   }
 
   public void leave_edit_mode (bool drop_changes = false) {
@@ -267,17 +278,17 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       done_button.label = _("Done");
 
       if (drop_changes) {
-	contact_pane.set_edit_mode (false, drop_changes);
+        this.contact_pane.set_edit_mode (false, drop_changes);
       } else {
-	contact_pane.create_contact.begin ();
+        this.contact_pane.create_contact.begin ();
       }
       new_contact_mode = false;
     } else {
-      contact_pane.set_edit_mode (false, drop_changes);
+      this.contact_pane.set_edit_mode (false, drop_changes);
     }
 
-    if (contact_pane.contact != null) {
-      right_title = contact_pane.contact.display_name;
+    if (this.contact_pane.contact != null) {
+      right_title = this.contact_pane.contact.display_name;
     } else {
       right_title = "";
       edit_button.hide ();
@@ -291,11 +302,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public void set_shown_contact (Contact? c) {
     /* FIXME: ask the user to leave edit-mode and act accordingly */
-    if (contact_pane.on_edit_mode) {
+    if (this.contact_pane.on_edit_mode)
       leave_edit_mode ();
-    }
 
-    contact_pane.show_contact (c, false);
+    this.contact_pane.show_contact (c, false);
     if (list_pane != null)
       list_pane.select_contact (c);
 
@@ -322,7 +332,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     done_button.label = _("Add");
 
-    contact_pane.new_contact ();
+    this.contact_pane.new_contact ();
   }
 
   public void show_search (string query) {
@@ -363,7 +373,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if ((event.keyval == Gdk.keyval_from_name ("q")) &&
         ((event.state & Gdk.ModifierType.CONTROL_MASK) != 0)) {
       // Clear the contacts so any changed information is stored
-      contact_pane.show_contact (null);
+      this.contact_pane.show_contact (null);
       destroy ();
     } else if (((event.keyval == Gdk.Key.s) ||
                 (event.keyval == Gdk.Key.f)) &&
@@ -386,7 +396,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkCallback]
   bool delete_event_cb (Gdk.EventAny event) {
     // Clear the contacts so any changed information is stored
-    contact_pane.show_contact (null);
+    this.contact_pane.show_contact (null);
     return false;
   }
 
@@ -454,8 +464,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 	set_shown_contact (contact_list.last ());
   }
 
-  [GtkCallback]
-  void contact_pane_delete_contact_cb (Contact contact) {
+  private void contact_pane_delete_contact_cb (Contact contact) {
     /* unsetting edit-mode */
     set_shown_contact (null);
     this.select_button.active = false;
@@ -485,7 +494,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
   }
 
-  [GtkCallback]
   void contact_pane_contacts_linked_cb (string? main_contact, string linked_contact, LinkOperation operation) {
     string msg;
     if (main_contact != null)

@@ -29,22 +29,7 @@ const int PROFILE_SIZE = 96;
 [GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-pane.ui")]
 public class Contacts.ContactPane : Stack {
 
-  private Store _store;
-  public Store store {
-    get {
-      return _store;
-    }
-    set {
-      _store = value;
-
-      // Refresh the view when the store is quiescent as we may have missed
-      // some potential matches while the store was still preparing.
-      if (value != null) {
-	_store.quiescent.connect (update_sheet);
-      }
-    }
-    default = null;
-  }
+  private Store store;
 
   public Contact? contact;
 
@@ -211,7 +196,10 @@ public class Contacts.ContactPane : Stack {
       set_visible_child (this.none_selected_page);
   }
 
-  construct {
+  public ContactPane (Store contacts_store) {
+    this.store = contacts_store;
+	this.store.quiescent.connect (update_sheet);
+
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
 

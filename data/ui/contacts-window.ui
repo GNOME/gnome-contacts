@@ -26,23 +26,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkOverlay">
+                  <object class="GtkOverlay" id="contact_pane_container">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="ContactsContactPane" id="contact_pane">
-                        <property name="visible">True</property>
-                        <property name="hexpand">True</property>
-                        <signal name="will-delete" handler="contact_pane_delete_contact_cb" object="ContactsWindow" after="no" swapped="no"/>
-                        <signal name="contacts-linked" handler="contact_pane_contacts_linked_cb" object="ContactsWindow" after="no" swapped="no"/>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
