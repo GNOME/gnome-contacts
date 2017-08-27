@@ -422,7 +422,7 @@ public class Contacts.ContactPane : Stack {
     // Now show it to the user
     var contact = this.store.find_contact_with_persona (persona);
     if (contact != null)
-      App.app.show_contact (contact);
+      this.parent_window.set_shown_contact (contact);
     else
       show_message_dialog (_("Unable to find newly created contact"));
   }

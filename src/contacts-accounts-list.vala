@@ -77,7 +77,7 @@ public class Contacts.AccountsList : Box {
     }
 
     PersonaStore local_store = null;
-    foreach (var persona_store in App.get_eds_address_books ()) {
+    foreach (var persona_store in Utils.get_eds_address_books (this.contacts_store)) {
       if (persona_store.id == "system-address-book") {
         local_store = persona_store;
         continue;

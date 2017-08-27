@@ -320,4 +320,16 @@ public class Contacts.Utils : Object {
     };
     return files;
   }
+
+  public static PersonaStore[] get_eds_address_books (Store contacts_store) {
+    PersonaStore[] stores = {};
+    foreach (var backend in contacts_store.backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values) {
+        if (persona_store.type_id == "eds") {
+          stores += persona_store;
+        }
+      }
+    }
+    return stores;
+  }
 }

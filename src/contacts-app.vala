@@ -19,8 +19,6 @@ using Gtk;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
-  public static App app;
-
   private Settings settings;
 
   private Store contacts_store;
@@ -330,21 +328,8 @@ public class Contacts.App : Gtk.Application {
     return 0;
   }
 
-  public static PersonaStore[] get_eds_address_books () {
-    PersonaStore[] stores = {};
-    foreach (var backend in app.contacts_store.backend_store.enabled_backends.values) {
-      foreach (var persona_store in backend.persona_stores.values) {
-        if (persona_store.type_id == "eds") {
-          stores += persona_store;
-        }
-      }
-    }
-    return stores;
-  }
-
   public App () {
     Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
-    app = this;
     this.settings = new Settings (this);
   }
 }
