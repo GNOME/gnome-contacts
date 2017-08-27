@@ -391,7 +391,6 @@ public class Contacts.ContactPane : Stack {
   // Creates a new contact from the details in the ContactEditor
   public async void create_contact () {
     var details = new HashTable<string, Value?> (str_hash, str_equal);
-    var contacts_store = App.app.contacts_store;
 
     // Collect the details from the editor
     if (editor.name_changed ())
@@ -411,13 +410,13 @@ public class Contacts.ContactPane : Stack {
       return;
     }
 
-    if (contacts_store.aggregator.primary_store == null) {
+    if (this.store.aggregator.primary_store == null) {
       show_message_dialog (_("No primary addressbook configured"));
       return;
     }
 
     // Create the contact
-    var primary_store = contacts_store.aggregator.primary_store;
+    var primary_store = this.store.aggregator.primary_store;
     Persona? persona = null;
     try {
       persona = yield Contact.create_primary_persona_for_details (primary_store, details);
@@ -427,7 +426,7 @@ public class Contacts.ContactPane : Stack {
     }
 
     // Now show it to the user
-    var contact = contacts_store.find_contact_with_persona (persona);
+    var contact = this.store.find_contact_with_persona (persona);
     if (contact != null)
       App.app.show_contact (contact);
     else

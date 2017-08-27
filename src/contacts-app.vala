@@ -23,7 +23,6 @@ public class Contacts.App : Gtk.Application {
 
   private Settings settings;
 
-  /* moving creation to Window */
   public Store contacts_store;
 
   private Window window;
@@ -80,7 +79,7 @@ public class Contacts.App : Gtk.Application {
     (dialog.get_content_area () as Box).add (explanation_label);
     (dialog.get_content_area () as Box).set_spacing (12);
 
-    var acc = new AccountsList ();
+    var acc = new AccountsList (this.contacts_store);
     acc.update_contents (true);
 
     ulong active_button_once = 0;
@@ -247,7 +246,7 @@ public class Contacts.App : Gtk.Application {
     if (!ensure_eds_accounts (true))
       quit ();
 
-    contacts_store = new Store ();
+    this.contacts_store = new Store ();
     base.startup ();
 
     var css_provider = load_css ("style.css");
@@ -260,7 +259,7 @@ public class Contacts.App : Gtk.Application {
   public override void activate () {
     /* window creation code */
     if (window == null) {
-      if (!contacts_store.is_prepared) {
+      if (!this.contacts_store.is_prepared) {
 	if (!is_prepare_scheluded) {
 	  schedule_window_creation ();
 	  return;
@@ -272,7 +271,7 @@ public class Contacts.App : Gtk.Application {
       window.show ();
     }
 
-    if (contacts_store.is_quiescent) {
+    if (this.contacts_store.is_quiescent) {
       debug ("callign set_list_pane cause store is already quiescent");
       window.set_list_pane ();
     } else if (!is_quiescent_scheduled) {

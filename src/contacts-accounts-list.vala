@@ -25,11 +25,14 @@ public class Contacts.AccountsList : Box {
 
   private ListBoxRow last_selected_row;
 
-  public PersonaStore selected_store;
+  private Store contacts_store;
+
+  public PersonaStore? selected_store;
 
   public signal void account_selected ();
 
-  construct {
+  public AccountsList (Store contacts_store) {
+    this.contacts_store = contacts_store;
     this.selected_store = null;
 
     this.accounts_view.set_header_func (add_separator);
@@ -123,7 +126,7 @@ public class Contacts.AccountsList : Box {
       accounts_view.add (row_data);
 
       if (select_active &&
-          persona_store == App.app.contacts_store.aggregator.primary_store) {
+          persona_store == this.contacts_store.aggregator.primary_store) {
         var row = row_data.get_parent () as ListBoxRow;
         row_activated (row);
       }
@@ -142,7 +145,7 @@ public class Contacts.AccountsList : Box {
       local_data.add (local_label);
       accounts_view.add (local_data);
       if (select_active &&
-          local_store == App.app.contacts_store.aggregator.primary_store) {
+          local_store == this.contacts_store.aggregator.primary_store) {
         var row = local_data.get_parent () as ListBoxRow;
         row_activated (row);
       }
