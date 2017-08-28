@@ -333,21 +333,14 @@ public class Contacts.Contact : GLib.Object  {
     return true;
   }
 
-  static string? get_first_string (Collection<string>? collection) {
-    if (collection != null) {
-      var i = collection.iterator();
-      if (i.next())
-	return i.get();
-    }
-    return null;
-  }
-
   private static bool has_pref (AbstractFieldDetails details) {
-    if (get_first_string (details.get_parameter_values ("x-evolution-ui-slot")) == "1")
+    var evolution_pref = details.get_parameter_values ("x-evolution-ui-slot");
+    if (evolution_pref != null && Utils.get_first (evolution_pref) == "1")
       return true;
-    foreach (var param in details.parameters.get ("type")) {
+
+    foreach (var param in details.parameters["type"]) {
       if (param.ascii_casecmp ("PREF") == 0)
-	return true;
+        return true;
     }
     return false;
   }
