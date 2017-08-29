@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-20 14:50+0000\n"
+"POT-Creation-Date: 2017-08-20 21:05+0000\n"
 "PO-Revision-Date: 2017-08-20 20:56+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
@@ -46,23 +46,22 @@ msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
 msgstr ""
-"Контакти ће се такође сјединити са адресарима на мрежи и самостално ће "
+"Контакти ће се такође сјединити са именицима на мрежи и самостално ће "
 "повезати контакте са различитих извора на мрежи."
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
-msgstr "пријатељи;адресар;"
+msgstr "пријатељи;адресар;именик;prijatelji;adresar;imenik;friends;address book;"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Contacts.desktop.in:8
-#| msgid "Contacts"
 msgid "gnome-contacts"
 msgstr "gnome-contacts"
 
 #: data/ui/app-menu.ui:6
 msgid "_Change Address Book…"
-msgstr "_Измени адресар…"
+msgstr "_Измени именик…"
 
 #: data/ui/app-menu.ui:12
 msgid "_Help"
@@ -96,11 +95,11 @@ msgstr "Откажи"
 
 #: data/ui/contacts-contact-editor.ui:8
 msgid "Home email"
-msgstr "Лична ел. адреса"
+msgstr "Адреса личне е-поште"
 
 #: data/ui/contacts-contact-editor.ui:12
 msgid "Work email"
-msgstr "Пословна ел. пошта"
+msgstr "Адреса пословне е-поште"
 
 #: data/ui/contacts-contact-editor.ui:16
 msgid "Mobile phone"
@@ -180,8 +179,8 @@ msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
 msgstr ""
-"Нови контакти ће бити додати у изабрани адресар. Можете да прегледате и да "
-"уређујете контакте из других адресара."
+"Нови контакти ће бити додати у изабрани именик. Можете да прегледате и да "
+"уређујете контакте из других именика."
 
 #: data/ui/contacts-window.ui:167 src/contacts-window.vala:237
 msgid "All Contacts"
@@ -206,7 +205,7 @@ msgstr "Урађено"
 
 #: data/ui/contacts-window.ui:294
 msgid "Select Address Book"
-msgstr "Изабери адресар"
+msgstr "Изабери именик"
 
 #: data/ui/contacts-window.ui:306
 msgid "Cancel setup"
@@ -222,7 +221,7 @@ msgstr "Налози на мрежи"
 
 #: src/contacts-accounts-list.vala:174 src/contacts-esd-setup.c:241
 msgid "Local Address Book"
-msgstr "Локални адресар"
+msgstr "Локални именик"
 
 #: src/contacts-address-map.vala:80
 msgid "Install GNOME Maps to open location."
@@ -239,7 +238,7 @@ msgstr "Контакт није пронађен"
 
 #: src/contacts-app.vala:63
 msgid "Change Address Book"
-msgstr "Измените адресар"
+msgstr "Измените именик"
 
 #: src/contacts-app.vala:68
 msgid "Change"
@@ -250,8 +249,8 @@ msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
 msgstr ""
-"Нови контакти ће бити додати у изабрани адресар.\n"
-"Можете да прегледате и да уређујете контакте из других адресара."
+"Нови контакти ће бити додати у изабрани именик.\n"
+"Можете да прегледате и да уређујете контакте из других именика."
 
 #: src/contacts-app.vala:133
 msgid "translator-credits"
@@ -276,7 +275,7 @@ msgstr "Програм за управљање контактима"
 #: src/contacts-app.vala:153
 #, c-format
 msgid "No contact with email address %s found"
-msgstr "Није пронађен ниједан контакт са адресом ел. поште %s"
+msgstr "Није пронађен ниједан контакт са адресом е-поште %s"
 
 #: src/contacts-app.vala:299
 msgid "Show contact with this individual id"
@@ -284,7 +283,7 @@ msgstr "Приказује контакт са овим појединачним
 
 #: src/contacts-app.vala:301
 msgid "Show contact with this email address"
-msgstr "Приказује контакт са овом адресом ел. поште"
+msgstr "Приказује контакт са овом адресом е-поште"
 
 #: src/contacts-app.vala:310
 msgid "— contact management"
@@ -332,7 +331,7 @@ msgstr "Земља"
 
 #: src/contacts-contact-editor.vala:313
 msgid "Add email"
-msgstr "Додај ел. пошту"
+msgstr "Додај е-пошту"
 
 #: src/contacts-contact-editor.vala:315
 msgid "Add number"
@@ -381,7 +380,7 @@ msgstr "Морате унети неке податке"
 
 #: src/contacts-contact-pane.vala:415
 msgid "No primary addressbook configured"
-msgstr "Није подешен примарни адресар"
+msgstr "Није подешен примарни именик"
 
 #: src/contacts-contact-pane.vala:425
 #, c-format
@@ -723,10 +722,10 @@ msgstr "Прегледа подскуп контаката"
 #~ msgstr "Децембар"
 
 #~ msgid "_Change Address Book..."
-#~ msgstr "_Измени адресар..."
+#~ msgstr "_Измени именик..."
 
 #~ msgid "Personal email"
-#~ msgstr "Лична ел. пошта"
+#~ msgstr "Лична е-пошта"
 
 #~ msgid "Primary Contacts Account"
 #~ msgstr "Основни налог контакта"
@@ -760,7 +759,7 @@ msgstr "Прегледа подскуп контаката"
 #~ msgstr "Име контакта"
 
 #~ msgid "Email"
-#~ msgstr "Ел. пошта"
+#~ msgstr "Е-пошта"
 
 #~ msgid "Phone"
 #~ msgstr "Телефон"
