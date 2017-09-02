@@ -32,6 +32,7 @@ org.gnome.Contacts.service:
 
 EXTRA_DIST = \
 	org.gnome.Contacts.desktop.in \
+	org.gnome.Contacts.service.in \
 	org.gnome.Contacts.appdata.xml.in \
 	org.gnome.Contacts.search-provider.ini \
 	org.gnome.Contacts.SearchProvider.service.in \

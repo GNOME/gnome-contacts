@@ -8,8 +8,13 @@ DIST_SUBDIRS = vapi src data po man
 
 EXTRA_DIST = \
 	autogen.sh \
-	**/meson.build \
+	meson.build \
+	data/meson.build \
+	man/meson.build \
+	po/meson.build \
+	src/meson.build \
 	meson_options.txt \
+	meson_post_install.py \
 	$(NULL)
 
 ChangeLog:
