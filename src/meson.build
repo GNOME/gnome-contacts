@@ -1,8 +1,10 @@
+# GSettings
 compiled = gnome.compile_schemas()
 install_data('org.gnome.Contacts.gschema.xml',
-  install_dir: 'share/glib-2.0/schemas'
+  install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas'),
 )
 
+# The gnome-contacts binary
 contacts_vala_sources = [
   'contacts-accounts-list.vala',
   'contacts-address-map.vala',
