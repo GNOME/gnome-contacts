@@ -1,5 +1,5 @@
 project('gnome-contacts', [ 'vala', 'c' ],
-  version: '3.22.1',
+  version: '3.25.4',
   license: 'GPL2+',
   meson_version: '>= 0.37',
 )
@@ -21,21 +21,26 @@ pkglibdir = join_paths(get_option('libdir'), meson.project_name())
 po_dir = join_paths(meson.source_root(), 'po')
 
 # Dependencies
+min_eds_version = '3.13.90'
+min_folks_version = '0.11.4'
+min_glib_version = '2.44.0'
+
 champlain = dependency('champlain-0.12')
 clutter_gtk = dependency('clutter-gtk-1.0')
-folks = dependency('folks', version: '>= 0.9.5')
-folks_eds = dependency('folks-eds')
-folks_telepathy = dependency('folks-telepathy')
+folks = dependency('folks', version: '>=' + min_folks_version)
+folks_eds = dependency('folks-eds', version: '>=' + min_folks_version)
+folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
 gee = dependency('gee-0.8')
 geocode_glib = dependency('geocode-glib-1.0', version: '>= 3.15.3')
-gio_unix = dependency('gio-unix-2.0')
-glib = dependency('glib-2.0', version: '>= 2.44.0')
-gmodule_export = dependency('gmodule-export-2.0')
+gio_unix = dependency('gio-unix-2.0', version: '>=' + min_glib_version)
+glib = dependency('glib-2.0', version: '>=' + min_glib_version)
+gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_version)
 gnome_desktop = dependency('gnome-desktop-3.0')
 goa = dependency('goa-1.0')
 gtk = dependency('gtk+-3.0', version: '>= 3.22.0')
-libebook = dependency('libebook-1.2', version: '>= 3.13.90')
-libedataserver = dependency('libedataserver-1.2', version: '>= 3.13.90')
+libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
+libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
+libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 
 if get_option('with-cheese')
@@ -44,9 +49,7 @@ if get_option('with-cheese')
 endif
 
 # Libraries
-cc = meson.get_compiler('c')
-libedataserverui = cc.find_library('libedataserverui-1.2', version: '>= 3.13.90')
-math = cc.find_library('m')
+math = meson.get_compiler('c').find_library('m')
 
 # Configuration
 conf = configuration_data()

@@ -29,7 +29,7 @@ contacts_vala_sources = [
 ]
 
 contacts_vala_args = [
-  '--target-glib=2.38',
+  '--target-glib=@0@'.format(min_glib_version),
   '--pkg', 'config',
   '--pkg', 'custom',
 ]
