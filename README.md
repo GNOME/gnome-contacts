@@ -2,12 +2,20 @@
 Contacts organizes your contacts information from all your online and offline
 sources, providing a centralized place for managing your contacts.
 
-## Build
-Building Contacts can be done by executing these commands in the directory:
+## Building
+First download the source code from git:
 ```sh
 git clone git://git.gnome.org/gnome-contacts
 cd gnome-contacts
-./autogen.sh && make && make install
+```
+
+You can then build Contacts using either [Meson](http://mesonbuild.com/) or
+Autotools:
+```sh
+# Meson
+meson build && ninja -C build
+# Autotools
+./autogen.sh && make
 ```
 
 ## Issue tracker
@@ -19,6 +27,15 @@ an issue using the
 [appropriate form](https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-contacts).
 
 In case of a bug, please also add reproducible steps and the version of Contacts.
+
+## Contributing
+If you would like to contribute a patch, you should send it in to the GNOME
+Bugzilla as well. If the patch fixes an existing bug, add the patch as an
+attachment to that bug report; otherwise, enter a new bug report that describes
+the patch, and attach the patch to that bug report.
+
+For more information on the recommended workflow, please read
+[this wiki page](https://wiki.gnome.org/Git/WorkingWithPatches).
 
 ## More information
 Contacts has its own web page on https://wiki.gnome.org/Apps/Contacts.
