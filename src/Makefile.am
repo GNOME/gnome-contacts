@@ -46,10 +46,6 @@ vala_sources = \
 	contact-resources.c \
 	$(NULL)
 
-gsettings_ENUM_NAMESPACE = org.gnome.Contacts
-gsettings_ENUM_FILES = \
-        contacts-view.c
-
 gsettings_SCHEMAS = org.gnome.Contacts.gschema.xml
 
 @GSETTINGS_RULES@
