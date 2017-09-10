@@ -53,12 +53,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private Grid  content_header_bar;
 
   [GtkChild]
+  private Grid setup_view;
+  [GtkChild]
   private HeaderBar setup_header_bar;
   [GtkChild]
   private Button setup_done_button;
   [GtkChild]
   private Button setup_cancel_button;
-  [GtkChild]
   private AccountsList setup_accounts_list;
 
   // The 2 panes the window consists of
@@ -144,6 +145,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     create_contact_pane ();
 
+    this.setup_accounts_list = new AccountsList (this.store);
+    this.setup_accounts_list.hexpand = true;
+    this.setup_accounts_list.halign = Align.CENTER;
+    this.setup_accounts_list.show ();
+    this.setup_view.attach (this.setup_accounts_list, 1, 0);
+
     if (settings.did_initial_setup) {
       view_switcher.visible_child_name = "content-view";
       set_titlebar (content_header_bar);
@@ -153,13 +160,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         change_book_action.set_enabled (false);
 
       store.eds_persona_store_changed.connect  ( () => {
-	  setup_accounts_list.update_contents (false);
-	});
+          setup_accounts_list.update_contents (false);
+        });
       ulong id2 = 0;
       id2 = setup_accounts_list.account_selected.connect (() => {
-	  setup_done_button.set_sensitive (true);
-	  setup_accounts_list.disconnect (id2);
-	});
+          setup_done_button.set_sensitive (true);
+          setup_accounts_list.disconnect (id2);
+        });
 
       view_switcher.visible_child_name = "setup-view";
       set_titlebar (setup_header_bar);

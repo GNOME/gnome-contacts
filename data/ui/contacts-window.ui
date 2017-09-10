@@ -98,7 +98,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkGrid">
+          <object class="GtkGrid" id="setup_view">
             <property name="visible">True</property>
             <property name="border_width">12</property>
             <property name="row_spacing">24</property>
@@ -114,19 +114,6 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="ContactsAccountsList" id="setup_accounts_list">
-                <property name="visible">True</property>
-                <property name="hexpand">True</property>
-                <property name="halign">center</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -331,13 +318,6 @@
     <widgets>
       <widget name="left_toolbar"/>
       <widget name="loading_box"/>
-    </widgets>
-  </object>
-  <object class="GtkSizeGroup">
-    <property name="mode">horizontal</property>
-    <widgets>
-      <widget name="setup_explanation_label"/>
-      <widget name="setup_accounts_list"/>
     </widgets>
   </object>
 </interface>
