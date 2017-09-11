@@ -43,13 +43,18 @@ libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_versio
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 
-if get_option('with-cheese')
-  cheese = dependency('cheese')
-  cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91')
-endif
-
 # Libraries
 math = meson.get_compiler('c').find_library('m')
+
+# Options
+cheese_enabled = (get_option('with-cheese') != 'no')
+if cheese_enabled
+  cheese = dependency('cheese', required: cheese_enabled)
+  cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91', required: cheese_enabled)
+  cheese_enabled = cheese.found() and cheese_gtk.found()
+endif
+
+manpage_enabled = get_option('with-manpage')
 
 # Configuration
 conf = configuration_data()

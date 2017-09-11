@@ -1,4 +1,4 @@
-if get_option('with-manpage')
+if manpage_enabled
   xsltproc = find_program('xsltproc')
   custom_target('manfile-gnome-contacts',
     input: 'gnome-contacts.xml',

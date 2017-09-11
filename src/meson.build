@@ -72,7 +72,7 @@ contacts_deps = [
 ]
 
 # Add extra stuff if cheese is enabled
-if get_option('with-cheese')
+if cheese_enabled
   contacts_deps += [ cheese, cheese_gtk ]
   contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
   contacts_c_sources += 'cheese-flash.c'
