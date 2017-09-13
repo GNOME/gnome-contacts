@@ -3,19 +3,11 @@ Contacts organizes your contacts information from all your online and offline
 sources, providing a centralized place for managing your contacts.
 
 ## Building
-First download the source code from git:
+You can build and install Contacts using [Meson](http://mesonbuild.com/):
 ```sh
-git clone git://git.gnome.org/gnome-contacts
-cd gnome-contacts
-```
-
-You can then build Contacts using either [Meson](http://mesonbuild.com/) or
-Autotools:
-```sh
-# Meson
-meson build && ninja -C build
-# Autotools
-./autogen.sh && make
+meson build
+ninja -C build
+ninja -C build install
 ```
 
 ## Issue tracker
