@@ -227,23 +227,17 @@ public class Contacts.TypeSet : Object  {
     return _("Other");
   }
 
-  public void update_details (AbstractFieldDetails details, TreeIter iter) {
-    var old_parameters = details.parameters;
-    details.parameters = new HashMultiMap<string, string> ();
+  public void update_type_parameter (MultiMap<string, string> parameters, TreeIter iter) {
     bool has_pref = false;
-    foreach (var value in old_parameters.get ("type")) {
-      if (value.ascii_casecmp ("PREF") == 0) {
-	has_pref = true;
-	break;
+    foreach (var val in parameters["type"]) {
+      if (val.ascii_casecmp ("PREF") == 0) {
+        has_pref = true;
+        break;
       }
     }
-    foreach (var param in old_parameters.get_keys()) {
-      if (param != "type" && param != X_GOOGLE_LABEL) {
-	foreach (var value in old_parameters.get (param)) {
-	  details.parameters.set (param, value);
-	}
-      }
-    }
+
+    parameters.remove_all("type");
+    parameters.remove_all(X_GOOGLE_LABEL);
 
     Data data;
     string display_name;
@@ -253,21 +247,21 @@ public class Contacts.TypeSet : Object  {
     assert (data != custom_dummy); // Not custom...
 
     if (data == null) { // A custom label
-      details.parameters.set ("type", "OTHER");
-      details.parameters.set (X_GOOGLE_LABEL, display_name);
+      parameters["type"] = "OTHER";
+      parameters[X_GOOGLE_LABEL] = display_name;
     } else {
       if (data == other_dummy) {
-	  details.parameters.set ("type", "OTHER");
+        parameters["type"] = "OTHER";
       } else {
-	InitData *init_data = data.init_data.data;
-	for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
-	  details.parameters.set ("type", init_data.types[j]);
-	}
+        InitData *init_data = data.init_data.data;
+        for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
+          parameters["type"] = init_data.types[j];
+        }
       }
     }
 
     if (has_pref)
-      details.parameters.set ("type", "PREF");
+      parameters["type"] = "PREF";
   }
 
   public bool is_custom (TreeIter iter) {
@@ -493,9 +487,9 @@ public class Contacts.TypeCombo : Grid  {
     set_from_iter (iter);
   }
 
-  public void update_details (AbstractFieldDetails details) {
+  public void update_type_parameter (MultiMap<string, string> parameters) {
     TreeIter iter;
     combo.get_active_iter (out iter);
-    type_set.update_details (details, iter);
+    type_set.update_type_parameter (parameters, iter);
   }
 }

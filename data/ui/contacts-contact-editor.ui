@@ -4,52 +4,36 @@
 
   <menu id="edit-contact-menu">
     <item>
-      <attribute name="action">edit.add.email-addresses.home</attribute>
-      <attribute name="label" translatable="yes">Home email</attribute>
+      <attribute name="action">edit.add-email-addresses</attribute>
+      <attribute name="label" translatable="yes">Email address</attribute>
     </item>
     <item>
-      <attribute name="action">edit.add.email-addresses.work</attribute>
-      <attribute name="label" translatable="yes">Work email</attribute>
+      <attribute name="action">edit.add-phone-numbers</attribute>
+      <attribute name="label" translatable="yes">Phone number</attribute>
     </item>
     <item>
-      <attribute name="action">edit.add.phone-numbers.cell</attribute>
-      <attribute name="label" translatable="yes">Mobile phone</attribute>
-    </item>
-    <item>
-      <attribute name="action">edit.add.phone-numbers.home</attribute>
-      <attribute name="label" translatable="yes">Home phone</attribute>
-    </item>
-    <item>
-      <attribute name="action">edit.add.phone-numbers.work</attribute>
-      <attribute name="label" translatable="yes">Work phone</attribute>
-    </item>
-    <item>
-      <attribute name="action">edit.add.urls</attribute>
+      <attribute name="action">edit.add-urls</attribute>
       <attribute name="label" translatable="yes">Website</attribute>
     </item>
     <item>
-      <attribute name="action">edit.add.nickname</attribute>
+      <attribute name="action">edit.add-nickname</attribute>
       <attribute name="label" translatable="yes">Nickname</attribute>
     </item>
     <item>
-      <attribute name="action">edit.add.birthday</attribute>
+      <attribute name="action">edit.add-birthday</attribute>
       <attribute name="label" translatable="yes">Birthday</attribute>
     </item>
     <item>
-      <attribute name="action">edit.add.postal-addresses.home</attribute>
-      <attribute name="label" translatable="yes">Home address</attribute>
+      <attribute name="action">edit.add-postal-addresses</attribute>
+      <attribute name="label" translatable="yes">Address</attribute>
     </item>
     <item>
-      <attribute name="action">edit.add.postal-addresses.work</attribute>
-      <attribute name="label" translatable="yes">Work address</attribute>
-    </item>
-    <item>
-      <attribute name="action">edit.add.notes</attribute>
+      <attribute name="action">edit.add-notes</attribute>
       <attribute name="label" translatable="yes">Notes</attribute>
     </item>
   </menu>
 
-  <template class="ContactsContactEditor" parent="GtkGrid">
+  <template class="ContactsEditorContactEditor" parent="GtkGrid">
     <property name="visible">True</property>
     <property name="orientation">vertical</property>
     <child>
@@ -69,7 +53,6 @@
             <property name="column_spacing">12</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <signal name="size-allocate" handler="on_container_grid_size_allocate" after="true" />
           </object>
         </child>
       </object>
@@ -108,13 +91,13 @@
         </child>
         <child>
           <object class="GtkButton" id="linked_button">
-            <property name="visible">True</property>
+            <property name="visible">False</property>
             <property name="label" translatable="yes">Linked Accounts</property>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="remove_button">
-            <property name="visible">True</property>
+            <property name="visible">False</property>
             <property name="label" translatable="yes">Remove Contact</property>
             <style>
               <class name="destructive-action"/>
