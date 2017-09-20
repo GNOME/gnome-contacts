@@ -72,9 +72,9 @@ public class Contacts.AvatarSelector : Dialog {
    */
   public signal void set_avatar (GLib.Icon avatar_icon);
 
-  public AvatarSelector (Window main_window, Contact? contact) {
+  public AvatarSelector (Gtk.Window? parent, Contact? contact) {
     Object (
-      transient_for: main_window,
+      transient_for: parent,
       use_header_bar: 1
     );
 
