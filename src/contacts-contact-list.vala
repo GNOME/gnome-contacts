@@ -181,8 +181,10 @@ public class Contacts.ContactList : ListBox {
     var data = row as ContactDataRow;
     var contact = data != null ? data.contact : null;
     selection_changed (contact);
+#if HAVE_TELEPATHY
     if (contact != null)
       contact.fetch_contact_info ();
+#endif
   }
 
   private bool filter (ListBoxRow row) {

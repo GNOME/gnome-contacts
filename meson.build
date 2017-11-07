@@ -32,7 +32,6 @@ min_glib_version = '2.44.0'
 
 folks = dependency('folks', version: '>=' + min_folks_version)
 folks_eds = dependency('folks-eds', version: '>=' + min_folks_version)
-folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
 gee = dependency('gee-0.8')
 gio_unix = dependency('gio-unix-2.0', version: '>=' + min_glib_version)
 glib = dependency('glib-2.0', version: '>=' + min_glib_version)
@@ -43,7 +42,6 @@ gtk = dependency('gtk+-3.0', version: '>= 3.22.0')
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
-telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 
 # Libraries
 math = meson.get_compiler('c').find_library('m')
@@ -62,6 +60,12 @@ if maps_enabled
   champlain = dependency('champlain-0.12')
   clutter_gtk = dependency('clutter-gtk-1.0')
   geocode_glib = dependency('geocode-glib-1.0', version: '>= 3.15.3')
+endif
+
+telepathy_enabled = get_option('telepathy')
+if telepathy_enabled
+  folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
+  telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 endif
 
 manpage_enabled = get_option('with-manpage')

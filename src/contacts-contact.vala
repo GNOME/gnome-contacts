@@ -295,6 +295,7 @@ public class Contacts.Contact : GLib.Object  {
     return lines;
   }
 
+#if HAVE_TELEPATHY
   public Tpf.Persona? find_im_persona (string protocol, string im_address) {
     var iid = protocol + ":" + im_address;
     foreach (var p in individual.personas) {
@@ -305,6 +306,7 @@ public class Contacts.Contact : GLib.Object  {
     }
     return null;
   }
+#endif
 
   private struct ImData {
     unowned string service;
@@ -506,10 +508,16 @@ public class Contacts.Contact : GLib.Object  {
      that will typically unlink the rest. */
   public bool can_remove_personas () {
     foreach (var p in individual.personas) {
+#if HAVE_TELEPATHY
       if (p.store.can_remove_personas == MaybeBool.TRUE &&
 	  !(p is Tpf.Persona)) {
 	return true;
       }
+#else
+      if (p.store.can_remove_personas == MaybeBool.TRUE) {
+        return true;
+      }
+#endif
     }
     return false;
   }
@@ -517,10 +525,16 @@ public class Contacts.Contact : GLib.Object  {
   public async void remove_personas () throws Folks.PersonaStoreError {
     var personas = new HashSet<Persona> ();
     foreach (var p in individual.personas) {
+#if HAVE_TELEPATHY
       if (p.store.can_remove_personas == MaybeBool.TRUE &&
 	  !(p is Tpf.Persona)) {
 	personas.add (p);
       }
+#else
+      if (p.store.can_remove_personas == MaybeBool.TRUE) {
+        personas.add (p);
+      }
+#endif
     }
     foreach (var persona in personas)  {
       yield persona.store.remove_persona (persona);
@@ -645,10 +659,12 @@ public class Contacts.Contact : GLib.Object  {
       if (eds_name != null)
 	return eds_name;
     }
+#if HAVE_TELEPATHY
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
       return format_im_service (account.service);
     }
+#endif
 
     return store.display_name;
   }
@@ -738,10 +754,12 @@ public class Contacts.Contact : GLib.Object  {
       if (eds_name != null)
 	return eds_name;
     }
+#if HAVE_TELEPATHY
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
       return format_im_service (account.service);
     }
+#endif
 
     return store.display_name;
   }
@@ -897,6 +915,7 @@ public class Contacts.Contact : GLib.Object  {
     w.destroy.connect (() => { this.disconnect (id); });
   }
 
+#if HAVE_TELEPATHY
   public void fetch_contact_info () {
     /* TODO: Ideally Folks should have API for this (#675131) */
     foreach (var p in individual.personas) {
@@ -906,6 +925,7 @@ public class Contacts.Contact : GLib.Object  {
       }
     }
   }
+#endif
 }
 
 public class Contacts.FakePersonaStore : PersonaStore {

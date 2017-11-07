@@ -153,6 +153,7 @@ public class Contacts.ContactSheet : Grid {
       if (phone_details != null) {
 	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
 	foreach (var phone in phones) {
+#if HAVE_TELEPATHY
 	  if (c.store != null && c.store.caller_account != null) {
 	    var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
 	    button.clicked.connect (() => {
@@ -161,9 +162,13 @@ public class Contacts.ContactSheet : Grid {
 	  } else {
 	    add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
 	  }
+#else
+          add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
+#endif
 	}
       }
 
+#if HAVE_TELEPATHY
       var im_details = p as ImDetails;
       if (im_details != null) {
 	foreach (var protocol in im_details.im_addresses.get_keys ()) {
@@ -186,6 +191,7 @@ public class Contacts.ContactSheet : Grid {
 	  }
 	}
       }
+#endif
 
       var url_details = p as UrlDetails;
       if (url_details != null) {

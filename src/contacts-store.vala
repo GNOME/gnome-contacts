@@ -19,7 +19,6 @@
 using Gtk;
 using Folks;
 using Gee;
-using TelepathyGLib;
 
 public class Contacts.Store : GLib.Object {
   public signal void changed (Contact c);
@@ -36,7 +35,9 @@ public class Contacts.Store : GLib.Object {
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
-  public Account? caller_account { get; private set; default = null; }
+#if HAVE_TELEPATHY
+  public TelepathyGLib.Account? caller_account { get; private set; default = null; }
+#endif
 
   public bool is_quiescent {
     get { return this.aggregator.is_quiescent; }
@@ -233,7 +234,9 @@ public class Contacts.Store : GLib.Object {
       });
     aggregator.prepare.begin ();
 
+#if HAVE_TELEPATHY
     check_call_capabilities.begin ();
+#endif
   }
 
   private void contact_changed_cb (Contact c) {
@@ -311,9 +314,10 @@ public class Contacts.Store : GLib.Object {
     removed (c);
   }
 
+#if HAVE_TELEPATHY
   // TODO: listen for changes in Account#URISchemes
   private async void check_call_capabilities () {
-    var account_manager = AccountManager.dup ();
+    var account_manager = TelepathyGLib.AccountManager.dup ();
 
     try {
       yield account_manager.prepare_async (null);
@@ -328,8 +332,8 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
-  private async void check_account_caps (Account account) {
-    GLib.Quark addressing = Account.get_feature_quark_addressing ();
+  private async void check_account_caps (TelepathyGLib.Account account) {
+    GLib.Quark addressing = TelepathyGLib.Account.get_feature_quark_addressing ();
     if (!account.is_prepared (addressing)) {
       GLib.Quark[] features = { addressing };
       try {
@@ -344,4 +348,5 @@ public class Contacts.Store : GLib.Object {
         this.caller_account = account;
     }
   }
+#endif
 }

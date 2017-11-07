@@ -49,7 +49,6 @@ contacts_c_args = [
 contacts_deps = [
   folks,
   folks_eds,
-  folks_telepathy,
   gee,
   gio_unix,
   glib,
@@ -60,7 +59,6 @@ contacts_deps = [
   libedataserver,
   libedataserverui,
   math,
-  telepathy_glib,
 ]
 
 # Add extra stuff given a certain set of options
@@ -74,6 +72,11 @@ if maps_enabled
   contacts_deps += [ champlain, clutter_gtk, geocode_glib ]
   contacts_vala_args += [ '-D', 'HAVE_MAPS' ]
   contacts_vala_sources += 'contacts-address-map.vala'
+endif
+
+if telepathy_enabled
+  contacts_deps += [ folks_telepathy, telepathy_glib ]
+  contacts_vala_args += [ '-D', 'HAVE_TELEPATHY' ]
 endif
 
 contacts_sources = [

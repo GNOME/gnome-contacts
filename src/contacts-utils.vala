@@ -130,6 +130,7 @@ namespace Contacts.Utils {
     }
   }
 
+#if HAVE_TELEPATHY
   public void start_chat (Contact contact, string protocol, string id) {
     var im_persona = contact.find_im_persona (protocol, id);
     var account = (im_persona.store as Tpf.PersonaStore).account;
@@ -162,6 +163,7 @@ namespace Contacts.Utils {
     var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
     request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Call", null);
   }
+#endif
 
   public T? get_first<T> (Collection<T> collection) {
     var i = collection.iterator();
