@@ -24,7 +24,7 @@ public class Contacts.AddressEditor : Box {
   public Entry? entries[7];  /* must be the number of elements in postal_element_props */
   public PostalAddressFieldDetails details;
 
-  public static const string[] postal_element_props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
+  public const string[] postal_element_props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
   public static string[] postal_element_names = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
 
   public signal void changed ();
