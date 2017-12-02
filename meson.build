@@ -60,6 +60,7 @@ manpage_enabled = get_option('with-manpage')
 # Configuration
 conf = configuration_data()
 conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
+conf.set_quoted('G_LOG_DOMAIN', meson.project_name())
 conf.set_quoted('LOCALEDIR', locale_dir)
 conf.set_quoted('PACKAGE_NAME', meson.project_name())
 conf.set_quoted('PACKAGE_STRING', meson.project_name())
