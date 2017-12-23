@@ -65,12 +65,6 @@ public class Contacts.View : ListBox {
     }
   }
 
-  public enum TextDisplay {
-    NONE,
-    PRESENCE,
-    STORES
-  }
-
   public signal void selection_changed (Contact? contact);
   public signal void contacts_marked (int contacts_marked);
 
