@@ -104,9 +104,7 @@ namespace Contacts {
 
     public abstract bool is_referenced_by_persona (Persona persona);
 
-#if DEBUG
     public abstract string to_string ();
-#endif
 
     public virtual bool equal (PersonaAttribute that) {
       return this.property_name == that.property_name;
@@ -135,11 +133,9 @@ namespace Contacts {
       return base.is_removable (from_persona) && value != from_persona.iid;
     }
 
-#if DEBUG
     public override string to_string () {
       return "local_id: " + value;
     }
-#endif
 
     public override bool is_referenced_by_persona (Persona persona) {
       var details = persona as LocalIdDetails;
@@ -231,11 +227,9 @@ namespace Contacts {
       this.detail = detail;
     }
 
-#if DEBUG
     public override string to_string () {
       return "im_addresses: " + protocol + ":" + detail.value;
     }
-#endif
 
     public override bool is_referenced_by_persona (Persona persona) {
       var details = persona as ImDetails;
@@ -340,11 +334,9 @@ namespace Contacts {
       this.detail = detail;
     }
 
-#if DEBUG
     public override string to_string () {
       return "web_service_addresses: " + service + ":" + detail.value;
     }
-#endif
 
     public override bool is_referenced_by_persona (Persona persona) {
       var details = persona as WebServiceDetails;
