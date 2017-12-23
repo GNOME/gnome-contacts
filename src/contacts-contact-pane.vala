@@ -187,7 +187,7 @@ public class Contacts.ContactPane : Stack {
   }
 
   private void create_contact_sheet () {
-    this.sheet = new ContactSheet (this.store);
+    this.sheet = new ContactSheet ();
     this.sheet.hexpand = true;
     this.sheet.vexpand = true;
     this.sheet.margin = 36;

@@ -22,8 +22,6 @@ using Gee;
 
 public class Contacts.ContactSheet : Grid {
 
-  private Store contacts_store;
-
   Button add_row_with_button (ref int row, string label_value, string value) {
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
@@ -90,9 +88,7 @@ public class Contacts.ContactSheet : Grid {
     row++;
   }
 
-  public ContactSheet (Store contacts_store) {
-    this.contacts_store = contacts_store;
-
+  public ContactSheet () {
     set_row_spacing (12);
     set_column_spacing (16);
     set_orientation (Orientation.VERTICAL);
@@ -156,10 +152,10 @@ public class Contacts.ContactSheet : Grid {
       if (phone_details != null) {
 	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
 	foreach (var phone in phones) {
-	  if (this.contacts_store.can_call) {
+	  if (c.store != null && c.store.can_call) {
 	    var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
 	    button.clicked.connect (() => {
-            Utils.start_call (phone.value, this.contacts_store.calling_accounts);
+            Utils.start_call (phone.value, c.store.calling_accounts);
 	      });
 	  } else {
 	    add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
