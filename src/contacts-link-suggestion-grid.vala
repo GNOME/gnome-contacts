@@ -24,57 +24,49 @@ using Gee;
  * It offers the user the sugugestion of linking the currently shown contact
  * and another (hopefully) similar contact.
  */
+[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-link-suggestion-grid.ui")]
 public class Contacts.LinkSuggestionGrid : Grid {
+
+  [GtkChild]
+  private Gtk.Label description_label;
+  [GtkChild]
+  private Gtk.Label extra_info_label;
+  [GtkChild]
+  private Gtk.Button accept_button;
+  [GtkChild]
+  private Gtk.Button reject_button;
 
   public signal void suggestion_accepted ();
   public signal void suggestion_rejected ();
 
   public LinkSuggestionGrid (Contact contact) {
-    this.valign = Align.END;
-
     get_style_context ().add_class ("contacts-suggestion");
-    set_redraw_on_allocate (true);
 
     var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
     image_frame.hexpand = false;
-    image_frame.margin = 24;
-    image_frame.margin_end = 12;
+    image_frame.margin = 12;
     contact.keep_widget_uptodate (image_frame,  (w) => {
         (w as ContactFrame).set_image (contact.individual, contact);
       });
+    image_frame.show ();
+    attach (image_frame, 0, 0, 1, 2);
 
-    attach (image_frame, 0, 0);
+    this.description_label.xalign = 0; // FIXME: hack to make it actually align left.
+    this.description_label.label = contact.is_main?
+          _("Is this the same person as %s from %s?").printf (contact.display_name, contact.format_persona_stores ())
+        : _("Is this the same person as %s?").printf (contact.display_name);
 
-    var label = new Label ("");
-    if (contact.is_main)
-      label.set_markup (Markup.printf_escaped (_("Does %s from %s belong here?"), contact.display_name, contact.format_persona_stores ()));
-    else
-      label.set_markup (Markup.printf_escaped (_("Do these details belong to %s?"), contact.display_name));
-    label.valign = Align.START;
-    label.halign = Align.START;
-    label.width_chars = 20;
-    label.wrap = true;
-    label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-    label.hexpand = true;
-    label.margin_top = 24;
-    label.margin_bottom = 24;
-    attach (label, 1, 0);
+    var emails = contact.individual.email_addresses;
+    if (!emails.is_empty) {
+      // This is of course a best guess.
+      var email = Utils.get_first<EmailFieldDetails>(emails);
+      if (email.value != null) {
+        this.extra_info_label.show ();
+        this.extra_info_label.label = email.value;
+      }
+    }
 
-    var bbox = new ButtonBox (Orientation.HORIZONTAL);
-    var yes = new Button.with_label (_("Yes"));
-    var no = new Button.with_label (_("No"));
-
-    yes.clicked.connect ( () => suggestion_accepted ());
-    no.clicked.connect ( () => suggestion_rejected ());
-
-    bbox.add (yes);
-    bbox.add (no);
-    bbox.set_spacing (8);
-    bbox.set_halign (Align.END);
-    bbox.set_hexpand (true);
-    bbox.margin = 24;
-    bbox.margin_start = 12;
-    attach (bbox, 2, 0);
-    show_all ();
+    this.reject_button.clicked.connect ( () => suggestion_rejected ());
+    this.accept_button.clicked.connect ( () => suggestion_accepted ());
   }
 }
