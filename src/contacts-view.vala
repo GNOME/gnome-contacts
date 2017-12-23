@@ -57,9 +57,14 @@ public class Contacts.View : ListBox {
       this.show_all ();
     }
 
-    public void update_widgets () {
-      label.set_text (display_name);
-      image_frame.set_image (contact.individual, contact);
+    public void update_data (bool filtered) {
+      this.display_name = this.contact.display_name;
+      this.initial_letter = this.contact.initial_letter;
+      this.filtered = filtered;
+
+      // Update widgets
+      this.label.set_text (this.display_name);
+      this.image_frame.set_image (this.contact.individual, this.contact);
     }
   }
 
@@ -217,15 +222,6 @@ public class Contacts.View : ListBox {
     return c.contains_strings (filter_values);
   }
 
-  private void update_data (ContactDataRow data) {
-    var c = data.contact;
-    data.display_name = c.display_name;
-    data.initial_letter = c.initial_letter;
-    data.filtered = calculate_filtered (c);
-
-    data.update_widgets ();
-  }
-
   private void update_all_filtered () {
     foreach (var data in contacts.values) {
       data.filtered = calculate_filtered (data.contact);
@@ -234,14 +230,14 @@ public class Contacts.View : ListBox {
 
   private void contact_changed_cb (Store store, Contact c) {
     var data = contacts.get (c);
-    update_data (data);
+    data.update_data (calculate_filtered (c));
     data.changed();
   }
 
   private void contact_added_cb (Store store, Contact c) {
     var data =  new ContactDataRow(c);
 
-    update_data (data);
+    data.update_data (calculate_filtered (c));
 
     data.selector_button.toggled.connect (() => {
 	if (data.selector_button.active)
