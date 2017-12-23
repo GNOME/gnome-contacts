@@ -38,7 +38,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Button add_button;
   [GtkChild]
-  private ToggleButton select_button;
+  private Button select_button;
+  [GtkChild]
+  private Button select_cancel_button;
   [GtkChild]
   private Button edit_button;
   [GtkChild]
@@ -235,9 +237,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public void activate_selection_mode (bool active) {
-    if (active) {
-      selection_mode = true;
+    this.selection_mode = active;
+    this.select_button.visible = !active;
+    this.select_cancel_button.visible = active;
 
+    if (active) {
       left_toolbar.get_style_context ().add_class ("selection-mode");
       right_toolbar.get_style_context ().add_class ("selection-mode");
 
@@ -245,8 +249,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
       list_pane.show_selection ();
     } else {
-      selection_mode = false;
-
       left_toolbar.get_style_context ().remove_class ("selection-mode");
       right_toolbar.get_style_context ().remove_class ("selection-mode");
 
@@ -322,7 +324,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     else
       right_title = "";
 
-    edit_button.visible = (c != null) && !select_button.active;
+    edit_button.visible = (c != null) && !this.selection_mode;
   }
 
   [GtkCallback]
@@ -358,21 +360,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       left_toolbar.decoration_layout = tokens[0];
     }
 
-    select_button.toggled.connect (() => {
-	activate_selection_mode (select_button.active);
-      });
-
-    edit_button.clicked.connect (() => {
-	enter_edit_mode ();
-      });
-
-    done_button.clicked.connect (() => {
-	leave_edit_mode ();
-      });
-
-    cancel_button.clicked.connect (() => {
-	leave_edit_mode (true);
-      });
+    this.select_button.clicked.connect (() => activate_selection_mode (true));
+    this.select_cancel_button.clicked.connect (() => activate_selection_mode (false));
+    this.edit_button.clicked.connect (() => enter_edit_mode ());
+    this.done_button.clicked.connect (() => leave_edit_mode ());
+    this.cancel_button.clicked.connect (() => leave_edit_mode (true));
   }
 
   [GtkCallback]
@@ -414,7 +406,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);
-    select_button.set_active (false);
+    activate_selection_mode (false);
 
     LinkOperation2 operation = null;
     link_contacts_list.begin (contact_list, this.store, (obj, result) => {
@@ -441,7 +433,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);
-    select_button.set_active (false);
+    activate_selection_mode (false);
 
     string msg = ngettext ("%d contact deleted",
                            "%d contacts deleted",
@@ -474,7 +466,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private void contact_pane_delete_contact_cb (Contact contact) {
     /* unsetting edit-mode */
     set_shown_contact (null);
-    this.select_button.active = false;
+    activate_selection_mode (false);
 
     var msg = _("Contact deleted: “%s”").printf (contact.display_name);
     var b = new Button.with_mnemonic (_("_Undo"));
