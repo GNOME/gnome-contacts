@@ -16,6 +16,7 @@ contacts_vala_sources = [
   'contacts-contact-sheet.vala',
   'contacts-contact.vala',
   'contacts-in-app-notification.vala',
+  'contacts-link-suggestion-grid.vala',
   'contacts-linked-accounts-dialog.vala',
   'contacts-linking.vala',
   'contacts-list-pane.vala',

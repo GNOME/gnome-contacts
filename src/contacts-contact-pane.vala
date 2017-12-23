@@ -62,7 +62,7 @@ public class Contacts.ContactPane : Stack {
   };
 
   public bool on_edit_mode;
-  public Grid suggestion_grid;
+  private LinkSuggestionGrid suggestion_grid;
 
   /* Signals */
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
@@ -99,76 +99,23 @@ public class Contacts.ContactPane : Stack {
       suggestion_grid = null;
     }
 
-    suggestion_grid = new Grid ();
-    suggestion_grid.set_valign (Align.END);
-    parent_overlay.add_overlay (suggestion_grid);
+    this.suggestion_grid = new LinkSuggestionGrid (c);
+    parent_overlay.add_overlay (this.suggestion_grid);
 
-    suggestion_grid.get_style_context ().add_class ("contacts-suggestion");
-    suggestion_grid.set_redraw_on_allocate (true);
-    suggestion_grid.draw.connect ( (cr) => {
-	Allocation allocation;
-	suggestion_grid.get_allocation (out allocation);
-
-	var context = suggestion_grid.get_style_context ();
-	context.render_background (cr,
-				   0, 0,
-				   allocation.width, allocation.height);
-	return false;
+    this.suggestion_grid.suggestion_accepted.connect ( () => {
+        var linked_contact = c.display_name;
+        link_contacts.begin (contact, c, this.store, (obj, result) => {
+            var operation = link_contacts.end (result);
+            this.contacts_linked (null, linked_contact, operation);
+          });
+        this.suggestion_grid.destroy ();
       });
 
-    var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
-    image_frame.set_hexpand (false);
-    image_frame.margin = 24;
-    image_frame.margin_end = 12;
-    c.keep_widget_uptodate (image_frame,  (w) => {
-	(w as ContactFrame).set_image (c.individual, c);
+    this.suggestion_grid.suggestion_rejected.connect ( () => {
+        store.add_no_suggest_link (contact, c);
+        /* TODO: Add undo */
+        this.suggestion_grid.destroy ();
       });
-
-    suggestion_grid.attach (image_frame, 0, 0, 1, 2);
-
-    var label = new Label ("");
-    if (contact.is_main)
-      label.set_markup (Markup.printf_escaped (_("Does %s from %s belong here?"), c.display_name, c.format_persona_stores ()));
-    else
-      label.set_markup (Markup.printf_escaped (_("Do these details belong to %s?"), c.display_name));
-    label.set_valign (Align.START);
-    label.set_halign (Align.START);
-    label.set_line_wrap (true);
-    label.width_chars = 20;
-    label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
-    label.set_hexpand (true);
-    label.margin_top = 24;
-    label.margin_bottom = 24;
-    suggestion_grid.attach (label, 1, 0, 1, 2);
-
-    var bbox = new ButtonBox (Orientation.HORIZONTAL);
-    var yes = new Button.with_label (_("Yes"));
-    var no = new Button.with_label (_("No"));
-
-    yes.clicked.connect ( () => {
-      var linked_contact = c.display_name;
-      link_contacts.begin (contact, c, this.store, (obj, result) => {
-	var operation = link_contacts.end (result);
-	this.contacts_linked (null, linked_contact, operation);
-      });
-      suggestion_grid.destroy ();
-    });
-
-    no.clicked.connect ( () => {
-	store.add_no_suggest_link (contact, c);
-	/* TODO: Add undo */
-	suggestion_grid.destroy ();
-      });
-
-    bbox.add (yes);
-    bbox.add (no);
-    bbox.set_spacing (8);
-    bbox.set_halign (Align.END);
-    bbox.set_hexpand (true);
-    bbox.margin = 24;
-    bbox.margin_start = 12;
-    suggestion_grid.attach (bbox, 2, 0, 1, 2);
-    suggestion_grid.show_all ();
   }
 
   public void show_contact (Contact? new_contact, bool show_matches = true) {
