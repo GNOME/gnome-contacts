@@ -25,11 +25,12 @@ public class Contacts.View : ListBox {
     public Label label;
     public ContactFrame image_frame;
     public CheckButton selector_button;
-    public int sort_prio;
     public bool filtered;
 
     public ContactDataRow(Contact c) {
       this.contact = c;
+
+      get_style_context (). add_class ("contact-data-row");
 
       Grid grid = new Grid ();
       grid.margin = 6;
@@ -116,18 +117,9 @@ public class Contacts.View : ListBox {
 	return compare_data (a, b);
       });
     this.set_filter_func (filter);
-    this.set_header_func (update_header);
   }
 
   private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
-    int a_prio = get_sort_prio (a_data);
-    int b_prio = get_sort_prio (b_data);
-
-    if (a_prio > b_prio)
-      return -1;
-    if (a_prio < b_prio)
-      return 1;
-
     if (is_set (a_data.contact.display_name) && is_set (b_data.contact.display_name))
       return a_data.contact.display_name.collate (b_data.contact.display_name);
 
@@ -148,33 +140,11 @@ public class Contacts.View : ListBox {
     return false;
   }
 
-  /* The hardcoded prio if set, otherwise 0 for the
-     main/combined group, or -1 for the separated other group */
-  private int get_sort_prio (ContactDataRow *data) {
-    if (data->sort_prio != 0)
-      return data->sort_prio;
-
-    if (is_other (data))
-      return -1;
-    return 0;
-  }
-
   public void set_show_subset (Subset subset) {
     show_subset = subset;
     update_all_filtered ();
     invalidate_filter ();
     invalidate_sort ();
-  }
-
-  public void set_custom_sort_prio (Contact c, int prio) {
-    /* We use negative prios internally */
-    assert (prio >= 0);
-
-    var data = contacts.get (c);
-    if (data == null)
-      return;
-    data.sort_prio = prio;
-    data.changed ();
   }
 
   public void hide_contact (Contact contact) {
@@ -267,58 +237,6 @@ public class Contacts.View : ListBox {
   private bool filter (ListBoxRow row) {
     var data = row as ContactDataRow;
     return data.filtered;
-  }
-
-  private void update_header (ListBoxRow row,
-			      ListBoxRow? before_row) {
-    var row_data = row as ContactDataRow;
-    var before_data = before_row as ContactDataRow;
-
-    var current = row.get_header ();
-
-    if (before_data == null && row_data.sort_prio > 0) {
-      if (current == null ||
-	  !(current.get_data<bool> ("contacts-suggestions-header"))) {
-	var l = new Label ("");
-	l.set_data ("contacts-suggestions-header", true);
-	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Suggestions")));
-	l.set_halign (Align.START);
-	row.set_header (l);
-      }
-      return;
-    }
-
-    if (before_data != null && before_data.sort_prio > 0 &&
-	row_data.sort_prio == 0) {
-      if (current == null ||
-	  !(current.get_data<bool> ("contacts-rest-header"))) {
-	var l = new Label ("");
-	l.set_data ("contacts-rest-header", true);
-	l.set_halign (Align.START);
-	row.set_header (l);
-      }
-      return;
-    }
-
-    if (is_other (row_data) &&
-	(before_data == null || !is_other (before_data))) {
-      if (current == null ||
-	  !(current.get_data<bool> ("contacts-other-header"))) {
-	var l = new Label ("");
-	l.set_data ("contacts-other-header", true);
-	l.set_markup (Markup.printf_escaped ("<b>%s</b>", _("Other Contacts")));
-	l.set_halign (Align.START);
-	row.set_header (l);
-      }
-      return;
-    }
-
-    if (before_data != null) {
-      if (current == null || !(current is Separator))
-	row.set_header (new Separator (Orientation.HORIZONTAL));
-      return;
-    }
-    row.set_header (null);
   }
 
   public void select_contact (Contact? contact) {
