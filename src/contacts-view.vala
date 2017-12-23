@@ -69,7 +69,6 @@ public class Contacts.View : ListBox {
   public signal void contacts_marked (int contacts_marked);
 
   HashMap<Contact,ContactDataRow> contacts;
-  HashSet<Contact> hidden_contacts;
   int nr_contacts_marked = 0;
 
   string []? filter_values;
@@ -93,8 +92,6 @@ public class Contacts.View : ListBox {
   }
 
   construct {
-    hidden_contacts = new HashSet<Contact>();
-
     contacts = new HashMap<Contact,ContactDataRow> ();
 
     this.set_sort_func ((row_a, row_b) => {
@@ -118,12 +115,6 @@ public class Contacts.View : ListBox {
     return 0;
   }
 
-  public void hide_contact (Contact contact) {
-    hidden_contacts.add (contact);
-    update_all_filtered ();
-    invalidate_filter ();
-  }
-
   public void set_filter_values (string []? values) {
     if (filter_values == values)
       return;
@@ -142,9 +133,6 @@ public class Contacts.View : ListBox {
 
   private bool calculate_filtered (Contact c) {
     if (c.is_hidden)
-      return false;
-
-    if (c in hidden_contacts)
       return false;
 
     if (filter_values == null || filter_values.length == 0)
