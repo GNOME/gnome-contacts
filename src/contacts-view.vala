@@ -65,13 +65,6 @@ public class Contacts.View : ListBox {
     }
   }
 
-  public enum Subset {
-    MAIN,
-    OTHER,
-    ALL_SEPARATED,
-    ALL
-  }
-
   public enum TextDisplay {
     NONE,
     PRESENCE,
@@ -81,7 +74,6 @@ public class Contacts.View : ListBox {
   public signal void selection_changed (Contact? contact);
   public signal void contacts_marked (int contacts_marked);
 
-  Subset show_subset = Subset.ALL;
   HashMap<Contact,ContactDataRow> contacts;
   HashSet<Contact> hidden_contacts;
   int nr_contacts_marked = 0;
@@ -132,21 +124,6 @@ public class Contacts.View : ListBox {
     return 0;
   }
 
-  private bool is_other (ContactDataRow data) {
-    if (show_subset == Subset.ALL_SEPARATED &&
-	data.contact != null &&
-	!data.contact.is_main)
-      return true;
-    return false;
-  }
-
-  public void set_show_subset (Subset subset) {
-    show_subset = subset;
-    update_all_filtered ();
-    invalidate_filter ();
-    invalidate_sort ();
-  }
-
   public void hide_contact (Contact contact) {
     hidden_contacts.add (contact);
     update_all_filtered ();
@@ -174,12 +151,6 @@ public class Contacts.View : ListBox {
       return false;
 
     if (c in hidden_contacts)
-      return false;
-
-    if ((show_subset == Subset.MAIN &&
-	 !c.is_main) ||
-	(show_subset == Subset.OTHER &&
-	 c.is_main))
       return false;
 
     if (filter_values == null || filter_values.length == 0)
