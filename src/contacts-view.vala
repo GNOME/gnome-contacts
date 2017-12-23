@@ -22,18 +22,16 @@ using Gee;
 public class Contacts.View : ListBox {
   private class ContactDataRow : ListBoxRow {
     public Contact contact;
-    public Grid grid;
     public Label label;
     public ContactFrame image_frame;
     public CheckButton selector_button;
     public int sort_prio;
-    public string display_name;
-    public unichar initial_letter;
     public bool filtered;
 
     public ContactDataRow(Contact c) {
       this.contact = c;
-      grid = new Grid ();
+
+      Grid grid = new Grid ();
       grid.margin = 6;
       grid.set_column_spacing (10);
       image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
@@ -58,12 +56,10 @@ public class Contacts.View : ListBox {
     }
 
     public void update_data (bool filtered) {
-      this.display_name = this.contact.display_name;
-      this.initial_letter = this.contact.initial_letter;
       this.filtered = filtered;
 
       // Update widgets
-      this.label.set_text (this.display_name);
+      this.label.set_text (this.contact.display_name);
       this.image_frame.set_image (this.contact.individual, this.contact);
     }
   }
@@ -132,13 +128,13 @@ public class Contacts.View : ListBox {
     if (a_prio < b_prio)
       return 1;
 
-    if (is_set (a_data.display_name) && is_set (b_data.display_name))
-      return a_data.display_name.collate (b_data.display_name);
+    if (is_set (a_data.contact.display_name) && is_set (b_data.contact.display_name))
+      return a_data.contact.display_name.collate (b_data.contact.display_name);
 
     // Sort empty names last
-    if (is_set (a_data.display_name))
+    if (is_set (a_data.contact.display_name))
       return -1;
-    if (is_set (b_data.display_name))
+    if (is_set (b_data.contact.display_name))
       return 1;
 
     return 0;
