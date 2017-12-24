@@ -27,27 +27,6 @@ namespace Contacts {
     return str != null && str != "";
   }
 
-  public Gtk.Builder load_ui (string ui) {
-    var builder = new Gtk.Builder ();
-    try {
-        builder.add_from_resource ("/org/gnome/contacts/ui/".concat (ui, null));
-    } catch (GLib.Error e) {
-        error ("loading ui file: %s", e.message);
-    }
-    return builder;
-  }
-
-  public Gtk.CssProvider load_css (string css) {
-    var provider = new Gtk.CssProvider ();
-    try {
-      var file = File.new_for_uri("resource:///org/gnome/contacts/ui/" + css);
-      provider.load_from_file (file);
-    } catch (GLib.Error e) {
-      warning ("loading css: %s", e.message);
-    }
-    return provider;
-  }
-
   public void add_separator (ListBoxRow row, ListBoxRow? before_row) {
     row.set_header (new Separator (Orientation.HORIZONTAL));
   }

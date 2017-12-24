@@ -174,7 +174,12 @@ public class Contacts.App : Gtk.Application {
     this.set_accels_for_action ("app.help", {"F1"});
     this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
 
-    var builder = load_ui ("app-menu.ui");
+    var builder = new Gtk.Builder ();
+    try {
+      builder.add_from_resource ("/org/gnome/contacts/ui/app-menu.ui");
+    } catch (GLib.Error e) {
+      error ("Error loading app menu: %s", e.message);
+    }
     set_app_menu ((MenuModel)builder.get_object ("app-menu"));
   }
 
@@ -247,11 +252,15 @@ public class Contacts.App : Gtk.Application {
     this.contacts_store = new Store ();
     base.startup ();
 
-    var css_provider = load_css ("style.css");
-    Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
-					      css_provider,
-					      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    load_styling ();
+  }
 
+  public void load_styling () {
+    var provider = new Gtk.CssProvider ();
+    provider.load_from_resource ("/org/gnome/contacts/ui/style.css");
+    StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
+                                          provider,
+                                          Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
   }
 
   public override void activate () {
