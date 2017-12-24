@@ -20,7 +20,7 @@ using Gee;
 using Gtk;
 using Folks;
 
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-list-pane.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-list-pane.ui")]
 public class Contacts.ListPane : Frame {
   private Store store;
 

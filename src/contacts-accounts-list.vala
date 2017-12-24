@@ -18,7 +18,7 @@
 using Gtk;
 using Folks;
 
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-accounts-list.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
 public class Contacts.AccountsList : Box {
   [GtkChild]
   private ListBox accounts_view;

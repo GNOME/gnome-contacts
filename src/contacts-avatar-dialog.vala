@@ -26,7 +26,7 @@ using Folks;
  *
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-avatar-dialog.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-dialog.ui")]
 public class Contacts.AvatarDialog : Dialog {
   const int MAIN_SIZE = 128;
   const int ICONS_SIZE = 64;

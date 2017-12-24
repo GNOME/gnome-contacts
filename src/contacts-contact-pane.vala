@@ -26,7 +26,7 @@ const int PROFILE_SIZE = 96;
  * a page if nothing is selected, a ContactSheet to view contact information,
  * and a ContactEditor to edit contact information.
  */
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-pane.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
 public class Contacts.ContactPane : Stack {
 
   private Window parent_window;

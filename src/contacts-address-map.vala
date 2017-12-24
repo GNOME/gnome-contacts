@@ -24,7 +24,7 @@ using Geocode;
 using Gtk;
 using GtkClutter;
 
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-address-map.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-address-map.ui")]
 public class Contacts.AddressMap : Frame {
 
   [GtkChild]

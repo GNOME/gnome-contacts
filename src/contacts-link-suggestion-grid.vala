@@ -24,7 +24,7 @@ using Gee;
  * It offers the user the sugugestion of linking the currently shown contact
  * and another (hopefully) similar contact.
  */
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-link-suggestion-grid.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-link-suggestion-grid.ui")]
 public class Contacts.LinkSuggestionGrid : Grid {
 
   [GtkChild]

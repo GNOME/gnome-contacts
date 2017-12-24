@@ -168,19 +168,11 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
-  private void create_app_menu () {
+  private void create_actions () {
     this.add_action_entries (action_entries, this);
 
     this.set_accels_for_action ("app.help", {"F1"});
     this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
-
-    var builder = new Gtk.Builder ();
-    try {
-      builder.add_from_resource ("/org/gnome/contacts/ui/app-menu.ui");
-    } catch (GLib.Error e) {
-      error ("Error loading app menu: %s", e.message);
-    }
-    set_app_menu ((MenuModel)builder.get_object ("app-menu"));
   }
 
   private void create_window () {
@@ -196,7 +188,7 @@ public class Contacts.App : Gtk.Application {
 	contacts_store.disconnect (id);
 	Source.remove (id2);
 
-	create_app_menu ();
+	create_actions ();
 	create_window ();
 	window.show ();
 
@@ -208,7 +200,7 @@ public class Contacts.App : Gtk.Application {
     id2 = Timeout.add (500, () => {
 	contacts_store.disconnect (id);
 
-	create_app_menu ();
+	create_actions ();
 	create_window ();
 	window.show ();
 
@@ -257,7 +249,7 @@ public class Contacts.App : Gtk.Application {
 
   public void load_styling () {
     var provider = new Gtk.CssProvider ();
-    provider.load_from_resource ("/org/gnome/contacts/ui/style.css");
+    provider.load_from_resource ("/org/gnome/Contacts/ui/style.css");
     StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
                                           provider,
                                           Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -273,7 +265,7 @@ public class Contacts.App : Gtk.Application {
 	}
       }
 
-      create_app_menu ();
+      create_actions ();
       create_window ();
       window.show ();
     }

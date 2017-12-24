@@ -19,7 +19,7 @@ using Gee;
 using Gtk;
 using Folks;
 
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-window.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
 public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Grid content_grid;

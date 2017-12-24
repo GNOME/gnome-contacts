@@ -17,7 +17,7 @@
 
 using Gtk;
 
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-in-app-notification.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-in-app-notification.ui")]
 public class Contacts.InAppNotification : Revealer {
   // Close the in-app notification after 5 seconds by default.
   private const uint DEFAULT_KEEPALIVE = 5;

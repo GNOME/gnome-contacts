@@ -61,7 +61,7 @@ public class Contacts.AddressEditor : Box {
   }
 }
 
-[GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-contact-editor.ui")]
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-editor.ui")]
 public class Contacts.ContactEditor : Grid {
 
   private const string[] DEFAULT_PROPS_NEW_CONTACT = {
