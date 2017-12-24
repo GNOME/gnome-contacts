@@ -993,18 +993,6 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
-  public Account? is_callable (string proto, string id) {
-    Tpf.Persona? t_persona = this.find_im_persona (proto, id);
-    if (t_persona != null && t_persona.contact != null) {
-      unowned TelepathyGLib.Capabilities caps =
-      t_persona.contact.get_capabilities ();
-      if (caps.supports_audio_call (TelepathyGLib.HandleType.CONTACT))
-	      return (t_persona.store as Tpf.PersonaStore).account;
-    }
-
-    return null;
-  }
-
   public static async Persona? create_primary_persona_for_details (Folks.PersonaStore store, HashTable<string, Value?> details) throws GLib.Error {
     var p = yield store.add_persona_from_details (details);
     return p;
