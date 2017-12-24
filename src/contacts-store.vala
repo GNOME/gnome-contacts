@@ -34,15 +34,9 @@ public class Contacts.Store : GLib.Object {
   public BackendStore backend_store { get; private set; }
   Gee.ArrayList<Contact> contacts;
 
-  public Gee.HashMap<string, Account> calling_accounts;
-
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
-  public bool can_call {
-    get {
-      return this.calling_accounts.size > 0 ? true : false;
-    }
-  }
+  public Account? caller_account { get; private set; default = null; }
 
   public bool is_quiescent {
     get { return this.aggregator.is_quiescent; }
@@ -319,7 +313,6 @@ public class Contacts.Store : GLib.Object {
 
   // TODO: listen for changes in Account#URISchemes
   private async void check_call_capabilities () {
-    this.calling_accounts = new Gee.HashMap<string, Account> ();
     var account_manager = AccountManager.dup ();
 
     try {
@@ -347,13 +340,8 @@ public class Contacts.Store : GLib.Object {
     }
 
     if (account.is_prepared (addressing)) {
-      var k = account.get_object_path ();
-      if (account.is_enabled () &&
-	  account.associated_with_uri_scheme ("tel")) {
-	this.calling_accounts.set (k, account);
-      } else {
-	this.calling_accounts.unset (k);
-      }
+      if (account.is_enabled () && account.associated_with_uri_scheme ("tel"))
+        this.caller_account = account;
     }
   }
 }

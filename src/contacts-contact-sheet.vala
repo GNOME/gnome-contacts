@@ -152,10 +152,10 @@ public class Contacts.ContactSheet : Grid {
       if (phone_details != null) {
 	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
 	foreach (var phone in phones) {
-	  if (c.store != null && c.store.can_call) {
+	  if (c.store != null && c.store.caller_account != null) {
 	    var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
 	    button.clicked.connect (() => {
-            Utils.start_call (phone.value, c.store.calling_accounts);
+            Utils.start_call (phone.value, c.store.caller_account);
 	      });
 	  } else {
 	    add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);

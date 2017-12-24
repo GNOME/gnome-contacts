@@ -168,13 +168,7 @@ namespace Contacts.Utils {
     request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
   }
 
-  public void start_call (string contact_id, Gee.HashMap<string, TelepathyGLib.Account> accounts) {
-    // TODO: prompt for which account to use
-    var account = accounts.values.to_array ()[0];
-    Utils.start_call_with_account (contact_id, account);
-  }
-
-  public void start_call_with_account (string contact_id, TelepathyGLib.Account account) {
+  public void start_call (string contact_id, TelepathyGLib.Account account) {
     var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
 
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
