@@ -98,20 +98,6 @@ public class Contacts.ListPane : Frame {
         this.link_button.sensitive = (nr_contacts_marked > 1);
         contacts_marked (nr_contacts_marked);
       });
-
-    // Take care of the other widgets
-    this.search_tool_item.set_expand (true);
-
-    this.link_button.clicked.connect (() => {
-        link_contacts (this.contacts_view.get_marked_contacts ());
-      });
-
-    this.delete_button.clicked.connect (() => {
-        var marked_contacts = contacts_view.get_marked_contacts ();
-        foreach (var c in marked_contacts)
-          c.hide ();
-        delete_contacts (marked_contacts);
-      });
   }
 
   public void select_contact (Contact? contact, bool ignore_change = false) {
@@ -129,6 +115,19 @@ public class Contacts.ListPane : Frame {
   public void hide_selection () {
     this.contacts_view.hide_selectors ();
     actions_bar.hide ();
+  }
+
+  [GtkCallback]
+  private void on_link_button_clicked (Gtk.Button link_button) {
+    link_contacts (this.contacts_view.get_marked_contacts ());
+  }
+
+  [GtkCallback]
+  private void on_delete_button_clicked (Gtk.Button delete_button) {
+    var marked_contacts = contacts_view.get_marked_contacts ();
+    foreach (var c in marked_contacts)
+      c.hide ();
+    delete_contacts (marked_contacts);
   }
 
   /* Limiting width hack */

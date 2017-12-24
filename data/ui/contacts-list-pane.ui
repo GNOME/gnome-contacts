@@ -35,6 +35,9 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="expand">True</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -71,6 +74,7 @@
                 <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
                 <property name="width_request">70</property>
                 <property name="sensitive">False</property>
+                <signal name="clicked" handler="on_link_button_clicked"/>
               </object>
               <packing>
                 <property name="pack_type">start</property>
@@ -84,6 +88,7 @@
                 <property name="label" translatable="yes">Remove</property>
                 <property name="width_request">70</property>
                 <property name="sensitive">False</property>
+                <signal name="clicked" handler="on_delete_button_clicked"/>
                 <style>
                   <class name="destructive-action"/>
                 </style>
