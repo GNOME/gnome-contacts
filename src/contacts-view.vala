@@ -68,38 +68,30 @@ public class Contacts.View : ListBox {
   public signal void selection_changed (Contact? contact);
   public signal void contacts_marked (int contacts_marked);
 
-  HashMap<Contact,ContactDataRow> contacts;
+  private Map<Contact, ContactDataRow> contacts = new HashMap<Contact, ContactDataRow> ();
   int nr_contacts_marked = 0;
 
   string []? filter_values;
   bool selectors_visible = false;
 
-  private Store _store;
+  private Store store;
 
-  public Store store {
-    get {
-      return _store;
-    }
-    set {
-      _store = value;
+  public View (Store store) {
+    this.selection_mode = Gtk.SelectionMode.BROWSE;
+    this.store = store;
 
-      _store.added.connect (contact_added_cb);
-      _store.removed.connect (contact_removed_cb);
-      _store.changed.connect (contact_changed_cb);
-      foreach (var c in _store.get_contacts ())
-        contact_added_cb (_store, c);
-    }
-  }
+    this.store.added.connect (contact_added_cb);
+    this.store.removed.connect (contact_removed_cb);
+    this.store.changed.connect (contact_changed_cb);
+    foreach (var c in this.store.get_contacts ())
+      contact_added_cb (this.store, c);
 
-  construct {
-    contacts = new HashMap<Contact,ContactDataRow> ();
+    get_style_context ().add_class ("contacts-view");
 
-    this.set_sort_func ((row_a, row_b) => {
-	var a = row_a as ContactDataRow;
-	var b = row_b as ContactDataRow;
-	return compare_data (a, b);
-      });
-    this.set_filter_func (filter);
+    set_sort_func ((a, b) => compare_data (a as ContactDataRow, b as ContactDataRow));
+    set_filter_func (filter);
+
+    show ();
   }
 
   private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {

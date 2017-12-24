@@ -22,18 +22,10 @@ using Folks;
 
 [GtkTemplate (ui = "/org/gnome/contacts/ui/contacts-list-pane.ui")]
 public class Contacts.ListPane : Frame {
-  private Store _store;
-  public Store store {
-    get {
-      return _store;
-    }
-    set {
-      _store = value;
-      contacts_view.store = _store;
-    }
-  }
+  private Store store;
 
   [GtkChild]
+  private Gtk.ScrolledWindow contacts_view_container;
   private View contacts_view;
 
   [GtkChild]
@@ -72,7 +64,7 @@ public class Contacts.ListPane : Frame {
       values = str.split(" ");
     }
 
-    contacts_view.set_filter_values (values);
+    this.contacts_view.set_filter_values (values);
   }
 
   private bool filter_entry_changed_timeout () {
@@ -90,62 +82,52 @@ public class Contacts.ListPane : Frame {
   }
 
   public ListPane (Store contacts_store) {
-    Object (store: contacts_store);
-  }
+    this.store = contacts_store;
 
-  construct {
-    search_tool_item.set_expand (true);
+    // Load the ContactsView and connect the necessary signals
+    this.contacts_view = new View (contacts_store);
+    this.contacts_view_container.add (this.contacts_view);
 
-    contacts_view.selection_changed.connect( (l, contact) => {
-        if (!ignore_selection_change)
+    this.contacts_view.selection_changed.connect( (l, contact) => {
+        if (!this.ignore_selection_change)
           selection_changed (contact);
       });
 
-    /* contact mark handling */
-    contacts_view.contacts_marked.connect ((nr_contacts_marked) => {
-        if (nr_contacts_marked > 0)
-          delete_button.set_sensitive (true);
-        else
-          delete_button.set_sensitive (false);
-
-        if (nr_contacts_marked > 1)
-          link_button.set_sensitive (true);
-        else
-          link_button.set_sensitive (false);
-
-	contacts_marked (nr_contacts_marked);
+    this.contacts_view.contacts_marked.connect ((nr_contacts_marked) => {
+        this.delete_button.sensitive = (nr_contacts_marked > 0);
+        this.link_button.sensitive = (nr_contacts_marked > 1);
+        contacts_marked (nr_contacts_marked);
       });
 
-    link_button.clicked.connect (() => {
-        var marked_contacts = contacts_view.get_marked_contacts ();
+    // Take care of the other widgets
+    this.search_tool_item.set_expand (true);
 
-	link_contacts (marked_contacts);
+    this.link_button.clicked.connect (() => {
+        link_contacts (this.contacts_view.get_marked_contacts ());
       });
 
-    delete_button.clicked.connect (() => {
+    this.delete_button.clicked.connect (() => {
         var marked_contacts = contacts_view.get_marked_contacts ();
-        foreach (var c in marked_contacts) {
-	  c.hide ();
-        }
-
-	delete_contacts (marked_contacts);
+        foreach (var c in marked_contacts)
+          c.hide ();
+        delete_contacts (marked_contacts);
       });
   }
 
   public void select_contact (Contact? contact, bool ignore_change = false) {
     if (ignore_change)
       ignore_selection_change = true;
-    contacts_view.select_contact (contact);
+    this.contacts_view.select_contact (contact);
     ignore_selection_change = false;
   }
 
   public void show_selection () {
-    contacts_view.show_selectors ();
+    this.contacts_view.show_selectors ();
     actions_bar.show ();
   }
 
   public void hide_selection () {
-    contacts_view.hide_selectors ();
+    this.contacts_view.hide_selectors ();
     actions_bar.hide ();
   }
 
