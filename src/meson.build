@@ -15,6 +15,7 @@ contacts_vala_sources = [
   'contacts-contact-pane.vala',
   'contacts-contact-sheet.vala',
   'contacts-contact.vala',
+  'contacts-esd-setup.vala',
   'contacts-in-app-notification.vala',
   'contacts-link-suggestion-grid.vala',
   'contacts-linked-accounts-dialog.vala',
@@ -38,7 +39,6 @@ contacts_vala_args = [
 
 contacts_c_sources = [
   'cc-crop-area.c',
-  'contacts-esd-setup.c',
 ]
 
 contacts_c_args = [
@@ -96,21 +96,13 @@ executable('gnome-contacts', contacts_sources,
 )
 
 # The search provider
-contact_search_provider_vala_sources = [
+contact_search_provider_sources = [
   'contacts-contact.vala',
+  'contacts-esd-setup.vala',
   'contacts-shell-search-provider.vala',
   'contacts-store.vala',
   'contacts-types.vala',
   'contacts-utils.vala',
-]
-
-contact_search_provider_c_sources = [
-  'contacts-esd-setup.c',
-]
-
-contact_search_provider_sources = [
-  contact_search_provider_vala_sources,
-  contact_search_provider_c_sources,
 ]
 
 executable('gnome-contacts-search-provider', contact_search_provider_sources,

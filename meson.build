@@ -81,6 +81,7 @@ conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 conf.set_quoted('PKGDATADIR', pkgdatadir)
 conf.set_quoted('PKGLIBDIR', pkglibdir)
 conf.set_quoted('VERSION', meson.project_version())
+conf.set('GOA_API_IS_SUBJECT_TO_CHANGE', true)
 configure_file(output: 'config.h', configuration: conf)
 
 # Post-install scripts
