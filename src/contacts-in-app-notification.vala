@@ -43,6 +43,7 @@ public class Contacts.InAppNotification : Revealer {
     this.label.label = message;
 
     if (button != null) {
+      button.valign = Gtk.Align.CENTER;
       this.grid.attach (button, 1, 0);
       button.show();
     }
