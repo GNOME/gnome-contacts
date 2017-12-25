@@ -7,9 +7,9 @@ msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-20 21:05+0000\n"
-"PO-Revision-Date: 2017-08-20 20:56+0200\n"
-"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"POT-Creation-Date: 2017-12-25 19:31+0000\n"
+"PO-Revision-Date: 2017-12-25 21:53+0100\n"
+"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
@@ -52,44 +53,84 @@ msgstr ""
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
-msgstr "пријатељи;адресар;именик;prijatelji;adresar;imenik;friends;address book;"
+msgstr ""
+"пријатељи;адресар;именик;prijatelji;adresar;imenik;friends;address book;"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Contacts.desktop.in:8
 msgid "gnome-contacts"
 msgstr "gnome-contacts"
 
-#: data/ui/app-menu.ui:6
+#: data/gtk/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "Overview"
+msgstr "Преглед"
+
+#: data/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Help"
+msgstr "Помоћ"
+
+#: data/gtk/help-overlay.ui:21
+msgctxt "shortcut window"
+msgid "Create a new contact"
+msgstr "Стварање новог контакта"
+
+#: data/gtk/help-overlay.ui:28
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Претрага"
+
+#: data/gtk/help-overlay.ui:35
+msgctxt "shortcut window"
+msgid "Shortcut list"
+msgstr "Списак пречица"
+
+#: data/gtk/help-overlay.ui:42
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Затварање програма"
+
+#: data/gtk/menus.ui:6
 msgid "_Change Address Book…"
 msgstr "_Измени именик…"
 
-#: data/ui/app-menu.ui:12
+#: data/gtk/menus.ui:12
+msgid "Keyboard Shortcuts"
+msgstr "Пречице на тастатури"
+
+#: data/gtk/menus.ui:16
 msgid "_Help"
 msgstr "По_моћ"
 
-#: data/ui/app-menu.ui:16
+#: data/gtk/menus.ui:20
 msgid "_About"
 msgstr "_О програму"
 
-#: data/ui/app-menu.ui:20
+#: data/gtk/menus.ui:24
 msgid "_Quit"
 msgstr "_Изађи"
+
+#: data/ui/contacts-accounts-list.ui:34
+msgid "Online Accounts"
+msgstr "Налози на мрежи"
 
 #: data/ui/contacts-avatar-dialog.ui:6
 msgid "Select Picture"
 msgstr "Изабери слику"
 
-#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:320
+#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:329
 msgid "New Contact"
 msgstr "Нови контакт"
 
-#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:202
-#: src/contacts-window.vala:228
+#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:212
+#: src/contacts-window.vala:240
 msgid "Select"
 msgstr "Изабери"
 
-#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:245
-#: data/ui/contacts-window.ui:303 src/contacts-app.vala:69
+#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:205
+#: data/ui/contacts-window.ui:227 data/ui/contacts-window.ui:285
+#: src/contacts-app.vala:67
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -145,7 +186,7 @@ msgid "New Detail"
 msgstr "Нови детаљ"
 
 #: data/ui/contacts-contact-editor.ui:100
-#: src/contacts-linked-accounts-dialog.vala:36
+#: src/contacts-linked-accounts-dialog.vala:40
 msgid "Linked Accounts"
 msgstr "Спојени налози"
 
@@ -157,24 +198,28 @@ msgstr "Уклони контакт"
 msgid "Select a contact"
 msgstr "Изаберите контакт"
 
+#: data/ui/contacts-link-suggestion-grid.ui:56
+msgid "Link Contacts"
+msgstr "Увежи контакте"
+
 #: data/ui/contacts-list-pane.ui:33
 msgid "Type to search"
 msgstr "Упишите да потражите"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-list-pane.ui:80
+#: data/ui/contacts-list-pane.ui:74
 msgid "Link"
 msgstr "Веза"
 
-#: data/ui/contacts-list-pane.ui:93
+#: data/ui/contacts-list-pane.ui:88
 msgid "Remove"
 msgstr "Уклони"
 
-#: data/ui/contacts-window.ui:83
+#: data/ui/contacts-window.ui:73
 msgid "Loading"
 msgstr "Учитавам"
 
-#: data/ui/contacts-window.ui:122
+#: data/ui/contacts-window.ui:112
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -182,44 +227,40 @@ msgstr ""
 "Нови контакти ће бити додати у изабрани именик. Можете да прегледате и да "
 "уређујете контакте из других именика."
 
-#: data/ui/contacts-window.ui:167 src/contacts-window.vala:237
+#: data/ui/contacts-window.ui:144 src/contacts-window.vala:247
 msgid "All Contacts"
 msgstr "Сви контакти"
 
-#: data/ui/contacts-window.ui:182
+#: data/ui/contacts-window.ui:159
 msgid "Add contact"
 msgstr "Додај контакт"
 
-#: data/ui/contacts-window.ui:210
+#: data/ui/contacts-window.ui:185
 msgid "Selection mode"
 msgstr "Режим избора"
 
-#: data/ui/contacts-window.ui:261
+#: data/ui/contacts-window.ui:243
 msgid "Edit"
 msgstr "Уреди"
 
-#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
-#: src/contacts-window.vala:269
+#: data/ui/contacts-window.ui:259 data/ui/contacts-window.ui:305
+#: src/contacts-window.vala:279
 msgid "Done"
 msgstr "Урађено"
 
-#: data/ui/contacts-window.ui:294
+#: data/ui/contacts-window.ui:276
 msgid "Select Address Book"
 msgstr "Изабери именик"
 
-#: data/ui/contacts-window.ui:306
+#: data/ui/contacts-window.ui:288
 msgid "Cancel setup"
 msgstr "Откажи подешавање"
 
-#: data/ui/contacts-window.ui:326
+#: data/ui/contacts-window.ui:308
 msgid "Setup complete"
 msgstr "Подешавање је завршено"
 
-#: src/contacts-accounts-list.vala:48
-msgid "Online Accounts"
-msgstr "Налози на мрежи"
-
-#: src/contacts-accounts-list.vala:174 src/contacts-esd-setup.c:241
+#: src/contacts-accounts-list.vala:144 src/contacts-esd-setup.c:241
 msgid "Local Address Book"
 msgstr "Локални именик"
 
@@ -227,24 +268,24 @@ msgstr "Локални именик"
 msgid "Install GNOME Maps to open location."
 msgstr "Инсталирајте Гномове карте да отворите место."
 
-#: src/contacts-app.vala:53
+#: src/contacts-app.vala:51
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Није пронађен ниједан контакт са иб-ом %s"
 
-#: src/contacts-app.vala:54 src/contacts-app.vala:154
+#: src/contacts-app.vala:52 src/contacts-app.vala:153
 msgid "Contact not found"
 msgstr "Контакт није пронађен"
 
-#: src/contacts-app.vala:63
+#: src/contacts-app.vala:61
 msgid "Change Address Book"
 msgstr "Измените именик"
 
-#: src/contacts-app.vala:68
+#: src/contacts-app.vala:66
 msgid "Change"
 msgstr "Измени"
 
-#: src/contacts-app.vala:78
+#: src/contacts-app.vala:76
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -252,7 +293,7 @@ msgstr ""
 "Нови контакти ће бити додати у изабрани именик.\n"
 "Можете да прегледате и да уређујете контакте из других именика."
 
-#: src/contacts-app.vala:133
+#: src/contacts-app.vala:132
 msgid "translator-credits"
 msgstr ""
 "  Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
@@ -260,32 +301,32 @@ msgstr ""
 "\n"
 "http://prevod.org — превод на српски језик"
 
-#: src/contacts-app.vala:134
+#: src/contacts-app.vala:133
 msgid "GNOME Contacts"
 msgstr "Гномови контакти"
 
-#: src/contacts-app.vala:135
+#: src/contacts-app.vala:134
 msgid "About GNOME Contacts"
 msgstr "О Гномовим контактима"
 
-#: src/contacts-app.vala:136
+#: src/contacts-app.vala:135
 msgid "Contact Management Application"
 msgstr "Програм за управљање контактима"
 
-#: src/contacts-app.vala:153
+#: src/contacts-app.vala:152
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Није пронађен ниједан контакт са адресом е-поште %s"
 
-#: src/contacts-app.vala:299
+#: src/contacts-app.vala:293
 msgid "Show contact with this individual id"
 msgstr "Приказује контакт са овим појединачним иб-ом"
 
-#: src/contacts-app.vala:301
+#: src/contacts-app.vala:295
 msgid "Show contact with this email address"
 msgstr "Приказује контакт са овом адресом е-поште"
 
-#: src/contacts-app.vala:310
+#: src/contacts-app.vala:304
 msgid "— contact management"
 msgstr "— управљање контактима"
 
@@ -356,146 +397,128 @@ msgstr "Додај име"
 msgid "Change avatar"
 msgstr "Измени аватар"
 
-#: src/contacts-contact-pane.vala:144
-#, c-format
-msgid "Does %s from %s belong here?"
-msgstr "Да ли %s из %s припада овде?"
-
-#: src/contacts-contact-pane.vala:146
-#, c-format
-msgid "Do these details belong to %s?"
-msgstr "Да ли ови детаљи спадају у %s?"
-
-#: src/contacts-contact-pane.vala:158
-msgid "Yes"
-msgstr "Да"
-
-#: src/contacts-contact-pane.vala:159
-msgid "No"
-msgstr "Не"
-
-#: src/contacts-contact-pane.vala:410
+#: src/contacts-contact-pane.vala:350
 msgid "You need to enter some data"
 msgstr "Морате унети неке податке"
 
-#: src/contacts-contact-pane.vala:415
+#: src/contacts-contact-pane.vala:355
 msgid "No primary addressbook configured"
 msgstr "Није подешен примарни именик"
 
-#: src/contacts-contact-pane.vala:425
+#: src/contacts-contact-pane.vala:365
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Не могу да направим нове контакте: %s"
 
-#: src/contacts-contact-pane.vala:434
+#: src/contacts-contact-pane.vala:374
 msgid "Unable to find newly created contact"
 msgstr "Не могу да нађем новостворени контакт"
 
-#: src/contacts-contact.vala:741
+#: src/contacts-contact.vala:490
 msgid "Google Talk"
 msgstr "Гугл разговор (Google Talk)"
 
-#: src/contacts-contact.vala:742
+#: src/contacts-contact.vala:491
 msgid "Ovi Chat"
 msgstr "Ови ћаскање (Ovi Chat)"
 
-#: src/contacts-contact.vala:743
+#: src/contacts-contact.vala:492
 msgid "Facebook"
 msgstr "Фејсбук"
 
-#: src/contacts-contact.vala:744
+#: src/contacts-contact.vala:493
 msgid "Livejournal"
 msgstr "Лајвжурнал (Livejournal)"
 
-#: src/contacts-contact.vala:745
+#: src/contacts-contact.vala:494
 msgid "AOL Instant Messenger"
 msgstr "АОЛ брзи гласник (AOL IM)"
 
-#: src/contacts-contact.vala:746
+#: src/contacts-contact.vala:495
 msgid "Gadu-Gadu"
 msgstr "Гаду-Гаду"
 
-#: src/contacts-contact.vala:747
+#: src/contacts-contact.vala:496
 msgid "Novell Groupwise"
 msgstr "Новел Гроупвајз (Novell Groupwise)"
 
-#: src/contacts-contact.vala:748
+#: src/contacts-contact.vala:497
 msgid "ICQ"
 msgstr "ИЦКу (ICQ)"
 
-#: src/contacts-contact.vala:749
+#: src/contacts-contact.vala:498
 msgid "IRC"
 msgstr "ИРЦ"
 
-#: src/contacts-contact.vala:750
+#: src/contacts-contact.vala:499
 msgid "Jabber"
 msgstr "Џабер (Jabber)"
 
-#: src/contacts-contact.vala:751
+#: src/contacts-contact.vala:500
 msgid "Local network"
 msgstr "Локална мрежа"
 
-#: src/contacts-contact.vala:752
+#: src/contacts-contact.vala:501
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: src/contacts-contact.vala:753
+#: src/contacts-contact.vala:502
 msgid "MySpace"
 msgstr "МајСпејс (MySpace)"
 
-#: src/contacts-contact.vala:754
+#: src/contacts-contact.vala:503
 msgid "MXit"
 msgstr "МИксит (MXit)"
 
-#: src/contacts-contact.vala:755
+#: src/contacts-contact.vala:504
 msgid "Napster"
 msgstr "Напстер"
 
-#: src/contacts-contact.vala:756
+#: src/contacts-contact.vala:505
 msgid "Tencent QQ"
 msgstr "Тенсент КуКу (Tencent QQ)"
 
-#: src/contacts-contact.vala:757
+#: src/contacts-contact.vala:506
 msgid "IBM Lotus Sametime"
 msgstr "ИБМ Лотус сејмтајм"
 
-#: src/contacts-contact.vala:758
+#: src/contacts-contact.vala:507
 msgid "SILC"
 msgstr "СИЛЦ"
 
-#: src/contacts-contact.vala:759
+#: src/contacts-contact.vala:508
 msgid "sip"
 msgstr "сип"
 
-#: src/contacts-contact.vala:760
+#: src/contacts-contact.vala:509
 msgid "Skype"
 msgstr "Скајп"
 
-#: src/contacts-contact.vala:761
+#: src/contacts-contact.vala:510
 msgid "Telephony"
 msgstr "Телефонија"
 
-#: src/contacts-contact.vala:762
+#: src/contacts-contact.vala:511
 msgid "Trepia"
 msgstr "Трепја (Trepia)"
 
-#: src/contacts-contact.vala:763 src/contacts-contact.vala:764
+#: src/contacts-contact.vala:512 src/contacts-contact.vala:513
 msgid "Yahoo! Messenger"
 msgstr "Јаху! дописник"
 
-#: src/contacts-contact.vala:765
+#: src/contacts-contact.vala:514
 msgid "Zephyr"
 msgstr "Зефир (Zephyr)"
 
-#: src/contacts-contact.vala:1070
+#: src/contacts-contact.vala:730
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Неочекивана унутрашња грешка: створени контакт није пронађен"
 
-#: src/contacts-contact.vala:1255
+#: src/contacts-contact.vala:914
 msgid "Google Circles"
 msgstr "Гугл кругови"
 
-#: src/contacts-contact.vala:1257 src/contacts-esd-setup.c:244
+#: src/contacts-contact.vala:916 src/contacts-esd-setup.c:244
 #: src/contacts-esd-setup.c:272
 msgid "Google"
 msgstr "Гугл"
@@ -504,18 +527,29 @@ msgstr "Гугл"
 msgid "Local Contact"
 msgstr "Локални контакт"
 
-#: src/contacts-linked-accounts-dialog.vala:35
+#: src/contacts-linked-accounts-dialog.vala:39
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: src/contacts-linked-accounts-dialog.vala:60
+#: src/contacts-linked-accounts-dialog.vala:62
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "Можете ручно да спојите контакте бирајући их са списка контаката"
 
-#: src/contacts-linked-accounts-dialog.vala:104
+#: src/contacts-linked-accounts-dialog.vala:106
 msgid "Unlink"
 msgstr "Развежи"
+
+#. FIXME: hack to make it actually align left.
+#: src/contacts-link-suggestion-grid.vala:56
+#, c-format
+msgid "Is this the same person as %s from %s?"
+msgstr "Да ли је ово иста особа као и особа „%s“ из „%s“?"
+
+#: src/contacts-link-suggestion-grid.vala:57
+#, c-format
+msgid "Is this the same person as %s?"
+msgstr "Да ли је ово иста особа као и особа „%s“?"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -594,19 +628,11 @@ msgstr "Телекс"
 msgid "TTY"
 msgstr "ТТВ (TTY)"
 
-#: src/contacts-view.vala:192
+#: src/contacts-view.vala:117
 msgid "No results matched search"
 msgstr "Нема резултата који одговарају претрази"
 
-#: src/contacts-view.vala:296
-msgid "Suggestions"
-msgstr "Предлози"
-
-#: src/contacts-view.vala:321
-msgid "Other Contacts"
-msgstr "Остали контакти"
-
-#: src/contacts-window.vala:204
+#: src/contacts-window.vala:214
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -615,16 +641,16 @@ msgstr[1] "%d изабрана"
 msgstr[2] "%d изабраних"
 msgstr[3] "Један изабран"
 
-#: src/contacts-window.vala:254
+#: src/contacts-window.vala:264
 #, c-format
 msgid "Editing %s"
 msgstr "Уређујем „%s“"
 
-#: src/contacts-window.vala:325
+#: src/contacts-window.vala:334
 msgid "Add"
 msgstr "Додај"
 
-#: src/contacts-window.vala:409
+#: src/contacts-window.vala:408
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -633,12 +659,12 @@ msgstr[1] "%d контакта су повезана"
 msgstr[2] "%d контаката је повезано"
 msgstr[3] "Један контакт је повезан"
 
-#: src/contacts-window.vala:413 src/contacts-window.vala:435
-#: src/contacts-window.vala:466 src/contacts-window.vala:498
+#: src/contacts-window.vala:412 src/contacts-window.vala:434
+#: src/contacts-window.vala:464 src/contacts-window.vala:495
 msgid "_Undo"
 msgstr "_Опозови"
 
-#: src/contacts-window.vala:431
+#: src/contacts-window.vala:430
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -647,17 +673,17 @@ msgstr[1] "%d контакта су обрисана"
 msgstr[2] "%d контакта је обрисано"
 msgstr[3] "Један контакт је обрисан"
 
-#: src/contacts-window.vala:465
+#: src/contacts-window.vala:463
 #, c-format
 msgid "Contact deleted: “%s”"
 msgstr "Контакт је обрисан: „%s“"
 
-#: src/contacts-window.vala:494
+#: src/contacts-window.vala:491
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s је повезан са %s"
 
-#: src/contacts-window.vala:496
+#: src/contacts-window.vala:493
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s је повезан са контактом"
@@ -667,16 +693,34 @@ msgid "First-time setup done."
 msgstr "Подешавање првог пута је урађено."
 
 #: src/org.gnome.Contacts.gschema.xml:6
-msgid "Set to true when the user ran the first-time setup wizard."
-msgstr "Изаберите када корисник покрене чаробњака подешавања првог пута."
+msgid "Set to true after the user has run the first-time setup wizard."
+msgstr ""
+"Постави на тачно након што корисник прође кроз чаробњака за прво коришћење "
+"програма."
 
-#: src/org.gnome.Contacts.gschema.xml:10
-msgid "View subset"
-msgstr "Преглед подскупа"
+#~ msgid "Does %s from %s belong here?"
+#~ msgstr "Да ли %s из %s припада овде?"
 
-#: src/org.gnome.Contacts.gschema.xml:11
-msgid "View contacts subset"
-msgstr "Прегледа подскуп контаката"
+#~ msgid "Do these details belong to %s?"
+#~ msgstr "Да ли ови детаљи спадају у %s?"
+
+#~ msgid "Yes"
+#~ msgstr "Да"
+
+#~ msgid "No"
+#~ msgstr "Не"
+
+#~ msgid "Suggestions"
+#~ msgstr "Предлози"
+
+#~ msgid "Other Contacts"
+#~ msgstr "Остали контакти"
+
+#~ msgid "View subset"
+#~ msgstr "Преглед подскупа"
+
+#~ msgid "View contacts subset"
+#~ msgstr "Прегледа подскуп контаката"
 
 #~| msgid "friends;address book;"
 #~ msgid "x-office-address-book"
@@ -690,9 +734,6 @@ msgstr "Прегледа подскуп контаката"
 
 #~ msgid "February"
 #~ msgstr "Фебруар"
-
-#~ msgid "March"
-#~ msgstr "Март"
 
 #~ msgid "April"
 #~ msgstr "Април"
@@ -744,9 +785,6 @@ msgstr "Прегледа подскуп контаката"
 
 #~ msgid "%s - Linked Accounts"
 #~ msgstr "%s — Спојени налози"
-
-#~ msgid "Create Contact"
-#~ msgstr "Направи контакт"
 
 #~ msgid ""
 #~ "Add or \n"
