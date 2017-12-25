@@ -30,9 +30,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private SizeGroup left_pane_size_group;
   [GtkChild]
-  private HeaderBar left_toolbar;
+  private HeaderBar left_header;
   [GtkChild]
-  private HeaderBar right_toolbar;
+  private HeaderBar right_header;
   [GtkChild]
   private Overlay overlay;
   [GtkChild]
@@ -69,21 +69,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private ContactPane contact_pane;
 
   private string left_title {
-    get {
-      return left_toolbar.get_title ();
-    }
-    set {
-      left_toolbar.set_title (value);
-    }
+    get { return this.left_header.title ; }
+    set { this.left_header.title = value; }
   }
 
   private string right_title {
-    get {
-      return right_toolbar.get_title ();
-    }
-    set {
-      right_toolbar.set_title (value);
-    }
+    get { return this.right_header.title ; }
+    set { this.right_header.title = value; }
   }
 
   private bool new_contact_mode = false;
@@ -110,7 +102,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     /* stablishing constraints */
     this.bind_property ("selection-mode",
-			right_toolbar, "show-close-button",
+			right_header, "show-close-button",
 			BindingFlags.DEFAULT |
 			BindingFlags.INVERT_BOOLEAN);
     this.bind_property ("selection-mode",
@@ -141,7 +133,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 			BindingFlags.DEFAULT |
 			BindingFlags.INVERT_BOOLEAN);
     this.bind_property ("edit-mode",
-			right_toolbar, "show-close-button",
+			right_header, "show-close-button",
 			BindingFlags.DEFAULT |
 			BindingFlags.INVERT_BOOLEAN);
 
@@ -242,17 +234,17 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.select_cancel_button.visible = active;
 
     if (active) {
-      left_toolbar.get_style_context ().add_class ("selection-mode");
-      right_toolbar.get_style_context ().add_class ("selection-mode");
+      left_header.get_style_context ().add_class ("selection-mode");
+      right_header.get_style_context ().add_class ("selection-mode");
 
-      left_toolbar.set_title (_("Select"));
+      left_header.set_title (_("Select"));
 
       list_pane.show_selection ();
     } else {
-      left_toolbar.get_style_context ().remove_class ("selection-mode");
-      right_toolbar.get_style_context ().remove_class ("selection-mode");
+      left_header.get_style_context ().remove_class ("selection-mode");
+      right_header.get_style_context ().remove_class ("selection-mode");
 
-      left_toolbar.set_title (_("All Contacts"));
+      left_header.set_title (_("All Contacts"));
 
       list_pane.hide_selection ();
 
@@ -271,8 +263,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     var name = this.contact_pane.contact.display_name;
     right_title = _("Editing %s").printf (name);
 
-    left_toolbar.get_style_context ().add_class ("selection-mode");
-    right_toolbar.get_style_context ().add_class ("selection-mode");
+    left_header.get_style_context ().add_class ("selection-mode");
+    right_header.get_style_context ().add_class ("selection-mode");
 
     this.contact_pane.set_edit_mode (true);
   }
@@ -280,8 +272,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void leave_edit_mode (bool drop_changes = false) {
     edit_mode = false;
 
-    left_toolbar.get_style_context ().remove_class ("selection-mode");
-    right_toolbar.get_style_context ().remove_class ("selection-mode");
+    left_header.get_style_context ().remove_class ("selection-mode");
+    right_header.get_style_context ().remove_class ("selection-mode");
 
     if (new_contact_mode) {
       done_button.label = _("Done");
@@ -318,7 +310,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (list_pane != null)
       list_pane.select_contact (c);
 
-    /* clearing right_toolbar */
+    /* clearing right_header */
     if (c != null)
       right_title = c.display_name;
     else
@@ -336,8 +328,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     right_title = _("New Contact");
 
-    left_toolbar.get_style_context ().add_class ("selection-mode");
-    right_toolbar.get_style_context ().add_class ("selection-mode");
+    left_header.get_style_context ().add_class ("selection-mode");
+    right_header.get_style_context ().add_class ("selection-mode");
 
     done_button.label = _("Add");
 
@@ -356,8 +348,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
     tokens = layout_desc.split (":", 2);
     if (tokens != null) {
-      right_toolbar.decoration_layout = ":%s".printf (tokens[1]);
-      left_toolbar.decoration_layout = tokens[0];
+      right_header.decoration_layout = ":%s".printf (tokens[1]);
+      left_header.decoration_layout = tokens[0];
     }
 
     this.select_button.clicked.connect (() => activate_selection_mode (true));
