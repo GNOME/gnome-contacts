@@ -139,8 +139,9 @@ public class Contacts.ContactList : ListBox {
   }
 
   private void update_all_filtered () {
-    foreach (var data in contacts.values) {
-      data.filtered = calculate_filtered (data.contact);
+    foreach (var widget in get_children ()) {
+      var row = widget as ContactDataRow;
+      row.filtered = calculate_filtered (row.contact);
     }
   }
 
@@ -201,16 +202,18 @@ public class Contacts.ContactList : ListBox {
   }
 
   public void show_selectors () {
-    foreach (var data in contacts.values) {
-      data.selector_button.show ();
+    foreach (var widget in get_children ()) {
+      var row = widget as ContactDataRow;
+      row.selector_button.show ();
     }
     selectors_visible = true;
   }
 
   public void hide_selectors () {
-    foreach (var data in contacts.values) {
-      data.selector_button.hide ();
-      data.selector_button.set_active (false);
+    foreach (var widget in get_children ()) {
+      var row = widget as ContactDataRow;
+      row.selector_button.hide ();
+      row.selector_button.set_active (false);
     }
     selectors_visible = false;
     nr_contacts_marked = 0;
@@ -218,9 +221,10 @@ public class Contacts.ContactList : ListBox {
 
   public LinkedList<Contact> get_marked_contacts () {
     var cs = new LinkedList<Contact> ();
-    foreach (var data in contacts.values) {
-      if (data.selector_button.active)
-	cs.add (data.contact);
+    foreach (var widget in get_children ()) {
+      var row = widget as ContactDataRow;
+      if (row.selector_button.active)
+        cs.add (row.contact);
     }
     return cs;
   }
