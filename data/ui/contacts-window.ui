@@ -100,22 +100,36 @@
         <child>
           <object class="GtkGrid" id="setup_view">
             <property name="visible">True</property>
+            <property name="valign">center</property>
             <property name="border_width">12</property>
             <property name="row_spacing">24</property>
             <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="halign">center</property>
+                <property name="label" translatable="yes">Welcome</property>
+                <attributes>
+                  <attribute name="scale" value="3.5"/>
+                  <!-- <attribute name="weight" value="bold"/> -->
+                </attributes>
+              </object>
+              <packing>
+                <property name="top_attach">0</property>
+                <property name="left_attach">0</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkLabel" id="setup_explanation_label">
                 <property name="visible">True</property>
                 <property name="halign">center</property>
                 <property name="wrap">True</property>
-                <property name="max_width_chars">25</property>
-                <property name="label" translatable="yes">New contacts will be added to the selected address book. You are able to view and edit contacts from other address books.</property>
+                <property name="max_width_chars">50</property>
+                <property name="label" translatable="yes">Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.</property>
               </object>
               <packing>
+                <property name="top_attach">1</property>
                 <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
           </object>
@@ -273,24 +287,22 @@
   <object class="GtkHeaderBar" id="setup_header_bar">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Select Address Book</property>
+    <property name="title" translatable="yes">Contacts Setup</property>
     <property name="show_close_button">False</property>
     <style>
       <class name="titlebar"/>
     </style>
     <child>
-      <object class="GtkButton" id="setup_cancel_button">
+      <object class="GtkButton" id="setup_quit_button">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="label" translatable="yes">Cancel</property>
+        <property name="label" translatable="yes">Quit</property>
+        <property name="action_name" translatable="yes">app.quit</property>
         <child internal-child="accessible">
-          <object class="AtkObject" id="setup_cancel_button_atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes">Cancel setup</property>
+          <object class="AtkObject" id="setup_quit_button_atkobject">
+            <property name="AtkObject::accessible-name" translatable="yes">Cancel setup and quit</property>
           </object>
         </child>
-        <style>
-          <class name="text-button"/>
-        </style>
       </object>
       <packing>
         <property name="pack_type">start</property>

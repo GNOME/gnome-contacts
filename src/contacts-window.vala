@@ -60,8 +60,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private HeaderBar setup_header_bar;
   [GtkChild]
   private Button setup_done_button;
-  [GtkChild]
-  private Button setup_cancel_button;
   private AccountsList setup_accounts_list;
 
   // The 2 panes the window consists of
@@ -143,7 +141,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.setup_accounts_list.hexpand = true;
     this.setup_accounts_list.halign = Align.CENTER;
     this.setup_accounts_list.show ();
-    this.setup_view.attach (this.setup_accounts_list, 1, 0);
+    this.setup_view.attach (this.setup_accounts_list, 0, 2);
 
     if (settings.did_initial_setup) {
       view_switcher.visible_child_name = "content-view";
@@ -168,20 +166,17 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       setup_accounts_list.update_contents (false);
 
       setup_done_button.clicked.connect (() => {
-	  view_switcher.visible_child_name = "content-view";
-	  set_titlebar (content_header_bar);
+          view_switcher.visible_child_name = "content-view";
+          set_titlebar (content_header_bar);
 
-	  var e_store = setup_accounts_list.selected_store as Edsf.PersonaStore;
-	  eds_source_registry.set_default_address_book (e_store.source);
-	  settings.did_initial_setup = true;
+          var e_store = setup_accounts_list.selected_store as Edsf.PersonaStore;
+          eds_source_registry.set_default_address_book (e_store.source);
+          settings.did_initial_setup = true;
 
-	  if (change_book_action != null) {
-	    change_book_action.set_enabled (true);
-	  }
-	});
-      setup_cancel_button.clicked.connect (() => {
-	  app.quit ();
-	});
+          if (change_book_action != null) {
+            change_book_action.set_enabled (true);
+          }
+        });
     }
 
     init_content_widgets ();
