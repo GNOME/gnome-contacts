@@ -52,3 +52,8 @@ configure_file(
   install: true,
   install_dir: join_paths(get_option('datadir'), 'dbus-1', 'services'),
 )
+
+# The search provider file
+install_data('org.gnome.Contacts.search-provider.ini',
+  install_dir: join_paths(get_option('datadir'), 'gnome-shell', 'search-providers'),
+)
