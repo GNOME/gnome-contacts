@@ -19,7 +19,12 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.View : ListBox {
+/**
+ * The ContactList is the actual list of {@link Contact}s that the user sees on
+ * the left. It is contained by the {@link ListPane}, which also provides other
+ * functionality, such as an action bar.
+ */
+public class Contacts.ContactList : ListBox {
   private class ContactDataRow : ListBoxRow {
     public Contact contact;
     public Label label;
@@ -76,7 +81,7 @@ public class Contacts.View : ListBox {
 
   private Store store;
 
-  public View (Store store) {
+  public ContactList (Store store) {
     this.selection_mode = Gtk.SelectionMode.BROWSE;
     this.store = store;
 
@@ -86,7 +91,7 @@ public class Contacts.View : ListBox {
     foreach (var c in this.store.get_contacts ())
       contact_added_cb (this.store, c);
 
-    get_style_context ().add_class ("contacts-view");
+    get_style_context ().add_class ("contacts-contact-list");
 
     set_sort_func ((a, b) => compare_data (a as ContactDataRow, b as ContactDataRow));
     set_filter_func (filter);

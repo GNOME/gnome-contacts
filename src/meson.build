@@ -12,6 +12,7 @@ contacts_vala_sources = [
   'contacts-avatar-dialog.vala',
   'contacts-contact-editor.vala',
   'contacts-contact-frame.vala',
+  'contacts-contact-list.vala',
   'contacts-contact-pane.vala',
   'contacts-contact-sheet.vala',
   'contacts-contact.vala',
@@ -24,7 +25,6 @@ contacts_vala_sources = [
   'contacts-store.vala',
   'contacts-types.vala',
   'contacts-utils.vala',
-  'contacts-view.vala',
   'contacts-window.vala',
   'main.vala',
 ]

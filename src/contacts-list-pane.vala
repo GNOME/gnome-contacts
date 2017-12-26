@@ -25,8 +25,8 @@ public class Contacts.ListPane : Frame {
   private Store store;
 
   [GtkChild]
-  private Gtk.ScrolledWindow contacts_view_container;
-  private View contacts_view;
+  private Gtk.ScrolledWindow contacts_list_container;
+  private ContactList contacts_list;
 
   [GtkChild]
   public ToolItem search_tool_item;
@@ -48,8 +48,8 @@ public class Contacts.ListPane : Frame {
 
   public signal void selection_changed (Contact? contact);
 
-  public signal void link_contacts (LinkedList<Contact> contacts_list);
-  public signal void delete_contacts (LinkedList<Contact> contacts_list);
+  public signal void link_contacts (LinkedList<Contact> contacts);
+  public signal void delete_contacts (LinkedList<Contact> contacts);
 
   public signal void contacts_marked (int contacts_marked);
 
@@ -64,7 +64,7 @@ public class Contacts.ListPane : Frame {
       values = str.split(" ");
     }
 
-    this.contacts_view.set_filter_values (values);
+    this.contacts_list.set_filter_values (values);
   }
 
   private bool filter_entry_changed_timeout () {
@@ -85,15 +85,15 @@ public class Contacts.ListPane : Frame {
     this.store = contacts_store;
 
     // Load the ContactsView and connect the necessary signals
-    this.contacts_view = new View (contacts_store);
-    this.contacts_view_container.add (this.contacts_view);
+    this.contacts_list = new ContactList (contacts_store);
+    this.contacts_list_container.add (this.contacts_list);
 
-    this.contacts_view.selection_changed.connect( (l, contact) => {
+    this.contacts_list.selection_changed.connect( (l, contact) => {
         if (!this.ignore_selection_change)
           selection_changed (contact);
       });
 
-    this.contacts_view.contacts_marked.connect ((nr_contacts_marked) => {
+    this.contacts_list.contacts_marked.connect ((nr_contacts_marked) => {
         this.delete_button.sensitive = (nr_contacts_marked > 0);
         this.link_button.sensitive = (nr_contacts_marked > 1);
         contacts_marked (nr_contacts_marked);
@@ -103,28 +103,28 @@ public class Contacts.ListPane : Frame {
   public void select_contact (Contact? contact, bool ignore_change = false) {
     if (ignore_change)
       ignore_selection_change = true;
-    this.contacts_view.select_contact (contact);
+    this.contacts_list.select_contact (contact);
     ignore_selection_change = false;
   }
 
   public void show_selection () {
-    this.contacts_view.show_selectors ();
+    this.contacts_list.show_selectors ();
     actions_bar.show ();
   }
 
   public void hide_selection () {
-    this.contacts_view.hide_selectors ();
+    this.contacts_list.hide_selectors ();
     actions_bar.hide ();
   }
 
   [GtkCallback]
   private void on_link_button_clicked (Gtk.Button link_button) {
-    link_contacts (this.contacts_view.get_marked_contacts ());
+    link_contacts (this.contacts_list.get_marked_contacts ());
   }
 
   [GtkCallback]
   private void on_delete_button_clicked (Gtk.Button delete_button) {
-    var marked_contacts = contacts_view.get_marked_contacts ();
+    var marked_contacts = this.contacts_list.get_marked_contacts ();
     foreach (var c in marked_contacts)
       c.hide ();
     delete_contacts (marked_contacts);
