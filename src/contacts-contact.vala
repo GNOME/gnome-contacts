@@ -71,23 +71,7 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public string display_name {
-    get {
-      unowned string? name = individual.full_name;
-      if (is_set (name))
-	return name;
-      unowned string? alias = individual.alias;
-      if (is_set (alias))
-	return alias;
-      unowned string? nickname = individual.nickname;
-      if (is_set (nickname))
-	return nickname;
-      foreach (var email in individual.email_addresses) {
-	string? e = email.value;
-	if (is_set (e))
-	  return email.value;
-      }
-      return "";
-    }
+    get { return this.individual.display_name; }
   }
 
   public static bool persona_has_writable_property (Persona persona, string property) {
@@ -101,36 +85,6 @@ public class Contacts.Contact : GLib.Object  {
 	return true;
     }
     return false;
-  }
-
-  public static string get_display_name_for_persona (Persona persona) {
-    var name_details = persona as NameDetails;
-    var alias_details = persona as AliasDetails;
-    var email_details = persona as EmailDetails;
-
-    if (name_details != null) {
-      unowned string? name = name_details.full_name;
-      if (is_set (name))
-	return name;
-    }
-    if (alias_details != null) {
-      unowned string? alias = alias_details.alias;
-      if (is_set (alias))
-	return alias;
-    }
-    if (name_details != null) {
-      unowned string? nickname = name_details.nickname;
-      if (is_set (nickname))
-	return nickname;
-    }
-    if (email_details != null) {
-      foreach (var email in email_details.email_addresses) {
-	string e = email.value;
-	if (is_set (e))
-	  return e;
-      }
-    }
-    return "";
   }
 
   public unichar initial_letter {
