@@ -53,23 +53,6 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  private Variant? _avatar_icon_data;
-  public Variant? avatar_icon_data {
-    get {
-      if (individual.avatar == null)
-        return null;
-
-      if (_avatar_icon_data == null) {
-
-        if (small_avatar == null)
-          return null;
-
-        _avatar_icon_data = small_avatar.serialize ();
-      }
-      return _avatar_icon_data;
-    }
-  }
-
   public string display_name {
     get { return this.individual.display_name; }
   }
@@ -235,7 +218,6 @@ public class Contacts.Contact : GLib.Object  {
       connect_persona (p);
     }
     _small_avatar = null;
-    _avatar_icon_data = null;
     individual.notify.connect(notify_cb);
     queue_changed (true);
   }
@@ -511,7 +493,6 @@ public class Contacts.Contact : GLib.Object  {
   private void notify_cb (ParamSpec pspec) {
     if (pspec.get_name () == "avatar") {
       _small_avatar = null;
-      _avatar_icon_data = null;
     }
     queue_changed (false);
   }
@@ -686,14 +667,6 @@ public class Contacts.Contact : GLib.Object  {
     return p;
   }
 
-  public Persona? find_persona_from_store (PersonaStore store) {
-    foreach (var p in individual.personas) {
-      if (p.store == store)
-	return p;
-    }
-    return null;
-  }
-
   public Gee.List<Persona> get_personas_for_display () {
     CompareDataFunc<Persona> compare_persona_by_store = (a, b) =>
     {
@@ -746,9 +719,15 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Persona? find_primary_persona () {
-    if (store.aggregator.primary_store == null)
+    var primary_store = store.aggregator.primary_store;
+    if (primary_store == null)
       return null;
-    return find_persona_from_store (store.aggregator.primary_store);
+
+    foreach (var p in individual.personas) {
+      if (p.store == primary_store)
+        return p;
+    }
+    return null;
   }
 
   public Persona? find_persona_from_uid (string uid) {
