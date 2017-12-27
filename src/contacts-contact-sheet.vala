@@ -92,6 +92,7 @@ public class Contacts.ContactSheet : Grid {
     set_row_spacing (12);
     set_column_spacing (16);
     set_orientation (Orientation.VERTICAL);
+    get_style_context ().add_class ("contacts-contact-sheet");
   }
 
   public void update (Contact c) {
