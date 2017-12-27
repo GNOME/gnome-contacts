@@ -22,10 +22,8 @@ using Gee;
 
 public class Contacts.ContactFrame : Frame {
   private int size;
-  private string? text;
   private Gdk.Pixbuf? pixbuf;
   private Pango.Layout? layout;
-  private int text_height;
 
   public signal void clicked ();
 
@@ -81,26 +79,6 @@ public class Contacts.ContactFrame : Frame {
     set_pixbuf (a_pixbuf);
   }
 
-  public void set_text (string? text_, int text_height_) {
-    text = text_;
-    text_height = text_height_;
-    layout = null;
-    if (text != null) {
-      layout = create_pango_layout (text);
-      Pango.Rectangle rect = {0 };
-      int font_size = text_height - /* Y PADDING */ 4 +  /* Removed below */ 1;
-
-      do {
-	font_size = font_size - 1;
-	var fd = new Pango.FontDescription();
-	fd.set_absolute_size (font_size*Pango.SCALE);
-	layout.set_font_description (fd);
-	layout.get_extents (null, out rect);
-      } while (rect.width > size * Pango.SCALE);
-    }
-    queue_draw ();
-  }
-
   public bool draw_image (Cairo.Context cr) {
     cr.save ();
 
@@ -114,7 +92,7 @@ public class Contacts.ContactFrame : Frame {
       cr.clip ();
 
       cr.set_source_rgba (0, 0, 0, 0.5);
-      cr.rectangle (0, size - text_height, size, text_height);
+      cr.rectangle (0, size, size, 0);
       cr.fill ();
 
       cr.set_source_rgb (1.0, 1.0, 1.0);
@@ -123,7 +101,7 @@ public class Contacts.ContactFrame : Frame {
       double label_width = rect.width/(double)Pango.SCALE;
       double label_height = rect.height / (double)Pango.SCALE;
       cr.move_to (Math.round ((size - label_width) / 2.0),
-		  size - text_height + Math.floor ((text_height - label_height) / 2.0));
+		  size + Math.floor ((-label_height) / 2.0));
       Pango.cairo_show_layout (cr, layout);
     }
     cr.restore ();
