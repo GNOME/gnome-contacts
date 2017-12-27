@@ -36,6 +36,55 @@ public class Contacts.App : Gtk.Application {
     { "new-contact", new_contact         }
   };
 
+  private const OptionEntry[] options = {
+    { "individual",  'i', 0, OptionArg.STRING, null, N_("Show contact with this individual id") },
+    { "email",       'e', 0, OptionArg.STRING, null, N_("Show contact with this email address") },
+    { "search",      's', 0, OptionArg.STRING                                                   },
+    { "version",     'v', 0, OptionArg.NONE,   null, N_("Show the current version of Contacts") },
+    {}
+  };
+
+  public App () {
+    Object (
+      application_id: "org.gnome.Contacts",
+      flags: ApplicationFlags.HANDLES_COMMAND_LINE
+    );
+
+    this.settings = new Settings (this);
+    add_main_option_entries (options);
+  }
+
+  public override int command_line (ApplicationCommandLine command_line) {
+    var options = command_line.get_options_dict ();
+
+    activate ();
+
+    if ("individual" in options) {
+      var individual = options.lookup_value ("individual", VariantType.STRING);
+      if (individual != null)
+        show_individual.begin (individual.get_string ());
+    } else if ("email" in options) {
+      var email = options.lookup_value ("email", VariantType.STRING);
+      if (email != null)
+        show_by_email.begin (email.get_string ());
+    } else if ("search" in options) {
+      var search_term = options.lookup_value ("search", VariantType.STRING);
+      if (search_term != null)
+        show_search (search_term.get_string ());
+    }
+
+    return 0;
+  }
+
+  public override int handle_local_options (VariantDict options) {
+    if ("version" in options) {
+      stdout.printf ("gnome-contacts %s\n", Config.PACKAGE_VERSION);
+      return 0;
+    }
+
+    return -1;
+  }
+
   public void show_contact (Contact? contact) {
     window.set_shown_contact (contact);
   }
@@ -283,54 +332,5 @@ public class Contacts.App : Gtk.Application {
 
   public void new_contact () {
     window.new_contact ();
-  }
-
-  private static string individual_id = null;
-  private static string email_address = null;
-  private static string search_terms = null;
-  private const OptionEntry[] options = {
-    { "individual", 'i', 0, OptionArg.STRING, ref individual_id,
-      N_("Show contact with this individual id"), null },
-    { "email", 'e', 0, OptionArg.STRING, ref email_address,
-      N_("Show contact with this email address"), null },
-    { "search", 's', 0, OptionArg.STRING, ref search_terms,
-      null, null },
-    { null }
-  };
-
-  public override int command_line (ApplicationCommandLine command_line) {
-    var args = command_line.get_arguments ();
-    unowned string[] _args = args;
-    var context = new OptionContext (N_("— contact management"));
-    context.add_main_entries (options, Config.GETTEXT_PACKAGE);
-    context.set_translation_domain (Config.GETTEXT_PACKAGE);
-    context.add_group (Gtk.get_option_group (true));
-
-    individual_id = null;
-    email_address = null;
-    search_terms = null;
-
-    try {
-      context.parse (ref _args);
-    } catch (Error e) {
-      printerr ("Unable to parse: %s\n", e.message);
-      return 1;
-    }
-
-    activate ();
-
-    if (individual_id != null)
-      show_individual.begin (individual_id);
-    if (email_address != null)
-      show_by_email.begin (email_address);
-    if (search_terms != null)
-      show_search (search_terms);
-
-    return 0;
-  }
-
-  public App () {
-    Object (application_id: "org.gnome.Contacts", flags: ApplicationFlags.HANDLES_COMMAND_LINE);
-    this.settings = new Settings (this);
   }
 }
