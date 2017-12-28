@@ -19,7 +19,6 @@
 using Gtk;
 using Folks;
 using Gee;
-using TelepathyGLib;
 using Geocode;
 
 public errordomain ContactError {
@@ -145,23 +144,6 @@ public class Contacts.Contact : GLib.Object  {
     return i.get_data ("contact");
   }
 
-  private void persona_notify_cb (ParamSpec pspec) {
-    queue_changed (false);
-  }
-
-  private void connect_persona (Persona p) {
-    var tp = p as Tpf.Persona;
-    if (tp != null && tp.contact != null)
-      tp.contact.notify["client-types"].connect (persona_notify_cb);
-  }
-
-  private void disconnect_persona (Persona p) {
-    SignalHandler.disconnect_by_func (individual, (void *)persona_notify_cb, this);
-    var tp = p as Tpf.Persona;
-    if (tp != null && tp.contact != null)
-      SignalHandler.disconnect_by_func (tp.contact, (void *)persona_notify_cb, this);
-  }
-
   public static bool persona_is_main (Persona persona) {
     var store = persona.store;
     if (!store.is_primary_store)
@@ -190,16 +172,9 @@ public class Contacts.Contact : GLib.Object  {
     individual.set_data ("contact", this);
 
     is_main = calc_is_main ();
-    foreach (var p in individual.personas) {
-      connect_persona (p);
-    }
 
     individual.personas_changed.connect ( (added, removed) => {
-	foreach (var p in added)
-	  connect_persona (p);
-	foreach (var p in removed)
-	  disconnect_persona (p);
-	queue_changed (true);
+        queue_changed (true);
       });
 
     update ();
@@ -208,15 +183,9 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public void replace_individual (Individual new_individual) {
-    foreach (var p in individual.personas) {
-      disconnect_persona (p);
-    }
     individual.notify.disconnect(notify_cb);
     individual = new_individual;
     individual.set_data ("contact", this);
-    foreach (var p in individual.personas) {
-      connect_persona (p);
-    }
     _small_avatar = null;
     individual.notify.connect(notify_cb);
     queue_changed (true);
@@ -224,9 +193,6 @@ public class Contacts.Contact : GLib.Object  {
 
   public void remove () {
     unqueue_changed ();
-    foreach (var p in individual.personas) {
-      disconnect_persona (p);
-    }
     individual.notify.disconnect(notify_cb);
   }
 
