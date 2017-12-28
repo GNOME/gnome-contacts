@@ -54,6 +54,7 @@ contacts_deps = [
   glib,
   gnome_desktop,
   goa,
+  goa_backend,
   gtk,
   libebook,
   libedataserver,

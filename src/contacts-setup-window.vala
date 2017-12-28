@@ -55,6 +55,21 @@ public class Contacts.SetupWindow : Gtk.ApplicationWindow {
 
     fill_accounts_list (store);
 
+    // TODO make this a clickbable listbox
+    // TODO if accountslist is empty: don't show accountslist 
+    GLib.List<Goa.Provider>? providers = null;
+    Goa.Provider.get_all ( (obj, res) => {
+        try {
+          Goa.Provider.get_all_finish (out providers, res);
+        } catch (Error e) {
+          warning ("Couldn't get list of providers!");
+        }
+
+        foreach (var provider in providers)
+          if (Goa.ProviderFeatures.CONTACTS in provider.get_provider_features ())
+            warning ("Found contacts provider \"%s\"", provider.get_provider_name ());
+      });
+
     this.setup_done_button.clicked.connect (() => {
         var selected_store = this.setup_accounts_list.selected_store as Edsf.PersonaStore;
         setup_done (selected_store);
