@@ -1,7 +1,7 @@
 # GSettings
 compiled = gnome.compile_schemas()
 install_data('org.gnome.Contacts.gschema.xml',
-  install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas'),
+  install_dir: join_paths(datadir, 'glib-2.0', 'schemas'),
 )
 
 # The gnome-contacts binary
@@ -111,4 +111,5 @@ executable('gnome-contacts-search-provider', contact_search_provider_sources,
   c_args: contacts_c_args,
   dependencies: contacts_deps,
   install: true,
+  install_dir: libexecdir,
 )

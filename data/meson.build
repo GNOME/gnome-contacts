@@ -5,7 +5,7 @@ resources = gnome.compile_resources('org.gnome.Contacts', resource_files,
 )
 
 # The icons
-iconsdir = join_paths(get_option('datadir'), 'icons', 'hicolor')
+iconsdir = join_paths(datadir, 'icons', 'hicolor')
 foreach size: ['16x16', '22x22', '32x32', '48x48', '512x512', 'symbolic']
   install_subdir('icons/hicolor/' + size, install_dir: iconsdir)
 endforeach
@@ -17,7 +17,7 @@ i18n.merge_file(
   type: 'desktop',
   po_dir: po_dir,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'applications')
+  install_dir: join_paths(datadir, 'applications')
 )
 
 # The appdata file
@@ -27,13 +27,13 @@ i18n.merge_file(
   type: 'xml',
   po_dir: po_dir,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'metainfo')
+  install_dir: join_paths(datadir, 'metainfo')
 )
 
 # DBus service files
 service_config = configuration_data()
-service_config.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
-service_config.set('libexecdir', join_paths(get_option('prefix'), get_option('libexecdir')))
+service_config.set('bindir', join_paths(bindir))
+service_config.set('libexecdir', join_paths(libexecdir))
 
 # The DBUS service file of the app
 configure_file(
@@ -41,7 +41,7 @@ configure_file(
   output: 'org.gnome.Contacts.service',
   configuration: service_config,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'dbus-1', 'services'),
+  install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
 
 # The DBUS service file of the search provider
@@ -50,10 +50,10 @@ configure_file(
   output: 'org.gnome.Contacts.SearchProvider.service',
   configuration: service_config,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'dbus-1', 'services'),
+  install_dir: join_paths(datadir, 'dbus-1', 'services'),
 )
 
 # The search provider file
 install_data('org.gnome.Contacts.search-provider.ini',
-  install_dir: join_paths(get_option('datadir'), 'gnome-shell', 'search-providers'),
+  install_dir: join_paths(datadir, 'gnome-shell', 'search-providers'),
 )

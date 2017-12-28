@@ -15,9 +15,14 @@ add_project_arguments(
 
 # Some variables
 config_h_dir = include_directories('.')
-locale_dir = join_paths(get_option('prefix'), get_option('localedir'))
-pkgdatadir = join_paths(get_option('datadir'), meson.project_name())
-pkglibdir = join_paths(get_option('libdir'), meson.project_name())
+contacts_prefix = get_option('prefix')
+datadir = join_paths(contacts_prefix, get_option('datadir'))
+bindir = join_paths(contacts_prefix, get_option('bindir'))
+libdir = join_paths(contacts_prefix, get_option('libdir'))
+libexecdir = join_paths(contacts_prefix, get_option('libexecdir'))
+locale_dir = join_paths(contacts_prefix, get_option('localedir'))
+pkgdatadir = join_paths(datadir, meson.project_name())
+pkglibdir = join_paths(libdir, meson.project_name())
 po_dir = join_paths(meson.source_root(), 'po')
 
 # Dependencies
