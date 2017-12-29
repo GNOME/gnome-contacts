@@ -345,22 +345,16 @@ public class Contacts.Contact : GLib.Object  {
     return null;
   }
 
-  public enum ImDisplay {
-    DEFAULT,           /* $id ($service) */
-    ALIAS_SERVICE      /* $alias ($service) */
-  }
-
   private struct ImData {
     unowned string service;
     unowned string display_name;
-    ImDisplay display;
   }
 
-  public static string format_im_service (string service, out ImDisplay display) {
+  public static string format_im_service (string service) {
     const ImData[] data = {
       { "google-talk", N_("Google Talk") },
       { "ovi-chat", N_("Ovi Chat") },
-      { "facebook", N_("Facebook"), ImDisplay.ALIAS_SERVICE },
+      { "facebook", N_("Facebook") },
       { "lj-talk", N_("Livejournal") },
       { "aim", N_("AOL Instant Messenger") },
       { "gadugadu", N_("Gadu-Gadu") },
@@ -385,14 +379,10 @@ public class Contacts.Contact : GLib.Object  {
       { "zephyr", N_("Zephyr")}
     };
 
-    foreach (var d in data) {
-      if (d.service == service) {
-	display = d.display;
-	return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
-      }
-    }
+    foreach (var d in data)
+      if (d.service == service)
+        return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
 
-    display = ImDisplay.DEFAULT;
     return service;
   }
 
@@ -696,7 +686,7 @@ public class Contacts.Contact : GLib.Object  {
     }
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
-      return format_im_service (account.service, null);
+      return format_im_service (account.service);
     }
 
     return store.display_name;
@@ -789,7 +779,7 @@ public class Contacts.Contact : GLib.Object  {
     }
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
-      return format_im_service (account.service, null);
+      return format_im_service (account.service);
     }
 
     return store.display_name;
