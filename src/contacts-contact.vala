@@ -29,7 +29,7 @@ public class Contacts.Contact : GLib.Object  {
   public const int LIST_AVATAR_SIZE = 48;
   public const int SMALL_AVATAR_SIZE = 54;
 
-  public Store store;
+  public weak Store store;
   public bool is_main;
 
   public Individual individual;
