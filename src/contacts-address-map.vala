@@ -90,10 +90,10 @@ public class Contacts.AddressMap : Frame {
     var geocodes = 0;
 
     foreach (var addr in addresses) {
-      Contact.geocode_address.begin (addr.value, (object, res) => {
+      geocode_address.begin (addr.value, (object, res) => {
           mutex.lock ();
 
-          var place = Contact.geocode_address.end (res);
+          var place = geocode_address.end (res);
           geocodes++;
 
           if (place != null)
@@ -214,5 +214,35 @@ public class Contacts.AddressMap : Frame {
      * before we calculate the visible bounding box and show
      * the markers.*/
     alloc_id = marker_layer.allocation_changed.connect (on_allocation_changed);
+  }
+
+  private async Place geocode_address (PostalAddress addr) {
+    SourceFunc callback = geocode_address.callback;
+
+    var params = new HashTable<string, GLib.Value?>(str_hash, str_equal);
+    if (is_set (addr.street))
+      params["street"] = addr.street;
+    if (is_set (addr.locality))
+      params["locality"] = addr.locality;
+    if (is_set (addr.region))
+      params["region"] = addr.region;
+    if (is_set (addr.country))
+      params["country"] = addr.country;
+
+    Place? place = null;
+    var forward = new Forward.for_params (params);
+    forward.search_async.begin (null, (object, res) => {
+        try {
+          var places = forward.search_async.end (res);
+
+          place = places.nth_data (0);
+          callback ();
+        } catch (GLib.Error e) {
+          debug ("No geocode result found for contact");
+          callback ();
+        }
+      });
+    yield;
+    return place;
   }
 }

@@ -19,7 +19,6 @@
 using Gtk;
 using Folks;
 using Gee;
-using Geocode;
 
 public errordomain ContactError {
   NOT_IMPLEMENTED,
@@ -269,39 +268,6 @@ public class Contacts.Contact : GLib.Object  {
     res.add_all (fields);
     res.sort (Contact.compare_fields);
     return res;
-  }
-
-  public static async Place geocode_address (PostalAddress addr) {
-    SourceFunc callback = geocode_address.callback;
-    var params = new HashTable<string, GLib.Value?>(str_hash, str_equal);
-
-    if (is_set (addr.street))
-      params.insert("street", addr.street);
-
-    if (is_set (addr.locality))
-      params.insert("locality", addr.locality);
-
-    if (is_set (addr.region))
-      params.insert("region", addr.region);
-
-    if (is_set (addr.country))
-      params.insert("country", addr.country);
-
-    Place? place = null;
-    var forward = new Forward.for_params (params);
-    forward.search_async.begin (null, (object, res) => {
-        try {
-          var places = forward.search_async.end (res);
-
-          place = places.nth_data (0);
-          callback ();
-        } catch (GLib.Error e) {
-          debug ("No geocode result found for contact");
-          callback ();
-        }
-      });
-    yield;
-    return place;
   }
 
   public static string[] format_address (PostalAddress addr) {
