@@ -30,13 +30,10 @@ min_eds_version = '3.13.90'
 min_folks_version = '0.11.4'
 min_glib_version = '2.44.0'
 
-champlain = dependency('champlain-0.12')
-clutter_gtk = dependency('clutter-gtk-1.0')
 folks = dependency('folks', version: '>=' + min_folks_version)
 folks_eds = dependency('folks-eds', version: '>=' + min_folks_version)
 folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
 gee = dependency('gee-0.8')
-geocode_glib = dependency('geocode-glib-1.0', version: '>= 3.15.3')
 gio_unix = dependency('gio-unix-2.0', version: '>=' + min_glib_version)
 glib = dependency('glib-2.0', version: '>=' + min_glib_version)
 gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_version)
@@ -58,6 +55,13 @@ if cheese_enabled
   cheese = dependency('cheese', required: cheese_required)
   cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91', required: cheese_required)
   cheese_enabled = cheese.found() and cheese_gtk.found()
+endif
+
+maps_enabled = get_option('maps')
+if maps_enabled
+  champlain = dependency('champlain-0.12')
+  clutter_gtk = dependency('clutter-gtk-1.0')
+  geocode_glib = dependency('geocode-glib-1.0', version: '>= 3.15.3')
 endif
 
 manpage_enabled = get_option('with-manpage')

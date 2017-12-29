@@ -225,12 +225,14 @@ public class Contacts.ContactSheet : Grid {
 	  add_row_with_label (ref i, TypeSet.general.format_type (addr), all_strs);
 	}
 
-	if (addr_details.postal_addresses.size > 0) {
-	  var map = new AddressMap (c, addr_details.postal_addresses);
-	  map.load ();
-	  attach (map, 1, i, 1, 1);
-	  i++;
-	}
+#if HAVE_MAPS
+        if (addr_details.postal_addresses.size > 0) {
+          var map = new AddressMap (c, addr_details.postal_addresses);
+          map.load ();
+          attach (map, 1, i);
+          i++;
+        }
+#endif
       }
 
       if (i != 3)

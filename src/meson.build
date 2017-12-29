@@ -7,7 +7,6 @@ install_data('org.gnome.Contacts.gschema.xml',
 # The gnome-contacts binary
 contacts_vala_sources = [
   'contacts-accounts-list.vala',
-  'contacts-address-map.vala',
   'contacts-app.vala',
   'contacts-avatar-dialog.vala',
   'contacts-contact-editor.vala',
@@ -46,20 +45,11 @@ contacts_c_args = [
   '-DLOCALEDIR="@0@"'.format(locale_dir),
 ]
 
-contacts_sources = [
-  contacts_c_sources,
-  contacts_vala_sources,
-  resources,
-]
-
 contacts_deps = [
-  champlain,
-  clutter_gtk,
   folks,
   folks_eds,
   folks_telepathy,
   gee,
-  geocode_glib,
   gio_unix,
   glib,
   gnome_desktop,
@@ -72,12 +62,25 @@ contacts_deps = [
   telepathy_glib,
 ]
 
-# Add extra stuff if cheese is enabled
+# Add extra stuff given a certain set of options
 if cheese_enabled
   contacts_deps += [ cheese, cheese_gtk ]
   contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
   contacts_c_sources += 'cheese-flash.c'
 endif
+
+if maps_enabled
+  contacts_deps += [ champlain, clutter_gtk, geocode_glib ]
+  contacts_vala_args += [ '-D', 'HAVE_MAPS' ]
+  contacts_vala_sources += 'contacts-address-map.vala'
+endif
+
+contacts_sources = [
+  contacts_c_sources,
+  contacts_vala_sources,
+  resources,
+]
+
 
 executable('gnome-contacts', contacts_sources,
   include_directories: config_h_dir,
