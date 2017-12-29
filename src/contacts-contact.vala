@@ -140,20 +140,15 @@ public class Contacts.Contact : GLib.Object  {
       return false;
 
     // Mark google contacts not in "My Contacts" as non-main
-    if (persona_is_google_other (persona)) {
-      return false;
-    }
-
-    return true;
+    return !persona_is_google_other (persona);
   }
 
   private bool calc_is_main () {
-    var res = false;
-    foreach (var p in individual.personas) {
+    foreach (var p in this.individual.personas)
       if (persona_is_main (p))
-	res = true;
-    }
-    return res;
+        return true;
+
+    return false;
   }
 
   public Contact (Store store, Individual i) {
