@@ -21,6 +21,7 @@ contacts_vala_sources = [
   'contacts-linking.vala',
   'contacts-list-pane.vala',
   'contacts-settings.vala',
+  'contacts-setup-window.vala',
   'contacts-store.vala',
   'contacts-types.vala',
   'contacts-utils.vala',

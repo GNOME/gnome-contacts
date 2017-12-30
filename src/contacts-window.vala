@@ -51,17 +51,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Stack view_switcher;
 
-  [GtkChild]
-  private Grid  content_header_bar;
-
-  [GtkChild]
-  private Grid setup_view;
-  [GtkChild]
-  private HeaderBar setup_header_bar;
-  [GtkChild]
-  private Button setup_done_button;
-  private AccountsList setup_accounts_list;
-
   // The 2 panes the window consists of
   private ListPane list_pane;
   private ContactPane contact_pane;
@@ -137,47 +126,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     create_contact_pane ();
 
-    this.setup_accounts_list = new AccountsList (this.store);
-    this.setup_accounts_list.hexpand = true;
-    this.setup_accounts_list.halign = Align.CENTER;
-    this.setup_accounts_list.show ();
-    this.setup_view.attach (this.setup_accounts_list, 0, 2);
-
-    if (settings.did_initial_setup) {
-      view_switcher.visible_child_name = "content-view";
-      set_titlebar (content_header_bar);
-    } else {
-      var change_book_action = app.lookup_action ("change-book") as GLib.SimpleAction;
-      if (change_book_action != null)
-        change_book_action.set_enabled (false);
-
-      store.eds_persona_store_changed.connect  ( () => {
-          setup_accounts_list.update_contents (false);
-        });
-      ulong id2 = 0;
-      id2 = setup_accounts_list.account_selected.connect (() => {
-          setup_done_button.set_sensitive (true);
-          setup_accounts_list.disconnect (id2);
-        });
-
-      view_switcher.visible_child_name = "setup-view";
-      set_titlebar (setup_header_bar);
-
-      setup_accounts_list.update_contents (false);
-
-      setup_done_button.clicked.connect (() => {
-          view_switcher.visible_child_name = "content-view";
-          set_titlebar (content_header_bar);
-
-          var e_store = setup_accounts_list.selected_store as Edsf.PersonaStore;
-          eds_source_registry.set_default_address_book (e_store.source);
-          settings.did_initial_setup = true;
-
-          if (change_book_action != null) {
-            change_book_action.set_enabled (true);
-          }
-        });
-    }
+    view_switcher.visible_child_name = "content-view";
 
     init_content_widgets ();
   }

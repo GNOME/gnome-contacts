@@ -52,6 +52,7 @@ public class Contacts.App : Gtk.Application {
 
     this.settings = new Settings (this);
     add_main_option_entries (options);
+	create_actions ();
   }
 
   public override int command_line (ApplicationCommandLine command_line) {
@@ -237,7 +238,6 @@ public class Contacts.App : Gtk.Application {
 	contacts_store.disconnect (id);
 	Source.remove (id2);
 
-	create_actions ();
 	create_window ();
 	window.show ();
 
@@ -249,7 +249,6 @@ public class Contacts.App : Gtk.Application {
     id2 = Timeout.add (500, () => {
 	contacts_store.disconnect (id);
 
-	create_actions ();
 	create_window ();
 	window.show ();
 
@@ -305,6 +304,33 @@ public class Contacts.App : Gtk.Application {
   }
 
   public override void activate () {
+    // Check if we've already done the setup process
+    if (this.settings.did_initial_setup)
+      create_new_window ();
+    else
+      run_setup ();
+  }
+
+  private void run_setup () {
+    // Disable the change-book action (don't want the user to do that during setup)
+    var change_book_action = lookup_action ("change-book") as SimpleAction;
+    change_book_action.set_enabled (false);
+
+    // Create and show the setup window
+    var setup_window = new SetupWindow (this, this.contacts_store);
+    setup_window.setup_done.connect ( (selected_store) => {
+        setup_window.destroy ();
+
+        eds_source_registry.set_default_address_book (selected_store.source);
+        this.settings.did_initial_setup = true;
+
+        change_book_action.set_enabled (true); // re-enable change-book action
+        create_new_window ();
+      });
+    setup_window.show ();
+  }
+
+  private void create_new_window () {
     /* window creation code */
     if (window == null) {
       if (!this.contacts_store.is_prepared) {
@@ -314,7 +340,6 @@ public class Contacts.App : Gtk.Application {
 	}
       }
 
-      create_actions ();
       create_window ();
       window.show ();
     }
