@@ -273,28 +273,6 @@ namespace Contacts.Utils {
     entry.select_region (start, end);
   }
 
-  public string[] get_stock_avatars () {
-    string[] files = {};
-    var system_data_dirs = Environment.get_system_data_dirs ();
-    foreach (var data_dir in system_data_dirs) {
-      var path = Path.build_filename (data_dir, "pixmaps", "faces");
-      Dir? dir = null;
-      try {
-        dir = Dir.open (path);
-      } catch (Error e) {
-        debug ("Couldn't open stock avatars folder \"%s\": %s", path, e.message);
-      }
-      if (dir != null) {
-        string? face;
-        while ((face = dir.read_name ()) != null) {
-          var filename = Path.build_filename (path, face);
-          files += filename;
-        }
-      }
-    };
-    return files;
-  }
-
   public PersonaStore[] get_eds_address_books (Store contacts_store) {
     PersonaStore[] stores = {};
     foreach (var backend in contacts_store.backend_store.enabled_backends.values) {

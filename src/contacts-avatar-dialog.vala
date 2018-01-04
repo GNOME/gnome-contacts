@@ -21,31 +21,25 @@ using Folks;
 
 /**
  * The AvatarDialog can be used to choose the avatar for a contact.
- * This can be done by either choosing a stock thumbnail, an image file
- * provided by the user, or -if cheese is enabled- by using a webcam.
+ * This can be done by choosing from:
+ * - one of the contact's avatar,
+ * - an image file on the user's machine
+ * - (if cheese is enabled) a webcam.
+ * - a fallback avatar
  *
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-dialog.ui")]
-public class Contacts.AvatarDialog : Dialog {
+public class Contacts.AvatarPopover : Popover {
   const int MAIN_SIZE = 128;
   const int ICONS_SIZE = 64;
 
   private Contact contact;
 
-  // This will provide the default thumbnails
-  private Gnome.DesktopThumbnailFactory thumbnail_factory;
-
-  [GtkChild]
-  private Grid grid;
-  [GtkChild]
-  private Label contact_name_label;
   [GtkChild]
   private Stack views_stack;
   [GtkChild]
   private FlowBox personas_thumbnail_grid;
-  [GtkChild]
-  private FlowBox stock_thumbnail_grid;
   [GtkChild]
   private Grid crop_page;
   private Cc.CropArea crop_area;
@@ -53,8 +47,6 @@ public class Contacts.AvatarDialog : Dialog {
   private Grid photobooth_page;
   [GtkChild]
   private Button webcam_button;
-  [GtkChild]
-  private Box webcam_button_box;
 
   private ContactFrame current_avatar;
 
@@ -72,13 +64,12 @@ public class Contacts.AvatarDialog : Dialog {
    */
   public signal void set_avatar (GLib.Icon avatar_icon);
 
-  public AvatarDialog (Window main_window, Contact? contact) {
+  public AvatarPopover (Widget? relative_to, Contact? contact) {
     Object (
-      transient_for: main_window,
-      use_header_bar: 1
+      relative_to: relative_to,
+      modal: true
     );
 
-    this.thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
     this.contact = contact;
 
     // Load the current avatar
@@ -92,14 +83,10 @@ public class Contacts.AvatarDialog : Dialog {
     }
     this.current_avatar.set_hexpand (false);
     this.current_avatar.show ();
-    this.grid.attach (this.current_avatar, 0, 0);
+    /* this.grid.attach (this.current_avatar, 0, 0); */
 
-    if (contact != null)
-      this.contact_name_label.label = contact.display_name;
 
 #if HAVE_CHEESE
-    this.webcam_button_box.show ();
-
     // Look for camera devices.
     this.camera_monitor = new Cheese.CameraDeviceMonitor ();
     this.camera_monitor.added.connect ( () => {
@@ -125,9 +112,6 @@ public class Contacts.AvatarDialog : Dialog {
     this.photobooth_page.show ();
 
     this.flash = new Cheese.Flash (this);
-#else
-    // Don't show the camera button
-    this.webcam_button_box.hide ();
 #endif
 
     this.views_stack.set_visible_child_name ("thumbnail-page");
@@ -141,7 +125,7 @@ public class Contacts.AvatarDialog : Dialog {
        });
     */
 
-    update_thumbnail_grids ();
+    update_thumbnail_grid ();
   }
 
   private Gdk.Pixbuf scale_pixbuf_for_avatar_use (Gdk.Pixbuf pixbuf) {
@@ -189,25 +173,14 @@ public class Contacts.AvatarDialog : Dialog {
     return null;
   }
 
-  private ContactFrame? frame_for_filename (string filename) {
-    ContactFrame? image_frame = null;
-    try {
-      var pixbuf = new Gdk.Pixbuf.from_file (filename);
-      return create_frame (pixbuf);
-    } catch {
-    }
-    return image_frame;
-  }
-
   private void selected_pixbuf (Gdk.Pixbuf pixbuf) {
     var p = pixbuf.scale_simple (MAIN_SIZE, MAIN_SIZE, Gdk.InterpType.HYPER);
     this.current_avatar.set_pixbuf (p);
 
     this.new_pixbuf = pixbuf;
-    set_response_sensitive (ResponseType.OK, true);
   }
 
-  private void update_thumbnail_grids () {
+  private void update_thumbnail_grid () {
     if (this.contact != null) {
       foreach (var p in contact.individual.personas) {
         ContactFrame? frame = frame_for_persona (p);
@@ -216,14 +189,6 @@ public class Contacts.AvatarDialog : Dialog {
       }
     }
     this.personas_thumbnail_grid.show_all ();
-
-    var stock_files = Utils.get_stock_avatars ();
-    foreach (var file_name in stock_files) {
-      ContactFrame? frame = frame_for_filename (file_name);
-      if (frame != null)
-        this.stock_thumbnail_grid.add (frame);
-    }
-    this.stock_thumbnail_grid.show_all ();
   }
 
   public void update_preview (FileChooser chooser) {
@@ -240,8 +205,9 @@ public class Contacts.AvatarDialog : Dialog {
         if (file_info != null) {
           var mime_type = file_info.get_content_type ();
 
-          if (mime_type != null)
-            pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
+              //XXX FIXME do this without gnome-desktop pls
+          /* if (mime_type != null) */
+          /*   pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type); */
         }
       } catch (GLib.Error e) {
       }
@@ -271,30 +237,30 @@ public class Contacts.AvatarDialog : Dialog {
     this.views_stack.set_visible_child_name ("crop-page");
   }
 
-  public override void response (int response_id) {
-    if (response_id == ResponseType.OK && this.new_pixbuf != null) {
-      try {
-        uint8[] buffer;
-        if (this.new_pixbuf.save_to_buffer (out buffer, "png", null)) {
-          var icon = new BytesIcon (new Bytes (buffer));
-          set_avatar (icon);
-        } else {
-          /* Failure. Fall through. */
-        }
-      } catch {
-      }
-    }
+  /* public override void response (int response_id) {*/
+  /*   if (response_id == ResponseType.OK && this.new_pixbuf != null) {*/
+  /*     try {*/
+  /*       uint8[] buffer;*/
+  /*       if (this.new_pixbuf.save_to_buffer (out buffer, "png", null)) {*/
+  /*         var icon = new BytesIcon (new Bytes (buffer));*/
+  /*         set_avatar (icon);*/
+  /*       } else {*/
+           /* Failure. Fall through. */
+  /*       }*/
+  /*     } catch {*/
+  /*     }*/
+  /*   }*/
 
-#if HAVE_CHEESE
-    /* Ensure the Vala garbage collector disposes of the Cheese widget.
-     * This prevents the 'Device or resource busy' warnings, see:
-     *   https://bugzilla.gnome.org/show_bug.cgi?id=700959
-     */
-    this.cheese = null;
-#endif
+/* #if HAVE_CHEESE*/
+     /* Ensure the Vala garbage collector disposes of the Cheese widget.
+      * This prevents the 'Device or resource busy' warnings, see:
+      *   https://bugzilla.gnome.org/show_bug.cgi?id=700959
+      */
+  /*   this.cheese = null;*/
+/* #endif*/
 
-    this.destroy ();
-  }
+  /*   this.destroy ();*/
+  /* }*/
 
   [GtkCallback]
   private void select_avatar_file_cb (Button button) {
@@ -332,7 +298,7 @@ public class Contacts.AvatarDialog : Dialog {
           else
             selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
 
-          update_thumbnail_grids ();
+          update_thumbnail_grid ();
         } catch {
         }
 

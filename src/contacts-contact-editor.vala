@@ -978,23 +978,23 @@ public class Contacts.ContactEditor : Grid {
     this.container_grid.attach (this.avatar_frame, 0, 0, 1, 3);
   }
 
-  // Show the avatar dialog when the avatar is clicked
+  // Show the avatar popover when the avatar is clicked
   private void on_avatar_frame_clicked () {
-    var dialog = new AvatarDialog ((Window) get_toplevel (), this.contact);
-    dialog.set_avatar.connect ( (icon) =>  {
-        this.avatar_frame.set_data ("value", icon);
-        this.avatar_frame.set_data ("changed", true);
+    var popover = new AvatarPopover (this.avatar_frame, this.contact);
+    /* dialog.set_avatar.connect ( (icon) =>  { */
+    /*     this.avatar_frame.set_data ("value", icon); */
+    /*     this.avatar_frame.set_data ("changed", true); */
 
-        Gdk.Pixbuf? a_pixbuf = null;
-        try {
-          var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null);
-          a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, PROFILE_SIZE, PROFILE_SIZE, true);
-        } catch {
-        }
+    /*     Gdk.Pixbuf? a_pixbuf = null; */
+    /*     try { */
+    /*       var stream = (icon as LoadableIcon).load (PROFILE_SIZE, null); */
+    /*       a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, PROFILE_SIZE, PROFILE_SIZE, true); */
+    /*     } catch { */
+    /*     } */
 
-        this.avatar_frame.set_pixbuf (a_pixbuf);
-      });
-    dialog.run ();
+    /*     this.avatar_frame.set_pixbuf (a_pixbuf); */
+    /*   }); */
+    popover.show ();
   }
 
   public bool avatar_changed () {
