@@ -118,7 +118,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     view_switcher.visible_child_name = "content-view";
 
-    init_content_widgets ();
+    set_headerbar_layout ();
+    connect_button_signals ();
   }
 
   private void create_contact_pane () {
@@ -270,18 +271,18 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane.filter_entry.set_text (query);
   }
 
-  /* internal API */
-  void init_content_widgets () {
-    string layout_desc;
-    string[] tokens;
-
-    layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
-    tokens = layout_desc.split (":", 2);
+  private void set_headerbar_layout () {
+    // Propagate the decoration layout to the separate headerbars, so
+    // that we know, for example, on which side the close button should be.
+    string layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
+    string[] tokens = layout_desc.split (":", 2);
     if (tokens != null) {
-      right_header.decoration_layout = ":%s".printf (tokens[1]);
-      left_header.decoration_layout = tokens[0];
+      this.right_header.decoration_layout = ":%s".printf (tokens[1]);
+      this.left_header.decoration_layout = tokens[0];
     }
+  }
 
+  private void connect_button_signals () {
     this.select_button.clicked.connect (() => activate_selection_mode (true));
     this.select_cancel_button.clicked.connect (() => activate_selection_mode (false));
     this.edit_button.clicked.connect (() => enter_edit_mode ());
