@@ -55,16 +55,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private ListPane list_pane;
   private ContactPane contact_pane;
 
-  private string left_title {
-    get { return this.left_header.title ; }
-    set { this.left_header.title = value; }
-  }
-
-  private string right_title {
-    get { return this.right_header.title ; }
-    set { this.right_header.title = value; }
-  }
-
   private bool new_contact_mode = false;
 
   public Store store {
@@ -152,12 +142,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane.delete_contacts.connect (list_pane_delete_contacts_cb);
 
     list_pane.contacts_marked.connect ((nr_contacts) => {
-	if (nr_contacts == 0) {
-	  left_title = _("Select");
-	} else {
-	  left_title = ngettext ("%d Selected",
-				 "%d Selected", nr_contacts).printf (nr_contacts);
-	}
+        if (nr_contacts == 0)
+          this.left_header.title = _("Select");
+        else
+          this.left_header.title = ngettext ("%d Selected", "%d Selected", nr_contacts)
+                                       .printf (nr_contacts);
       });
 
     left_pane_size_group.add_widget (list_pane);
@@ -205,7 +194,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     edit_mode = true;
 
     var name = this.contact_pane.contact.display_name;
-    right_title = _("Editing %s").printf (name);
+    this.right_header.title = _("Editing %s").printf (name);
 
     left_header.get_style_context ().add_class ("selection-mode");
     right_header.get_style_context ().add_class ("selection-mode");
@@ -233,9 +222,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
 
     if (this.contact_pane.contact != null) {
-      right_title = this.contact_pane.contact.display_name;
+      this.right_header.title = this.contact_pane.contact.display_name;
     } else {
-      right_title = "";
+      this.right_header.title = "";
       edit_button.hide ();
     }
   }
@@ -254,11 +243,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (list_pane != null)
       list_pane.select_contact (c);
 
-    /* clearing right_header */
-    if (c != null)
-      right_title = c.display_name;
-    else
-      right_title = "";
+    // clearing right_header
+    this.right_header.title = (c != null)? c.display_name : "";
 
     edit_button.visible = (c != null) && !this.selection_mode;
   }
@@ -270,7 +256,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     edit_mode = true;
     new_contact_mode = true;
 
-    right_title = _("New Contact");
+    this.right_header.title = _("New Contact");
 
     left_header.get_style_context ().add_class ("selection-mode");
     right_header.get_style_context ().add_class ("selection-mode");
