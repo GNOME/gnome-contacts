@@ -55,17 +55,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private ListPane list_pane;
   private ContactPane contact_pane;
 
-  private bool new_contact_mode = false;
-
   public Store store {
     get; construct set;
   }
 
   private bool selection_mode = false;
-
-  public bool edit_mode {
-    get; set;
-  }
+  private bool editing_new_contact = false;
 
   public Window (App app, Store contacts_store, Settings settings) {
     Object (
@@ -74,30 +69,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       store: contacts_store
     );
     debug ("everyone creation: finalized already!!!");
-
-    /* stablishing constraints */
-    this.bind_property ("edit-mode",
-			edit_button, "visible",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
-    this.bind_property ("edit-mode",
-			done_button, "visible",
-			BindingFlags.DEFAULT);
-    this.bind_property ("edit-mode",
-			cancel_button, "visible",
-			BindingFlags.DEFAULT);
-    this.bind_property ("edit-mode",
-			add_button, "visible",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
-    this.bind_property ("edit-mode",
-			select_button, "visible",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
-    this.bind_property ("edit-mode",
-			right_header, "show-close-button",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
 
     create_contact_pane ();
 
@@ -179,28 +150,40 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  public void enter_edit_mode () {
+  private void activate_edit_mode (bool active) {
+    this.done_button.visible = active;
+    this.cancel_button.visible = active;
+
+    this.edit_button.visible = !active;
+    this.add_button.visible = !active;
+    this.select_button.visible = !active;
+    this.right_header.show_close_button = !active;
+
+    if (active) {
+      left_header.get_style_context ().add_class ("selection-mode");
+      right_header.get_style_context ().add_class ("selection-mode");
+    } else {
+      left_header.get_style_context ().remove_class ("selection-mode");
+      right_header.get_style_context ().remove_class ("selection-mode");
+    }
+  }
+
+  private void edit_contact () {
     if (this.contact_pane.contact == null)
       return;
 
-    edit_mode = true;
+    activate_edit_mode (true);
 
     var name = this.contact_pane.contact.display_name;
     this.right_header.title = _("Editing %s").printf (name);
 
-    left_header.get_style_context ().add_class ("selection-mode");
-    right_header.get_style_context ().add_class ("selection-mode");
-
     this.contact_pane.set_edit_mode (true);
   }
 
-  public void leave_edit_mode (bool drop_changes = false) {
-    edit_mode = false;
+  private void leave_edit_mode (bool drop_changes = false) {
+    activate_edit_mode (false);
 
-    left_header.get_style_context ().remove_class ("selection-mode");
-    right_header.get_style_context ().remove_class ("selection-mode");
-
-    if (new_contact_mode) {
+    if (this.editing_new_contact) {
       done_button.label = _("Done");
 
       if (drop_changes) {
@@ -208,7 +191,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       } else {
         this.contact_pane.create_contact.begin ();
       }
-      new_contact_mode = false;
+      this.editing_new_contact = false;
     } else {
       this.contact_pane.set_edit_mode (false, drop_changes);
     }
@@ -245,15 +228,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void new_contact () {
     /* FIXME: eventually ContactPane will become just a skeleton and
      * this call will go through to ContactEditor */
-    edit_mode = true;
-    new_contact_mode = true;
+    activate_edit_mode (true);
+    this.editing_new_contact = true;
 
     this.right_header.title = _("New Contact");
-
-    left_header.get_style_context ().add_class ("selection-mode");
-    right_header.get_style_context ().add_class ("selection-mode");
-
-    done_button.label = _("Add");
+    this.done_button.label = _("Add");
 
     this.contact_pane.new_contact ();
   }
@@ -276,7 +255,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private void connect_button_signals () {
     this.select_button.clicked.connect (() => activate_selection_mode (true));
     this.select_cancel_button.clicked.connect (() => activate_selection_mode (false));
-    this.edit_button.clicked.connect (() => enter_edit_mode ());
+    this.edit_button.clicked.connect (() => edit_contact ());
     this.done_button.clicked.connect (() => leave_edit_mode ());
     this.cancel_button.clicked.connect (() => leave_edit_mode (true));
   }
