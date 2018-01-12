@@ -129,20 +129,19 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.edit_button.visible = !active;
     this.right_header.show_close_button = !active;
 
+    this.list_pane.activate_selection_mode (active);
+
     if (active) {
       left_header.get_style_context ().add_class ("selection-mode");
       right_header.get_style_context ().add_class ("selection-mode");
 
       left_header.set_title (_("Select"));
 
-      list_pane.show_selection ();
     } else {
       left_header.get_style_context ().remove_class ("selection-mode");
       right_header.get_style_context ().remove_class ("selection-mode");
 
       left_header.set_title (_("All Contacts"));
-
-      list_pane.hide_selection ();
 
       /* could be no contact selected whatsoever */
       if (this.contact_pane.contact == null)

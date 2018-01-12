@@ -84,14 +84,13 @@ public class Contacts.ListPane : Frame {
     ignore_selection_change = false;
   }
 
-  public void show_selection () {
-    this.contacts_list.show_selectors ();
-    actions_bar.show ();
-  }
+  public void activate_selection_mode (bool active) {
+    if (active)
+      this.contacts_list.show_selectors ();
+    else
+      this.contacts_list.hide_selectors ();
 
-  public void hide_selection () {
-    this.contacts_list.hide_selectors ();
-    actions_bar.hide ();
+    this.actions_bar.visible = active;
   }
 
   [GtkCallback]
