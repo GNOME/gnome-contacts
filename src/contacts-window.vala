@@ -61,9 +61,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     get; construct set;
   }
 
-  public bool selection_mode {
-    get; set;
-  }
+  private bool selection_mode = false;
 
   public bool edit_mode {
     get; set;
@@ -78,19 +76,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     debug ("everyone creation: finalized already!!!");
 
     /* stablishing constraints */
-    this.bind_property ("selection-mode",
-			right_header, "show-close-button",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
-    this.bind_property ("selection-mode",
-			add_button, "visible",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
-    this.bind_property ("selection-mode",
-			edit_button, "visible",
-			BindingFlags.DEFAULT |
-			BindingFlags.INVERT_BOOLEAN);
-
     this.bind_property ("edit-mode",
 			edit_button, "visible",
 			BindingFlags.DEFAULT |
@@ -164,8 +149,14 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public void activate_selection_mode (bool active) {
     this.selection_mode = active;
-    this.select_button.visible = !active;
+
+    // Show some buttons when selecting (and vice versa)
     this.select_cancel_button.visible = active;
+    // and hide some
+    this.select_button.visible = !active;
+    this.add_button.visible = !active;
+    this.edit_button.visible = !active;
+    this.right_header.show_close_button = !active;
 
     if (active) {
       left_header.get_style_context ().add_class ("selection-mode");
