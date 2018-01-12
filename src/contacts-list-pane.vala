@@ -43,43 +43,12 @@ public class Contacts.ListPane : Frame {
   [GtkChild]
   public ActionBar actions_bar;
 
-  private uint filter_entry_changed_id;
   private bool ignore_selection_change;
 
   public signal void selection_changed (Contact? contact);
-
   public signal void link_contacts (LinkedList<Contact> contacts);
   public signal void delete_contacts (LinkedList<Contact> contacts);
-
   public signal void contacts_marked (int contacts_marked);
-
-  public void refilter () {
-    string []? values;
-    string str = filter_entry.get_text ();
-
-    if (Utils.string_is_empty (str))
-      values = null;
-    else {
-      str = Utils.canonicalize_for_search (str);
-      values = str.split(" ");
-    }
-
-    this.contacts_list.set_filter_values (values);
-  }
-
-  private bool filter_entry_changed_timeout () {
-    filter_entry_changed_id = 0;
-    refilter ();
-    return false;
-  }
-
-  [GtkCallback]
-  private void filter_entry_changed (Editable editable) {
-    if (filter_entry_changed_id != 0)
-      Source.remove (filter_entry_changed_id);
-
-    filter_entry_changed_id = Timeout.add (300, filter_entry_changed_timeout);
-  }
 
   public ListPane (Store contacts_store) {
     this.store = contacts_store;
@@ -98,6 +67,17 @@ public class Contacts.ListPane : Frame {
         this.link_button.sensitive = (nr_contacts_marked > 1);
         contacts_marked (nr_contacts_marked);
       });
+  }
+
+  [GtkCallback]
+  private void filter_entry_changed (Editable editable) {
+    if (Utils.string_is_empty (this.filter_entry.text)) {
+      this.contacts_list.set_filter_values (null);
+      return;
+    }
+
+    var str = Utils.canonicalize_for_search (this.filter_entry.text);
+    this.contacts_list.set_filter_values (str.split(" "));
   }
 
   public void select_contact (Contact? contact, bool ignore_change = false) {
