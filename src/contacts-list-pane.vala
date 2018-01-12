@@ -29,19 +29,16 @@ public class Contacts.ListPane : Frame {
   private ContactList contacts_list;
 
   [GtkChild]
-  public ToolItem search_tool_item;
-
-  [GtkChild]
   public SearchEntry filter_entry;
 
   [GtkChild]
-  public Button link_button;
+  private Button link_button;
 
   [GtkChild]
-  public Button delete_button;
+  private Button delete_button;
 
   [GtkChild]
-  public ActionBar actions_bar;
+  private ActionBar actions_bar;
 
   private bool ignore_selection_change;
 
