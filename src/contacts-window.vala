@@ -48,9 +48,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Button done_button;
 
-  [GtkChild]
-  private Stack view_switcher;
-
   // The 2 panes the window consists of
   private ListPane list_pane;
   private ContactPane contact_pane;
@@ -71,8 +68,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     debug ("everyone creation: finalized already!!!");
 
     create_contact_pane ();
-
-    view_switcher.visible_child_name = "content-view";
 
     set_headerbar_layout ();
     connect_button_signals ();
