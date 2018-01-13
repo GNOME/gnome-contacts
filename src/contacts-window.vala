@@ -69,7 +69,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       show_menubar: false,
       store: contacts_store
     );
-    debug ("everyone creation: finalized already!!!");
 
     create_contact_pane ();
     set_headerbar_layout ();
