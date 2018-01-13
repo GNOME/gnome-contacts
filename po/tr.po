@@ -7,15 +7,15 @@
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Necdet Yücel <necdetyucel@gmail.com>, 2015.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-20 14:50+0000\n"
-"PO-Revision-Date: 2017-09-05 07:42+0300\n"
+"POT-Creation-Date: 2018-01-02 16:20+0000\n"
+"PO-Revision-Date: 2018-01-09 01:01+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -43,10 +43,10 @@ msgid ""
 "aggregates the details from all your sources providing a centralized place "
 "for managing your contacts."
 msgstr ""
-"Kişiler uygulaması kişilerinizin bilgilerini saklar ve organize eder. "
-"Kişileriniz hakkındaki bilgileri oluşturabilir, düzenleyebilir, silebilir ve "
-"birbirine bağlayabilirsiniz. Kişiler uygulaması tüm kaynaklarınızdaki "
-"bilgileri birleştirerek tek bir yerden yönetmenize olanak sağlar."
+"Kişiler uygulaması kişilerinizin bilgilerini saklar ve düzenler. Kişileriniz "
+"hakkındaki bilgileri oluşturabilir, düzenleyebilir, silebilir ve birbirine "
+"bağlayabilirsiniz. Kişiler uygulaması tüm kaynaklarınızdaki bilgileri "
+"birleştirerek tek bir yerden yönetmenize olanak sağlar."
 
 #: data/org.gnome.Contacts.appdata.xml.in:15
 msgid ""
@@ -63,41 +63,83 @@ msgstr "arkadaşlar;adres defteri;"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Contacts.desktop.in:8
-#| msgid "Contacts"
 msgid "gnome-contacts"
 msgstr "gnome-contacts"
 
-#: data/ui/app-menu.ui:6
+#: data/gtk/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+#: data/gtk/help-overlay.ui:14
+#| msgid "_Help"
+msgctxt "shortcut window"
+msgid "Help"
+msgstr "Yardım"
+
+#: data/gtk/help-overlay.ui:21
+#| msgid "Select a contact"
+msgctxt "shortcut window"
+msgid "Create a new contact"
+msgstr "Yeni kişi oluştur"
+
+#: data/gtk/help-overlay.ui:28
+#| msgid "March"
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Ara"
+
+#: data/gtk/help-overlay.ui:35
+msgctxt "shortcut window"
+msgid "Shortcut list"
+msgstr "Kısayol listesi"
+
+#: data/gtk/help-overlay.ui:42
+#| msgid "_Quit"
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Çık"
+
+#: data/gtk/menus.ui:6
 msgid "_Change Address Book…"
 msgstr "Adres Defterini _Değiştir…"
 
-#: data/ui/app-menu.ui:12
+#: data/gtk/menus.ui:12
+msgid "Keyboard Shortcuts"
+msgstr "Klavye Kısayolları"
+
+#: data/gtk/menus.ui:16
 msgid "_Help"
 msgstr "_Yardım"
 
-#: data/ui/app-menu.ui:16
+#: data/gtk/menus.ui:20
 msgid "_About"
 msgstr "_Hakkında"
 
-#: data/ui/app-menu.ui:20
+#: data/gtk/menus.ui:24
 msgid "_Quit"
 msgstr "_Çık"
+
+#: data/ui/contacts-accounts-list.ui:35
+#| msgid "Online Accounts"
+msgid "Online Accounts Settings"
+msgstr "Çevrim İçi Hesaplar Ayarları"
 
 #: data/ui/contacts-avatar-dialog.ui:6
 msgid "Select Picture"
 msgstr "Resim Seç"
 
-#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:320
+#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:273
 msgid "New Contact"
 msgstr "Yeni Kişi"
 
-#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:202
-#: src/contacts-window.vala:228
+#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:156
+#: src/contacts-window.vala:184
 msgid "Select"
 msgstr "Seç"
 
-#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:245
-#: data/ui/contacts-window.ui:303 src/contacts-app.vala:69
+#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:82
+#: data/ui/contacts-window.ui:104 src/contacts-app.vala:117
 msgid "Cancel"
 msgstr "Vazgeç"
 
@@ -122,17 +164,17 @@ msgid "Work phone"
 msgstr "İş telefonu"
 
 #: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:574
-#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:192
+#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:199
 msgid "Website"
 msgstr "Web Sitesi"
 
 #: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:600
-#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:198
+#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:205
 msgid "Nickname"
 msgstr "Takma ad"
 
 #: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:633
-#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:205
+#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:212
 msgid "Birthday"
 msgstr "Doğum Günü"
 
@@ -153,7 +195,7 @@ msgid "New Detail"
 msgstr "Yeni Ayrıntı"
 
 #: data/ui/contacts-contact-editor.ui:100
-#: src/contacts-linked-accounts-dialog.vala:36
+#: src/contacts-linked-accounts-dialog.vala:40
 msgid "Linked Accounts"
 msgstr "Bağlı Hesaplar"
 
@@ -165,69 +207,83 @@ msgstr "Kişiyi Sil"
 msgid "Select a contact"
 msgstr "Bir kişi seçin"
 
+#: data/ui/contacts-link-suggestion-grid.ui:56
+#| msgid "Contacts"
+msgid "Link Contacts"
+msgstr "Kişileri Bağla"
+
 #: data/ui/contacts-list-pane.ui:33
 msgid "Type to search"
 msgstr "Aramak için yaz"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-list-pane.ui:80
+#: data/ui/contacts-list-pane.ui:74
 msgid "Link"
-msgstr "Bağlantı"
+msgstr "Bağla"
 
-#: data/ui/contacts-list-pane.ui:93
+#: data/ui/contacts-list-pane.ui:88
 msgid "Remove"
 msgstr "Kaldır"
 
-#: data/ui/contacts-window.ui:83
-msgid "Loading"
-msgstr "Yükleniyor"
+#: data/ui/contacts-setup-window.ui:13
+#| msgid "Contacts"
+msgid "Contacts Setup"
+msgstr "Kişiler Kurulumu"
 
-#: data/ui/contacts-window.ui:122
-msgid ""
-"New contacts will be added to the selected address book. You are able to "
-"view and edit contacts from other address books."
-msgstr ""
-"Yeni kişiler seçili adres defterine eklenecek. Başka adres defterlerini "
-"görüntüleyebilir ve düzenleme yapabilirsiniz."
+#: data/ui/contacts-setup-window.ui:22
+#| msgid "_Quit"
+msgid "Quit"
+msgstr "Çık"
 
-#: data/ui/contacts-window.ui:167 src/contacts-window.vala:237
-msgid "All Contacts"
-msgstr "Tüm Kişiler"
+#: data/ui/contacts-setup-window.ui:26
+#| msgid "Cancel setup"
+msgid "Cancel setup and quit"
+msgstr "Kurulumu iptal et ve çık"
 
-#: data/ui/contacts-window.ui:182
-msgid "Add contact"
-msgstr "Kişi ekle"
-
-#: data/ui/contacts-window.ui:210
-msgid "Selection mode"
-msgstr "Seçim kipi"
-
-#: data/ui/contacts-window.ui:261
-msgid "Edit"
-msgstr "Düzenle"
-
-#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
-#: src/contacts-window.vala:269
+#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:136
+#: src/contacts-window.vala:223
 msgid "Done"
 msgstr "Tamam"
 
-#: data/ui/contacts-window.ui:294
-msgid "Select Address Book"
-msgstr "Adres Defterini Seç"
-
-#: data/ui/contacts-window.ui:306
-msgid "Cancel setup"
-msgstr "Kurulumu iptal et"
-
-#: data/ui/contacts-window.ui:326
+#: data/ui/contacts-setup-window.ui:43
 msgid "Setup complete"
 msgstr "Kurulum tamamlandı"
 
-#: src/contacts-accounts-list.vala:48
-msgid "Online Accounts"
-msgstr "Çevrim İçi Hesaplar"
+#: data/ui/contacts-setup-window.ui:69
+msgid "Welcome"
+msgstr "Hoş Geldiniz"
 
-#: src/contacts-accounts-list.vala:174 src/contacts-esd-setup.c:241
+#: data/ui/contacts-setup-window.ui:81
+msgid ""
+"Please select your main address book: this is where new contacts will be "
+"added. If you keep your contacts in an online account, you can add them "
+"using the online accounts settings."
+msgstr ""
+"Lütfen ana adres defterinizi seçin: bu, yeni kişilerin ekleneceği yerdir. "
+"Eğer kişilerinizi çevrim içi hesapta tutuyorsanız, çevrim içi hesaplar "
+"ayarlarını kullanarak onları ekleyebilirsiniz."
+
+#: data/ui/contacts-window.ui:21 src/contacts-window.vala:191
+msgid "All Contacts"
+msgstr "Tüm Kişiler"
+
+#: data/ui/contacts-window.ui:36
+msgid "Add contact"
+msgstr "Kişi ekle"
+
+#: data/ui/contacts-window.ui:62
+msgid "Selection mode"
+msgstr "Seçim kipi"
+
+#: data/ui/contacts-window.ui:120
+msgid "Edit"
+msgstr "Düzenle"
+
+#: data/ui/contacts-window.ui:208
+msgid "Loading"
+msgstr "Yükleniyor"
+
+#: src/contacts-accounts-list.vala:144 src/contacts-esd-setup.c:241
 msgid "Local Address Book"
 msgstr "Yerel Adres Defteri"
 
@@ -235,24 +291,36 @@ msgstr "Yerel Adres Defteri"
 msgid "Install GNOME Maps to open location."
 msgstr "Konumu açmak için GNOME Haritalar’ı yükleyin."
 
-#: src/contacts-app.vala:53
+#: src/contacts-app.vala:40
+msgid "Show contact with this individual id"
+msgstr "Bu bireysel kimliğe sahip kişiyi göster"
+
+#: src/contacts-app.vala:41
+msgid "Show contact with this email address"
+msgstr "Bu e-posta adresine sahip kişiyi göster"
+
+#: src/contacts-app.vala:43
+msgid "Show the current version of Contacts"
+msgstr "Kişiler’in şimdiki sürümünü göster"
+
+#: src/contacts-app.vala:101
 #, c-format
 msgid "No contact with id %s found"
 msgstr "%s adlı kişi bulunamadı"
 
-#: src/contacts-app.vala:54 src/contacts-app.vala:154
+#: src/contacts-app.vala:102 src/contacts-app.vala:203
 msgid "Contact not found"
 msgstr "Kişi bulanamadı"
 
-#: src/contacts-app.vala:63
+#: src/contacts-app.vala:111
 msgid "Change Address Book"
 msgstr "Adres Defterini Değiştir"
 
-#: src/contacts-app.vala:68
+#: src/contacts-app.vala:116
 msgid "Change"
 msgstr "Değiştir"
 
-#: src/contacts-app.vala:78
+#: src/contacts-app.vala:126
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -260,40 +328,28 @@ msgstr ""
 "Yeni kişiler seçili adres defterine eklenecek.\n"
 "Başka adres defterlerini görüntüleyebilir ve düzenleme yapabilirsiniz."
 
-#: src/contacts-app.vala:133
+#: src/contacts-app.vala:182
 msgid "translator-credits"
 msgstr ""
 "Muhammet Kara <muhammetk@gmail.com>\n"
 "Osman Karagöz <osmank3@gmail.com>"
 
-#: src/contacts-app.vala:134
+#: src/contacts-app.vala:183
 msgid "GNOME Contacts"
 msgstr "GNOME Kişiler"
 
-#: src/contacts-app.vala:135
+#: src/contacts-app.vala:184
 msgid "About GNOME Contacts"
 msgstr "GNOME Kişiler Hakkında"
 
-#: src/contacts-app.vala:136
+#: src/contacts-app.vala:185
 msgid "Contact Management Application"
 msgstr "Kişi Yönetimi Uygulaması"
 
-#: src/contacts-app.vala:153
+#: src/contacts-app.vala:202
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "E-posta adresi %s olan kişi bulunamadı"
-
-#: src/contacts-app.vala:299
-msgid "Show contact with this individual id"
-msgstr "Bu bireysel kimliğe sahip kişiyi göster"
-
-#: src/contacts-app.vala:301
-msgid "Show contact with this email address"
-msgstr "Bu e-posta adresine sahip kişiyi göster"
-
-#: src/contacts-app.vala:310
-msgid "— contact management"
-msgstr "— kişi yönetimi"
 
 #: src/contacts-avatar-dialog.vala:301
 msgid "Browse for more pictures"
@@ -350,7 +406,7 @@ msgid "Delete field"
 msgstr "Alanı sil"
 
 #: src/contacts-contact-editor.vala:655 src/contacts-contact-editor.vala:662
-#: src/contacts-contact-sheet.vala:212
+#: src/contacts-contact-sheet.vala:219
 msgid "Note"
 msgstr "Not"
 
@@ -358,150 +414,136 @@ msgstr "Not"
 msgid "Add name"
 msgstr "Ad ekle"
 
-#: src/contacts-contact-frame.vala:40
+#: src/contacts-contact-frame.vala:38
 msgid "Change avatar"
 msgstr "Avatar değiştir"
 
-#: src/contacts-contact-pane.vala:144
-#, c-format
-msgid "Does %s from %s belong here?"
-msgstr "%2$s’den %1$s’in yeri burası mı?"
+#: src/contacts-contact-list.vala:122
+msgid "No results matched search"
+msgstr "Aramanızla eşleşen sonuç yok"
 
-#: src/contacts-contact-pane.vala:146
-#, c-format
-msgid "Do these details belong to %s?"
-msgstr "Bu ayrıntılar %s’e mi ait?"
-
-#: src/contacts-contact-pane.vala:158
-msgid "Yes"
-msgstr "Evet"
-
-#: src/contacts-contact-pane.vala:159
-msgid "No"
-msgstr "Hayır"
-
-#: src/contacts-contact-pane.vala:410
+#: src/contacts-contact-pane.vala:350
 msgid "You need to enter some data"
-msgstr "Bazı veriler girmeniz gerekir"
+msgstr "Birkaç veri girmeniz gerekir"
 
-#: src/contacts-contact-pane.vala:415
+#: src/contacts-contact-pane.vala:355
 msgid "No primary addressbook configured"
 msgstr "Yapılandırılmış birincil adres defteri yok"
 
-#: src/contacts-contact-pane.vala:425
+#: src/contacts-contact-pane.vala:365
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Yeni kişiler oluşturulamadı: %s"
 
-#: src/contacts-contact-pane.vala:434
+#: src/contacts-contact-pane.vala:374
 msgid "Unable to find newly created contact"
 msgstr "Yeni oluşturulan kişi bulunamadı"
 
-#: src/contacts-contact.vala:741
+#: src/contacts-contact.vala:318
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: src/contacts-contact.vala:742
+#: src/contacts-contact.vala:319
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: src/contacts-contact.vala:743
+#: src/contacts-contact.vala:320
 msgid "Facebook"
 msgstr "Facebook"
 
-#: src/contacts-contact.vala:744
+#: src/contacts-contact.vala:321
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: src/contacts-contact.vala:745
+#: src/contacts-contact.vala:322
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: src/contacts-contact.vala:746
+#: src/contacts-contact.vala:323
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: src/contacts-contact.vala:747
+#: src/contacts-contact.vala:324
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: src/contacts-contact.vala:748
+#: src/contacts-contact.vala:325
 msgid "ICQ"
 msgstr "ICQ"
 
-#: src/contacts-contact.vala:749
+#: src/contacts-contact.vala:326
 msgid "IRC"
 msgstr "IRC"
 
-#: src/contacts-contact.vala:750
+#: src/contacts-contact.vala:327
 msgid "Jabber"
 msgstr "Jabber"
 
-#: src/contacts-contact.vala:751
+#: src/contacts-contact.vala:328
 msgid "Local network"
 msgstr "Yerel ağ"
 
-#: src/contacts-contact.vala:752
+#: src/contacts-contact.vala:329
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: src/contacts-contact.vala:753
+#: src/contacts-contact.vala:330
 msgid "MySpace"
 msgstr "MySpace"
 
-#: src/contacts-contact.vala:754
+#: src/contacts-contact.vala:331
 msgid "MXit"
 msgstr "MXit"
 
-#: src/contacts-contact.vala:755
+#: src/contacts-contact.vala:332
 msgid "Napster"
 msgstr "Napster"
 
-#: src/contacts-contact.vala:756
+#: src/contacts-contact.vala:333
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: src/contacts-contact.vala:757
+#: src/contacts-contact.vala:334
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: src/contacts-contact.vala:758
+#: src/contacts-contact.vala:335
 msgid "SILC"
 msgstr "SILC"
 
-#: src/contacts-contact.vala:759
+#: src/contacts-contact.vala:336
 msgid "sip"
 msgstr "sip"
 
-#: src/contacts-contact.vala:760
+#: src/contacts-contact.vala:337
 msgid "Skype"
 msgstr "Skype"
 
-#: src/contacts-contact.vala:761
+#: src/contacts-contact.vala:338
 msgid "Telephony"
 msgstr "Telephony"
 
-#: src/contacts-contact.vala:762
+#: src/contacts-contact.vala:339
 msgid "Trepia"
 msgstr "Trepia"
 
-#: src/contacts-contact.vala:763 src/contacts-contact.vala:764
+#: src/contacts-contact.vala:340 src/contacts-contact.vala:341
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: src/contacts-contact.vala:765
+#: src/contacts-contact.vala:342
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-contact.vala:1070
+#: src/contacts-contact.vala:565
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Beklenmeyen iç hata: oluşturulan kişi bulunamadı"
 
-#: src/contacts-contact.vala:1255
+#: src/contacts-contact.vala:749
 msgid "Google Circles"
 msgstr "Google Çevreler"
 
-#: src/contacts-contact.vala:1257 src/contacts-esd-setup.c:244
+#: src/contacts-contact.vala:751 src/contacts-esd-setup.c:244
 #: src/contacts-esd-setup.c:272
 msgid "Google"
 msgstr "Google"
@@ -510,19 +552,29 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "Yerel Kişi"
 
-#: src/contacts-linked-accounts-dialog.vala:35
+#: src/contacts-linked-accounts-dialog.vala:39
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: src/contacts-linked-accounts-dialog.vala:60
+#: src/contacts-linked-accounts-dialog.vala:62
 msgid "You can link contacts by selecting them from the contacts list"
-msgstr ""
-"Kişileri adres defterinden seçerek birbiriyle bağlantılandırabilirsiniz"
+msgstr "Kişileri adres defterinden seçerek birbirine bağlayabilirsiniz"
 
-#: src/contacts-linked-accounts-dialog.vala:104
+#: src/contacts-linked-accounts-dialog.vala:106
 msgid "Unlink"
 msgstr "Bağlantıyı çöz"
+
+#. FIXME: hack to make it actually align left.
+#: src/contacts-link-suggestion-grid.vala:56
+#, c-format
+msgid "Is this the same person as %s from %s?"
+msgstr "%2$s'deki %1$s ile bu aynı kişi mi?"
+
+#: src/contacts-link-suggestion-grid.vala:57
+#, c-format
+msgid "Is this the same person as %s?"
+msgstr "%s ile bu aynı kişi mi?"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
@@ -601,61 +653,49 @@ msgstr "Teleks"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-view.vala:192
-msgid "No results matched search"
-msgstr "Aramanızla eşleşen sonuç yok"
-
-#: src/contacts-view.vala:296
-msgid "Suggestions"
-msgstr "Öneriler"
-
-#: src/contacts-view.vala:321
-msgid "Other Contacts"
-msgstr "Diğer Kişiler"
-
-#: src/contacts-window.vala:204
+#: src/contacts-window.vala:158
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d Seçildi"
 
-#: src/contacts-window.vala:254
+#: src/contacts-window.vala:208
 #, c-format
 msgid "Editing %s"
 msgstr "%s Düzenleniyor"
 
-#: src/contacts-window.vala:325
+#: src/contacts-window.vala:278
 msgid "Add"
 msgstr "Ekle"
 
-#: src/contacts-window.vala:409
+#: src/contacts-window.vala:352
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d kişi birbiriyle bağlantılandırıldı"
 
-#: src/contacts-window.vala:413 src/contacts-window.vala:435
-#: src/contacts-window.vala:466 src/contacts-window.vala:498
+#: src/contacts-window.vala:356 src/contacts-window.vala:378
+#: src/contacts-window.vala:408 src/contacts-window.vala:439
 msgid "_Undo"
 msgstr "_Geri Al"
 
-#: src/contacts-window.vala:431
+#: src/contacts-window.vala:374
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d kişi silindi"
 
-#: src/contacts-window.vala:465
+#: src/contacts-window.vala:407
 #, c-format
 msgid "Contact deleted: “%s”"
 msgstr "Kişi silindi: “%s”"
 
-#: src/contacts-window.vala:494
+#: src/contacts-window.vala:435
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s ile %s bağlandı"
 
-#: src/contacts-window.vala:496
+#: src/contacts-window.vala:437
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s kişi ile bağlandı"
@@ -665,18 +705,48 @@ msgid "First-time setup done."
 msgstr "İlk kurulum tamamlandı."
 
 #: src/org.gnome.Contacts.gschema.xml:6
-msgid "Set to true when the user ran the first-time setup wizard."
+#| msgid "Set to true when the user ran the first-time setup wizard."
+msgid "Set to true after the user has run the first-time setup wizard."
 msgstr ""
-"Kullanıcı ilk kurulum sihirbazını çalıştırdığı zaman doğru (true) olarak "
-"ayarlandı."
+"Kullanıcı ilk kurum sihirbazını çalıştırdıktan sonra doğru (true) olarak "
+"ayarla."
 
-#: src/org.gnome.Contacts.gschema.xml:10
-msgid "View subset"
-msgstr "Altkümeyi görüntüle"
+#~ msgid ""
+#~ "New contacts will be added to the selected address book. You are able to "
+#~ "view and edit contacts from other address books."
+#~ msgstr ""
+#~ "Yeni kişiler seçili adres defterine eklenecek. Başka adres defterlerini "
+#~ "görüntüleyebilir ve düzenleme yapabilirsiniz."
 
-#: src/org.gnome.Contacts.gschema.xml:11
-msgid "View contacts subset"
-msgstr "Altkümedeki kişileri görüntüle"
+#~ msgid "Select Address Book"
+#~ msgstr "Adres Defterini Seç"
+
+#~ msgid "— contact management"
+#~ msgstr "— kişi yönetimi"
+
+#~ msgid "Does %s from %s belong here?"
+#~ msgstr "%2$s’den %1$s’in yeri burası mı?"
+
+#~ msgid "Do these details belong to %s?"
+#~ msgstr "Bu ayrıntılar %s’e mi ait?"
+
+#~ msgid "Yes"
+#~ msgstr "Evet"
+
+#~ msgid "No"
+#~ msgstr "Hayır"
+
+#~ msgid "Suggestions"
+#~ msgstr "Öneriler"
+
+#~ msgid "Other Contacts"
+#~ msgstr "Diğer Kişiler"
+
+#~ msgid "View subset"
+#~ msgstr "Altkümeyi görüntüle"
+
+#~ msgid "View contacts subset"
+#~ msgstr "Altkümedeki kişileri görüntüle"
 
 #~| msgid "friends;address book;"
 #~ msgid "x-office-address-book"
@@ -687,9 +757,6 @@ msgstr "Altkümedeki kişileri görüntüle"
 
 #~ msgid "February"
 #~ msgstr "Şubat"
-
-#~ msgid "March"
-#~ msgstr "Mart"
 
 #~ msgid "April"
 #~ msgstr "Nisan"
