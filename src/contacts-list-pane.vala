@@ -40,8 +40,6 @@ public class Contacts.ListPane : Frame {
   [GtkChild]
   private ActionBar actions_bar;
 
-  private bool ignore_selection_change;
-
   public signal void selection_changed (Contact? contact);
   public signal void link_contacts (LinkedList<Contact> contacts);
   public signal void delete_contacts (LinkedList<Contact> contacts);
@@ -55,8 +53,7 @@ public class Contacts.ListPane : Frame {
     this.contacts_list_container.add (this.contacts_list);
 
     this.contacts_list.selection_changed.connect( (l, contact) => {
-        if (!this.ignore_selection_change)
-          selection_changed (contact);
+        selection_changed (contact);
       });
 
     this.contacts_list.contacts_marked.connect ((nr_contacts_marked) => {
@@ -77,11 +74,8 @@ public class Contacts.ListPane : Frame {
     this.contacts_list.set_filter_values (str.split(" "));
   }
 
-  public void select_contact (Contact? contact, bool ignore_change = false) {
-    if (ignore_change)
-      ignore_selection_change = true;
+  public void select_contact (Contact? contact) {
     this.contacts_list.select_contact (contact);
-    ignore_selection_change = false;
   }
 
   public void activate_selection_mode (bool active) {
