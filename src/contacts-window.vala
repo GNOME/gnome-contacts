@@ -34,7 +34,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private HeaderBar right_header;
   [GtkChild]
-  private Overlay overlay;
+  private Overlay notification_overlay;
   [GtkChild]
   private Button add_button;
   [GtkChild]
@@ -187,7 +187,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public void add_notification (InAppNotification notification) {
-    this.overlay.add_overlay (notification);
+    this.notification_overlay.add_overlay (notification);
     notification.show ();
   }
 
