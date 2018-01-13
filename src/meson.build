@@ -24,6 +24,7 @@ contacts_vala_sources = [
   'contacts-setup-window.vala',
   'contacts-store.vala',
   'contacts-types.vala',
+  'contacts-ui-state.vala',
   'contacts-utils.vala',
   'contacts-window.vala',
   'main.vala',

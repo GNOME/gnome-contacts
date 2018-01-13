@@ -52,12 +52,16 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private ListPane list_pane;
   private ContactPane contact_pane;
 
+  // We start in the normal UI state
+  private UiState _state = UiState.NORMAL;
+  public UiState state {
+    get { return this._state; }
+    set { change_ui_state (value); }
+  }
+
   public Store store {
     get; construct set;
   }
-
-  private bool selection_mode = false;
-  private bool editing_new_contact = false;
 
   public Window (App app, Store contacts_store) {
     Object (
@@ -68,7 +72,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     debug ("everyone creation: finalized already!!!");
 
     create_contact_pane ();
-
     set_headerbar_layout ();
     connect_button_signals ();
   }
@@ -113,60 +116,49 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane.show ();
   }
 
-  public void activate_selection_mode (bool active) {
-    this.selection_mode = active;
+  private void change_ui_state (UiState new_state) {
+    // UI when we're not editing of selecting stuff
+    this.add_button.visible
+        = this.right_header.show_close_button
+        = this.select_button.visible
+        = (new_state == UiState.NORMAL || new_state == UiState.SHOWING);
 
-    // Show some buttons when selecting (and vice versa)
-    this.select_cancel_button.visible = active;
-    // and hide some
-    this.select_button.visible = !active;
-    this.add_button.visible = !active;
-    this.edit_button.visible = !active;
-    this.right_header.show_close_button = !active;
+    // UI when showing a contact
+    this.edit_button.visible = (new_state == UiState.SHOWING);
 
-    this.list_pane.activate_selection_mode (active);
+    // Selecting UI
+    this.select_cancel_button.visible = (new_state == UiState.SELECTING);
+    this.list_pane.activate_selection_mode (new_state == UiState.SELECTING);
 
-    if (active) {
-      left_header.get_style_context ().add_class ("selection-mode");
-      right_header.get_style_context ().add_class ("selection-mode");
+    // Editing UI
+    this.cancel_button.visible
+        = this.done_button.visible
+        = new_state.editing ();
+    if (new_state.editing ())
+      this.done_button.label = (new_state == UiState.CREATING)? _("Add") : _("Done");
 
-      left_header.set_title (_("Select"));
+    // When selecting or editing, we get special headerbars
+    if (new_state == UiState.SELECTING || new_state.editing ()) {
+      this.left_header.get_style_context ().add_class ("selection-mode");
+      this.right_header.get_style_context ().add_class ("selection-mode");
 
+      this.left_header.title = (new_state == UiState.SELECTING)?  _("Select") : "";
     } else {
-      left_header.get_style_context ().remove_class ("selection-mode");
-      right_header.get_style_context ().remove_class ("selection-mode");
+      this.left_header.get_style_context ().remove_class ("selection-mode");
+      this.right_header.get_style_context ().remove_class ("selection-mode");
 
-      left_header.set_title (_("All Contacts"));
-
-      /* could be no contact selected whatsoever */
-      if (this.contact_pane.contact == null)
-        edit_button.hide ();
+      this.left_header.title = _("All Contacts");
     }
-  }
 
-  private void activate_edit_mode (bool active) {
-    this.done_button.visible = active;
-    this.cancel_button.visible = active;
-
-    this.edit_button.visible = !active;
-    this.add_button.visible = !active;
-    this.select_button.visible = !active;
-    this.right_header.show_close_button = !active;
-
-    if (active) {
-      left_header.get_style_context ().add_class ("selection-mode");
-      right_header.get_style_context ().add_class ("selection-mode");
-    } else {
-      left_header.get_style_context ().remove_class ("selection-mode");
-      right_header.get_style_context ().remove_class ("selection-mode");
-    }
+    // Save the result
+    this._state = new_state;
   }
 
   private void edit_contact () {
     if (this.contact_pane.contact == null)
       return;
 
-    activate_edit_mode (true);
+    this.state = UiState.UPDATING;
 
     var name = this.contact_pane.contact.display_name;
     this.right_header.title = _("Editing %s").printf (name);
@@ -174,18 +166,14 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.contact_pane.set_edit_mode (true);
   }
 
-  private void leave_edit_mode (bool drop_changes = false) {
-    activate_edit_mode (false);
-
-    if (this.editing_new_contact) {
-      done_button.label = _("Done");
+  private void stop_editing (bool drop_changes = false) {
+    if (this.state == UiState.CREATING) {
 
       if (drop_changes) {
         this.contact_pane.set_edit_mode (false, drop_changes);
       } else {
         this.contact_pane.create_contact.begin ();
       }
-      this.editing_new_contact = false;
     } else {
       this.contact_pane.set_edit_mode (false, drop_changes);
     }
@@ -194,8 +182,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       this.right_header.title = this.contact_pane.contact.display_name;
     } else {
       this.right_header.title = "";
-      edit_button.hide ();
     }
+
+    this.state = UiState.SHOWING;
   }
 
   public void add_notification (InAppNotification notification) {
@@ -206,27 +195,24 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   public void set_shown_contact (Contact? c) {
     /* FIXME: ask the user to leave edit-mode and act accordingly */
     if (this.contact_pane.on_edit_mode)
-      leave_edit_mode ();
+      stop_editing ();
+
+    this.state = (c != null)? UiState.SHOWING : UiState.NORMAL;
 
     this.contact_pane.show_contact (c, false);
     if (list_pane != null)
       list_pane.select_contact (c);
 
     // clearing right_header
-    this.right_header.title = (c != null)? c.display_name : "";
-
-    edit_button.visible = (c != null) && !this.selection_mode;
+    if (c != null)
+      this.right_header.title = c.display_name;
   }
 
   [GtkCallback]
   public void new_contact () {
-    /* FIXME: eventually ContactPane will become just a skeleton and
-     * this call will go through to ContactEditor */
-    activate_edit_mode (true);
-    this.editing_new_contact = true;
+    this.state = UiState.CREATING;
 
     this.right_header.title = _("New Contact");
-    this.done_button.label = _("Add");
 
     this.contact_pane.new_contact ();
   }
@@ -247,11 +233,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   private void connect_button_signals () {
-    this.select_button.clicked.connect (() => activate_selection_mode (true));
-    this.select_cancel_button.clicked.connect (() => activate_selection_mode (false));
+    this.select_button.clicked.connect (() => { this.state = UiState.SELECTING; });
+    this.select_cancel_button.clicked.connect (() => { this.state = UiState.NORMAL; });
     this.edit_button.clicked.connect (() => edit_contact ());
-    this.done_button.clicked.connect (() => leave_edit_mode ());
-    this.cancel_button.clicked.connect (() => leave_edit_mode (true));
+    this.done_button.clicked.connect (() => stop_editing ());
+    this.cancel_button.clicked.connect (() => stop_editing (true));
   }
 
   [GtkCallback]
@@ -293,7 +279,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);
-    activate_selection_mode (false);
 
     LinkOperation2 operation = null;
     link_contacts_list.begin (contact_list, this.store, (obj, result) => {
@@ -320,7 +305,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);
-    activate_selection_mode (false);
+    this.state == UiState.NORMAL;
 
     string msg = ngettext ("%d contact deleted",
                            "%d contacts deleted",
@@ -353,7 +338,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private void contact_pane_delete_contact_cb (Contact contact) {
     /* unsetting edit-mode */
     set_shown_contact (null);
-    activate_selection_mode (false);
 
     var msg = _("Contact deleted: “%s”").printf (contact.display_name);
     var b = new Button.with_mnemonic (_("_Undo"));
