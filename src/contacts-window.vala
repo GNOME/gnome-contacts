@@ -62,7 +62,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private bool selection_mode = false;
   private bool editing_new_contact = false;
 
-  public Window (App app, Store contacts_store, Settings settings) {
+  public Window (App app, Store contacts_store) {
     Object (
       application: app,
       show_menubar: false,
