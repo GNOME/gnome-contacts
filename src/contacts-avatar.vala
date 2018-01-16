@@ -33,6 +33,8 @@ public class Contacts.Avatar : Frame {
   public Avatar (int size, bool with_button = false) {
     this.size = size;
 
+    get_style_context ().add_class ("contacts-avatar");
+
     var image = new Image ();
     image.set_size_request (size, size);
 
@@ -49,6 +51,7 @@ public class Contacts.Avatar : Frame {
 	});
 
       this.add (button);
+      this.shadow_type = ShadowType.NONE;
     } else {
       this.add (image);
     }
@@ -56,7 +59,6 @@ public class Contacts.Avatar : Frame {
     image.show ();
     image.draw.connect (draw_image);
 
-    set_shadow_type (ShadowType.NONE);
   }
 
   public void set_pixbuf (Gdk.Pixbuf a_pixbuf) {

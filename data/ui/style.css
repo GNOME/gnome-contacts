@@ -55,29 +55,14 @@ row.contact-data-row {
   border-top-left-radius: 0;
 }
 
-.contacts-avatar-frame.frame {
- border-width: 1px 1px 1px 1px;
- border-style: solid;
- border-color: @borders;
- border-image: none;
- border-radius: 0;
- padding: 0;
-}
-
-.main-avatar-frame.frame {
- border-width: 1px;
- border-style: solid;
- border-color: @borders;
- border-radius: 6px;
-}
-
-.main-avatar-frame border {
- border-radius: 5px;
+/* Draw a border around the avatar */
+.contacts-avatar border {
+  border-radius: 5px;
 }
 
 /* Give the avatar in the ContactSheet some margin,
  * so it doesn't jump when switching to the editor. */
-.contacts-contact-sheet .main-avatar-frame {
+.contacts-contact-sheet .contacts-avatar {
   margin: 4px 8px;
 }
 

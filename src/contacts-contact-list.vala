@@ -41,8 +41,6 @@ public class Contacts.ContactList : ListBox {
       grid.margin = 6;
       grid.set_column_spacing (10);
       this.avatar = new Avatar (Contact.LIST_AVATAR_SIZE);
-      this.avatar.set_shadow_type (ShadowType.IN);
-      this.avatar.get_style_context ().add_class ("main-avatar-frame");
 
       label = new Label ("");
       label.set_ellipsize (Pango.EllipsizeMode.END);
