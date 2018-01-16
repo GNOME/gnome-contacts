@@ -74,31 +74,16 @@ ContactsWindow .primary-toolbar.toolbar {
  border-color: @borders;
 }
 
-.contacts-entry {
- box-shadow: none;
- border-image: none;
- border-width: 1px;
- border-radius: 4px;
- border-style: solid;
- border-color: @borders;
-}
-
-.contacts-entry:selected,
-.contacts-entry:selected:focus {
- background-color: @theme_selected_bg_color;
- color: @theme_selected_fg_color;
-}
-
-.contacts-entry.contacts-postal-entry {
+.contacts-postal-entry {
  border-radius: 0 0 0 0;
  border-width: 1px 1px 0 1px;
 }
 
-.contacts-entry.contacts-postal-entry:nth-child(first) {
+.contacts-postal-entry:nth-child(first) {
  border-radius: 4px 4px 0 0;
 }
 
-.contacts-entry.contacts-postal-entry:nth-child(last) {
+.contacts-postal-entry:nth-child(last) {
  border-radius: 0 0 4px 4px;
  border-width: 1px;
 }

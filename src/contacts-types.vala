@@ -397,7 +397,6 @@ public class Contacts.TypeCombo : Grid  {
       });
 
     entry = new Entry ();
-    entry.get_style_context ().add_class ("contacts-entry");
     entry.set_halign (Align.FILL);
     entry.set_hexpand (true);
     // Make the default entry small so we don't unnecessarily

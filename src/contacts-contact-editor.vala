@@ -46,7 +46,6 @@ public class Contacts.AddressEditor : Box {
       if (postal_part != null)
 	entries[i].set_text (postal_part);
 
-      entries[i].get_style_context ().add_class ("contacts-entry");
       entries[i].get_style_context ().add_class ("contacts-postal-entry");
       add (entries[i]);
 
@@ -377,7 +376,6 @@ public class Contacts.ContactEditor : Grid {
     var value_text = new TextView ();
     value_text.get_buffer ().set_text (value);
     value_text.set_hexpand (true);
-    value_text.get_style_context ().add_class ("contacts-entry");
     sw.add (value_text);
     container_grid.attach (sw, 1, row, 1, 1);
 
