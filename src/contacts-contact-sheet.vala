@@ -96,14 +96,14 @@ public class Contacts.ContactSheet : Grid {
   }
 
   public void update (Contact c) {
-    var image_frame = new ContactFrame (PROFILE_SIZE);
+    var image_frame = new Avatar (PROFILE_SIZE);
     image_frame.get_style_context ().add_class ("main-avatar-frame");
     image_frame.set_shadow_type (ShadowType.IN);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
     c.keep_widget_uptodate (image_frame,  (w) => {
-	(w as ContactFrame).set_image (c.individual, c);
-      });
+        (w as Avatar).set_image (c.individual, c);
+          });
     attach (image_frame,  0, 0, 1, 3);
 
     var name_label = new Label (null);

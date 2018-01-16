@@ -42,11 +42,11 @@ public class Contacts.LinkSuggestionGrid : Grid {
   public LinkSuggestionGrid (Contact contact) {
     get_style_context ().add_class ("contacts-suggestion");
 
-    var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
+    var image_frame = new Avatar (Contact.SMALL_AVATAR_SIZE);
     image_frame.hexpand = false;
     image_frame.margin = 12;
     contact.keep_widget_uptodate (image_frame,  (w) => {
-        (w as ContactFrame).set_image (contact.individual, contact);
+        (w as Avatar).set_image (contact.individual, contact);
       });
     image_frame.show ();
     attach (image_frame, 0, 0, 1, 2);

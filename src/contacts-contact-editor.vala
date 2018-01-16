@@ -77,7 +77,7 @@ public class Contacts.ContactEditor : Grid {
 
   private Entry name_entry;
 
-  private ContactFrame avatar_frame;
+  private Avatar avatar;
 
   [GtkChild]
   private ScrolledWindow main_sw;
@@ -804,7 +804,7 @@ public class Contacts.ContactEditor : Grid {
     linked_button.show ();
     linked_button.sensitive = contact.individual.personas.size > 1;
 
-    create_avatar_frame ();
+    create_avatar_button ();
     create_name_entry ();
 
     int i = 3;
@@ -855,7 +855,7 @@ public class Contacts.ContactEditor : Grid {
     remove_button.hide ();
     linked_button.hide ();
 
-    create_avatar_frame ();
+    create_avatar_button ();
     create_name_entry ();
     this.last_row = 2;
 
@@ -959,31 +959,31 @@ public class Contacts.ContactEditor : Grid {
     container_grid.show_all ();
   }
 
-  // Creates the contact's current avatar, the big frame on top of the Editor
-  private void create_avatar_frame () {
-    this.avatar_frame = new ContactFrame (PROFILE_SIZE, true);
-    this.avatar_frame.vexpand = false;
-    this.avatar_frame.valign = Align.START;
-    (this.avatar_frame.get_child () as Button).relief = ReliefStyle.NORMAL;
-    this.avatar_frame.clicked.connect (on_avatar_frame_clicked);
+  // Creates the contact's current avatar in a big button on top of the Editor
+  private void create_avatar_button () {
+    this.avatar = new Avatar (PROFILE_SIZE, true);
+    this.avatar.vexpand = false;
+    this.avatar.valign = Align.START;
+    (this.avatar.get_child () as Button).relief = ReliefStyle.NORMAL;
+    this.avatar.clicked.connect (on_avatar_frame_clicked);
 
     if (this.contact != null) {
-      this.contact.keep_widget_uptodate (this.avatar_frame,  (w) => {
-          this.avatar_frame.set_image (this.contact.individual, this.contact);
+      this.contact.keep_widget_uptodate (this.avatar,  (w) => {
+          this.avatar.set_image (this.contact.individual, this.contact);
         });
     } else {
-      this.avatar_frame.set_image (null, null);
+      this.avatar.set_image (null, null);
     }
 
-    this.container_grid.attach (this.avatar_frame, 0, 0, 1, 3);
+    this.container_grid.attach (this.avatar, 0, 0, 1, 3);
   }
 
   // Show the avatar dialog when the avatar is clicked
   private void on_avatar_frame_clicked () {
     var dialog = new AvatarDialog ((Window) get_toplevel (), this.contact);
     dialog.set_avatar.connect ( (icon) =>  {
-        this.avatar_frame.set_data ("value", icon);
-        this.avatar_frame.set_data ("changed", true);
+        this.avatar.set_data ("value", icon);
+        this.avatar.set_data ("changed", true);
 
         Gdk.Pixbuf? a_pixbuf = null;
         try {
@@ -992,17 +992,17 @@ public class Contacts.ContactEditor : Grid {
         } catch {
         }
 
-        this.avatar_frame.set_pixbuf (a_pixbuf);
+        this.avatar.set_pixbuf (a_pixbuf);
       });
     dialog.run ();
   }
 
   public bool avatar_changed () {
-    return this.avatar_frame.get_data<bool> ("changed");
+    return this.avatar.get_data<bool> ("changed");
   }
 
   public Value get_avatar_value () {
-    GLib.Icon icon = this.avatar_frame.get_data<GLib.Icon> ("value");
+    GLib.Icon icon = this.avatar.get_data<GLib.Icon> ("value");
     Value v = Value (icon.get_type ());
     v.set_object (icon);
     return v;

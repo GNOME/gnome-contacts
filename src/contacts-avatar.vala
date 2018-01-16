@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -20,14 +19,18 @@ using Gtk;
 using Folks;
 using Gee;
 
-public class Contacts.ContactFrame : Frame {
+/**
+ * The Avatar of a Contact is responsible for showing an {@link Individual}'s
+ * avatar, or a fallback if it's not available.
+ */
+public class Contacts.Avatar : Frame {
   private int size;
   private Gdk.Pixbuf? pixbuf;
   private Pango.Layout? layout;
 
   public signal void clicked ();
 
-  public ContactFrame (int size, bool with_button = false) {
+  public Avatar (int size, bool with_button = false) {
     this.size = size;
 
     var image = new Image ();

@@ -56,7 +56,7 @@ public class Contacts.AvatarDialog : Dialog {
   [GtkChild]
   private Box webcam_button_box;
 
-  private ContactFrame current_avatar;
+  private Avatar current_avatar;
 
 #if HAVE_CHEESE
   private Cheese.Flash flash;
@@ -82,10 +82,10 @@ public class Contacts.AvatarDialog : Dialog {
     this.contact = contact;
 
     // Load the current avatar
-    this.current_avatar = new ContactFrame (MAIN_SIZE);
+    this.current_avatar = new Avatar (MAIN_SIZE);
     if (contact != null) {
       contact.keep_widget_uptodate (this.current_avatar, (w) => {
-          (w as ContactFrame).set_image (contact.individual, contact);
+          (w as Avatar).set_image (contact.individual, contact);
         });
     } else {
       this.current_avatar.set_image (null, null);
@@ -162,18 +162,18 @@ public class Contacts.AvatarDialog : Dialog {
     return pixbuf.scale_simple (w, h, Gdk.InterpType.HYPER);
   }
 
-  private ContactFrame create_frame (Gdk.Pixbuf source_pixbuf) {
-    var image_frame = new ContactFrame (ICONS_SIZE, true);
+  private Avatar create_frame (Gdk.Pixbuf source_pixbuf) {
+    var avatar = new Avatar (ICONS_SIZE, true);
     var pixbuf = source_pixbuf.scale_simple (ICONS_SIZE, ICONS_SIZE, Gdk.InterpType.HYPER);
-    image_frame.set_pixbuf (pixbuf);
+    avatar.set_pixbuf (pixbuf);
     var avatar_pixbuf = scale_pixbuf_for_avatar_use (source_pixbuf);
-    image_frame.clicked.connect ( () => {
+    avatar.clicked.connect ( () => {
         selected_pixbuf (avatar_pixbuf);
       });
-    return image_frame;
+    return avatar;
   }
 
-  private ContactFrame? frame_for_persona (Persona persona) {
+  private Avatar? frame_for_persona (Persona persona) {
     var details = persona as AvatarDetails;
     if (details == null || details.avatar == null)
       return null;
@@ -189,14 +189,14 @@ public class Contacts.AvatarDialog : Dialog {
     return null;
   }
 
-  private ContactFrame? frame_for_filename (string filename) {
-    ContactFrame? image_frame = null;
+  private Avatar? frame_for_filename (string filename) {
+    Avatar? avatar = null;
     try {
       var pixbuf = new Gdk.Pixbuf.from_file (filename);
       return create_frame (pixbuf);
     } catch {
     }
-    return image_frame;
+    return avatar;
   }
 
   private void selected_pixbuf (Gdk.Pixbuf pixbuf) {
@@ -210,7 +210,7 @@ public class Contacts.AvatarDialog : Dialog {
   private void update_thumbnail_grids () {
     if (this.contact != null) {
       foreach (var p in contact.individual.personas) {
-        ContactFrame? frame = frame_for_persona (p);
+        Avatar? frame = frame_for_persona (p);
         if (frame != null)
           this.personas_thumbnail_grid.add (frame);
       }
@@ -219,7 +219,7 @@ public class Contacts.AvatarDialog : Dialog {
 
     var stock_files = Utils.get_stock_avatars ();
     foreach (var file_name in stock_files) {
-      ContactFrame? frame = frame_for_filename (file_name);
+      Avatar? frame = frame_for_filename (file_name);
       if (frame != null)
         this.stock_thumbnail_grid.add (frame);
     }

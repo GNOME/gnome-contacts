@@ -78,13 +78,13 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
       var row_grid = new Grid ();
 
-      var image_frame = new ContactFrame (Contact.SMALL_AVATAR_SIZE);
+      var image_frame = new Avatar (Contact.SMALL_AVATAR_SIZE);
       image_frame.set_hexpand (false);
       image_frame.margin = 6;
       image_frame.margin_end = 12;
       contact.keep_widget_uptodate (image_frame, (w) => {
-	  (w as ContactFrame).set_image (contact.individual, contact);
-	});
+          (w as Avatar).set_image (contact.individual, contact);
+        });
       row_grid.attach (image_frame, 0, 0, 1, 2);
 
       var display_name = new Label ("");

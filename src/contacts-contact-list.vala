@@ -28,7 +28,7 @@ public class Contacts.ContactList : ListBox {
   private class ContactDataRow : ListBoxRow {
     public Contact contact;
     public Label label;
-    public ContactFrame image_frame;
+    private Avatar avatar;
     public CheckButton selector_button;
     public bool filtered;
 
@@ -40,9 +40,9 @@ public class Contacts.ContactList : ListBox {
       Grid grid = new Grid ();
       grid.margin = 6;
       grid.set_column_spacing (10);
-      image_frame = new ContactFrame (Contact.LIST_AVATAR_SIZE);
-      image_frame.set_shadow_type (ShadowType.IN);
-      image_frame.get_style_context ().add_class ("main-avatar-frame");
+      this.avatar = new Avatar (Contact.LIST_AVATAR_SIZE);
+      this.avatar.set_shadow_type (ShadowType.IN);
+      this.avatar.get_style_context ().add_class ("main-avatar-frame");
 
       label = new Label ("");
       label.set_ellipsize (Pango.EllipsizeMode.END);
@@ -54,7 +54,7 @@ public class Contacts.ContactList : ListBox {
       selector_button.set_halign (Align.END);
       selector_button.set_hexpand (true);
 
-      grid.attach (image_frame, 0, 0, 1, 1);
+      grid.attach (this.avatar, 0, 0, 1, 1);
       grid.attach (label, 1, 0, 1, 1);
       grid.attach (selector_button, 2, 0, 1, 1);
       this.add (grid);
@@ -66,7 +66,7 @@ public class Contacts.ContactList : ListBox {
 
       // Update widgets
       this.label.set_text (this.contact.display_name);
-      this.image_frame.set_image (this.contact.individual, this.contact);
+      this.avatar.set_image (this.contact.individual, this.contact);
     }
   }
 
