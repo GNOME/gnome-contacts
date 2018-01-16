@@ -423,7 +423,6 @@ public class Contacts.ContactEditor : Grid {
         month_combo.append_text (month.format ("%B"));
     }
     month_combo.set_active (birthday.to_local ().get_month () - 1);
-    month_combo.get_style_context ().add_class ("contacts-combo");
     month_combo.hexpand = true;
 
     var year_spin = new SpinButton.with_range (1800, 3000, 1);
