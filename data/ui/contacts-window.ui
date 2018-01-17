@@ -117,12 +117,16 @@
                 <property name="visible">False</property>
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="label" translatable="yes">Edit</property>
-                <property name="width_request">70</property>
                 <property name="valign">center</property>
-                <style>
-                  <class name="text-button"/>
-                </style>
+                <signal name="clicked" handler="on_edit_button_clicked"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">document-edit-symbolic</property>
+                    <property name="icon_size">1</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="pack_type">end</property>
@@ -226,14 +230,6 @@
       </object>
     </child>
   </template>
-  <object class="GtkSizeGroup">
-    <property name="mode">vertical</property>
-    <widgets>
-      <widget name="add_button"/>
-      <widget name="edit_button"/>
-      <widget name="done_button"/>
-    </widgets>
-  </object>
   <object class="GtkSizeGroup" id="left_pane_size_group">
     <property name="mode">horizontal</property>
     <widgets>

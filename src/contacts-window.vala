@@ -153,7 +153,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this._state = new_state;
   }
 
-  private void edit_contact () {
+  [GtkCallback]
+  private void on_edit_button_clicked () {
     if (this.contact_pane.contact == null)
       return;
 
@@ -234,7 +235,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private void connect_button_signals () {
     this.select_button.clicked.connect (() => { this.state = UiState.SELECTING; });
     this.select_cancel_button.clicked.connect (() => { this.state = UiState.NORMAL; });
-    this.edit_button.clicked.connect (() => edit_contact ());
     this.done_button.clicked.connect (() => stop_editing ());
     this.cancel_button.clicked.connect (() => stop_editing (true));
   }
