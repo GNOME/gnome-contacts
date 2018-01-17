@@ -55,12 +55,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private ListPane list_pane;
   private ContactPane contact_pane;
 
-  // We start in the normal UI state
-  private UiState _state = UiState.NORMAL;
-  public UiState state {
-    get { return this._state; }
-    set { change_ui_state (value); }
-  }
+  public UiState state { get; set; default = UiState.NORMAL; }
 
   public Store store {
     get; construct set;
@@ -72,6 +67,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       show_menubar: false,
       store: contacts_store
     );
+
+    this.notify["state"].connect ( () => { on_ui_state_changed(); });
 
     create_contact_pane ();
     set_headerbar_layout ();
@@ -94,6 +91,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       return;
 
     list_pane = new ListPane (store);
+    bind_property ("state", this.list_pane, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     list_pane.selection_changed.connect (list_pane_selection_changed_cb);
     list_pane.link_contacts.connect (list_pane_link_contacts_cb);
     list_pane.delete_contacts.connect (list_pane_delete_contacts_cb);
@@ -118,12 +116,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane.show ();
   }
 
-  private void change_ui_state (UiState new_state) {
+  private void on_ui_state_changed () {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
         = this.right_header.show_close_button
         = this.select_button.visible
-        = (new_state == UiState.NORMAL || new_state == UiState.SHOWING);
+        = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 
     // UI when showing a contact
     this.edit_button.visible
@@ -131,29 +129,25 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         = (new_state == UiState.SHOWING);
 
     // Selecting UI
-    this.select_cancel_button.visible = (new_state == UiState.SELECTING);
-    this.list_pane.activate_selection_mode (new_state == UiState.SELECTING);
+    this.select_cancel_button.visible = (this.state == UiState.SELECTING);
 
     this.left_header.title = (new_state == UiState.SELECTING)?  _("Select") : _("Contacts");
 
     // Editing UI
     this.cancel_button.visible
         = this.done_button.visible
-        = new_state.editing ();
-    if (new_state.editing ())
-      this.done_button.label = (new_state == UiState.CREATING)? _("Add") : _("Done");
+        = this.state.editing ();
+    if (this.state.editing ())
+      this.done_button.label = (this.state == UiState.CREATING)? _("Add") : _("Done");
 
     // When selecting or editing, we get special headerbars
-    if (new_state == UiState.SELECTING || new_state.editing ()) {
+    if (this.state == UiState.SELECTING || this.state.editing ()) {
       this.left_header.get_style_context ().add_class ("selection-mode");
       this.right_header.get_style_context ().add_class ("selection-mode");
     } else {
       this.left_header.get_style_context ().remove_class ("selection-mode");
       this.right_header.get_style_context ().remove_class ("selection-mode");
     }
-
-    // Save the result
-    this._state = new_state;
   }
 
   [GtkCallback]

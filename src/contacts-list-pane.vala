@@ -40,6 +40,8 @@ public class Contacts.ListPane : Frame {
   [GtkChild]
   private ActionBar actions_bar;
 
+  public UiState state { get; set; }
+
   public signal void selection_changed (Contact? contact);
   public signal void link_contacts (LinkedList<Contact> contacts);
   public signal void delete_contacts (LinkedList<Contact> contacts);
@@ -47,6 +49,8 @@ public class Contacts.ListPane : Frame {
 
   public ListPane (Store contacts_store) {
     this.store = contacts_store;
+
+    this.notify["state"].connect ( () => { on_ui_state_changed(); });
 
     // Load the ContactsView and connect the necessary signals
     this.contacts_list = new ContactList (contacts_store);
@@ -63,6 +67,20 @@ public class Contacts.ListPane : Frame {
       });
   }
 
+  private void on_ui_state_changed () {
+    // Disable when editing a contact. (Not using `this.sensitive` to allow scrolling)
+    this.filter_entry.sensitive
+        = this.contacts_list.sensitive
+        = !this.state.editing ();
+
+    if (this.state == UiState.SELECTING)
+      this.contacts_list.show_selectors ();
+    else
+      this.contacts_list.hide_selectors ();
+
+    this.actions_bar.visible = (this.state == UiState.SELECTING);
+  }
+
   [GtkCallback]
   private void filter_entry_changed (Editable editable) {
     if (Utils.string_is_empty (this.filter_entry.text)) {
@@ -76,15 +94,6 @@ public class Contacts.ListPane : Frame {
 
   public void select_contact (Contact? contact) {
     this.contacts_list.select_contact (contact);
-  }
-
-  public void activate_selection_mode (bool active) {
-    if (active)
-      this.contacts_list.show_selectors ();
-    else
-      this.contacts_list.hide_selectors ();
-
-    this.actions_bar.visible = active;
   }
 
   [GtkCallback]
