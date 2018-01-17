@@ -126,12 +126,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // UI when showing a contact
     this.edit_button.visible
         = this.favorite_button.visible
-        = (new_state == UiState.SHOWING);
+        = (this.state == UiState.SHOWING);
 
     // Selecting UI
     this.select_cancel_button.visible = (this.state == UiState.SELECTING);
 
-    this.left_header.title = (new_state == UiState.SELECTING)?  _("Select") : _("Contacts");
+    this.left_header.title = (this.state == UiState.SELECTING)?  _("Select") : _("Contacts");
 
     // Editing UI
     this.cancel_button.visible

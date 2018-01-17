@@ -78,13 +78,16 @@ public class Contacts.ContactList : ListBox {
   int nr_contacts_marked = 0;
 
   string []? filter_values;
-  bool selectors_visible = false;
 
   private Store store;
+
+  public UiState state { get; set; }
 
   public ContactList (Store store) {
     this.selection_mode = Gtk.SelectionMode.BROWSE;
     this.store = store;
+
+    this.notify["state"].connect ( () => { on_ui_state_changed(); });
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
@@ -99,6 +102,19 @@ public class Contacts.ContactList : ListBox {
     set_header_func (update_header);
 
     show ();
+  }
+
+  private void on_ui_state_changed () {
+    foreach (var widget in get_children ()) {
+      var row = widget as ContactDataRow;
+      row.selector_button.visible = (this.state == UiState.SELECTING);
+
+      if (this.state != UiState.SELECTING)
+        row.selector_button.active = false;
+    }
+
+    if (this.state != UiState.SELECTING)
+      this.nr_contacts_marked = 0;
   }
 
   private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
@@ -208,7 +224,7 @@ public class Contacts.ContactList : ListBox {
 	contacts_marked (this.nr_contacts_marked);
       });
 
-    if (! selectors_visible)
+    if (this.state != UiState.SELECTING)
       data.selector_button.hide ();
     contacts.set (c, data);
     this.add (data);
@@ -244,24 +260,6 @@ public class Contacts.ContactList : ListBox {
 
     var data = contacts.get (contact);
     select_row (data);
-  }
-
-  public void show_selectors () {
-    foreach (var widget in get_children ()) {
-      var row = widget as ContactDataRow;
-      row.selector_button.show ();
-    }
-    selectors_visible = true;
-  }
-
-  public void hide_selectors () {
-    foreach (var widget in get_children ()) {
-      var row = widget as ContactDataRow;
-      row.selector_button.hide ();
-      row.selector_button.set_active (false);
-    }
-    selectors_visible = false;
-    nr_contacts_marked = 0;
   }
 
   public LinkedList<Contact> get_marked_contacts () {

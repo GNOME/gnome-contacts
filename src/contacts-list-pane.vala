@@ -54,6 +54,7 @@ public class Contacts.ListPane : Frame {
 
     // Load the ContactsView and connect the necessary signals
     this.contacts_list = new ContactList (contacts_store);
+    bind_property ("state", this.contacts_list, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     this.contacts_list_container.add (this.contacts_list);
 
     this.contacts_list.selection_changed.connect( (l, contact) => {
@@ -72,11 +73,6 @@ public class Contacts.ListPane : Frame {
     this.filter_entry.sensitive
         = this.contacts_list.sensitive
         = !this.state.editing ();
-
-    if (this.state == UiState.SELECTING)
-      this.contacts_list.show_selectors ();
-    else
-      this.contacts_list.hide_selectors ();
 
     this.actions_bar.visible = (this.state == UiState.SELECTING);
   }
