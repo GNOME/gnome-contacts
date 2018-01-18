@@ -71,6 +71,7 @@ public class Contacts.ContactEditor : Grid {
 
   private Contact contact;
 
+  [GtkChild]
   private Grid container_grid;
   private weak Widget focus_widget;
 
@@ -752,7 +753,8 @@ public class Contacts.ContactEditor : Grid {
     container_grid.insert_row (idx);
   }
 
-  void size_allocate_cb (Allocation alloc) {
+  [GtkCallback]
+  private void on_container_grid_size_allocate (Allocation alloc) {
     if (focus_widget != null &&
         focus_widget is Widget) {
       focus_widget.grab_focus ();
@@ -761,27 +763,14 @@ public class Contacts.ContactEditor : Grid {
   }
 
   public ContactEditor (SimpleActionGroup editor_actions) {
-    this.container_grid = new Grid ();
-    this.container_grid.set_row_spacing (12);
-    this.container_grid.set_column_spacing (12);
-    this.container_grid.set_vexpand (true);
-    this.container_grid.set_hexpand (true);
-    this.container_grid.margin = 36;
-    this.container_grid.set_margin_bottom (24);
-
-    this.main_sw.add (this.container_grid);
     this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
 
-    this.main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
-    this.main_sw.get_child ().get_style_context ().add_class ("view");
-
-    this.main_sw.show_all ();
+    this.main_sw.get_style_context ().add_class ("contacts-main-view");
+    this.main_sw.get_style_context ().add_class ("view");
 
     this.add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
 
     this.writable_personas = new HashMap<string, HashMap<string, Field?>> ();
-
-    this.container_grid.size_allocate.connect_after (size_allocate_cb);
   }
 
   /**
