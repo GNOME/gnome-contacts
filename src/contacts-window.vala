@@ -129,6 +129,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.select_cancel_button.visible = (new_state == UiState.SELECTING);
     this.list_pane.activate_selection_mode (new_state == UiState.SELECTING);
 
+    this.left_header.title = (new_state == UiState.SELECTING)?  _("Select") : _("Contacts");
+
     // Editing UI
     this.cancel_button.visible
         = this.done_button.visible
@@ -140,13 +142,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (new_state == UiState.SELECTING || new_state.editing ()) {
       this.left_header.get_style_context ().add_class ("selection-mode");
       this.right_header.get_style_context ().add_class ("selection-mode");
-
-      this.left_header.title = (new_state == UiState.SELECTING)?  _("Select") : "";
     } else {
       this.left_header.get_style_context ().remove_class ("selection-mode");
       this.right_header.get_style_context ().remove_class ("selection-mode");
-
-      this.left_header.title = _("All Contacts");
     }
 
     // Save the result
