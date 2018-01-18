@@ -942,11 +942,12 @@ public class Contacts.ContactEditor : Grid {
 
   // Creates the contact's current avatar in a big button on top of the Editor
   private void create_avatar_button () {
-    this.avatar = new Avatar (PROFILE_SIZE, true);
-    this.avatar.vexpand = false;
-    this.avatar.valign = Align.START;
-    (this.avatar.get_child () as Button).relief = ReliefStyle.NORMAL;
-    this.avatar.clicked.connect (on_avatar_frame_clicked);
+    this.avatar = new Avatar (PROFILE_SIZE);
+
+    var button = new Button ();
+    button.get_accessible ().set_name (_("Change avatar"));
+    button.image = this.avatar;
+    button.clicked.connect (on_avatar_button_clicked);
 
     if (this.contact != null) {
       this.contact.keep_widget_uptodate (this.avatar,  (w) => {
@@ -956,11 +957,11 @@ public class Contacts.ContactEditor : Grid {
       this.avatar.set_image (null, null);
     }
 
-    this.container_grid.attach (this.avatar, 0, 0, 1, 3);
+    this.container_grid.attach (button, 0, 0, 1, 3);
   }
 
   // Show the avatar dialog when the avatar is clicked
-  private void on_avatar_frame_clicked () {
+  private void on_avatar_button_clicked (Button avatar_button) {
     var dialog = new AvatarDialog ((Window) get_toplevel (), this.contact);
     dialog.set_avatar.connect ( (icon) =>  {
         this.avatar.set_data ("value", icon);

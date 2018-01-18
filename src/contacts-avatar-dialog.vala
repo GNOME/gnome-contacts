@@ -162,41 +162,44 @@ public class Contacts.AvatarDialog : Dialog {
     return pixbuf.scale_simple (w, h, Gdk.InterpType.HYPER);
   }
 
-  private Avatar create_frame (Gdk.Pixbuf source_pixbuf) {
-    var avatar = new Avatar (ICONS_SIZE, true);
+  private Button create_thumbnail (Gdk.Pixbuf source_pixbuf) {
+    var avatar = new Avatar (ICONS_SIZE);
     var pixbuf = source_pixbuf.scale_simple (ICONS_SIZE, ICONS_SIZE, Gdk.InterpType.HYPER);
     avatar.set_pixbuf (pixbuf);
-    var avatar_pixbuf = scale_pixbuf_for_avatar_use (source_pixbuf);
-    avatar.clicked.connect ( () => {
-        selected_pixbuf (avatar_pixbuf);
+
+    var button = new Button ();
+    button.get_style_context ().add_class ("flat");
+    button.image = avatar;
+    button.clicked.connect ( () => {
+        selected_pixbuf (scale_pixbuf_for_avatar_use (source_pixbuf));
       });
-    return avatar;
+
+    return button;
   }
 
-  private Avatar? frame_for_persona (Persona persona) {
+  private Button? thumbnail_for_persona (Persona persona) {
     var details = persona as AvatarDetails;
     if (details == null || details.avatar == null)
       return null;
 
     try {
       var stream = details.avatar.load (128, null);
-      var pixbuf = new Gdk.Pixbuf.from_stream (stream);
-      return create_frame (pixbuf);
-    }
-    catch {
+      return create_thumbnail (new Gdk.Pixbuf.from_stream (stream));
+    } catch {
+      debug ("Couldn't create frame for persona \"%s\".", persona.display_id);
     }
 
     return null;
   }
 
-  private Avatar? frame_for_filename (string filename) {
-    Avatar? avatar = null;
+  private Button? thumbnail_for_filename (string filename) {
     try {
-      var pixbuf = new Gdk.Pixbuf.from_file (filename);
-      return create_frame (pixbuf);
+      return create_thumbnail (new Gdk.Pixbuf.from_file (filename));
     } catch {
+      debug ("Couldn't create frame for file \"%s\".", filename);
     }
-    return avatar;
+
+    return null;
   }
 
   private void selected_pixbuf (Gdk.Pixbuf pixbuf) {
@@ -210,18 +213,18 @@ public class Contacts.AvatarDialog : Dialog {
   private void update_thumbnail_grids () {
     if (this.contact != null) {
       foreach (var p in contact.individual.personas) {
-        Avatar? frame = frame_for_persona (p);
-        if (frame != null)
-          this.personas_thumbnail_grid.add (frame);
+        var button = thumbnail_for_persona (p);
+        if (button != null)
+          this.personas_thumbnail_grid.add (button);
       }
     }
     this.personas_thumbnail_grid.show_all ();
 
     var stock_files = Utils.get_stock_avatars ();
     foreach (var file_name in stock_files) {
-      Avatar? frame = frame_for_filename (file_name);
-      if (frame != null)
-        this.stock_thumbnail_grid.add (frame);
+      var button = thumbnail_for_filename (file_name);
+      if (button != null)
+        this.stock_thumbnail_grid.add (button);
     }
     this.stock_thumbnail_grid.show_all ();
   }

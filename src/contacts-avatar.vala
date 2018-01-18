@@ -23,42 +23,18 @@ using Gee;
  * The Avatar of a Contact is responsible for showing an {@link Individual}'s
  * avatar, or a fallback if it's not available.
  */
-public class Contacts.Avatar : Frame {
+public class Contacts.Avatar : DrawingArea {
   private int size;
   private Gdk.Pixbuf? pixbuf;
   private Pango.Layout? layout;
 
-  public signal void clicked ();
-
-  public Avatar (int size, bool with_button = false) {
+  public Avatar (int size) {
     this.size = size;
+    set_size_request (size, size);
 
     get_style_context ().add_class ("contacts-avatar");
 
-    var image = new Image ();
-    image.set_size_request (size, size);
-
-    if (with_button) {
-      var button = new Button ();
-      button.get_accessible ().set_name (_("Change avatar"));
-      button.get_style_context ().add_class ("contacts-square");
-      button.set_relief (ReliefStyle.NONE);
-      button.set_focus_on_click (false);
-      button.add (image);
-
-      button.clicked.connect ( () => {
-	  this.clicked ();
-	});
-
-      this.add (button);
-      this.shadow_type = ShadowType.NONE;
-    } else {
-      this.add (image);
-    }
-
-    image.show ();
-    image.draw.connect (draw_image);
-
+    show ();
   }
 
   public void set_pixbuf (Gdk.Pixbuf a_pixbuf) {
@@ -84,7 +60,7 @@ public class Contacts.Avatar : Frame {
     set_pixbuf (a_pixbuf);
   }
 
-  public bool draw_image (Cairo.Context cr) {
+  public override bool draw (Cairo.Context cr) {
     cr.save ();
 
     if (pixbuf != null) {
