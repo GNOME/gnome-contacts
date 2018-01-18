@@ -761,10 +761,6 @@ public class Contacts.ContactEditor : Grid {
   }
 
   public ContactEditor (SimpleActionGroup editor_actions) {
-    var hcenter = new Center ();
-    hcenter.max_width = 600;
-    hcenter.xalign = 0.0;
-
     this.container_grid = new Grid ();
     this.container_grid.set_row_spacing (12);
     this.container_grid.set_column_spacing (12);
@@ -773,8 +769,7 @@ public class Contacts.ContactEditor : Grid {
     this.container_grid.margin = 36;
     this.container_grid.set_margin_bottom (24);
 
-    hcenter.add (this.container_grid);
-    this.main_sw.add (hcenter);
+    this.main_sw.add (this.container_grid);
     this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
 
     this.main_sw.get_child ().get_style_context ().add_class ("contacts-main-view");
