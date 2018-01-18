@@ -38,7 +38,8 @@ public class Contacts.ContactList : ListBox {
       get_style_context (). add_class ("contact-data-row");
 
       Grid grid = new Grid ();
-      grid.margin = 6;
+      grid.margin = 3;
+      grid.margin_start = 9;
       grid.set_column_spacing (10);
       this.avatar = new Avatar (Contact.LIST_AVATAR_SIZE);
 
@@ -93,21 +94,63 @@ public class Contacts.ContactList : ListBox {
 
     set_sort_func ((a, b) => compare_data (a as ContactDataRow, b as ContactDataRow));
     set_filter_func (filter);
+    set_header_func (update_header);
 
     show ();
   }
 
   private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
-    if (is_set (a_data.contact.display_name) && is_set (b_data.contact.display_name))
-      return a_data.contact.display_name.collate (b_data.contact.display_name);
+    var a = a_data.contact.individual;
+    var b = b_data.contact.individual;
+
+    // Always prefer favourites over non-favourites.
+    if (a.is_favourite != b.is_favourite)
+      return a.is_favourite? -1 : 1;
+
+    // Both are (non-)favourites: sort by name
+    if (is_set (a.display_name) && is_set (b.display_name))
+      return a.display_name.collate (b.display_name);
 
     // Sort empty names last
-    if (is_set (a_data.contact.display_name))
+    if (is_set (a.display_name))
       return -1;
-    if (is_set (b_data.contact.display_name))
+    if (is_set (b.display_name))
       return 1;
 
     return 0;
+  }
+
+  private void update_header (ListBoxRow row, ListBoxRow? before) {
+    var current = ((ContactDataRow) row).contact.individual;
+
+    if (before == null) {
+      if (current.is_favourite)
+        row.set_header (create_header_label (_("Favorites")));
+      else
+        row.set_header (create_header_label (_("All Contacts")));
+      return;
+    }
+
+    var previous = ((ContactDataRow) before).contact.individual;
+    if (!current.is_favourite && previous.is_favourite) {
+      row.set_header (create_header_label (_("All Contacts")));
+    } else {
+      row.set_header (null);
+    }
+  }
+
+  private Label create_header_label (string text) {
+    var label = new Label (text);
+    label.halign = Align.START;
+    label.margin = 3;
+    label.margin_start = 6;
+    label.margin_top = 6;
+    var attrs = new Pango.AttrList ();
+    attrs.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
+    attrs.insert (Pango.attr_scale_new ((Pango.Scale.SMALL + Pango.Scale.MEDIUM) / 2.0));
+    attrs.insert (Pango.attr_foreground_alpha_new (30000));
+    label.attributes = attrs;
+    return label;
   }
 
   public void set_filter_values (string []? values) {
