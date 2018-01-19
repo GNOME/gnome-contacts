@@ -69,12 +69,6 @@ if cheese_enabled
   contacts_c_sources += 'cheese-flash.c'
 endif
 
-if maps_enabled
-  contacts_deps += [ champlain, clutter_gtk, geocode_glib ]
-  contacts_vala_args += [ '-D', 'HAVE_MAPS' ]
-  contacts_vala_sources += 'contacts-address-map.vala'
-endif
-
 if telepathy_enabled
   contacts_deps += [ folks_telepathy, telepathy_glib ]
   contacts_vala_args += [ '-D', 'HAVE_TELEPATHY' ]

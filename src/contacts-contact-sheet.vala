@@ -220,23 +220,10 @@ public class Contacts.ContactSheet : Grid {
 
       var addr_details = p as PostalAddressDetails;
       if (addr_details != null) {
-	foreach (var addr in addr_details.postal_addresses) {
-	  string[] strs = Contact.format_address (addr.value);
-	  var all_strs = "";
-	  foreach (var s in strs) {
-	    all_strs += s + "\n";
-	  }
-	  add_row_with_label (ref i, TypeSet.general.format_type (addr), all_strs);
-	}
-
-#if HAVE_MAPS
-        if (addr_details.postal_addresses.size > 0) {
-          var map = new AddressMap (c, addr_details.postal_addresses);
-          map.load ();
-          attach (map, 1, i);
-          i++;
+        foreach (var addr in addr_details.postal_addresses) {
+          var all_strs = string.joinv ("\n", Contact.format_address (addr.value));
+          add_row_with_label (ref i, TypeSet.general.format_type (addr), all_strs);
         }
-#endif
       }
 
       if (i != 3)

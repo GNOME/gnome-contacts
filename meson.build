@@ -55,13 +55,6 @@ if cheese_enabled
   cheese_enabled = cheese.found() and cheese_gtk.found()
 endif
 
-maps_enabled = get_option('maps')
-if maps_enabled
-  champlain = dependency('champlain-0.12')
-  clutter_gtk = dependency('clutter-gtk-1.0')
-  geocode_glib = dependency('geocode-glib-1.0', version: '>= 3.15.3')
-endif
-
 telepathy_enabled = get_option('telepathy')
 if telepathy_enabled
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
