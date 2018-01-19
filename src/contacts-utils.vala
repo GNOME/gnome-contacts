@@ -172,54 +172,6 @@ namespace Contacts.Utils {
     return null;
   }
 
-  public void cairo_ellipsis (Cairo.Context cr,
-                              double xc, double yc,
-                              double xradius, double yradius,
-                              double angle1 ,double angle2) {
-    if (xradius <= 0.0 || yradius <= 0.0) {
-      cr.line_to (xc, yc);
-      return;
-    }
-
-    cr.save ();
-    cr.translate (xc, yc);
-    cr.scale (xradius, yradius);
-    cr.arc (0, 0, 1.0, angle1, angle2);
-    cr.restore ();
-  }
-
-  public void cairo_rounded_box (Cairo.Context cr,
-                                 int x, int y,
-                                 int width, int height,
-                                 int radius) {
-    cr.new_sub_path ();
-
-    cairo_ellipsis (cr,
-		    x + radius,
-		    y + radius,
-		    radius,
-		    radius,
-		    Math.PI, 3 * Math.PI / 2);
-    cairo_ellipsis (cr,
-		    x + width - radius,
-		    y + radius,
-		    radius,
-		    radius,
-		    - Math.PI / 2, 0);
-    cairo_ellipsis (cr,
-		    x + width - radius,
-		    y + height - radius,
-		    radius,
-		    radius,
-		    0, Math.PI / 2);
-    cairo_ellipsis (cr,
-		    x + radius,
-		    y + height - radius,
-		    radius,
-		    radius,
-		    Math.PI / 2, Math.PI);
-  }
-
   private unichar strip_char (unichar ch) {
     switch (ch.type ()) {
     case UnicodeType.CONTROL:
