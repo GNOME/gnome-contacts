@@ -133,6 +133,26 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToggleButton" id="favorite_button">
+                <property name="visible">False</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="valign">center</property>
+                <signal name="toggled" handler="on_favorite_button_toggled"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">starred-symbolic</property>
+                    <property name="icon_size">1</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="done_button">
                 <property name="visible">False</property>
                 <property name="can_focus">True</property>

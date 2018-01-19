@@ -42,6 +42,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Button select_cancel_button;
   [GtkChild]
+  private ToggleButton favorite_button;
+  private bool ignore_favorite_button_toggled;
+  [GtkChild]
   private Button edit_button;
   [GtkChild]
   private Button cancel_button;
@@ -123,7 +126,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         = (new_state == UiState.NORMAL || new_state == UiState.SHOWING);
 
     // UI when showing a contact
-    this.edit_button.visible = (new_state == UiState.SHOWING);
+    this.edit_button.visible
+        = this.favorite_button.visible
+        = (new_state == UiState.SHOWING);
 
     // Selecting UI
     this.select_cancel_button.visible = (new_state == UiState.SELECTING);
@@ -164,6 +169,16 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.contact_pane.set_edit_mode (true);
   }
 
+  [GtkCallback]
+  private void on_favorite_button_toggled (ToggleButton button) {
+    // Don't change the contact being favorite while switching between the two of them
+    if (this.ignore_favorite_button_toggled)
+      return;
+
+    var is_fav = this.contact_pane.contact.individual.is_favourite;
+    this.contact_pane.contact.individual.is_favourite = !is_fav;
+  }
+
   private void stop_editing (bool drop_changes = false) {
     if (this.state == UiState.CREATING) {
 
@@ -202,8 +217,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       list_pane.select_contact (c);
 
     // clearing right_header
-    if (c != null)
+    if (c != null) {
+      this.ignore_favorite_button_toggled = true;
+      this.favorite_button.active = c.individual.is_favourite;
+      this.ignore_favorite_button_toggled = false;
       this.right_header.title = c.display_name;
+    }
   }
 
   [GtkCallback]
