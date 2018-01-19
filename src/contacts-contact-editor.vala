@@ -962,7 +962,7 @@ public class Contacts.ContactEditor : Grid {
 
   // Show the avatar dialog when the avatar is clicked
   private void on_avatar_button_clicked (Button avatar_button) {
-    var dialog = new AvatarDialog ((Window) get_toplevel (), this.contact);
+    var dialog = new AvatarSelector ((Window) get_toplevel (), this.contact);
     dialog.set_avatar.connect ( (icon) =>  {
         this.avatar.set_data ("value", icon);
         this.avatar.set_data ("changed", true);

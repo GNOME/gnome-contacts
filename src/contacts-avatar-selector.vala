@@ -20,14 +20,14 @@ using Gtk;
 using Folks;
 
 /**
- * The AvatarDialog can be used to choose the avatar for a contact.
+ * The AvatarSelector can be used to choose the avatar for a contact.
  * This can be done by either choosing a stock thumbnail, an image file
  * provided by the user, or -if cheese is enabled- by using a webcam.
  *
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
-[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-dialog.ui")]
-public class Contacts.AvatarDialog : Dialog {
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-selector.ui")]
+public class Contacts.AvatarSelector : Dialog {
   const int MAIN_SIZE = 128;
   const int ICONS_SIZE = 64;
 
@@ -72,7 +72,7 @@ public class Contacts.AvatarDialog : Dialog {
    */
   public signal void set_avatar (GLib.Icon avatar_icon);
 
-  public AvatarDialog (Window main_window, Contact? contact) {
+  public AvatarSelector (Window main_window, Contact? contact) {
     Object (
       transient_for: main_window,
       use_header_bar: 1

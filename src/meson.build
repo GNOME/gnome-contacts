@@ -9,7 +9,7 @@ contacts_vala_sources = [
   'contacts-accounts-list.vala',
   'contacts-app.vala',
   'contacts-avatar.vala',
-  'contacts-avatar-dialog.vala',
+  'contacts-avatar-selector.vala',
   'contacts-contact-editor.vala',
   'contacts-contact-list.vala',
   'contacts-contact-pane.vala',
