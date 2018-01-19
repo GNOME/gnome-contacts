@@ -27,8 +27,6 @@ main (string[] args) {
 
 #if HAVE_CHEESE
   GtkCheese.init (ref args);
-#else
-  GtkClutter.init (ref args);
 #endif
 
   var app = new App ();
