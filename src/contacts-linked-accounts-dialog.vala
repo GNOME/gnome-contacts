@@ -20,6 +20,8 @@ using Gtk;
 using Folks;
 
 public class Contacts.LinkedAccountsDialog : Dialog {
+  private const int AVATAR_SIZE = 54;
+
   Contact contact;
   ListBox linked_accounts_view;
 
@@ -78,7 +80,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
       var row_grid = new Grid ();
 
-      var image_frame = new Avatar (Contact.SMALL_AVATAR_SIZE);
+      var image_frame = new Avatar (AVATAR_SIZE);
       image_frame.set_hexpand (false);
       image_frame.margin = 6;
       image_frame.margin_end = 12;

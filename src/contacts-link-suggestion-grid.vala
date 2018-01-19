@@ -26,6 +26,7 @@ using Gee;
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-link-suggestion-grid.ui")]
 public class Contacts.LinkSuggestionGrid : Grid {
+  private const int AVATAR_SIZE = 54;
 
   [GtkChild]
   private Gtk.Label description_label;
@@ -42,7 +43,7 @@ public class Contacts.LinkSuggestionGrid : Grid {
   public LinkSuggestionGrid (Contact contact) {
     get_style_context ().add_class ("contacts-suggestion");
 
-    var image_frame = new Avatar (Contact.SMALL_AVATAR_SIZE);
+    var image_frame = new Avatar (AVATAR_SIZE);
     image_frame.hexpand = false;
     image_frame.margin = 12;
     contact.keep_widget_uptodate (image_frame,  (w) => {

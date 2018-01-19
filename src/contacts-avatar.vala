@@ -26,7 +26,12 @@ using Gee;
 public class Contacts.Avatar : DrawingArea {
   private int size;
   private Gdk.Pixbuf? pixbuf;
-  private Pango.Layout? layout;
+  private Contact? contact;
+
+  // The background color used in case of a fallback avatar
+  private Gdk.RGBA? bg_color = null;
+  // The color used for an initial or the fallback icon
+  private const Gdk.RGBA fg_color = { 0, 0, 0, 0.25 };
 
   public Avatar (int size) {
     this.size = size;
@@ -37,25 +42,27 @@ public class Contacts.Avatar : DrawingArea {
     show ();
   }
 
-  public void set_pixbuf (Gdk.Pixbuf a_pixbuf) {
-    pixbuf = Contact.frame_icon (a_pixbuf);
+  public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
+    this.pixbuf = a_pixbuf;
     queue_draw ();
   }
 
   public void set_image (AvatarDetails? details, Contact? contact = null) {
+    this.contact = contact;
+
+    // FIXME listen for changes in the Individual's avatar
+
     Gdk.Pixbuf? a_pixbuf = null;
-    if (details != null &&
-	details.avatar != null) {
+    if (details != null && details.avatar != null) {
       try {
-	var stream = details.avatar.load (size, null);
-	a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
-      }
-      catch {
+        var stream = details.avatar.load (size, null);
+        a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
+      } catch {
       }
     }
 
     if (a_pixbuf == null) {
-      a_pixbuf = Contact.draw_fallback_avatar (size, contact);
+      a_pixbuf = null;
     }
     set_pixbuf (a_pixbuf);
   }
@@ -63,30 +70,72 @@ public class Contacts.Avatar : DrawingArea {
   public override bool draw (Cairo.Context cr) {
     cr.save ();
 
-    if (pixbuf != null) {
-      Gdk.cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
-      cr.paint();
-    }
+    if (this.pixbuf != null)
+      draw_contact_avatar (cr);
+    else // No avatar available, draw a fallback
+      draw_fallback (cr);
 
-    if (layout != null) {
-      Utils.cairo_rounded_box (cr, 0, 0, size, size, 4);
-      cr.clip ();
-
-      cr.set_source_rgba (0, 0, 0, 0.5);
-      cr.rectangle (0, size, size, 0);
-      cr.fill ();
-
-      cr.set_source_rgb (1.0, 1.0, 1.0);
-      Pango.Rectangle rect;
-      layout.get_extents (null, out rect);
-      double label_width = rect.width/(double)Pango.SCALE;
-      double label_height = rect.height / (double)Pango.SCALE;
-      cr.move_to (Math.round ((size - label_width) / 2.0),
-		  size + Math.floor ((-label_height) / 2.0));
-      Pango.cairo_show_layout (cr, layout);
-    }
     cr.restore ();
 
     return true;
+  }
+
+  private void draw_contact_avatar (Cairo.Context cr) {
+    Gdk.cairo_set_source_pixbuf (cr, this.pixbuf, 0, 0);
+    // Clip with a circle
+    create_circle (cr);
+    cr.clip_preserve ();
+    cr.paint ();
+  }
+
+  private void draw_fallback (Cairo.Context cr) {
+    // The background color
+    if (this.bg_color == null)
+      calculate_color ();
+
+    // Fill the background circle
+    cr.set_source_rgb (this.bg_color.red, this.bg_color.green, this.bg_color.blue);
+    cr.arc (this.size / 2, this.size / 2, this.size / 2, 0, 2*Math.PI);
+    create_circle (cr);
+    cr.fill_preserve ();
+
+    // Draw the icon
+    try {
+      // FIXME we can probably cache this
+      var theme = IconTheme.get_default ();
+      var fallback_avatar = theme.lookup_icon ("avatar-default",
+                                               this.size * 4 / 5,
+                                               IconLookupFlags.FORCE_SYMBOLIC);
+      var icon_pixbuf = fallback_avatar.load_symbolic (fg_color);
+      create_circle (cr);
+      cr.clip_preserve ();
+      Gdk.cairo_set_source_pixbuf (cr, icon_pixbuf, 1 + this.size / 10, 1 + this.size / 5);
+      cr.paint ();
+    } catch (Error e) {
+      warning ("Couldn't get default avatar icon: %s", e.message);
+    }
+  }
+
+  private void calculate_color () {
+    //XXX find something if this.contact == nulll or id == ""
+
+    // We use the hash of the id so we get the same color for a contact
+    var hash = str_hash (this.contact.individual.id);
+
+    var r = ((hash & 0xFF0000) >> 16) / 255.0;
+    var g = ((hash & 0x00FF00) >> 8) / 255.0;
+    var b = (hash & 0x0000FF) / 255.0;
+
+    // Make it a bit lighter by default (and since the foreground will be darker)
+    this.bg_color = Gdk.RGBA () {
+      red = (r + 2) / 3.0,
+      green = (g + 2) / 3.0,
+      blue = (b + 2) / 3.0,
+      alpha = 0
+    };
+  }
+
+  private void create_circle (Cairo.Context cr) {
+    cr.arc (this.size / 2, this.size / 2, this.size / 2, 0, 2*Math.PI);
   }
 }

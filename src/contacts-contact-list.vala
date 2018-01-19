@@ -26,6 +26,8 @@ using Gee;
  */
 public class Contacts.ContactList : ListBox {
   private class ContactDataRow : ListBoxRow {
+    private const int LIST_AVATAR_SIZE = 48;
+
     public Contact contact;
     public Label label;
     private Avatar avatar;
@@ -41,7 +43,7 @@ public class Contacts.ContactList : ListBox {
       grid.margin = 3;
       grid.margin_start = 9;
       grid.set_column_spacing (10);
-      this.avatar = new Avatar (Contact.LIST_AVATAR_SIZE);
+      this.avatar = new Avatar (LIST_AVATAR_SIZE);
 
       label = new Label ("");
       label.set_ellipsize (Pango.EllipsizeMode.END);

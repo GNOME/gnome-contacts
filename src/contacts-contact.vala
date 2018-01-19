@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -26,9 +25,6 @@ public errordomain ContactError {
 }
 
 public class Contacts.Contact : GLib.Object  {
-  public const int LIST_AVATAR_SIZE = 48;
-  public const int SMALL_AVATAR_SIZE = 54;
-
   public weak Store store;
   public bool is_main;
 
@@ -37,19 +33,6 @@ public class Contacts.Contact : GLib.Object  {
   bool changed_personas;
 
   public Persona? fake_persona = null;
-
-  private Gdk.Pixbuf? _small_avatar;
-  public Gdk.Pixbuf small_avatar {
-    get {
-      if (_small_avatar == null) {
-	var pixbuf = load_icon (individual.avatar, SMALL_AVATAR_SIZE);
-	if (pixbuf == null)
-	  pixbuf = draw_fallback_avatar (SMALL_AVATAR_SIZE, this);
-	_small_avatar = frame_icon (pixbuf);
-      }
-      return _small_avatar;
-    }
-  }
 
   public string display_name {
     get { return this.individual.display_name; }
@@ -171,7 +154,6 @@ public class Contacts.Contact : GLib.Object  {
     individual.notify.disconnect(notify_cb);
     individual = new_individual;
     individual.set_data ("contact", this);
-    _small_avatar = null;
     individual.notify.connect(notify_cb);
     queue_changed (true);
   }
@@ -379,9 +361,6 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private void notify_cb (ParamSpec pspec) {
-    if (pspec.get_name () == "avatar") {
-      _small_avatar = null;
-    }
     queue_changed (false);
   }
 
@@ -428,80 +407,6 @@ public class Contacts.Contact : GLib.Object  {
     }
 
     update_filter_data ();
-  }
-
-  // TODO: This should be async, but the vala bindings are broken (bug #649875)
-  private Gdk.Pixbuf load_icon (LoadableIcon ?file, int size) {
-    Gdk.Pixbuf? res = null;
-    if (file != null) {
-      try {
-	Cancellable c = new Cancellable ();
-	var stream = file.load (size, null, c);
-	res = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true, c);
-      } catch (GLib.Error e) {
-	warning ("error loading avatar %s\n", e.message);
-      }
-    }
-
-    return res;
-  }
-
-  public static Gdk.Pixbuf frame_icon (Gdk.Pixbuf icon) {
-    int w = icon.get_width ();
-    int h = icon.get_height ();
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, w, h);
-    var cr = new Cairo.Context (cst);
-
-    cr.set_source_rgba (0, 0, 0, 0);
-    cr.rectangle (0, 0, w, h);
-    cr.fill ();
-
-    Gdk.cairo_set_source_pixbuf (cr, icon, 0, 0);
-    Utils.cairo_rounded_box (cr,
-			     0, 0,
-			     w, h, 4);
-    cr.fill ();
-
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, w, h);
-  }
-
-  private static Gdk.Pixbuf? fallback_pixbuf_default;
-  public static Gdk.Pixbuf draw_fallback_avatar (int size, Contact? contact) {
-    if (size == SMALL_AVATAR_SIZE && fallback_pixbuf_default != null)
-      return fallback_pixbuf_default;
-
-    Gdk.Pixbuf pixbuf = null;
-    try {
-      var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
-      var cr = new Cairo.Context (cst);
-
-      var pat = new Cairo.Pattern.linear (0, 0, 0, size);
-      pat.add_color_stop_rgb (0, 0.937, 0.937, 0.937);
-      pat.add_color_stop_rgb (1, 0.969, 0.969, 0.969);
-
-      cr.set_source (pat);
-      cr.paint ();
-
-      int avatar_size = (int) (size * 0.3);
-      var icon_info = IconTheme.get_default ().lookup_icon ("avatar-default-symbolic", avatar_size,
-							    IconLookupFlags.GENERIC_FALLBACK);
-      if (icon_info != null) {
-	Gdk.cairo_set_source_pixbuf (cr, icon_info.load_icon (), (size - avatar_size) / 2, (size - avatar_size) / 2);
-	cr.rectangle ((size - avatar_size) / 2, (size - avatar_size) / 2, avatar_size, avatar_size);
-	cr.fill ();
-      }
-      pixbuf = Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
-    } catch {
-    }
-
-    if (size == SMALL_AVATAR_SIZE)
-      fallback_pixbuf_default = pixbuf;
-
-    if (pixbuf != null)
-      return pixbuf;
-
-    var cst = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
-    return Gdk.pixbuf_get_from_surface (cst, 0, 0, size, size);
   }
 
   /* We claim something is "removable" if at least one persona is removable,
