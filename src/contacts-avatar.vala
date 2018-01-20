@@ -61,9 +61,6 @@ public class Contacts.Avatar : DrawingArea {
       }
     }
 
-    if (a_pixbuf == null) {
-      a_pixbuf = null;
-    }
     set_pixbuf (a_pixbuf);
   }
 
