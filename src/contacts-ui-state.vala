@@ -30,13 +30,13 @@ public enum Contacts.UiState {
   NORMAL,
 
   /**
-   * A contact has been selected and is displayed.
+   * A single contact is selected and displayed.
    */
   SHOWING,
 
   /**
    * Zero or more contacts are selected (but this can be changed).
-   * No contact should be displayed.
+   * One contact might be displayed.
    */
   SELECTING,
 

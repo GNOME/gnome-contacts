@@ -210,8 +210,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (this.contact_pane.on_edit_mode)
       stop_editing ();
 
-    this.state = (c != null)? UiState.SHOWING : UiState.NORMAL;
-
     this.contact_pane.show_contact (c, false);
     if (list_pane != null)
       list_pane.select_contact (c);
@@ -290,11 +288,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   void list_pane_selection_changed_cb (Contact? new_selection) {
     set_shown_contact (new_selection);
+    if (this.state != UiState.SELECTING)
+      this.state = UiState.SHOWING;
   }
 
   void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {
-    /* getting out of selection mode */
     set_shown_contact (null);
+    this.state = UiState.NORMAL;
 
     LinkOperation2 operation = null;
     link_contacts_list.begin (contact_list, this.store, (obj, result) => {
@@ -321,7 +321,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
     /* getting out of selection mode */
     set_shown_contact (null);
-    this.state == UiState.NORMAL;
+    this.state = UiState.NORMAL;
 
     string msg = ngettext ("%d contact deleted",
                            "%d contacts deleted",
@@ -336,6 +336,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     b.clicked.connect ( () => {
         really_delete = false;
         notification.dismiss ();
+
+        foreach (var c in contact_list)
+          c.show ();
+
+        set_shown_contact (contact_list.last ());
+        this.state = UiState.SHOWING;
       });
     notification.dismissed.connect ( () => {
         if (really_delete)
@@ -344,16 +350,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
 
     add_notification (notification);
-
-	foreach (var c in contact_list) {
-	  c.show ();
-	}
-	set_shown_contact (contact_list.last ());
   }
 
   private void contact_pane_delete_contact_cb (Contact contact) {
-    /* unsetting edit-mode */
     set_shown_contact (null);
+    this.state = UiState.NORMAL;
 
     var msg = _("Contact deleted: “%s”").printf (contact.display_name);
     var b = new Button.with_mnemonic (_("_Undo"));
@@ -377,6 +378,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         notification.dismiss ();
         contact.show ();
         set_shown_contact (contact);
+        this.state = UiState.SHOWING;
       });
   }
 
