@@ -19,7 +19,7 @@ using Gtk;
 using Folks;
 using Gee;
 
-const int PROFILE_SIZE = 96;
+const int PROFILE_SIZE = 128;
 
 /**
  * The ContactPage is the right pane. It consists of 3 possible pages:
