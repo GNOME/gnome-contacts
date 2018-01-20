@@ -47,7 +47,7 @@ public class Contacts.LinkSuggestionGrid : Grid {
     image_frame.hexpand = false;
     image_frame.margin = 12;
     contact.keep_widget_uptodate (image_frame,  (w) => {
-        (w as Avatar).set_image (contact.individual, contact);
+        (w as Avatar).set_image.begin (contact.individual, contact);
       });
     image_frame.show ();
     attach (image_frame, 0, 0, 1, 2);

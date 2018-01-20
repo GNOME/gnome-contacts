@@ -25,8 +25,8 @@ using Gee;
  */
 public class Contacts.Avatar : DrawingArea {
   private int size;
-  private Gdk.Pixbuf? pixbuf;
-  private Contact? contact;
+  private Gdk.Pixbuf? pixbuf = null;
+  private Contact? contact = null;
 
   // The background color used in case of a fallback avatar
   private Gdk.RGBA? bg_color = null;
@@ -47,21 +47,19 @@ public class Contacts.Avatar : DrawingArea {
     queue_draw ();
   }
 
-  public void set_image (AvatarDetails? details, Contact? contact = null) {
+  public async void set_image (AvatarDetails? details, Contact? contact = null) {
     this.contact = contact;
 
     // FIXME listen for changes in the Individual's avatar
 
-    Gdk.Pixbuf? a_pixbuf = null;
     if (details != null && details.avatar != null) {
       try {
-        var stream = details.avatar.load (size, null);
-        a_pixbuf = new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
+        var stream = yield details.avatar.load_async (size, null);
+        this.pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream, size, size, true);
+        queue_draw ();
       } catch {
       }
     }
-
-    set_pixbuf (a_pixbuf);
   }
 
   public override bool draw (Cairo.Context cr) {

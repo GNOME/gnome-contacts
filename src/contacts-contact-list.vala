@@ -67,7 +67,7 @@ public class Contacts.ContactList : ListBox {
 
       // Update widgets
       this.label.set_text (this.contact.display_name);
-      this.avatar.set_image (this.contact.individual, this.contact);
+      this.avatar.set_image.begin (this.contact.individual, this.contact);
     }
   }
 

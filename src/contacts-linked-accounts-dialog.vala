@@ -85,7 +85,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       image_frame.margin = 6;
       image_frame.margin_end = 12;
       contact.keep_widget_uptodate (image_frame, (w) => {
-          (w as Avatar).set_image (contact.individual, contact);
+          (w as Avatar).set_image.begin (contact.individual, contact);
         });
       row_grid.attach (image_frame, 0, 0, 1, 2);
 

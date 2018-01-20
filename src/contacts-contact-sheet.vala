@@ -100,8 +100,8 @@ public class Contacts.ContactSheet : Grid {
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
     c.keep_widget_uptodate (image_frame,  (w) => {
-        (w as Avatar).set_image (c.individual, c);
-          });
+        (w as Avatar).set_image.begin (c.individual, c);
+      });
     attach (image_frame,  0, 0, 1, 3);
 
     var name_label = new Label (null);

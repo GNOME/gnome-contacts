@@ -951,10 +951,10 @@ public class Contacts.ContactEditor : Grid {
 
     if (this.contact != null) {
       this.contact.keep_widget_uptodate (this.avatar,  (w) => {
-          this.avatar.set_image (this.contact.individual, this.contact);
+          this.avatar.set_image.begin (this.contact.individual, this.contact);
         });
     } else {
-      this.avatar.set_image (null, null);
+      this.avatar.set_image.begin (null, null);
     }
 
     this.container_grid.attach (button, 0, 0, 1, 3);
