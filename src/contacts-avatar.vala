@@ -117,10 +117,8 @@ public class Contacts.Avatar : DrawingArea {
   }
 
   private void calculate_color () {
-    //XXX find something if this.contact == nulll or id == ""
-
-    // We use the hash of the id so we get the same color for a contact
-    var hash = str_hash (this.contact.individual.id);
+    // We use the hash of the id so we get the same color each time for the same contact
+    var hash = (this.contact != null)? str_hash (this.contact.individual.id) : Gdk.CURRENT_TIME;
 
     var r = ((hash & 0xFF0000) >> 16) / 255.0;
     var g = ((hash & 0x00FF00) >> 8) / 255.0;
