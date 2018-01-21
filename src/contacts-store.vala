@@ -289,14 +289,6 @@ public class Contacts.Store : GLib.Object {
     return contacts.read_only_view;
   }
 
-  public bool is_empty () {
-    foreach (var contact in contacts) {
-      if (!contact.is_hidden)
-	return false;
-    }
-    return true;
-  }
-
   private void add (Contact c) {
     contacts.add (c);
     c.changed.connect (contact_changed_cb);
