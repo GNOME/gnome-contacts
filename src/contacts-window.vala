@@ -95,9 +95,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane.delete_contacts.connect (list_pane_delete_contacts_cb);
 
     list_pane.contacts_marked.connect ((nr_contacts) => {
-        if (nr_contacts == 0)
-          this.left_header.title = _("Select");
-        else
+        if (nr_contacts != 0)
           this.left_header.title = ngettext ("%d Selected", "%d Selected", nr_contacts)
                                        .printf (nr_contacts);
       });
@@ -128,7 +126,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // Selecting UI
     this.select_cancel_button.visible = (this.state == UiState.SELECTING);
 
-    this.left_header.title = (this.state == UiState.SELECTING)?  _("Select") : _("Contacts");
+    if (this.state != UiState.SELECTING)
+      this.left_header.title = _("Contacts");
 
     // Editing UI
     this.cancel_button.visible
