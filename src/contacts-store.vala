@@ -30,8 +30,8 @@ public class Contacts.Store : GLib.Object {
   public signal void eds_persona_store_changed ();
 
   public IndividualAggregator aggregator { get; private set; }
-  public BackendStore backend_store { get; private set; }
-  Gee.ArrayList<Contact> contacts;
+  public BackendStore backend_store { get { return this.aggregator.backend_store; } }
+  private ArrayList<Contact> contacts;
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
@@ -137,19 +137,19 @@ public class Contacts.Store : GLib.Object {
     dont_suggest_link = new Gee.HashMultiMap<string, string> ();
     read_dont_suggest_db ();
 
-    backend_store = BackendStore.dup ();
+    var backend_store = BackendStore.dup ();
     backend_store.backend_available.connect ((backend) => {
-	if (backend.name == "eds") {
-	  backend.persona_store_added.connect (() => {
-	      eds_persona_store_changed ();
-	    });
-	  backend.persona_store_removed.connect (() => {
-	      eds_persona_store_changed ();
-	    });
-	}
+        if (backend.name == "eds") {
+          backend.persona_store_added.connect (() => {
+              eds_persona_store_changed ();
+            });
+          backend.persona_store_removed.connect (() => {
+              eds_persona_store_changed ();
+            });
+        }
       });
 
-    aggregator = IndividualAggregator.dup ();
+    this.aggregator = IndividualAggregator.dup_with_backend_store (backend_store);
     aggregator.notify["is-quiescent"].connect ( (obj, pspec) => {
 	// We seem to get this before individuals_changed, so hack around it
 	Idle.add( () => {
