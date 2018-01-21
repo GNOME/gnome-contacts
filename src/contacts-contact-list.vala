@@ -32,6 +32,8 @@ public class Contacts.ContactList : ListBox {
     public Label label;
     private Avatar avatar;
     public CheckButton selector_button;
+    // Whether the selector should always be visible (or only on hover)
+    private bool checkbox_exposed = false;
     public bool filtered;
 
     public ContactDataRow(Contact c) {
@@ -68,6 +70,22 @@ public class Contacts.ContactList : ListBox {
       // Update widgets
       this.label.set_text (this.contact.display_name);
       this.avatar.set_image.begin (this.contact.individual, this.contact);
+    }
+
+    // Sets whether the checbox should always be shown (and not only on hover)
+    public void expose_checkbox (bool expose) {
+      this.checkbox_exposed = expose;
+      this.selector_button.visible = expose;
+    }
+
+    // Normally, we would use the (enter/leave)_notify_event here, but since ListBoxRow
+    // doesn't have its own Gdk.Window, this won't work (at least in GTK+3).
+    public override void state_flags_changed (StateFlags previous_state) {
+      var hovering_now = StateFlags.PRELIGHT in get_state_flags ();
+      var was_hovering = StateFlags.PRELIGHT in previous_state;
+
+      if (hovering_now != was_hovering) // If hovering changed
+        this.selector_button.visible = checkbox_exposed || hovering_now;
     }
   }
 
@@ -107,7 +125,7 @@ public class Contacts.ContactList : ListBox {
   private void on_ui_state_changed () {
     foreach (var widget in get_children ()) {
       var row = widget as ContactDataRow;
-      row.selector_button.visible = (this.state == UiState.SELECTING);
+      row.expose_checkbox (this.state == UiState.SELECTING);
 
       if (this.state != UiState.SELECTING)
         row.selector_button.active = false;
@@ -211,23 +229,28 @@ public class Contacts.ContactList : ListBox {
   }
 
   private void contact_added_cb (Store store, Contact c) {
-    var data =  new ContactDataRow(c);
+    var row =  new ContactDataRow(c);
+    row.update_data (calculate_filtered (c));
+    row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
+    row.selector_button.visible = (this.state == UiState.SELECTING);
 
-    data.update_data (calculate_filtered (c));
+    contacts[c] = row;
+    add (row);
+  }
 
-    data.selector_button.toggled.connect (() => {
-	if (data.selector_button.active)
-	  this.nr_contacts_marked++;
-	else
-	  this.nr_contacts_marked--;
+  private void on_row_checkbox_toggled (ContactDataRow row) {
+    this.nr_contacts_marked += (row.selector_button.active)? 1 : -1;
 
-	contacts_marked (this.nr_contacts_marked);
-      });
+    // User selected a first checkbox: enter selection mode
+    if (row.selector_button.active && this.nr_contacts_marked == 1)
+      this.state = UiState.SELECTING;
 
-    if (this.state != UiState.SELECTING)
-      data.selector_button.hide ();
-    contacts.set (c, data);
-    this.add (data);
+
+    // User deselected the last checkbox: leave selection mode
+    if (!row.selector_button.active && this.nr_contacts_marked == 0)
+      this.state = UiState.SHOWING;
+
+    contacts_marked (this.nr_contacts_marked);
   }
 
   private void contact_removed_cb (Store store, Contact c) {

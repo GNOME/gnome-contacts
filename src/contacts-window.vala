@@ -38,8 +38,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Button add_button;
   [GtkChild]
-  private Button select_button;
-  [GtkChild]
   private Button select_cancel_button;
   [GtkChild]
   private ToggleButton favorite_button;
@@ -120,7 +118,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
         = this.right_header.show_close_button
-        = this.select_button.visible
         = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 
     // UI when showing a contact
@@ -242,7 +239,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   private void connect_button_signals () {
-    this.select_button.clicked.connect (() => { this.state = UiState.SELECTING; });
     this.select_cancel_button.clicked.connect (() => { this.state = UiState.NORMAL; });
     this.done_button.clicked.connect (() => stop_editing ());
     this.cancel_button.clicked.connect (() => stop_editing (true));
