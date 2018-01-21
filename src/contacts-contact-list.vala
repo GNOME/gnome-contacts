@@ -51,15 +51,18 @@ public class Contacts.ContactList : ListBox {
       label.set_ellipsize (Pango.EllipsizeMode.END);
       label.set_valign (Align.CENTER);
       label.set_halign (Align.START);
-      selector_button = new CheckButton ();
-      selector_button.no_show_all = true;
-      selector_button.set_valign (Align.CENTER);
-      selector_button.set_halign (Align.END);
-      selector_button.set_hexpand (true);
+
+      this.selector_button = new CheckButton ();
+      this.selector_button.visible = false;
+      this.selector_button.valign = Align.CENTER;
+      this.selector_button.halign = Align.END;
+      this.selector_button.hexpand = true;
+      // Make sure it doesn't overlap with the scrollbar
+      this.selector_button.margin_end = 12;
 
       grid.attach (this.avatar, 0, 0, 1, 1);
       grid.attach (label, 1, 0, 1, 1);
-      grid.attach (selector_button, 2, 0, 1, 1);
+      grid.attach (this.selector_button, 2, 0);
       this.add (grid);
       this.show_all ();
     }
@@ -75,7 +78,9 @@ public class Contacts.ContactList : ListBox {
     // Sets whether the checbox should always be shown (and not only on hover)
     public void expose_checkbox (bool expose) {
       this.checkbox_exposed = expose;
-      this.selector_button.visible = expose;
+
+      var hovering = StateFlags.PRELIGHT in get_state_flags ();
+      this.selector_button.visible = expose || hovering;
     }
 
     // Normally, we would use the (enter/leave)_notify_event here, but since ListBoxRow
