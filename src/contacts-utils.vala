@@ -172,20 +172,6 @@ namespace Contacts.Utils {
     return null;
   }
 
-  /* Returns false if the given string contains at least one non-"space"
-   * character.
-   */
-  public bool string_is_empty (string str) {
-    unichar c;
-
-    for (int i = 0; str.get_next_char (ref i, out c);) {
-      if (!c.isspace ())
-        return false;
-    }
-
-    return true;
-  }
-
   public void grab_entry_focus_no_select (Entry entry) {
     int start, end;
     if (!entry.get_selection_bounds (out start, out end)) {
