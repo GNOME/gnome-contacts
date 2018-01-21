@@ -34,7 +34,6 @@ public class Contacts.ContactList : ListBox {
     public CheckButton selector_button;
     // Whether the selector should always be visible (or only on hover)
     private bool checkbox_exposed = false;
-    public bool filtered;
 
     public ContactDataRow(Contact c) {
       this.contact = c;
@@ -67,9 +66,7 @@ public class Contacts.ContactList : ListBox {
       this.show_all ();
     }
 
-    public void update_data (bool filtered) {
-      this.filtered = filtered;
-
+    public void update () {
       // Update widgets
       this.label.set_text (this.contact.display_name);
       this.avatar.set_image.begin (this.contact.individual, this.contact);
@@ -100,15 +97,17 @@ public class Contacts.ContactList : ListBox {
   private Map<Contact, ContactDataRow> contacts = new HashMap<Contact, ContactDataRow> ();
   int nr_contacts_marked = 0;
 
-  string []? filter_values;
+  private Query filter_query;
 
   private Store store;
 
   public UiState state { get; set; }
 
-  public ContactList (Store store) {
+  public ContactList (Store store, Query query) {
     this.selection_mode = Gtk.SelectionMode.BROWSE;
     this.store = store;
+    this.filter_query = query;
+    this.filter_query.notify.connect (() => { invalidate_filter (); });
 
     this.notify["state"].connect ( () => { on_ui_state_changed(); });
 
@@ -121,7 +120,7 @@ public class Contacts.ContactList : ListBox {
     get_style_context ().add_class ("contacts-contact-list");
 
     set_sort_func ((a, b) => compare_data (a as ContactDataRow, b as ContactDataRow));
-    set_filter_func (filter);
+    set_filter_func (filter_row);
     set_header_func (update_header);
 
     show ();
@@ -194,48 +193,15 @@ public class Contacts.ContactList : ListBox {
     return label;
   }
 
-  public void set_filter_values (string []? values) {
-    if (filter_values == values)
-      return;
-
-    if (filter_values == null)
-      set_placeholder (null);
-    else {
-      var l = new Label (_("No results matched search"));
-      l.show ();
-      set_placeholder (l);
-    }
-    filter_values = values;
-    update_all_filtered ();
-    invalidate_filter ();
-  }
-
-  private bool calculate_filtered (Contact c) {
-    if (c.is_hidden)
-      return false;
-
-    if (filter_values == null || filter_values.length == 0)
-      return true;
-
-    return c.contains_strings (filter_values);
-  }
-
-  private void update_all_filtered () {
-    foreach (var widget in get_children ()) {
-      var row = widget as ContactDataRow;
-      row.filtered = calculate_filtered (row.contact);
-    }
-  }
-
   private void contact_changed_cb (Store store, Contact c) {
     var data = contacts.get (c);
-    data.update_data (calculate_filtered (c));
+    data.update ();
     data.changed();
   }
 
   private void contact_added_cb (Store store, Contact c) {
     var row =  new ContactDataRow(c);
-    row.update_data (calculate_filtered (c));
+    row.update ();
     row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
     row.selector_button.visible = (this.state == UiState.SELECTING);
 
@@ -274,9 +240,9 @@ public class Contacts.ContactList : ListBox {
 #endif
   }
 
-  private bool filter (ListBoxRow row) {
-    var data = row as ContactDataRow;
-    return data.filtered;
+  private bool filter_row (ListBoxRow row) {
+    var indiv = ((ContactDataRow) row).contact.individual;
+    return this.filter_query.is_match (indiv) > 0;
   }
 
   public void select_contact (Contact? contact) {

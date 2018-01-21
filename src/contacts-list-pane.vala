@@ -30,6 +30,7 @@ public class Contacts.ListPane : Frame {
 
   [GtkChild]
   public SearchEntry filter_entry;
+  private SimpleQuery filter_query;
 
   [GtkChild]
   private Button link_button;
@@ -49,11 +50,17 @@ public class Contacts.ListPane : Frame {
 
   public ListPane (Store contacts_store) {
     this.store = contacts_store;
-
     this.notify["state"].connect ( () => { on_ui_state_changed(); });
 
+    // Build the filter query
+    string[] filtered_fields = Query.MATCH_FIELDS_NAMES;
+    foreach (var field in Query.MATCH_FIELDS_ADDRESSES)
+      filtered_fields += field;
+    this.filter_query = new SimpleQuery ("", filtered_fields);
+
+
     // Load the ContactsView and connect the necessary signals
-    this.contacts_list = new ContactList (contacts_store);
+    this.contacts_list = new ContactList (contacts_store, this.filter_query);
     bind_property ("state", this.contacts_list, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     this.contacts_list_container.add (this.contacts_list);
 
@@ -79,13 +86,7 @@ public class Contacts.ListPane : Frame {
 
   [GtkCallback]
   private void filter_entry_changed (Editable editable) {
-    if (Utils.string_is_empty (this.filter_entry.text)) {
-      this.contacts_list.set_filter_values (null);
-      return;
-    }
-
-    var str = Utils.canonicalize_for_search (this.filter_entry.text);
-    this.contacts_list.set_filter_values (str.split(" "));
+    this.filter_query.query_string = this.filter_entry.text;
   }
 
   public void select_contact (Contact? contact) {

@@ -51,8 +51,6 @@ public class Contacts.Contact : GLib.Object  {
     return false;
   }
 
-  private string filter_data;
-
   public signal void changed ();
   public signal void personas_changed ();
 
@@ -170,14 +168,6 @@ public class Contacts.Contact : GLib.Object  {
 	return true;
     }
     return false;
-  }
-
-  public bool contains_strings (string [] strings) {
-    foreach (string i in strings) {
-      if (! (i in filter_data))
-	return false;
-    }
-    return true;
   }
 
   private static bool has_pref (AbstractFieldDetails details) {
@@ -364,39 +354,6 @@ public class Contacts.Contact : GLib.Object  {
     queue_changed (false);
   }
 
-  private void update_filter_data () {
-    var builder = new StringBuilder ();
-    if (individual.alias != null) {
-      builder.append (Utils.canonicalize_for_search (individual.alias));
-      builder.append_unichar (' ');
-    }
-    if (individual.full_name != null) {
-      builder.append (Utils.canonicalize_for_search (individual.full_name));
-      builder.append_unichar (' ');
-    }
-    if (individual.nickname != null) {
-      builder.append (Utils.canonicalize_for_search (individual.nickname));
-      builder.append_unichar (' ');
-    }
-    var im_addresses = individual.im_addresses;
-    foreach (var detail in im_addresses.get_values ()) {
-      var addr = detail.value;
-      builder.append (addr.casefold ());
-      builder.append_unichar (' ');
-    }
-    var emails = individual.email_addresses;
-    foreach (var email in emails) {
-      builder.append (email.value.casefold ());
-      builder.append_unichar (' ');
-    }
-    var phone_numbers = individual.phone_numbers;
-    foreach (var phone in phone_numbers) {
-      builder.append (phone.value.casefold ());
-      builder.append_unichar (' ');
-    }
-    filter_data = builder.str;
-  }
-
   private void update () {
     foreach (var email in individual.email_addresses) {
       TypeSet.general.type_seen (email);
@@ -405,8 +362,6 @@ public class Contacts.Contact : GLib.Object  {
     foreach (var phone in individual.phone_numbers) {
       TypeSet.phone.type_seen (phone);
     }
-
-    update_filter_data ();
   }
 
   /* We claim something is "removable" if at least one persona is removable,
