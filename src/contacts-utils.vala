@@ -172,21 +172,6 @@ namespace Contacts.Utils {
     return null;
   }
 
-  private unichar strip_char (unichar ch) {
-    switch (ch.type ()) {
-    case UnicodeType.CONTROL:
-    case UnicodeType.FORMAT:
-    case UnicodeType.UNASSIGNED:
-    case UnicodeType.NON_SPACING_MARK:
-    case UnicodeType.COMBINING_MARK:
-    case UnicodeType.ENCLOSING_MARK:
-      /* Ignore those */
-      return 0;
-    default:
-      return ch.tolower ();
-    }
-  }
-
   /* Returns false if the given string contains at least one non-"space"
    * character.
    */
@@ -199,21 +184,6 @@ namespace Contacts.Utils {
     }
 
     return true;
-  }
-
-  public string canonicalize_for_search (string str) {
-    unowned string s;
-    var buf = new unichar[18];
-    var res = new StringBuilder ();
-    for (s = str; s[0] != 0; s = s.next_char ()) {
-      var c = strip_char (s.get_char ());
-      if (c != 0) {
-        var size = c.fully_decompose (false, buf);
-        if (size > 0)
-          res.append_unichar (buf[0]);
-      }
-    }
-    return res.str;
   }
 
   public void grab_entry_focus_no_select (Entry entry) {
