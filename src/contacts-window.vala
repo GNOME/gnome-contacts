@@ -209,6 +209,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       this.ignore_favorite_button_toggled = true;
       this.favorite_button.active = c.individual.is_favourite;
       this.ignore_favorite_button_toggled = false;
+      this.favorite_button.tooltip_text = (c.individual.is_favourite)? _("Unmark as favorite")
+                                                                     : _("Mark as favorite");
       this.right_header.title = c.display_name;
     }
   }

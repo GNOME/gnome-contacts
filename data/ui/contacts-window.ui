@@ -30,15 +30,13 @@
                 <property name="can_focus">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
+                <property name="tooltip_text" translatable="yes">Create new contact</property>
                 <signal name="clicked" handler="new_contact" object="ContactsWindow" after="no" swapped="no"/>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="add_button_atkobject">
                     <property name="AtkObject::accessible-name" translatable="yes">Add contact</property>
                   </object>
                 </child>
-                <style>
-                  <class name="image-button"/>
-                </style>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -57,6 +55,7 @@
                 <property name="visible">False</property>
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
+                <property name="tooltip_text" translatable="yes">Cancel selection</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -103,6 +102,7 @@
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="valign">center</property>
+                <property name="tooltip_text" translatable="yes">Edit details</property>
                 <signal name="clicked" handler="on_edit_button_clicked"/>
                 <child>
                   <object class="GtkImage">
