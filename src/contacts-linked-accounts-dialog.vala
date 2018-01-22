@@ -38,7 +38,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
     any_unlinked = false;
 
     var headerbar = get_header_bar () as Gtk.HeaderBar;
-    headerbar.set_title (_("%s").printf (contact.display_name));
+    headerbar.set_title (_("%s").printf (contact.individual.display_name));
     headerbar.set_subtitle (_("Linked Accounts"));
 
     set_default_size (600, 400);

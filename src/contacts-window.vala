@@ -155,7 +155,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     this.state = UiState.UPDATING;
 
-    var name = this.contact_pane.contact.display_name;
+    var name = this.contact_pane.contact.individual.display_name;
     this.right_header.title = _("Editing %s").printf (name);
 
     this.contact_pane.set_edit_mode (true);
@@ -186,7 +186,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
 
     if (this.contact_pane.contact != null) {
-      this.right_header.title = this.contact_pane.contact.display_name;
+      this.right_header.title = this.contact_pane.contact.individual.display_name;
     } else {
       this.right_header.title = "";
     }
@@ -213,7 +213,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       this.ignore_favorite_button_toggled = false;
       this.favorite_button.tooltip_text = (c.individual.is_favourite)? _("Unmark as favorite")
                                                                      : _("Mark as favorite");
-      this.right_header.title = c.display_name;
+      this.right_header.title = c.individual.display_name;
     }
   }
 
@@ -316,7 +316,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.state = UiState.NORMAL;
 
     var msg = (contacts.size > 1)? _("%d contacts deleted").printf (contacts.size)
-                                 : _("Deleted contact %s").printf (contacts[0].display_name);
+                                 : _("Deleted contact %s").printf (contacts[0].individual.display_name);
 
     var b = new Button.with_mnemonic (_("_Undo"));
 

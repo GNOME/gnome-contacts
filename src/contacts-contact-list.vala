@@ -46,7 +46,7 @@ public class Contacts.ContactList : ListBox {
       grid.set_column_spacing (10);
       this.avatar = new Avatar (LIST_AVATAR_SIZE);
 
-      this.label = new Label (c.display_name);
+      this.label = new Label (c.individual.display_name);
       this.label.ellipsize = Pango.EllipsizeMode.END;
       this.label.valign = Align.CENTER;
       this.label.halign = Align.START;
@@ -70,7 +70,7 @@ public class Contacts.ContactList : ListBox {
 
     public void update () {
       // Update widgets
-      this.label.set_text (this.contact.display_name);
+      this.label.set_text (this.contact.individual.display_name);
       this.avatar.set_image.begin (this.contact.individual, this.contact);
     }
 

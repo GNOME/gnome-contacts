@@ -114,7 +114,7 @@ public class Contacts.ContactSheet : Grid {
     name_label.set_selectable (true);
 
     c.keep_widget_uptodate (name_label, (w) => {
-	(w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", c.display_name));
+        (w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", c.individual.display_name));
       });
     attach (name_label,  1, 0, 1, 3);
 
@@ -142,7 +142,7 @@ public class Contacts.ContactSheet : Grid {
 	foreach (var email in emails) {
 	  var button = add_row_with_button (ref i, TypeSet.email.format_type (email), email.value);
 	  button.clicked.connect (() => {
-	      Utils.compose_mail ("%s <%s>".printf(c.display_name, email.value));
+	      Utils.compose_mail ("%s <%s>".printf(c.individual.display_name, email.value));
 	    });
 	}
       }

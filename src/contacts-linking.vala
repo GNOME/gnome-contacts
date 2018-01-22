@@ -571,7 +571,7 @@ namespace Contacts {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
 	var v = Value (typeof (string));
-	v.set_string (main.display_name);
+	v.set_string (main.individual.display_name);
 	details.set ("full-name", v);
 	write_persona = yield Contact.create_primary_persona_for_details (contacts_store.aggregator.primary_store, details);
 	operation.added_persona (write_persona);
@@ -676,9 +676,9 @@ namespace Contacts {
     if (main_persona == null && other_personas.size > 1) {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
-	main_persona = yield contact.store.aggregator.primary_store.add_persona_from_details (details);
-	yield (main_persona as NameDetails).change_full_name (contact.display_name);
-	operation.added_persona (main_persona);
+        main_persona = yield contact.store.aggregator.primary_store.add_persona_from_details (details);
+        yield (main_persona as NameDetails).change_full_name (contact.individual.display_name);
+        operation.added_persona (main_persona);
       } catch (GLib.Error e) {
 	warning ("Unable to create new persona when unlinking: %s\n", e.message);
 	return operation;

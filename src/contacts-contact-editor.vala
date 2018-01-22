@@ -999,7 +999,7 @@ public class Contacts.ContactEditor : Grid {
     this.name_entry.set_data ("changed", false);
 
     if (this.contact != null)
-        this.name_entry.text = this.contact.display_name;
+        this.name_entry.text = this.contact.individual.display_name;
 
     /* structured name change */
     this.name_entry.changed.connect (() => {

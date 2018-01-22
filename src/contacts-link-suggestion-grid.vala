@@ -54,8 +54,8 @@ public class Contacts.LinkSuggestionGrid : Grid {
 
     this.description_label.xalign = 0; // FIXME: hack to make it actually align left.
     this.description_label.label = contact.is_main?
-          _("Is this the same person as %s from %s?").printf (contact.display_name, contact.format_persona_stores ())
-        : _("Is this the same person as %s?").printf (contact.display_name);
+          _("Is this the same person as %s from %s?").printf (contact.individual.display_name, contact.format_persona_stores ())
+        : _("Is this the same person as %s?").printf (contact.individual.display_name);
 
     var extra_info = find_extra_description (contact);
     if (extra_info != null) {

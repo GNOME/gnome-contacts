@@ -34,10 +34,6 @@ public class Contacts.Contact : GLib.Object  {
 
   public Persona? fake_persona = null;
 
-  public string display_name {
-    get { return this.individual.display_name; }
-  }
-
   public static bool persona_has_writable_property (Persona persona, string property) {
     // TODO: This should check the writibility on the FakePersona store,
     // but that is not availible in folks yet
@@ -880,7 +876,7 @@ public class Contacts.FakePersona : Persona {
       prop_vals.add (v);
       Persona p = yield contact.ensure_primary_persona ();
       if (!has_full_name)
-	p.set ("full-name", contact.display_name);
+	p.set ("full-name", contact.individual.display_name);
       foreach (var pv in prop_vals) {
 	yield Contact.set_persona_property (p, pv.property, pv.value);
       }

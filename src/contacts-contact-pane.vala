@@ -103,7 +103,7 @@ public class Contacts.ContactPane : Stack {
     parent_overlay.add_overlay (this.suggestion_grid);
 
     this.suggestion_grid.suggestion_accepted.connect ( () => {
-        var linked_contact = c.display_name;
+        var linked_contact = c.individual.display_name;
         link_contacts.begin (contact, c, this.store, (obj, result) => {
             var operation = link_contacts.end (result);
             this.contacts_linked (null, linked_contact, operation);

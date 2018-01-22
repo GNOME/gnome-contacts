@@ -95,7 +95,7 @@ public class Contacts.AvatarSelector : Dialog {
     this.grid.attach (this.current_avatar, 0, 0);
 
     if (contact != null)
-      this.contact_name_label.label = contact.display_name;
+      this.contact_name_label.label = contact.individual.display_name;
 
 #if HAVE_CHEESE
     this.webcam_button_box.show ();
