@@ -48,8 +48,6 @@ public class Contacts.Avatar : DrawingArea {
     this.size = size;
     set_size_request (size, size);
 
-    get_style_context ().add_class ("contacts-avatar");
-
     // If we don't have an avatar, don't try to load it later
     this.avatar_loaded = (contact == null || contact.individual == null
                           || contact.individual.avatar == null);
