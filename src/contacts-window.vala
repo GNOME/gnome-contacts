@@ -179,8 +179,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       } else {
         this.contact_pane.create_contact.begin ();
       }
+      this.state = UiState.NORMAL;
     } else {
       this.contact_pane.set_edit_mode (false, drop_changes);
+      this.state = UiState.SHOWING;
     }
 
     if (this.contact_pane.contact != null) {
@@ -188,8 +190,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     } else {
       this.right_header.title = "";
     }
-
-    this.state = UiState.SHOWING;
   }
 
   public void add_notification (InAppNotification notification) {
