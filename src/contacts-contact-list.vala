@@ -241,8 +241,8 @@ public class Contacts.ContactList : ListBox {
   }
 
   private bool filter_row (ListBoxRow row) {
-    var indiv = ((ContactDataRow) row).contact.individual;
-    return this.filter_query.is_match (indiv) > 0;
+    var contact = ((ContactDataRow) row).contact;
+    return !contact.is_hidden && this.filter_query.is_match (contact.individual) > 0;
   }
 
   public void select_contact (Contact? contact) {

@@ -77,7 +77,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.contact_pane = new ContactPane (this, this.store);
     this.contact_pane.visible = true;
     this.contact_pane.hexpand = true;
-    this.contact_pane.will_delete.connect (contact_pane_delete_contact_cb);
+    this.contact_pane.will_delete.connect ( (contact) => {
+        delete_contacts (new ArrayList<Contact>.wrap ({ contact }));
+     });
     this.contact_pane.contacts_linked.connect (contact_pane_contacts_linked_cb);
     this.contact_pane_container.add (this.contact_pane);
   }
@@ -92,7 +94,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     bind_property ("state", this.list_pane, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     list_pane.selection_changed.connect (list_pane_selection_changed_cb);
     list_pane.link_contacts.connect (list_pane_link_contacts_cb);
-    list_pane.delete_contacts.connect (list_pane_delete_contacts_cb);
+    list_pane.delete_contacts.connect (delete_contacts);
 
     list_pane.contacts_marked.connect ((nr_contacts) => {
         if (nr_contacts != 0)
@@ -309,68 +311,41 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     add_notification (notification);
   }
 
-  void list_pane_delete_contacts_cb (LinkedList<Contact> contact_list) {
-    /* getting out of selection mode */
+  private void delete_contacts (Gee.List<Contact> contacts) {
     set_shown_contact (null);
     this.state = UiState.NORMAL;
 
-    string msg = ngettext ("%d contact deleted",
-                           "%d contacts deleted",
-                           contact_list.size).printf (contact_list.size);
+    var msg = (contacts.size > 1)? _("%d contacts deleted").printf (contacts.size)
+                                 : _("Deleted contact %s").printf (contacts[0].display_name);
 
     var b = new Button.with_mnemonic (_("_Undo"));
 
     var notification = new InAppNotification (msg, b);
 
-    /* signal handlers */
-    bool really_delete = true;
-    b.clicked.connect ( () => {
-        really_delete = false;
-        notification.dismiss ();
-
-        foreach (var c in contact_list)
-          c.show ();
-
-        set_shown_contact (contact_list.last ());
-        this.state = UiState.SHOWING;
-      });
-    notification.dismissed.connect ( () => {
-        if (really_delete)
-          foreach (var c in contact_list)
-            c.remove_personas.begin ();
-      });
-
-    add_notification (notification);
-  }
-
-  private void contact_pane_delete_contact_cb (Contact contact) {
-    set_shown_contact (null);
-    this.state = UiState.NORMAL;
-
-    var msg = _("Contact deleted: “%s”").printf (contact.display_name);
-    var b = new Button.with_mnemonic (_("_Undo"));
-
-    var notification = new InAppNotification (msg, b);
     // Don't wrap (default), but ellipsize
     notification.message_label.wrap = false;
     notification.message_label.max_width_chars = 45;
     notification.message_label.ellipsize = Pango.EllipsizeMode.END;
 
+    // signal handlers
     bool really_delete = true;
-    notification.dismissed.connect ( () => {
-        if (really_delete)
-          contact.remove_personas.begin ( () => {
-              contact.show ();
-            });
-      });
-    add_notification (notification);
     b.clicked.connect ( () => {
         really_delete = false;
         notification.dismiss ();
-        contact.show ();
-        set_shown_contact (contact);
+
+        foreach (var c in contacts)
+          c.show ();
+
+        set_shown_contact (contacts[0]);
         this.state = UiState.SHOWING;
       });
+    notification.dismissed.connect ( () => {
+        if (really_delete)
+          foreach (var c in contacts)
+            c.remove_personas.begin ();
+      });
+
+    add_notification (notification);
   }
 
   void contact_pane_contacts_linked_cb (string? main_contact, string linked_contact, LinkOperation operation) {
