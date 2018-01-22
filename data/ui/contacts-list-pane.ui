@@ -12,39 +12,19 @@
         <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <child>
-          <object class="GtkToolbar">
+          <object class="GtkSearchEntry" id="filter_entry">
             <property name="visible">True</property>
-            <property name="icon_size">1</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">False</property>
-            <style>
-             <class name="primary-toolbar"/>
-            </style>
-            <child>
-              <object class="GtkToolItem" id="search_tool_item">
-                <property name="visible">True</property>
-                <child>
-                  <object class="GtkSearchEntry" id="filter_entry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="primary_icon_name">edit-find-symbolic</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">False</property>
-                    <property name="placeholder_text" translatable="yes">Type to search</property>
-                    <signal name="search_changed" handler="filter_entry_changed" object="ContactsListPane" after="no" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
+            <property name="can_focus">True</property>
+            <property name="primary_icon_name">edit-find-symbolic</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">False</property>
+            <property name="margin">6</property>
+            <property name="placeholder_text" translatable="yes">Type to search</property>
+            <signal name="search_changed" handler="filter_entry_changed" object="ContactsListPane" after="no" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
