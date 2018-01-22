@@ -44,7 +44,7 @@ public class Contacts.ContactList : ListBox {
       grid.margin = 3;
       grid.margin_start = 9;
       grid.set_column_spacing (10);
-      this.avatar = new Avatar (LIST_AVATAR_SIZE);
+      this.avatar = new Avatar (LIST_AVATAR_SIZE, this.contact);
 
       this.label = new Label (c.individual.display_name);
       this.label.ellipsize = Pango.EllipsizeMode.END;
@@ -71,7 +71,6 @@ public class Contacts.ContactList : ListBox {
     public void update () {
       // Update widgets
       this.label.set_text (this.contact.individual.display_name);
-      this.avatar.set_image.begin (this.contact.individual, this.contact);
     }
 
     // Sets whether the checbox should always be shown (and not only on hover)

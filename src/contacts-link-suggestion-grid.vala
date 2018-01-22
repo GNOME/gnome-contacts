@@ -43,16 +43,13 @@ public class Contacts.LinkSuggestionGrid : Grid {
   public LinkSuggestionGrid (Contact contact) {
     get_style_context ().add_class ("contacts-suggestion");
 
-    var image_frame = new Avatar (AVATAR_SIZE);
+    var image_frame = new Avatar (AVATAR_SIZE, contact);
     image_frame.hexpand = false;
     image_frame.margin = 12;
-    contact.keep_widget_uptodate (image_frame,  (w) => {
-        (w as Avatar).set_image.begin (contact.individual, contact);
-      });
     image_frame.show ();
     attach (image_frame, 0, 0, 1, 2);
 
-    this.description_label.xalign = 0; // FIXME: hack to make it actually align left.
+    this.description_label.xalign = 0;
     this.description_label.label = contact.is_main?
           _("Is this the same person as %s from %s?").printf (contact.individual.display_name, contact.format_persona_stores ())
         : _("Is this the same person as %s?").printf (contact.individual.display_name);

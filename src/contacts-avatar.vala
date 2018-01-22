@@ -26,44 +26,64 @@ using Gee;
 public class Contacts.Avatar : DrawingArea {
   private int size;
   private Gdk.Pixbuf? pixbuf = null;
+
   private Contact? contact = null;
+  // We want to lazily load the Pixbuf to make sure we don't draw all contact avatars at once.
+  // As long as there is no need for it to be drawn, keep this to false.
+  private bool avatar_loaded = false;
 
   // The background color used in case of a fallback avatar
   private Gdk.RGBA? bg_color = null;
   // The color used for an initial or the fallback icon
   private const Gdk.RGBA fg_color = { 0, 0, 0, 0.25 };
 
-  public Avatar (int size) {
+  public Avatar (int size, Contact? contact = null) {
+    this.contact = contact;
+    if (contact != null) {
+      contact.individual.notify["avatar"].connect ( (s, p) => {
+          load_avatar.begin ();
+        });
+    }
+
     this.size = size;
     set_size_request (size, size);
 
     get_style_context ().add_class ("contacts-avatar");
 
+    // If we don't have an avatar, don't try to load it later
+    this.avatar_loaded = (contact == null || contact.individual == null
+                          || contact.individual.avatar == null);
+
     show ();
   }
 
+  /**
+   * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
+   */
   public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
     this.pixbuf = a_pixbuf;
     queue_draw ();
   }
 
-  public async void set_image (AvatarDetails? details, Contact? contact = null) {
-    this.contact = contact;
+  private async void load_avatar () {
+    assert (this.contact != null);
 
-    // FIXME listen for changes in the Individual's avatar
-
-    if (details != null && details.avatar != null) {
-      try {
-        var stream = yield details.avatar.load_async (size, null);
-        this.pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream, size, size, true);
-        queue_draw ();
-      } catch {
-      }
+    this.avatar_loaded = true;
+    try {
+      var stream = yield this.contact.individual.avatar.load_async (this.size);
+      this.pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream, this.size, this.size, true);
+      queue_draw ();
+    } catch (Error e) {
+      debug ("Couldn't load avatar of contact %s. Reason: %s", this.contact.individual.display_name, e.message);
     }
   }
 
   public override bool draw (Cairo.Context cr) {
     cr.save ();
+
+    // This exists to implement lazy loading: i.e. only load the avatar on the first draw()
+    if (!this.avatar_loaded)
+      load_avatar.begin ();
 
     if (this.pixbuf != null)
       draw_contact_avatar (cr);

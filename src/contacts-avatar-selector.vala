@@ -82,14 +82,7 @@ public class Contacts.AvatarSelector : Dialog {
     this.contact = contact;
 
     // Load the current avatar
-    this.current_avatar = new Avatar (MAIN_SIZE);
-    if (contact != null) {
-      contact.keep_widget_uptodate (this.current_avatar, (w) => {
-          (w as Avatar).set_image.begin (contact.individual, contact);
-        });
-    } else {
-      this.current_avatar.set_image.begin (null, null);
-    }
+    this.current_avatar = new Avatar (MAIN_SIZE, contact);
     this.current_avatar.set_hexpand (false);
     this.current_avatar.show ();
     this.grid.attach (this.current_avatar, 0, 0);

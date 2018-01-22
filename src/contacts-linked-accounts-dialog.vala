@@ -80,13 +80,10 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
       var row_grid = new Grid ();
 
-      var image_frame = new Avatar (AVATAR_SIZE);
+      var image_frame = new Avatar (AVATAR_SIZE, contact);
       image_frame.set_hexpand (false);
       image_frame.margin = 6;
       image_frame.margin_end = 12;
-      contact.keep_widget_uptodate (image_frame, (w) => {
-          (w as Avatar).set_image.begin (contact.individual, contact);
-        });
       row_grid.attach (image_frame, 0, 0, 1, 2);
 
       var display_name = new Label ("");
