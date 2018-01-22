@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -19,63 +18,34 @@
 using Gtk;
 using Folks;
 
-public class Contacts.LinkedAccountsDialog : Dialog {
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-linked-personas-dialog.ui")]
+public class Contacts.LinkedPersonasDialog : Dialog {
   private const int AVATAR_SIZE = 54;
 
-  Contact contact;
-  ListBox linked_accounts_view;
+  [GtkChild]
+  private ListBox linked_accounts_view;
 
-  public bool any_unlinked;
+  private Contact contact;
 
-  public LinkedAccountsDialog (Window main_win, Contact contact) {
+  public bool any_unlinked = false;
+
+  public LinkedPersonasDialog (Window main_win, Contact contact) {
     Object (
       use_header_bar: 1,
       transient_for: main_win,
-      modal: true
+      title: contact.individual.display_name
     );
 
     this.contact = contact;
-    any_unlinked = false;
+    this.linked_accounts_view.set_header_func (add_separator);
 
-    var headerbar = get_header_bar () as Gtk.HeaderBar;
-    headerbar.set_title (contact.individual.display_name);
-    headerbar.set_subtitle (_("Linked Accounts"));
-
-    set_default_size (600, 400);
-
-    var grid = new Grid ();
-    grid.set_orientation (Orientation.VERTICAL);
-    grid.set_row_spacing (12);
-    grid.set_border_width (8);
-
-    var scrolled = new Gtk.ScrolledWindow (null, null);
-    scrolled.set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
-    scrolled.set_hexpand (true);
-    scrolled.set_vexpand (true);
-    scrolled.set_shadow_type (ShadowType.IN);
-
-    linked_accounts_view = new ListBox ();
-    linked_accounts_view.set_selection_mode (SelectionMode.NONE);
-    linked_accounts_view.set_header_func (add_separator);
-
-    scrolled.add (linked_accounts_view);
-    grid.add (scrolled);
-
-    var label = new Label (_("You can link contacts by selecting them from the contacts list"));
-    label.set_halign (Align.CENTER);
-    grid.add (label);
-
-    grid.show_all ();
-    (get_content_area () as Container).add (grid);
-
-    /* loading personas for display */
+    // loading personas for display
     var personas = contact.get_personas_for_display ();
-    /* Cause personas are sorted properly I can do this */
     bool is_first = true;
     foreach (var p in personas) {
       if (is_first) {
-	is_first = false;
-	continue;
+        is_first = false;
+        continue;
       }
 
       var row_grid = new Grid ();
@@ -90,8 +60,7 @@ public class Contacts.LinkedAccountsDialog : Dialog {
       display_name.set_halign (Align.START);
       display_name.set_valign (Align.END);
       display_name.set_hexpand (true);
-      display_name.set_markup (Markup.printf_escaped ("<span font='bold'>%s</span>",
-						      p.display_id));
+      display_name.set_markup (Markup.printf_escaped ("<span font='bold'>%s</span>", p.display_id));
 
       row_grid.attach (display_name, 1, 0, 1, 1);
 
@@ -110,19 +79,19 @@ public class Contacts.LinkedAccountsDialog : Dialog {
 
       /* signal */
       button.clicked.connect (() => {
-	  unlink_persona.begin (contact, p, (obj, result) => {
-	      unlink_persona.end (result);
+          unlink_persona.begin (contact, p, (obj, result) => {
+              unlink_persona.end (result);
 
-	      row_grid.destroy ();
+              row_grid.destroy ();
 
-	      any_unlinked = true;
-	      /* TODO: Support undo */
-	      /* TODO: Ensure we don't get suggestion for this linkage again */
-	    });
-	});
+              this.any_unlinked = true;
+              /* TODO: Support undo */
+              /* TODO: Ensure we don't get suggestion for this linkage again */
+            });
+        });
 
       row_grid.show_all ();
-      linked_accounts_view.add (row_grid);
+      this.linked_accounts_view.add (row_grid);
     }
   }
 }

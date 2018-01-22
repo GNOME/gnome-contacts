@@ -217,10 +217,8 @@ public class Contacts.ContactPane : Stack {
   }
 
   private void linked_accounts () {
-    var dialog = new LinkedAccountsDialog (this.parent_window, contact);
-    var result = dialog.run ();
-    if (result == ResponseType.CLOSE &&
-	dialog.any_unlinked) {
+    var dialog = new LinkedPersonasDialog (this.parent_window, contact);
+    if (dialog.run () == ResponseType.CLOSE && dialog.any_unlinked) {
       /* update edited contact if any_unlinked */
       set_edit_mode (false);
       set_edit_mode (true);
