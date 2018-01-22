@@ -231,7 +231,7 @@ public class Contacts.ContactList : ListBox {
   }
 
   public override void row_selected (ListBoxRow? row) {
-    var data = row as ContactDataRow;
+    var data = (ContactDataRow?) row as ContactDataRow;
     var contact = data != null ? data.contact : null;
     selection_changed (contact);
 #if HAVE_TELEPATHY
@@ -264,5 +264,17 @@ public class Contacts.ContactList : ListBox {
         cs.add (row.contact);
     }
     return cs;
+  }
+
+  public override bool button_press_event (Gdk.EventButton event) {
+    base.button_press_event (event);
+
+    if (event.button == Gdk.BUTTON_SECONDARY) {
+      var row = (ContactDataRow) get_row_at_y ((int) Math.round (event.y));
+      select_row (row);
+      row.selector_button.active = (this.state != UiState.SELECTING);
+    }
+
+    return false;
   }
 }
