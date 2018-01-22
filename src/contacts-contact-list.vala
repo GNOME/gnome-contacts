@@ -29,7 +29,7 @@ public class Contacts.ContactList : ListBox {
     private const int LIST_AVATAR_SIZE = 48;
 
     public Contact contact;
-    public Label label;
+    private Label label;
     private Avatar avatar;
     public CheckButton selector_button;
     // Whether the selector should always be visible (or only on hover)
@@ -46,10 +46,12 @@ public class Contacts.ContactList : ListBox {
       grid.set_column_spacing (10);
       this.avatar = new Avatar (LIST_AVATAR_SIZE);
 
-      label = new Label ("");
-      label.set_ellipsize (Pango.EllipsizeMode.END);
-      label.set_valign (Align.CENTER);
-      label.set_halign (Align.START);
+      this.label = new Label (c.display_name);
+      this.label.ellipsize = Pango.EllipsizeMode.END;
+      this.label.valign = Align.CENTER;
+      this.label.halign = Align.START;
+      // Make sure it doesn't "twitch" when the checkbox becomes visible
+      this.label.xalign = 0;
 
       this.selector_button = new CheckButton ();
       this.selector_button.visible = false;
@@ -59,8 +61,8 @@ public class Contacts.ContactList : ListBox {
       // Make sure it doesn't overlap with the scrollbar
       this.selector_button.margin_end = 12;
 
-      grid.attach (this.avatar, 0, 0, 1, 1);
-      grid.attach (label, 1, 0, 1, 1);
+      grid.attach (this.avatar, 0, 0);
+      grid.attach (this.label, 1, 0);
       grid.attach (this.selector_button, 2, 0);
       this.add (grid);
       this.show_all ();
