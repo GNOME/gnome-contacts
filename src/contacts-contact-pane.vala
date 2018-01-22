@@ -195,7 +195,6 @@ public class Contacts.ContactPane : Stack {
 
     var hcenter = new Center ();
     hcenter.max_width = 600;
-    hcenter.xalign = 0.0;
     hcenter.show ();
     hcenter.add (this.sheet);
 

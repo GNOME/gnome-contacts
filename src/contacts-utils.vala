@@ -71,11 +71,6 @@ namespace Contacts {
 
 public class Center : Bin {
   public int max_width { get; set; }
-  public double xalign { get; set; }
-
-  public Center () {
-    this.xalign = 0.5;
-  }
 
   public override void get_preferred_height (out int minimum_height, out int natural_height) {
     var child = get_child ();
@@ -112,7 +107,7 @@ public class Center : Bin {
     new_alloc = allocation;
     if (allocation.width > this.max_width) {
       new_alloc.width = this.max_width;
-      new_alloc.x = (int) ((allocation.width - this.max_width) * this.xalign) + allocation.x;
+      new_alloc.x = allocation.x;
     }
 
     var child = get_child ();
