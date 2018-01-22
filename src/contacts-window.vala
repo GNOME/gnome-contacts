@@ -315,9 +315,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     set_shown_contact (null);
     this.state = UiState.NORMAL;
 
-    var msg = ngettext (_("Deleted contact %s").printf (contacts[0].individual.display_name),
-                        _("%d contacts deleted").printf (contacts.size),
-                        contacts.size);
+    string msg;
+    if (contacts.size == 1)
+      msg = _("Deleted contact %s").printf (contacts[0].individual.display_name);
+    else
+      msg = ngettext (_("%d contact deleted"), _("%d contacts deleted"), contacts.size)
+              .printf (contacts.size);
 
     var b = new Button.with_mnemonic (_("_Undo"));
 
