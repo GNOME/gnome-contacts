@@ -66,7 +66,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       store: contacts_store
     );
 
-    this.notify["state"].connect ( () => { on_ui_state_changed(); });
+    this.notify["state"].connect (on_ui_state_changed);
 
     create_contact_pane ();
     set_headerbar_layout ();
@@ -114,7 +114,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane.show ();
   }
 
-  private void on_ui_state_changed () {
+  private void on_ui_state_changed (Object obj, ParamSpec pspec) {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
         = this.right_header.show_close_button

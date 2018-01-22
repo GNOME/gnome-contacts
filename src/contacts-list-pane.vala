@@ -50,7 +50,7 @@ public class Contacts.ListPane : Frame {
 
   public ListPane (Store contacts_store) {
     this.store = contacts_store;
-    this.notify["state"].connect ( () => { on_ui_state_changed(); });
+    this.notify["state"].connect (on_ui_state_changed);
 
     // Build the filter query
     string[] filtered_fields = Query.MATCH_FIELDS_NAMES;
@@ -75,7 +75,7 @@ public class Contacts.ListPane : Frame {
       });
   }
 
-  private void on_ui_state_changed () {
+  private void on_ui_state_changed (Object obj, ParamSpec pspec) {
     // Disable when editing a contact. (Not using `this.sensitive` to allow scrolling)
     this.filter_entry.sensitive
         = this.contacts_list.sensitive

@@ -111,7 +111,7 @@ public class Contacts.ContactList : ListBox {
     this.filter_query.notify.connect (() => { invalidate_filter (); });
     this.visible = true;
 
-    this.notify["state"].connect ( () => { on_ui_state_changed(); });
+    this.notify["state"].connect (on_ui_state_changed);
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
@@ -126,7 +126,7 @@ public class Contacts.ContactList : ListBox {
     set_header_func (update_header);
   }
 
-  private void on_ui_state_changed () {
+  private void on_ui_state_changed (Object obj, ParamSpec pspec) {
     foreach (var widget in get_children ()) {
       var row = widget as ContactDataRow;
       row.expose_checkbox (this.state == UiState.SELECTING);
