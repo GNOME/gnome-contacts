@@ -110,6 +110,7 @@ public class Contacts.ContactList : ListBox {
     this.store = store;
     this.filter_query = query;
     this.filter_query.notify.connect (() => { invalidate_filter (); });
+    this.visible = true;
 
     this.notify["state"].connect ( () => { on_ui_state_changed(); });
 
@@ -124,8 +125,6 @@ public class Contacts.ContactList : ListBox {
     set_sort_func ((a, b) => compare_data (a as ContactDataRow, b as ContactDataRow));
     set_filter_func (filter_row);
     set_header_func (update_header);
-
-    show ();
   }
 
   private void on_ui_state_changed () {
