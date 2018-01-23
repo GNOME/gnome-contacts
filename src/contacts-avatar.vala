@@ -49,8 +49,7 @@ public class Contacts.Avatar : DrawingArea {
     set_size_request (size, size);
 
     // If we don't have an avatar, don't try to load it later
-    this.avatar_loaded = (contact == null || contact.individual == null
-                          || contact.individual.avatar == null);
+    this.avatar_loaded = (contact == null || contact.individual.avatar == null);
 
     show ();
   }
