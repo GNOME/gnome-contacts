@@ -121,7 +121,7 @@ public class Contacts.ContactList : ListBox {
 
     get_style_context ().add_class ("contacts-contact-list");
 
-    set_sort_func ((a, b) => compare_data (a as ContactDataRow, b as ContactDataRow));
+    set_sort_func (compare_rows);
     set_filter_func (filter_row);
     set_header_func (update_header);
   }
@@ -139,25 +139,16 @@ public class Contacts.ContactList : ListBox {
       this.nr_contacts_marked = 0;
   }
 
-  private int compare_data (ContactDataRow a_data, ContactDataRow b_data) {
-    var a = a_data.contact.individual;
-    var b = b_data.contact.individual;
+  private int compare_rows (ListBoxRow row_a, ListBoxRow row_b) {
+    var a = ((ContactDataRow) row_a).contact.individual;
+    var b = ((ContactDataRow) row_b).contact.individual;
 
     // Always prefer favourites over non-favourites.
     if (a.is_favourite != b.is_favourite)
       return a.is_favourite? -1 : 1;
 
     // Both are (non-)favourites: sort by name
-    if (is_set (a.display_name) && is_set (b.display_name))
-      return a.display_name.collate (b.display_name);
-
-    // Sort empty names last
-    if (is_set (a.display_name))
-      return -1;
-    if (is_set (b.display_name))
-      return 1;
-
-    return 0;
+    return a.display_name.collate (b.display_name);
   }
 
   private void update_header (ListBoxRow row, ListBoxRow? before) {
