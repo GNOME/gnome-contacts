@@ -165,78 +165,80 @@ public class Contacts.Store : GLib.Object {
 	  });
       });
 
-    aggregator.individuals_changed_detailed.connect ( (changes) =>   {
-	// Note: Apparently the current implementation doesn't necessarily pick
-	// up unlinked individual as replacements.
-
-	var replaced_individuals = new HashMap<Individual?, Individual?> ();
-
-	// Pick best replacements at joins
-	foreach (var old_individual in changes.get_keys ()) {
-	  if (old_individual == null)
-	    continue;
-	  foreach (var new_individual in changes.get (old_individual)) {
-	    if (new_individual == null)
-	      continue;
-	    if (!replaced_individuals.has_key (new_individual) ||
-		individual_should_replace_at_join (old_individual)) {
-	      replaced_individuals.set (new_individual, old_individual);
-	    }
-	  }
-	}
-
-	foreach (var old_individual in changes.get_keys ()) {
-	  HashSet<Individual>? replacements = null;
-	  foreach (var new_individual in changes.get (old_individual)) {
-	    if (old_individual != null && new_individual != null &&
-		replaced_individuals.get (new_individual) == old_individual) {
-	      if (replacements == null)
-		replacements = new HashSet<Individual> ();
-	      replacements.add (new_individual);
-	    } else if (old_individual != null) {
-	      /* Removing an old individual. */
-	      var c = Contact.from_individual (old_individual);
-	      this.remove (c);
-	    } else if (new_individual != null) {
-	      /* Adding a new individual. */
-	      this.add (new Contact (this, new_individual));
-	    }
-	  }
-
-	  // This old_individual was split up into one or more new ones
-	  // We have to pick one to be the one that we keep around
-	  // in the old Contact, the rest gets new Contacts
-	  // This is important to get right, as we might be displaying
-	  // the contact and unlink a specific persona from the contact
-	  if (replacements != null) {
-	    Individual? main_individual = null;
-	    foreach (var i in replacements) {
-	      main_individual = i;
-	      // If this was marked as being possible to replace the
-	      // contact on split then we can otherwise bail immediately
-	      // Otherwise need to look for other possible better
-	      // replacements that we should reuse
-	      if (individual_can_replace_at_split (i))
-		break;
-	    }
-
-	    var c = Contact.from_individual (old_individual);
-	    c.replace_individual (main_individual);
-	    foreach (var i in replacements) {
-	      if (i != main_individual) {
-		/* Already replaced this old_individual, i.e. we're splitting
-		   old_individual. We just make this a new one. */
-		this.add (new Contact (this, i));
-	      }
-	    }
-	  }
-	}
-      });
+    this.aggregator.individuals_changed_detailed.connect (on_individuals_changed_detailed);
     aggregator.prepare.begin ();
 
 #if HAVE_TELEPATHY
     check_call_capabilities.begin ();
 #endif
+  }
+
+  private void on_individuals_changed_detailed (MultiMap<Individual?,Individual?> changes) {
+    // Note: Apparently the current implementation doesn't necessarily pick
+    // up unlinked individual as replacements.
+
+    var replaced_individuals = new HashMap<Individual?, Individual?> ();
+
+    // Pick best replacements at joins
+    foreach (var old_individual in changes.get_keys ()) {
+      if (old_individual == null)
+        continue;
+      foreach (var new_individual in changes[old_individual]) {
+        if (new_individual == null)
+          continue;
+        if (!replaced_individuals.has_key (new_individual)
+            || individual_should_replace_at_join (old_individual)) {
+          replaced_individuals[new_individual] = old_individual;
+        }
+      }
+    }
+
+    foreach (var old_individual in changes.get_keys ()) {
+      HashSet<Individual>? replacements = null;
+      foreach (var new_individual in changes[old_individual]) {
+        if (old_individual != null && new_individual != null &&
+            replaced_individuals[new_individual] == old_individual) {
+          if (replacements == null)
+            replacements = new HashSet<Individual> ();
+          replacements.add (new_individual);
+        } else if (old_individual != null) {
+          // Removing an old individual.
+          var c = Contact.from_individual (old_individual);
+          remove (c);
+        } else if (new_individual != null) {
+          // Adding a new individual.
+          add (new Contact (this, new_individual));
+        }
+      }
+
+      // This old_individual was split up into one or more new ones
+      // We have to pick one to be the one that we keep around
+      // in the old Contact, the rest gets new Contacts
+      // This is important to get right, as we might be displaying
+      // the contact and unlink a specific persona from the contact
+      if (replacements != null) {
+        Individual? main_individual = null;
+        foreach (var i in replacements) {
+          main_individual = i;
+          // If this was marked as being possible to replace the
+          // contact on split then we can otherwise bail immediately
+          // Otherwise need to look for other possible better
+          // replacements that we should reuse
+          if (individual_can_replace_at_split (i))
+            break;
+        }
+
+        var c = Contact.from_individual (old_individual);
+        c.replace_individual (main_individual);
+        foreach (var i in replacements) {
+          if (i != main_individual) {
+            // Already replaced this old_individual, i.e. we're splitting
+            // old_individual. We just make this a new one.
+            add (new Contact (this, i));
+          }
+        }
+      }
+    }
   }
 
   private void contact_changed_cb (Contact c) {
