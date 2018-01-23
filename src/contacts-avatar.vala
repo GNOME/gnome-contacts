@@ -77,8 +77,6 @@ public class Contacts.Avatar : DrawingArea {
   }
 
   public override bool draw (Cairo.Context cr) {
-    cr.save ();
-
     // This exists to implement lazy loading: i.e. only load the avatar on the first draw()
     if (!this.avatar_loaded)
       load_avatar.begin ();
@@ -87,8 +85,6 @@ public class Contacts.Avatar : DrawingArea {
       draw_contact_avatar (cr);
     else // No avatar available, draw a fallback
       draw_fallback (cr);
-
-    cr.restore ();
 
     return true;
   }
