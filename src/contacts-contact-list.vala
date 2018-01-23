@@ -37,6 +37,7 @@ public class Contacts.ContactList : ListBox {
 
     public ContactDataRow(Contact c) {
       this.contact = c;
+      this.contact.changed.connect (on_contact_changed);
 
       get_style_context (). add_class ("contact-data-row");
 
@@ -68,9 +69,9 @@ public class Contacts.ContactList : ListBox {
       this.show_all ();
     }
 
-    public void update () {
-      // Update widgets
+    private void on_contact_changed () {
       this.label.set_text (this.contact.individual.display_name);
+      changed ();
     }
 
     // Sets whether the checbox should always be shown (and not only on hover)
@@ -95,7 +96,6 @@ public class Contacts.ContactList : ListBox {
   public signal void selection_changed (Contact? contact);
   public signal void contacts_marked (int contacts_marked);
 
-  private Map<Contact, ContactDataRow> contacts = new HashMap<Contact, ContactDataRow> ();
   int nr_contacts_marked = 0;
 
   private Query filter_query;
@@ -115,7 +115,6 @@ public class Contacts.ContactList : ListBox {
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
-    this.store.changed.connect (contact_changed_cb);
     foreach (var c in this.store.get_contacts ())
       contact_added_cb (this.store, c);
 
@@ -184,19 +183,11 @@ public class Contacts.ContactList : ListBox {
     return label;
   }
 
-  private void contact_changed_cb (Store store, Contact c) {
-    var data = contacts.get (c);
-    data.update ();
-    data.changed();
-  }
-
   private void contact_added_cb (Store store, Contact c) {
     var row =  new ContactDataRow(c);
-    row.update ();
     row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
     row.selector_button.visible = (this.state == UiState.SELECTING);
 
-    contacts[c] = row;
     add (row);
   }
 
@@ -216,9 +207,9 @@ public class Contacts.ContactList : ListBox {
   }
 
   private void contact_removed_cb (Store store, Contact c) {
-    var data = contacts.get (c);
-    contacts.unset (c);
-    data.destroy ();
+    var row = find_row_for_contact (c);
+    if (row != null)
+      row.destroy ();
   }
 
   public override void row_selected (ListBoxRow? row) {
@@ -243,8 +234,17 @@ public class Contacts.ContactList : ListBox {
       return;
     }
 
-    var data = contacts.get (contact);
-    select_row (data);
+    select_row (find_row_for_contact (contact));
+  }
+
+  private ContactDataRow? find_row_for_contact (Contact contact) {
+    foreach (var widget in get_children ()) {
+      var row = ((ContactDataRow) widget);
+      if (row.contact == contact)
+        return row;
+    }
+
+    return null;
   }
 
   public LinkedList<Contact> get_marked_contacts () {
