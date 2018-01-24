@@ -15,6 +15,7 @@ EXTRA_DIST = \
 	src/meson.build \
 	meson_options.txt \
 	meson_post_install.py \
+	README.md \
 	$(NULL)
 
 ChangeLog:
