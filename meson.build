@@ -1,5 +1,5 @@
 project('gnome-contacts', [ 'vala', 'c' ],
-  version: '3.26',
+  version: '3.26.1',
   license: 'GPL2+',
   meson_version: '>= 0.37',
 )
