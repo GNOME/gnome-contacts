@@ -1,0 +1,29 @@
+image: fedora:26
+
+stages:
+  - build
+
+before_script:
+  - dnf update -y
+  - >
+    dnf install -y \
+      gcc \
+      meson \
+      vala \
+      gettext \
+      glib2-devel \
+      gtk3-devel \
+      libgee-devel \
+      folks-devel \
+      evolution-data-server-devel \
+      gnome-desktop3-devel \
+      cheese-libs-devel \
+      gnome-online-accounts-devel \
+      telepathy-glib-devel
+
+build-gnome-contacts:
+  stage: build
+  script:
+  - meson _build .
+  - ninja -v -C _build
+  - ninja -v -C _build install
