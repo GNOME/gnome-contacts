@@ -24,6 +24,6 @@ before_script:
 build-gnome-contacts:
   stage: build
   script:
-  - meson _build .
+  - meson -Dwith-manpage=false _build .
   - ninja -v -C _build
   - ninja -v -C _build install
