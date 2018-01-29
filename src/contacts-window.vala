@@ -279,7 +279,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // Clear the contacts so any changed information is stored
     this.contact_pane.show_contact (null);
     return false;
-	  }
+  }
 
   void list_pane_selection_changed_cb (Contact? new_selection) {
     set_shown_contact (new_selection);
