@@ -278,12 +278,12 @@ public class Contacts.ContactPane : Stack {
 
 	if (editor.name_changed ()) {
 	  var v = editor.get_full_name_value ();
-	  display_name_changed (v.get_string ());
 	  Contact.set_individual_property.begin (contact,
 						 "full-name", v,
 						 (obj, result) => {
 						   try {
 						     Contact.set_individual_property.end (result);
+						     display_name_changed (v.get_string ());
 						   } catch (Error e) {
 						     show_message (e.message);
 						     /* FIXME: add this back */
