@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-01-02 16:20+0000\n"
-"PO-Revision-Date: 2018-01-10 13:32+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
+"POT-Creation-Date: 2018-01-24 16:34+0000\n"
+"PO-Revision-Date: 2018-02-04 17:15+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -21,6 +20,7 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
+#: data/ui/contacts-window.ui:21 src/contacts-window.vala:132
 msgid "Contacts"
 msgstr "Contats"
 
@@ -113,21 +113,20 @@ msgstr "J_es"
 msgid "Online Accounts Settings"
 msgstr "Impostazions di Account online"
 
-#: data/ui/contacts-avatar-dialog.ui:6
+#: data/ui/contacts-avatar-selector.ui:6
 msgid "Select Picture"
 msgstr "Selezione imagjin"
 
-#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:273
+#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:224
 msgid "New Contact"
 msgstr "Gnûf contat"
 
-#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:156
-#: src/contacts-window.vala:184
+#: data/ui/contacts-avatar-selector.ui:279
 msgid "Select"
 msgstr "Selezione"
 
-#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:82
-#: data/ui/contacts-window.ui:104 src/contacts-app.vala:117
+#: data/ui/contacts-avatar-selector.ui:285 data/ui/contacts-window.ui:88
+#: src/contacts-app.vala:117
 msgid "Cancel"
 msgstr "Anule"
 
@@ -151,18 +150,18 @@ msgstr "Telefon di cjase "
 msgid "Work phone"
 msgstr "Telefon di vore"
 
-#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:574
-#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:199
+#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:572
+#: src/contacts-contact-editor.vala:579 src/contacts-contact-sheet.vala:194
 msgid "Website"
 msgstr "Sît web"
 
-#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:600
-#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:205
+#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:598
+#: src/contacts-contact-editor.vala:605 src/contacts-contact-sheet.vala:200
 msgid "Nickname"
 msgstr "Sorenon"
 
-#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:633
-#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:212
+#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:631
+#: src/contacts-contact-editor.vala:638 src/contacts-contact-sheet.vala:207
 msgid "Birthday"
 msgstr "Complean"
 
@@ -178,20 +177,20 @@ msgstr "Recapit di vore"
 msgid "Notes"
 msgstr "Notis"
 
-#: data/ui/contacts-contact-editor.ui:82
+#: data/ui/contacts-contact-editor.ui:94
 msgid "New Detail"
 msgstr "Gnûf detai"
 
-#: data/ui/contacts-contact-editor.ui:100
-#: src/contacts-linked-accounts-dialog.vala:40
+#: data/ui/contacts-contact-editor.ui:112
+#: data/ui/contacts-linked-personas-dialog.ui:12
 msgid "Linked Accounts"
 msgstr "Account leâts"
 
-#: data/ui/contacts-contact-editor.ui:106
+#: data/ui/contacts-contact-editor.ui:118
 msgid "Remove Contact"
 msgstr "Gjave contat"
 
-#: data/ui/contacts-contact-pane.ui:29
+#: data/ui/contacts-contact-pane.ui:30
 msgid "Select a contact"
 msgstr "Selezione un contat"
 
@@ -199,16 +198,20 @@ msgstr "Selezione un contat"
 msgid "Link Contacts"
 msgstr "Lee i contats"
 
-#: data/ui/contacts-list-pane.ui:33
+#: data/ui/contacts-linked-personas-dialog.ui:45
+msgid "You can link contacts by selecting them from the contacts list"
+msgstr "Al è pussibil unî i contats selezionantju de liste dai contats"
+
+#: data/ui/contacts-list-pane.ui:22
 msgid "Type to search"
 msgstr "Scrîf par cirî"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-list-pane.ui:74
+#: data/ui/contacts-list-pane.ui:54
 msgid "Link"
 msgstr "Unìs"
 
-#: data/ui/contacts-list-pane.ui:88
+#: data/ui/contacts-list-pane.ui:68
 msgid "Remove"
 msgstr "Gjave"
 
@@ -224,8 +227,8 @@ msgstr "Jes"
 msgid "Cancel setup and quit"
 msgstr "Anule la configurazion e jes"
 
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:136
-#: src/contacts-window.vala:223
+#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:145
+#: src/contacts-window.vala:139
 msgid "Done"
 msgstr "Fat"
 
@@ -247,33 +250,29 @@ msgstr ""
 "vignaran zontâts i gnûfs contats. Se si ten i contats intune rubriche in "
 "rêt, si pues zontâju doprant lis impostazions dai account online."
 
-#: data/ui/contacts-window.ui:21 src/contacts-window.vala:191
-msgid "All Contacts"
-msgstr "Ducj i contats"
+#: data/ui/contacts-window.ui:33
+msgid "Create new contact"
+msgstr "Cree gnûf contat"
 
-#: data/ui/contacts-window.ui:36
+#: data/ui/contacts-window.ui:37
 msgid "Add contact"
 msgstr "Zonte contat"
 
-#: data/ui/contacts-window.ui:62
-msgid "Selection mode"
-msgstr "Modalitât di selezion"
+#: data/ui/contacts-window.ui:58
+msgid "Cancel selection"
+msgstr "Anule selezion"
 
-#: data/ui/contacts-window.ui:120
-msgid "Edit"
-msgstr "Cambie"
+#: data/ui/contacts-window.ui:105
+msgid "Edit details"
+msgstr "Modifiche detais"
 
-#: data/ui/contacts-window.ui:208
+#: data/ui/contacts-window.ui:213
 msgid "Loading"
 msgstr "Cjariament in vore"
 
-#: src/contacts-accounts-list.vala:144 src/contacts-esd-setup.c:241
+#: src/contacts-accounts-list.vala:144 src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Rubriche locâl"
-
-#: src/contacts-address-map.vala:80
-msgid "Install GNOME Maps to open location."
-msgstr "Instale Mapis GNOME par vierzi la posizion."
 
 #: src/contacts-app.vala:40
 msgid "Show contact with this individual id"
@@ -333,15 +332,15 @@ msgstr "Aplicazion par ministrâ i contats"
 msgid "No contact with email address %s found"
 msgstr "Nol è stât cjatât nissun contat cun recapit e-mail %s"
 
-#: src/contacts-avatar-dialog.vala:301
+#: src/contacts-avatar-selector.vala:297
 msgid "Browse for more pictures"
 msgstr "Cîr plui imagjins "
 
-#: src/contacts-avatar-dialog.vala:304
+#: src/contacts-avatar-selector.vala:300
 msgid "_Cancel"
 msgstr "_Anule"
 
-#: src/contacts-avatar-dialog.vala:305
+#: src/contacts-avatar-selector.vala:301
 msgid "_Open"
 msgstr "_Vierç"
 
@@ -382,178 +381,172 @@ msgid "Add number"
 msgstr "Zonte numar"
 
 #: src/contacts-contact-editor.vala:319 src/contacts-contact-editor.vala:350
-#: src/contacts-contact-editor.vala:385 src/contacts-contact-editor.vala:441
-#: src/contacts-contact-editor.vala:491
+#: src/contacts-contact-editor.vala:384 src/contacts-contact-editor.vala:439
+#: src/contacts-contact-editor.vala:489
 msgid "Delete field"
 msgstr "Elimine cjamp"
 
-#: src/contacts-contact-editor.vala:655 src/contacts-contact-editor.vala:662
-#: src/contacts-contact-sheet.vala:219
+#: src/contacts-contact-editor.vala:653 src/contacts-contact-editor.vala:660
+#: src/contacts-contact-sheet.vala:214
 msgid "Note"
 msgstr "Note"
 
-#: src/contacts-contact-editor.vala:1016
-msgid "Add name"
-msgstr "Zonte non"
-
-#: src/contacts-contact-frame.vala:38
+#: src/contacts-contact-editor.vala:948
 msgid "Change avatar"
 msgstr "Cambie avatar"
 
-#: src/contacts-contact-list.vala:122
-msgid "No results matched search"
-msgstr "Nissun risultât al corispuint ae ricercje"
+#: src/contacts-contact-editor.vala:990
+msgid "Add name"
+msgstr "Zonte non"
 
-#: src/contacts-contact-pane.vala:350
+#: src/contacts-contact-list.vala:158
+msgid "Favorites"
+msgstr "Preferîts"
+
+#: src/contacts-contact-list.vala:160 src/contacts-contact-list.vala:166
+msgid "All Contacts"
+msgstr "Ducj i contats"
+
+#: src/contacts-contact-pane.vala:347
 msgid "You need to enter some data"
 msgstr "Tu scugnis meti cualchi dât"
 
-#: src/contacts-contact-pane.vala:355
+#: src/contacts-contact-pane.vala:352
 msgid "No primary addressbook configured"
 msgstr "Nissune rubriche principâl configurade"
 
-#: src/contacts-contact-pane.vala:365
+#: src/contacts-contact-pane.vala:362
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Impussibil creâ gnûfs contats: %s"
 
-#: src/contacts-contact-pane.vala:374
+#: src/contacts-contact-pane.vala:371
 msgid "Unable to find newly created contact"
 msgstr "Impussibil cjatâ il contat creât cumò denant"
 
-#: src/contacts-contact.vala:318
+#: src/contacts-contact.vala:286
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: src/contacts-contact.vala:319
+#: src/contacts-contact.vala:287
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: src/contacts-contact.vala:320
+#: src/contacts-contact.vala:288
 msgid "Facebook"
 msgstr "Facebook"
 
-#: src/contacts-contact.vala:321
+#: src/contacts-contact.vala:289
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: src/contacts-contact.vala:322
+#: src/contacts-contact.vala:290
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: src/contacts-contact.vala:323
+#: src/contacts-contact.vala:291
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: src/contacts-contact.vala:324
+#: src/contacts-contact.vala:292
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: src/contacts-contact.vala:325
+#: src/contacts-contact.vala:293
 msgid "ICQ"
 msgstr "ICQ"
 
-#: src/contacts-contact.vala:326
+#: src/contacts-contact.vala:294
 msgid "IRC"
 msgstr "IRC"
 
-#: src/contacts-contact.vala:327
+#: src/contacts-contact.vala:295
 msgid "Jabber"
 msgstr "Jabber"
 
-#: src/contacts-contact.vala:328
+#: src/contacts-contact.vala:296
 msgid "Local network"
 msgstr "Rêt locâl"
 
-#: src/contacts-contact.vala:329
+#: src/contacts-contact.vala:297
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: src/contacts-contact.vala:330
+#: src/contacts-contact.vala:298
 msgid "MySpace"
 msgstr "MySpace"
 
-#: src/contacts-contact.vala:331
+#: src/contacts-contact.vala:299
 msgid "MXit"
 msgstr "MXit"
 
-#: src/contacts-contact.vala:332
+#: src/contacts-contact.vala:300
 msgid "Napster"
 msgstr "Napster"
 
-#: src/contacts-contact.vala:333
+#: src/contacts-contact.vala:301
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: src/contacts-contact.vala:334
+#: src/contacts-contact.vala:302
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: src/contacts-contact.vala:335
+#: src/contacts-contact.vala:303
 msgid "SILC"
 msgstr "SILC"
 
-#: src/contacts-contact.vala:336
+#: src/contacts-contact.vala:304
 msgid "sip"
 msgstr "sip"
 
-#: src/contacts-contact.vala:337
+#: src/contacts-contact.vala:305
 msgid "Skype"
 msgstr "Skype"
 
-#: src/contacts-contact.vala:338
+#: src/contacts-contact.vala:306
 msgid "Telephony"
 msgstr "Telefonie"
 
-#: src/contacts-contact.vala:339
+#: src/contacts-contact.vala:307
 msgid "Trepia"
 msgstr "Trepia"
 
-#: src/contacts-contact.vala:340 src/contacts-contact.vala:341
+#: src/contacts-contact.vala:308 src/contacts-contact.vala:309
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: src/contacts-contact.vala:342
+#: src/contacts-contact.vala:310
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-contact.vala:565
+#: src/contacts-contact.vala:421
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Erôr interni no spietât: il contat creât nol è stât cjatât"
 
-#: src/contacts-contact.vala:749
+#: src/contacts-contact.vala:605
 msgid "Google Circles"
 msgstr "Cerclis di Google"
 
-#: src/contacts-contact.vala:751 src/contacts-esd-setup.c:244
-#: src/contacts-esd-setup.c:272
+#: src/contacts-contact.vala:607 src/contacts-esd-setup.vala:152
+#: src/contacts-esd-setup.vala:167
 msgid "Google"
 msgstr "Google"
 
-#: src/contacts-esd-setup.c:269
+#: src/contacts-esd-setup.vala:164
 msgid "Local Contact"
 msgstr "Contat locâl"
 
-#: src/contacts-linked-accounts-dialog.vala:39
-#, c-format
-msgid "%s"
-msgstr "%s"
-
-#: src/contacts-linked-accounts-dialog.vala:62
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "Al è pussibil unî i contats selezionantju de liste dai contats"
-
-#: src/contacts-linked-accounts-dialog.vala:106
+#: src/contacts-linked-personas-dialog.vala:74
 msgid "Unlink"
 msgstr "Separe"
 
-#. FIXME: hack to make it actually align left.
-#: src/contacts-link-suggestion-grid.vala:56
+#: src/contacts-link-suggestion-grid.vala:54
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "Ise cheste la stesse persone di %s di %s?"
 
-#: src/contacts-link-suggestion-grid.vala:57
+#: src/contacts-link-suggestion-grid.vala:55
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Ise la stesse persone di %s?"
@@ -635,52 +628,60 @@ msgstr "Telex"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:158
+#: src/contacts-window.vala:101
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d Selezionât"
 msgstr[1] "%d Selezionâts"
 
-#: src/contacts-window.vala:208
+#: src/contacts-window.vala:139
+msgid "Add"
+msgstr "Zonte"
+
+#: src/contacts-window.vala:159
 #, c-format
 msgid "Editing %s"
 msgstr "Modifiche di %s"
 
-#: src/contacts-window.vala:278
-msgid "Add"
-msgstr "Zonte"
+#: src/contacts-window.vala:214
+msgid "Unmark as favorite"
+msgstr "Gjave segn di preferît"
 
-#: src/contacts-window.vala:352
+#: src/contacts-window.vala:215
+msgid "Mark as favorite"
+msgstr "Segne come preferît"
+
+#: src/contacts-window.vala:297
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d contat unît"
 msgstr[1] "%d contats unîts"
 
-#: src/contacts-window.vala:356 src/contacts-window.vala:378
-#: src/contacts-window.vala:408 src/contacts-window.vala:439
+#: src/contacts-window.vala:301 src/contacts-window.vala:325
+#: src/contacts-window.vala:362
 msgid "_Undo"
 msgstr "_Torne indaûr"
 
-#: src/contacts-window.vala:374
+#: src/contacts-window.vala:320
+#, c-format
+msgid "Deleted contact %s"
+msgstr "Contat %s eliminât"
+
+#: src/contacts-window.vala:322
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d contat eliminât"
 msgstr[1] "%d contats eliminâts"
 
-#: src/contacts-window.vala:407
-#, c-format
-msgid "Contact deleted: “%s”"
-msgstr "Contat eliminât: “%s”"
-
-#: src/contacts-window.vala:435
+#: src/contacts-window.vala:358
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s unît cun %s"
 
-#: src/contacts-window.vala:437
+#: src/contacts-window.vala:360
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s unît cul contat"
@@ -693,6 +694,24 @@ msgstr "Impostazions di prin inviament completadis."
 msgid "Set to true after the user has run the first-time setup wizard."
 msgstr ""
 "Met a vêr dopo che l'utent al à eseguît l'assistent ae configurazion iniziâl."
+
+#~ msgid "Selection mode"
+#~ msgstr "Modalitât di selezion"
+
+#~ msgid "Edit"
+#~ msgstr "Cambie"
+
+#~ msgid "Install GNOME Maps to open location."
+#~ msgstr "Instale Mapis GNOME par vierzi la posizion."
+
+#~ msgid "No results matched search"
+#~ msgstr "Nissun risultât al corispuint ae ricercje"
+
+#~ msgid "%s"
+#~ msgstr "%s"
+
+#~ msgid "Contact deleted: “%s”"
+#~ msgstr "Contat eliminât: “%s”"
 
 #~ msgid ""
 #~ "New contacts will be added to the selected address book. You are able to "
