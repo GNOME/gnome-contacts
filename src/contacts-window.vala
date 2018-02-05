@@ -40,6 +40,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Button select_cancel_button;
   [GtkChild]
+  private MenuButton hamburger_menu_button;
+  [GtkChild]
+  private RadioButton sort_on_surname_button;
+  [GtkChild]
   private ToggleButton favorite_button;
   private bool ignore_favorite_button_toggled;
   [GtkChild]
@@ -55,16 +59,24 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public UiState state { get; set; default = UiState.NORMAL; }
 
+  private Settings settings;
+
   public Store store {
     get; construct set;
   }
 
-  public Window (App app, Store contacts_store) {
+  public Window (Settings settings, App app, Store contacts_store) {
     Object (
       application: app,
       show_menubar: false,
       store: contacts_store
     );
+
+    this.settings = settings;
+    this.sort_on_surname_button.active = this.settings.sort_on_surname;
+    this.sort_on_surname_button.toggled.connect (() => {
+        this.settings.sort_on_surname = this.sort_on_surname_button.active;
+      });
 
     this.notify["state"].connect (on_ui_state_changed);
 
@@ -90,7 +102,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (list_pane != null)
       return;
 
-    list_pane = new ListPane (store);
+    list_pane = new ListPane (this.settings, store);
     bind_property ("state", this.list_pane, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     list_pane.selection_changed.connect (list_pane_selection_changed_cb);
     list_pane.link_contacts.connect (list_pane_link_contacts_cb);
@@ -117,6 +129,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private void on_ui_state_changed (Object obj, ParamSpec pspec) {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
+        = this.hamburger_menu_button.visible
         = this.right_header.show_close_button
         = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 

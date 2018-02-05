@@ -48,7 +48,7 @@ public class Contacts.ListPane : Frame {
   public signal void delete_contacts (LinkedList<Contact> contacts);
   public signal void contacts_marked (int contacts_marked);
 
-  public ListPane (Store contacts_store) {
+  public ListPane (Settings settings, Store contacts_store) {
     this.store = contacts_store;
     this.notify["state"].connect (on_ui_state_changed);
 
@@ -60,7 +60,7 @@ public class Contacts.ListPane : Frame {
 
 
     // Load the ContactsView and connect the necessary signals
-    this.contacts_list = new ContactList (contacts_store, this.filter_query);
+    this.contacts_list = new ContactList (settings, contacts_store, this.filter_query);
     bind_property ("state", this.contacts_list, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     this.contacts_list_container.add (this.contacts_list);
 

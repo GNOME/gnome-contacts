@@ -18,15 +18,19 @@
 /**
  * Provides a convenient interface to deal with the settings.
  */
-public class Contacts.Settings {
-  private GLib.Settings settings;
+public class Contacts.Settings : GLib.Settings {
 
   public bool did_initial_setup {
-    get { return settings.get_boolean ("did-initial-setup"); }
-    set { settings.set_boolean ("did-initial-setup", value); }
+    get { return get_boolean ("did-initial-setup"); }
+    set { set_boolean ("did-initial-setup", value); }
+  }
+
+  public bool sort_on_surname {
+    get { return get_boolean ("sort-on-surname"); }
+    set { set_boolean ("sort-on-surname", value); }
   }
 
   public Settings (App app) {
-    this.settings = new GLib.Settings (app.application_id);
+    Object (schema_id: app.application_id);
   }
 }

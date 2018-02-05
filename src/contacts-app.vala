@@ -226,7 +226,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_window () {
-    this.window = new Contacts.Window (this, this.contacts_store);
+    this.window = new Contacts.Window (this.settings, this, this.contacts_store);
   }
 
   private void schedule_window_creation () {

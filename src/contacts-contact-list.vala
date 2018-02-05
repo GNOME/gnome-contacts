@@ -102,9 +102,11 @@ public class Contacts.ContactList : ListBox {
 
   private Store store;
 
+  private Settings settings;
+
   public UiState state { get; set; }
 
-  public ContactList (Store store, Query query) {
+  public ContactList (Settings settings, Store store, Query query) {
     this.selection_mode = Gtk.SelectionMode.BROWSE;
     this.store = store;
     this.filter_query = query;
@@ -112,6 +114,9 @@ public class Contacts.ContactList : ListBox {
     this.visible = true;
 
     this.notify["state"].connect (on_ui_state_changed);
+
+    this.settings = settings;
+    this.settings.changed["sort-on-surname"].connect(invalidate_sort);
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
@@ -146,8 +151,19 @@ public class Contacts.ContactList : ListBox {
     if (a.is_favourite != b.is_favourite)
       return a.is_favourite? -1 : 1;
 
-    // Both are (non-)favourites: sort by name
-    return a.display_name.collate (b.display_name);
+    // Both are (non-)favourites: sort by either first name or surname (user preference)
+    unowned string? a_name = this.settings.sort_on_surname? try_get_surname(a) : a.display_name;
+    unowned string? b_name = this.settings.sort_on_surname? try_get_surname(b) : b.display_name;
+
+    return a_name.collate (b_name);
+  }
+
+  private unowned string try_get_surname (Individual indiv) {
+    if (indiv.structured_name != null && indiv.structured_name.family_name != "")
+      return indiv.structured_name.family_name;
+
+    // Fall back to the display_name
+    return indiv.display_name;
   }
 
   private void update_header (ListBoxRow row, ListBoxRow? before) {

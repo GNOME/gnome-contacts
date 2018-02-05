@@ -1,7 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Thu Aug 15 15:33:02 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <!-- interface-requires gtk+ 3.22 -->
+  <object class="GtkPopover" id="hamburger_menu_popover">
+    <child>
+      <object class="GtkGrid">
+        <property name="visible">True</property>
+        <property name="row_spacing">6</property>
+        <property name="margin">18</property>
+        <property name="width_request">200</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes">List contacts by:</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+          <packing>
+            <property name="top_attach">0</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="sort_on_firstname_button">
+            <property name="visible">True</property>
+            <property name="group">sort_on_firstname_button</property>
+          </object>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="left_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="label" translatable="yes">First name</property>
+            <property name="mnemonic_widget">sort_on_firstname_button</property>
+          </object>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="left_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="sort_on_surname_button">
+            <property name="visible">True</property>
+            <property name="group">sort_on_firstname_button</property>
+          </object>
+          <packing>
+            <property name="top_attach">2</property>
+            <property name="left_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="label" translatable="yes">Surname</property>
+            <property name="mnemonic_widget">sort_on_surname_button</property>
+          </object>
+          <packing>
+            <property name="top_attach">2</property>
+            <property name="left_attach">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <template class="ContactsWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="default_width">800</property>
@@ -48,6 +117,24 @@
               </object>
               <packing>
                 <property name="pack_type">start</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkMenuButton" id="hamburger_menu_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="popover">hamburger_menu_popover</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">open-menu-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
               </packing>
             </child>
             <child>
