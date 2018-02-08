@@ -67,6 +67,11 @@ public class Contacts.ContactPane : Stack {
   /* Signals */
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
   public signal void will_delete (Contact contact);
+  /**
+   * Passes the changed display name to all listeners after edit mode has been completed.
+   */
+  public signal void display_name_changed (string new_display_name);
+
 
   public void update_sheet () {
     if (on_edit_mode) {
@@ -278,6 +283,7 @@ public class Contacts.ContactPane : Stack {
 						 (obj, result) => {
 						   try {
 						     Contact.set_individual_property.end (result);
+						     display_name_changed (v.get_string ());
 						   } catch (Error e) {
 						     show_message (e.message);
 						     /* FIXME: add this back */

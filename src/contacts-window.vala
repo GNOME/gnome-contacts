@@ -93,6 +93,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         delete_contacts (new ArrayList<Contact>.wrap ({ contact }));
      });
     this.contact_pane.contacts_linked.connect (contact_pane_contacts_linked_cb);
+    this.contact_pane.display_name_changed.connect ((display_name) => {
+      this.right_header.title = display_name;
+    });
     this.contact_pane_container.add (this.contact_pane);
   }
 
