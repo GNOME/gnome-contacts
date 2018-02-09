@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2018-01-24 16:34+0000\n"
-"PO-Revision-Date: 2018-02-04 17:15+0100\n"
+"POT-Creation-Date: 2018-02-05 20:59+0000\n"
+"PO-Revision-Date: 2018-02-10 00:43+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -19,8 +19,8 @@ msgstr ""
 "X-Generator: Poedit 2.0.3\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
-#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
-#: data/ui/contacts-window.ui:21 src/contacts-window.vala:132
+#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:79
+#: data/ui/contacts-window.ui:90 src/contacts-window.vala:145
 msgid "Contacts"
 msgstr "Contats"
 
@@ -117,7 +117,7 @@ msgstr "Impostazions di Account online"
 msgid "Select Picture"
 msgstr "Selezione imagjin"
 
-#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:224
+#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:237
 msgid "New Contact"
 msgstr "Gnûf contat"
 
@@ -125,7 +125,7 @@ msgstr "Gnûf contat"
 msgid "Select"
 msgstr "Selezione"
 
-#: data/ui/contacts-avatar-selector.ui:285 data/ui/contacts-window.ui:88
+#: data/ui/contacts-avatar-selector.ui:285 data/ui/contacts-window.ui:175
 #: src/contacts-app.vala:117
 msgid "Cancel"
 msgstr "Anule"
@@ -227,8 +227,8 @@ msgstr "Jes"
 msgid "Cancel setup and quit"
 msgstr "Anule la configurazion e jes"
 
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:145
-#: src/contacts-window.vala:139
+#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:232
+#: src/contacts-window.vala:152
 msgid "Done"
 msgstr "Fat"
 
@@ -250,23 +250,35 @@ msgstr ""
 "vignaran zontâts i gnûfs contats. Se si ten i contats intune rubriche in "
 "rêt, si pues zontâju doprant lis impostazions dai account online."
 
-#: data/ui/contacts-window.ui:33
+#: data/ui/contacts-window.ui:15
+msgid "List contacts by:"
+msgstr "Liste i contats par:"
+
+#: data/ui/contacts-window.ui:40
+msgid "First name"
+msgstr "Non"
+
+#: data/ui/contacts-window.ui:63
+msgid "Surname"
+msgstr "Cognon"
+
+#: data/ui/contacts-window.ui:102
 msgid "Create new contact"
 msgstr "Cree gnûf contat"
 
-#: data/ui/contacts-window.ui:37
+#: data/ui/contacts-window.ui:106
 msgid "Add contact"
 msgstr "Zonte contat"
 
-#: data/ui/contacts-window.ui:58
+#: data/ui/contacts-window.ui:145
 msgid "Cancel selection"
 msgstr "Anule selezion"
 
-#: data/ui/contacts-window.ui:105
+#: data/ui/contacts-window.ui:192
 msgid "Edit details"
 msgstr "Modifiche detais"
 
-#: data/ui/contacts-window.ui:213
+#: data/ui/contacts-window.ui:300
 msgid "Loading"
 msgstr "Cjariament in vore"
 
@@ -399,11 +411,11 @@ msgstr "Cambie avatar"
 msgid "Add name"
 msgstr "Zonte non"
 
-#: src/contacts-contact-list.vala:158
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "Preferîts"
 
-#: src/contacts-contact-list.vala:160 src/contacts-contact-list.vala:166
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "Ducj i contats"
 
@@ -628,60 +640,60 @@ msgstr "Telex"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:101
+#: src/contacts-window.vala:113
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d Selezionât"
 msgstr[1] "%d Selezionâts"
 
-#: src/contacts-window.vala:139
+#: src/contacts-window.vala:152
 msgid "Add"
 msgstr "Zonte"
 
-#: src/contacts-window.vala:159
+#: src/contacts-window.vala:172
 #, c-format
 msgid "Editing %s"
 msgstr "Modifiche di %s"
 
-#: src/contacts-window.vala:214
+#: src/contacts-window.vala:227
 msgid "Unmark as favorite"
 msgstr "Gjave segn di preferît"
 
-#: src/contacts-window.vala:215
+#: src/contacts-window.vala:228
 msgid "Mark as favorite"
 msgstr "Segne come preferît"
 
-#: src/contacts-window.vala:297
+#: src/contacts-window.vala:310
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d contat unît"
 msgstr[1] "%d contats unîts"
 
-#: src/contacts-window.vala:301 src/contacts-window.vala:325
-#: src/contacts-window.vala:362
+#: src/contacts-window.vala:314 src/contacts-window.vala:338
+#: src/contacts-window.vala:375
 msgid "_Undo"
 msgstr "_Torne indaûr"
 
-#: src/contacts-window.vala:320
+#: src/contacts-window.vala:333
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Contat %s eliminât"
 
-#: src/contacts-window.vala:322
+#: src/contacts-window.vala:335
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d contat eliminât"
 msgstr[1] "%d contats eliminâts"
 
-#: src/contacts-window.vala:358
+#: src/contacts-window.vala:371
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s unît cun %s"
 
-#: src/contacts-window.vala:360
+#: src/contacts-window.vala:373
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s unît cul contat"
@@ -694,6 +706,18 @@ msgstr "Impostazions di prin inviament completadis."
 msgid "Set to true after the user has run the first-time setup wizard."
 msgstr ""
 "Met a vêr dopo che l'utent al à eseguît l'assistent ae configurazion iniziâl."
+
+#: src/org.gnome.Contacts.gschema.xml:10
+msgid "Sort contacts on surname."
+msgstr "Ordene i contats par cognon."
+
+#: src/org.gnome.Contacts.gschema.xml:11
+msgid ""
+"If this is set to true, the list of contacts will be sorted on their "
+"surnames. Otherwise, it will be sorted on the first names of the contacts."
+msgstr ""
+"Se chest al è metût a vêr, la liste dai contats e vignarà ordenade par "
+"cognons. In câs contrari, e vignarà ordenade par non dai contats."
 
 #~ msgid "Selection mode"
 #~ msgstr "Modalitât di selezion"
