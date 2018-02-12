@@ -169,7 +169,7 @@ public class Contacts.ContactSheet : Grid {
 	foreach (var protocol in im_details.im_addresses.get_keys ()) {
 	  foreach (var id in im_details.im_addresses[protocol]) {
 	    if (p is Tpf.Persona) {
-	      var button = add_row_with_button (ref i, Contact.format_im_service (protocol), id.value);
+	      var button = add_row_with_button (ref i, ImService.get_display_name (protocol), id.value);
 	      button.clicked.connect (() => {
 		  var im_persona = c.find_im_persona (protocol, id.value);
 		  if (im_persona != null) {
