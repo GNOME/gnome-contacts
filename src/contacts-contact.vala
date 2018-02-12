@@ -276,47 +276,6 @@ public class Contacts.Contact : GLib.Object  {
   }
 #endif
 
-  private struct ImData {
-    unowned string service;
-    unowned string display_name;
-  }
-
-  public static string format_im_service (string service) {
-    const ImData[] data = {
-      { "google-talk", N_("Google Talk") },
-      { "ovi-chat", N_("Ovi Chat") },
-      { "facebook", N_("Facebook") },
-      { "lj-talk", N_("Livejournal") },
-      { "aim", N_("AOL Instant Messenger") },
-      { "gadugadu", N_("Gadu-Gadu") },
-      { "groupwise", N_("Novell Groupwise") },
-      { "icq", N_("ICQ")},
-      { "irc", N_("IRC")},
-      { "jabber", N_("Jabber")},
-      { "local-xmpp", N_("Local network")},
-      { "msn", N_("Windows Live Messenger")},
-      { "myspace", N_("MySpace")},
-      { "mxit", N_("MXit")},
-      { "napster", N_("Napster")},
-      { "qq", N_("Tencent QQ")},
-      { "sametime", N_("IBM Lotus Sametime")},
-      { "silc", N_("SILC")},
-      { "sip", N_("sip")},
-      { "skype", N_("Skype")},
-      { "tel", N_("Telephony")},
-      { "trepia", N_("Trepia")},
-      { "yahoo", N_("Yahoo! Messenger")},
-      { "yahoojp", N_("Yahoo! Messenger")},
-      { "zephyr", N_("Zephyr")}
-    };
-
-    foreach (var d in data)
-      if (d.service == service)
-        return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
-
-    return service;
-  }
-
   private bool changed_cb () {
     changed_id = 0;
     var changed_personas = this.changed_personas;
@@ -518,7 +477,7 @@ public class Contacts.Contact : GLib.Object  {
 #if HAVE_TELEPATHY
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
-      return format_im_service (account.service);
+      return Contacts.ImService.get_display_name (account.service);
     }
 #endif
 
@@ -613,7 +572,7 @@ public class Contacts.Contact : GLib.Object  {
 #if HAVE_TELEPATHY
     if (store.type_id == "telepathy") {
       var account = (store as Tpf.PersonaStore).account;
-      return format_im_service (account.service);
+      return Contacts.ImService.get_display_name (account.service);
     }
 #endif
 
