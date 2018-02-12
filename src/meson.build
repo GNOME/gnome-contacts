@@ -72,6 +72,7 @@ endif
 if telepathy_enabled
   contacts_deps += [ folks_telepathy, telepathy_glib ]
   contacts_vala_args += [ '-D', 'HAVE_TELEPATHY' ]
+  contacts_vala_sources += [ 'contacts-im-service.vala' ]
 endif
 
 contacts_sources = [
