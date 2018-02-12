@@ -267,20 +267,20 @@ public class Contacts.App : Gtk.Application {
     ulong id = 0;
     uint id2 = 0;
     id = contacts_store.quiescent.connect (() => {
-	Source.remove (id2);
-	contacts_store.disconnect (id);
+      Source.remove (id2);
+      contacts_store.disconnect (id);
 
-	debug ("callign set_list_pane from quiescent.connect");
-	window.set_list_pane ();
-      });
+      debug ("calling set_list_pane from quiescent.connect");
+      window.create_and_show_list_pane ();
+    });
     // Wait at most 0.5 seconds to show the window
     id2 = Timeout.add (500, () => {
-	contacts_store.disconnect (id);
+      contacts_store.disconnect (id);
 
-	debug ("callign set_list_pane from 500.timeout");
-	window.set_list_pane ();
-	return false;
-      });
+      debug ("calling set_list_pane from 500.timeout");
+      window.create_and_show_list_pane ();
+      return false;
+    });
 
     is_quiescent_scheduled = true;
   }
@@ -345,8 +345,8 @@ public class Contacts.App : Gtk.Application {
     }
 
     if (this.contacts_store.is_quiescent) {
-      debug ("callign set_list_pane cause store is already quiescent");
-      window.set_list_pane ();
+      debug ("calling set_list_pane cause store is already quiescent");
+      window.create_and_show_list_pane ();
     } else if (!is_quiescent_scheduled) {
       schedule_window_finish_ui ();
     }
