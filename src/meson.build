@@ -15,6 +15,7 @@ contacts_vala_sources = [
   'contacts-contact-pane.vala',
   'contacts-contact-sheet.vala',
   'contacts-contact.vala',
+  'contacts-crop-cheese-dialog.vala',
   'contacts-esd-setup.vala',
   'contacts-im-service.vala',
   'contacts-in-app-notification.vala',
