@@ -579,43 +579,25 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  public const string[] sorted_properties = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
+  private const string[] SORTED_PROPERTIES = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
 
-  public static string []sort_persona_properties (string [] props) {
-    CompareDataFunc<string> compare_properties = (a, b) =>
-    {
-      var sorted_map = new HashMap<string, int> ();
-      int i = 0;
-      foreach (var p in sorted_properties) {
-	sorted_map.set (p, ++i);
-      }
+  public static string[] sort_persona_properties (string[] props) {
+    CompareDataFunc<string> compare_properties = (a, b) => {
+        foreach (var prop in SORTED_PROPERTIES) {
+          if (a == prop)
+            return (b == prop)? 0 : -1;
 
-      string a_str = (string) a;
-      string b_str = (string) b;
+          if (b == prop)
+            return 1;
+        }
 
-      if (sorted_map.has_key (a_str) && sorted_map.has_key (b_str)) {
-	if (sorted_map[a_str] < sorted_map[b_str])
-	  return -1;
-	if (sorted_map[a_str] > sorted_map[b_str])
-	  return 1;
-	return 0;
-      } else if (sorted_map.has_key (a_str))
-	return -1;
-      else if (sorted_map.has_key (b_str))
-	return 1;
-      else {
-	if (a_str < b_str)
-	  return -1;
-      if (a_str > b_str)
-	return 1;
-      return 0;
-      }
-    };
+        return 0;
+      };
 
     var sorted_props = new ArrayList<string> ();
-    foreach (var s in props) {
+    foreach (var s in props)
       sorted_props.add (s);
-    }
+
     sorted_props.sort ((owned) compare_properties);
     return sorted_props.to_array ();
 
