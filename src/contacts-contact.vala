@@ -579,7 +579,7 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  public static string[] sorted_properties = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
+  public const string[] sorted_properties = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
 
   public static string []sort_persona_properties (string [] props) {
     CompareDataFunc<string> compare_properties = (a, b) =>
