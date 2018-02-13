@@ -579,7 +579,7 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  private const string[] SORTED_PROPERTIES = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "notes", "postal-addresses" };
+  private const string[] SORTED_PROPERTIES = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "postal-addresses", "notes" };
 
   public static string[] sort_persona_properties (string[] props) {
     CompareDataFunc<string> compare_properties = (a, b) => {
@@ -600,7 +600,6 @@ public class Contacts.Contact : GLib.Object  {
 
     sorted_props.sort ((owned) compare_properties);
     return sorted_props.to_array ();
-
   }
 
   /* Tries to set the property on all persons that have it writeable, and
