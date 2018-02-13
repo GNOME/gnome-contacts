@@ -131,7 +131,7 @@ update_pixbufs (CcCropArea *area)
                 if (area->priv->color_shifted)
                         g_object_unref (area->priv->color_shifted);
                 area->priv->color_shifted = gdk_pixbuf_copy (area->priv->pixbuf);
-                shift_colors (area->priv->color_shifted, -32, -32, -32, 0);
+                shift_colors (area->priv->color_shifted, -100, -100, -100, 0);
 
                 if (area->priv->scale == 0.0) {
                         gdouble scale_to_80, scale_to_image, crop_scale;
@@ -201,55 +201,37 @@ cc_crop_area_draw (GtkWidget *widget,
         iy = uarea->priv->image.y;
 
         gdk_cairo_set_source_pixbuf (cr, uarea->priv->color_shifted, ix, iy);
-        cairo_rectangle (cr, ix, iy, width, crop.y - iy);
-        cairo_rectangle (cr, ix, crop.y, crop.x - ix, crop.height);
-        cairo_rectangle (cr, crop.x + crop.width, crop.y, width - crop.width - (crop.x - ix), crop.height);
-        cairo_rectangle (cr, ix, crop.y + crop.height, width, height - crop.height - (crop.y - iy));
+        cairo_rectangle (cr, ix, iy, width, height);
         cairo_fill (cr);
 
         gdk_cairo_set_source_pixbuf (cr, uarea->priv->pixbuf, ix, iy);
-        cairo_rectangle (cr, crop.x, crop.y, crop.width, crop.height);
+        cairo_arc (cr, crop.x + crop.width / 2, crop.y + crop.width / 2, crop.width / 2, 0, 2 * G_PI);
         cairo_fill (cr);
 
-        if (uarea->priv->active_region != OUTSIDE) {
-                gint x1, x2, y1, y2;
-                cairo_set_source_rgb (cr, 1, 1, 1);
-                cairo_set_line_width (cr, 1.0);
-                x1 = crop.x + crop.width / 3.0;
-                x2 = crop.x + 2 * crop.width / 3.0;
-                y1 = crop.y + crop.height / 3.0;
-                y2 = crop.y + 2 * crop.height / 3.0;
-
-                cairo_move_to (cr, x1 + 0.5, crop.y);
-                cairo_line_to (cr, x1 + 0.5, crop.y + crop.height);
-
-                cairo_move_to (cr, x2 + 0.5, crop.y);
-                cairo_line_to (cr, x2 + 0.5, crop.y + crop.height);
-
-                cairo_move_to (cr, crop.x, y1 + 0.5);
-                cairo_line_to (cr, crop.x + crop.width, y1 + 0.5);
-
-                cairo_move_to (cr, crop.x, y2 + 0.5);
-                cairo_line_to (cr, crop.x + crop.width, y2 + 0.5);
-                cairo_stroke (cr);
-        }
-
-        cairo_set_source_rgb (cr,  0, 0, 0);
-        cairo_set_line_width (cr, 1.0);
-        cairo_rectangle (cr,
-                         crop.x + 0.5,
-                         crop.y + 0.5,
-                         crop.width - 1.0,
-                         crop.height - 1.0);
-        cairo_stroke (cr);
-
+        // draw the four corners
         cairo_set_source_rgb (cr, 1, 1, 1);
-        cairo_set_line_width (cr, 2.0);
-        cairo_rectangle (cr,
-                         crop.x + 2.0,
-                         crop.y + 2.0,
-                         crop.width - 4.0,
-                         crop.height - 4.0);
+        cairo_set_line_width (cr, 4.0);
+
+        // top left corner
+        cairo_move_to (cr, crop.x + 15, crop.y);
+        cairo_line_to (cr, crop.x, crop.y);
+        cairo_line_to (cr, crop.x, crop.y + 15);
+
+        // top right corner
+        cairo_move_to (cr, crop.x + crop.width - 15, crop.y);
+        cairo_line_to (cr, crop.x + crop.width, crop.y);
+        cairo_line_to (cr, crop.x + crop.width, crop.y + 15);
+
+        // bottom right corner
+        cairo_move_to (cr, crop.x + crop.width - 15, crop.y + crop.height);
+        cairo_line_to (cr, crop.x + crop.width, crop.y + crop.height);
+        cairo_line_to (cr, crop.x + crop.width, crop.y + crop.height - 15);
+
+        // bottom left corner
+        cairo_move_to (cr, crop.x + 15, crop.y + crop.height);
+        cairo_line_to (cr, crop.x, crop.y + crop.height);
+        cairo_line_to (cr, crop.x, crop.y + crop.height - 15);
+
         cairo_stroke (cr);
 
         return FALSE;
@@ -397,8 +379,8 @@ cc_crop_area_motion_notify_event (GtkWidget      *widget,
 
         crop_to_widget (area, &damage);
         gtk_widget_queue_draw_area (widget,
-                                    damage.x - 1, damage.y - 1,
-                                    damage.width + 2, damage.height + 2);
+                                    damage.x - 4, damage.y - 4,
+                                    damage.width + 6, damage.height + 6);
 
         pb_width = gdk_pixbuf_get_width (area->priv->browse_pixbuf);
         pb_height = gdk_pixbuf_get_height (area->priv->browse_pixbuf);
@@ -629,8 +611,8 @@ cc_crop_area_motion_notify_event (GtkWidget      *widget,
 
         crop_to_widget (area, &damage);
         gtk_widget_queue_draw_area (widget,
-                                    damage.x - 1, damage.y - 1,
-                                    damage.width + 2, damage.height + 2);
+                                    damage.x - 4, damage.y - 4,
+                                    damage.width + 6, damage.height + 6);
 
         return FALSE;
 }
@@ -652,8 +634,8 @@ cc_crop_area_button_press_event (GtkWidget      *widget,
         area->priv->active_region = find_location (&crop, event->x, event->y);
 
         gtk_widget_queue_draw_area (widget,
-                                    crop.x - 1, crop.y - 1,
-                                    crop.width + 2, crop.height + 2);
+                                    crop.x - 4, crop.y - 4,
+                                    crop.width + 6, crop.height + 6);
 
         return FALSE;
 }
@@ -675,8 +657,8 @@ cc_crop_area_button_release_event (GtkWidget      *widget,
         area->priv->active_region = OUTSIDE;
 
         gtk_widget_queue_draw_area (widget,
-                                    crop.x - 1, crop.y - 1,
-                                    crop.width + 2, crop.height + 2);
+                                    crop.x - 4, crop.y - 4,
+                                    crop.width + 6, crop.height + 6);
 
         return FALSE;
 }
