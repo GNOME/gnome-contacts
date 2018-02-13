@@ -28,7 +28,7 @@ po_dir = join_paths(meson.source_root(), 'po')
 # Dependencies
 min_eds_version = '3.13.90'
 min_folks_version = '0.11.4'
-min_glib_version = '2.44.0'
+min_glib_version = '2.44' # We also use this value for --target-glib, so scratch the micro version.
 
 folks = dependency('folks', version: '>=' + min_folks_version)
 folks_eds = dependency('folks-eds', version: '>=' + min_folks_version)
