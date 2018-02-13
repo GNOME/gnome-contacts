@@ -952,10 +952,10 @@ public class Contacts.ContactEditor : Grid {
     this.container_grid.attach (button, 0, 0, 1, 3);
   }
 
-  // Show the avatar dialog when the avatar is clicked
+  // Show the avatar popover when the avatar is clicked
   private void on_avatar_button_clicked (Button avatar_button) {
-    var dialog = new AvatarSelector ((Window) get_toplevel (), this.contact);
-    dialog.set_avatar.connect ( (icon) =>  {
+    var popover = new AvatarSelector (avatar_button, this.contact);
+    popover.set_avatar.connect ( (icon) =>  {
         this.avatar.set_data ("value", icon);
         this.avatar.set_data ("changed", true);
 
@@ -968,7 +968,7 @@ public class Contacts.ContactEditor : Grid {
 
         this.avatar.set_pixbuf (a_pixbuf);
       });
-    dialog.run ();
+    popover.show();
   }
 
   public bool avatar_changed () {

@@ -209,4 +209,14 @@ namespace Contacts.Utils {
     }
     return stores;
   }
+
+  public void show_error_dialog (string error, Gtk.Window toplevel) {
+    var dialog = new Gtk.MessageDialog (toplevel,
+                                        Gtk.DialogFlags.MODAL,
+                                        Gtk.MessageType.ERROR,
+                                        Gtk.ButtonsType.OK,
+                                        error);
+    dialog.run();
+    dialog.destroy();
+  }
 }
