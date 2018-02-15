@@ -133,7 +133,7 @@ public class Contacts.ContactPane : Stack {
     }
 
     if (contact != null) {
-      contact.personas_changed.disconnect (update_sheet);
+      contact.individual.personas_changed.disconnect (update_sheet);
       contact.changed.disconnect (update_sheet);
     }
 
@@ -142,8 +142,8 @@ public class Contacts.ContactPane : Stack {
     update_sheet ();
 
     if (contact != null) {
-      contact.personas_changed.connect (update_sheet);
       contact.changed.connect (update_sheet);
+      contact.individual.personas_changed.connect (update_sheet);
     }
 
     if (contact == null)

@@ -30,7 +30,6 @@ public class Contacts.Contact : GLib.Object  {
 
   public Individual individual;
   uint changed_id;
-  bool changed_personas;
 
   public Persona? fake_persona = null;
 
@@ -48,7 +47,6 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public signal void changed ();
-  public signal void personas_changed ();
 
   private bool _is_hidden;
   private bool _is_hidden_uptodate;
@@ -98,13 +96,13 @@ public class Contacts.Contact : GLib.Object  {
   public void hide () {
     _is_hidden_to_delete = true;
 
-    queue_changed (false);
+    queue_changed ();
   }
 
   public void show () {
     _is_hidden_to_delete = false;
 
-    queue_changed (false);
+    queue_changed ();
   }
 
   public static Contact from_individual (Individual i) {
@@ -135,10 +133,6 @@ public class Contacts.Contact : GLib.Object  {
 
     is_main = calc_is_main ();
 
-    individual.personas_changed.connect ( (added, removed) => {
-        queue_changed (true);
-      });
-
     update ();
 
     individual.notify.connect(notify_cb);
@@ -149,7 +143,7 @@ public class Contacts.Contact : GLib.Object  {
     individual = new_individual;
     individual.set_data ("contact", this);
     individual.notify.connect(notify_cb);
-    queue_changed (true);
+    queue_changed ();
   }
 
   public void remove () {
@@ -277,14 +271,10 @@ public class Contacts.Contact : GLib.Object  {
 #endif
 
   private bool changed_cb () {
-    changed_id = 0;
-    var changed_personas = this.changed_personas;
-    this.changed_personas = false;
+    this.changed_id = 0;
     this.is_main = calc_is_main ();
     update ();
     changed ();
-    if (changed_personas)
-      personas_changed ();
     return false;
   }
 
@@ -295,18 +285,15 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  public void queue_changed (bool is_persona_change) {
-    _is_hidden_uptodate = false;
-    changed_personas |= is_persona_change;
+  public void queue_changed () {
+    this._is_hidden_uptodate = false;
 
-    if (changed_id != 0)
-      return;
-
-    changed_id = Idle.add (changed_cb);
+    if (this.changed_id == 0)
+      this.changed_id = Idle.add (changed_cb);
   }
 
   private void notify_cb (ParamSpec pspec) {
-    queue_changed (false);
+    queue_changed ();
   }
 
   private void update () {
