@@ -397,16 +397,11 @@ public class Contacts.Contact : GLib.Object  {
       };
 
     var persona_list = new ArrayList<Persona>();
-    int i = 0;
-    persona_list.add_all (individual.personas);
-    while (i < persona_list.size) {
-      if (persona_list[i].store.type_id == "key-file")
-	persona_list.remove_at (i);
-      else
-	i++;
-    }
-    persona_list.sort ((owned) compare_persona_by_store);
+    foreach (var persona in individual.personas)
+      if (persona.store.type_id != "key-file")
+        persona_list.add (persona);
 
+    persona_list.sort ((owned) compare_persona_by_store);
     return persona_list;
   }
 
