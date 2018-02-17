@@ -494,11 +494,7 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   private static bool persona_is_google (Persona persona) {
-    var store = persona.store;
-
-    if (store.type_id == "eds" && esource_uid_is_google (store.id))
-      return true;
-    return false;
+    return persona.store.type_id == "eds" && esource_uid_is_google (persona.store.id);
   }
 
   /**
