@@ -370,41 +370,31 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Gee.List<Persona> get_personas_for_display () {
-    CompareDataFunc<Persona> compare_persona_by_store = (a, b) =>
-    {
-      Persona persona_a = (Persona *)a;
-      Persona persona_b = (Persona *)b;
-      var store_a = persona_a.store;
-      var store_b = persona_b.store;
+    CompareDataFunc<Persona> compare_persona_by_store = (a, b) => {
+        var store_a = a.store;
+        var store_b = b.store;
 
-      if (store_a == store_b) {
-	if (persona_is_google (persona_a)) {
-	  /* Non-other google personas rank before others */
-	  if (persona_is_google_other (persona_a) && !persona_is_google_other (persona_b))
-	    return 1;
-	  if (!persona_is_google_other (persona_a) && persona_is_google_other (persona_b))
-	    return -1;
-	}
+        // In the same store, sort Google 'other' contacts last
+        if (store_a == store_b) {
+          if (!persona_is_google (a))
+            return 0;
 
-	return 0;
-      }
+          var a_is_other = persona_is_google_other (a);
+          if (a_is_other != persona_is_google_other (b))
+            return a_is_other? 1 : -1;
+        }
 
-      if (store_a.is_primary_store && store_b.is_primary_store)
-	return 0;
-      if (store_a.is_primary_store)
-	return -1;
-      if (store_b.is_primary_store)
-	return 1;
+        // Sort primary stores before others
+        if (store_a.is_primary_store != store_b.is_primary_store)
+          return (store_a.is_primary_store)? -1 : 1;
 
-      if (store_a.type_id == "eds" && store_b.type_id == "eds")
-	return strcmp (store_a.id, store_b.id);
-      if (store_a.type_id == "eds")
-	return -1;
-      if (store_b.type_id == "eds")
-	return 1;
+        // E-D-S stores get prioritized
+        if ((store_a.type_id == "eds") != (store_b.type_id == "eds"))
+          return (store_a.type_id == "eds")? -1 : 1;
 
-      return strcmp (store_a.id, store_b.id);
-    };
+        // Normal case: use alphabetical sorting
+        return strcmp (store_a.id, store_b.id);
+      };
 
     var persona_list = new ArrayList<Persona>();
     int i = 0;
