@@ -171,56 +171,42 @@ public class Contacts.Contact : GLib.Object  {
     }
     return false;
   }
-  
-  private static int compare_fields_type (TypeSet type_set, AbstractFieldDetails a, AbstractFieldDetails b) {
-    string a_type = type_set.format_type (a);
-    string b_type = type_set.format_type (b);
-    return a_type.ascii_casecmp (b_type);
-  }
-  
+
   private static TypeSet select_typeset_from_fielddetails (AbstractFieldDetails a) {
     if (a is EmailFieldDetails)
       return TypeSet.email;
-    else if (a is PhoneFieldDetails)
+    if (a is PhoneFieldDetails)
       return TypeSet.phone;
-    else
-      return TypeSet.general; 
+    return TypeSet.general;
   }
 
-  public static int compare_fields (void *_a, void *_b) {
-    AbstractFieldDetails *a = (AbstractFieldDetails *)_a;
-    AbstractFieldDetails *b = (AbstractFieldDetails *)_b;
+  public static int compare_fields (void* _a, void* _b) {
+    var a = (AbstractFieldDetails) _a;
+    var b = (AbstractFieldDetails) _b;
 
-    /* Compare by pref */
-    bool first_a = has_pref (a);
-    bool first_b = has_pref (b);
-    if (first_a != first_b) {
-      if (first_a)
-	return -1;
-      else
-	return 1;
-    }
-    
-    // compare by type
-    TypeSet field_type_set = select_typeset_from_fielddetails (a);    
-    int result = compare_fields_type (field_type_set, a, b);
-    if (result != 0) {
+    // Fields with a PREF hint always go first (see VCard PREF attribute)
+    var a_has_pref = has_pref (a);
+    if (a_has_pref != has_pref (b))
+      return (a_has_pref)? -1 : 1;
+
+    // sort by field type first (e.g. "Home", "Work")
+    var type_set = select_typeset_from_fielddetails (a);
+    var result = type_set.format_type (a).ascii_casecmp (type_set.format_type (b));
+    if (result != 0)
       return result;
-    }
-    
-    // compare by value if types are equal
-    if (a is EmailFieldDetails || a is PhoneFieldDetails) {
-      var aa = a as AbstractFieldDetails<string>;
-      var bb = b as AbstractFieldDetails<string>;
+
+    // Try to compare by value if types are equal
+    var aa = a as AbstractFieldDetails<string>;
+    var bb = b as AbstractFieldDetails<string>;
+    if (aa != null && bb != null)
       return strcmp (aa.value, bb.value);
-    }
 
+    // No heuristics to fall back to.
     warning ("Unsupported AbstractFieldDetails value type");
-
     return 0;
   }
 
-  public static ArrayList<T> sort_fields<T> (Collection<T> fields) {
+  public static Gee.List<T> sort_fields<T> (Collection<T> fields) {
     var res = new ArrayList<T>();
     res.add_all (fields);
     res.sort (Contact.compare_fields);
