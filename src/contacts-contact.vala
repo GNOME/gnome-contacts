@@ -492,9 +492,7 @@ public class Contacts.Contact : GLib.Object  {
       return false;
 
     var p = persona as Edsf.Persona;
-    if (p != null)
-      return !p.in_google_personal_group;
-    return false;
+    return p != null && !p.in_google_personal_group;
   }
 
   public static bool persona_is_google_profile (Persona persona) {
