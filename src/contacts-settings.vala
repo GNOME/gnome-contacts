@@ -20,17 +20,27 @@
  */
 public class Contacts.Settings : GLib.Settings {
 
+  public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
+  public const string SORT_ON_SURNAME_KEY = "sort-on-surname";
+  public const string WINDOW_WIDTH_KEY = "window-width";
+  public const string WINDOW_HEIGHT_KEY = "window-height";
+  public const string WINDOW_MAXIMIZED_KEY = "window-maximized";
+
   public bool did_initial_setup {
-    get { return get_boolean ("did-initial-setup"); }
-    set { set_boolean ("did-initial-setup", value); }
+    get { return get_boolean (DID_INITIAL_SETUP_KEY); }
+    set { set_boolean (DID_INITIAL_SETUP_KEY, value); }
   }
 
   public bool sort_on_surname {
-    get { return get_boolean ("sort-on-surname"); }
-    set { set_boolean ("sort-on-surname", value); }
+    get { return get_boolean (SORT_ON_SURNAME_KEY); }
+    set { set_boolean (SORT_ON_SURNAME_KEY, value); }
   }
 
   public Settings (App app) {
     Object (schema_id: app.application_id);
+  }
+
+  public void bind_default (string key, Object object, string property) {
+    bind (key, object, property, GLib.SettingsBindFlags.DEFAULT);
   }
 }
