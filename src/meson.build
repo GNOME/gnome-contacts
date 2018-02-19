@@ -61,6 +61,7 @@ contacts_deps = [
   libebook,
   libedataserver,
   libedataserverui,
+  libhandy,
   math,
 ]
 
