@@ -59,6 +59,18 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public UiState state { get; set; default = UiState.NORMAL; }
 
+  /** Holds the current width. */
+  public int window_width { get; set; }
+  private const string WINDOW_WIDTH_PROP = "window-width";
+
+  /** Holds the current height. */
+  public int window_height { get; set; }
+  private const string WINDOW_HEIGHT_PROP = "window-height";
+
+  /** Holds true if the window is currently maximized. */
+  public bool window_maximized { get; set; }
+  private const string WINDOW_MAXIMIZED_PROP = "window-maximized";
+
   private Settings settings;
 
   public Store store {
@@ -80,9 +92,58 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     this.notify["state"].connect (on_ui_state_changed);
 
+    bind_dimension_properties_to_settings ();
     create_contact_pane ();
     set_headerbar_layout ();
     connect_button_signals ();
+    restore_window_size_and_position_from_settings ();
+  }
+
+  private void restore_window_size_and_position_from_settings () {
+    var screen = get_screen();
+    if (screen != null && this.window_width <= screen.get_width () && this.window_height <= screen.get_height ()) {
+      set_default_size (this.window_width, this.window_height);
+    }
+    if (this.window_maximized) {
+      maximize();
+    }
+    // always put the window into the center position to avoid losing it somewhere at the screen boundaries.
+    this.window_position = Gtk.WindowPosition.CENTER;
+  }
+
+  public override bool window_state_event (Gdk.EventWindowState event) {
+    if ((event.new_window_state & Gdk.WindowState.WITHDRAWN) == 0) {
+      bool maximized = (
+        (event.new_window_state & Gdk.WindowState.MAXIMIZED) != 0
+      );
+      if (this.window_maximized != maximized) {
+        this.window_maximized = maximized;
+      }
+    }
+    return base.window_state_event (event);
+  }
+
+  // Called on window resize. Save window size for the next start.
+  public override void size_allocate (Gtk.Allocation allocation) {
+    base.size_allocate (allocation);
+
+    var screen = get_screen ();
+    if (screen != null && !this.window_maximized) {
+      // Get the size via ::get_size instead of the allocation
+      // so that the window isn't ever-expanding.
+      int width = 0;
+      int height = 0;
+      get_size(out width, out height);
+
+      // Only store if the values have changed and are
+      // reasonable-looking.
+      if (this.window_width != width && width > 0 && width <= screen.get_width ()) {
+        this.window_width = width;
+      }
+      if (this.window_height != height && height > 0 && height <= screen.get_height ()) {
+        this.window_height = height;
+      }
+    }
   }
 
   private void create_contact_pane () {
@@ -384,5 +445,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       });
 
     add_notification (notification);
+  }
+
+  private void bind_dimension_properties_to_settings () {
+    this.settings.bind_default (Settings.WINDOW_WIDTH_KEY, this, WINDOW_WIDTH_PROP);
+    this.settings.bind_default (Settings.WINDOW_HEIGHT_KEY, this, WINDOW_HEIGHT_PROP);
+    this.settings.bind_default (Settings.WINDOW_MAXIMIZED_KEY, this, WINDOW_MAXIMIZED_PROP);
   }
 }
