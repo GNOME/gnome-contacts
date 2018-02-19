@@ -18,17 +18,20 @@
 using Gee;
 using Gtk;
 using Folks;
+using Hdy;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
 public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
-  private Grid content_grid;
+  private Leaflet content_box;
+  [GtkChild]
+  private Button back;
+  [GtkChild]
+  private Container list_pane_container;
   [GtkChild]
   private Container contact_pane_container;
   [GtkChild]
   private Grid loading_box;
-  [GtkChild]
-  private SizeGroup left_pane_size_group;
   [GtkChild]
   private HeaderBar left_header;
   [GtkChild]
@@ -166,6 +169,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane = new ListPane (this.settings, store);
     bind_property ("state", this.list_pane, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     list_pane.selection_changed.connect (list_pane_selection_changed_cb);
+    list_pane.contact_activated.connect (list_pane_contact_activated_cb);
     list_pane.link_contacts.connect (list_pane_link_contacts_cb);
     list_pane.delete_contacts.connect (delete_contacts);
 
@@ -175,11 +179,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
                                        .printf (nr_contacts);
       });
 
-    left_pane_size_group.add_widget (list_pane);
-    left_pane_size_group.remove_widget (loading_box);
-    loading_box.destroy ();
+    loading_box.visible = false;
 
-    content_grid.attach (list_pane, 0, 0, 1, 1);
+    list_pane_container.add (list_pane);
 
     if (this.contact_pane.contact != null)
       list_pane.select_contact (this.contact_pane.contact);
@@ -223,6 +225,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
+  private void on_back_clicked () {
+    show_list_pane ();
+  }
+
+  [GtkCallback]
   private void on_edit_button_clicked () {
     if (this.contact_pane.contact == null)
       return;
@@ -246,6 +253,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   private void stop_editing (bool drop_changes = false) {
+    show_list_pane ();
     if (this.state == UiState.CREATING) {
 
       if (drop_changes) {
@@ -301,6 +309,31 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.right_header.title = _("New Contact");
 
     this.contact_pane.new_contact ();
+    show_contact_pane ();
+  }
+
+  [GtkCallback]
+  private void on_cancel_visible () {
+    update ();
+  }
+
+  [GtkCallback]
+  private void on_fold () {
+    update ();
+  }
+
+  private void update () {
+    back.visible = this.content_box.fold == Fold.FOLDED && !this.cancel_button.visible;
+  }
+
+  private void show_list_pane () {
+    content_box.visible_child_name = "list-pane";
+    update ();
+  }
+
+  private void show_contact_pane () {
+    content_box.visible_child_name = "contact-pane";
+    update ();
   }
 
   public void show_search (string query) {
@@ -360,6 +393,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     set_shown_contact (new_selection);
     if (this.state != UiState.SELECTING)
       this.state = UiState.SHOWING;
+  }
+
+  private void list_pane_contact_activated_cb () {
+    show_contact_pane ();
   }
 
   void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {

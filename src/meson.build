@@ -46,6 +46,7 @@ contacts_c_sources = [
 contacts_c_args = [
   '-include', 'config.h',
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
+  '-DHANDY_USE_UNSTABLE_API',
   '-DLOCALEDIR="@0@"'.format(locale_dir),
 ]
 

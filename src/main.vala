@@ -29,6 +29,8 @@ main (string[] args) {
   GtkCheese.init (ref args);
 #endif
 
+  typeof (Hdy.Leaflet).ensure ();
+
   var app = new App ();
   app.run (args);
   app = null;
