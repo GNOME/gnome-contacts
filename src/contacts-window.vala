@@ -112,13 +112,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   public override bool window_state_event (Gdk.EventWindowState event) {
-    if ((event.new_window_state & Gdk.WindowState.WITHDRAWN) == 0) {
-      bool maximized = (
-        (event.new_window_state & Gdk.WindowState.MAXIMIZED) != 0
-      );
-      if (this.window_maximized != maximized) {
+    if (!(Gdk.WindowState.WITHDRAWN in event.new_window_state)) {
+      bool maximized = (Gdk.WindowState.MAXIMIZED in event.new_window_state);
+      if (this.window_maximized != maximized)
         this.window_maximized = maximized;
-      }
     }
     return base.window_state_event (event);
   }
