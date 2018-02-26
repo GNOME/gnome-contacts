@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2018-02-20 22:39+0000\n"
-"PO-Revision-Date: 2018-02-26 13:21+0100\n"
+"POT-Creation-Date: 2018-02-26 12:22+0000\n"
+"PO-Revision-Date: 2018-02-26 14:54+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -23,7 +23,7 @@ msgstr ""
 # desktop entry name
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:79
-#: data/ui/contacts-window.ui:90 src/contacts-window.vala:209
+#: data/ui/contacts-window.ui:90 src/contacts-window.vala:206
 msgid "Contacts"
 msgstr "Kontakty"
 
@@ -31,7 +31,7 @@ msgstr "Kontakty"
 #: data/org.gnome.Contacts.appdata.xml.in:7
 #: data/org.gnome.Contacts.desktop.in:4
 msgid "A contacts manager for GNOME"
-msgstr "Správca kontaktov pre prostredie GNOME"
+msgstr "Správca kontaktov prostredia GNOME"
 
 #: data/org.gnome.Contacts.appdata.xml.in:9
 msgid ""
@@ -83,11 +83,9 @@ msgid "Create a new contact"
 msgstr "Vytvorenie nového kontaktu"
 
 #: data/gtk/help-overlay.ui:28
-#, fuzzy
-#| msgid "March"
 msgctxt "shortcut window"
 msgid "Search"
-msgstr "marec"
+msgstr "Vyhľadávanie"
 
 #: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
@@ -133,7 +131,7 @@ msgstr "Nastavenia účtov služieb"
 msgid "Select Picture"
 msgstr "Výber obrázka"
 
-#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:301
+#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:298
 msgid "New Contact"
 msgstr "Nový kontakt"
 
@@ -253,26 +251,20 @@ msgstr "Odstrániť"
 
 # desktop entry name
 #: data/ui/contacts-setup-window.ui:13
-#, fuzzy
-#| msgid "Contacts"
 msgid "Contacts Setup"
-msgstr "Kontakty"
+msgstr "Nastavenie aplikácie Kontakty"
 
 # menu
 #: data/ui/contacts-setup-window.ui:22
-#, fuzzy
-#| msgid "_Quit"
 msgid "Quit"
-msgstr "U_končiť"
+msgstr "Ukončiť"
 
 #: data/ui/contacts-setup-window.ui:26
-#, fuzzy
-#| msgid "Cancel setup"
 msgid "Cancel setup and quit"
-msgstr "Zrušiť nastavenie"
+msgstr "Zruší nastavenie a skončí"
 
 #: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:232
-#: src/contacts-window.vala:216
+#: src/contacts-window.vala:213
 msgid "Done"
 msgstr "Dokončiť"
 
@@ -292,35 +284,31 @@ msgid ""
 msgstr ""
 
 #: data/ui/contacts-window.ui:15
-#, fuzzy
-#| msgid "View contacts subset"
 msgid "List contacts by:"
-msgstr "Zobrazovať podmnožiny kontaktov"
+msgstr "Kontakty zoraďovať podľa:"
 
 #: data/ui/contacts-window.ui:40
 msgid "First name"
-msgstr "Krstné meno"
+msgstr "Krstného mena"
 
 #: data/ui/contacts-window.ui:63
 msgid "Surname"
-msgstr "Priezvisko"
+msgstr "Priezviska"
 
+# tooltip
 #: data/ui/contacts-window.ui:102
-#, fuzzy
-#| msgid "Unable to create new contacts: %s"
 msgid "Create new contact"
-msgstr "Nepodarilo sa vytvoriť nové kontakty: %s"
+msgstr "Vytvorí nový kontakt"
 
 # DK:button title
 #: data/ui/contacts-window.ui:106
 msgid "Add contact"
 msgstr "Pridať kontakt"
 
+# tooltip
 #: data/ui/contacts-window.ui:145
-#, fuzzy
-#| msgid "Cancel setup"
 msgid "Cancel selection"
-msgstr "Zrušiť nastavenie"
+msgstr "Zruší výber"
 
 #: data/ui/contacts-window.ui:192
 msgid "Edit details"
@@ -484,7 +472,7 @@ msgstr "Pridať meno"
 
 #: src/contacts-contact-list.vala:174
 msgid "Favorites"
-msgstr ""
+msgstr "Obľúbené"
 
 # menu item
 #: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
@@ -658,12 +646,12 @@ msgstr "Zrušiť prepojenie"
 #: src/contacts-link-suggestion-grid.vala:54
 #, c-format
 msgid "Is this the same person as %s from %s?"
-msgstr ""
+msgstr "Je to tá istá osoba ako %s z %s?"
 
 #: src/contacts-link-suggestion-grid.vala:55
 #, c-format
 msgid "Is this the same person as %s?"
-msgstr ""
+msgstr "Je to tá istá osoba ako %s?"
 
 # store item
 # label
@@ -764,7 +752,7 @@ msgid "TTY"
 msgstr "Ďalekopis"
 
 # MǙ: kontakt
-#: src/contacts-window.vala:177
+#: src/contacts-window.vala:174
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -773,26 +761,28 @@ msgstr[1] "%d vybratý"
 msgstr[2] "%d vybraté"
 
 # DK: button label
-#: src/contacts-window.vala:216
+#: src/contacts-window.vala:213
 msgid "Add"
 msgstr "Pridať"
 
 # label
-#: src/contacts-window.vala:236
+#: src/contacts-window.vala:233
 #, c-format
 msgid "Editing %s"
 msgstr "Upravuje sa %s"
 
-#: src/contacts-window.vala:291
+# tooltip
+#: src/contacts-window.vala:288
 msgid "Unmark as favorite"
-msgstr ""
+msgstr "Zruší označenie ako obľúbený"
 
-#: src/contacts-window.vala:292
+# tooltip
+#: src/contacts-window.vala:289
 msgid "Mark as favorite"
-msgstr ""
+msgstr "Označí ako obľúbený"
 
 # notification label
-#: src/contacts-window.vala:374
+#: src/contacts-window.vala:371
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -800,21 +790,20 @@ msgstr[0] "%d prepojených kontaktov"
 msgstr[1] "%d prepojený kontakt"
 msgstr[2] "%d prepojené kontakty"
 
-#: src/contacts-window.vala:378 src/contacts-window.vala:402
-#: src/contacts-window.vala:439
+#: src/contacts-window.vala:375 src/contacts-window.vala:399
+#: src/contacts-window.vala:436
 msgid "_Undo"
 msgstr "_Vrátiť"
 
 # MČ: zobrazí sa, keď nie je vybraný kontakt
 # label
-#: src/contacts-window.vala:397
-#, fuzzy, c-format
-#| msgid "Select a contact"
+#: src/contacts-window.vala:394
+#, c-format
 msgid "Deleted contact %s"
-msgstr "Vyberte kontakt"
+msgstr "Kontakt %s odstránený"
 
 # notification label
-#: src/contacts-window.vala:399
+#: src/contacts-window.vala:396
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -823,12 +812,12 @@ msgstr[1] "%d odstránený kontakt"
 msgstr[2] "%d odstránené kontakty"
 
 #  kontakt %s s kontaktom %s
-#: src/contacts-window.vala:435
+#: src/contacts-window.vala:432
 #, c-format
 msgid "%s linked to %s"
 msgstr "kontakt %s prepojený s kontaktom %s"
 
-#: src/contacts-window.vala:437
+#: src/contacts-window.vala:434
 #, c-format
 msgid "%s linked to the contact"
 msgstr "kontakt %s prepojený s kontaktom"
@@ -843,11 +832,9 @@ msgstr "Prvotné nastavenie bolo dokončené."
 #  PK: suhlasim s petom, nahlas bug
 # MČ: osobne sa mi to takto pozdáva. Ak to teraz na drihý krát cez vás neprejde, nahlásim bug.
 #: src/org.gnome.Contacts.gschema.xml:7
-#, fuzzy
-#| msgid "Set to true when the user ran the first-time setup wizard."
 msgid "Set to true after the user has run the first-time setup wizard."
 msgstr ""
-"Nastavte na hodnotu true, keď používateľ prešiel sprievodcom prvotného "
+"Nastavte na hodnotu true, keď používateľ spustil sprievodcu prvotného "
 "nastavenia."
 
 #: src/org.gnome.Contacts.gschema.xml:11
@@ -862,7 +849,7 @@ msgstr ""
 
 #: src/org.gnome.Contacts.gschema.xml:19
 msgid "The default height of the contacts window."
-msgstr ""
+msgstr "Predvolená výška okna kontaktov."
 
 #: src/org.gnome.Contacts.gschema.xml:20
 msgid ""
@@ -882,11 +869,11 @@ msgstr ""
 
 #: src/org.gnome.Contacts.gschema.xml:32
 msgid "Is the window maximized?"
-msgstr ""
+msgstr "Je okno maximalizované?"
 
 #: src/org.gnome.Contacts.gschema.xml:33
 msgid "Stores if the window is currently maximized."
-msgstr ""
+msgstr "Ukladá, či je okno momentálne maximalizované."
 
 # DK:label
 #~ msgid ""
