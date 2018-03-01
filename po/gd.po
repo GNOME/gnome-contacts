@@ -2,14 +2,14 @@
 # Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the gnome-contacts package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
-# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2015, 2016.
+# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2015, 2016, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-04-29 07:42+0000\n"
-"PO-Revision-Date: 2016-04-29 11:30+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product"
+"=gnome-contacts&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-09-11 08:34+0000\n"
+"PO-Revision-Date: 2018-03-01 12:20+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -22,546 +22,605 @@ msgstr ""
 "X-Launchpad-Export-Date: 2013-09-15 06:16+0000\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:1
-#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
-#: ../src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "Luchd-aithne GNOME"
+#: data/org.gnome.Contacts.appdata.xml.in:6
+#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
+msgid "Contacts"
+msgstr "Luchd-aithne"
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
-#: ../data/org.gnome.Contacts.desktop.in.in.h:2
+#: data/org.gnome.Contacts.appdata.xml.in:7
+#: data/org.gnome.Contacts.desktop.in:4
 msgid "A contacts manager for GNOME"
 msgstr "Manaidsear luchd-aithne airson GNOME"
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:3
+#: data/org.gnome.Contacts.appdata.xml.in:9
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
 "aggregates the details from all your sources providing a centralized place "
 "for managing your contacts."
 msgstr ""
-"Cumaidh Luchd-aithne fiosrachadh mun luchd-aithne agad an rian. 'S urrainn "
+"Cumaidh Luchd-aithne fiosrachadh mun luchd-aithne agad an rian. ’S urrainn "
 "dhut bloighean fiosrachaidh mun luchd-aithne agad a chruthachadh, a "
 "dheasachadh, a sguabadh às agus a cheangal ri chèile. Cuiridh Luchd-aithne a "
-"h-uile fiosrachadh o na tùsan agad ri chèile gus prìomh ionad a chruthachadh "
-"gus an luchd-aithne agad a stiùireadh."
+"h-uile fiosrachadh o na tùsan agad ri chèile gus prìomh ionad a "
+"chruthachadh gus an luchd-aithne agad a stiùireadh."
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:4
+#: data/org.gnome.Contacts.appdata.xml.in:15
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
 msgstr ""
 "Amalaichidh Luchd-aithne le leabhraichean nan seòladh air loidhne cuideachd "
-"'s nì e ceangal ri luchd-aithne o chaochladh de thùsan air loidhne gu fèin-"
+"’s nì e ceangal ri luchd-aithne o chaochladh de thùsan air loidhne gu fèin-"
 "obrachail."
 
-#: ../data/org.gnome.Contacts.desktop.in.in.h:1
-msgid "Contacts"
-msgstr "Luchd-aithne"
-
-#: ../data/org.gnome.Contacts.desktop.in.in.h:3
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
 msgstr ""
 "friends;address book;caraidean;leabhar sheòlaidhean;leabhar nan seòladh;"
 "seòlaidhean;"
 
-#: ../src/contacts-accounts-list.vala:48
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: data/org.gnome.Contacts.desktop.in:8
+#| msgid "Main contacts"
+msgid "gnome-contacts"
+msgstr "gnome-contacts"
+
+#: data/ui/app-menu.ui:6
+#| msgid "Change Address Book"
+msgid "_Change Address Book…"
+msgstr "Atharrai_ch leabhar nan seòladh…"
+
+#: data/ui/app-menu.ui:12
+msgid "_Help"
+msgstr "_Cobhair"
+
+#: data/ui/app-menu.ui:16
+msgid "_About"
+msgstr "_Mu dhèidhinn"
+
+#: data/ui/app-menu.ui:20
+msgid "_Quit"
+msgstr "_Fàg an-seo"
+
+#: data/ui/contacts-accounts-list.ui:34
 msgid "Online Accounts"
 msgstr "Cunntasan air loidhne"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:241
+#: data/ui/contacts-avatar-dialog.ui:6
+msgid "Select Picture"
+msgstr "Tagh dealbh"
+
+#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:335
+msgid "New Contact"
+msgstr "Neach-aithne ùr"
+
+#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:218
+#: src/contacts-window.vala:244
+msgid "Select"
+msgstr "Tagh"
+
+#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:222
+#: data/ui/contacts-window.ui:280 src/contacts-app.vala:67
+msgid "Cancel"
+msgstr "Sguir dheth"
+
+#: data/ui/contacts-contact-editor.ui:8
+msgid "Home email"
+msgstr "Post-d na dachaighe"
+
+#: data/ui/contacts-contact-editor.ui:12
+msgid "Work email"
+msgstr "Post-d na h-obrach"
+
+#: data/ui/contacts-contact-editor.ui:16
+msgid "Mobile phone"
+msgstr "Fòn-làimhe"
+
+#: data/ui/contacts-contact-editor.ui:20
+msgid "Home phone"
+msgstr "Fòn dachaigh"
+
+#: data/ui/contacts-contact-editor.ui:24
+msgid "Work phone"
+msgstr "Fòn obrach"
+
+#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:574
+#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:196
+msgid "Website"
+msgstr "Làrach-lìn"
+
+#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:600
+#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:202
+msgid "Nickname"
+msgstr "Far-ainm"
+
+#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:633
+#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:209
+msgid "Birthday"
+msgstr "Co-là breith"
+
+#: data/ui/contacts-contact-editor.ui:40
+msgid "Home address"
+msgstr "Seòladh dachaigh"
+
+#: data/ui/contacts-contact-editor.ui:44
+msgid "Work address"
+msgstr "Seòladh obrach"
+
+#: data/ui/contacts-contact-editor.ui:48
+msgid "Notes"
+msgstr "Nòtaichean"
+
+#: data/ui/contacts-contact-editor.ui:82
+msgid "New Detail"
+msgstr "Fiosrachadh ùr"
+
+#: data/ui/contacts-contact-editor.ui:100
+#: src/contacts-linked-accounts-dialog.vala:40
+msgid "Linked Accounts"
+msgstr "Cunntasan ceangailte"
+
+#: data/ui/contacts-contact-editor.ui:106
+msgid "Remove Contact"
+msgstr "Thoir air falbh an neach-aithne"
+
+#: data/ui/contacts-contact-pane.ui:29
+msgid "Select a contact"
+msgstr "Tagh neach-aithne"
+
+#: data/ui/contacts-list-pane.ui:33
+msgid "Type to search"
+msgstr "Sgrìobh airson lorg"
+
+#. Link refers to the verb, from linking contacts together
+#: data/ui/contacts-list-pane.ui:80
+msgid "Link"
+msgstr "Ceangal"
+
+#: data/ui/contacts-list-pane.ui:93
+msgid "Remove"
+msgstr "Thoir air falbh"
+
+#: data/ui/contacts-window.ui:73
+msgid "Loading"
+msgstr "’Ga luchdadh"
+
+#: data/ui/contacts-window.ui:112
+msgid ""
+"New contacts will be added to the selected address book. You are able to "
+"view and edit contacts from other address books."
+msgstr ""
+"Thèid luchd-aithne ùr a chur ris an leabhar sheòlaidhean a thagh thu. ’S "
+"urrainn dhut luchd-aithne o leabhraichean sheòlaidhean eile a shealltainn ’s "
+"a dheasachadh."
+
+#: data/ui/contacts-window.ui:144 src/contacts-window.vala:253
+msgid "All Contacts"
+msgstr "A h-uile neach-aithne"
+
+#: data/ui/contacts-window.ui:159
+msgid "Add contact"
+msgstr "Cuir ris neach-aithne ùr"
+
+#: data/ui/contacts-window.ui:187
+msgid "Selection mode"
+msgstr "Am modh taghaidh"
+
+#: data/ui/contacts-window.ui:238
+msgid "Edit"
+msgstr "Deasaich"
+
+#: data/ui/contacts-window.ui:254 data/ui/contacts-window.ui:300
+#: src/contacts-window.vala:285
+msgid "Done"
+msgstr "Deiseil"
+
+#: data/ui/contacts-window.ui:271
+msgid "Select Address Book"
+msgstr "Tagh leabhar sheòlaidhean"
+
+#: data/ui/contacts-window.ui:283
+msgid "Cancel setup"
+msgstr "Sguir dhen rèiteachadh"
+
+#: data/ui/contacts-window.ui:303
+msgid "Setup complete"
+msgstr "Tha an rèiteachadh coileanta"
+
+#: src/contacts-accounts-list.vala:144 src/contacts-esd-setup.c:241
 msgid "Local Address Book"
 msgstr "Leabhar sheòlaidhean ionadail"
 
-#: ../src/contacts-address-map.vala:80
+#: src/contacts-address-map.vala:80
 msgid "Install GNOME Maps to open location."
 msgstr "Stàlaich mapaichean GNOME gus an t-ionad fhosgladh."
 
-#: ../src/contacts-app.vala:46
+#: src/contacts-app.vala:51
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Cha deach neach-aithne a lorg aig a bheil an ID %s"
 
-#: ../src/contacts-app.vala:47 ../src/contacts-app.vala:149
+#: src/contacts-app.vala:52 src/contacts-app.vala:153
 msgid "Contact not found"
 msgstr "Cha deach an neach-aithne a lorg"
 
-#: ../src/contacts-app.vala:56
+#: src/contacts-app.vala:61
 msgid "Change Address Book"
 msgstr "Atharraich leabhar nan seòladh"
 
-#: ../src/contacts-app.vala:61
+#: src/contacts-app.vala:66
 msgid "Change"
 msgstr "Atharraich"
 
-#: ../src/contacts-app.vala:62 ../src/contacts-avatar-dialog.vala:255
-#: ../data/ui/contacts-window.ui.h:6
-msgid "Cancel"
-msgstr "Sguir dheth"
-
-#: ../src/contacts-app.vala:71
+#: src/contacts-app.vala:76
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
 msgstr ""
 "Thèid luchd-aithne ùr a chur ris an leabhar sheòlaidhean a thagh thu.\n"
-"'S urrainn dhut luchd-aithne o leabhraichean sheòlaidhean eile a shealltainn "
-"'s a dheasachadh."
+"’S urrainn dhut luchd-aithne o leabhraichean sheòlaidhean eile a shealltainn "
+"’s a dheasachadh."
 
-#: ../src/contacts-app.vala:128
+#: src/contacts-app.vala:132
 msgid "translator-credits"
 msgstr ""
 "Akerbeltz https://launchpad.net/~fios\n"
 "alasdair caimbeul https://launchpad.net/~alexd\n"
 "GunChleoc fios@foramnagaidhlig.net"
 
-#: ../src/contacts-app.vala:130
+#: src/contacts-app.vala:133
+msgid "GNOME Contacts"
+msgstr "Luchd-aithne GNOME"
+
+#: src/contacts-app.vala:134
 msgid "About GNOME Contacts"
 msgstr "Mu dhèidhinn Luchd-aithne GNOME"
 
-#: ../src/contacts-app.vala:131
+#: src/contacts-app.vala:135
 msgid "Contact Management Application"
 msgstr "Aplacaid stiùireadh luchd-aithne"
 
-#: ../src/contacts-app.vala:148
+#: src/contacts-app.vala:152
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Cha deach neach-aithne a lorg aig a bheil an seòladh puist-d %s"
 
-#: ../src/contacts-app.vala:320
+#: src/contacts-app.vala:292
 msgid "Show contact with this individual id"
 msgstr "Seall an neach-aithne aig a bheil an ID àraidh seo"
 
-#: ../src/contacts-app.vala:322
+#: src/contacts-app.vala:294
 msgid "Show contact with this email address"
 msgstr "Seall an neach-aithne aig a bheil an seòladh puist-d seo"
 
-#: ../src/contacts-app.vala:331
+#: src/contacts-app.vala:303
 msgid "— contact management"
 msgstr "— stiùireadh luchd-aithne"
 
-#: ../src/contacts-avatar-dialog.vala:200
+#: src/contacts-avatar-dialog.vala:301
 msgid "Browse for more pictures"
 msgstr "Brabhsaich airson barrachd dhealbhan"
 
-#: ../src/contacts-avatar-dialog.vala:203
+#: src/contacts-avatar-dialog.vala:304
 msgid "_Cancel"
 msgstr "_Sguir dheth"
 
-#: ../src/contacts-avatar-dialog.vala:204
+#: src/contacts-avatar-dialog.vala:305
 msgid "_Open"
 msgstr "F_osgail"
 
-#: ../src/contacts-avatar-dialog.vala:249
-msgid "Select Picture"
-msgstr "Tagh dealbh"
-
-#: ../src/contacts-avatar-dialog.vala:253 ../src/contacts-window.vala:198
-#: ../src/contacts-window.vala:224
-msgid "Select"
-msgstr "Tagh"
-
-#: ../src/contacts-avatar-dialog.vala:281 ../src/contacts-window.vala:315
-msgid "New Contact"
-msgstr "Neach-aithne ùr"
-
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "Street"
 msgstr "Sràid"
 
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "Extension"
 msgstr "Leudachan"
 
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "City"
 msgstr "Baile"
 
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "State/Province"
 msgstr "Siorrachd/Còigeamh/Stàit"
 
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "Zip/Postal Code"
 msgstr "Còd-puist/ZIP"
 
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "PO box"
 msgstr "Bogsa-puist"
 
-#: ../src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:28
 msgid "Country"
 msgstr "Dùthaich"
 
-#: ../src/contacts-contact-editor.vala:293
+#: src/contacts-contact-editor.vala:313
 msgid "Add email"
 msgstr "Cuir post-d ris"
 
-#: ../src/contacts-contact-editor.vala:295
+#: src/contacts-contact-editor.vala:315
 msgid "Add number"
 msgstr "Cuir àireamh ris"
 
-#: ../src/contacts-contact-editor.vala:299
-#: ../src/contacts-contact-editor.vala:330
-#: ../src/contacts-contact-editor.vala:365
-#: ../src/contacts-contact-editor.vala:428
-#: ../src/contacts-contact-editor.vala:478
+#: src/contacts-contact-editor.vala:319 src/contacts-contact-editor.vala:350
+#: src/contacts-contact-editor.vala:385 src/contacts-contact-editor.vala:441
+#: src/contacts-contact-editor.vala:491
 msgid "Delete field"
 msgstr "Sguab às an raon"
 
-#: ../src/contacts-contact-editor.vala:400
-msgid "January"
-msgstr "Am Faoilleach"
-
-#: ../src/contacts-contact-editor.vala:401
-msgid "February"
-msgstr "An Gearran"
-
-#: ../src/contacts-contact-editor.vala:402
-msgid "March"
-msgstr "Am Màrt"
-
-#: ../src/contacts-contact-editor.vala:403
-msgid "April"
-msgstr "An Giblean"
-
-#: ../src/contacts-contact-editor.vala:404
-msgid "May"
-msgstr "An Cèitean"
-
-#: ../src/contacts-contact-editor.vala:405
-msgid "June"
-msgstr "An t-Ògmhios"
-
-#: ../src/contacts-contact-editor.vala:406
-msgid "July"
-msgstr "An t-Iuchar"
-
-#: ../src/contacts-contact-editor.vala:407
-msgid "August"
-msgstr "An Lùnastal"
-
-#: ../src/contacts-contact-editor.vala:408
-msgid "September"
-msgstr "An t-Sultain"
-
-#: ../src/contacts-contact-editor.vala:409
-msgid "October"
-msgstr "An Dàmhair"
-
-#: ../src/contacts-contact-editor.vala:410
-msgid "November"
-msgstr "An t-Samhain"
-
-#: ../src/contacts-contact-editor.vala:411
-msgid "December"
-msgstr "An Dùbhlachd"
-
-#: ../src/contacts-contact-editor.vala:561
-#: ../src/contacts-contact-editor.vala:568
-#: ../src/contacts-contact-sheet.vala:190 ../data/ui/app-menu.ui.h:10
-msgid "Website"
-msgstr "Làrach-lìn"
-
-#: ../src/contacts-contact-editor.vala:587
-#: ../src/contacts-contact-editor.vala:594
-#: ../src/contacts-contact-sheet.vala:196 ../data/ui/app-menu.ui.h:11
-msgid "Nickname"
-msgstr "Far-ainm"
-
-#: ../src/contacts-contact-editor.vala:620
-#: ../src/contacts-contact-editor.vala:627
-#: ../src/contacts-contact-sheet.vala:203 ../data/ui/app-menu.ui.h:12
-msgid "Birthday"
-msgstr "Co-là breith"
-
-#: ../src/contacts-contact-editor.vala:642
-#: ../src/contacts-contact-editor.vala:649
-#: ../src/contacts-contact-sheet.vala:210
+#: src/contacts-contact-editor.vala:655 src/contacts-contact-editor.vala:662
+#: src/contacts-contact-sheet.vala:216
 msgid "Note"
 msgstr "Nòta"
 
-#: ../src/contacts-contact-editor.vala:795
-msgid "New Detail"
-msgstr "Fiosrachadh ùr"
-
-#: ../src/contacts-contact-editor.vala:801
-#: ../src/contacts-linked-accounts-dialog.vala:36
-msgid "Linked Accounts"
-msgstr "Cunntasan ceangailte"
-
-#: ../src/contacts-contact-editor.vala:804
-msgid "Remove Contact"
-msgstr "Thoir air falbh an neach-aithne"
-
-#: ../src/contacts-contact-editor.vala:862
-#: ../src/contacts-contact-editor.vala:1062
+#: src/contacts-contact-editor.vala:1016
 msgid "Add name"
 msgstr "Cuir ainm ris"
 
-#: ../src/contacts-contact-pane.vala:137
+#: src/contacts-contact-frame.vala:40
+msgid "Change avatar"
+msgstr "Atharraich an t-avatar"
+
+#: src/contacts-contact-pane.vala:131
 #, c-format
 msgid "Does %s from %s belong here?"
 msgstr "Am bu chòir dha %s o %s a bhith an-seo?"
 
-#: ../src/contacts-contact-pane.vala:139
+#: src/contacts-contact-pane.vala:133
 #, c-format
 msgid "Do these details belong to %s?"
-msgstr "A bheil am fiosrachadh seo a' buntainn ri %s?"
+msgstr "A bheil am fiosrachadh seo a’ buntainn ri %s?"
 
-#: ../src/contacts-contact-pane.vala:151
+#: src/contacts-contact-pane.vala:145
 msgid "Yes"
 msgstr "Tha"
 
-#: ../src/contacts-contact-pane.vala:152
+#: src/contacts-contact-pane.vala:146
 msgid "No"
 msgstr "Chan eil"
 
-#: ../src/contacts-contact-pane.vala:323
-msgid "Select a contact"
-msgstr "Tagh neach-aithne"
-
-#: ../src/contacts-contact-pane.vala:455
+#: src/contacts-contact-pane.vala:403
 msgid "You need to enter some data"
 msgstr "Feumaidh tu rudeigin a chur a-steach"
 
-#: ../src/contacts-contact-pane.vala:467
+#: src/contacts-contact-pane.vala:408
 msgid "No primary addressbook configured"
 msgstr "Cha deach prìomh leabhar sheòlaidhean a rèiteachadh"
 
-#: ../src/contacts-contact-pane.vala:486
+#: src/contacts-contact-pane.vala:418
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Cha ghabh luchd-aithne ùra a chruthachadh: %s"
 
-#: ../src/contacts-contact-pane.vala:497
+#: src/contacts-contact-pane.vala:427
 msgid "Unable to find newly created contact"
-msgstr "Cha b' urrainn dhuinn an neach-aithne a tha air ùr-chruthachadh a lorg"
+msgstr "Cha b’ urrainn dhuinn an neach-aithne a tha air ùr-chruthachadh a lorg"
 
-#: ../src/contacts-contact-frame.vala:40
-msgid "Change avatar"
-msgstr "Atharraich an t-avatar"
-
-#: ../src/contacts-contact.vala:741
+#: src/contacts-contact.vala:467
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: ../src/contacts-contact.vala:742
+#: src/contacts-contact.vala:468
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: ../src/contacts-contact.vala:743
+#: src/contacts-contact.vala:469
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../src/contacts-contact.vala:744
+#: src/contacts-contact.vala:470
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: ../src/contacts-contact.vala:745
+#: src/contacts-contact.vala:471
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
-#: ../src/contacts-contact.vala:746
+#: src/contacts-contact.vala:472
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: ../src/contacts-contact.vala:747
+#: src/contacts-contact.vala:473
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: ../src/contacts-contact.vala:748
+#: src/contacts-contact.vala:474
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../src/contacts-contact.vala:749
+#: src/contacts-contact.vala:475
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/contacts-contact.vala:750
+#: src/contacts-contact.vala:476
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../src/contacts-contact.vala:751
+#: src/contacts-contact.vala:477
 msgid "Local network"
 msgstr "Lìonra ionadail"
 
-#: ../src/contacts-contact.vala:752
+#: src/contacts-contact.vala:478
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: ../src/contacts-contact.vala:753
+#: src/contacts-contact.vala:479
 msgid "MySpace"
 msgstr "MySpace"
 
-#: ../src/contacts-contact.vala:754
+#: src/contacts-contact.vala:480
 msgid "MXit"
 msgstr "MXit"
 
-#: ../src/contacts-contact.vala:755
+#: src/contacts-contact.vala:481
 msgid "Napster"
 msgstr "Napster"
 
-#: ../src/contacts-contact.vala:756
+#: src/contacts-contact.vala:482
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: ../src/contacts-contact.vala:757
+#: src/contacts-contact.vala:483
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: ../src/contacts-contact.vala:758
+#: src/contacts-contact.vala:484
 msgid "SILC"
 msgstr "SILC"
 
-#: ../src/contacts-contact.vala:759
+#: src/contacts-contact.vala:485
 msgid "sip"
 msgstr "sip"
 
-#: ../src/contacts-contact.vala:760
+#: src/contacts-contact.vala:486
 msgid "Skype"
 msgstr "Skype"
 
-#: ../src/contacts-contact.vala:761
+#: src/contacts-contact.vala:487
 msgid "Telephony"
 msgstr "Telephony"
 
-#: ../src/contacts-contact.vala:762
+#: src/contacts-contact.vala:488
 msgid "Trepia"
 msgstr "Trepia"
 
-#: ../src/contacts-contact.vala:763 ../src/contacts-contact.vala:764
+#: src/contacts-contact.vala:489 src/contacts-contact.vala:490
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: ../src/contacts-contact.vala:765
+#: src/contacts-contact.vala:491
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: ../src/contacts-contact.vala:1070
+#: src/contacts-contact.vala:707
 msgid "Unexpected internal error: created contact was not found"
 msgstr ""
 "Thachair mearachd inntearnail ris nach robh dùil: cha deach an neach-aithne "
 "a chaidh a chruthachadh a lorg"
 
-#: ../src/contacts-contact.vala:1255
+#: src/contacts-contact.vala:891
 msgid "Google Circles"
 msgstr "Google Circles"
 
-#: ../src/contacts-contact.vala:1257 ../src/contacts-esd-setup.c:244
-#: ../src/contacts-esd-setup.c:272
+#: src/contacts-contact.vala:893 src/contacts-esd-setup.c:244
+#: src/contacts-esd-setup.c:272
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:269
+#: src/contacts-esd-setup.c:269
 msgid "Local Contact"
 msgstr "Neach-aithne ionadail"
 
-#: ../src/contacts-linked-accounts-dialog.vala:35
+#: src/contacts-linked-accounts-dialog.vala:39
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: ../src/contacts-linked-accounts-dialog.vala:60
+#: src/contacts-linked-accounts-dialog.vala:62
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr ""
-"'S urrainn dhut luchd-aithne a cheangal 's tu an taghadh o liosta an luchd-"
+"’S urrainn dhut luchd-aithne a cheangal ’s tu an taghadh o liosta an luchd-"
 "aithne"
 
-#: ../src/contacts-linked-accounts-dialog.vala:104
+#: src/contacts-linked-accounts-dialog.vala:106
 msgid "Unlink"
 msgstr "Neo-cheangail"
 
 #. Refers to the type of the detail, could be Home, Work or Other for email, and the same
 #. * for phone numbers, addresses, etc.
-#: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
-#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:342
+#: src/contacts-types.vala:114 src/contacts-types.vala:126
+#: src/contacts-types.vala:227 src/contacts-types.vala:341
 msgid "Other"
 msgstr "Eile"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:307
-#: ../src/contacts-types.vala:338
+#: src/contacts-types.vala:282 src/contacts-types.vala:306
+#: src/contacts-types.vala:337
 msgid "Home"
 msgstr "Dachaigh"
 
-#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:308
-#: ../src/contacts-types.vala:333
+#: src/contacts-types.vala:283 src/contacts-types.vala:307
+#: src/contacts-types.vala:332
 msgid "Work"
 msgstr "Obair"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:306
+#: src/contacts-types.vala:305
 msgid "Personal"
 msgstr "Pearsanta"
 
 #. List most specific first, always in upper case
-#: ../src/contacts-types.vala:332
+#: src/contacts-types.vala:331
 msgid "Assistant"
 msgstr "Cuidiche"
 
-#: ../src/contacts-types.vala:334
+#: src/contacts-types.vala:333
 msgid "Work Fax"
 msgstr "Facs obrach"
 
-#: ../src/contacts-types.vala:335
+#: src/contacts-types.vala:334
 msgid "Callback"
 msgstr "Callback"
 
-#: ../src/contacts-types.vala:336
+#: src/contacts-types.vala:335
 msgid "Car"
 msgstr "Càr"
 
-#: ../src/contacts-types.vala:337
+#: src/contacts-types.vala:336
 msgid "Company"
 msgstr "Companaidh"
 
-#: ../src/contacts-types.vala:339
+#: src/contacts-types.vala:338
 msgid "Home Fax"
 msgstr "Facs dachaigh"
 
-#: ../src/contacts-types.vala:340
+#: src/contacts-types.vala:339
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/contacts-types.vala:341
+#: src/contacts-types.vala:340
 msgid "Mobile"
 msgstr "Fòn-làimhe"
 
-#: ../src/contacts-types.vala:343
+#: src/contacts-types.vala:342
 msgid "Fax"
 msgstr "Facs"
 
-#: ../src/contacts-types.vala:344
+#: src/contacts-types.vala:343
 msgid "Pager"
 msgstr "Pèidsear"
 
-#: ../src/contacts-types.vala:345
+#: src/contacts-types.vala:344
 msgid "Radio"
 msgstr "Rèidio"
 
-#: ../src/contacts-types.vala:346
+#: src/contacts-types.vala:345
 msgid "Telex"
 msgstr "Telex"
 
 #. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:348
+#: src/contacts-types.vala:347
 msgid "TTY"
 msgstr "TTY"
 
-#: ../src/contacts-view.vala:194
+#: src/contacts-view.vala:192
 msgid "No results matched search"
 msgstr "Cha deach toradh a lorg"
 
-#: ../src/contacts-view.vala:298
+#: src/contacts-view.vala:296
 msgid "Suggestions"
 msgstr "Molaidhean"
 
-#: ../src/contacts-view.vala:323
+#: src/contacts-view.vala:321
 msgid "Other Contacts"
 msgstr "Luchd-aithne eile"
 
-#: ../src/contacts-window.vala:200
+#: src/contacts-window.vala:220
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -570,24 +629,16 @@ msgstr[1] "%d air a thaghadh"
 msgstr[2] "%d air an taghadh"
 msgstr[3] "%d air a thaghadh"
 
-#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:3
-msgid "All Contacts"
-msgstr "A h-uile neach-aithne"
-
-#: ../src/contacts-window.vala:250
+#: src/contacts-window.vala:270
 #, c-format
 msgid "Editing %s"
-msgstr "A' deasachadh %s"
+msgstr "A’ deasachadh %s"
 
-#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:8
-msgid "Done"
-msgstr "Deiseil"
-
-#: ../src/contacts-window.vala:320
+#: src/contacts-window.vala:340
 msgid "Add"
 msgstr "Cuir ris"
 
-#: ../src/contacts-window.vala:411
+#: src/contacts-window.vala:424
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -596,12 +647,12 @@ msgstr[1] "Chaidh %d neach-aithne a cheangal"
 msgstr[2] "Chaidh %d luchd-aithne a cheangal"
 msgstr[3] "Chaidh %d neach-aithne a cheangal"
 
-#: ../src/contacts-window.vala:415 ../src/contacts-window.vala:447
-#: ../src/contacts-window.vala:489 ../src/contacts-window.vala:525
+#: src/contacts-window.vala:428 src/contacts-window.vala:450
+#: src/contacts-window.vala:480 src/contacts-window.vala:511
 msgid "_Undo"
 msgstr "_Neo-dhèan"
 
-#: ../src/contacts-window.vala:443
+#: src/contacts-window.vala:446
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -610,139 +661,79 @@ msgstr[1] "Chaidh %d neach-aithne a sguabadh às"
 msgstr[2] "Chaidh %d luchd-aithne a sguabadh às"
 msgstr[3] "Chaidh %d neach-aithne a sguabadh às"
 
-#: ../src/contacts-window.vala:486
+#: src/contacts-window.vala:479
 #, c-format
-msgid "Contact deleted: \"%s\""
-msgstr "Chaidh an neach-aithne seo a sguabadh às: \"%s\""
+#| msgid "Contact deleted: \"%s\""
+msgid "Contact deleted: “%s”"
+msgstr "Chaidh an neach-aithne seo a sguabadh às: “%s”"
 
-#: ../src/contacts-window.vala:521
+#: src/contacts-window.vala:507
 #, c-format
 msgid "%s linked to %s"
 msgstr "Tha %s ceangailte ri %s"
 
-#: ../src/contacts-window.vala:523
+#: src/contacts-window.vala:509
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s ceangailte ris an neach-aithne"
 
-#: ../data/ui/app-menu.ui.h:1
-msgid "_Change Address Book..."
-msgstr "_Atharraich leabhar nan seòlaidhean..."
-
-#: ../data/ui/app-menu.ui.h:2
-msgid "_Help"
-msgstr "_Cobhair"
-
-#: ../data/ui/app-menu.ui.h:3
-msgid "_About"
-msgstr "_Mu dhèidhinn"
-
-#: ../data/ui/app-menu.ui.h:4
-msgid "_Quit"
-msgstr "_Fàg an-seo"
-
-#: ../data/ui/app-menu.ui.h:5
-msgid "Home email"
-msgstr "Post-d na dachaighe"
-
-#: ../data/ui/app-menu.ui.h:6
-msgid "Work email"
-msgstr "Post-d na h-obrach"
-
-#: ../data/ui/app-menu.ui.h:7
-msgid "Mobile phone"
-msgstr "Fòn-làimhe"
-
-#: ../data/ui/app-menu.ui.h:8
-msgid "Home phone"
-msgstr "Fòn dachaigh"
-
-#: ../data/ui/app-menu.ui.h:9
-msgid "Work phone"
-msgstr "Fòn obrach"
-
-#: ../data/ui/app-menu.ui.h:13
-msgid "Home address"
-msgstr "Seòladh dachaigh"
-
-#: ../data/ui/app-menu.ui.h:14
-msgid "Work address"
-msgstr "Seòladh obrach"
-
-#: ../data/ui/app-menu.ui.h:15
-msgid "Notes"
-msgstr "Nòtaichean"
-
-#: ../data/ui/contacts-list-pane.ui.h:1
-msgid "Type to search"
-msgstr "Sgrìobh airson lorg"
-
-#. Link refers to the verb, from linking contacts together
-#: ../data/ui/contacts-list-pane.ui.h:3
-msgid "Link"
-msgstr "Ceangal"
-
-#: ../data/ui/contacts-list-pane.ui.h:4
-msgid "Delete"
-msgstr "Sguab às"
-
-#: ../data/ui/contacts-window.ui.h:1
-msgid "Loading"
-msgstr "'Ga luchdadh"
-
-#: ../data/ui/contacts-window.ui.h:2
-#| msgid ""
-#| "New contacts will be added to the selected address book.\n"
-#| "You are able to view and edit contacts from other address books."
-msgid ""
-"New contacts will be added to the selected address book. You are able to "
-"view and edit contacts from other address books."
-msgstr ""
-"Thèid luchd-aithne ùr a chur ris an leabhar sheòlaidhean a thagh thu. 'S "
-"urrainn dhut luchd-aithne o leabhraichean sheòlaidhean eile a shealltainn 's "
-"a dheasachadh."
-
-#: ../data/ui/contacts-window.ui.h:4
-msgid "Add contact"
-msgstr "Cuir ris neach-aithne ùr"
-
-#: ../data/ui/contacts-window.ui.h:5
-msgid "Selection mode"
-msgstr "Am modh taghaidh"
-
-#: ../data/ui/contacts-window.ui.h:7
-msgid "Edit"
-msgstr "Deasaich"
-
-#: ../data/ui/contacts-window.ui.h:9
-msgid "Select Address Book"
-msgstr "Tagh leabhar sheòlaidhean"
-
-#: ../data/ui/contacts-window.ui.h:10
-msgid "Cancel setup"
-msgstr "Sguir dhen rèiteachadh"
-
-#: ../data/ui/contacts-window.ui.h:11
-msgid "Setup complete"
-msgstr "Tha an rèiteachadh coileanta"
-
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+#: src/org.gnome.Contacts.gschema.xml:5
 msgid "First-time setup done."
 msgstr "Chaidh a chiad-suidheachadh a choileanadh."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
+#: src/org.gnome.Contacts.gschema.xml:6
 msgid "Set to true when the user ran the first-time setup wizard."
 msgstr ""
-"Chaidh true a thaghadh air a shon nuair a ruith an cleachdaiche draoidh a' "
+"Chaidh true a thaghadh air a shon nuair a ruith an cleachdaiche draoidh a’ "
 "chiad-suidheachaidh."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:3
-msgid "View subset"
-msgstr "Seall am fo-sheata"
+#~ msgid "January"
+#~ msgstr "Am Faoilleach"
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:4
-msgid "View contacts subset"
-msgstr "Seall fo-sheata an luchd-aithne"
+#~ msgid "February"
+#~ msgstr "An Gearran"
+
+#~ msgid "March"
+#~ msgstr "Am Màrt"
+
+#~ msgid "April"
+#~ msgstr "An Giblean"
+
+#~ msgid "May"
+#~ msgstr "An Cèitean"
+
+#~ msgid "June"
+#~ msgstr "An t-Ògmhios"
+
+#~ msgid "July"
+#~ msgstr "An t-Iuchar"
+
+#~ msgid "August"
+#~ msgstr "An Lùnastal"
+
+#~ msgid "September"
+#~ msgstr "An t-Sultain"
+
+#~ msgid "October"
+#~ msgstr "An Dàmhair"
+
+#~ msgid "November"
+#~ msgstr "An t-Samhain"
+
+#~ msgid "December"
+#~ msgstr "An Dùbhlachd"
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "_Atharraich leabhar nan seòlaidhean..."
+
+#~ msgid "Delete"
+#~ msgstr "Sguab às"
+
+#~ msgid "View subset"
+#~ msgstr "Seall am fo-sheata"
+
+#~ msgid "View contacts subset"
+#~ msgstr "Seall fo-sheata an luchd-aithne"
 
 #~ msgid "Personal email"
 #~ msgstr "Post-d pearsanta"
@@ -793,17 +784,11 @@ msgstr "Seall fo-sheata an luchd-aithne"
 #~ msgid "%s - Linked Accounts"
 #~ msgstr "%s - Cunntasan ceangailte"
 
-#~ msgid "Remove"
-#~ msgstr "Thoir air falbh"
-
 #~ msgid "_About Contacts"
 #~ msgstr "_Mu dhèidhinn Contacts"
 
 #~ msgid "View"
 #~ msgstr "Sealladh"
-
-#~ msgid "Main contacts"
-#~ msgstr "Prìomh luchd-aithne"
 
 #~ msgid "New"
 #~ msgstr "Ùr"
