@@ -276,7 +276,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (this.contact_pane.on_edit_mode)
       stop_editing ();
 
-    this.contact_pane.show_contact (c, false);
+    this.contact_pane.show_contact (c);
     if (list_pane != null)
       list_pane.select_contact (c);
 

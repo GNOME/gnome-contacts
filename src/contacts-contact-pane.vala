@@ -33,7 +33,7 @@ public class Contacts.ContactPane : Stack {
 
   private Store store;
 
-  public Contact? contact;
+  public Contact? contact = null;
 
   [GtkChild]
   private Grid none_selected_page;
@@ -75,29 +75,6 @@ public class Contacts.ContactPane : Stack {
   public signal void display_name_changed (string new_display_name);
 
 
-  public void update_sheet () {
-    if (on_edit_mode) {
-      /* this was triggered by some signal, do nothing */
-      return;
-    }
-
-    sheet.clear ();
-
-    if (contact == null)
-      return;
-
-    sheet.update (contact);
-    set_visible_child (this.contact_sheet_page);
-
-    var matches = contact.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
-    foreach (var ind in matches.keys) {
-      var c = Contact.from_individual (ind);
-      if (c != null && contact.suggest_link_to (c)) {
-	add_suggestion (c);
-      }
-    }
-  }
-
   public void add_suggestion (Contact c) {
     var parent_overlay = this.get_parent () as Overlay;
 
@@ -125,42 +102,30 @@ public class Contacts.ContactPane : Stack {
       });
   }
 
-  public void show_contact (Contact? new_contact, bool show_matches = true) {
-    if (contact == new_contact)
+  public void show_contact (Contact? contact) {
+    if (this.contact == contact)
       return;
 
-    if (suggestion_grid != null) {
-      suggestion_grid.destroy ();
-      suggestion_grid = null;
+    if (this.suggestion_grid != null) {
+      this.suggestion_grid.destroy ();
+      this.suggestion_grid = null;
     }
 
-    if (contact != null) {
-      contact.individual.personas_changed.disconnect (update_sheet);
-      contact.changed.disconnect (update_sheet);
-    }
-
-    contact = new_contact;
-
-    update_sheet ();
-
-    if (contact != null) {
-      contact.changed.connect (update_sheet);
-      contact.individual.personas_changed.connect (update_sheet);
-    }
-
-    if (contact == null)
+    this.contact = contact;
+    if (this.contact != null) {
+      show_contact_sheet ();
+    } else {
+      remove_contact_sheet ();
       set_visible_child (this.none_selected_page);
+    }
   }
 
   public ContactPane (Window parent_window, Store contacts_store) {
     this.parent_window = parent_window;
     this.store = contacts_store;
-	this.store.quiescent.connect (update_sheet);
 
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
-
-    create_contact_sheet ();
 
     this.suggestion_grid = null;
 
@@ -193,15 +158,23 @@ public class Contacts.ContactPane : Stack {
                                BindingFlags.INVERT_BOOLEAN);
   }
 
-  private void create_contact_sheet () {
-    this.sheet = new ContactSheet ();
-    this.sheet.hexpand = true;
-    this.sheet.vexpand = true;
-    this.sheet.margin = 36;
-    this.sheet.set_margin_bottom (24);
-    this.contact_sheet_container.add (this.sheet);
+  private void show_contact_sheet () {
+    assert (this.contact != null);
 
+    remove_contact_sheet();
+    this.sheet = new ContactSheet (this.contact, this.store);
+    this.contact_sheet_container.add (this.sheet);
     this.sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
+    set_visible_child (this.contact_sheet_page);
+  }
+
+  private void remove_contact_sheet () {
+    if (this.sheet == null)
+      return;
+
+    this.contact_sheet_container.remove (this.sheet);
+    this.sheet.destroy();
+    this.sheet = null;
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
@@ -243,7 +216,7 @@ public class Contacts.ContactPane : Stack {
 
       on_edit_mode = true;
 
-      sheet.clear ();
+      remove_contact_sheet ();
 
       if (suggestion_grid != null) {
 	suggestion_grid.destroy ();
@@ -265,7 +238,6 @@ public class Contacts.ContactPane : Stack {
 						  Contact.set_persona_property.end (result);
 						} catch (Error e2) {
 						  show_message (e2.message);
-						  update_sheet ();
 						}
 					      });
 	}
@@ -302,9 +274,7 @@ public class Contacts.ContactPane : Stack {
       editor.clear ();
 
       if (contact != null) {
-        sheet.clear ();
-        sheet.update (contact);
-        set_visible_child (this.contact_sheet_page);
+        show_contact_sheet ();
       } else {
         set_visible_child (this.none_selected_page);
       }
@@ -314,7 +284,7 @@ public class Contacts.ContactPane : Stack {
   public void new_contact () {
     on_edit_mode = true;
 
-    sheet.clear ();
+    remove_contact_sheet ();
 
     if (suggestion_grid != null) {
       suggestion_grid.destroy ();

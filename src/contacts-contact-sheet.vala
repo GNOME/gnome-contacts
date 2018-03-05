@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -20,7 +19,27 @@ using Gtk;
 using Folks;
 using Gee;
 
+/**
+ * The contact sheet displays the actual information of a contact.
+ *
+ * (Note: to edit a contact, use the {@link ContactEditor} instead.
+ */
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-sheet.ui")]
 public class Contacts.ContactSheet : Grid {
+
+  private Contact? contact;
+
+  [GtkChild]
+  private Label name_label;
+
+  public ContactSheet (Contact contact, Store store) {
+      this.contact = contact;
+      this.contact.changed.connect (update);
+      this.contact.individual.personas_changed.connect (update);
+      store.quiescent.connect (update);
+
+      update ();
+  }
 
   Button add_row_with_button (ref int row, string label_value, string value) {
     var type_label = new Label (label_value);
@@ -88,38 +107,22 @@ public class Contacts.ContactSheet : Grid {
     row++;
   }
 
-  public ContactSheet () {
-    set_row_spacing (12);
-    set_column_spacing (16);
-    set_orientation (Orientation.VERTICAL);
-    get_style_context ().add_class ("contacts-contact-sheet");
-  }
-
-  public void update (Contact c) {
-    var image_frame = new Avatar (PROFILE_SIZE, c);
+  private void update () {
+    var image_frame = new Avatar (PROFILE_SIZE, this.contact);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
     attach (image_frame,  0, 0, 1, 3);
 
-    var name_label = new Label (null);
-    name_label.set_hexpand (true);
-    name_label.set_halign (Align.START);
-    name_label.set_valign (Align.CENTER);
-    name_label.margin_start = 6;
-    name_label.set_ellipsize (Pango.EllipsizeMode.END);
-    name_label.xalign = 0.0f;
-    name_label.set_selectable (true);
-
-    c.keep_widget_uptodate (name_label, (w) => {
-        (w as Label).set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", c.individual.display_name));
+    this.contact.keep_widget_uptodate (this.name_label, (w) => {
+        this.name_label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>",
+                                                           this.contact.individual.display_name));
       });
-    attach (name_label,  1, 0, 1, 3);
 
     int i = 3;
     int last_store_position = 0;
     bool is_first_persona = true;
 
-    var personas = c.get_personas_for_display ();
+    var personas = this.contact.get_personas_for_display ();
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
       if (!is_first_persona) {
@@ -139,7 +142,7 @@ public class Contacts.ContactSheet : Grid {
 	foreach (var email in emails) {
 	  var button = add_row_with_button (ref i, TypeSet.email.format_type (email), email.value);
 	  button.clicked.connect (() => {
-	      Utils.compose_mail ("%s <%s>".printf(c.individual.display_name, email.value));
+	      Utils.compose_mail ("%s <%s>".printf(this.contact.individual.display_name, email.value));
 	    });
 	}
       }
@@ -149,10 +152,10 @@ public class Contacts.ContactSheet : Grid {
 	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
 	foreach (var phone in phones) {
 #if HAVE_TELEPATHY
-	  if (c.store != null && c.store.caller_account != null) {
+	  if (this.contact.store != null && this.contact.store.caller_account != null) {
 	    var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
 	    button.clicked.connect (() => {
-            Utils.start_call (phone.value, c.store.caller_account);
+            Utils.start_call (phone.value, this.contact.store.caller_account);
 	      });
 	  } else {
 	    add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
@@ -171,14 +174,12 @@ public class Contacts.ContactSheet : Grid {
 	    if (p is Tpf.Persona) {
 	      var button = add_row_with_button (ref i, ImService.get_display_name (protocol), id.value);
 	      button.clicked.connect (() => {
-		  var im_persona = c.find_im_persona (protocol, id.value);
+		  var im_persona = this.contact.find_im_persona (protocol, id.value);
 		  if (im_persona != null) {
 		    var type = im_persona.presence_type;
-		    if (type != PresenceType.UNSET &&
-			type != PresenceType.ERROR &&
-			type != PresenceType.OFFLINE &&
-			type != PresenceType.UNKNOWN) {
-		      Utils.start_chat (c, protocol, id.value);
+		    if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
+                type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
+		      Utils.start_chat (this.contact, protocol, id.value);
 		    }
 		  }
 		});
@@ -232,11 +233,5 @@ public class Contacts.ContactSheet : Grid {
     }
 
     show_all ();
-  }
-
-  public void clear () {
-    foreach (var w in get_children ()) {
-      w.destroy ();
-    }
   }
 }
