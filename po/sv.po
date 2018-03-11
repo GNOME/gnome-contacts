@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2018-01-24 16:34+0000\n"
-"PO-Revision-Date: 2018-02-03 14:42+0100\n"
+"POT-Creation-Date: 2018-02-19 18:01+0000\n"
+"PO-Revision-Date: 2018-02-22 13:12+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
-#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:10
-#: data/ui/contacts-window.ui:21 src/contacts-window.vala:132
+#: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:79
+#: data/ui/contacts-window.ui:90 src/contacts-window.vala:209
 msgid "Contacts"
 msgstr "Kontakter"
 
@@ -120,7 +120,7 @@ msgstr "Nätkontoinställningar"
 msgid "Select Picture"
 msgstr "Välj bild"
 
-#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:224
+#: data/ui/contacts-avatar-selector.ui:33 src/contacts-window.vala:301
 msgid "New Contact"
 msgstr "Ny kontakt"
 
@@ -128,7 +128,7 @@ msgstr "Ny kontakt"
 msgid "Select"
 msgstr "Välj"
 
-#: data/ui/contacts-avatar-selector.ui:285 data/ui/contacts-window.ui:88
+#: data/ui/contacts-avatar-selector.ui:285 data/ui/contacts-window.ui:175
 #: src/contacts-app.vala:117
 msgid "Cancel"
 msgstr "Avbryt"
@@ -230,8 +230,8 @@ msgstr "Avsluta"
 msgid "Cancel setup and quit"
 msgstr "Avbryt konfiguration och avsluta"
 
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:145
-#: src/contacts-window.vala:139
+#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:232
+#: src/contacts-window.vala:216
 msgid "Done"
 msgstr "Färdig"
 
@@ -253,23 +253,35 @@ msgstr ""
 "läggas till. Om du vill behålla dina kontakter i ett nätkonto kan du lägga "
 "till dem med nätkontoinställningarna."
 
-#: data/ui/contacts-window.ui:33
+#: data/ui/contacts-window.ui:15
+msgid "List contacts by:"
+msgstr "Lista kontakter enligt:"
+
+#: data/ui/contacts-window.ui:40
+msgid "First name"
+msgstr "Förnamn"
+
+#: data/ui/contacts-window.ui:63
+msgid "Surname"
+msgstr "Efternamn"
+
+#: data/ui/contacts-window.ui:102
 msgid "Create new contact"
 msgstr "Skapa ny kontakt"
 
-#: data/ui/contacts-window.ui:37
+#: data/ui/contacts-window.ui:106
 msgid "Add contact"
 msgstr "Lägg till kontakt"
 
-#: data/ui/contacts-window.ui:58
+#: data/ui/contacts-window.ui:145
 msgid "Cancel selection"
 msgstr "Avbryt markering"
 
-#: data/ui/contacts-window.ui:105
+#: data/ui/contacts-window.ui:192
 msgid "Edit details"
 msgstr "Redigera detaljer"
 
-#: data/ui/contacts-window.ui:213
+#: data/ui/contacts-window.ui:300
 msgid "Loading"
 msgstr "Läser in"
 
@@ -407,136 +419,40 @@ msgstr "Byt profilbild"
 msgid "Add name"
 msgstr "Lägg till namn"
 
-#: src/contacts-contact-list.vala:158
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "Favoriter"
 
-#: src/contacts-contact-list.vala:160 src/contacts-contact-list.vala:166
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "Alla kontakter"
 
-#: src/contacts-contact-pane.vala:347
+#: src/contacts-contact-pane.vala:353
 msgid "You need to enter some data"
 msgstr "Du behöver ange någon information"
 
-#: src/contacts-contact-pane.vala:352
+#: src/contacts-contact-pane.vala:358
 msgid "No primary addressbook configured"
 msgstr "Ingen primär adressbok konfigurerad"
 
-#: src/contacts-contact-pane.vala:362
+#: src/contacts-contact-pane.vala:368
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Kunde inte skapa nya kontakter: %s"
 
-#: src/contacts-contact-pane.vala:371
+#: src/contacts-contact-pane.vala:377
 msgid "Unable to find newly created contact"
 msgstr "Kunde inte hitta nyligen skapad kontakt"
 
-#: src/contacts-contact.vala:286
-msgid "Google Talk"
-msgstr "Google Talk"
-
-#: src/contacts-contact.vala:287
-msgid "Ovi Chat"
-msgstr "Ovi Chat"
-
-#: src/contacts-contact.vala:288
-msgid "Facebook"
-msgstr "Facebook"
-
-#: src/contacts-contact.vala:289
-msgid "Livejournal"
-msgstr "Livejournal"
-
-#: src/contacts-contact.vala:290
-msgid "AOL Instant Messenger"
-msgstr "AOL Instant Messenger"
-
-#: src/contacts-contact.vala:291
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
-
-#: src/contacts-contact.vala:292
-msgid "Novell Groupwise"
-msgstr "Novell Groupwise"
-
-#: src/contacts-contact.vala:293
-msgid "ICQ"
-msgstr "ICQ"
-
-#: src/contacts-contact.vala:294
-msgid "IRC"
-msgstr "IRC"
-
-#: src/contacts-contact.vala:295
-msgid "Jabber"
-msgstr "Jabber"
-
-#: src/contacts-contact.vala:296
-msgid "Local network"
-msgstr "Lokalt nätverk"
-
-#: src/contacts-contact.vala:297
-msgid "Windows Live Messenger"
-msgstr "Windows Live Messenger"
-
-#: src/contacts-contact.vala:298
-msgid "MySpace"
-msgstr "MySpace"
-
-#: src/contacts-contact.vala:299
-msgid "MXit"
-msgstr "MXit"
-
-#: src/contacts-contact.vala:300
-msgid "Napster"
-msgstr "Napster"
-
-#: src/contacts-contact.vala:301
-msgid "Tencent QQ"
-msgstr "Tencent QQ"
-
-#: src/contacts-contact.vala:302
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
-
-#: src/contacts-contact.vala:303
-msgid "SILC"
-msgstr "SILC"
-
-#: src/contacts-contact.vala:304
-msgid "sip"
-msgstr "sip"
-
-#: src/contacts-contact.vala:305
-msgid "Skype"
-msgstr "Skype"
-
-#: src/contacts-contact.vala:306
-msgid "Telephony"
-msgstr "Telefoni"
-
-#: src/contacts-contact.vala:307
-msgid "Trepia"
-msgstr "Trepia"
-
-#: src/contacts-contact.vala:308 src/contacts-contact.vala:309
-msgid "Yahoo! Messenger"
-msgstr "Yahoo! Messenger"
-
-#: src/contacts-contact.vala:310
-msgid "Zephyr"
-msgstr "Zephyr"
-
-#: src/contacts-contact.vala:421
+#: src/contacts-contact.vala:353
 msgid "Unexpected internal error: created contact was not found"
 msgstr "Oväntat internt fel: skapad kontakt hittades inte"
 
-#: src/contacts-contact.vala:605
+#: src/contacts-contact.vala:516
 msgid "Google Circles"
 msgstr "Google-cirklar"
 
-#: src/contacts-contact.vala:607 src/contacts-esd-setup.vala:152
+#: src/contacts-contact.vala:518 src/contacts-esd-setup.vala:152
 #: src/contacts-esd-setup.vala:167
 msgid "Google"
 msgstr "Google"
@@ -544,6 +460,102 @@ msgstr "Google"
 #: src/contacts-esd-setup.vala:164
 msgid "Local Contact"
 msgstr "Lokal kontakt"
+
+#: src/contacts-im-service.vala:32
+msgid "AOL Instant Messenger"
+msgstr "AOL Instant Messenger"
+
+#: src/contacts-im-service.vala:33
+msgid "Facebook"
+msgstr "Facebook"
+
+#: src/contacts-im-service.vala:34
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: src/contacts-im-service.vala:35
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: src/contacts-im-service.vala:36
+msgid "Novell Groupwise"
+msgstr "Novell Groupwise"
+
+#: src/contacts-im-service.vala:37
+msgid "ICQ"
+msgstr "ICQ"
+
+#: src/contacts-im-service.vala:38
+msgid "IRC"
+msgstr "IRC"
+
+#: src/contacts-im-service.vala:39
+msgid "Jabber"
+msgstr "Jabber"
+
+#: src/contacts-im-service.vala:40
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: src/contacts-im-service.vala:41
+msgid "Local network"
+msgstr "Lokalt nätverk"
+
+#: src/contacts-im-service.vala:42
+msgid "Windows Live Messenger"
+msgstr "Windows Live Messenger"
+
+#: src/contacts-im-service.vala:43
+msgid "MySpace"
+msgstr "MySpace"
+
+#: src/contacts-im-service.vala:44
+msgid "MXit"
+msgstr "MXit"
+
+#: src/contacts-im-service.vala:45
+msgid "Napster"
+msgstr "Napster"
+
+#: src/contacts-im-service.vala:46
+msgid "Ovi Chat"
+msgstr "Ovi Chat"
+
+#: src/contacts-im-service.vala:47
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: src/contacts-im-service.vala:48
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: src/contacts-im-service.vala:49
+msgid "SILC"
+msgstr "SILC"
+
+#: src/contacts-im-service.vala:50
+msgid "sip"
+msgstr "sip"
+
+#: src/contacts-im-service.vala:51
+msgid "Skype"
+msgstr "Skype"
+
+#: src/contacts-im-service.vala:52
+msgid "Telephony"
+msgstr "Telefoni"
+
+#: src/contacts-im-service.vala:53
+msgid "Trepia"
+msgstr "Trepia"
+
+#: src/contacts-im-service.vala:54 src/contacts-im-service.vala:55
+msgid "Yahoo! Messenger"
+msgstr "Yahoo! Messenger"
+
+#: src/contacts-im-service.vala:56
+msgid "Zephyr"
+msgstr "Zephyr"
 
 #: src/contacts-linked-personas-dialog.vala:74
 msgid "Unlink"
@@ -636,72 +648,117 @@ msgstr "Telex"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:101
+#: src/contacts-window.vala:177
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d vald"
 msgstr[1] "%d valda"
 
-#: src/contacts-window.vala:139
+#: src/contacts-window.vala:216
 msgid "Add"
 msgstr "Lägg till"
 
-#: src/contacts-window.vala:159
+#: src/contacts-window.vala:236
 #, c-format
 msgid "Editing %s"
 msgstr "Redigerar %s"
 
-#: src/contacts-window.vala:214
+#: src/contacts-window.vala:291
 msgid "Unmark as favorite"
 msgstr "Avmarkera som favorit"
 
-#: src/contacts-window.vala:215
+#: src/contacts-window.vala:292
 msgid "Mark as favorite"
 msgstr "Markera som favorit"
 
-#: src/contacts-window.vala:297
+#: src/contacts-window.vala:374
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d kontakter länkade"
 msgstr[1] "%d kontakter länkade"
 
-#: src/contacts-window.vala:301 src/contacts-window.vala:325
-#: src/contacts-window.vala:362
+#: src/contacts-window.vala:378 src/contacts-window.vala:402
+#: src/contacts-window.vala:439
 msgid "_Undo"
 msgstr "_Ångra"
 
-#: src/contacts-window.vala:320
+#: src/contacts-window.vala:397
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Tog bort kontakten %s"
 
-#: src/contacts-window.vala:322
+#: src/contacts-window.vala:399
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d kontakt borttagen"
 msgstr[1] "%d kontakter borttagna"
 
-#: src/contacts-window.vala:358
+#: src/contacts-window.vala:435
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s länkad till %s"
 
-#: src/contacts-window.vala:360
+#: src/contacts-window.vala:437
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s länkad till kontakten"
 
-#: src/org.gnome.Contacts.gschema.xml:5
+#: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
 msgstr "Förstagångskonfigurationen är färdig."
 
-#: src/org.gnome.Contacts.gschema.xml:6
+#: src/org.gnome.Contacts.gschema.xml:7
 msgid "Set to true after the user has run the first-time setup wizard."
 msgstr ""
 "Ställ in till true (sant) när användaren har kört förstagångskonfigurationen."
+
+#: src/org.gnome.Contacts.gschema.xml:11
+msgid "Sort contacts on surname."
+msgstr "Sortera kontakter enligt efternamn."
+
+#: src/org.gnome.Contacts.gschema.xml:12
+msgid ""
+"If this is set to true, the list of contacts will be sorted on their "
+"surnames. Otherwise, it will be sorted on the first names of the contacts."
+msgstr ""
+"Om detta är satt till true (sant) kommer kontaktlistan att sorteras i "
+"efternamnsordning. I annat fall kommer den att sorteras enligt kontakternas "
+"förnamn."
+
+#: src/org.gnome.Contacts.gschema.xml:19
+msgid "The default height of the contacts window."
+msgstr "Standardhöjden för kontaktfönstret."
+
+#: src/org.gnome.Contacts.gschema.xml:20
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the height of the window."
+msgstr ""
+"Om fönsterstorleken inte ännu har ändrats av användaren kommer detta att "
+"användas som det ursprungliga värdet för höjden på fönstret."
+
+#: src/org.gnome.Contacts.gschema.xml:26
+msgid "The default width of the contacts window."
+msgstr "Standardbredden för kontaktfönstret."
+
+#: src/org.gnome.Contacts.gschema.xml:27
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the width of the window."
+msgstr ""
+"Om fönsterstorleken inte ännu har ändrats av användaren kommer detta att "
+"användas som det ursprungliga värdet för bredden på fönstret."
+
+#: src/org.gnome.Contacts.gschema.xml:32
+msgid "Is the window maximized?"
+msgstr "Är fönstret maximerat?"
+
+#: src/org.gnome.Contacts.gschema.xml:33
+msgid "Stores if the window is currently maximized."
+msgstr "Lagrar om fönstret för närvarande är maximerat."
 
 #~ msgid ""
 #~ "New contacts will be added to the selected address book. You are able to "
