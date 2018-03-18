@@ -183,7 +183,7 @@ public class Contacts.App : Gtk.Application {
                            "program-name", _("GNOME Contacts"),
                            "title", _("About GNOME Contacts"),
                            "comments", _("Contact Management Application"),
-                           "copyright", "Copyright 2011 Red Hat, Inc.\nCopyright 2014 The Contacts Developers",
+                           "copyright", "Copyright 2011 Red Hat, Inc.\nCopyright 2011-2018 The Contacts Developers",
                            "license-type", Gtk.License.GPL_2_0,
                            "logo-icon-name", "gnome-contacts",
                            "version", Config.PACKAGE_VERSION,
