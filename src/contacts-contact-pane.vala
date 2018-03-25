@@ -64,7 +64,7 @@ public class Contacts.ContactPane : Stack {
   };
 
   public bool on_edit_mode;
-  private LinkSuggestionGrid suggestion_grid;
+  private LinkSuggestionGrid? suggestion_grid = null;
 
   /* Signals */
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
@@ -78,11 +78,7 @@ public class Contacts.ContactPane : Stack {
   public void add_suggestion (Contact c) {
     var parent_overlay = this.get_parent () as Overlay;
 
-    if (suggestion_grid != null) {
-      suggestion_grid.destroy ();
-      suggestion_grid = null;
-    }
-
+    remove_suggestion_grid ();
     this.suggestion_grid = new LinkSuggestionGrid (c);
     parent_overlay.add_overlay (this.suggestion_grid);
 
@@ -92,13 +88,13 @@ public class Contacts.ContactPane : Stack {
             var operation = link_contacts.end (result);
             this.contacts_linked (null, linked_contact, operation);
           });
-        this.suggestion_grid.destroy ();
+        remove_suggestion_grid ();
       });
 
     this.suggestion_grid.suggestion_rejected.connect ( () => {
-        store.add_no_suggest_link (contact, c);
         /* TODO: Add undo */
-        this.suggestion_grid.destroy ();
+        store.add_no_suggest_link (contact, c);
+        remove_suggestion_grid ();
       });
   }
 
@@ -106,12 +102,8 @@ public class Contacts.ContactPane : Stack {
     if (this.contact == contact)
       return;
 
-    if (this.suggestion_grid != null) {
-      this.suggestion_grid.destroy ();
-      this.suggestion_grid = null;
-    }
-
     this.contact = contact;
+
     if (this.contact != null) {
       show_contact_sheet ();
     } else {
@@ -126,8 +118,6 @@ public class Contacts.ContactPane : Stack {
 
     this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
-
-    this.suggestion_grid = null;
 
     /* edit mode widgetry, third page */
     this.on_edit_mode = false;
@@ -171,6 +161,9 @@ public class Contacts.ContactPane : Stack {
   private void remove_contact_sheet () {
     if (this.sheet == null)
       return;
+
+    // Remove the suggestion grid that goes along with it.
+    remove_suggestion_grid ();
 
     this.contact_sheet_container.remove (this.sheet);
     this.sheet.destroy();
@@ -217,11 +210,6 @@ public class Contacts.ContactPane : Stack {
       on_edit_mode = true;
 
       remove_contact_sheet ();
-
-      if (suggestion_grid != null) {
-	suggestion_grid.destroy ();
-	suggestion_grid = null;
-      }
 
       editor.clear ();
       editor.edit (contact);
@@ -285,11 +273,6 @@ public class Contacts.ContactPane : Stack {
     on_edit_mode = true;
 
     remove_contact_sheet ();
-
-    if (suggestion_grid != null) {
-      suggestion_grid.destroy ();
-      suggestion_grid = null;
-    }
 
     editor.set_new_contact ();
 
@@ -356,5 +339,13 @@ public class Contacts.ContactPane : Stack {
     var notification = new InAppNotification (message);
     notification.show ();
     this.parent_window.add_notification (notification);
+  }
+
+  private void remove_suggestion_grid () {
+    if (this.suggestion_grid == null)
+      return;
+
+    this.suggestion_grid.destroy ();
+    this.suggestion_grid = null;
   }
 }
