@@ -48,7 +48,7 @@ public class Contacts.ContactPane : Stack {
   private Box contact_editor_page;
   private ContactEditor editor;
 
-  private SimpleActionGroup edit_contact_actions;
+  private SimpleActionGroup edit_contact_actions = new SimpleActionGroup ();
   private const GLib.ActionEntry[] action_entries = {
     { "add.email-addresses.home", on_add_detail },
     { "add.email-addresses.work", on_add_detail },
@@ -63,7 +63,7 @@ public class Contacts.ContactPane : Stack {
     { "add.notes", on_add_detail },
   };
 
-  public bool on_edit_mode;
+  public bool on_edit_mode = false;
   private LinkSuggestionGrid? suggestion_grid = null;
 
   /* Signals */
@@ -116,11 +116,9 @@ public class Contacts.ContactPane : Stack {
     this.parent_window = parent_window;
     this.store = contacts_store;
 
-    this.edit_contact_actions = new SimpleActionGroup ();
     this.edit_contact_actions.add_action_entries (action_entries, this);
 
-    /* edit mode widgetry, third page */
-    this.on_edit_mode = false;
+    // Contact editor
     this.editor = new ContactEditor (this.edit_contact_actions);
     this.editor.linked_button.clicked.connect (linked_accounts);
     this.editor.remove_button.clicked.connect (delete_contact);
