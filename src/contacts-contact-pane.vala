@@ -198,12 +198,12 @@ public class Contacts.ContactPane : Stack {
     this.sheet.margin = 36;
     this.sheet.set_margin_bottom (24);
 
-    var hcenter = new Center ();
-    hcenter.max_width = 600;
-    hcenter.show ();
-    hcenter.add (this.sheet);
+    var contact_sheet_container = new MaxWidthBin ();
+    contact_sheet_container.max_width = 600;
+    contact_sheet_container.show ();
+    contact_sheet_container.add (this.sheet);
 
-    this.contact_sheet_page.add (hcenter);
+    this.contact_sheet_page.add (contact_sheet_container);
     this.sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
 
     this.contact_sheet_page.get_child ().get_style_context ().add_class ("contacts-main-view");

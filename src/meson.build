@@ -22,6 +22,7 @@ contacts_vala_sources = [
   'contacts-linked-personas-dialog.vala',
   'contacts-linking.vala',
   'contacts-list-pane.vala',
+  'contacts-max-width-bin.vala',
   'contacts-settings.vala',
   'contacts-setup-window.vala',
   'contacts-store.vala',
