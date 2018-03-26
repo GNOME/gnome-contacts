@@ -42,7 +42,7 @@ public class Contacts.ContactPane : Stack {
   private ScrolledWindow contact_sheet_page;
   [GtkChild]
   private Container contact_sheet_container;
-  private ContactSheet sheet;
+  private ContactSheet? sheet = null;
 
   [GtkChild]
   private Box contact_editor_page;
