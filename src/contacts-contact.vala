@@ -53,16 +53,11 @@ public class Contacts.Contact : GLib.Object  {
   private bool _is_hidden_to_delete;
 
   private bool _get_is_hidden () {
-    // Don't show the user itself
-    if (individual.is_user)
-      return true;
-
     // Contact has been deleted (but this is not actually posted, for undo support)
-    if (_is_hidden_to_delete)
+    if (this._is_hidden_to_delete)
       return true;
 
-    var personas = individual.personas;
-    var i = personas.iterator();
+    var i = this.individual.personas.iterator();
     // Look for single-persona individuals
     if (i.next() && !i.has_next ()) {
       var persona = i.get();
@@ -71,13 +66,12 @@ public class Contacts.Contact : GLib.Object  {
       // Filter out pure key-file persona individuals as these are
       // not very interesting
       if (store.type_id == "key-file")
-	return true;
+        return true;
 
       // Filter out uncertain things like link-local xmpp
       if (store.type_id == "telepathy" &&
-	  store.trust_level == PersonaStoreTrust.NONE)
-	return true;
-
+          store.trust_level == PersonaStoreTrust.NONE)
+        return true;
     }
 
     return false;
