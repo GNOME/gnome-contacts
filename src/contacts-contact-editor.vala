@@ -70,6 +70,7 @@ public class Contacts.ContactEditor : Grid {
   };
 
   private Contact contact;
+  private Store store;
 
   [GtkChild]
   private Grid container_grid;
@@ -762,7 +763,9 @@ public class Contacts.ContactEditor : Grid {
     }
   }
 
-  public ContactEditor (SimpleActionGroup editor_actions) {
+  public ContactEditor (Store store, SimpleActionGroup editor_actions) {
+    this.store = store;
+
     this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
 
     this.main_sw.get_style_context ().add_class ("contacts-main-view");
@@ -915,11 +918,10 @@ public class Contacts.ContactEditor : Grid {
     Persona persona = null;
     if (contact != null) {
       if (p == null) {
-  	persona = new FakePersona (contact);
-  	writable_personas.set (persona.uid,
-			       new HashMap<string, Field?> ());
+        persona = new FakePersona (this.store, contact);
+        writable_personas[persona.uid] = new HashMap<string, Field?> ();
       } else {
-	persona = p;
+        persona = p;
       }
     }
 

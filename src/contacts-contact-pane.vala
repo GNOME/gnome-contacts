@@ -119,7 +119,7 @@ public class Contacts.ContactPane : Stack {
     this.edit_contact_actions.add_action_entries (action_entries, this);
 
     // Contact editor
-    this.editor = new ContactEditor (this.edit_contact_actions);
+    this.editor = new ContactEditor (this.store, this.edit_contact_actions);
     this.editor.linked_button.clicked.connect (linked_accounts);
     this.editor.remove_button.clicked.connect (delete_contact);
     this.contact_editor_page.add (this.editor);
@@ -179,7 +179,7 @@ public class Contacts.ContactPane : Stack {
   }
 
   private void linked_accounts () {
-    var dialog = new LinkedPersonasDialog (this.parent_window, contact);
+    var dialog = new LinkedPersonasDialog (this.parent_window, this.store, contact);
     if (dialog.run () == ResponseType.CLOSE && dialog.any_unlinked) {
       /* update edited contact if any_unlinked */
       set_edit_mode (false);

@@ -25,7 +25,7 @@ public errordomain ContactError {
 }
 
 public class Contacts.Contact : GLib.Object  {
-  public weak Store store;
+  private weak Store store;
   public bool is_main;
 
   public Individual individual;
@@ -331,7 +331,7 @@ public class Contacts.Contact : GLib.Object  {
     var persona_set = new HashSet<Persona>();
     persona_set.add_all (individual.personas);
     if (persona_set.size == 1)
-      persona_set.add (new FakePersona (this));
+      persona_set.add (new FakePersona (this.store, this));
 
     yield store.aggregator.link_personas (persona_set);
 
@@ -379,14 +379,10 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Persona? find_primary_persona () {
-    var primary_store = store.aggregator.primary_store;
-    if (primary_store == null)
-      return null;
-
-    foreach (var p in individual.personas) {
-      if (p.store == primary_store)
+    foreach (var p in individual.personas)
+      if (p.store.is_primary_store)
         return p;
-    }
+
     return null;
   }
 
@@ -559,7 +555,7 @@ public class Contacts.Contact : GLib.Object  {
     }
 
     if (!did_set) {
-      var fake = new FakePersona (contact);
+      var fake = new FakePersona (contact.store, contact);
       return yield fake.make_real_and_set (property_name, value);
     }
     return null;
@@ -712,7 +708,7 @@ public class Contacts.FakePersona : Persona {
   private bool now_real;
   private bool has_full_name;
 
-  public static FakePersona? maybe_create_for (Contact contact) {
+  public static FakePersona? maybe_create_for (Store store, Contact contact) {
     var primary_persona = contact.find_primary_persona ();
 
     if (primary_persona != null)
@@ -727,7 +723,7 @@ public class Contacts.FakePersona : Persona {
 	return null;
     }
 
-    return new FakePersona (contact);
+    return new FakePersona (store, contact);
   }
 
   private const string[] _linkable_properties = {};
@@ -768,12 +764,12 @@ public class Contacts.FakePersona : Persona {
     }
   }
 
-  public FakePersona (Contact contact) {
+  public FakePersona (Store? store, Contact contact) {
     Object (display_id: "display_id",
-	    uid: "uid-fake-persona",
-	    iid: "iid",
-	    store: contact.store.aggregator.primary_store ?? FakePersonaStore.the_store(),
-	    is_user: false);
+            uid: "uid-fake-persona",
+            iid: "iid",
+            store: store.aggregator.primary_store ?? FakePersonaStore.the_store(),
+            is_user: false);
     this.contact = contact;
     this.contact.fake_persona = this;
   }

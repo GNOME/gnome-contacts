@@ -29,7 +29,7 @@ public class Contacts.LinkedPersonasDialog : Dialog {
 
   public bool any_unlinked = false;
 
-  public LinkedPersonasDialog (Window main_win, Contact contact) {
+  public LinkedPersonasDialog (Window main_win, Store store, Contact contact) {
     Object (
       use_header_bar: 1,
       transient_for: main_win,
@@ -79,7 +79,7 @@ public class Contacts.LinkedPersonasDialog : Dialog {
 
       /* signal */
       button.clicked.connect (() => {
-          unlink_persona.begin (contact, p, (obj, result) => {
+          unlink_persona.begin (store, contact, p, (obj, result) => {
               unlink_persona.end (result);
 
               row_grid.destroy ();

@@ -29,14 +29,18 @@ public class Contacts.ContactSheet : Grid {
 
   private Contact? contact;
 
+  private Store store;
+
   [GtkChild]
   private Label name_label;
 
   public ContactSheet (Contact contact, Store store) {
       this.contact = contact;
+      this.store = store;
+
       this.contact.changed.connect (update);
       this.contact.individual.personas_changed.connect (update);
-      store.quiescent.connect (update);
+      this.store.quiescent.connect (update);
 
       update ();
   }
@@ -152,14 +156,14 @@ public class Contacts.ContactSheet : Grid {
 	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
 	foreach (var phone in phones) {
 #if HAVE_TELEPATHY
-	  if (this.contact.store != null && this.contact.store.caller_account != null) {
-	    var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
-	    button.clicked.connect (() => {
-            Utils.start_call (phone.value, this.contact.store.caller_account);
-	      });
-	  } else {
-	    add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
-	  }
+          if (this.store.caller_account != null) {
+            var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
+            button.clicked.connect (() => {
+                Utils.start_call (phone.value, this.store.caller_account);
+              });
+          } else {
+            add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
+          }
 #else
           add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
 #endif

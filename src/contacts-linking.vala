@@ -592,7 +592,7 @@ namespace Contacts {
     return operation;
   }
 
-  public async LinkOperation unlink_persona (Contact contact, Persona persona_to_unlink) {
+  public async LinkOperation unlink_persona (Store store, Contact contact, Persona persona_to_unlink) {
     var individual = contact.individual;
     var persona_to_unlink_removals = PersonaAttribute.create_set ();
     var other_personas_removals = PersonaAttribute.create_set ();
@@ -676,7 +676,7 @@ namespace Contacts {
     if (main_persona == null && other_personas.size > 1) {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
-        main_persona = yield contact.store.aggregator.primary_store.add_persona_from_details (details);
+        main_persona = yield store.aggregator.primary_store.add_persona_from_details (details);
         yield (main_persona as NameDetails).change_full_name (contact.individual.display_name);
         operation.added_persona (main_persona);
       } catch (GLib.Error e) {
