@@ -20,7 +20,7 @@ using Folks;
 using Gee;
 
 /**
- * The Avatar of a Contact is responsible for showing an {@link Individual}'s
+ * The Avatar of a Contact is responsible for showing an {@link Folks.Individual}'s
  * avatar, or a fallback if it's not available.
  */
 public class Contacts.Avatar : DrawingArea {

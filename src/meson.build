@@ -5,7 +5,7 @@ install_data('org.gnome.Contacts.gschema.xml',
 )
 
 # The gnome-contacts binary
-contacts_vala_sources = [
+contacts_vala_sources = files(
   'contacts-accounts-list.vala',
   'contacts-app.vala',
   'contacts-avatar.vala',
@@ -31,7 +31,7 @@ contacts_vala_sources = [
   'contacts-utils.vala',
   'contacts-window.vala',
   'main.vala',
-]
+)
 
 contacts_vala_args = [
   '--target-glib=@0@'.format(min_glib_version),

@@ -61,6 +61,9 @@ if telepathy_enabled
   telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 endif
 
+docs_enabled = get_option('docs')
+valadoc = find_program('valadoc', required: docs_enabled)
+
 manpage_enabled = get_option('with-manpage')
 
 # Configuration
@@ -85,3 +88,6 @@ subdir('data')
 subdir('po')
 subdir('src')
 subdir('man')
+if docs_enabled
+  subdir('docs')
+endif
