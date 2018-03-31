@@ -209,11 +209,6 @@ public class Contacts.TypeSet : Object  {
     }
   }
 
-
-  public void type_seen (AbstractFieldDetails detail) {
-    lookup_type (detail, null);
-  }
-
   public string format_type (AbstractFieldDetails detail) {
     if (detail.parameters.contains (X_GOOGLE_LABEL)) {
       return Utils.get_first<string> (detail.parameters.get (X_GOOGLE_LABEL));

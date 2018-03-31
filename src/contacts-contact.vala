@@ -133,8 +133,6 @@ public class Contacts.Contact : GLib.Object  {
 
     is_main = calc_is_main ();
 
-    update ();
-
     individual.notify.connect(notify_cb);
   }
 
@@ -259,7 +257,6 @@ public class Contacts.Contact : GLib.Object  {
   private bool changed_cb () {
     this.changed_id = 0;
     this.is_main = calc_is_main ();
-    update ();
     changed ();
     return false;
   }
@@ -280,16 +277,6 @@ public class Contacts.Contact : GLib.Object  {
 
   private void notify_cb (ParamSpec pspec) {
     queue_changed ();
-  }
-
-  private void update () {
-    foreach (var email in individual.email_addresses) {
-      TypeSet.general.type_seen (email);
-    }
-
-    foreach (var phone in individual.phone_numbers) {
-      TypeSet.phone.type_seen (phone);
-    }
   }
 
   /* We claim something is "removable" if at least one persona is removable,
