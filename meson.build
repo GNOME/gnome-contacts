@@ -13,7 +13,13 @@ add_project_arguments(
   language: 'vala'
 )
 
-# Some variables
+# Options
+cheese_enabled = (get_option('with-cheese') != 'no')
+telepathy_enabled = get_option('telepathy')
+docs_enabled = get_option('docs')
+manpage_enabled = get_option('with-manpage')
+
+# Common variables
 config_h_dir = include_directories('.')
 contacts_prefix = get_option('prefix')
 datadir = join_paths(contacts_prefix, get_option('datadir'))
@@ -30,6 +36,8 @@ min_eds_version = '3.13.90'
 min_folks_version = '0.11.4'
 min_glib_version = '2.44' # We also use this value for --target-glib, so scratch the micro version.
 
+math = meson.get_compiler('c').find_library('m')
+
 folks = dependency('folks', version: '>=' + min_folks_version)
 folks_eds = dependency('folks-eds', version: '>=' + min_folks_version)
 gee = dependency('gee-0.8')
@@ -43,11 +51,6 @@ libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 
-# Libraries
-math = meson.get_compiler('c').find_library('m')
-
-# Options
-cheese_enabled = (get_option('with-cheese') != 'no')
 if cheese_enabled
   cheese_required = (cheese_enabled == 'yes')
   cheese = dependency('cheese', required: cheese_required)
@@ -55,16 +58,13 @@ if cheese_enabled
   cheese_enabled = cheese.found() and cheese_gtk.found()
 endif
 
-telepathy_enabled = get_option('telepathy')
 if telepathy_enabled
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
   telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 endif
 
-docs_enabled = get_option('docs')
 valadoc = find_program('valadoc', required: docs_enabled)
 
-manpage_enabled = get_option('with-manpage')
 
 # Configuration
 conf = configuration_data()
