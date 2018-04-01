@@ -14,7 +14,7 @@ add_project_arguments(
 )
 
 # Options
-cheese_enabled = (get_option('with-cheese') != 'no')
+cheese_enabled = get_option('with-cheese')
 telepathy_enabled = get_option('telepathy')
 docs_enabled = get_option('docs')
 manpage_enabled = get_option('with-manpage')
@@ -52,10 +52,8 @@ libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_versio
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 
 if cheese_enabled
-  cheese_required = (cheese_enabled == 'yes')
-  cheese = dependency('cheese', required: cheese_required)
-  cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91', required: cheese_required)
-  cheese_enabled = cheese.found() and cheese_gtk.found()
+  cheese = dependency('cheese')
+  cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91')
 endif
 
 if telepathy_enabled
