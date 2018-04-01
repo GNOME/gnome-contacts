@@ -14,10 +14,10 @@ add_project_arguments(
 )
 
 # Options
-cheese_enabled = get_option('with-cheese')
+cheese_enabled = get_option('cheese')
 telepathy_enabled = get_option('telepathy')
 docs_enabled = get_option('docs')
-manpage_enabled = get_option('with-manpage')
+manpage_enabled = get_option('manpage')
 
 # Common variables
 config_h_dir = include_directories('.')
