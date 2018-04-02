@@ -38,6 +38,7 @@ public class Contacts.ContactList : ListBox {
     public ContactDataRow(Contact c) {
       this.contact = c;
       this.contact.changed.connect (on_contact_changed);
+      this.contact.notify["hidden"].connect ((o, p) => changed());
 
       get_style_context (). add_class ("contact-data-row");
 
@@ -240,7 +241,7 @@ public class Contacts.ContactList : ListBox {
 
   private bool filter_row (ListBoxRow row) {
     var contact = ((ContactDataRow) row).contact;
-    return !contact.is_hidden && this.filter_query.is_match (contact.individual) > 0;
+    return !contact.hidden && this.filter_query.is_match (contact.individual) > 0;
   }
 
   public void select_contact (Contact? contact) {

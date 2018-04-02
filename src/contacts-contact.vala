@@ -48,56 +48,22 @@ public class Contacts.Contact : GLib.Object  {
 
   public signal void changed ();
 
-  private bool _is_hidden;
-  private bool _is_hidden_uptodate;
-  private bool _is_hidden_to_delete;
-
-  private bool _get_is_hidden () {
-    // Contact has been deleted (but this is not actually posted, for undo support)
-    if (this._is_hidden_to_delete)
-      return true;
-
-    var i = this.individual.personas.iterator();
-    // Look for single-persona individuals
-    if (i.next() && !i.has_next ()) {
-      var persona = i.get();
-      var store = persona.store;
-
-      // Filter out pure key-file persona individuals as these are
-      // not very interesting
-      if (store.type_id == "key-file")
-        return true;
-
-      // Filter out uncertain things like link-local xmpp
-      if (store.type_id == "telepathy" &&
-          store.trust_level == PersonaStoreTrust.NONE)
-        return true;
-    }
-
-    return false;
-  }
-
-  public bool is_hidden {
-    get {
-      if (!_is_hidden_uptodate) {
-	_is_hidden = _get_is_hidden ();
-	_is_hidden_uptodate = true;
+  /**
+   * There are 2 reasons why we want to hide a contact in the UI:
+   * 1. The contact is going to be deleted (but isn't yet, since we support undoing)
+   * 2. The contact comes from an uninteresting or untrusted source.
+   */
+  public bool hidden {
+    get { return this.ignored || this.to_be_deleted; }
+    set {
+      if (this.to_be_deleted != value) {
+        this.to_be_deleted = value;
+        notify_property("hidden");
       }
-      return _is_hidden;
     }
   }
-
-  public void hide () {
-    _is_hidden_to_delete = true;
-
-    queue_changed ();
-  }
-
-  public void show () {
-    _is_hidden_to_delete = false;
-
-    queue_changed ();
-  }
+  private bool to_be_deleted; // this.hidden, part 1
+  private bool ignored;       // this.hidden, part 2
 
   public static Contact from_individual (Individual i) {
     return i.get_data ("contact");
@@ -125,7 +91,8 @@ public class Contacts.Contact : GLib.Object  {
     individual = i;
     individual.set_data ("contact", this);
 
-    is_main = calc_is_main ();
+    this.ignored = is_ignorable ();
+    this.is_main = calc_is_main ();
 
     individual.notify.connect(notify_cb);
   }
@@ -141,6 +108,26 @@ public class Contacts.Contact : GLib.Object  {
   public void remove () {
     unqueue_changed ();
     individual.notify.disconnect(notify_cb);
+  }
+
+  private bool is_ignorable () {
+    var i = this.individual.personas.iterator();
+
+    // Look for single-persona individuals
+    if (i.next() && !i.has_next ()) {
+      var persona_store = i.get().store;
+
+      // Filter out pure key-file persona individuals as these are not very interesting
+      if (persona_store.type_id == "key-file")
+        return true;
+
+      // Filter out uncertain things like link-local xmpp
+      if (persona_store.type_id == "telepathy" &&
+          persona_store.trust_level == PersonaStoreTrust.NONE)
+        return true;
+    }
+
+    return false;
   }
 
   public bool has_email (string email_address) {
@@ -263,8 +250,6 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public void queue_changed () {
-    this._is_hidden_uptodate = false;
-
     if (this.changed_id == 0)
       this.changed_id = Idle.add (changed_cb);
   }

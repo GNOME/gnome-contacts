@@ -102,7 +102,7 @@ public class Contacts.ListPane : Frame {
   private void on_delete_button_clicked (Gtk.Button delete_button) {
     var marked_contacts = this.contacts_list.get_marked_contacts ();
     foreach (var c in marked_contacts)
-      c.hide ();
+      c.hidden = true;
     delete_contacts (marked_contacts);
   }
 

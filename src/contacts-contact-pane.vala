@@ -190,8 +190,7 @@ public class Contacts.ContactPane : Stack {
 
   void delete_contact () {
     if (contact != null) {
-      contact.hide ();
-
+      contact.hidden = true;
       this.will_delete (contact);
     }
   }

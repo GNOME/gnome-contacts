@@ -412,7 +412,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         notification.dismiss ();
 
         foreach (var c in contacts)
-          c.show ();
+          c.hidden = false;
 
         set_shown_contact (contacts[0]);
         this.state = UiState.SHOWING;
