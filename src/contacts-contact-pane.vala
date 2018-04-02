@@ -146,6 +146,15 @@ public class Contacts.ContactPane : Stack {
     this.contact_sheet_container.add (this.sheet);
     this.sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
     set_visible_child (this.contact_sheet_page);
+
+    var matches = this.store.aggregator.get_potential_matches (this.contact.individual, MatchResult.HIGH);
+    foreach (var ind in matches.keys) {
+      var c = Contact.from_individual (ind);
+      if (c != null && this.contact.suggest_link_to (c)) {
+        add_suggestion (c);
+        break;
+      }
+    }
   }
 
   private void remove_contact_sheet () {
