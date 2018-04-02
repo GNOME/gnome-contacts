@@ -75,6 +75,32 @@ public class Contacts.ContactPane : Stack {
   public signal void display_name_changed (string new_display_name);
 
 
+  public ContactPane (Window parent_window, Store contacts_store) {
+    this.parent_window = parent_window;
+    this.store = contacts_store;
+
+    this.edit_contact_actions.add_action_entries (action_entries, this);
+
+    // Contact editor
+    this.editor = new ContactEditor (this.store, this.edit_contact_actions);
+    this.editor.linked_button.clicked.connect (linked_accounts);
+    this.editor.remove_button.clicked.connect (delete_contact);
+    this.contact_editor_page.add (this.editor);
+
+    /* enable/disable actions*/
+    var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
+    this.editor.bind_property ("has-birthday-row", birthday_action, "enabled",
+                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+    var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
+    this.editor.bind_property ("has-nickname-row", nickname_action, "enabled",
+                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+    var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
+    this.editor.bind_property ("has-notes-row", notes_action, "enabled",
+                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+  }
+
   public void add_suggestion (Contact c) {
     var parent_overlay = this.get_parent () as Overlay;
 
@@ -110,40 +136,6 @@ public class Contacts.ContactPane : Stack {
       remove_contact_sheet ();
       set_visible_child (this.none_selected_page);
     }
-  }
-
-  public ContactPane (Window parent_window, Store contacts_store) {
-    this.parent_window = parent_window;
-    this.store = contacts_store;
-
-    this.edit_contact_actions.add_action_entries (action_entries, this);
-
-    // Contact editor
-    this.editor = new ContactEditor (this.store, this.edit_contact_actions);
-    this.editor.linked_button.clicked.connect (linked_accounts);
-    this.editor.remove_button.clicked.connect (delete_contact);
-    this.contact_editor_page.add (this.editor);
-
-    /* enable/disable actions*/
-    var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
-    this.editor.bind_property ("has-birthday-row",
-                               birthday_action, "enabled",
-                               BindingFlags.SYNC_CREATE |
-                               BindingFlags.INVERT_BOOLEAN);
-
-    var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
-    this.editor.bind_property ("has-nickname-row",
-                               nickname_action, "enabled",
-                               BindingFlags.DEFAULT |
-                               BindingFlags.SYNC_CREATE |
-                               BindingFlags.INVERT_BOOLEAN);
-
-    var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
-    this.editor.bind_property ("has-notes-row",
-                               notes_action, "enabled",
-                               BindingFlags.DEFAULT |
-                               BindingFlags.SYNC_CREATE |
-                               BindingFlags.INVERT_BOOLEAN);
   }
 
   private void show_contact_sheet () {
