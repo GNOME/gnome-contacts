@@ -101,7 +101,7 @@
         {
             "name": "libical",
             "cleanup": [ "/lib/cmake"],
-            "buildsystem": "cmake",
+            "buildsystem": "cmake-ninja",
             "config-opts": [ "-DCMAKE_INSTALL_LIBDIR:PATH=/app/lib",
                              "-DBUILD_SHARED_LIBS:BOOL=ON" ],
             "sources": [
@@ -159,7 +159,7 @@
                 "-DENABLE_GTK_DOC=OFF",
                 "-DENABLE_EXAMPLES=OFF"
             ],
-            "buildsystem": "cmake",
+            "buildsystem": "cmake-ninja",
             "sources": [
                 {
                     "type": "git",
