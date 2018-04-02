@@ -65,6 +65,16 @@ public class Contacts.Contact : GLib.Object  {
   private bool to_be_deleted; // this.hidden, part 1
   private bool ignored;       // this.hidden, part 2
 
+  public Contact (Store store, Individual i) {
+    this.store = store;
+    this.individual = i;
+    this.individual.set_data ("contact", this);
+    this.individual.notify.connect(notify_cb);
+
+    this.ignored = is_ignorable ();
+    this.is_main = calc_is_main ();
+  }
+
   public static Contact from_individual (Individual i) {
     return i.get_data ("contact");
   }
@@ -84,17 +94,6 @@ public class Contacts.Contact : GLib.Object  {
         return true;
 
     return false;
-  }
-
-  public Contact (Store store, Individual i) {
-    this.store = store;
-    individual = i;
-    individual.set_data ("contact", this);
-
-    this.ignored = is_ignorable ();
-    this.is_main = calc_is_main ();
-
-    individual.notify.connect(notify_cb);
   }
 
   public void replace_individual (Individual new_individual) {
