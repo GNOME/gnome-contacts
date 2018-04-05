@@ -53,7 +53,7 @@ public class Contacts.TypeSet : Object  {
   private TypeSet () {
     display_name_hash = new HashTable<unowned string, Data> (str_hash, str_equal);
     vcard_lookup_hash = new HashTable<unowned string, GLib.List<InitData*> > (str_hash, str_equal);
-    custom_hash = new HashTable<unowned string, TreeIter? > (str_hash, str_equal);
+    custom_hash = new HashTable<string, TreeIter? > (str_hash, str_equal);
 
     store = new Gtk.ListStore (2,
                                // Display name or null for separator
