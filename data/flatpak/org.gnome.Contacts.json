@@ -40,17 +40,21 @@
             "V": "1"
         }
     },
-    "cleanup": ["/include", "/lib/pkgconfig",
-                "/share/pkgconfig", "/share/aclocal",
-                "/man", "/share/man", "/share/gtk-doc",
-                "/share/vala",
-                "*.la", "*.a"],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig", "/share/pkgconfig",
+        "/share/aclocal",
+        "/man", "/share/man",
+        "/share/gtk-doc",
+        "/share/vala",
+        "*.la", "*.a"
+    ],
     "modules": [
         {
             "name": "telepathy-glib",
             "config-opts": [
-              "--disable-static",
-              "--enable-vala-bindings=yes"
+                "--disable-static",
+                "--enable-vala-bindings=yes"
             ],
             "sources": [
                 {
@@ -90,7 +94,11 @@
         {
             "name": "gnome-online-accounts",
             "cleanup": [ "/bin", "/share/GConf" ],
-            "config-opts": ["--disable-telepathy", "--disable-documentation", "--disable-backend"],
+            "config-opts": [
+                "--disable-telepathy",
+                "--disable-documentation",
+                "--disable-backend"
+            ],
             "sources": [
                 {
                     "type": "git",
@@ -100,10 +108,13 @@
         },
         {
             "name": "libical",
-            "cleanup": [ "/lib/cmake"],
+            "cleanup": [
+              "/lib/cmake"
+            ],
             "buildsystem": "cmake-ninja",
-            "config-opts": [ "-DCMAKE_INSTALL_LIBDIR:PATH=/app/lib",
-                             "-DBUILD_SHARED_LIBS:BOOL=ON" ],
+            "config-opts": [
+                "-DBUILD_SHARED_LIBS:BOOL=ON"
+            ],
             "sources": [
                 {
                     "type": "archive",
@@ -169,8 +180,13 @@
         },
         {
             "name": "folks",
-            "cleanup": [ "/bin", "/share/GConf" ],
-            "config-opts": [ "--disable-fatal-warnings" ],
+            "cleanup": [
+                "/bin",
+                "/share/GConf"
+            ],
+            "config-opts": [
+                "--disable-fatal-warnings"
+            ],
             "sources": [
                 {
                     "type": "git",
@@ -180,7 +196,10 @@
         },
         {
             "name": "gnome-desktop",
-            "config-opts": ["--disable-debug-tools", "--disable-udev"],
+            "config-opts": [
+                "--disable-debug-tools",
+                "--disable-udev"
+            ],
             "sources": [
                 {
                     "type": "git",
@@ -190,7 +209,10 @@
         },
         {
             "name": "cheese",
-            "config-opts": [ "--disable-man", "--disable-lcov" ],
+            "config-opts": [
+                "--disable-man",
+                "--disable-lcov"
+            ],
             "sources": [
                 {
                     "type": "git",
