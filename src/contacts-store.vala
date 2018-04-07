@@ -175,11 +175,11 @@ public class Contacts.Store : GLib.Object {
   private void on_individuals_changed_detailed (MultiMap<Individual?,Individual?> changes) {
     // Note: Apparently the current implementation doesn't necessarily pick
     // up unlinked individual as replacements.
-
     var replaced_individuals = new HashMap<Individual?, Individual?> ();
+    var old_individuals = changes.get_keys();
 
     // Pick best replacements at joins
-    foreach (var old_individual in changes.get_keys ()) {
+    foreach (var old_individual in old_individuals) {
       if (old_individual == null)
         continue;
       foreach (var new_individual in changes[old_individual]) {
@@ -192,7 +192,7 @@ public class Contacts.Store : GLib.Object {
       }
     }
 
-    foreach (var old_individual in changes.get_keys ()) {
+    foreach (var old_individual in old_individuals) {
       HashSet<Individual>? replacements = null;
       foreach (var new_individual in changes[old_individual]) {
         if (old_individual != null && new_individual != null &&
