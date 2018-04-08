@@ -103,7 +103,7 @@ public class Contacts.ContactList : ListBox {
 
   private Store store;
 
-  private Settings settings;
+  private bool sort_on_surname = false; // keep in sync with the setting
 
   public UiState state { get; set; }
 
@@ -116,8 +116,10 @@ public class Contacts.ContactList : ListBox {
 
     this.notify["state"].connect (on_ui_state_changed);
 
-    this.settings = settings;
-    this.settings.changed["sort-on-surname"].connect(invalidate_sort);
+    settings.changed["sort-on-surname"].connect(() => {
+        this.sort_on_surname = settings.sort_on_surname;
+        invalidate_sort();
+      });
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
@@ -153,8 +155,8 @@ public class Contacts.ContactList : ListBox {
       return a.is_favourite? -1 : 1;
 
     // Both are (non-)favourites: sort by either first name or surname (user preference)
-    unowned string? a_name = this.settings.sort_on_surname? try_get_surname(a) : a.display_name;
-    unowned string? b_name = this.settings.sort_on_surname? try_get_surname(b) : b.display_name;
+    unowned string? a_name = this.sort_on_surname? try_get_surname(a) : a.display_name;
+    unowned string? b_name = this.sort_on_surname? try_get_surname(b) : b.display_name;
 
     return a_name.collate (b_name);
   }
