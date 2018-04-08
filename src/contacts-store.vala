@@ -176,10 +176,20 @@ public class Contacts.Store : GLib.Object {
     var replaced_individuals = new HashMap<Individual?, Individual?> ();
     var old_individuals = changes.get_keys();
 
+    // At startup, a mass of contacts are added here: so, do this in a separate thread.
+    var added_individuals = changes[null];
+    if (!added_individuals.is_empty) {
+      new Thread<void*> (null, () => {
+          bulk_add (added_individuals);
+          return null;
+        });
+    }
+
     // Pick best replacements at joins
     foreach (var old_individual in old_individuals) {
       if (old_individual == null)
         continue;
+
       foreach (var new_individual in changes[old_individual]) {
         if (new_individual == null)
           continue;
@@ -202,9 +212,6 @@ public class Contacts.Store : GLib.Object {
           // Removing an old individual.
           var c = Contact.from_individual (old_individual);
           remove (c);
-        } else if (new_individual != null) {
-          // Adding a new individual.
-          add (new Contact (this, new_individual));
         }
       }
 
@@ -231,7 +238,9 @@ public class Contacts.Store : GLib.Object {
           if (i != main_individual) {
             // Already replaced this old_individual, i.e. we're splitting
             // old_individual. We just make this a new one.
-            add (new Contact (this, i));
+            var new_contact = new Contact (this, i);
+            this.contacts.add (new_contact);
+            added (new_contact);
           }
         }
       }
@@ -277,9 +286,16 @@ public class Contacts.Store : GLib.Object {
     return contacts.read_only_view;
   }
 
-  private void add (Contact c) {
-    contacts.add (c);
-    added (c);
+  private void bulk_add (Collection<Individual> indivs) {
+    foreach (var individual in indivs) {
+      var c = new Contact (this, individual);
+      this.contacts.add (c);
+      // Since we do this in a separate thread, use Idle.add.
+      Idle.add (() => {
+          added (c);
+          return false;
+        });
+    }
   }
 
   private void remove (Contact c) {

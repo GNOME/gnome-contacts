@@ -116,6 +116,7 @@ public class Contacts.ContactList : ListBox {
 
     this.notify["state"].connect (on_ui_state_changed);
 
+    this.sort_on_surname = settings.sort_on_surname;
     settings.changed["sort-on-surname"].connect(() => {
         this.sort_on_surname = settings.sort_on_surname;
         invalidate_sort();
