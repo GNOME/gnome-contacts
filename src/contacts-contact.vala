@@ -75,7 +75,7 @@ public class Contacts.Contact : GLib.Object  {
     this.is_main = calc_is_main ();
   }
 
-  public static Contact from_individual (Individual i) {
+  public static unowned Contact from_individual (Individual i) {
     return i.get_data ("contact");
   }
 
