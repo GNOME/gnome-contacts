@@ -2,7 +2,7 @@
 .build_template: &distro_build
   script:
     - meson -Dmanpage=false _build
-    - ninja -C build install
+    - ninja -C _build install
 
 stages:
   - build-flatpak
