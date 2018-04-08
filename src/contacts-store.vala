@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -21,7 +20,6 @@ using Folks;
 using Gee;
 
 public class Contacts.Store : GLib.Object {
-  public signal void changed (Contact c);
   public signal void added (Contact c);
   public signal void removed (Contact c);
   public signal void quiescent ();
@@ -240,10 +238,6 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
-  private void contact_changed_cb (Contact c) {
-    changed (c);
-  }
-
   public delegate bool ContactMatcher (Contact c);
   public async Contact? find_contact (ContactMatcher matcher) {
     foreach (var c in contacts) {
@@ -254,14 +248,8 @@ public class Contacts.Store : GLib.Object {
       return null;
 
     Contact? matched = null;
-    ulong id1, id2, id3;
+    ulong id2, id3;
     SourceFunc callback = find_contact.callback;
-    id1 = this.changed.connect ( (c) => {
-	if (matcher (c)) {
-	  matched = c;
-	  callback ();
-	}
-      });
     id2 = this.added.connect ( (c) => {
 	if (matcher (c)) {
 	  matched = c;
@@ -272,7 +260,6 @@ public class Contacts.Store : GLib.Object {
 	callback();
       });
     yield;
-    this.disconnect (id1);
     this.disconnect (id2);
     this.disconnect (id3);
     return matched;
@@ -292,13 +279,10 @@ public class Contacts.Store : GLib.Object {
 
   private void add (Contact c) {
     contacts.add (c);
-    c.changed.connect (contact_changed_cb);
     added (c);
   }
 
   private void remove (Contact c) {
-    c.changed.disconnect (contact_changed_cb);
-
     var i = contacts.index_of (c);
     if (i != contacts.size - 1)
       contacts.set (i, contacts.get (contacts.size - 1));
