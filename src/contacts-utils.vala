@@ -83,7 +83,7 @@ namespace Contacts.Utils {
   public void start_chat (Contact contact, string protocol, string id) {
     var im_persona = contact.find_im_persona (protocol, id);
     var account = (im_persona.store as Tpf.PersonaStore).account;
-    var request_dict = new HashTable<weak string, Value?>(str_hash, str_equal);
+    var request_dict = new HashTable<string, Value?>(str_hash, str_equal);
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
                          TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
@@ -98,7 +98,7 @@ namespace Contacts.Utils {
   }
 
   public void start_call (string contact_id, TelepathyGLib.Account account) {
-    var request_dict = new HashTable<weak string,GLib.Value?>(str_hash, str_equal);
+    var request_dict = new HashTable<string,GLib.Value?>(str_hash, str_equal);
 
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
                          TelepathyGLib.IFACE_CHANNEL_TYPE_CALL);
