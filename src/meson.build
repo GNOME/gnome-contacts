@@ -67,11 +67,11 @@ contacts_deps = [
 ]
 
 # Add extra stuff given a certain set of options
-if cheese_enabled
-  contacts_deps += [ cheese, cheese_gtk ]
-  contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
-  contacts_c_sources += 'cheese-flash.c'
-endif
+# if cheese_enabled
+#   contacts_deps += [ cheese, cheese_gtk ]
+#   contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
+#   contacts_c_sources += 'cheese-flash.c'
+# endif
 
 if telepathy_enabled
   contacts_deps += [ folks_telepathy, telepathy_glib ]

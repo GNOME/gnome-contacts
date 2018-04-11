@@ -53,10 +53,10 @@ libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_versio
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 libhandy = dependency('libhandy-0.0', version: '>=' + min_handy_version)
 
-if cheese_enabled
-  cheese = dependency('cheese')
-  cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91')
-endif
+# if cheese_enabled
+#   cheese = dependency('cheese')
+#   cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91')
+# endif
 
 if telepathy_enabled
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
