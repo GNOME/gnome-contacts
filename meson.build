@@ -49,7 +49,7 @@ math = meson.get_compiler('c').find_library('m')
 # Options
 cheese_enabled = (get_option('with-cheese') != 'no')
 if cheese_enabled
-  cheese_required = (cheese_enabled == 'yes')
+  cheese_required = (get_option('with-cheese') == 'yes')
   cheese = dependency('cheese', required: cheese_required)
   cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91', required: cheese_required)
   cheese_enabled = cheese.found() and cheese_gtk.found()
