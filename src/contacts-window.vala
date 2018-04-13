@@ -293,6 +293,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   [GtkCallback]
   public void new_contact () {
+    if (this.state == UiState.UPDATING || this.state == UiState.CREATING)
+      return;
+
     this.state = UiState.CREATING;
 
     this.right_header.title = _("New Contact");
