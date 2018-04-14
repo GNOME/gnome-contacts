@@ -231,8 +231,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     var name = this.contact_pane.contact.individual.display_name;
     this.right_header.title = _("Editing %s").printf (name);
-
-    this.contact_pane.set_edit_mode (true);
+    this.contact_pane.start_editing ();
   }
 
   [GtkCallback]
@@ -249,13 +248,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (this.state == UiState.CREATING) {
 
       if (drop_changes) {
-        this.contact_pane.set_edit_mode (false, drop_changes);
+        this.contact_pane.stop_editing (drop_changes);
       } else {
         this.contact_pane.create_contact.begin ();
       }
       this.state = UiState.NORMAL;
     } else {
-      this.contact_pane.set_edit_mode (false, drop_changes);
+      this.contact_pane.stop_editing (drop_changes);
       this.state = UiState.SHOWING;
     }
 

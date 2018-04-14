@@ -502,12 +502,11 @@ public class Contacts.Contact : GLib.Object  {
    * if none, creates a new persona and writes to it, returning the new
    * persona.
    */
-  public static async Persona? set_individual_property (Contact contact,
-							string property_name,
-							Value value) throws GLib.Error, PropertyError {
+  public async Persona? set_individual_property (string property_name, Value value)
+      throws GLib.Error, PropertyError {
     bool did_set = false;
     // Need to make a copy here as it could change during the yields
-    var personas_copy = contact.individual.personas.to_array ();
+    var personas_copy = this.individual.personas.to_array ();
     foreach (var p in personas_copy) {
       if (property_name in p.writeable_properties) {
 	did_set = true;
@@ -516,7 +515,7 @@ public class Contacts.Contact : GLib.Object  {
     }
 
     if (!did_set) {
-      var fake = new FakePersona (contact.store, contact);
+      var fake = new FakePersona (this.store, this);
       return yield fake.make_real_and_set (property_name, value);
     }
     return null;

@@ -183,8 +183,8 @@ public class Contacts.ContactPane : Stack {
     var dialog = new LinkedPersonasDialog (this.parent_window, this.store, contact);
     if (dialog.run () == ResponseType.CLOSE && dialog.any_unlinked) {
       /* update edited contact if any_unlinked */
-      set_edit_mode (false);
-      set_edit_mode (true);
+      stop_editing ();
+      start_editing ();
     }
     dialog.destroy ();
   }
@@ -196,73 +196,62 @@ public class Contacts.ContactPane : Stack {
     }
   }
 
-  public void set_edit_mode (bool on_edit, bool drop_changes = false) {
-    if (on_edit == on_edit_mode)
+  public void start_editing() {
+    if (this.on_edit_mode || this.contact == null)
       return;
 
-    if (on_edit) {
-      if (contact == null) {
-	return;
+    this.on_edit_mode = true;
+
+    remove_contact_sheet ();
+
+    this.editor.clear ();
+    this.editor.edit (this.contact);
+    this.editor.show_all ();
+    set_visible_child (this.contact_editor_page);
+  }
+
+  public void stop_editing (bool drop_changes = false) {
+    if (!this.on_edit_mode)
+      return;
+
+    this.on_edit_mode = false;
+    /* saving changes */
+    if (!drop_changes)
+      save_editor_changes.begin ();
+
+    this.editor.clear ();
+
+    if (this.contact != null)
+      show_contact_sheet ();
+    else
+      set_visible_child (this.none_selected_page);
+  }
+
+  private async void save_editor_changes () {
+    foreach (var prop in this.editor.properties_changed ().entries) {
+      try {
+        yield Contact.set_persona_property (prop.value.persona, prop.key, prop.value.value);
+      } catch (Error e) {
+        show_message (e.message);
       }
+    }
 
-      on_edit_mode = true;
-
-      remove_contact_sheet ();
-
-      editor.clear ();
-      editor.edit (contact);
-      editor.show_all ();
-      set_visible_child (this.contact_editor_page);
-    } else {
-      on_edit_mode = false;
-      /* saving changes */
-      if (!drop_changes) {
-	foreach (var prop in editor.properties_changed ().entries) {
-	  Contact.set_persona_property.begin (prop.value.persona, prop.key, prop.value.value,
-					      (obj, result) => {
-						try {
-						  Contact.set_persona_property.end (result);
-						} catch (Error e2) {
-						  show_message (e2.message);
-						}
-					      });
-	}
-
-	if (editor.name_changed ()) {
-	  var v = editor.get_full_name_value ();
-	  Contact.set_individual_property.begin (contact,
-						 "full-name", v,
-						 (obj, result) => {
-						   try {
-						     Contact.set_individual_property.end (result);
-						     display_name_changed (v.get_string ());
-						   } catch (Error e) {
-						     show_message (e.message);
-						     /* FIXME: add this back */
-						     /* l.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>", contact.display_name)); */
-						   }
-						 });
-	}
-	if (editor.avatar_changed ()) {
-	  var v = editor.get_avatar_value ();
-	  Contact.set_individual_property.begin (contact,
-						 "avatar", v,
-						 (obj, result) => {
-						   try {
-						     Contact.set_individual_property.end (result);
-						   } catch (GLib.Error e) {
-						     show_message (e.message);
-						   }
-						 });
-	}
+    if (this.editor.name_changed ()) {
+      var v = this.editor.get_full_name_value ();
+      try {
+        yield this.contact.set_individual_property ("full-name", v);
+        display_name_changed (v.get_string ());
+      } catch (Error e) {
+        show_message (e.message);
       }
+    }
 
-      editor.clear ();
-
-      if (contact != null) {
-        show_contact_sheet ();
-      } else {
-        set_visible_child (this.none_selected_page);
+    if (this.editor.avatar_changed ()) {
+      var v = this.editor.get_avatar_value ();
+      try {
+        yield this.contact.set_individual_property ("avatar", v);
+      } catch (Error e) {
+        show_message (e.message);
       }
     }
   }
@@ -292,7 +281,7 @@ public class Contacts.ContactPane : Stack {
       details[prop.key] = prop.value.value;
 
     // Leave edit mode
-    set_edit_mode (false, true);
+    stop_editing (true);
 
     if (details.size () == 0) {
       show_message_dialog (_("You need to enter some data"));
