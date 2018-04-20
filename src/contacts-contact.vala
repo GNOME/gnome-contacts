@@ -475,7 +475,7 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  private const string[] SORTED_PROPERTIES = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "postal-addresses", "notes" };
+  public const string[] SORTED_PROPERTIES = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "postal-addresses", "notes" };
 
   public static string[] sort_persona_properties (string[] props) {
     CompareDataFunc<string> compare_properties = (a, b) => {

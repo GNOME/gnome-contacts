@@ -31,6 +31,8 @@ public class Contacts.ContactSheet : Grid {
 
   private Store store;
 
+  private int last_row = 0;
+
   [GtkChild]
   private Label name_label;
 
@@ -45,20 +47,20 @@ public class Contacts.ContactSheet : Grid {
       update ();
   }
 
-  Button add_row_with_button (ref int row, string label_value, string value) {
+  private Button add_row_with_button (string label_value, string value) {
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, row, 1, 1);
+    attach (type_label, 0, this.last_row);
 
     var value_button = new Button.with_label (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
     value_button.xalign = 0.0f;
     value_button.set_hexpand (true);
-    attach (value_button, 1, row, 1, 1);
-    row++;
+    attach (value_button, 1, this.last_row);
+    this.last_row++;
 
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
     (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
@@ -66,32 +68,32 @@ public class Contacts.ContactSheet : Grid {
     return value_button;
   }
 
-  void add_row_with_link_button (ref int row, string label_value, string value) {
+  private void add_row_with_link_button (string label_value, string value) {
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, row, 1, 1);
+    attach (type_label, 0, this.last_row);
 
     var value_button = new LinkButton (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
     value_button.xalign = 0.0f;
     value_button.set_hexpand (true);
-    attach (value_button, 1, row, 1, 1);
-    row++;
+    attach (value_button, 1, this.last_row);
+    this.last_row++;
 
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
     (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
   }
 
-  void add_row_with_label (ref int row, string label_value, string value) {
+  void add_row_with_label (string label_value, string value) {
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.set_valign (Align.START);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, row, 1, 1);
+    attach (type_label, 0, this.last_row, 1, 1);
 
     var value_label = new Label (value);
     value_label.set_line_wrap (true);
@@ -107,8 +109,8 @@ public class Contacts.ContactSheet : Grid {
     value_label.margin_top = 3;
     value_label.margin_bottom = 3;
 
-    attach (value_label, 1, row, 1, 1);
-    row++;
+    attach (value_label, 1, this.last_row, 1, 1);
+    this.last_row++;
   }
 
   private void update () {
@@ -122,120 +124,163 @@ public class Contacts.ContactSheet : Grid {
                                                            this.contact.individual.display_name));
       });
 
-    int i = 3;
-    int last_store_position = 0;
+    this.last_row += 3; // Name/Avatar takes up 3 rows
     bool is_first_persona = true;
 
     var personas = this.contact.get_personas_for_display ();
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
+      int persona_store_pos = 0;
       if (!is_first_persona) {
-	var store_name = new Label("");
-	store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-						      Contact.format_persona_store_name_for_contact (p)));
-	store_name.set_halign (Align.START);
-	store_name.xalign = 0.0f;
-	store_name.margin_start = 6;
-	attach (store_name, 0, i, 3, 1);
-	last_store_position = ++i;
+        persona_store_pos = this.last_row;
+        var store_name = new Label("");
+        store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
+                               Contact.format_persona_store_name_for_contact (p)));
+        store_name.set_halign (Align.START);
+        store_name.xalign = 0.0f;
+        store_name.margin_start = 6;
+        attach (store_name, 0, this.last_row, 3, 1);
+        this.last_row++;
       }
+      is_first_persona = false;
 
-      var details = p as EmailDetails;
-      if (details != null) {
-	var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
-	foreach (var email in emails) {
-	  var button = add_row_with_button (ref i, TypeSet.email.format_type (email), email.value);
-	  button.clicked.connect (() => {
-	      Utils.compose_mail ("%s <%s>".printf(this.contact.individual.display_name, email.value));
-	    });
-	}
-      }
+      foreach (var prop in Contact.SORTED_PROPERTIES)
+        add_row_for_property (p, prop);
 
-      var phone_details = p as PhoneDetails;
-      if (phone_details != null) {
-	var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
-	foreach (var phone in phones) {
-#if HAVE_TELEPATHY
-          if (this.store.caller_account != null) {
-            var button = add_row_with_button (ref i, TypeSet.phone.format_type (phone), phone.value);
-            button.clicked.connect (() => {
-                Utils.start_call (phone.value, this.store.caller_account);
-              });
-          } else {
-            add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
-          }
-#else
-          add_row_with_label (ref i, TypeSet.phone.format_type (phone), phone.value);
-#endif
-	}
-      }
-
-#if HAVE_TELEPATHY
-      var im_details = p as ImDetails;
-      if (im_details != null) {
-	foreach (var protocol in im_details.im_addresses.get_keys ()) {
-	  foreach (var id in im_details.im_addresses[protocol]) {
-	    if (p is Tpf.Persona) {
-	      var button = add_row_with_button (ref i, ImService.get_display_name (protocol), id.value);
-	      button.clicked.connect (() => {
-		  var im_persona = this.contact.find_im_persona (protocol, id.value);
-		  if (im_persona != null) {
-		    var type = im_persona.presence_type;
-		    if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
-                type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
-		      Utils.start_chat (this.contact, protocol, id.value);
-		    }
-		  }
-		});
-	    }
-	  }
-	}
-      }
-#endif
-
-      var url_details = p as UrlDetails;
-      if (url_details != null) {
-	foreach (var url in url_details.urls)
-	  add_row_with_link_button (ref i, _("Website"), url.value);
-      }
-
-      var name_details = p as NameDetails;
-      if (name_details != null) {
-	if (is_set (name_details.nickname)) {
-	  add_row_with_label (ref i, _("Nickname"), name_details.nickname);
-	}
-      }
-
-      var birthday_details = p as BirthdayDetails;
-      if (birthday_details != null) {
-	if (birthday_details.birthday != null) {
-	  add_row_with_label (ref i, _("Birthday"), birthday_details.birthday.to_local ().format ("%x"));
-	}
-      }
-
-      var note_details = p as NoteDetails;
-      if (note_details != null) {
-	foreach (var note in note_details.notes) {
-	  add_row_with_label (ref i, _("Note"), note.value);
-	}
-      }
-
-      var addr_details = p as PostalAddressDetails;
-      if (addr_details != null) {
-        foreach (var addr in addr_details.postal_addresses) {
-          var all_strs = string.joinv ("\n", Contact.format_address (addr.value));
-          add_row_with_label (ref i, TypeSet.general.format_type (addr), all_strs);
-        }
-      }
-
-      if (i != 3)
-	is_first_persona = false;
-
-      if (i == last_store_position) {
-	get_child_at (0, i - 1).destroy ();
-      }
+      // Nothing to show in the persona: don't mention it
+      if (this.last_row == persona_store_pos + 1)
+        get_child_at (0, persona_store_pos).destroy ();
     }
 
     show_all ();
+  }
+
+  private void add_row_for_property (Persona persona, string property) {
+    switch (property) {
+      case "email-addresses":
+        add_emails (persona);
+        break;
+      case "phone-numbers":
+        add_phone_nrs (persona);
+        break;
+      case "im-addresses":
+        add_im_addresses (persona);
+        break;
+      case "urls":
+        add_urls (persona);
+        break;
+      case "nickname":
+        add_nickname (persona);
+        break;
+      case "birthday":
+        add_birthday (persona);
+        break;
+      case "notes":
+        add_notes (persona);
+        break;
+      case "postal-addresses":
+        add_postal_addresses (persona);
+        break;
+      default:
+        debug ("Unsupported property: %s", property);
+        break;
+    }
+  }
+
+  private void add_emails (Persona persona) {
+    var details = persona as EmailDetails;
+    if (details != null) {
+      var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+      foreach (var email in emails) {
+          var button = add_row_with_button (TypeSet.email.format_type (email), email.value);
+          button.clicked.connect (() => {
+          Utils.compose_mail ("%s <%s>".printf(this.contact.individual.display_name, email.value));
+        });
+      }
+    }
+  }
+
+  private void add_phone_nrs (Persona persona) {
+    var phone_details = persona as PhoneDetails;
+    if (phone_details != null) {
+      var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+      foreach (var phone in phones) {
+#if HAVE_TELEPATHY
+        if (this.store.caller_account != null) {
+          var button = add_row_with_button (TypeSet.phone.format_type (phone), phone.value);
+          button.clicked.connect (() => {
+              Utils.start_call (phone.value, this.store.caller_account);
+            });
+        } else {
+          add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
+        }
+#else
+        add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
+#endif
+      }
+    }
+  }
+
+  private void add_im_addresses (Persona persona) {
+#if HAVE_TELEPATHY
+    var im_details = persona as ImDetails;
+    if (im_details != null) {
+      foreach (var protocol in im_details.im_addresses.get_keys ()) {
+        foreach (var id in im_details.im_addresses[protocol]) {
+          if (persona is Tpf.Persona) {
+            var button = add_row_with_button (ImService.get_display_name (protocol), id.value);
+            button.clicked.connect (() => {
+                var im_persona = this.contact.find_im_persona (protocol, id.value);
+                if (im_persona != null) {
+                  var type = im_persona.presence_type;
+                  if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
+                      type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
+                    Utils.start_chat (this.contact, protocol, id.value);
+                  }
+                }
+              });
+          }
+        }
+      }
+    }
+#endif
+  }
+
+  private void add_urls (Persona persona) {
+    var url_details = persona as UrlDetails;
+    if (url_details != null) {
+      foreach (var url in url_details.urls)
+        add_row_with_link_button (_("Website"), url.value);
+    }
+  }
+
+  private void add_nickname (Persona persona) {
+    var name_details = persona as NameDetails;
+    if (name_details != null && is_set (name_details.nickname))
+      add_row_with_label (_("Nickname"), name_details.nickname);
+  }
+
+  private void add_birthday (Persona persona) {
+    var birthday_details = persona as BirthdayDetails;
+    if (birthday_details != null && birthday_details.birthday != null)
+      add_row_with_label (_("Birthday"), birthday_details.birthday.to_local ().format ("%x"));
+  }
+
+  private void add_notes (Persona persona) {
+    var note_details = persona as NoteDetails;
+    if (note_details != null) {
+      foreach (var note in note_details.notes)
+        add_row_with_label (_("Note"), note.value);
+    }
+  }
+
+  private void add_postal_addresses (Persona persona) {
+    var addr_details = persona as PostalAddressDetails;
+    if (addr_details != null) {
+      foreach (var addr in addr_details.postal_addresses) {
+        var all_strs = string.joinv ("\n", Contact.format_address (addr.value));
+        add_row_with_label (TypeSet.general.format_type (addr), all_strs);
+      }
+    }
   }
 }
