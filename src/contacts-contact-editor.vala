@@ -63,16 +63,13 @@ public class Contacts.AddressEditor : Box {
  * A widget that allows the user to edit a given {@link Contact}.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-editor.ui")]
-public class Contacts.ContactEditor : Grid {
+public class Contacts.ContactEditor : ContactForm {
 
   private const string[] DEFAULT_PROPS_NEW_CONTACT = {
     "email-addresses.personal",
     "phone-numbers.cell",
     "postal-addresses.home"
   };
-
-  private Contact contact;
-  private Store store;
 
   [GtkChild]
   private Grid container_grid;
@@ -108,7 +105,6 @@ public class Contacts.ContactEditor : Grid {
     HashMap<int, RowData?> rows;
   }
 
-  private int last_row;
   /* the key of the hash_map is the uid of the persona */
   private HashMap<string, HashMap<string, Field?>> writable_personas;
 
@@ -176,7 +172,7 @@ public class Contacts.ContactEditor : Grid {
         last_store_position = ++i;
       }
 
-      var rw_props = Contact.sort_persona_properties (p.writeable_properties);
+      var rw_props = sort_persona_properties (p.writeable_properties);
       if (rw_props.length != 0) {
         this.writable_personas[p.uid] = new HashMap<string, Field?> ();
         foreach (var prop in rw_props)
