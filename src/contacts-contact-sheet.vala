@@ -124,22 +124,17 @@ public class Contacts.ContactSheet : ContactForm {
     var personas = this.contact.get_personas_for_display ();
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
-      int persona_store_pos = 0;
+      int persona_store_pos = this.last_row;
       if (!is_first_persona) {
-        persona_store_pos = this.last_row;
-        var store_name = new Label("");
-        store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-                               Contact.format_persona_store_name_for_contact (p)));
-        store_name.set_halign (Align.START);
-        store_name.xalign = 0.0f;
-        store_name.margin_start = 6;
-        attach (store_name, 0, this.last_row, 3, 1);
+        attach (create_persona_store_label (p), 0, this.last_row, 3);
         this.last_row++;
       }
-      is_first_persona = false;
 
       foreach (var prop in ContactForm.SORTED_PROPERTIES)
         add_row_for_property (p, prop);
+
+      if (this.last_row != 3)
+        is_first_persona = false;
 
       // Nothing to show in the persona: don't mention it
       if (this.last_row == persona_store_pos + 1)

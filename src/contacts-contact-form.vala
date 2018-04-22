@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Folks;
 using Gee;
 using Gtk;
 
@@ -63,5 +64,16 @@ public abstract class Contacts.ContactForm : Grid {
 
     sorted_props.sort ((owned) compare_properties);
     return sorted_props.to_array ();
+  }
+
+  protected Label create_persona_store_label (Persona p) {
+    var store_name = new Label("");
+    store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
+                           Contact.format_persona_store_name_for_contact (p)));
+    store_name.set_halign (Align.START);
+    store_name.xalign = 0.0f;
+    store_name.margin_start = 6;
+
+    return store_name;
   }
 }

@@ -162,13 +162,7 @@ public class Contacts.ContactEditor : ContactForm {
     var personas = this.contact.get_personas_for_display ();
     foreach (var p in personas) {
       if (!is_first_persona) {
-        var store_name = new Label("");
-        store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-                                  Contact.format_persona_store_name_for_contact (p)));
-        store_name.set_halign (Align.START);
-        store_name.xalign = 0.0f;
-        store_name.margin_start = 6;
-        container_grid.attach (store_name, 0, i, 2, 1);
+        this.container_grid.attach (create_persona_store_label (p), 0, i, 2);
         last_store_position = ++i;
       }
 
