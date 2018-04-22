@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -60,6 +59,9 @@ public class Contacts.AddressEditor : Box {
   }
 }
 
+/**
+ * A widget that allows the user to edit a given {@link Contact}.
+ */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-editor.ui")]
 public class Contacts.ContactEditor : Grid {
 
@@ -108,7 +110,7 @@ public class Contacts.ContactEditor : Grid {
 
   private int last_row;
   /* the key of the hash_map is the uid of the persona */
-  private HashMap<string, HashMap<string, Field?> > writable_personas;
+  private HashMap<string, HashMap<string, Field?>> writable_personas;
 
   public bool has_birthday_row {
     get; private set; default = false;
@@ -120,6 +122,90 @@ public class Contacts.ContactEditor : Grid {
 
   public bool has_notes_row {
     get; private set; default = false;
+  }
+
+  construct {
+    this.writable_personas = new HashMap<string, HashMap<string, Field?>> ();
+
+    this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
+
+    this.main_sw.get_style_context ().add_class ("contacts-main-view");
+    this.main_sw.get_style_context ().add_class ("view");
+  }
+
+  public ContactEditor (Contact? contact, Store store, GLib.ActionGroup editor_actions) {
+    this.store = store;
+    this.contact = contact;
+
+    this.add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
+
+    if (contact != null) {
+      this.remove_button.sensitive = contact.can_remove_personas ();
+      this.linked_button.sensitive = contact.individual.personas.size > 1;
+    } else {
+      this.remove_button.hide ();
+      this.linked_button.hide ();
+    }
+
+    create_avatar_button ();
+    create_name_entry ();
+
+    if (contact != null)
+      fill_in_contact ();
+    else
+      fill_in_empty ();
+
+    show_all ();
+  }
+
+  private void fill_in_contact () {
+    int i = 3;
+    int last_store_position = 0;
+    bool is_first_persona = true;
+
+    var personas = this.contact.get_personas_for_display ();
+    foreach (var p in personas) {
+      if (!is_first_persona) {
+        var store_name = new Label("");
+        store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
+                                  Contact.format_persona_store_name_for_contact (p)));
+        store_name.set_halign (Align.START);
+        store_name.xalign = 0.0f;
+        store_name.margin_start = 6;
+        container_grid.attach (store_name, 0, i, 2, 1);
+        last_store_position = ++i;
+      }
+
+      var rw_props = Contact.sort_persona_properties (p.writeable_properties);
+      if (rw_props.length != 0) {
+        this.writable_personas[p.uid] = new HashMap<string, Field?> ();
+        foreach (var prop in rw_props)
+          add_edit_row (p, prop, ref i);
+      }
+
+      if (is_first_persona)
+        this.last_row = i - 1;
+
+      if (i != 3)
+        is_first_persona = false;
+
+      if (i == last_store_position) {
+        i--;
+        this.container_grid.get_child_at (0, i).destroy ();
+      }
+    }
+  }
+
+  private void fill_in_empty () {
+    this.last_row = 2;
+
+    this.writable_personas["null-persona.hack"] = new HashMap<string, Field?> ();
+    foreach (var prop in DEFAULT_PROPS_NEW_CONTACT) {
+      var tok = prop.split (".");
+      add_new_row_for_property (null, tok[0], tok[1].up ());
+    }
+
+    this.focus_widget = this.name_entry;
   }
 
   Value get_value_from_emails (HashMap<int, RowData?> rows) {
@@ -761,112 +847,6 @@ public class Contacts.ContactEditor : Grid {
       focus_widget.grab_focus ();
       focus_widget = null;
     }
-  }
-
-  public ContactEditor (Store store, SimpleActionGroup editor_actions) {
-    this.store = store;
-
-    this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
-
-    this.main_sw.get_style_context ().add_class ("contacts-main-view");
-    this.main_sw.get_style_context ().add_class ("view");
-
-    this.add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
-
-    this.writable_personas = new HashMap<string, HashMap<string, Field?>> ();
-  }
-
-  /**
-   * Adjusts the ContactEditor to the given contact.
-   * Use clear() to make sure nothing is lingering from the previous one.
-   */
-  public void edit (Contact c) {
-    contact = c;
-
-    remove_button.show ();
-    remove_button.sensitive = contact.can_remove_personas ();
-    linked_button.show ();
-    linked_button.sensitive = contact.individual.personas.size > 1;
-
-    create_avatar_button ();
-    create_name_entry ();
-
-    int i = 3;
-    int last_store_position = 0;
-    bool is_first_persona = true;
-
-    var personas = c.get_personas_for_display ();
-    foreach (var p in personas) {
-      if (!is_first_persona) {
-	var store_name = new Label("");
-	store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-						      Contact.format_persona_store_name_for_contact (p)));
-	store_name.set_halign (Align.START);
-	store_name.xalign = 0.0f;
-	store_name.margin_start = 6;
-	container_grid.attach (store_name, 0, i, 2, 1);
-	last_store_position = ++i;
-      }
-
-      var rw_props = Contact.sort_persona_properties (p.writeable_properties);
-      if (rw_props.length != 0) {
-  	writable_personas.set (p.uid, new HashMap<string, Field?> ());
-  	foreach (var prop in rw_props) {
-  	  add_edit_row (p, prop, ref i);
-  	}
-      }
-
-      if (is_first_persona) {
-	last_row = i - 1;
-      }
-
-      if (i != 3) {
-	is_first_persona = false;
-      }
-
-      if (i == last_store_position) {
-	i--;
-	container_grid.get_child_at (0, i).destroy ();
-      }
-    }
-  }
-
-  /**
-   * Adjusts the ContactEditor for a new contact.
-   * Use clear() to make sure nothing is lingering from the previous one.
-   */
-  public void set_new_contact () {
-    remove_button.hide ();
-    linked_button.hide ();
-
-    create_avatar_button ();
-    create_name_entry ();
-    this.last_row = 2;
-
-    writable_personas["null-persona.hack"] = new HashMap<string, Field?> ();
-    foreach (var prop in DEFAULT_PROPS_NEW_CONTACT) {
-      var tok = prop.split (".");
-      add_new_row_for_property (null, tok[0], tok[1].up ());
-    }
-
-    this.focus_widget = this.name_entry;
-  }
-
-  public void clear () {
-    foreach (var w in container_grid.get_children ()) {
-      w.destroy ();
-    }
-
-    remove_button.set_sensitive (false);
-    linked_button.set_sensitive (false);
-
-    /* clean metadata as well */
-    has_birthday_row = false;
-    has_nickname_row = false;
-    has_notes_row = false;
-
-    writable_personas.clear ();
-    contact = null;
   }
 
   public HashMap<string, PropertyData?> properties_changed () {
