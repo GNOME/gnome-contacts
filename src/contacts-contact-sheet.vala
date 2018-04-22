@@ -25,13 +25,7 @@ using Gee;
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-sheet.ui")]
-public class Contacts.ContactSheet : Grid {
-
-  private Contact? contact;
-
-  private Store store;
-
-  private int last_row = 0;
+public class Contacts.ContactSheet : ContactForm {
 
   [GtkChild]
   private Label name_label;
@@ -144,7 +138,7 @@ public class Contacts.ContactSheet : Grid {
       }
       is_first_persona = false;
 
-      foreach (var prop in Contact.SORTED_PROPERTIES)
+      foreach (var prop in ContactForm.SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
       // Nothing to show in the persona: don't mention it
