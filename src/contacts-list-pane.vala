@@ -100,6 +100,13 @@ public class Contacts.ListPane : Frame {
 
   [GtkCallback]
   private void on_delete_button_clicked (Gtk.Button delete_button) {
+    delete_selection ();
+  }
+
+  public void delete_selection () {
+    if (this.state != UiState.SELECTING)
+      return;
+
     var marked_contacts = this.contacts_list.get_marked_contacts ();
     foreach (var c in marked_contacts)
       c.hidden = true;

@@ -387,6 +387,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     add_notification (notification);
   }
 
+  public void delete_selection () {
+    this.list_pane.delete_selection ();
+  }
+
   private void delete_contacts (Gee.List<Contact> contacts) {
     set_shown_contact (null);
     this.state = UiState.NORMAL;
