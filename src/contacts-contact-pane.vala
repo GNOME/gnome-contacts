@@ -39,9 +39,7 @@ public class Contacts.ContactPane : Stack {
   private Grid none_selected_page;
 
   [GtkChild]
-  private ScrolledWindow contact_sheet_page;
-  [GtkChild]
-  private Container contact_sheet_container;
+  private Container contact_sheet_page;
   private ContactSheet? sheet = null;
 
   [GtkChild]
@@ -124,8 +122,7 @@ public class Contacts.ContactPane : Stack {
 
     remove_contact_sheet();
     this.sheet = new ContactSheet (this.contact, this.store);
-    this.contact_sheet_container.add (this.sheet);
-    this.sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
+    this.contact_sheet_page.add (this.sheet);
     set_visible_child (this.contact_sheet_page);
 
     var matches = this.store.aggregator.get_potential_matches (this.contact.individual, MatchResult.HIGH);
@@ -145,7 +142,7 @@ public class Contacts.ContactPane : Stack {
     // Remove the suggestion grid that goes along with it.
     remove_suggestion_grid ();
 
-    this.contact_sheet_container.remove (this.sheet);
+    this.contact_sheet_page.remove (this.sheet);
     this.sheet.destroy();
     this.sheet = null;
   }
