@@ -36,7 +36,7 @@ public class Contacts.ListPane : Frame {
   private Button link_button;
 
   [GtkChild]
-  private Button delete_button;
+  private ModelButton delete_button;
 
   [GtkChild]
   private ActionBar actions_bar;
@@ -96,11 +96,6 @@ public class Contacts.ListPane : Frame {
   [GtkCallback]
   private void on_link_button_clicked (Gtk.Button link_button) {
     link_contacts (this.contacts_list.get_marked_contacts ());
-  }
-
-  [GtkCallback]
-  private void on_delete_button_clicked (Gtk.Button delete_button) {
-    delete_selection ();
   }
 
   public void delete_selection () {
