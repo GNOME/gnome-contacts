@@ -29,11 +29,12 @@ public class Contacts.App : Gtk.Application {
   private bool is_quiescent_scheduled = false;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "quit",        quit                },
-    { "help",        show_help           },
-    { "about",       show_about          },
-    { "change-book", change_address_book },
-    { "new-contact", new_contact         }
+    { "quit",             quit                },
+    { "help",             show_help           },
+    { "about",            show_about          },
+    { "change-book",      change_address_book },
+    { "new-contact",      new_contact         },
+    { "delete-selection", delete_selection    }
   };
 
   private const OptionEntry[] options = {
@@ -357,5 +358,9 @@ public class Contacts.App : Gtk.Application {
 
   public void new_contact () {
     window.new_contact ();
+  }
+
+  public void delete_selection () {
+    window.delete_selection ();
   }
 }
