@@ -47,6 +47,31 @@
           <object class="GtkActionBar" id="actions_bar">
             <property name="visible">False</property>
             <child>
+              <object class="GtkToggleButton" id="more_actions_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <style>
+                  <class name="image-button"/>
+                </style>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="a11y-back">
+                    <property name="accessible-name" translatable="yes">More actions</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkImage" id="more_actions_image">
+                    <property name="visible">True</property>
+                    <property name="icon-name">view-more-symbolic</property>
+                    <property name="icon-size">1</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="link_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -88,4 +113,17 @@
       </object>
     </child>
   </template>
+  <object class="GtkPopover" id="more_actions_popver">
+    <property name="can_focus">False</property>
+    <property name="relative_to">more_actions_button</property>
+    <property name="visible" bind-source="more_actions_button" bind-property="active" bind-flags="bidirectional|sync-create"/>
+    <child>
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="margin">12</property>
+        <property name="orientation">vertical</property>
+        <property name="visible">True</property>
+      </object>
+    </child>
+  </object>
 </interface>
