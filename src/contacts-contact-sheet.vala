@@ -26,9 +26,8 @@ using Gee;
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-sheet.ui")]
 public class Contacts.ContactSheet : ContactForm {
-
   [GtkChild]
-  private Label name_label;
+  private Grid container_grid;
 
   public ContactSheet (Contact contact, Store store) {
       this.contact = contact;
@@ -46,14 +45,14 @@ public class Contacts.ContactSheet : ContactForm {
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, this.last_row);
+    this.container_grid.attach (type_label, 0, this.last_row);
 
     var value_button = new Button.with_label (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
     value_button.xalign = 0.0f;
     value_button.set_hexpand (true);
-    attach (value_button, 1, this.last_row);
+    this.container_grid.attach (value_button, 1, this.last_row);
     this.last_row++;
 
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
@@ -67,14 +66,14 @@ public class Contacts.ContactSheet : ContactForm {
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, this.last_row);
+    this.container_grid.attach (type_label, 0, this.last_row);
 
     var value_button = new LinkButton (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
     value_button.xalign = 0.0f;
     value_button.set_hexpand (true);
-    attach (value_button, 1, this.last_row);
+    this.container_grid.attach (value_button, 1, this.last_row);
     this.last_row++;
 
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
@@ -87,7 +86,7 @@ public class Contacts.ContactSheet : ContactForm {
     type_label.set_halign (Align.END);
     type_label.set_valign (Align.START);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, this.last_row, 1, 1);
+    this.container_grid.attach (type_label, 0, this.last_row, 1, 1);
 
     var value_label = new Label (value);
     value_label.set_line_wrap (true);
@@ -103,7 +102,7 @@ public class Contacts.ContactSheet : ContactForm {
     value_label.margin_top = 3;
     value_label.margin_bottom = 3;
 
-    attach (value_label, 1, this.last_row, 1, 1);
+    this.container_grid.attach (value_label, 1, this.last_row, 1, 1);
     this.last_row++;
   }
 
@@ -111,12 +110,9 @@ public class Contacts.ContactSheet : ContactForm {
     var image_frame = new Avatar (PROFILE_SIZE, this.contact);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
-    attach (image_frame,  0, 0, 1, 3);
+    this.container_grid.attach (image_frame,  0, 0, 1, 3);
 
-    this.contact.keep_widget_uptodate (this.name_label, (w) => {
-        this.name_label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>",
-                                                           this.contact.individual.display_name));
-      });
+    create_name_label ();
 
     this.last_row += 3; // Name/Avatar takes up 3 rows
     bool is_first_persona = true;
@@ -126,7 +122,7 @@ public class Contacts.ContactSheet : ContactForm {
     foreach (var p in personas) {
       int persona_store_pos = this.last_row;
       if (!is_first_persona) {
-        attach (create_persona_store_label (p), 0, this.last_row, 3);
+        this.container_grid.attach (create_persona_store_label (p), 0, this.last_row, 3);
         this.last_row++;
       }
 
@@ -142,6 +138,18 @@ public class Contacts.ContactSheet : ContactForm {
     }
 
     show_all ();
+  }
+
+  private void create_name_label () {
+    var name_label = new Label ("");
+    name_label.ellipsize = Pango.EllipsizeMode.END;
+    name_label.xalign = 0f;
+    name_label.selectable = true;
+    this.container_grid.attach (name_label,  1, 0, 1, 3);
+    this.contact.keep_widget_uptodate (name_label, (w) => {
+        name_label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>",
+                                                      this.contact.individual.display_name));
+      });
   }
 
   private void add_row_for_property (Persona persona, string property) {
