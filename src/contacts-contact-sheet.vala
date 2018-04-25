@@ -112,11 +112,11 @@ public class Contacts.ContactSheet : ContactForm {
     create_name_label ();
 
     this.last_row += 3; // Name/Avatar takes up 3 rows
-    bool is_first_persona = true;
 
     var personas = this.contact.get_personas_for_display ();
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
+      bool is_first_persona = (this.last_row == 3);
       int persona_store_pos = this.last_row;
       if (!is_first_persona) {
         this.container_grid.attach (create_persona_store_label (p), 0, this.last_row, 3);
@@ -126,12 +126,12 @@ public class Contacts.ContactSheet : ContactForm {
       foreach (var prop in ContactForm.SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
-      if (this.last_row != 3)
-        is_first_persona = false;
-
       // Nothing to show in the persona: don't mention it
-      if (this.last_row == persona_store_pos + 1)
-        get_child_at (0, persona_store_pos).destroy ();
+      bool is_empty_persona = (this.last_row == persona_store_pos + 1);
+      if (!is_first_persona && is_empty_persona) {
+        this.container_grid.remove_row (persona_store_pos);
+        this.last_row--;
+      }
     }
 
     show_all ();
