@@ -126,12 +126,12 @@ public class Contacts.ContactSheet : ContactForm {
       foreach (var prop in ContactForm.SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
+      // Nothing to show in the persona: don't mention it
+      if (!is_first_persona && this.last_row == persona_store_pos + 1)
+        get_child_at (0, persona_store_pos).destroy ();
+
       if (this.last_row != 3)
         is_first_persona = false;
-
-      // Nothing to show in the persona: don't mention it
-      if (this.last_row == persona_store_pos + 1)
-        get_child_at (0, persona_store_pos).destroy ();
     }
 
     show_all ();
