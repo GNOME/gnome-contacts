@@ -26,6 +26,7 @@ using Gtk;
  * (possibly empty) contact, starting with a header and subsequently iterating
  * over the several {@link Folks.Persona}s, displaying their properties.
  */
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-form.ui")]
 public abstract class Contacts.ContactForm : Grid {
 
   protected const string[] SORTED_PROPERTIES = {
@@ -43,7 +44,17 @@ public abstract class Contacts.ContactForm : Grid {
 
   protected Store store;
 
+  [GtkChild]
+  private ScrolledWindow main_sw;
+
+  [GtkChild]
+  protected Grid container_grid;
   protected int last_row = 0;
+
+  construct {
+    this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
+    this.main_sw.get_style_context ().add_class ("contacts-contact-form");
+  }
 
   protected string[] sort_persona_properties (string[] props) {
     CompareDataFunc<string> compare_properties = (a, b) => {

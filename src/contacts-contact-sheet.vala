@@ -24,10 +24,7 @@ using Gee;
  *
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
-[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-sheet.ui")]
 public class Contacts.ContactSheet : ContactForm {
-  [GtkChild]
-  private Grid container_grid;
 
   public ContactSheet (Contact contact, Store store) {
       this.contact = contact;
