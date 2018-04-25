@@ -71,16 +71,11 @@ public class Contacts.ContactEditor : ContactForm {
     "postal-addresses.home"
   };
 
-  [GtkChild]
-  private Grid container_grid;
   private weak Widget focus_widget;
 
   private Entry name_entry;
 
   private Avatar avatar;
-
-  [GtkChild]
-  private ScrolledWindow main_sw;
 
   [GtkChild]
   private MenuButton add_detail_button;
@@ -122,11 +117,7 @@ public class Contacts.ContactEditor : ContactForm {
 
   construct {
     this.writable_personas = new HashMap<string, HashMap<string, Field?>> ();
-
-    this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
-
-    this.main_sw.get_style_context ().add_class ("contacts-main-view");
-    this.main_sw.get_style_context ().add_class ("view");
+    this.container_grid.size_allocate.connect(on_container_grid_size_allocate);
   }
 
   public ContactEditor (Contact? contact, Store store, GLib.ActionGroup editor_actions) {
@@ -830,12 +821,10 @@ public class Contacts.ContactEditor : ContactForm {
     container_grid.insert_row (idx);
   }
 
-  [GtkCallback]
   private void on_container_grid_size_allocate (Allocation alloc) {
-    if (focus_widget != null &&
-        focus_widget is Widget) {
-      focus_widget.grab_focus ();
-      focus_widget = null;
+    if (this.focus_widget != null && this.focus_widget is Widget) {
+      this.focus_widget.grab_focus ();
+      this.focus_widget = null;
     }
   }
 
