@@ -46,7 +46,7 @@ public class Contacts.App : Gtk.Application {
 
   public App () {
     Object (
-      application_id: "org.gnome.Contacts",
+      application_id: Config.APP_ID,
       flags: ApplicationFlags.HANDLES_COMMAND_LINE
     );
 
@@ -79,7 +79,7 @@ public class Contacts.App : Gtk.Application {
 
   public override int handle_local_options (VariantDict options) {
     if ("version" in options) {
-      stdout.printf ("gnome-contacts %s\n", Config.PACKAGE_VERSION);
+      stdout.printf ("%s %s\n", Config.PACKAGE_NAME, Config.PACKAGE_VERSION);
       return 0;
     }
 
@@ -185,7 +185,7 @@ public class Contacts.App : Gtk.Application {
                            "comments", _("Contact Management Application"),
                            "copyright", _("© 2011 Red Hat, Inc.\n© 2011-2018 The Contacts Developers"),
                            "license-type", Gtk.License.GPL_2_0,
-                           "logo-icon-name", "gnome-contacts",
+                           "logo-icon-name", Config.APP_ID,
                            "version", Config.PACKAGE_VERSION,
                            "website", "https://wiki.gnome.org/Apps/Contacts",
                            "wrap-license", true);
