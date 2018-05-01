@@ -8,6 +8,7 @@ stages:
   - build-flatpak
   - build-os
 
+# We always use flatpak-builder to check if everything still works.
 flatpak:master:
   image: registry.gitlab.com/alatiera/gnome-nightly-oci/gnome-master:latest
   stage: build-flatpak
@@ -32,26 +33,26 @@ flatpak:master:
     paths:
       - .flatpak-builder/cache
 
-fedora:stable:
-  image: fedora:27
+
+# We also check (less often) if we're still building on some popular distros
+fedora:rawhide:
+  image: fedora:rawhide
   stage: build-os
   before_script:
-    - dnf update -y
-    - >
-      dnf install -y \
-        gcc \
-        meson \
-        vala \
-        gettext \
-        glib2-devel \
-        gtk3-devel \
-        libgee-devel \
-        folks-devel \
-        evolution-data-server-devel \
-        gnome-desktop3-devel \
-        cheese-libs-devel \
-        gnome-online-accounts-devel \
-        telepathy-glib-devel
+    - dnf update -y && dnf install -y 'dnf-command(builddep)' redhat-rpm-config
+    - dnf builddep -y gnome-contacts
+  <<: *distro_build
+  only:
+    - schedules
+    - web
+    - tags
+
+ubuntu:devel:
+  image: ubuntu:devel
+  stage: build-os
+  before_script:
+    - apt update -y
+    - apt build-dep -y gnome-contacts
   <<: *distro_build
   only:
     - schedules
