@@ -36,7 +36,7 @@ namespace Contacts {
     [DBus (name = "ActivateAction")]
     public abstract void ActivateAction (string action,
                                          Variant[] parameter,
-                                         HashTable<string, Variant> data) throws IOError;
+                                         HashTable<string, Variant> data) throws Error;
   }
 
   public void activate_action (string app_id,
@@ -62,8 +62,8 @@ namespace Contacts {
                                                       new GLib.List<File>());
       var data = new HashTable<string, Variant>(str_hash, str_equal);
       data.insert ("desktop-startup-id", new Variant.string (startup_id));
-        con.ActivateAction (action, param_array, data);
-    } catch (IOError e) {
+      con.ActivateAction (action, param_array, data);
+    } catch (Error e) {
       debug ("Failed to activate action" + action);
     }
   }
