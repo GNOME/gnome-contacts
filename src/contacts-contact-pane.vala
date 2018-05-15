@@ -39,14 +39,12 @@ public class Contacts.ContactPane : Stack {
   private Grid none_selected_page;
 
   [GtkChild]
-  private ScrolledWindow contact_sheet_page;
-  [GtkChild]
-  private Container contact_sheet_container;
+  private Container contact_sheet_page;
   private ContactSheet? sheet = null;
 
   [GtkChild]
   private Box contact_editor_page;
-  private ContactEditor editor;
+  private ContactEditor? editor = null;
 
   private SimpleActionGroup edit_contact_actions = new SimpleActionGroup ();
   private const GLib.ActionEntry[] action_entries = {
@@ -80,25 +78,6 @@ public class Contacts.ContactPane : Stack {
     this.store = contacts_store;
 
     this.edit_contact_actions.add_action_entries (action_entries, this);
-
-    // Contact editor
-    this.editor = new ContactEditor (this.store, this.edit_contact_actions);
-    this.editor.linked_button.clicked.connect (linked_accounts);
-    this.editor.remove_button.clicked.connect (delete_contact);
-    this.contact_editor_page.add (this.editor);
-
-    /* enable/disable actions*/
-    var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
-    this.editor.bind_property ("has-birthday-row", birthday_action, "enabled",
-                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
-
-    var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
-    this.editor.bind_property ("has-nickname-row", nickname_action, "enabled",
-                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
-
-    var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
-    this.editor.bind_property ("has-notes-row", notes_action, "enabled",
-                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
   }
 
   public void add_suggestion (Contact c) {
@@ -143,8 +122,7 @@ public class Contacts.ContactPane : Stack {
 
     remove_contact_sheet();
     this.sheet = new ContactSheet (this.contact, this.store);
-    this.contact_sheet_container.add (this.sheet);
-    this.sheet.set_focus_vadjustment (this.contact_sheet_page.get_vadjustment ());
+    this.contact_sheet_page.add (this.sheet);
     set_visible_child (this.contact_sheet_page);
 
     var matches = this.store.aggregator.get_potential_matches (this.contact.individual, MatchResult.HIGH);
@@ -164,9 +142,41 @@ public class Contacts.ContactPane : Stack {
     // Remove the suggestion grid that goes along with it.
     remove_suggestion_grid ();
 
-    this.contact_sheet_container.remove (this.sheet);
+    this.contact_sheet_page.remove (this.sheet);
     this.sheet.destroy();
     this.sheet = null;
+  }
+
+  private void create_contact_editor () {
+    if (this.editor != null)
+      remove_contact_editor ();
+
+    this.editor = new ContactEditor (this.contact, this.store, this.edit_contact_actions);
+    this.editor.linked_button.clicked.connect (linked_accounts);
+    this.editor.remove_button.clicked.connect (delete_contact);
+
+    /* enable/disable actions*/
+    var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
+    this.editor.bind_property ("has-birthday-row", birthday_action, "enabled",
+                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+    var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
+    this.editor.bind_property ("has-nickname-row", nickname_action, "enabled",
+                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+    var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
+    this.editor.bind_property ("has-notes-row", notes_action, "enabled",
+                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+    this.contact_editor_page.add (this.editor);
+  }
+
+  private void remove_contact_editor () {
+    if (this.editor == null)
+      return;
+
+    this.contact_editor_page.remove (this.editor);
+    this.editor = null;
   }
 
   void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
@@ -203,10 +213,7 @@ public class Contacts.ContactPane : Stack {
     this.on_edit_mode = true;
 
     remove_contact_sheet ();
-
-    this.editor.clear ();
-    this.editor.edit (this.contact);
-    this.editor.show_all ();
+    create_contact_editor ();
     set_visible_child (this.contact_editor_page);
   }
 
@@ -219,7 +226,7 @@ public class Contacts.ContactPane : Stack {
     if (!drop_changes)
       save_editor_changes.begin ();
 
-    this.editor.clear ();
+    remove_contact_editor ();
 
     if (this.contact != null)
       show_contact_sheet ();
@@ -257,12 +264,10 @@ public class Contacts.ContactPane : Stack {
   }
 
   public void new_contact () {
-    on_edit_mode = true;
-
+    this.on_edit_mode = true;
+    this.contact = null;
     remove_contact_sheet ();
-
-    editor.set_new_contact ();
-
+    create_contact_editor ();
     set_visible_child (this.contact_editor_page);
   }
 

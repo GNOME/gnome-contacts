@@ -42,15 +42,16 @@ public class Contacts.SearchProvider : Object {
       this.app.quit ();
   }
 
-  public async string[] GetInitialResultSet (string[] terms) {
+  public async string[] GetInitialResultSet (string[] terms) throws Error {
     return yield do_search (terms);
   }
 
-  public async string[] GetSubsearchResultSet (string[] previous_results, string[] new_terms) {
+  public async string[] GetSubsearchResultSet (string[] previous_results, string[] new_terms)
+      throws Error {
     return yield do_search (new_terms);
   }
 
-  private async string[] do_search (string[] terms) {
+  private async string[] do_search (string[] terms) throws Error {
     this.app.hold ();
 
     // Make the query and search view
@@ -72,11 +73,11 @@ public class Contacts.SearchProvider : Object {
     return results;
   }
 
-  public async HashTable<string, Variant>[] GetResultMetas (string[] ids) {
+  public async HashTable<string, Variant>[] GetResultMetas (string[] ids) throws Error {
     return yield get_metas (ids);
   }
 
-  private async HashTable<string, Variant>[] get_metas (owned string[] ids) {
+  private async HashTable<string, Variant>[] get_metas (owned string[] ids) throws Error {
     this.app.hold ();
 
     var results = new ArrayList<HashTable> ();
@@ -117,7 +118,7 @@ public class Contacts.SearchProvider : Object {
     return results.to_array ();
   }
 
-  public void ActivateResult (string id, string[] terms, uint32 timestamp) {
+  public void ActivateResult (string id, string[] terms, uint32 timestamp) throws Error {
     this.app.hold ();
 
     try {
@@ -128,7 +129,7 @@ public class Contacts.SearchProvider : Object {
     this.app.release ();
   }
 
-  public void LaunchSearch (string[] terms, uint32 timestamp) {
+  public void LaunchSearch (string[] terms, uint32 timestamp) throws Error {
     this.app.hold ();
 
     debug ("LaunchSearch (%s)", string.joinv (", ", terms));

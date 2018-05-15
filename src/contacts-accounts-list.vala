@@ -104,8 +104,7 @@ public class Contacts.AccountsList : Box {
         var provider_image = Contacts.get_icon_for_goa_account (source_account_id);
         row_data.attach (provider_image, 0, 0, 1, 2);
       } else {
-        var provider_image = new Image.from_icon_name ("gnome-contacts",
-                                                       IconSize.DIALOG);
+        var provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
         row_data.attach (provider_image, 0, 0, 1, 2);
       }
 
@@ -138,8 +137,7 @@ public class Contacts.AccountsList : Box {
       local_data.margin_start = 5;
       local_data.set_column_spacing (10);
       local_data.set_data ("store", local_store);
-      var provider_image = new Image.from_icon_name ("gnome-contacts",
-                                                     IconSize.DIALOG);
+      var provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
       local_data.add (provider_image);
       var local_label = new Label (_("Local Address Book"));
       local_data.add (local_label);

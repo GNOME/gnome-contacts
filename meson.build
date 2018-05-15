@@ -20,6 +20,8 @@ docs_enabled = get_option('docs')
 manpage_enabled = get_option('manpage')
 
 # Common variables
+contacts_app_id = 'org.gnome.Contacts'
+
 config_h_dir = include_directories('.')
 contacts_prefix = get_option('prefix')
 datadir = join_paths(contacts_prefix, get_option('datadir'))
@@ -66,6 +68,7 @@ valadoc = find_program('valadoc', required: docs_enabled)
 
 # Configuration
 conf = configuration_data()
+conf.set_quoted('APP_ID', contacts_app_id)
 conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 conf.set_quoted('G_LOG_DOMAIN', meson.project_name())
 conf.set_quoted('LOCALEDIR', locale_dir)

@@ -24,17 +24,7 @@ using Gee;
  *
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
-[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-sheet.ui")]
-public class Contacts.ContactSheet : Grid {
-
-  private Contact? contact;
-
-  private Store store;
-
-  private int last_row = 0;
-
-  [GtkChild]
-  private Label name_label;
+public class Contacts.ContactSheet : ContactForm {
 
   public ContactSheet (Contact contact, Store store) {
       this.contact = contact;
@@ -52,14 +42,14 @@ public class Contacts.ContactSheet : Grid {
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, this.last_row);
+    this.container_grid.attach (type_label, 0, this.last_row);
 
     var value_button = new Button.with_label (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
     value_button.xalign = 0.0f;
     value_button.set_hexpand (true);
-    attach (value_button, 1, this.last_row);
+    this.container_grid.attach (value_button, 1, this.last_row);
     this.last_row++;
 
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
@@ -73,14 +63,14 @@ public class Contacts.ContactSheet : Grid {
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, this.last_row);
+    this.container_grid.attach (type_label, 0, this.last_row);
 
     var value_button = new LinkButton (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
     value_button.xalign = 0.0f;
     value_button.set_hexpand (true);
-    attach (value_button, 1, this.last_row);
+    this.container_grid.attach (value_button, 1, this.last_row);
     this.last_row++;
 
     (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
@@ -93,7 +83,7 @@ public class Contacts.ContactSheet : Grid {
     type_label.set_halign (Align.END);
     type_label.set_valign (Align.START);
     type_label.get_style_context ().add_class ("dim-label");
-    attach (type_label, 0, this.last_row, 1, 1);
+    this.container_grid.attach (type_label, 0, this.last_row, 1, 1);
 
     var value_label = new Label (value);
     value_label.set_line_wrap (true);
@@ -109,7 +99,7 @@ public class Contacts.ContactSheet : Grid {
     value_label.margin_top = 3;
     value_label.margin_bottom = 3;
 
-    attach (value_label, 1, this.last_row, 1, 1);
+    this.container_grid.attach (value_label, 1, this.last_row, 1, 1);
     this.last_row++;
   }
 
@@ -117,42 +107,46 @@ public class Contacts.ContactSheet : Grid {
     var image_frame = new Avatar (PROFILE_SIZE, this.contact);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
-    attach (image_frame,  0, 0, 1, 3);
+    this.container_grid.attach (image_frame,  0, 0, 1, 3);
 
-    this.contact.keep_widget_uptodate (this.name_label, (w) => {
-        this.name_label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>",
-                                                           this.contact.individual.display_name));
-      });
+    create_name_label ();
 
     this.last_row += 3; // Name/Avatar takes up 3 rows
-    bool is_first_persona = true;
 
     var personas = this.contact.get_personas_for_display ();
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
-      int persona_store_pos = 0;
+      bool is_first_persona = (this.last_row == 3);
+      int persona_store_pos = this.last_row;
       if (!is_first_persona) {
-        persona_store_pos = this.last_row;
-        var store_name = new Label("");
-        store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-                               Contact.format_persona_store_name_for_contact (p)));
-        store_name.set_halign (Align.START);
-        store_name.xalign = 0.0f;
-        store_name.margin_start = 6;
-        attach (store_name, 0, this.last_row, 3, 1);
+        this.container_grid.attach (create_persona_store_label (p), 0, this.last_row, 3);
         this.last_row++;
       }
-      is_first_persona = false;
 
-      foreach (var prop in Contact.SORTED_PROPERTIES)
+      foreach (var prop in ContactForm.SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
       // Nothing to show in the persona: don't mention it
-      if (this.last_row == persona_store_pos + 1)
-        get_child_at (0, persona_store_pos).destroy ();
+      bool is_empty_persona = (this.last_row == persona_store_pos + 1);
+      if (!is_first_persona && is_empty_persona) {
+        this.container_grid.remove_row (persona_store_pos);
+        this.last_row--;
+      }
     }
 
     show_all ();
+  }
+
+  private void create_name_label () {
+    var name_label = new Label ("");
+    name_label.ellipsize = Pango.EllipsizeMode.END;
+    name_label.xalign = 0f;
+    name_label.selectable = true;
+    this.container_grid.attach (name_label,  1, 0, 1, 3);
+    this.contact.keep_widget_uptodate (name_label, (w) => {
+        name_label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>",
+                                                      this.contact.individual.display_name));
+      });
   }
 
   private void add_row_for_property (Persona persona, string property) {

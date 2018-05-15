@@ -475,29 +475,6 @@ public class Contacts.Contact : GLib.Object  {
     return store.display_name;
   }
 
-  public const string[] SORTED_PROPERTIES = { "email-addresses" , "phone-numbers" , "im-addresses", "urls", "nickname", "birthday", "postal-addresses", "notes" };
-
-  public static string[] sort_persona_properties (string[] props) {
-    CompareDataFunc<string> compare_properties = (a, b) => {
-        foreach (var prop in SORTED_PROPERTIES) {
-          if (a == prop)
-            return (b == prop)? 0 : -1;
-
-          if (b == prop)
-            return 1;
-        }
-
-        return 0;
-      };
-
-    var sorted_props = new ArrayList<string> ();
-    foreach (var s in props)
-      sorted_props.add (s);
-
-    sorted_props.sort ((owned) compare_properties);
-    return sorted_props.to_array ();
-  }
-
   /* Tries to set the property on all persons that have it writeable, and
    * if none, creates a new persona and writes to it, returning the new
    * persona.

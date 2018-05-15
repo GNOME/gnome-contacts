@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk+" version="3.22"/>
 
   <menu id="edit-contact-menu">
     <item>
@@ -49,31 +49,9 @@
     </item>
   </menu>
 
-  <template class="ContactsContactEditor" parent="GtkGrid">
+  <template class="ContactsContactEditor" parent="ContactsContactForm">
     <property name="visible">True</property>
     <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkScrolledWindow" id="main_sw">
-        <property name="visible">True</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
-        <property name="shadow_type">none</property>
-        <property name="hscrollbar_policy">never</property>
-        <property name="vscrollbar_policy">automatic</property>
-        <child>
-          <object class="GtkGrid" id="container_grid">
-            <property name="visible">True</property>
-            <property name="margin">36</property>
-            <property name="margin_bottom">24</property>
-            <property name="row_spacing">12</property>
-            <property name="column_spacing">12</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-            <signal name="size-allocate" handler="on_container_grid_size_allocate" after="true" />
-          </object>
-        </child>
-      </object>
-    </child>
     <child>
       <object class="GtkActionBar">
         <property name="visible">True</property>
