@@ -187,11 +187,10 @@ public class Contacts.AvatarSelector : Popover {
 
   [GtkCallback]
   private void on_file_clicked (Button button) {
-    var chooser = new FileChooserDialog (_("Browse for more pictures"),
+    var chooser = new FileChooserNative (_("Browse for more pictures"),
                                          (Gtk.Window)this.get_toplevel (),
                                          FileChooserAction.OPEN,
-                                         _("_Cancel"), ResponseType.CANCEL,
-                                         _("_Open"), ResponseType.ACCEPT);
+                                         _("_Open"), _("_Cancel"));
     chooser.set_modal (true);
     chooser.set_local_only (false);
     var preview = new Image ();
@@ -235,7 +234,7 @@ public class Contacts.AvatarSelector : Popover {
         chooser.destroy ();
       });
 
-    chooser.present ();
+    chooser.run ();
     this.popdown();
   }
 
@@ -259,7 +258,8 @@ public class Contacts.AvatarSelector : Popover {
       } catch {
       }
 
-      (chooser as Dialog).set_response_sensitive (ResponseType.ACCEPT, (pixbuf != null));
+      if (chooser is Dialog)
+        ((Dialog) chooser).set_response_sensitive (ResponseType.ACCEPT, (pixbuf != null));
 
       if (pixbuf != null)
         preview.set_from_pixbuf (pixbuf);
