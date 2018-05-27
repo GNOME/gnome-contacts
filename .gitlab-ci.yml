@@ -12,12 +12,12 @@ flatpak:master:
   image: registry.gitlab.com/alatiera/gnome-nightly-oci/gnome-master:latest
   stage: build-flatpak
   script:
-    - flatpak-builder --stop-at=gnome-contacts app data/flatpak/org.gnome.Contacts.json
+    - flatpak-builder --stop-at=gnome-contacts app data/flatpak/org.gnome.Contacts.yml
     # Make sure to keep this in sync with the Flatpak manifest, all arguments
     # are passed except the config-args because we build it ourselves
     - flatpak build app meson --prefix=/app _build
     - flatpak build app ninja -C _build install
-    - flatpak-builder --finish-only --repo=repo app data/flatpak/org.gnome.Contacts.json
+    - flatpak-builder --finish-only --repo=repo app data/flatpak/org.gnome.Contacts.yml
     # Make a Flatpak Contacts bundle for people to test
     - flatpak build-bundle repo contacts-dev.flatpak --runtime-repo=https://sdk.gnome.org/gnome-nightly.flatpakrepo org.gnome.Contacts
     # TODO: Run automatic tests inside the Flatpak env
