@@ -37,18 +37,17 @@ public class Contacts.ContactSheet : ContactForm {
       update ();
   }
 
-  private Button add_row_with_button (string label_value, string value) {
-    var type_label = new Label (label_value);
+  private Button add_row_with_button (string label, string value, bool use_link_button = false) {
+    var type_label = new Label (label);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.get_style_context ().add_class ("dim-label");
     this.container_grid.attach (type_label, 0, this.last_row);
 
-    var value_button = new Button.with_label (value);
+    var value_button = use_link_button? new LinkButton (value) : new Button.with_label (value);
     value_button.focus_on_click = false;
     value_button.relief = ReliefStyle.NONE;
-    value_button.xalign = 0.0f;
-    value_button.set_hexpand (true);
+    value_button.halign = Align.START;
     this.container_grid.attach (value_button, 1, this.last_row);
     this.last_row++;
 
@@ -56,25 +55,6 @@ public class Contacts.ContactSheet : ContactForm {
     (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
 
     return value_button;
-  }
-
-  private void add_row_with_link_button (string label_value, string value) {
-    var type_label = new Label (label_value);
-    type_label.xalign = 1.0f;
-    type_label.set_halign (Align.END);
-    type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row);
-
-    var value_button = new LinkButton (value);
-    value_button.focus_on_click = false;
-    value_button.relief = ReliefStyle.NONE;
-    value_button.xalign = 0.0f;
-    value_button.set_hexpand (true);
-    this.container_grid.attach (value_button, 1, this.last_row);
-    this.last_row++;
-
-    (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
-    (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
   }
 
   void add_row_with_label (string label_value, string value) {
@@ -244,7 +224,7 @@ public class Contacts.ContactSheet : ContactForm {
     var url_details = persona as UrlDetails;
     if (url_details != null) {
       foreach (var url in url_details.urls)
-        add_row_with_link_button (_("Website"), url.value);
+        add_row_with_button (_("Website"), url.value, true);
     }
   }
 
