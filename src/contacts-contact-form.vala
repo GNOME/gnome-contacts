@@ -87,4 +87,16 @@ public abstract class Contacts.ContactForm : Grid {
 
     return store_name;
   }
+
+  protected Label create_property_label (string text, string? tooltip = null) {
+    var property_label = new Label (text);
+    property_label.xalign = 1.0f;
+    property_label.halign = Align.END;
+    property_label.valign = Align.START;
+    property_label.get_style_context ().add_class ("dim-label");
+    if (tooltip != null)
+      property_label.tooltip_text = tooltip;
+
+    return property_label;
+  }
 }

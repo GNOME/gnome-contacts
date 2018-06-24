@@ -38,11 +38,7 @@ public class Contacts.ContactSheet : ContactForm {
   }
 
   private Button add_row_with_button (string label, string value, bool use_link_button = false) {
-    var type_label = new Label (label);
-    type_label.xalign = 1.0f;
-    type_label.set_halign (Align.END);
-    type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row);
+    this.container_grid.attach (create_property_label (label), 0, this.last_row);
 
     var value_button = use_link_button? new LinkButton (value) : new Button.with_label (value);
     value_button.focus_on_click = false;
@@ -57,13 +53,8 @@ public class Contacts.ContactSheet : ContactForm {
     return value_button;
   }
 
-  void add_row_with_label (string label_value, string value) {
-    var type_label = new Label (label_value);
-    type_label.xalign = 1.0f;
-    type_label.set_halign (Align.END);
-    type_label.set_valign (Align.START);
-    type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row, 1, 1);
+  void add_row_with_label (string label, string value) {
+    this.container_grid.attach (create_property_label (label), 0, this.last_row);
 
     var value_label = new Label (value);
     value_label.set_line_wrap (true);
@@ -74,7 +65,7 @@ public class Contacts.ContactSheet : ContactForm {
     value_label.set_selectable (true);
 
     /* FIXME: hardcode gap to match the button size */
-    type_label.margin_top = 3;
+    value_label.margin_top = 3;
     value_label.margin_start = 6;
     value_label.margin_top = 3;
     value_label.margin_bottom = 3;

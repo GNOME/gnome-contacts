@@ -403,11 +403,7 @@ public class Contacts.ContactEditor : ContactForm {
   }
 
   void attach_row_with_entry_labeled (string title, AbstractFieldDetails? details, string value, int row) {
-    var title_label = new Label (title);
-    title_label.set_hexpand (false);
-    title_label.set_halign (Align.START);
-    title_label.margin_end = 6;
-    container_grid.attach (title_label, 0, row, 1, 1);
+    container_grid.attach (create_property_label (title), 0, row);
 
     var value_entry = new Entry ();
     value_entry.set_text (value);
@@ -431,13 +427,7 @@ public class Contacts.ContactEditor : ContactForm {
   }
 
   void attach_row_with_text_labeled (string title, AbstractFieldDetails? details, string value, int row) {
-    var title_label = new Label (title);
-    title_label.set_hexpand (false);
-    title_label.set_halign (Align.START);
-    title_label.set_valign (Align.START);
-    title_label.margin_top = 3;
-    title_label.margin_end = 6;
-    container_grid.attach (title_label, 0, row, 1, 1);
+    container_grid.attach (create_property_label (title), 0, row);
 
     var sw = new ScrolledWindow (null, null);
     sw.set_shadow_type (ShadowType.OUT);
@@ -469,12 +459,8 @@ public class Contacts.ContactEditor : ContactForm {
 
   delegate void AdjustingDateFn();
 
-  void attach_row_for_birthday (string title, AbstractFieldDetails? details, DateTime birthday, int row) {
-    var title_label = new Label (title);
-    title_label.set_hexpand (false);
-    title_label.set_halign (Align.START);
-    title_label.margin_end = 6;
-    container_grid.attach (title_label, 0, row, 1, 1);
+  private void attach_row_for_birthday (DateTime birthday, int row) {
+    container_grid.attach (create_property_label (_("Birthday")), 0, row);
 
     var box = new Grid ();
     box.set_column_spacing (12);
@@ -695,19 +681,17 @@ public class Contacts.ContactEditor : ContactForm {
     case "birthday":
       var rows = new HashMap<int, RowData?> ();
       if (add_empty) {
-	var today = new DateTime.now_local ();
-	attach_row_for_birthday (_("Birthday"), null, today, row);
-	rows.set (row, { null });
-	row++;
+        var today = new DateTime.now_local ();
+        attach_row_for_birthday (today, row);
+        rows.set (row, { null });
+        row++;
       } else {
-	var birthday_details = p as BirthdayDetails;
-	if (birthday_details != null) {
-	  if (birthday_details.birthday != null) {
-	    attach_row_for_birthday (_("Birthday"), null, birthday_details.birthday, row);
-	    rows.set (row, { null });
-	    row++;
-	  }
-	}
+        var birthday_details = p as BirthdayDetails;
+        if (birthday_details != null && birthday_details.birthday != null) {
+            attach_row_for_birthday (birthday_details.birthday, row);
+            rows.set (row, { null });
+            row++;
+        }
       }
       if (! rows.is_empty) {
 	has_birthday_row = true;
