@@ -1,24 +1,25 @@
+stages:
+  - build-flatpak
+  - build-os
 
 .build_template: &distro_build
   script:
     - meson -Dmanpage=false _build
     - ninja -C _build install
 
-stages:
-  - build-flatpak
-  - build-os
-
-# We always use flatpak-builder to check if everything still works.
+# We always use flatpak to check if everything still works.
 flatpak:master:
   image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
   stage: build-flatpak
+  variables:
+    MANIFEST_PATH: 'data/flatpak/org.gnome.Contacts.json'
   script:
-    - flatpak-builder --stop-at=gnome-contacts app data/flatpak/org.gnome.Contacts.json
+    - flatpak-builder --stop-at=gnome-contacts app ${MANIFEST_PATH}
     # Make sure to keep this in sync with the Flatpak manifest, all arguments
     # are passed except the config-args because we build it ourselves
     - flatpak build app meson --prefix=/app _build
     - flatpak build app ninja -C _build install
-    - flatpak-builder --finish-only --repo=repo app data/flatpak/org.gnome.Contacts.json
+    - flatpak-builder --finish-only --repo=repo app ${MANIFEST_PATH}
     # Make a Flatpak Contacts bundle for people to test
     - flatpak build-bundle repo contacts-dev.flatpak --runtime-repo=https://sdk.gnome.org/gnome-nightly.flatpakrepo org.gnome.Contacts
     # TODO: Run automatic tests inside the Flatpak env
