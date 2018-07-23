@@ -6,7 +6,7 @@ resources = gnome.compile_resources('org.gnome.Contacts', resource_files,
 
 # The icons
 iconsdir = join_paths(datadir, 'icons', 'hicolor')
-foreach size: ['16x16', '22x22', '32x32', '48x48', '512x512', 'symbolic']
+foreach size: ['scalable', 'symbolic']
   install_subdir('icons/hicolor/' + size, install_dir: iconsdir)
 endforeach
 
