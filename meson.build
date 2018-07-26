@@ -92,3 +92,4 @@ subdir('man')
 if docs_enabled
   subdir('docs')
 endif
+subdir('tests')

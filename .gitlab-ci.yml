@@ -21,13 +21,12 @@ flatpak:master:
     - flatpak-builder --finish-only --repo=repo app data/flatpak/org.gnome.Contacts.json
     # Make a Flatpak Contacts bundle for people to test
     - flatpak build-bundle repo contacts-dev.flatpak --runtime-repo=https://sdk.gnome.org/gnome-nightly.flatpakrepo org.gnome.Contacts
-    # TODO: Run automatic tests inside the Flatpak env
-    # - xvfb-run -a -s "-screen 0 1024x768x24" flatpak build app ninja -C _build test
+    - xvfb-run -a -s "-screen 0 1024x768x24" flatpak build app ninja -C _build test
   artifacts:
     paths:
       - contacts-dev.flatpak
       - _build/meson-logs/meson-log.txt
-      # - _build/meson-logs/testlog.txt
+      - _build/meson-logs/testlog.txt
     expire_in: 2 days
   cache:
     paths:
