@@ -503,7 +503,7 @@ public class Contacts.Contact : GLib.Object  {
     return p;
   }
 
-  internal static async void set_persona_property (Persona persona,
+  public static async void set_persona_property (Persona persona,
 						   string property_name, Value new_value) throws PropertyError, IndividualAggregatorError, ContactError, PropertyError {
     if (persona is FakePersona) {
       var fake = persona as FakePersona;

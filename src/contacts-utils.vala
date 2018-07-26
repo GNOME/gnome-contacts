@@ -23,7 +23,7 @@ using GLib;
 using Gdk;
 
 namespace Contacts {
-  private bool is_set (string? str) {
+  public bool is_set (string? str) {
     return str != null && str != "";
   }
 
