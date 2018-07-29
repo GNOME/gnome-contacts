@@ -363,12 +363,12 @@ public class Contacts.TypeSet : Object  {
 }
 
 public class Contacts.TypeCombo : Grid  {
-  TypeSet type_set;
-  ComboBox combo;
-  Entry entry;
-  TreeIter last_active;
-  bool custom_mode;
-  bool in_manual_change;
+  private unowned TypeSet type_set;
+  private ComboBox combo;
+  private Entry entry;
+  private TreeIter last_active;
+  private bool custom_mode;
+  private bool in_manual_change;
   public bool modified;
 
   public signal void changed ();
