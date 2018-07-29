@@ -10,7 +10,7 @@ libcontacts_sources = [
   'contacts-esd-setup.vala',
   'contacts-im-service.vala',
   'contacts-store.vala',
-  'contacts-types.vala',
+  'contacts-typeset.vala',
   'contacts-utils.vala',
 ]
 
@@ -87,6 +87,7 @@ contacts_vala_sources = files(
   'contacts-max-width-bin.vala',
   'contacts-settings.vala',
   'contacts-setup-window.vala',
+  'contacts-type-combo.vala',
   'contacts-ui-state.vala',
   'contacts-window.vala',
   'main.vala',
