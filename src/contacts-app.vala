@@ -29,11 +29,12 @@ public class Contacts.App : Gtk.Application {
   private bool is_quiescent_scheduled = false;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "quit",        quit                },
-    { "help",        show_help           },
-    { "about",       show_about          },
-    { "change-book", change_address_book },
-    { "new-contact", new_contact         }
+    { "quit",            quit                },
+    { "help",            show_help           },
+    { "about",           show_about          },
+    { "change-book",     change_address_book },
+    { "online-accounts", online_accounts     },
+    { "new-contact",     new_contact         }
   };
 
   private const OptionEntry[] options = {
@@ -157,6 +158,32 @@ public class Contacts.App : Gtk.Application {
 	contacts_store.disconnect (stores_changed_id);
 	dialog.destroy ();
       });
+  }
+
+  public void online_accounts () {
+    try {
+      var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
+                                              DBusProxyFlags.NONE,
+                                              null,
+                                              "org.gnome.ControlCenter",
+                                              "/org/gnome/ControlCenter",
+                                              "org.gtk.Actions");
+
+      var builder = new VariantBuilder (new VariantType ("av") );
+      builder.add ("v", new Variant.string (""));
+      var param = new Variant.tuple ({
+        new Variant.string ("launch-panel"),
+        new Variant.array (new VariantType ("v"), {
+          new Variant ("v", new Variant ("(sav)", "online-accounts", builder))
+        }),
+        new Variant.array (new VariantType ("{sv}"), {})
+      });
+
+      proxy.call_sync ("Activate", param, DBusCallFlags.NONE, -1);
+    } catch (Error e) {
+      // TODO: Show error dialog
+      warning ("Couldn't open online-accounts: %s", e.message);
+    }
   }
 
   public void show_help () {
