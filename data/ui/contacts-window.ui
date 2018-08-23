@@ -3,10 +3,11 @@
   <!-- interface-requires gtk+ 3.22 -->
   <object class="GtkPopover" id="hamburger_menu_popover">
     <child>
-      <object class="GtkGrid">
+      <object class="GtkBox" id="hamburger_menu_box">
         <property name="visible">True</property>
-        <property name="row_spacing">6</property>
+        <property name="spacing">6</property>
         <property name="margin">18</property>
+        <property name="orientation">vertical</property>
         <property name="width_request">200</property>
         <child>
           <object class="GtkLabel">
@@ -17,56 +18,58 @@
               <class name="dim-label"/>
             </style>
           </object>
-          <packing>
-            <property name="top_attach">0</property>
-            <property name="width">2</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkRadioButton" id="sort_on_firstname_button">
+          <object class="GtkGrid">
             <property name="visible">True</property>
-            <property name="group">sort_on_firstname_button</property>
+            <property name="row_spacing" bind-source="hamburger_menu_box" bind-property="spacing" bind-flags="bidirectional|sync-create"/>
+            <child>
+              <object class="GtkRadioButton" id="sort_on_firstname_button">
+                <property name="visible">True</property>
+                <property name="group">sort_on_firstname_button</property>
+              </object>
+              <packing>
+                <property name="top_attach">0</property>
+                <property name="left_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">First name</property>
+                <property name="mnemonic_widget">sort_on_firstname_button</property>
+              </object>
+              <packing>
+                <property name="top_attach">0</property>
+                <property name="left_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="sort_on_surname_button">
+                <property name="visible">True</property>
+                <property name="group">sort_on_firstname_button</property>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="left_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">Surname</property>
+                <property name="mnemonic_widget">sort_on_surname_button</property>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="left_attach">0</property>
+              </packing>
+            </child>
           </object>
-          <packing>
-            <property name="top_attach">1</property>
-            <property name="left_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="halign">start</property>
-            <property name="hexpand">True</property>
-            <property name="label" translatable="yes">First name</property>
-            <property name="mnemonic_widget">sort_on_firstname_button</property>
-          </object>
-          <packing>
-            <property name="top_attach">1</property>
-            <property name="left_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkRadioButton" id="sort_on_surname_button">
-            <property name="visible">True</property>
-            <property name="group">sort_on_firstname_button</property>
-          </object>
-          <packing>
-            <property name="top_attach">2</property>
-            <property name="left_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="halign">start</property>
-            <property name="hexpand">True</property>
-            <property name="label" translatable="yes">Surname</property>
-            <property name="mnemonic_widget">sort_on_surname_button</property>
-          </object>
-          <packing>
-            <property name="top_attach">2</property>
-            <property name="left_attach">0</property>
-          </packing>
         </child>
       </object>
     </child>
