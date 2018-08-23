@@ -151,31 +151,4 @@ public class Contacts.AccountsList : Box {
 
     accounts_view.show_all ();
   }
-
-  [GtkCallback]
-  private void on_goa_button_clicked () {
-    try {
-      var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
-                                              DBusProxyFlags.NONE,
-                                              null,
-                                              "org.gnome.ControlCenter",
-                                              "/org/gnome/ControlCenter",
-                                              "org.gtk.Actions");
-
-      var builder = new VariantBuilder (new VariantType ("av") );
-      builder.add ("v", new Variant.string (""));
-      var param = new Variant.tuple ({
-        new Variant.string ("launch-panel"),
-        new Variant.array (new VariantType ("v"), {
-          new Variant ("v", new Variant ("(sav)", "online-accounts", builder))
-        }),
-        new Variant.array (new VariantType ("{sv}"), {})
-      });
-
-      proxy.call_sync ("Activate", param, DBusCallFlags.NONE, -1);
-    } catch (Error e) {
-      // TODO: Show error dialog
-      warning ("Couldn't open online-accounts: %s", e.message);
-    }
-  }
 }
