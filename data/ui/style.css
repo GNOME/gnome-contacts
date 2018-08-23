@@ -2,12 +2,8 @@
  * GNOME Contacts
  */
 
-ContactsListPane.frame:dir(ltr) {
-  border-width: 0 1px 0 0;
-}
-
-ContactsListPane.frame:dir(rtl) {
-  border-width: 0 0 0 1px;
+separator.selection-mode {
+  background-color: mix(@theme_selected_bg_color, #000, 0.2);
 }
 
 .contacts-map {
@@ -31,25 +27,6 @@ row.contact-data-row {
 .contacts-suggestion {
   border-top: 1px solid @borders;
   background-color: shade(@theme_bg_color, 0.9);
-}
-
-/* Border on the right in the left menu toolbar */
-.contacts-left-header-bar:dir(ltr) {
- border-right-width: 1px;
-}
-
-.contacts-left-header-bar:dir(rtl) {
- border-left-width: 1px;
-}
-
-.contacts-left-header-bar:dir(ltr),
-.contacts-right-header-bar:dir(rtl) {
-  border-top-right-radius: 0;
-}
-
-.contacts-right-header-bar:dir(ltr),
-.contacts-left-header-bar:dir(rtl) {
-  border-top-left-radius: 0;
 }
 
 /* Give the avatar in the ContactSheet some margin,
