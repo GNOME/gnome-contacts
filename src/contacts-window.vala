@@ -32,6 +32,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private HeaderBar left_header;
   [GtkChild]
+  private Separator header_separator;
+  [GtkChild]
   private HeaderBar right_header;
   [GtkChild]
   private Overlay notification_overlay;
@@ -215,9 +217,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // When selecting or editing, we get special headerbars
     if (this.state == UiState.SELECTING || this.state.editing ()) {
       this.left_header.get_style_context ().add_class ("selection-mode");
+      this.header_separator.get_style_context ().add_class ("selection-mode");
       this.right_header.get_style_context ().add_class ("selection-mode");
     } else {
       this.left_header.get_style_context ().remove_class ("selection-mode");
+      this.header_separator.get_style_context ().remove_class ("selection-mode");
       this.right_header.get_style_context ().remove_class ("selection-mode");
     }
   }
