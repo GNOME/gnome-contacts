@@ -282,8 +282,10 @@ public class Contacts.ContactList : ListBox {
 
     if (event.button == Gdk.BUTTON_SECONDARY) {
       var row = (ContactDataRow) get_row_at_y ((int) Math.round (event.y));
-      select_row (row);
-      row.selector_button.active = (this.state != UiState.SELECTING) || !row.selector_button.active;
+      if (row != null) {
+        select_row (row);
+        row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
+      }
     }
 
     return false;
