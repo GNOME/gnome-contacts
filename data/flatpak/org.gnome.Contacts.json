@@ -22,8 +22,6 @@
         "--talk-name=org.gnome.evolution.dataserver.AddressBook9",
         "--talk-name=org.gnome.evolution.dataserver.Sources5",
         "--talk-name=org.gnome.evolution.dataserver.Subprocess.Backend.*",
-        /* Telepathy */
-        "--talk-name=org.freedesktop.Telepathy.AccountManager",
         /* Access for the default avatars */
         "--filesystem=xdg-data/pixmaps/faces:ro:create",
         /* Needed for dconf to work */
@@ -47,20 +45,6 @@
         "*.la", "*.a"
     ],
     "modules": [
-        {
-            "name": "telepathy-glib",
-            "config-opts": [
-                "--disable-static",
-                "--enable-vala-bindings=yes"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://telepathy.freedesktop.org/releases/telepathy-glib/telepathy-glib-0.24.1.tar.gz",
-                    "sha256": "9e0df1d8f857e0270cf0b32e2d1ca5a24aa7282873361785d573f72ad7f7d5eb"
-                }
-            ]
-        },
         {
             "name": "libgee",
             "make-install-args": [
@@ -179,6 +163,7 @@
                 "/share/GConf"
             ],
             "config-opts": [
+                "--disable-telepathy-backend",
                 "--disable-fatal-warnings"
             ],
             "sources": [
