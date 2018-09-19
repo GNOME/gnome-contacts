@@ -100,30 +100,6 @@
             ]
         },
         {
-            "name": "liboauth",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "http://netix.dl.sourceforge.net/project/liboauth/liboauth-1.0.3.tar.gz",
-                    "sha256": "0df60157b052f0e774ade8a8bac59d6e8d4b464058cc55f9208d72e41156811f"
-                }
-            ]
-        },
-        {
-            "name": "libgdata",
-            "config-opts": [
-                "--disable-always-build-tests",
-                "--disable-Werror",
-                "--disable-static"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/libgdata.git"
-                }
-            ]
-        },
-        {
             "name": "evolution-data-server",
             "cleanup": [
                 "/lib/cmake",
@@ -136,9 +112,9 @@
                 "-DENABLE_GTK=ON",
                 "-DENABLE_GOA=ON",
                 "-DENABLE_UOA=OFF",
-                "-DENABLE_GOOGLE_AUTH=ON",
-                "-DENABLE_GOOGLE=ON",
-                "-DENABLE_WITH_PHONENUMBER=ON",
+                "-DENABLE_GOOGLE_AUTH=OFF",
+                "-DENABLE_GOOGLE=OFF",
+                "-DENABLE_WITH_PHONENUMBER=OFF",
                 "-DENABLE_VALA_BINDINGS=ON",
                 "-DENABLE_WEATHER=OFF",
                 "-DWITH_OPENLDAP=OFF",
