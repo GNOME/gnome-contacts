@@ -299,6 +299,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     if (this.state == UiState.UPDATING || this.state == UiState.CREATING)
       return;
 
+    this.list_pane.select_contact (null);
+
     this.state = UiState.CREATING;
 
     this.right_header.title = _("New Contact");
