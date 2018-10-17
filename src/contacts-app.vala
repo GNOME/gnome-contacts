@@ -323,6 +323,7 @@ public class Contacts.App : Gtk.Application {
     load_styling ();
 
     typeof (HeaderGroup).ensure ();
+    typeof (TitleBar).ensure ();
   }
 
   public void load_styling () {
