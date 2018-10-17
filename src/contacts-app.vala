@@ -16,6 +16,7 @@
  */
 
 using Gtk;
+using Hdy;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
@@ -320,6 +321,8 @@ public class Contacts.App : Gtk.Application {
     base.startup ();
 
     load_styling ();
+
+    typeof (HeaderGroup).ensure ();
   }
 
   public void load_styling () {
