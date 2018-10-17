@@ -17,6 +17,7 @@
 
 using Gee;
 using Gtk;
+using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
@@ -54,6 +55,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private Button cancel_button;
   [GtkChild]
   private Button done_button;
+  // Somehow needed for the header group to work
+  [GtkChild]
+  private HeaderGroup header_group;
 
   // The 2 panes the window consists of
   private ListPane list_pane;
@@ -96,7 +100,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     bind_dimension_properties_to_settings ();
     create_contact_pane ();
-    set_headerbar_layout ();
     connect_button_signals ();
     restore_window_size_and_position_from_settings ();
   }
@@ -193,6 +196,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
         = this.hamburger_menu_button.visible
+        = this.left_header.show_close_button
         = this.right_header.show_close_button
         = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 
@@ -313,17 +317,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   public void show_search (string query) {
     list_pane.filter_entry.set_text (query);
-  }
-
-  private void set_headerbar_layout () {
-    // Propagate the decoration layout to the separate headerbars, so
-    // that we know, for example, on which side the close button should be.
-    string layout_desc = Gtk.Settings.get_default ().gtk_decoration_layout;
-    string[] tokens = layout_desc.split (":", 2);
-    if (tokens != null) {
-      this.right_header.decoration_layout = ":%s".printf (tokens[1]);
-      this.left_header.decoration_layout = tokens[0];
-    }
   }
 
   private void connect_button_signals () {
