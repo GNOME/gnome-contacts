@@ -187,6 +187,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     list_pane = new ListPane (this.settings, store);
     bind_property ("state", this.list_pane, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     list_pane.selection_changed.connect (list_pane_selection_changed_cb);
+    list_pane.contact_activated.connect (list_pane_contact_activated_cb);
     list_pane.link_contacts.connect (list_pane_link_contacts_cb);
     list_pane.delete_contacts.connect (delete_contacts);
 
@@ -409,6 +410,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     if (new_selection != null)
       show_contact_pane ();
+  }
+
+  private void list_pane_contact_activated_cb () {
+    // show_contact_pane ();
   }
 
   void list_pane_link_contacts_cb (LinkedList<Contact> contact_list) {
