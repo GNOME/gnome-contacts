@@ -44,6 +44,7 @@ public class Contacts.ListPane : Frame {
   public UiState state { get; set; }
 
   public signal void selection_changed (Contact? contact);
+  public signal void contact_activated ();
   public signal void link_contacts (LinkedList<Contact> contacts);
   public signal void delete_contacts (LinkedList<Contact> contacts);
   public signal void contacts_marked (int contacts_marked);
@@ -66,6 +67,14 @@ public class Contacts.ListPane : Frame {
 
     this.contacts_list.selection_changed.connect( (l, contact) => {
         selection_changed (contact);
+      });
+
+    this.contacts_list.row_selected.connect( () => {
+        contact_activated ();
+      });
+
+    this.contacts_list.row_activated.connect( () => {
+        contact_activated ();
       });
 
     this.contacts_list.contacts_marked.connect ((nr_contacts_marked) => {
