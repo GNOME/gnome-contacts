@@ -25,6 +25,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Grid content_grid;
   [GtkChild]
+  private Revealer back_revealer;
+  [GtkChild]
   private Container contact_pane_container;
   [GtkChild]
   private Grid loading_box;
@@ -235,6 +237,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
     // When selecting or editing, we get special headerbars
     this.titlebar.selection_mode = this.state == UiState.SELECTING || this.state.editing ();
+  }
+
+  [GtkCallback]
+  private void on_back_clicked () {
   }
 
   [GtkCallback]
