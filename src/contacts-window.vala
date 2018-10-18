@@ -31,9 +31,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private SizeGroup left_pane_size_group;
   [GtkChild]
-  private HeaderBar left_header;
+  private TitleBar titlebar;
   [GtkChild]
-  private Separator header_separator;
+  private HeaderBar left_header;
   [GtkChild]
   private HeaderBar right_header;
   [GtkChild]
@@ -219,15 +219,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       this.done_button.label = (this.state == UiState.CREATING)? _("Add") : _("Done");
 
     // When selecting or editing, we get special headerbars
-    if (this.state == UiState.SELECTING || this.state.editing ()) {
-      this.left_header.get_style_context ().add_class ("selection-mode");
-      this.header_separator.get_style_context ().add_class ("selection-mode");
-      this.right_header.get_style_context ().add_class ("selection-mode");
-    } else {
-      this.left_header.get_style_context ().remove_class ("selection-mode");
-      this.header_separator.get_style_context ().remove_class ("selection-mode");
-      this.right_header.get_style_context ().remove_class ("selection-mode");
-    }
+    this.titlebar.selection_mode = this.state == UiState.SELECTING || this.state.editing ();
   }
 
   [GtkCallback]
