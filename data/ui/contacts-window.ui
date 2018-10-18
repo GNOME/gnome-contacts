@@ -194,6 +194,35 @@
                 <property name="hexpand">True</property>
                 <property name="show_close_button">True</property>
                 <child>
+                  <object class="GtkRevealer" id="back_revealer">
+                    <property name="can_focus">False</property>
+                    <property name="transition-type">slide-right</property>
+                    <child>
+                      <object class="GtkButton" id="back">
+                        <property name="visible">True</property>
+                        <property name="valign">center</property>
+                        <property name="use-underline">True</property>
+                        <signal name="clicked" handler="on_back_clicked"/>
+                        <style>
+                          <class name="image-button"/>
+                        </style>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="a11y-back">
+                            <property name="accessible-name" translatable="yes">Back</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="back_image">
+                            <property name="visible">True</property>
+                            <property name="icon-name">go-previous-symbolic</property>
+                            <property name="icon-size">1</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
                   <object class="GtkButton" id="cancel_button">
                     <property name="visible">False</property>
                     <property name="can_focus">True</property>
