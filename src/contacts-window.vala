@@ -211,9 +211,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.cancel_button.visible
         = this.done_button.visible
         = this.state.editing ();
-    if (this.state.editing ())
+    if (this.state.editing ()) {
       this.done_button.label = (this.state == UiState.CREATING)? _("Add") : _("Done");
-
+      // Cast is required because Gtk.Button.set_focus_on_click is deprecated and
+      // we have to use Gtk.Widget.set_focus_on_click instead
+      ((Widget) this.done_button).set_focus_on_click (true);
+    }
     // When selecting or editing, we get special headerbars
     if (this.state == UiState.SELECTING || this.state.editing ()) {
       this.left_header.get_style_context ().add_class ("selection-mode");
