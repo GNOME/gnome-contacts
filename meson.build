@@ -84,7 +84,7 @@ conf.set('GOA_API_IS_SUBJECT_TO_CHANGE', true)
 configure_file(output: 'config.h', configuration: conf)
 
 # Post-install scripts
-meson.add_install_script('meson_post_install.py')
+meson.add_install_script('build-aux/meson_post_install.py')
 
 # Subfolders
 subdir('data')
