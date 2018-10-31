@@ -5,14 +5,14 @@ install_data('org.gnome.Contacts.gschema.xml',
 )
 
 # Common library
-libcontacts_sources = [
+libcontacts_sources = files(
   'contacts-contact.vala',
   'contacts-esd-setup.vala',
   'contacts-im-service.vala',
   'contacts-store.vala',
   'contacts-typeset.vala',
   'contacts-utils.vala',
-]
+)
 
 contacts_vala_args = [
   '--target-glib=@0@'.format(min_glib_version),
