@@ -117,15 +117,21 @@ public class Contacts.ContactSheet : ContactForm {
     show_all ();
   }
 
+  private void update_name_label (Gtk.Label name_label) {
+    var name = Markup.printf_escaped ("<span font='16'>%s</span>",
+                                      this.contact.individual.display_name);
+    name_label.set_markup (name);
+  }
+
   private void create_name_label () {
     var name_label = new Label ("");
     name_label.ellipsize = Pango.EllipsizeMode.END;
     name_label.xalign = 0f;
     name_label.selectable = true;
     this.container_grid.attach (name_label,  1, 0, 1, 3);
-    this.contact.keep_widget_uptodate (name_label, (w) => {
-        name_label.set_markup (Markup.printf_escaped ("<span font='16'>%s</span>",
-                                                      this.contact.individual.display_name));
+    update_name_label (name_label);
+    this.contact.individual.notify["display-name"].connect ((obj, spec) => {
+        update_name_label (name_label);
       });
   }
 

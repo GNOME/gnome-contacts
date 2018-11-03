@@ -577,12 +577,6 @@ public class Contacts.Contact : GLib.Object  {
     }
   }
 
-  public void keep_widget_uptodate (Widget w, owned Gtk.Callback callback) {
-    callback(w);
-    ulong id = this.changed.connect ( () => { callback(w); });
-    w.destroy.connect (() => { this.disconnect (id); });
-  }
-
 #if HAVE_TELEPATHY
   public void fetch_contact_info () {
     /* TODO: Ideally Folks should have API for this (#675131) */
