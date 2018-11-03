@@ -47,7 +47,7 @@ public class Contacts.Store : GLib.Object {
 
   public void refresh () {
     foreach (var c in contacts)
-      c.queue_changed ();
+      c.update ();
   }
 
   private bool individual_can_replace_at_split (Individual new_individual) {

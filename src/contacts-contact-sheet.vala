@@ -30,7 +30,7 @@ public class Contacts.ContactSheet : ContactForm {
       this.contact = contact;
       this.store = store;
 
-      this.contact.changed.connect (update);
+      this.contact.individual.notify.connect (update);
       this.contact.individual.personas_changed.connect (update);
       this.store.quiescent.connect (update);
 
