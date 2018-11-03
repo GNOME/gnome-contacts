@@ -29,7 +29,6 @@ public class Contacts.Contact : GLib.Object  {
   public bool is_main;
 
   public Individual individual;
-  uint changed_id;
 
   public Persona? fake_persona = null;
 
@@ -45,8 +44,6 @@ public class Contacts.Contact : GLib.Object  {
     }
     return false;
   }
-
-  public signal void changed ();
 
   /**
    * There are 2 reasons why we want to hide a contact in the UI:
@@ -69,7 +66,7 @@ public class Contacts.Contact : GLib.Object  {
     this.store = store;
     this.individual = i;
     this.individual.set_data ("contact", this);
-    this.individual.notify.connect(notify_cb);
+    this.individual.notify.connect(on_individual_notify);
 
     this.ignored = is_ignorable ();
     this.is_main = calc_is_main ();
@@ -97,16 +94,15 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public void replace_individual (Individual new_individual) {
-    individual.notify.disconnect(notify_cb);
+    individual.notify.disconnect(on_individual_notify);
     individual = new_individual;
     individual.set_data ("contact", this);
-    individual.notify.connect(notify_cb);
-    queue_changed ();
+    individual.notify.connect(on_individual_notify);
+    update ();
   }
 
   public void remove () {
-    unqueue_changed ();
-    individual.notify.disconnect(notify_cb);
+    this.individual.notify.disconnect(on_individual_notify);
   }
 
   private bool is_ignorable () {
@@ -234,27 +230,13 @@ public class Contacts.Contact : GLib.Object  {
   }
 #endif
 
-  private bool changed_cb () {
-    this.changed_id = 0;
+  public bool update () {
     this.is_main = calc_is_main ();
-    changed ();
     return false;
   }
 
-  private void unqueue_changed () {
-    if (changed_id != 0) {
-      Source.remove (changed_id);
-      changed_id = 0;
-    }
-  }
-
-  public void queue_changed () {
-    if (this.changed_id == 0)
-      this.changed_id = Idle.add (changed_cb);
-  }
-
-  private void notify_cb (ParamSpec pspec) {
-    queue_changed ();
+  private void on_individual_notify (ParamSpec pspec) {
+    update ();
   }
 
   /* We claim something is "removable" if at least one persona is removable,

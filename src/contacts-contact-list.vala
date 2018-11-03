@@ -37,7 +37,7 @@ public class Contacts.ContactList : ListBox {
 
     public ContactDataRow(Contact c) {
       this.contact = c;
-      this.contact.changed.connect (on_contact_changed);
+      this.contact.individual.notify.connect (on_contact_changed);
       this.contact.notify["hidden"].connect ((o, p) => changed());
 
       get_style_context (). add_class ("contact-data-row");
@@ -70,7 +70,7 @@ public class Contacts.ContactList : ListBox {
       this.show_all ();
     }
 
-    private void on_contact_changed () {
+    private void on_contact_changed (Object obj, ParamSpec pspec) {
       this.label.set_text (this.contact.individual.display_name);
       changed ();
     }
