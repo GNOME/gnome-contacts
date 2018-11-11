@@ -1,12 +1,5 @@
-
-.build_template: &distro_build
-  script:
-    - meson -Dmanpage=false _build
-    - ninja -C _build install
-
 stages:
   - build-flatpak
-  - build-os
 
 # We always use flatpak-builder to check if everything still works.
 flatpak:master:
@@ -31,29 +24,3 @@ flatpak:master:
   cache:
     paths:
       - .flatpak-builder/cache
-
-
-# We also check (less often) if we're still building on some popular distros
-fedora:rawhide:
-  image: fedora:rawhide
-  stage: build-os
-  before_script:
-    - dnf update -y && dnf install -y 'dnf-command(builddep)' redhat-rpm-config
-    - dnf builddep -y gnome-contacts
-  <<: *distro_build
-  only:
-    - schedules
-    - web
-    - tags
-
-ubuntu:devel:
-  image: ubuntu:devel
-  stage: build-os
-  before_script:
-    - apt update -y
-    - apt build-dep -y gnome-contacts
-  <<: *distro_build
-  only:
-    - schedules
-    - web
-    - tags
