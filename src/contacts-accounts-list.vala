@@ -76,16 +76,21 @@ public class Contacts.AccountsList : Box {
       child.destroy ();
     }
 
-    PersonaStore local_store = null;
-    foreach (var persona_store in Utils.get_eds_address_books (this.contacts_store)) {
+    // Fill the list with address book
+    PersonaStore[] eds_stores = Utils.get_eds_address_books (this.contacts_store);
+    debug ("Found %d EDS stores", eds_stores.length);
+
+    PersonaStore? local_store = null;
+    foreach (var persona_store in eds_stores) {
       if (persona_store.id == "system-address-book") {
         local_store = persona_store;
         continue;
       }
       var source = (persona_store as Edsf.PersonaStore).source;
       var parent_source = eds_source_registry.ref_source (source.parent);
-
       var provider_name = Contact.format_persona_store_name (persona_store);
+
+      debug ("Contact store \"%s\"", provider_name);
 
       var source_account_id = "";
       if (parent_source.has_extension (E.SOURCE_EXTENSION_GOA)) {
@@ -100,13 +105,12 @@ public class Contacts.AccountsList : Box {
       row_data.set_row_spacing (1);
       row_data.set_column_spacing (10);
 
-      if (source_account_id != "") {
-        var provider_image = Contacts.get_icon_for_goa_account (source_account_id);
-        row_data.attach (provider_image, 0, 0, 1, 2);
-      } else {
-        var provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
-        row_data.attach (provider_image, 0, 0, 1, 2);
-      }
+      Gtk.Image provider_image;
+      if (source_account_id != "")
+        provider_image = Contacts.get_icon_for_goa_account (source_account_id);
+      else
+        provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
+      row_data.attach (provider_image, 0, 0, 1, 2);
 
       var provider_label = new Label (provider_name);
       provider_label.set_halign (Align.START);
