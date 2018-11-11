@@ -176,6 +176,8 @@ public class Contacts.Store : GLib.Object {
     var replaced_individuals = new HashMap<Individual?, Individual?> ();
     var old_individuals = changes.get_keys();
 
+    debug ("Individuals changed: %d old, %d new", old_individuals.size - 1, changes[null].size);
+
     // Pick best replacements at joins
     foreach (var old_individual in old_individuals) {
       if (old_individual == null)
