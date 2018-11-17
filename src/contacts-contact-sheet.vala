@@ -84,6 +84,9 @@ public class Contacts.ContactSheet : ContactForm {
   }
 
   private void update () {
+    this.last_row = 0;
+    this.container_grid.foreach ((child) => this.container_grid.remove (child));
+
     var image_frame = new Avatar (PROFILE_SIZE, this.contact);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
