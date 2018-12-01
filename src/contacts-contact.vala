@@ -82,7 +82,7 @@ public class Contacts.Contact : GLib.Object  {
       return false;
 
     // Mark google contacts not in "My Contacts" as non-main
-    return !persona_is_google_other (persona);
+    return !Utils.persona_is_google_other (persona);
   }
 
   private bool calc_is_main () {
@@ -178,13 +178,6 @@ public class Contacts.Contact : GLib.Object  {
     // No heuristics to fall back to.
     warning ("Unsupported AbstractFieldDetails value type");
     return 0;
-  }
-
-  public static Gee.List<T> sort_fields<T> (Collection<T> fields) {
-    var res = new ArrayList<T>();
-    res.add_all (fields);
-    res.sort (Contact.compare_fields);
-    return res;
   }
 
   public static string[] format_address (PostalAddress addr) {
@@ -286,38 +279,12 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Gee.List<Persona> get_personas_for_display () {
-    CompareDataFunc<Persona> compare_persona_by_store = (a, b) => {
-        var store_a = a.store;
-        var store_b = b.store;
-
-        // In the same store, sort Google 'other' contacts last
-        if (store_a == store_b) {
-          if (!persona_is_google (a))
-            return 0;
-
-          var a_is_other = persona_is_google_other (a);
-          if (a_is_other != persona_is_google_other (b))
-            return a_is_other? 1 : -1;
-        }
-
-        // Sort primary stores before others
-        if (store_a.is_primary_store != store_b.is_primary_store)
-          return (store_a.is_primary_store)? -1 : 1;
-
-        // E-D-S stores get prioritized
-        if ((store_a.type_id == "eds") != (store_b.type_id == "eds"))
-          return (store_a.type_id == "eds")? -1 : 1;
-
-        // Normal case: use alphabetical sorting
-        return strcmp (store_a.id, store_b.id);
-      };
-
     var persona_list = new ArrayList<Persona>();
     foreach (var persona in individual.personas)
       if (persona.store.type_id != "key-file")
         persona_list.add (persona);
 
-    persona_list.sort ((owned) compare_persona_by_store);
+    persona_list.sort (Utils.compare_personas_on_store);
     return persona_list;
   }
 
@@ -373,7 +340,7 @@ public class Contacts.Contact : GLib.Object  {
   public bool has_mainable_persona () {
     foreach (var p in individual.personas) {
       if (p.store.type_id == "eds" &&
-	  !persona_is_google_other (p))
+	  !Utils.persona_is_google_other (p))
 	return true;
     }
     return false;
@@ -385,8 +352,8 @@ public class Contacts.Contact : GLib.Object  {
     bool all_unlinkable = true;
 
     foreach (var p in individual.personas) {
-      if (!persona_is_google_other (p) ||
-	  persona_is_google_profile (p))
+      if (!Utils.persona_is_google_other (p) ||
+	  Utils.persona_is_google_profile (p))
 	all_unlinkable = false;
     }
 
@@ -405,42 +372,12 @@ public class Contacts.Contact : GLib.Object  {
     return !this.is_main || !other.has_mainable_persona();
   }
 
-  private static bool persona_is_google (Persona persona) {
-    return persona.store.type_id == "eds" && esource_uid_is_google (persona.store.id);
-  }
-
-  /**
-   * Return true only for personas which are in a Google address book, but which
-   * are not in the user's "My Contacts" group in the address book.
-   */
-  public static bool persona_is_google_other (Persona persona) {
-    if (!persona_is_google (persona))
-      return false;
-
-    var p = persona as Edsf.Persona;
-    return p != null && !p.in_google_personal_group;
-  }
-
-  public static bool persona_is_google_profile (Persona persona) {
-    if (!persona_is_google_other (persona))
-      return false;
-
-    var u = persona as UrlDetails;
-    if (u != null && u.urls.size == 1) {
-      foreach (var url in u.urls) {
-	if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
-	  return true;
-      }
-    }
-    return false;
-  }
-
   public static string format_persona_store_name_for_contact (Persona persona) {
     var store = persona.store;
     if (store.type_id == "eds") {
-      if (persona_is_google_profile (persona))
+      if (Utils.persona_is_google_profile (persona))
 	return _("Google Circles");
-      else if (persona_is_google_other (persona))
+      else if (Utils.persona_is_google_other (persona))
 	return _("Google");
 
       string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
