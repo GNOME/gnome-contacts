@@ -90,6 +90,7 @@ contacts_vala_sources = files(
   'contacts-linking.vala',
   'contacts-list-pane.vala',
   'contacts-max-width-bin.vala',
+  'contacts-persona-property.vala',
   'contacts-settings.vala',
   'contacts-setup-window.vala',
   'contacts-type-combo.vala',

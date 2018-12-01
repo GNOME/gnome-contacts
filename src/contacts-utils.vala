@@ -70,15 +70,6 @@ namespace Contacts {
 }
 
 namespace Contacts.Utils {
-  public void compose_mail (string email) {
-    var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
-    try {
-      Gtk.show_uri_on_window (null, mailto_uri, 0);
-    } catch (Error e) {
-      debug ("Couldn't launch URI \"%s\": %s", mailto_uri, e.message);
-    }
-  }
-
 #if HAVE_TELEPATHY
   public void start_chat (Contact contact, string protocol, string id) {
     var im_persona = contact.find_im_persona (protocol, id);
@@ -172,5 +163,64 @@ namespace Contacts.Utils {
                                         error);
     dialog.run();
     dialog.destroy();
+  }
+
+  public static int compare_personas_on_store (Persona? a, Persona? b) {
+    if (a == null || b == null)
+      return (a == null)? -1 : 1;
+
+    var store_a = a.store;
+    var store_b = b.store;
+
+    // In the same store, sort Google 'other' contacts last
+    if (store_a == store_b) {
+      if (!Utils.persona_is_google (a))
+        return 0;
+
+      var a_is_other = Utils.persona_is_google_other (a);
+      if (a_is_other != Utils.persona_is_google_other (b))
+        return a_is_other? 1 : -1;
+    }
+
+    // Sort primary stores before others
+    if (store_a.is_primary_store != store_b.is_primary_store)
+      return (store_a.is_primary_store)? -1 : 1;
+
+    // E-D-S stores get prioritized
+    if ((store_a.type_id == "eds") != (store_b.type_id == "eds"))
+      return (store_a.type_id == "eds")? -1 : 1;
+
+    // Normal case: use alphabetical sorting
+    return strcmp (store_a.id, store_b.id);
+  }
+
+  public bool persona_is_google (Persona persona) {
+    return persona.store.type_id == "eds" && esource_uid_is_google (persona.store.id);
+  }
+
+  /**
+   * Return true only for personas which are in a Google address book, but which
+   * are not in the user's "My Contacts" group in the address book.
+   */
+  public bool persona_is_google_other (Persona persona) {
+    if (!persona_is_google (persona))
+      return false;
+
+    var p = persona as Edsf.Persona;
+    return p != null && !p.in_google_personal_group;
+  }
+
+  public bool persona_is_google_profile (Persona persona) {
+    if (!persona_is_google_other (persona))
+      return false;
+
+    var u = persona as UrlDetails;
+    if (u != null && u.urls.size == 1) {
+      foreach (var url in u.urls) {
+        if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
+        return true;
+      }
+    }
+    return false;
   }
 }
