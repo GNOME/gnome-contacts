@@ -184,8 +184,8 @@ public class Contacts.ContactPane : Stack {
 
     if (tok[0] == "add") {
       editor.add_new_row_for_property (contact.find_primary_persona (),
-				       tok[1],
-				       tok.length > 2 ? tok[2].up () : null);
+                                       tok[1],
+                                       tok.length > 2 ? tok[2].up () : null);
     }
   }
 
@@ -221,10 +221,21 @@ public class Contacts.ContactPane : Stack {
     if (!this.on_edit_mode)
       return;
 
+    // Get a strong reference
+    ContactEditor editor = this.editor;
     this.on_edit_mode = false;
     /* saving changes */
-    if (!drop_changes)
-      save_editor_changes.begin ();
+    if (!drop_changes) {
+              warning ("Editor:saving changes");
+      editor.save_changes.begin ((obj, res) => {
+          try {
+            editor.save_changes.end (res);
+          } catch (Error e) {
+              critical(e.message); // XXX
+            show_message (e.message);
+          }
+        });
+    }
 
     remove_contact_editor ();
 
@@ -232,35 +243,6 @@ public class Contacts.ContactPane : Stack {
       show_contact_sheet ();
     else
       set_visible_child (this.none_selected_page);
-  }
-
-  private async void save_editor_changes () {
-    foreach (var prop in this.editor.properties_changed ().entries) {
-      try {
-        yield Contact.set_persona_property (prop.value.persona, prop.key, prop.value.value);
-      } catch (Error e) {
-        show_message (e.message);
-      }
-    }
-
-    if (this.editor.name_changed ()) {
-      var v = this.editor.get_full_name_value ();
-      try {
-        yield this.contact.set_individual_property ("full-name", v);
-        display_name_changed (v.get_string ());
-      } catch (Error e) {
-        show_message (e.message);
-      }
-    }
-
-    if (this.editor.avatar_changed ()) {
-      var v = this.editor.get_avatar_value ();
-      try {
-        yield this.contact.set_individual_property ("avatar", v);
-      } catch (Error e) {
-        show_message (e.message);
-      }
-    }
   }
 
   public void new_contact () {
@@ -273,17 +255,7 @@ public class Contacts.ContactPane : Stack {
 
   // Creates a new contact from the details in the ContactEditor
   public async void create_contact () {
-    var details = new HashTable<string, Value?> (str_hash, str_equal);
-
-    // Collect the details from the editor
-    if (editor.name_changed ())
-      details["full-name"] = this.editor.get_full_name_value ();
-
-    if (editor.avatar_changed ())
-      details["avatar"] = this.editor.get_avatar_value ();
-
-    foreach (var prop in this.editor.properties_changed ().entries)
-      details[prop.key] = prop.value.value;
+    var details = this.editor.create_details_for_new_contact ();
 
     // Leave edit mode
     stop_editing (true);

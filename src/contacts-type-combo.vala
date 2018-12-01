@@ -51,7 +51,6 @@ public class Contacts.TypeCombo : ComboBox  {
   construct {
     this.valign = Align.START;
     this.halign = Align.FILL;
-    this.hexpand = true;
     this.visible = true;
 
     var renderer = new CellRendererText ();

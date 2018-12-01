@@ -82,7 +82,7 @@ public class Contacts.Contact : GLib.Object  {
       return false;
 
     // Mark google contacts not in "My Contacts" as non-main
-    return !persona_is_google_other (persona);
+    return !Utils.persona_is_google_other (persona);
   }
 
   private bool calc_is_main () {
@@ -132,89 +132,6 @@ public class Contacts.Contact : GLib.Object  {
 	return true;
     }
     return false;
-  }
-
-  private static bool has_pref (AbstractFieldDetails details) {
-    var evolution_pref = details.get_parameter_values ("x-evolution-ui-slot");
-    if (evolution_pref != null && Utils.get_first (evolution_pref) == "1")
-      return true;
-
-    foreach (var param in details.parameters["type"]) {
-      if (param.ascii_casecmp ("PREF") == 0)
-        return true;
-    }
-    return false;
-  }
-
-  private static TypeSet select_typeset_from_fielddetails (AbstractFieldDetails a) {
-    if (a is EmailFieldDetails)
-      return TypeSet.email;
-    if (a is PhoneFieldDetails)
-      return TypeSet.phone;
-    return TypeSet.general;
-  }
-
-  public static int compare_fields (void* _a, void* _b) {
-    var a = (AbstractFieldDetails) _a;
-    var b = (AbstractFieldDetails) _b;
-
-    // Fields with a PREF hint always go first (see VCard PREF attribute)
-    var a_has_pref = has_pref (a);
-    if (a_has_pref != has_pref (b))
-      return (a_has_pref)? -1 : 1;
-
-    // sort by field type first (e.g. "Home", "Work")
-    var type_set = select_typeset_from_fielddetails (a);
-    var result = type_set.format_type (a).ascii_casecmp (type_set.format_type (b));
-    if (result != 0)
-      return result;
-
-    // Try to compare by value if types are equal
-    var aa = a as AbstractFieldDetails<string>;
-    var bb = b as AbstractFieldDetails<string>;
-    if (aa != null && bb != null)
-      return strcmp (aa.value, bb.value);
-
-    // No heuristics to fall back to.
-    warning ("Unsupported AbstractFieldDetails value type");
-    return 0;
-  }
-
-  public static Gee.List<T> sort_fields<T> (Collection<T> fields) {
-    var res = new ArrayList<T>();
-    res.add_all (fields);
-    res.sort (Contact.compare_fields);
-    return res;
-  }
-
-  public static string[] format_address (PostalAddress addr) {
-    string[] lines = {};
-
-    if (is_set (addr.street))
-      lines += addr.street;
-
-    if (is_set (addr.extension))
-      lines += addr.extension;
-
-    if (is_set (addr.locality))
-      lines += addr.locality;
-
-    if (is_set (addr.region))
-      lines += addr.region;
-
-    if (is_set (addr.postal_code))
-      lines += addr.postal_code;
-
-    if (is_set (addr.po_box))
-      lines += addr.po_box;
-
-    if (is_set (addr.country))
-      lines += addr.country;
-
-    if (is_set (addr.address_format))
-      lines += addr.address_format;
-
-    return lines;
   }
 
 #if HAVE_TELEPATHY
@@ -286,38 +203,12 @@ public class Contacts.Contact : GLib.Object  {
   }
 
   public Gee.List<Persona> get_personas_for_display () {
-    CompareDataFunc<Persona> compare_persona_by_store = (a, b) => {
-        var store_a = a.store;
-        var store_b = b.store;
-
-        // In the same store, sort Google 'other' contacts last
-        if (store_a == store_b) {
-          if (!persona_is_google (a))
-            return 0;
-
-          var a_is_other = persona_is_google_other (a);
-          if (a_is_other != persona_is_google_other (b))
-            return a_is_other? 1 : -1;
-        }
-
-        // Sort primary stores before others
-        if (store_a.is_primary_store != store_b.is_primary_store)
-          return (store_a.is_primary_store)? -1 : 1;
-
-        // E-D-S stores get prioritized
-        if ((store_a.type_id == "eds") != (store_b.type_id == "eds"))
-          return (store_a.type_id == "eds")? -1 : 1;
-
-        // Normal case: use alphabetical sorting
-        return strcmp (store_a.id, store_b.id);
-      };
-
     var persona_list = new ArrayList<Persona>();
     foreach (var persona in individual.personas)
       if (persona.store.type_id != "key-file")
         persona_list.add (persona);
 
-    persona_list.sort ((owned) compare_persona_by_store);
+    persona_list.sort (Utils.compare_personas_on_store);
     return persona_list;
   }
 
@@ -373,7 +264,7 @@ public class Contacts.Contact : GLib.Object  {
   public bool has_mainable_persona () {
     foreach (var p in individual.personas) {
       if (p.store.type_id == "eds" &&
-	  !persona_is_google_other (p))
+	  !Utils.persona_is_google_other (p))
 	return true;
     }
     return false;
@@ -385,8 +276,8 @@ public class Contacts.Contact : GLib.Object  {
     bool all_unlinkable = true;
 
     foreach (var p in individual.personas) {
-      if (!persona_is_google_other (p) ||
-	  persona_is_google_profile (p))
+      if (!Utils.persona_is_google_other (p) ||
+	  Utils.persona_is_google_profile (p))
 	all_unlinkable = false;
     }
 
@@ -405,42 +296,12 @@ public class Contacts.Contact : GLib.Object  {
     return !this.is_main || !other.has_mainable_persona();
   }
 
-  private static bool persona_is_google (Persona persona) {
-    return persona.store.type_id == "eds" && esource_uid_is_google (persona.store.id);
-  }
-
-  /**
-   * Return true only for personas which are in a Google address book, but which
-   * are not in the user's "My Contacts" group in the address book.
-   */
-  public static bool persona_is_google_other (Persona persona) {
-    if (!persona_is_google (persona))
-      return false;
-
-    var p = persona as Edsf.Persona;
-    return p != null && !p.in_google_personal_group;
-  }
-
-  public static bool persona_is_google_profile (Persona persona) {
-    if (!persona_is_google_other (persona))
-      return false;
-
-    var u = persona as UrlDetails;
-    if (u != null && u.urls.size == 1) {
-      foreach (var url in u.urls) {
-	if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
-	  return true;
-      }
-    }
-    return false;
-  }
-
   public static string format_persona_store_name_for_contact (Persona persona) {
     var store = persona.store;
     if (store.type_id == "eds") {
-      if (persona_is_google_profile (persona))
+      if (Utils.persona_is_google_profile (persona))
 	return _("Google Circles");
-      else if (persona_is_google_other (persona))
+      else if (Utils.persona_is_google_other (persona))
 	return _("Google");
 
       string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
