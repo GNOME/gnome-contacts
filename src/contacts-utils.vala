@@ -70,15 +70,6 @@ namespace Contacts {
 }
 
 namespace Contacts.Utils {
-  public void compose_mail (string email) {
-    var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
-    try {
-      Gtk.show_uri_on_window (null, mailto_uri, 0);
-    } catch (Error e) {
-      debug ("Couldn't launch URI \"%s\": %s", mailto_uri, e.message);
-    }
-  }
-
 #if HAVE_TELEPATHY
   public void start_chat (Contact contact, string protocol, string id) {
     var im_persona = contact.find_im_persona (protocol, id);

@@ -28,6 +28,9 @@ using Gtk;
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-form.ui")]
 public abstract class Contacts.ContactForm : Grid {
+    // XXX make some kind of factory here
+    // Where PropertyFields can register themselves
+    // as (non-)editable for a given property
 
   protected const string[] SORTED_PROPERTIES = {
     "email-addresses",
@@ -49,31 +52,74 @@ public abstract class Contacts.ContactForm : Grid {
 
   [GtkChild]
   protected Grid container_grid;
-  protected int last_row = 0;
+
+  [GtkChild]
+  protected ListBox form_container;
+  protected GLib.ListStore fields = new GLib.ListStore (typeof (PropertyField));
+
+  protected SizeGroup labels_sizegroup = new SizeGroup (SizeGroupMode.HORIZONTAL);
+  protected SizeGroup values_sizegroup = new SizeGroup (SizeGroupMode.HORIZONTAL);
+  protected SizeGroup actions_sizegroup = new SizeGroup (SizeGroupMode.HORIZONTAL);
+
+  // Seperate treatment for the header widgets
+  protected Widget avatar_widget;
+  protected Widget name_widget;
 
   construct {
     this.container_grid.set_focus_vadjustment (this.main_sw.get_vadjustment ());
     this.main_sw.get_style_context ().add_class ("contacts-contact-form");
+
+    this.form_container.bind_model (fields, create_row);
+    this.form_container.set_header_func (create_persona_store_header);
+  }
+
+  private Gtk.Widget create_row (Object object) {
+    return ((PropertyField) object).create_row (labels_sizegroup, values_sizegroup, actions_sizegroup);
+  }
+
+  public void create_persona_store_header (ListBoxRow row, ListBoxRow? before) {
+    // Leave out the persona store header at the start
+    if (before == null) {
+      row.set_header (null);
+      return;
+    }
+
+    PropertyWidget current = (PropertyWidget) row;
+    PropertyWidget previous = (PropertyWidget) before;
+    if (current.field.persona == null || previous.field.persona == null)
+      return;
+    if (current.field.persona == previous.field.persona)
+      return;
+
+    var label = create_persona_store_label (current.field.persona);
+    row.set_header (label);
+  }
+
+  private static int compare_fields (Object obj_a, Object obj_b) {
+    unowned PropertyField a = (PropertyField) obj_a;
+    unowned PropertyField b = (PropertyField) obj_b;
+
+    return compare_properties (a.property_name, b.property_name);
+  }
+
+  private static int compare_properties (string a, string b) {
+    foreach (var prop in SORTED_PROPERTIES) {
+      if (a == prop)
+        return (b == prop)? 0 : -1;
+
+      if (b == prop)
+        return 1;
+    }
+
+    return 0;
   }
 
   protected string[] sort_persona_properties (string[] props) {
-    CompareDataFunc<string> compare_properties = (a, b) => {
-        foreach (var prop in SORTED_PROPERTIES) {
-          if (a == prop)
-            return (b == prop)? 0 : -1;
-
-          if (b == prop)
-            return 1;
-        }
-
-        return 0;
-      };
-
     var sorted_props = new ArrayList<string> ();
     foreach (var s in props)
       sorted_props.add (s);
 
-    sorted_props.sort ((owned) compare_properties);
+    sorted_props.sort (compare_properties);
     return sorted_props.to_array ();
   }
 
@@ -84,7 +130,22 @@ public abstract class Contacts.ContactForm : Grid {
     store_name.set_halign (Align.START);
     store_name.xalign = 0.0f;
     store_name.margin_start = 6;
+    store_name.visible = true;
 
     return store_name;
+  }
+
+  protected PropertyField? get_property_field_for_name (string name) {
+    for (uint i = 0; i < this.fields.get_n_items(); i++) {
+      var field = (PropertyField) this.fields.get_item (i);
+      if (field.property_name == name)
+        return field;
+    }
+
+    return null;
+  }
+
+  protected void add_field (PropertyField field) {
+    this.fields.insert_sorted (field, compare_fields);
   }
 }
