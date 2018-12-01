@@ -89,26 +89,36 @@ public class Contacts.TypeDescriptor : Object {
     return this.source == Source.CUSTOM;
   }
 
-  public void save_to_field_details (AbstractFieldDetails details) {
+  /**
+   * Saves the type decribed by this object to the given parameters (as found
+   * in the parameters property of a {@link Folks.AbstractFieldDetails} object.
+   *
+   * If old_parameters is specified, it will also copy over all fields (that
+   * not related to the type of the property).
+   *
+   * @param old_parameters: The previous parameters to base on, or null if none.
+   */
+  public MultiMap<string, string> add_type_to_parameters (MultiMap<string, string>? old_parameters) {
     debug ("Saving type %s", to_string ());
 
-    var old_parameters = details.parameters;
     var new_parameters = new HashMultiMap<string, string> ();
 
     // Check whether PREF VCard "flag" is set
     bool has_pref = false;
-    foreach (var val in old_parameters["type"]) {
-      if (val.ascii_casecmp ("PREF") == 0) {
-        has_pref = true;
-        break;
+    if (old_parameters != null) {
+      foreach (var val in old_parameters["type"]) {
+        if (val.ascii_casecmp ("PREF") == 0) {
+          has_pref = true;
+          break;
+        }
       }
-    }
 
-    // Copy over all parameters, execept the ones we're going to create ourselves
-    foreach (var param in old_parameters.get_keys ()) {
-      if (param != "type" && param != X_GOOGLE_LABEL)
-        foreach (var val in old_parameters[param])
-          new_parameters[param] = val;
+      // Copy over all parameters, execept the ones we're going to create ourselves
+      foreach (var param in old_parameters.get_keys ()) {
+        if (param != "type" && param != X_GOOGLE_LABEL)
+          foreach (var val in old_parameters[param])
+            new_parameters[param] = val;
+      }
     }
 
     // Set the type based on our Source
@@ -130,8 +140,7 @@ public class Contacts.TypeDescriptor : Object {
     if (has_pref)
       new_parameters["type"] = "PREF";
 
-    // We didn't crash 'n burn, so lets
-    details.parameters = new_parameters;
+    return new_parameters;
   }
 
   /**
