@@ -11,7 +11,7 @@ foreach size: ['scalable', 'symbolic']
 endforeach
 
 # The desktop file
-i18n.merge_file(
+desktop_file = i18n.merge_file(
   input: 'org.gnome.Contacts.desktop.in',
   output: 'org.gnome.Contacts.desktop',
   type: 'desktop',
@@ -19,9 +19,20 @@ i18n.merge_file(
   install: true,
   install_dir: join_paths(datadir, 'applications')
 )
+# Validate the desktop file 
+desktop_file_validate = find_program ('desktop-file-validate', required: false)
+if desktop_file_validate.found()
+  test(
+    'validate-desktop',
+    desktop_file_validate,
+    args: [
+      desktop_file.full_path()
+    ]
+  )
+endif
 
 # The appdata file
-i18n.merge_file(
+appdata_file = i18n.merge_file(
   input: 'org.gnome.Contacts.appdata.xml.in',
   output: 'org.gnome.Contacts.appdata.xml',
   type: 'xml',
@@ -29,6 +40,16 @@ i18n.merge_file(
   install: true,
   install_dir: join_paths(datadir, 'metainfo')
 )
+# Validate the appdata file 
+appstream_util = find_program('appstream-util', required: false)
+if appstream_util.found()
+  test(
+    'validate-appdata', appstream_util,
+    args: [
+      'validate-relax', appdata_file.full_path()
+    ]
+  )
+endif
 
 # DBus service files
 service_config = configuration_data()
