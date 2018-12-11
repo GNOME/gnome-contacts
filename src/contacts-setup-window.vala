@@ -43,7 +43,7 @@ public class Contacts.SetupWindow : Gtk.ApplicationWindow {
     this.content.add (this.setup_accounts_list);
 
     // Listen for changes
-    store.eds_persona_store_changed.connect  ( () => {
+    store.backend_store.backend_available.connect  ( () => {
         this.setup_accounts_list.update_contents (false);
       });
 

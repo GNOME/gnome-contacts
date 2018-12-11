@@ -25,8 +25,6 @@ public class Contacts.Store : GLib.Object {
   public signal void quiescent ();
   public signal void prepared ();
 
-  public signal void eds_persona_store_changed ();
-
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get { return this.aggregator.backend_store; } }
   private ArrayList<Contact> contacts;
@@ -135,16 +133,6 @@ public class Contacts.Store : GLib.Object {
     read_dont_suggest_db ();
 
     var backend_store = BackendStore.dup ();
-    backend_store.backend_available.connect ((backend) => {
-        if (backend.name == "eds") {
-          backend.persona_store_added.connect (() => {
-              eds_persona_store_changed ();
-            });
-          backend.persona_store_removed.connect (() => {
-              eds_persona_store_changed ();
-            });
-        }
-      });
 
     this.aggregator = IndividualAggregator.dup_with_backend_store (backend_store);
     aggregator.notify["is-quiescent"].connect ( (obj, pspec) => {
