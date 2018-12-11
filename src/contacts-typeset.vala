@@ -22,14 +22,15 @@ using Folks;
 public class Contacts.TypeSet : Object  {
   const string X_GOOGLE_LABEL = "x-google-label";
   const int MAX_TYPES = 3;
-  private struct InitData {
+
+  private struct VcardTypeMapping {
     unowned string display_name_u;
     unowned string types[3]; //MAX_TYPES
   }
 
   private class TypeDescriptor : Object {
     public string display_name; // Translated
-    public GLib.List<InitData*> init_data;
+    public VcardTypeMapping? vcard_mapping;
     public TreeIter iter; // Set if in_store
     public bool in_store;
   }
@@ -41,8 +42,8 @@ public class Contacts.TypeSet : Object  {
 
   // Map from translated display name to TypeDescriptor for all "standard" types
   private HashTable<unowned string, TypeDescriptor> display_name_hash;
-  // Map from all type strings in to list of InitData with the data in it
-  private HashTable<unowned string, GLib.List<InitData*> > vcard_lookup_hash;
+  // Map from all type strings in to list of VcardTypeMapping with the data in it
+  private Gee.List<unowned VcardTypeMapping?> vcard_lookup_hash;
   // Map from display name to TreeIter for all custom types
   private HashTable<string, TreeIter?> custom_hash;
 
@@ -51,7 +52,7 @@ public class Contacts.TypeSet : Object  {
 
   private TypeSet () {
     display_name_hash = new HashTable<unowned string, TypeDescriptor> (str_hash, str_equal);
-    vcard_lookup_hash = new HashTable<unowned string, GLib.List<InitData*> > (str_hash, str_equal);
+    this.vcard_lookup_hash = new Gee.ArrayList<VcardTypeMapping?> ();
     custom_hash = new HashTable<string, TreeIter? > (str_hash, str_equal);
 
     store = new Gtk.ListStore (2,
@@ -74,8 +75,8 @@ public class Contacts.TypeSet : Object  {
     store.set (descriptor.iter, 0, descriptor.display_name, 1, descriptor);
   }
 
-  private void add_init_data (InitData *init_data) {
-    unowned string dn = dgettext (Config.GETTEXT_PACKAGE, init_data.display_name_u);
+  private void add_vcard_mapping (VcardTypeMapping vcard_mapping) {
+    unowned string dn = dgettext (Config.GETTEXT_PACKAGE, vcard_mapping.display_name_u);
     TypeDescriptor descriptor = display_name_hash.lookup (dn);
     if (descriptor == null) {
       descriptor = new TypeDescriptor ();
@@ -83,22 +84,13 @@ public class Contacts.TypeSet : Object  {
       display_name_hash.insert (dn, descriptor);
     }
 
-    descriptor.init_data.append (init_data);
+    if (descriptor.vcard_mapping == null)
+      descriptor.vcard_mapping = vcard_mapping;
 
-    for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++) {
-      unowned string type = init_data.types[j];
-      unowned GLib.List<InitData*> l = this.vcard_lookup_hash.lookup (type);
-      if (l != null) {
-        l.append (init_data);
-      } else {
-        GLib.List<InitData*> l2 = null;
-        l2.append (init_data);
-        this.vcard_lookup_hash.insert (type, (owned) l2);
-      }
-    }
+    this.vcard_lookup_hash.add (vcard_mapping);
   }
 
-  private void add_init_data_done (string[] standard_untranslated) {
+  private void add_vcard_mapping_done (string[] standard_untranslated) {
     foreach (var untranslated in standard_untranslated) {
       var descriptor = display_name_hash.lookup (dgettext (Config.GETTEXT_PACKAGE, untranslated));
       if (descriptor != null)
@@ -139,8 +131,7 @@ public class Contacts.TypeSet : Object  {
   }
 
   private unowned TypeDescriptor? lookup_descriptor_by_string (string str) {
-    unowned GLib.List<InitData *>? l = vcard_lookup_hash.lookup (str);
-    foreach (unowned InitData *d in l) {
+    foreach (var d in this.vcard_lookup_hash) {
       if (d.types[1] == null) {
         unowned string dn = dgettext (Config.GETTEXT_PACKAGE, d.display_name_u);
         return display_name_hash.lookup (dn);
@@ -149,7 +140,6 @@ public class Contacts.TypeSet : Object  {
 
     return null;
   }
-
 
   private unowned TypeDescriptor? lookup_descriptor (AbstractFieldDetails detail) {
     var i = detail.get_parameter_values ("type");
@@ -160,11 +150,10 @@ public class Contacts.TypeSet : Object  {
     foreach (var s in detail.get_parameter_values ("type"))
       list.add (s.up ());
 
-    // Make sure all items in the InitData is in the specified type, there might
+    // Make sure all items in the VcardTypeMapping is in the specified type, there might
     // be more, but we ignore them (so a HOME,FOO,PREF,BLAH contact still matches
     // the standard HOME one, but not HOME,FAX
-    unowned GLib.List<InitData *>? l = vcard_lookup_hash.lookup (list[0]);
-    foreach (unowned InitData *d in l) {
+    foreach (var d in this.vcard_lookup_hash) {
       bool all_found = true;
       for (int j = 0; j < MAX_TYPES && d.types[j] != null; j++) {
         if (!list.contains (d.types[j])) {
@@ -241,9 +230,9 @@ public class Contacts.TypeSet : Object  {
       if (descriptor == other_dummy) {
         details.parameters["type"] = "OTHER";
       } else {
-        InitData *init_data = descriptor.init_data.data;
-        for (int j = 0; j < MAX_TYPES && init_data.types[j] != null; j++)
-          details.parameters["type"] = init_data.types[j];
+        VcardTypeMapping? vcard_mapping = descriptor.vcard_mapping;
+        for (int j = 0; j < MAX_TYPES && vcard_mapping.types[j] != null; j++)
+          details.parameters["type"] = vcard_mapping.types[j];
       }
     }
 
@@ -258,7 +247,7 @@ public class Contacts.TypeSet : Object  {
   }
 
   private static TypeSet _general;
-  private const InitData[] general_data = {
+  private const VcardTypeMapping[] general_data = {
     // List most specific first, always in upper case
     { N_("Home"), { "HOME" } },
     { N_("Work"), { "WORK" } }
@@ -272,8 +261,8 @@ public class Contacts.TypeSet : Object  {
       if (_general == null) {
         _general = new TypeSet ();
         for (int i = 0; i < general_data.length; i++)
-          _general.add_init_data (&general_data[i]);
-        _general.add_init_data_done (standard);
+          _general.add_vcard_mapping (general_data[i]);
+        _general.add_vcard_mapping_done (standard);
       }
 
       return _general;
@@ -281,7 +270,7 @@ public class Contacts.TypeSet : Object  {
   }
 
   private static TypeSet _email;
-  private const InitData[] email_data = {
+  private const VcardTypeMapping[] email_data = {
     // List most specific first, always in upper case
     { N_("Personal"),    { "PERSONAL" } },
     { N_("Home"),        { "HOME" } },
@@ -296,8 +285,8 @@ public class Contacts.TypeSet : Object  {
       if (_email == null) {
         _email = new TypeSet ();
         for (int i = 0; i < email_data.length; i++)
-          _email.add_init_data (&email_data[i]);
-        _email.add_init_data_done (standard);
+          _email.add_vcard_mapping (email_data[i]);
+        _email.add_vcard_mapping_done (standard);
       }
 
       return _email;
@@ -307,7 +296,7 @@ public class Contacts.TypeSet : Object  {
   private static TypeSet _phone;
   public static TypeSet phone {
     get {
-      const InitData[] data = {
+      const VcardTypeMapping[] data = {
         // List most specific first, always in upper case
         { N_("Assistant"),  { "X-EVOLUTION-ASSISTANT" } },
         { N_("Work"),       { "WORK", "VOICE" } },
@@ -336,10 +325,10 @@ public class Contacts.TypeSet : Object  {
       if (_phone == null) {
         _phone = new TypeSet ();
         for (int i = 0; i < data.length; i++)
-          _phone.add_init_data (&data[i]);
+          _phone.add_vcard_mapping (data[i]);
         for (int i = 0; i < general_data.length; i++)
-          _phone.add_init_data (&general_data[i]);
-        _phone.add_init_data_done (standard);
+          _phone.add_vcard_mapping (general_data[i]);
+        _phone.add_vcard_mapping_done (standard);
       }
 
       return _phone;
