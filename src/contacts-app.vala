@@ -138,7 +138,7 @@ public class Contacts.App : Gtk.Application {
 	acc.disconnect (active_button_once);
       });
 
-    ulong stores_changed_id = contacts_store.eds_persona_store_changed.connect  ( () => {
+    ulong stores_changed_id = contacts_store.backend_store.backend_available.connect (() => {
     	acc.update_contents (true);
       });
 
