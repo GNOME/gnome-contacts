@@ -35,8 +35,6 @@ public class Contacts.TypeSet : Object  {
     public bool in_store;
   }
 
-  // Dummy TypeDescriptor to mark the "Custom..." store entry
-  private static TypeDescriptor custom_dummy = new TypeDescriptor ();
   // Dummy TypeDescriptor to mark the "Other..." store entry
   private static TypeDescriptor other_dummy = new TypeDescriptor ();
 
@@ -221,7 +219,6 @@ public class Contacts.TypeSet : Object  {
     store.get (iter, 0, out display_name, 1, out descriptor);
 
     assert (display_name != null); // Not separator
-    assert (descriptor != custom_dummy); // Not custom...
 
     if (descriptor == null) { // A custom label
       details.parameters["type"] = "OTHER";
@@ -238,12 +235,6 @@ public class Contacts.TypeSet : Object  {
 
     if (has_pref)
       details.parameters["type"] = "PREF";
-  }
-
-  public bool is_custom (TreeIter iter) {
-    TypeDescriptor descriptor;
-    store.get (iter, 1, out descriptor);
-    return descriptor == custom_dummy;
   }
 
   private static TypeSet _general;
