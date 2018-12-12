@@ -113,15 +113,8 @@ public class Contacts.TypeCombo : Grid  {
     modified = true;
     TreeIter iter;
     if (combo.get_active_iter (out iter)) {
-      if (type_set.is_custom (iter)) {
-        custom_mode = true;
-        entry.show ();
-        entry.grab_focus ();
-        combo.hide ();
-      } else {
-        last_active = iter;
-        this.changed ();
-      }
+      last_active = iter;
+      this.changed ();
     }
   }
 
