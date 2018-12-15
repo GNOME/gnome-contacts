@@ -12,7 +12,9 @@ libcontacts_sources = files(
   'contacts-im-service.vala',
   'contacts-store.vala',
   'contacts-typeset.vala',
+  'contacts-type-descriptor.vala',
   'contacts-utils.vala',
+  'contacts-vcard-type-mapping.vala',
 )
 
 contacts_vala_args = [
