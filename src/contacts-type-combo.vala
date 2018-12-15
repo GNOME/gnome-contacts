@@ -77,7 +77,7 @@ public class Contacts.TypeCombo : Grid  {
 
     if (text != "") {
       TreeIter iter;
-      type_set.add_custom_label (text, out iter);
+      type_set.get_iter_for_custom_label (text, out iter);
 
       last_active = iter;
       combo.set_active_iter (iter);
@@ -128,19 +128,24 @@ public class Contacts.TypeCombo : Grid  {
 
   public void set_active (AbstractFieldDetails details) {
     TreeIter iter;
-    type_set.lookup_type (details, out iter);
+    type_set.get_iter_for_field_details (details, out iter);
     set_from_iter (iter);
   }
 
   public void set_to (string type) {
     TreeIter iter;
-    type_set.lookup_type_by_string (type, out iter);
+    type_set.get_iter_for_vcard_type (type, out iter);
     set_from_iter (iter);
   }
 
   public void update_details (AbstractFieldDetails details) {
     TreeIter iter;
     combo.get_active_iter (out iter);
-    type_set.update_details (details, iter);
+
+    TypeDescriptor descriptor;
+    string display_name;
+    combo.model.get (iter, 0, out display_name, 1, out descriptor);
+    assert (display_name != null); // Not separator
+    descriptor.save_to_field_details (details);
   }
 }
