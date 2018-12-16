@@ -57,7 +57,7 @@ public class Contacts.TypeSet : Object  {
   public void get_iter_for_field_details (AbstractFieldDetails detail, out TreeIter iter) {
     // Note that we shouldn't have null here, but it's there just to be sure.
     var d = lookup_descriptor_for_field_details (detail);
-    iter = (d != null)? d.iter : other_dummy.iter;
+    iter = d.iter;
   }
 
   /**
@@ -84,7 +84,7 @@ public class Contacts.TypeSet : Object  {
    */
   public string format_type (AbstractFieldDetails detail) {
     var d = lookup_descriptor_for_field_details (detail);
-    return (d != null)? d.display_name : _("Other");
+    return d.display_name;
   }
 
   /**
@@ -179,7 +179,7 @@ public class Contacts.TypeSet : Object  {
     return null;
   }
 
-  private TypeDescriptor? lookup_descriptor_for_field_details (AbstractFieldDetails detail) {
+  public TypeDescriptor lookup_descriptor_for_field_details (AbstractFieldDetails detail) {
     if (detail.parameters.contains (TypeDescriptor.X_GOOGLE_LABEL)) {
       var label = Utils.get_first<string> (detail.parameters[TypeDescriptor.X_GOOGLE_LABEL]);
       var descriptor = get_descriptor_for_custom_label (label);
@@ -190,15 +190,17 @@ public class Contacts.TypeSet : Object  {
     }
 
     var types = detail.get_parameter_values ("type");
-    if (types == null || types.is_empty)
-      return null;
+    if (types == null || types.is_empty) {
+      warning ("No types given in the AbstractFieldDetails");
+      return this.other_dummy;
+    }
 
     foreach (VcardTypeMapping? d in this.vcard_type_mappings) {
       if (d.matches (types))
         return lookup_descriptor_in_store (d.name);
     }
 
-    return null;
+    return this.other_dummy;
   }
 
 

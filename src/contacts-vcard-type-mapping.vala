@@ -46,10 +46,10 @@ internal struct Contacts.VcardTypeMapping {
    */
   public bool matches (Collection<string> types) {
     for (int i = 0; i < MAX_TYPES && this.types[i] != null; i++) {
-      bool occurs_in_list = true;
+      bool occurs_in_list = false;
       foreach (var type in types) {
-        if (!types_are_equal (type, this.types[i])) {
-          occurs_in_list = false;
+        if (types_are_equal (type, this.types[i])) {
+          occurs_in_list = true;
           break;
         }
       }
