@@ -200,7 +200,7 @@ public class Contacts.ContactEditor : ContactForm {
       if (entry.get_text () == "")
         continue;
 
-      combo.update_details (row_entry.value.details);
+      combo.active_descriptor.save_to_field_details (row_entry.value.details);
       var details = new EmailFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
     }
@@ -221,7 +221,7 @@ public class Contacts.ContactEditor : ContactForm {
       if (entry.get_text () == "")
         continue;
 
-      combo.update_details (row_entry.value.details);
+      combo.active_descriptor.save_to_field_details (row_entry.value.details);
       var details = new PhoneFieldDetails (entry.get_text (), row_entry.value.details.parameters);
       new_details.add (details);
     }
@@ -306,7 +306,7 @@ public class Contacts.ContactEditor : ContactForm {
     foreach (var row_entry in rows.entries) {
       var combo = container_grid.get_child_at (0, row_entry.key) as TypeCombo;
       var addr_editor = container_grid.get_child_at (1, row_entry.key) as AddressEditor;
-      combo.update_details (row_entry.value.details);
+      combo.active_descriptor.save_to_field_details (row_entry.value.details);
 
       var new_value = new PostalAddress (addr_editor.details.value.po_box,
 					 addr_editor.details.value.extension,
@@ -366,9 +366,9 @@ public class Contacts.ContactEditor : ContactForm {
   void attach_row_with_entry (int row, TypeSet type_set, AbstractFieldDetails details, string value, string? type = null) {
     var combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
-    combo.set_active (details);
+    combo.set_active_from_field_details (details);
     if (type != null)
-      combo.set_to (type);
+      combo.set_active_from_vcard_type (type);
     combo.set_valign (Align.CENTER);
     container_grid.attach (combo, 0, row, 1, 1);
 
@@ -388,7 +388,7 @@ public class Contacts.ContactEditor : ContactForm {
     container_grid.attach (delete_button, 3, row, 1, 1);
 
     /* Notify change to upper layer */
-    combo.changed.connect (() => {
+    combo.changed.connect ((c) => {
 	set_field_changed (get_current_row (combo));
       });
     value_entry.changed.connect (() => {
@@ -545,9 +545,9 @@ public class Contacts.ContactEditor : ContactForm {
   void attach_row_for_address (int row, TypeSet type_set, PostalAddressFieldDetails details, string? type = null) {
     var combo = new TypeCombo (type_set);
     combo.set_hexpand (false);
-    combo.set_active (details);
+    combo.set_active_from_field_details (details);
     if (type != null)
-      combo.set_to (type);
+      combo.set_active_from_vcard_type (type);
     container_grid.attach (combo, 0, row, 1, 1);
 
     var value_address = new AddressEditor (details);

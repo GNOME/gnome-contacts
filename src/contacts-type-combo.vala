@@ -19,133 +19,78 @@ using Gtk;
 using Gee;
 using Folks;
 
-public class Contacts.TypeCombo : Grid  {
+/**
+ * The TypeCombo is a widget that fills itself with the types of a certain
+ * category (using {@link Contacts.TypeSet}). For example, it allows the user
+ * to choose between "Personal", "Home" and "Work" for email addresses,
+ * together with all the custom labels it has encountered since then.
+ */
+public class Contacts.TypeCombo : ComboBox  {
+
   private unowned TypeSet type_set;
-  private ComboBox combo;
-  private Entry entry;
-  private TreeIter last_active;
-  private bool custom_mode;
-  private bool in_manual_change;
-  public bool modified;
 
-  public signal void changed ();
+  /**
+   * The {@link Contacts.TypeDescriptor} that is currently shown
+   */
+  public TypeDescriptor active_descriptor {
+    get {
+      TreeIter iter;
 
-  public TypeCombo (TypeSet type_set) {
-    this.type_set = type_set;
+      get_active_iter (out iter);
+      assert (!is_separator (this.model, iter));
 
-    combo = new ComboBox.with_model (type_set.store);
-    combo.set_halign (Align.FILL);
-    combo.set_hexpand (true);
-    this.add (combo);
+      unowned TypeDescriptor descriptor;
+      this.model.get (iter, 1, out descriptor);
+      return descriptor;
+    }
+    set {
+      set_active_iter (value.iter);
+    }
+  }
+
+  construct {
+    this.valign = Align.START;
+    this.halign = Align.FILL;
+    this.hexpand = true;
+    this.visible = true;
 
     var renderer = new CellRendererText ();
-    combo.pack_start (renderer, true);
-    combo.set_attributes (renderer,
-                          "text", 0);
-    combo.set_row_separator_func ( (model, iter) => {
-        string? s;
-        model.get (iter, 0, out s);
-        return s == null;
-      });
+    pack_start (renderer, true);
+    set_attributes (renderer, "text", 0);
 
-    entry = new Entry ();
-    entry.set_halign (Align.FILL);
-    entry.set_hexpand (true);
-    // Make the default entry small so we don't unnecessarily
-    // expand the labels (it'll be expanded a bit anyway)
-    entry.width_chars = 4;
-
-    this.add (entry);
-
-    combo.set_no_show_all (true);
-    entry.set_no_show_all (true);
-
-    combo.show ();
-
-    combo.changed.connect (combo_changed);
-    entry.focus_out_event.connect (entry_focus_out_event);
-    entry.activate.connect (entry_activate);
-    entry.key_release_event.connect (entry_key_release);
+    set_row_separator_func (is_separator);
   }
 
-  private void finish_custom () {
-    if (!custom_mode)
-      return;
-
-    custom_mode = false;
-    var text = entry.get_text ();
-
-    if (text != "") {
-      TreeIter iter;
-      type_set.get_iter_for_custom_label (text, out iter);
-
-      last_active = iter;
-      combo.set_active_iter (iter);
-    } else {
-      combo.set_active_iter (last_active);
-    }
-
-    combo.show ();
-    entry.hide ();
+  /**
+   * Creates a TypeCombo for the given TypeSet. To set the active value,
+   * use the "current-decsriptor" property, set_active_from_field_details(),
+   * or set_active_from_vcard_type()
+   */
+  public TypeCombo (TypeSet type_set) {
+    this.type_set = type_set;
+    this.model = type_set.store;
   }
 
-  private void entry_activate () {
-    finish_custom ();
+  private bool is_separator (TreeModel model, TreeIter iter) {
+    unowned string? s;
+    model.get (iter, 0, out s);
+    return s == null;
   }
 
-  private bool entry_key_release (Gdk.EventKey event) {
-    if (event.keyval == Gdk.Key.Escape) {
-      entry.set_text ("");
-      finish_custom ();
-    }
-    return true;
+  /**
+   * Sets the value to the type of the given {@link Folks.AbstractFieldDetails}.
+   */
+  public void set_active_from_field_details (AbstractFieldDetails details) {
+    this.active_descriptor = this.type_set.lookup_descriptor_for_field_details (details);
   }
 
-  private bool entry_focus_out_event (Gdk.EventFocus event) {
-    finish_custom ();
-    return false;
-  }
-
-  private void combo_changed (ComboBox combo) {
-    if (in_manual_change)
-      return;
-
-    modified = true;
+  /**
+   * Sets the value to the type that best matches the given vcard type
+   * (for example "HOME" or "WORK").
+   */
+  public void set_active_from_vcard_type (string type) {
     TreeIter iter;
-    if (combo.get_active_iter (out iter)) {
-      last_active = iter;
-      this.changed ();
-    }
-  }
-
-  private void set_from_iter (TreeIter iter) {
-    in_manual_change = true;
-    last_active = iter;
-    combo.set_active_iter (iter);
-    in_manual_change = false;
-    modified = false;
-  }
-
-  public void set_active (AbstractFieldDetails details) {
-    TreeIter iter;
-    type_set.get_iter_for_field_details (details, out iter);
-    set_from_iter (iter);
-  }
-
-  public void set_to (string type) {
-    TreeIter iter;
-    type_set.get_iter_for_vcard_type (type, out iter);
-    set_from_iter (iter);
-  }
-
-  public void update_details (AbstractFieldDetails details) {
-    TreeIter iter;
-    combo.get_active_iter (out iter);
-
-    TypeDescriptor descriptor;
-    string display_name;
-    combo.model.get (iter, 0, out display_name, 1, out descriptor);
-    assert (display_name != null); // Not separator
-    descriptor.save_to_field_details (details);
+    this.type_set.get_iter_for_vcard_type (type, out iter);
+    set_active_iter (iter);
   }
 }
