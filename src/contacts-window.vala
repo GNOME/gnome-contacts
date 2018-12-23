@@ -45,7 +45,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private MenuButton hamburger_menu_button;
   [GtkChild]
-  private RadioButton sort_on_surname_button;
+  private ModelButton sort_on_firstname_button;
+  [GtkChild]
+  private ModelButton sort_on_surname_button;
   [GtkChild]
   private ToggleButton favorite_button;
   private bool ignore_favorite_button_toggled;
@@ -91,10 +93,15 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     );
 
     this.settings = settings;
-    this.sort_on_surname_button.active = this.settings.sort_on_surname;
-    this.sort_on_surname_button.toggled.connect (() => {
-        this.settings.sort_on_surname = this.sort_on_surname_button.active;
-      });
+    this.sort_on_firstname_button.clicked.connect (() => {
+      this.settings.sort_on_surname = false;
+      on_sort_changed ();
+    });
+    this.sort_on_surname_button.clicked.connect (() => {
+      this.settings.sort_on_surname = true;
+      on_sort_changed ();
+    });
+    on_sort_changed ();
 
     this.notify["state"].connect (on_ui_state_changed);
 
@@ -102,6 +109,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     create_contact_pane ();
     connect_button_signals ();
     restore_window_size_and_position_from_settings ();
+  }
+
+  private void on_sort_changed () {
+    this.sort_on_firstname_button.active = !this.settings.sort_on_surname;
+    this.sort_on_surname_button.active = this.settings.sort_on_surname;
   }
 
   private void restore_window_size_and_position_from_settings () {
