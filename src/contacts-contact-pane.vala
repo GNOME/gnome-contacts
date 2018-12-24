@@ -226,10 +226,12 @@ public class Contacts.ContactPane : Stack {
     this.on_edit_mode = false;
     /* saving changes */
     if (!drop_changes) {
+              warning ("Editor:saving changes");
       editor.save_changes.begin ((obj, res) => {
           try {
             editor.save_changes.end (res);
           } catch (Error e) {
+              critical(e.message); // XXX
             show_message (e.message);
           }
         });

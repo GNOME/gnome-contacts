@@ -106,12 +106,7 @@ public class Contacts.TypeDescriptor : Object {
     // Check whether PREF VCard "flag" is set
     bool has_pref = false;
     if (old_parameters != null) {
-      foreach (var val in old_parameters["type"]) {
-        if (val.ascii_casecmp ("PREF") == 0) {
-          has_pref = true;
-          break;
-        }
-      }
+      has_pref = TypeDescriptor.parameters_have_type_pref (old_parameters);
 
       // Copy over all parameters, execept the ones we're going to create ourselves
       foreach (var param in old_parameters.get_keys ()) {
@@ -141,6 +136,57 @@ public class Contacts.TypeDescriptor : Object {
       new_parameters["type"] = "PREF";
 
     return new_parameters;
+  }
+
+  public static bool parameters_have_type_pref (MultiMap<string, string> parameters) {
+    foreach (var val in parameters["type"])
+      if (val.ascii_casecmp ("PREF") == 0)
+        return true;
+
+    return false;
+  }
+
+  /**
+   * Checks whether the values related to a {@link TypeDescriptor} in the given
+   * parameters (as one might find in a {@link Folks.AbstractFieldDetails}) are
+   * equal.
+   *
+   * @param parameters_a: The first parameters multimap to compare
+   * @param parameters_b: The second parameters multimap to compare
+   *
+   * @return: Whether the type parameters ("type" and "PREF") are equal
+   */
+  public static bool check_type_parameters_equal (MultiMap<string, string> parameters_a,
+                                                  MultiMap<string, string> parameters_b) {
+    // First check if some "PREF" value changed
+    if (TypeDescriptor.parameters_have_type_pref (parameters_a)
+        != TypeDescriptor.parameters_have_type_pref (parameters_b))
+      return false;
+
+    // Next, check for any custom Google property labels
+    var google_label_a = Utils.get_first<string> (parameters_a[X_GOOGLE_LABEL]);
+    var google_label_b = Utils.get_first<string> (parameters_b[X_GOOGLE_LABEL]);
+    if (google_label_a != null || google_label_b != null) {
+      // Note that we do a case-sensitive comparison for custom labels
+      return google_label_a == google_label_b;
+    }
+
+    // Finally, check the type parameters
+    var types_a = new ArrayList<string>.wrap (parameters_a["type"].to_array ());
+    var types_b = new ArrayList<string>.wrap (parameters_b["type"].to_array ());
+
+    if (types_a.size != types_b.size)
+      return false;
+
+    // Now we check if types are esual. Note that we might be a bit more strict
+    // than truly necessary, but from a UI perspective they are still the same
+    types_a.sort ();
+    types_b.sort ();
+    for (int i = 0; i < types_a.size; i++)
+      if (types_a[i].ascii_casecmp (types_b[i]) != 0)
+        return false;
+
+    return true;
   }
 
   /**
