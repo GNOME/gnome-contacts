@@ -64,8 +64,6 @@ public abstract class Contacts.PropertyField : Object {
 
 public interface Contacts.EditableProperty : PropertyField {
 
-  /* public bool dirty { get; construct set; } */
-
   /**
    * Creates a new {@link GLib.Value} from the content of this property.
    * This method is used when a new contact is created.
@@ -75,8 +73,41 @@ public interface Contacts.EditableProperty : PropertyField {
   /**
    * Saves the content of this property to the {@link Folks.Persona}. Note that
    * it is a programmer error to call this when `this.persona == null`.
+   *
+   * XXX TODO FIXME: this will time out and fail in Edsf personas if the property didn't change.
+   * Either we need to fix this in folks or make *absolutely* sure the values changed
    */
   public abstract async void save_changes () throws PropertyError;
+
+  protected bool check_if_equal (Collection<AbstractFieldDetails> old_field_details,
+                                 Collection<AbstractFieldDetails> new_field_details) {
+    // Compare FieldDetails (maybe use equal_static? using a Set)
+    foreach (var old_field_detail in old_field_details) {
+      bool got_match = false;
+      foreach (var new_field_detail in new_field_details) {
+        // Check if the values are equal
+        if (!old_field_detail.values_equal (new_field_detail))
+          continue;
+
+        // We can't use AbstractFieldDetails.parameters_equal here,
+        // since custom labels should be compared case-sensitive, while standard
+        // ones shouldn't really.
+
+        // Only compare the fields we know about => at this point only the
+        // type-related ones
+        if (!TypeDescriptor.check_type_parameters_equal (old_field_detail.parameters,
+                                                         new_field_detail.parameters))
+          continue;
+
+        got_match = true;
+      }
+
+      if (!got_match)
+        return false;
+    }
+
+    return true;
+  }
 }
 
 public class Contacts.PropertyWidget : ListBoxRow {
@@ -271,6 +302,9 @@ public class Contacts.EditableNicknameField : NicknameField, EditableProperty {
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
+    if (this.nickname == ((NameDetails) this.persona).nickname)
+      return;
+
     yield ((NameDetails) this.persona).change_nickname (this.nickname);
   }
 }
@@ -395,7 +429,11 @@ public class Contacts.EditableBirthdayField : BirthdayField, EditableProperty {
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
-    yield ((BirthdayDetails) this.persona).change_birthday (this.birthday);
+    var new_birthday = this.birthday.to_utc ();
+    if (new_birthday == ((BirthdayDetails) this.persona).birthday)
+      return;
+
+    yield ((BirthdayDetails) this.persona).change_birthday (new_birthday);
   }
 }
 
@@ -478,7 +516,8 @@ public class Contacts.EditablePhoneNrsField : PhoneNrsField, EditableProperty {
     if (this.phone_nrs.is_empty)
       return null;
 
-    var new_details = create_set ();
+    var new_details = create_new_field_details ();
+
     // Check if we only had empty phone_nrs
     if (new_details.is_empty)
       return null;
@@ -491,11 +530,16 @@ public class Contacts.EditablePhoneNrsField : PhoneNrsField, EditableProperty {
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
-    var new_addrs = create_set ();
-    yield ((PhoneDetails) this.persona).change_phone_numbers (new_addrs);
+    var new_phone_nrs = create_new_field_details ();
+
+    // Check if we didn't have any changes. This is a necessary step
+    // XXX explain why (timeout)
+    var old_phone_nrs = ((PhoneDetails) this.persona).phone_numbers;
+    if (!check_if_equal (old_phone_nrs, new_phone_nrs))
+      yield ((PhoneDetails) this.persona).change_phone_numbers (new_phone_nrs);
   }
 
-  private HashSet<PhoneFieldDetails>? create_set () {
+  private HashSet<PhoneFieldDetails>? create_new_field_details () {
     var new_details = new HashSet<PhoneFieldDetails> ();
     for (int i = 0; i < this.phone_nrs.size; i++) {
       if (this.phone_nrs[i] == "")
@@ -588,7 +632,7 @@ public class Contacts.EditableEmailsField : EmailsField, EditableProperty {
     if (this.emails.is_empty)
       return null;
 
-    var new_details = create_set ();
+    var new_details = create_new_field_details ();
     // Check if we only had empty emails
     if (new_details.is_empty)
       return null;
@@ -601,11 +645,14 @@ public class Contacts.EditableEmailsField : EmailsField, EditableProperty {
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
-    var new_addrs = create_set ();
-    yield ((EmailDetails) this.persona).change_email_addresses (new_addrs);
+    var new_emails = create_new_field_details ();
+    var old_emails = ((EmailDetails) this.persona).email_addresses;
+
+    if (!check_if_equal (old_emails, new_emails))
+      yield ((EmailDetails) this.persona).change_email_addresses (new_emails);
   }
 
-  private HashSet<EmailFieldDetails>? create_set () {
+  private HashSet<EmailFieldDetails>? create_new_field_details () {
     var new_details = new HashSet<EmailFieldDetails> ();
     for (int i = 0; i < this.emails.size; i++) {
       if (this.emails[i] != "")
@@ -690,7 +737,7 @@ public class Contacts.EditableUrlsField : UrlsField, EditableProperty {
     if (this.urls.is_empty)
       return null;
 
-    var new_details = create_set ();
+    var new_details = create_new_field_details ();
     // Check if we only had empty urls
     if (new_details.is_empty)
       return null;
@@ -703,11 +750,11 @@ public class Contacts.EditableUrlsField : UrlsField, EditableProperty {
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
-    var new_urls = create_set ();
+    var new_urls = create_new_field_details ();
     yield ((UrlDetails) this.persona).change_urls (new_urls);
   }
 
-  private HashSet<UrlFieldDetails>? create_set () {
+  private HashSet<UrlFieldDetails>? create_new_field_details () {
     var new_details = new HashSet<UrlFieldDetails> ();
     for (int i = 0; i < this.urls.size; i++) {
       if (this.urls[i] == "")
@@ -789,7 +836,7 @@ public class Contacts.EditableNotesField : NotesField, EditableProperty {
     if (this.notes.is_empty)
       return null;
 
-    var new_details = create_set ();
+    var new_details = create_new_field_details ();
     // Check if we only had empty addresses
     if (new_details.is_empty)
       return null;
@@ -802,11 +849,11 @@ public class Contacts.EditableNotesField : NotesField, EditableProperty {
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
-    var new_addrs = create_set ();
+    var new_addrs = create_new_field_details ();
     yield ((NoteDetails) this.persona).change_notes (new_addrs);
   }
 
-  private HashSet<NoteFieldDetails>? create_set () {
+  private HashSet<NoteFieldDetails>? create_new_field_details () {
     var new_details = new HashSet<NoteFieldDetails> ();
     for (int i = 0; i < this.notes.size; i++) {
       if (this.notes[i] == "")
@@ -931,7 +978,7 @@ public class Contacts.EditablePostalAddressesField : PostalAddressesField, Edita
     if (this.addresses.is_empty)
       return null;
 
-    var new_details = create_set ();
+    var new_details = create_new_field_details ();
     // Check if we only had empty addresses
     if (new_details.is_empty)
       return null;
@@ -944,11 +991,14 @@ public class Contacts.EditablePostalAddressesField : PostalAddressesField, Edita
   public async void save_changes () throws PropertyError {
     assert (this.persona != null);
 
-    var new_addrs = create_set ();
-    yield ((PostalAddressDetails) this.persona).change_postal_addresses (new_addrs);
+    var new_addrs = create_new_field_details ();
+
+    var old_addrs = ((PostalAddressDetails) this.persona).postal_addresses;
+    if (!check_if_equal (old_addrs, new_addrs))
+      yield ((PostalAddressDetails) this.persona).change_postal_addresses (new_addrs);
   }
 
-  private HashSet<PostalAddressFieldDetails>? create_set () {
+  private HashSet<PostalAddressFieldDetails>? create_new_field_details () {
     var new_details = new HashSet<PostalAddressFieldDetails> ();
     for (int i = 0; i < this.addresses.size; i++) {
       if (is_empty_postal_address (this.addresses[i]))

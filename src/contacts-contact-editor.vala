@@ -169,13 +169,16 @@ public class Contacts.ContactEditor : ContactForm {
   public async void save_changes () throws Error {
     for (uint i = 0; i < this.fields.get_n_items (); i++) {
       var field = this.fields.get_item (i) as EditableProperty;
-      if (field != null)
+      if (field != null) {
         yield field.save_changes ();
+        debug ("Successfully saved property '%s'", field.property_name);
+      }
     }
 
     if (name_changed ()) {
       var v = get_full_name_value ();
       yield this.contact.set_individual_property ("full-name", v);
+      debug ("Successfully saved name");
       /*XXX*/
       /* display_name_changed (v.get_string ()); */
     }
@@ -183,6 +186,7 @@ public class Contacts.ContactEditor : ContactForm {
     if (avatar_changed ()) {
       var v = get_avatar_value ();
       yield this.contact.set_individual_property ("avatar", v);
+      debug ("Successfully saved avatar");
     }
   }
 
