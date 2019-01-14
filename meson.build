@@ -37,7 +37,6 @@ po_dir = join_paths(meson.source_root(), 'po')
 min_eds_version = '3.13.90'
 min_folks_version = '0.11.4'
 min_glib_version = '2.44' # We also use this value for --target-glib, so scratch the micro version.
-min_handy_version = '0.0.4'
 
 math = meson.get_compiler('c').find_library('m')
 
@@ -53,7 +52,6 @@ gtk = dependency('gtk+-3.0', version: '>= 3.23.1')
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
-libhandy = dependency('libhandy-0.0', version: '>=' + min_handy_version)
 
 if cheese_enabled
   cheese = dependency('cheese')
@@ -63,6 +61,19 @@ endif
 if telepathy_enabled
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
   telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
+endif
+
+libhandy = dependency('libhandy-0.0', version: '>= 0.0.4', required: false)
+if not libhandy.found()
+  libhandy_subproj = subproject(
+    'libhandy',
+    default_options: [
+      'examples=false',
+      'glade_catalog=false',
+      'tests=false',
+    ]
+  )
+  libhandy = libhandy_subproj.get_variable('libhandy_dep')
 endif
 
 valadoc = find_program('valadoc', required: docs_enabled)
