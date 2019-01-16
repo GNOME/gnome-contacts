@@ -17,12 +17,13 @@
 
 using Gee;
 using Gtk;
+using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-setup-window.ui")]
 public class Contacts.SetupWindow : Gtk.ApplicationWindow {
   [GtkChild]
-  private Grid content;
+  private Column content;
 
   [GtkChild]
   private Button setup_done_button;
@@ -38,7 +39,6 @@ public class Contacts.SetupWindow : Gtk.ApplicationWindow {
     Object (application: app);
     this.setup_accounts_list = new AccountsList (store);
     this.setup_accounts_list.hexpand = true;
-    this.setup_accounts_list.halign = Align.CENTER;
     this.setup_accounts_list.show ();
     this.content.add (this.setup_accounts_list);
 
