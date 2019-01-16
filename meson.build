@@ -73,7 +73,13 @@ if not libhandy.found()
       'tests=false',
     ]
   )
-  libhandy = libhandy_subproj.get_variable('libhandy_dep')
+  # When using libhandy as subproject, make sure we get the VAPI file
+  libhandy = declare_dependency(
+    dependencies: [
+      libhandy_subproj.get_variable('libhandy_dep'),
+      libhandy_subproj.get_variable('libhandy_vapi'),
+    ]
+  )
 endif
 
 valadoc = find_program('valadoc', required: docs_enabled)
