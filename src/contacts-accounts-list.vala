@@ -20,7 +20,7 @@ using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
-public class Contacts.AccountsList : Box {
+public class Contacts.AccountsList : Frame {
   [GtkChild]
   private ListBox accounts_view;
 
