@@ -29,6 +29,8 @@ main (string[] args) {
   GtkCheese.init (ref args);
 #endif
 
+  Hdy.init (ref args);
+
   var app = new App ();
   app.run (args);
   app = null;
