@@ -20,10 +20,7 @@ using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
-public class Contacts.AccountsList : Box {
-  [GtkChild]
-  private ListBox accounts_view;
-
+public class Contacts.AccountsList : ListBox {
   private ListBoxRow last_selected_row;
 
   private Store contacts_store;
@@ -36,11 +33,10 @@ public class Contacts.AccountsList : Box {
     this.contacts_store = contacts_store;
     this.selected_store = null;
 
-    this.accounts_view.set_header_func (add_separator);
-    this.accounts_view.row_activated.connect (row_activated);
+    this.set_header_func (add_separator);
   }
 
-  private void row_activated (ListBoxRow? row) {
+  public override void row_activated (ListBoxRow row) {
     if (row == null)
       return;
 
@@ -66,7 +62,7 @@ public class Contacts.AccountsList : Box {
   }
 
   public void update_contents (bool select_active) {
-    foreach (var child in accounts_view.get_children ()) {
+    foreach (var child in get_children ()) {
       child.destroy ();
     }
 
@@ -113,7 +109,7 @@ public class Contacts.AccountsList : Box {
                      "hexpand", true);
       row.add_action (checkmark);
       row.set_data ("checkmark", checkmark);
-      accounts_view.add (row);
+      add (row);
 
       if (select_active &&
           persona_store == this.contacts_store.aggregator.primary_store) {
@@ -136,13 +132,13 @@ public class Contacts.AccountsList : Box {
                      "hexpand", true);
       local_row.add_action (checkmark);
       local_row.set_data ("checkmark", checkmark);
-      accounts_view.add (local_row);
+      add (local_row);
       if (select_active &&
           local_store == this.contacts_store.aggregator.primary_store) {
         row_activated (local_row);
       }
     }
 
-    accounts_view.show_all ();
+    show_all ();
   }
 }

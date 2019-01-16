@@ -55,36 +55,56 @@
       </object>
     </child>
     <child>
-      <object class="GtkGrid" id="content">
+      <object class="GtkScrolledWindow">
         <property name="visible">True</property>
-        <property name="valign">center</property>
-        <property name="halign">center</property>
-        <property name="border_width">12</property>
-        <property name="row_spacing">24</property>
-        <property name="orientation">vertical</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="propagate_natural_height">True</property>
         <child>
-          <object class="GtkLabel">
+          <object class="HdyColumn">
             <property name="visible">True</property>
-            <property name="halign">center</property>
-            <property name="label" translatable="yes">Welcome</property>
-            <attributes>
-              <attribute name="scale" value="3.5"/>
-            </attributes>
-          </object>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="halign">center</property>
-            <property name="wrap">True</property>
-            <property name="max_width_chars">55</property>
-            <property name="label" translatable="yes">Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkListBox" id="providers_list">
-            <property name="visible">True</property>
-            <property name="halign">center</property>
+            <property name="maximum_width">600</property>
+            <property name="linear_growth_width">400</property>
+            <property name="margin_top">32</property>
+            <property name="margin_bottom">32</property>
+            <property name="margin_start">12</property>
+            <property name="margin_end">12</property>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="valign">center</property>
+                <property name="halign">center</property>
+                <property name="border_width">12</property>
+                <property name="row_spacing">24</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="halign">center</property>
+                    <property name="ellipsize">end</property>
+                    <property name="label" translatable="yes">Welcome</property>
+                    <attributes>
+                      <attribute name="scale" value="3.5"/>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="halign">start</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyColumn" id="content">
+                    <property name="visible">True</property>
+                    <property name="maximum_width">400</property>
+                    <property name="linear_growth_width">400</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>
