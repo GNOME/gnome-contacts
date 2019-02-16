@@ -107,7 +107,7 @@ public class Contacts.TypeSet : Object  {
    * {@link Typeset}'s store, if any.
    *
    * @param display_name: The translated display name
-   * @return: The appropriate TypeDescriptor or null if no match was found.
+   * @return The appropriate TypeDescriptor or null if no match was found.
    */
   public unowned TypeDescriptor? lookup_descriptor_in_store (string display_name) {
     TreeIter iter;

@@ -1,3 +1,11 @@
+docs_vapidirs = [
+  '--vapidir=@0@'.format(join_paths(meson.source_root(), 'vapi')),
+]
+
+if libhandy_vapidir != ''
+  docs_vapidirs += '--vapidir=@0@'.format(libhandy_vapidir )
+endif
+
 custom_target('docs',
   input: contacts_vala_sources,
   output: 'docs',
@@ -19,8 +27,8 @@ custom_target('docs',
     '--pkg=libhandy-0.0',
     '--pkg=custom',
     '--pkg=config',
-    '--vapidir=@0@'.format(join_paths(meson.source_root(), 'vapi')),
     '--directory=@OUTDIR@',
+    docs_vapidirs,
     [ libcontacts_sources, contacts_vala_sources ],
   ],
   build_by_default: true,
