@@ -62,7 +62,7 @@ public class Contacts.TypeSet : Object  {
 
   /**
    * Returns the TreeIter which corresponds the best to the given vcard type.
-   * @param type: A VCard-like type, such as "HOME" or "CELL".
+   * @param type A VCard-like type, such as "HOME" or "CELL".
    */
   public void get_iter_for_vcard_type (string type, out TreeIter iter) {
     unowned TypeDescriptor? d = lookup_descriptor_by_vcard_type (type);
@@ -88,8 +88,8 @@ public class Contacts.TypeSet : Object  {
   }
 
   /**
-   * Adds the TypeDescriptor to the {@link Typeset}'s store.
-   * @param descriptor: The TypeDescription to be added
+   * Adds the TypeDescriptor to the {@link TypeSet}'s store.
+   * @param descriptor The TypeDescription to be added
    */
   private void add_descriptor_to_store (TypeDescriptor descriptor) {
     debug ("%s: Adding type %s to store", this.category, descriptor.to_string ());
@@ -104,9 +104,9 @@ public class Contacts.TypeSet : Object  {
 
   /**
    * Returns the TypeDescriptor for the given display name in the
-   * {@link Typeset}'s store, if any.
+   * {@link TypeSet}'s store, if any.
    *
-   * @param display_name: The translated display name
+   * @param display_name The translated display name
    * @return The appropriate TypeDescriptor or null if no match was found.
    */
   public unowned TypeDescriptor? lookup_descriptor_in_store (string display_name) {
@@ -168,7 +168,7 @@ public class Contacts.TypeSet : Object  {
 
   /**
    * Returns the TypeDescriptor which corresponds the best to the given vcard type.
-   * @param str: A VCard-like type, such as "HOME" or "CELL".
+   * @param str A VCard-like type, such as "HOME" or "CELL".
    */
   private unowned TypeDescriptor? lookup_descriptor_by_vcard_type (string str) {
     foreach (VcardTypeMapping? mapping in this.vcard_type_mappings) {
