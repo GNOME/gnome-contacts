@@ -73,6 +73,7 @@ if not libhandy.found()
       'tests=false',
     ]
   )
+
   # When using libhandy as subproject, make sure we get the VAPI file
   libhandy = declare_dependency(
     dependencies: [
@@ -80,6 +81,10 @@ if not libhandy.found()
       libhandy_subproj.get_variable('libhandy_vapi'),
     ]
   )
+
+  libhandy_vapidir = join_paths(meson.build_root(), 'subprojects', 'libhandy', 'src')
+else
+  libhandy_vapidir = ''
 endif
 
 valadoc = find_program('valadoc', required: docs_enabled)
