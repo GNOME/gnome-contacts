@@ -142,7 +142,7 @@ public class Contacts.ContactEditor : ContactForm {
     else
       fill_in_empty ();
 
-    show_all ();
+    this.container_grid.show_all ();
   }
 
   private void fill_in_contact () {
