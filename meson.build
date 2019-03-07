@@ -63,7 +63,7 @@ if telepathy_enabled
   telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 endif
 
-libhandy = dependency('libhandy-0.0', version: '>= 0.0.8', required: false)
+libhandy = dependency('libhandy-0.0', version: '>= 0.0.9', required: false)
 if not libhandy.found()
   libhandy_subproj = subproject(
     'libhandy',
