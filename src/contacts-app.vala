@@ -34,7 +34,8 @@ public class Contacts.App : Gtk.Application {
     { "about",           show_about          },
     { "change-book",     change_address_book },
     { "online-accounts", online_accounts     },
-    { "new-contact",     new_contact         }
+    { "new-contact",     new_contact         },
+    { "show-contact",    on_show_contact,   "s"     }
   };
 
   private const OptionEntry[] options = {
@@ -385,4 +386,13 @@ public class Contacts.App : Gtk.Application {
   public void new_contact () {
     window.new_contact ();
   }
+
+  private void on_show_contact(SimpleAction action, Variant? param) {
+    var individual = param as string;
+    if (window != null)
+      window.present ();
+    if (individual != null)
+      show_individual.begin (individual);
+  }
+
 }
