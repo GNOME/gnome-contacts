@@ -35,6 +35,7 @@ public class Contacts.App : Gtk.Application {
     { "change-book",     change_address_book },
     { "online-accounts", online_accounts     },
     { "new-contact",     new_contact         },
+    { "create-contact",  on_create_contact, "a(ss)" },
     { "show-contact",    on_show_contact,   "s"     }
   };
 
@@ -386,6 +387,26 @@ public class Contacts.App : Gtk.Application {
   public void new_contact () {
     window.new_contact ();
   }
+
+  private void on_create_contact(SimpleAction action, Variant? param) {
+    Gee.MultiMap<string,string>? values = null;
+    if (param != null) {
+      values = new Gee.HashMultiMap<string,string>();
+      for (int i = 0; i < param.n_children(); i++) {
+        Variant entry = param.get_child_value(i);
+        string? key = entry.get_child_value(0) as string;
+        string? value = entry.get_child_value(1) as string;
+        if (key != null && value != null) {
+          values.set(key, value);
+        }
+      }
+    }
+    if (window != null) {
+      window.present ();
+      window.new_contact (values);
+    }
+  }
+
   private void on_show_contact(SimpleAction action, Variant? param) {
     var individual = param as string;
     if (window != null)

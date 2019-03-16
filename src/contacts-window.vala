@@ -311,8 +311,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
   }
 
-  [GtkCallback]
-  public void new_contact () {
+  public void new_contact (Gee.MultiMap<string,string>? values = null) {
     if (this.state == UiState.UPDATING || this.state == UiState.CREATING)
       return;
 
@@ -322,8 +321,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     this.right_header.title = _("New Contact");
 
-    this.contact_pane.new_contact ();
+    this.contact_pane.new_contact (values);
     show_contact_pane ();
+  }
+
+  [GtkCallback]
+  public void on_new_contact () {
+    new_contact ();
   }
 
   [GtkCallback]

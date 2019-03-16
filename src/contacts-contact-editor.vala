@@ -120,7 +120,7 @@ public class Contacts.ContactEditor : ContactForm {
     this.container_grid.size_allocate.connect(on_container_grid_size_allocate);
   }
 
-  public ContactEditor (Contact? contact, Store store, GLib.ActionGroup editor_actions) {
+  public ContactEditor (Contact? contact, Store store, GLib.ActionGroup editor_actions, MultiMap<string,string>? values = null) {
     this.store = store;
     this.contact = contact;
 
@@ -135,10 +135,24 @@ public class Contacts.ContactEditor : ContactForm {
     }
 
     create_avatar_button ();
-    create_name_entry ();
+
+    string name = "";
+    if (contact != null)
+      name = contact.individual.display_name;
+    else if (values != null) {
+      string key = PersonaStore.detail_key(PersonaDetail.FULL_NAME);
+      Collection<string>? names = values.get(key);
+      if (names != null && !names.is_empty) {
+        name = Utils.get_first(names);
+      }
+      values.remove_all(key);
+    }
+    create_name_entry (name);
 
     if (contact != null)
       fill_in_contact ();
+    else if (values != null)
+      fill_in_values (values);
     else
       fill_in_empty ();
 
@@ -177,13 +191,30 @@ public class Contacts.ContactEditor : ContactForm {
     }
   }
 
+  private void fill_in_values (MultiMap<string,string>? values = null) {
+    this.last_row = 2;
+
+    int row = 3;
+    this.writable_personas["null-persona.hack"] = new HashMap<string, Field?> ();
+    foreach (string key in values.get_keys()) {
+      switch (key) {
+      case "email-addresses":
+        foreach (string value in values.get(key))
+          add_edit_row (null, key, ref row, false, null, value);
+        break;
+      }
+    }
+
+    this.focus_widget = this.name_entry;
+  }
+
   private void fill_in_empty () {
     this.last_row = 2;
 
     this.writable_personas["null-persona.hack"] = new HashMap<string, Field?> ();
     foreach (var prop in DEFAULT_PROPS_NEW_CONTACT) {
       var tok = prop.split (".");
-      add_new_row_for_property (null, tok[0], tok[1].up ());
+      add_new_row_for_property (null, tok[0], null, tok[1].up ());
     }
 
     this.focus_widget = this.name_entry;
@@ -572,7 +603,7 @@ public class Contacts.ContactEditor : ContactForm {
     focus_widget = value_address;
   }
 
-  void add_edit_row (Persona? p, string prop_name, ref int row, bool add_empty = false, string? type = null) {
+  void add_edit_row (Persona? p, string prop_name, ref int row, bool add_empty = false, string? type = null, string? value = null) {
     /* Here, we will need to add manually every type of field,
      * we're planning to allow editing on */
     string persona_uid = p != null ? p.uid : "null-persona.hack";
@@ -582,6 +613,11 @@ public class Contacts.ContactEditor : ContactForm {
       if (add_empty) {
 	var detail_field = new EmailFieldDetails ("");
 	attach_row_with_entry (row, TypeSet.email, detail_field, "", type);
+	rows.set (row, { detail_field });
+	row++;
+      } else if (value != null){
+	var detail_field = new EmailFieldDetails ("");
+	attach_row_with_entry (row, TypeSet.email, detail_field, value, type);
 	rows.set (row, { detail_field });
 	row++;
       } else {
@@ -872,7 +908,7 @@ public class Contacts.ContactEditor : ContactForm {
     return props_set;
   }
 
-  public void add_new_row_for_property (Persona? p, string prop_name, string? type = null) {
+  public void add_new_row_for_property (Persona? p, string prop_name, string? value, string? type = null) {
     /* Somehow, I need to ensure that p is the main/default/first persona */
     Persona persona = null;
     if (contact != null) {
@@ -944,15 +980,13 @@ public class Contacts.ContactEditor : ContactForm {
   }
 
   // Creates the big name entry on the top
-  private void create_name_entry () {
+  private void create_name_entry (string name) {
     this.name_entry = new Entry ();
     this.name_entry.hexpand = true;
     this.name_entry.valign = Align.CENTER;
     this.name_entry.placeholder_text = _("Add name");
     this.name_entry.set_data ("changed", false);
-
-    if (this.contact != null)
-        this.name_entry.text = this.contact.individual.display_name;
+    this.name_entry.text = name;
 
     /* structured name change */
     this.name_entry.changed.connect (() => {

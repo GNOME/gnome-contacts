@@ -147,11 +147,11 @@ public class Contacts.ContactPane : Stack {
     this.sheet = null;
   }
 
-  private void create_contact_editor () {
+  private void create_contact_editor (Gee.MultiMap<string,string>? values = null) {
     if (this.editor != null)
       remove_contact_editor ();
 
-    this.editor = new ContactEditor (this.contact, this.store, this.edit_contact_actions);
+    this.editor = new ContactEditor (this.contact, this.store, this.edit_contact_actions, values);
     this.editor.linked_button.clicked.connect (linked_accounts);
     this.editor.remove_button.clicked.connect (delete_contact);
 
@@ -263,11 +263,11 @@ public class Contacts.ContactPane : Stack {
     }
   }
 
-  public void new_contact () {
+  public void new_contact (MultiMap<string,string>? values = null) {
     this.on_edit_mode = true;
     this.contact = null;
     remove_contact_sheet ();
-    create_contact_editor ();
+    create_contact_editor (values);
     set_visible_child (this.contact_editor_page);
   }
 
