@@ -169,7 +169,7 @@ namespace Contacts.Utils {
                                         Gtk.DialogFlags.MODAL,
                                         Gtk.MessageType.ERROR,
                                         Gtk.ButtonsType.OK,
-                                        error);
+                                        "%s", error);
     dialog.run();
     dialog.destroy();
   }
