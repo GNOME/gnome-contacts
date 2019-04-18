@@ -322,7 +322,7 @@ public class Contacts.ContactPane : Stack {
                            DialogFlags.DESTROY_WITH_PARENT | DialogFlags.MODAL,
                            MessageType.ERROR,
                            ButtonsType.OK,
-                           message);
+                           "%s", message);
     dialog.run ();
     dialog.destroy ();
   }
