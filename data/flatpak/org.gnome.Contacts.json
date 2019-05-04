@@ -53,8 +53,9 @@
             ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/libgee.git"
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/libgee/0.20/libgee-0.20.1.tar.xz",
+                    "sha256": "bb2802d29a518e8c6d2992884691f06ccfcc25792a5686178575c7111fea4630"
                 }
             ]
         },
@@ -76,6 +77,7 @@
             "sources": [
                 {
                     "type": "git",
+                    "branch": "gnome-3-32",
                     "url": "https://gitlab.gnome.org/GNOME/gnome-online-accounts.git"
                 }
             ]
@@ -128,25 +130,27 @@
             "sources": [
                 {
                     "type": "git",
+                    "branch": "gnome-3-32",
                     "url": "https://gitlab.gnome.org/GNOME/evolution-data-server.git"
                 }
             ]
         },
         {
             "name": "folks",
+            "buildsystem": "meson",
             "cleanup": [
                 "/bin",
                 "/share/GConf"
             ],
             "config-opts": [
-                "--disable-telepathy-backend",
-                "--disable-inspect-tool",
-                "--disable-import-tool",
-                "--disable-fatal-warnings"
+                "-Dtelepathy_backend=false",
+                "-Dinspect_tool=false",
+                "-Dimport_tool=false"
             ],
             "sources": [
                 {
                     "type": "git",
+                    "branch": "folks-0-12",
                     "url": "https://gitlab.gnome.org/GNOME/folks.git"
                 }
             ]
@@ -163,6 +167,7 @@
             "sources": [
                 {
                     "type": "git",
+                    "branch": "gnome-3-32",
                     "url": "https://gitlab.gnome.org/GNOME/gnome-desktop.git"
                 }
             ]
@@ -176,6 +181,7 @@
             "sources": [
                 {
                     "type": "git",
+                    "branch": "gnome-3-32",
                     "url": "https://gitlab.gnome.org/GNOME/cheese.git"
                 }
             ]
