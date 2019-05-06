@@ -8,5 +8,7 @@ foreach _test : test_names
     dependencies: libcontacts_dep,
   )
 
-  test(_test, test_bin)
+  test(_test, test_bin,
+    suite: 'gnome-contacts',
+  )
 endforeach
