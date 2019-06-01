@@ -59,9 +59,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   private Button cancel_button;
   [GtkChild]
   private Button done_button;
-  // Somehow needed for the header group to work
-  [GtkChild]
-  private HeaderGroup header_group;
 
   // The 2 panes the window consists of
   private ListPane list_pane;
