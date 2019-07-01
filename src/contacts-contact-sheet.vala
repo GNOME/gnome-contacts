@@ -230,7 +230,11 @@ public class Contacts.ContactSheet : ContactForm {
           var window = button.get_toplevel ();
           /* FIXME: show_uri_on_window doesn't do anything if the url
            * doesn't start with a protocol (e.g. http) */
-          show_uri_on_window ((Window) window, url.value, Gdk.CURRENT_TIME);
+          try {
+            show_uri_on_window ((Window) window, url.value, Gdk.CURRENT_TIME);
+          } catch (Error e) {
+            debug ("Failed to open url");
+          }
         });
         add_row_with_label (_("Website"), url.value, button);
       }
