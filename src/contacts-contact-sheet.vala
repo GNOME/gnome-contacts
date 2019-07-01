@@ -40,6 +40,7 @@ public class Contacts.ContactSheet : ContactForm {
   private Button create_button (string icon) {
     var button = new Button.from_icon_name (icon, IconSize.BUTTON);
     button.set_halign (Align.END);
+    button.get_style_context ().add_class ("flatten");
 
     return button;
   }
