@@ -36,31 +36,18 @@ public class Contacts.ContactSheet : ContactForm {
     update ();
   }
 
-  private Button add_row_with_button (string label, string value, bool use_link_button = false) {
-    var type_label = new Label (label);
-    type_label.xalign = 1.0f;
-    type_label.set_halign (Align.END);
-    type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row);
+  private Button create_button (string icon) {
+    var button = new Button.from_icon_name (icon, IconSize.BUTTON);
+    button.set_halign (Align.END);
 
-    var value_button = use_link_button? new LinkButton (value) : new Button.with_label (value);
-    value_button.focus_on_click = false;
-    value_button.relief = ReliefStyle.NONE;
-    value_button.halign = Align.START;
-    this.container_grid.attach (value_button, 1, this.last_row);
-    this.last_row++;
-
-    (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
-    (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
-
-    return value_button;
+    return button;
   }
 
-  void add_row_with_label (string label_value, string value) {
+  void add_row_with_label (string label_value, string value, Widget? buttons = null) {
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
-    type_label.set_valign (Align.START);
+    type_label.set_valign (Align.CENTER);
     type_label.get_style_context ().add_class ("dim-label");
     this.container_grid.attach (type_label, 0, this.last_row, 1, 1);
 
@@ -72,13 +59,14 @@ public class Contacts.ContactSheet : ContactForm {
     value_label.wrap_mode = Pango.WrapMode.CHAR;
     value_label.set_selectable (true);
 
-    /* FIXME: hardcode gap to match the button size */
-    type_label.margin_top = 3;
-    value_label.margin_start = 6;
-    value_label.margin_top = 3;
-    value_label.margin_bottom = 3;
-
-    this.container_grid.attach (value_label, 1, this.last_row, 1, 1);
+    if (buttons != null) {
+      var value_box = new Box(Orientation.HORIZONTAL, 12);
+      value_box.pack_start(value_label, false, false, 0);
+      value_box.pack_end(buttons, false, false, 0);
+      this.container_grid.attach (value_box, 1, this.last_row, 1, 1);
+    } else {
+      this.container_grid.attach (value_label, 1, this.last_row, 1, 1);
+    }
     this.last_row++;
   }
 
@@ -174,10 +162,11 @@ public class Contacts.ContactSheet : ContactForm {
     if (details != null) {
       var emails = Contacts.Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
       foreach (var email in emails) {
-          var button = add_row_with_button (TypeSet.email.format_type (email), email.value);
-          button.clicked.connect (() => {
+        var button = create_button ("mail-unread-symbolic");
+        button.clicked.connect (() => {
           Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
         });
+        add_row_with_label (TypeSet.email.format_type (email), email.value, button);
       }
     }
   }
@@ -189,10 +178,12 @@ public class Contacts.ContactSheet : ContactForm {
       foreach (var phone in phones) {
 #if HAVE_TELEPATHY
         if (this.store.caller_account != null) {
-          var button = add_row_with_button (TypeSet.phone.format_type (phone), phone.value);
-          button.clicked.connect (() => {
-              Utils.start_call (phone.value, this.store.caller_account);
-            });
+          var call_button = create_button ("call-start-symbolic");
+          call_button.clicked.connect (() => {
+            Utils.start_call (phone.value, this.store.caller_account);
+          });
+
+          add_row_with_label (TypeSet.phone.format_type (phone), phone.value, call_button);
         } else {
           add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
         }
@@ -210,7 +201,7 @@ public class Contacts.ContactSheet : ContactForm {
       foreach (var protocol in im_details.im_addresses.get_keys ()) {
         foreach (var id in im_details.im_addresses[protocol]) {
           if (persona is Tpf.Persona) {
-            var button = add_row_with_button (ImService.get_display_name (protocol), id.value);
+            var button = create_button ("user-available-symbolic");
             button.clicked.connect (() => {
               var im_persona = Contacts.Utils.find_im_persona (individual, protocol, id.value);
               if (im_persona != null) {
@@ -219,7 +210,9 @@ public class Contacts.ContactSheet : ContactForm {
                     type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
                   Utils.start_chat (this.contact, protocol, id.value);
                 }
-              });
+              }
+            });
+            add_row_with_label (ImService.get_display_name (protocol), id.value, button);
           }
         }
       }
@@ -230,9 +223,29 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_urls (Persona persona) {
     var url_details = persona as UrlDetails;
     if (url_details != null) {
-      foreach (var url in url_details.urls)
-        add_row_with_button (_("Website"), url.value, true);
+      foreach (var url in url_details.urls) {
+        var button = create_button ("web-browser-symbolic");
+        button.clicked.connect (() => {
+          var window = (Window) button.get_toplevel ();
+          try {
+            show_uri_on_window (window, fallback_to_https (url.value), Gdk.CURRENT_TIME);
+          } catch (Error e) {
+            debug ("Failed to open url");
+            print ("Error");
+          }
+        });
+        add_row_with_label (_("Website"), url.value, button);
+      }
     }
+  }
+
+  // When the url doesn't contain a scheme we fallback to http
+  // We are sure that the url is a webaddress but GTK falls back to opening a file
+  private string fallback_to_https (string url) {
+    string scheme = Uri.parse_scheme (url);
+    if (scheme == null)
+      return "https://" + url;
+    return url;
   }
 
   private void add_nickname (Persona persona) {
