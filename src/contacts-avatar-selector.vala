@@ -62,6 +62,7 @@ public class Contacts.AvatarSelector : Popover {
 
 #if HAVE_CHEESE
     this.cheese_button.visible = true;
+    this.cheese_button.sensitive = false;
 
     // Look for camera devices.
     this.camera_monitor = new Cheese.CameraDeviceMonitor ();
