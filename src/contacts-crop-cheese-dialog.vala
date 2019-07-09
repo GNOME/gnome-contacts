@@ -41,6 +41,10 @@ public class Contacts.CropCheeseDialog : Gtk.Window {
     setup_widget (parent);
     this.flash = new Cheese.Flash (this);
     this.cheese = new Cheese.Widget ();
+
+    /* make the minimum video size smaller */
+    this.cheese.get_video_area ().set_size_request (328, 246);
+
     this.cheese.show ();
     this.stack.add_named (this.cheese, STACK_NAME_CHEESE);
     this.stack.set_visible_child_name (STACK_NAME_CHEESE);
