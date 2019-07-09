@@ -24,12 +24,13 @@ namespace Cheese {
 		READY,
 		ERROR
 	}
-	[CCode (cheader_filename = "cheese/cheese-widget.h")]
+	[CCode (cheader_filename = "cheese-widget.h")]
 	public class Widget : Gtk.Widget {
 		[CCode (has_construct_function = false, type = "CheeseWidget*")]
 		public Widget ();
 		public WidgetState state { get; }
-        public unowned GLib.Object get_camera ();
+		public unowned GLib.Object get_camera ();
+		public unowned Gtk.Widget get_video_area ();
 	}
 	[CCode (cheader_filename = "cheese/cheese-camera.h")]
 	public class Camera : GLib.Object {
