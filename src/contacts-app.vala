@@ -88,14 +88,17 @@ public class Contacts.App : Gtk.Application {
     return -1;
   }
 
-  public void show_contact (Contact? contact) {
-    window.set_shown_contact (contact);
+  public void show_contact (Individual? individual) {
+    window.set_shown_contact (individual);
   }
 
   public async void show_individual (string id) {
-    var contact = yield contacts_store.find_contact ( (c) => {
-        return c.individual.id == id;
-      });
+    Individual? contact = null;
+    try {
+      contact = yield contacts_store.aggregator.look_up_individual (id);
+    } catch (Error e) {
+      debug ("Couldn't look up individual");
+    }
     if (contact != null) {
       show_contact (contact);
     } else {
@@ -153,7 +156,6 @@ public class Contacts.App : Gtk.Application {
 	    var settings = new GLib.Settings ("org.freedesktop.folks");
 	    settings.set_string ("primary-store",
 				 "eds:%s".printf(e_store.id));
-	    contacts_store.refresh ();
 	  }
 	}
 	contacts_store.disconnect (stores_changed_id);
@@ -221,11 +223,10 @@ public class Contacts.App : Gtk.Application {
   }
 
   public async void show_by_email (string email_address) {
-    var contact = yield contacts_store.find_contact ( (c) => {
-        return c.has_email (email_address);
-      });
-    if (contact != null) {
-      show_contact (contact);
+    var query = new SimpleQuery(email_address, Query.MATCH_FIELDS_ADDRESSES);
+    Individual individual = yield contacts_store.find_contact (query);
+    if (individual != null) {
+      show_contact (individual);
     } else {
       var dialog = new MessageDialog (this.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
                                       _("No contact with email address %s found"), email_address);

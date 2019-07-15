@@ -40,7 +40,7 @@ public abstract class Contacts.ContactForm : Grid {
     "notes"
   };
 
-  protected Contact? contact;
+  protected Individual? individual;
 
   protected Store store;
 
@@ -80,7 +80,7 @@ public abstract class Contacts.ContactForm : Grid {
   protected Label create_persona_store_label (Persona p) {
     var store_name = new Label("");
     store_name.set_markup (Markup.printf_escaped ("<span font='16px bold'>%s</span>",
-                           Contact.format_persona_store_name_for_contact (p)));
+                           ContactUtils.format_persona_store_name_for_contact (p)));
     store_name.set_halign (Align.START);
     store_name.xalign = 0.0f;
     store_name.margin_start = 6;

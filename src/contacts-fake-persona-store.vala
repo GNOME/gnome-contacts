@@ -64,36 +64,24 @@ public class Contacts.FakePersonaStore : PersonaStore {
 }
 
 /**
- * A "dummy" Persona which is used when creating a new contact (to store
- * information).
+ * A "dummy" Persona which is used when creating a new contact
+ * The FakePersona is used as a placeholder till we get the real persona from folks
+ * It needs to implement all Details we support so that we don't loise any information
  */
-public class Contacts.FakePersona : Persona {
-  public Contact contact;
-  private class PropVal {
-    public string property;
-    public Value value;
-  }
-  private ArrayList<PropVal> prop_vals;
-  private bool now_real;
-  private bool has_full_name;
-
-  public static FakePersona? maybe_create_for (Store store, Contact contact) {
-    var primary_persona = contact.find_primary_persona ();
-
-    if (primary_persona != null)
-      return null;
-
-    foreach (var p in contact.individual.personas) {
-      // Don't fake a primary persona if we have an eds
-      // persona on a non-readonly store
-      if (p.store.type_id == "eds" &&
-          p.store.can_add_personas == MaybeBool.TRUE &&
-          p.store.can_remove_personas == MaybeBool.TRUE)
-        return null;
-    }
-
-    return new FakePersona (store, contact);
-  }
+public class Contacts.FakePersona : Persona,
+  AvatarDetails,
+  BirthdayDetails,
+  EmailDetails,
+  ImDetails,
+  NameDetails,
+  NoteDetails,
+  PhoneDetails,
+  UrlDetails,
+  PostalAddressDetails
+{
+  private HashTable<string, Value?> properties;
+  // Keep track of the persona in the actual store
+  private weak Persona real_persona { get; set; default = null; }
 
   private const string[] _linkable_properties = {};
   private const string[] _writeable_properties = {};
@@ -105,39 +93,168 @@ public class Contacts.FakePersona : Persona {
     get { return _writeable_properties; }
   }
 
-  public FakePersona (Store? store, Contact contact) {
-    Object (display_id: "display_id",
-            uid: "uid-fake-persona",
-            iid: "iid",
-            store: store.aggregator.primary_store ?? FakePersonaStore.the_store(),
-            is_user: false);
-    this.contact = contact;
-    this.contact.fake_persona = this;
+  [CCode (notify = false)]
+  public LoadableIcon? avatar
+  {
+    get { unowned Value? value = this.properties.get ("avatar");
+      if (value == null)
+        return null;
+      return (LoadableIcon?) value;
+    }
+    set {}
   }
 
-  public async Persona? make_real_and_set (string property,
-                                           Value value) throws IndividualAggregatorError, ContactError, PropertyError {
-    var v = new PropVal ();
-    v.property = property;
-    v.value = value;
-    if (property == "full-name")
-      has_full_name = true;
+  [CCode (notify = false)]
+  public string full_name
+  {
+    get { unowned Value? value = this.properties.get ("full-name");
+      if (value == null)
+        return "";
+      return value.get_string (); }
+    set {}
+  }
 
-    if (prop_vals == null) {
-      prop_vals = new ArrayList<PropVal> ();
-      prop_vals.add (v);
-      Persona p = yield contact.ensure_primary_persona ();
-      if (!has_full_name)
-        p.set ("full-name", contact.individual.display_name);
-      foreach (var pv in prop_vals) {
-        yield Contact.set_persona_property (p, pv.property, pv.value);
+  [CCode (notify = false)]
+  public string nickname
+  {
+    get { unowned Value? value = this.properties.get ("nickname");
+      if (value == null)
+        return "";
+      return value.get_string (); }
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public StructuredName? structured_name
+  {
+    get { return null; }
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public Set<PhoneFieldDetails> phone_numbers
+  {
+    get { unowned Value? value = this.properties.get ("phone-numbers");
+      if (value == null) {
+        var new_value = Value (typeof (Set));
+        new_value.set_object (new HashSet<PhoneFieldDetails> ());
+        this.properties.set ("phone-numbers", new_value);
+        value = this.properties.get ("phone-numbers");
       }
-      now_real = true;
-      return p;
+      return (Set<PhoneFieldDetails>) value;
     }
 
-    assert (!now_real);
-    prop_vals.add (v);
-    return null;
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public Set<UrlFieldDetails> urls
+  {
+    get { unowned Value? value = this.properties.get ("urls");
+      if (value == null) {
+        var new_value = Value (typeof (Set));
+        new_value.set_object (new HashSet<UrlFieldDetails> ());
+        this.properties.set ("urls", new_value);
+        value = this.properties.get ("urls");
+      }
+      return (Set<UrlFieldDetails>) value;
+    }
+
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public Set<PostalAddressFieldDetails> postal_addresses
+  {
+    get { unowned Value? value = this.properties.get ("urls");
+      if (value == null) {
+        var new_value = Value (typeof (Set));
+        new_value.set_object (new HashSet<PostalAddressFieldDetails> ());
+        this.properties.set ("urls", new_value);
+        value = new_value;
+      }
+
+      return (Set<PostalAddressFieldDetails>) value;
+    }
+
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public Set<NoteFieldDetails> notes
+  {
+    get { unowned Value? value = this.properties.get ("notes");
+      if (value == null) {
+        var new_value = Value (typeof (Set));
+        new_value.set_object (new HashSet<NoteFieldDetails> ());
+        this.properties.set ("notes", new_value);
+        value = new_value;
+      }
+      return (Set<NoteFieldDetails>) value;
+    }
+
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public DateTime? birthday
+  {
+    get { unowned Value? value = this.properties.get ("birthday");
+      if (value == null)
+        return null;
+      return (DateTime) value;
+    }
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public string? calendar_event_id
+  {
+    get { return null; }
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public MultiMap<string,ImFieldDetails> im_addresses
+  {
+    get { unowned Value? value = this.properties.get ("im-addresses");
+      if (value == null) {
+        var new_value = Value (typeof (MultiMap));
+        new_value.set_object (new HashMultiMap<string, ImFieldDetails> ());
+        this.properties.set ("im-addresses", new_value);
+        value = new_value;
+      }
+
+      return (MultiMap<string, ImFieldDetails>) value;
+    }
+
+    set {}
+  }
+
+  [CCode (notify = false)]
+  public Set<EmailFieldDetails> email_addresses
+  {
+    get { unowned Value? value = this.properties.get ("email-addresses");
+      if (value == null) {
+        var new_value = Value (typeof (Set));
+        new_value.set_object (new HashSet<EmailFieldDetails> ());
+        this.properties.set ("email-addresses", new_value);
+        value = new_value;
+      }
+
+      return (Set<EmailFieldDetails>) value;
+    }
+    set {}
+  }
+
+  public FakePersona (PersonaStore store, HashTable<string, Value?> details) {
+    //TODO: use correct data to fill the object
+    Object (display_id: "display-id-fake-persona",
+            uid: "uid-fake-persona",
+            iid: "iid",
+            store: store,
+            is_user: false);
+
+    this.properties = details;
   }
 }
