@@ -40,21 +40,19 @@ public class Contacts.LinkSuggestionGrid : Grid {
   public signal void suggestion_accepted ();
   public signal void suggestion_rejected ();
 
-  public LinkSuggestionGrid (Contact contact) {
+  public LinkSuggestionGrid (Individual individual) {
     get_style_context ().add_class ("contacts-suggestion");
 
-    var image_frame = new Avatar (AVATAR_SIZE, contact);
+    var image_frame = new Avatar (AVATAR_SIZE, individual);
     image_frame.hexpand = false;
     image_frame.margin = 12;
     image_frame.show ();
     attach (image_frame, 0, 0, 1, 2);
 
     this.description_label.xalign = 0;
-    this.description_label.label = contact.is_main?
-          _("Is this the same person as %s from %s?").printf (contact.individual.display_name, contact.format_persona_stores ())
-        : _("Is this the same person as %s?").printf (contact.individual.display_name);
+    this.description_label.label = _("Is this the same person as %s?").printf (individual.display_name);
 
-    var extra_info = find_extra_description (contact);
+    var extra_info = find_extra_description (individual);
     if (extra_info != null) {
       this.extra_info_label.show ();
       this.extra_info_label.label = extra_info;
@@ -64,24 +62,24 @@ public class Contacts.LinkSuggestionGrid : Grid {
     this.accept_button.clicked.connect ( () => suggestion_accepted ());
   }
 
-  private string? find_extra_description (Contact contact) {
+  private string? find_extra_description (Individual individual) {
     // First try an email address
-    var emails = contact.individual.email_addresses;
+    var emails = individual.email_addresses;
     if (!emails.is_empty)
       return Utils.get_first<EmailFieldDetails> (emails).value;
 
     // Maybe a website? Works well with e.g. social media profiles
-    var urls = contact.individual.urls;
+    var urls = individual.urls;
     if (!urls.is_empty)
       return Utils.get_first<UrlFieldDetails> (urls).value;
 
     // Try a phone number
-    var phones = contact.individual.phone_numbers;
+    var phones = individual.phone_numbers;
     if (!phones.is_empty)
       return Utils.get_first<PhoneFieldDetails> (phones).value;
 
     // A postal address maybe?
-    var addresses = contact.individual.postal_addresses;
+    var addresses = individual.postal_addresses;
     if (!addresses.is_empty)
       return Utils.get_first<PostalAddressFieldDetails> (addresses).value.to_string ();
 
