@@ -34,7 +34,7 @@ public class Contacts.AvatarSelector : Popover {
 
   // This will provide the default thumbnails
   private Gnome.DesktopThumbnailFactory thumbnail_factory;
-  private Contact contact;
+  private Individual individual;
 
   [GtkChild]
   private FlowBox personas_thumbnail_grid;
@@ -53,10 +53,10 @@ public class Contacts.AvatarSelector : Popover {
    */
   public signal void set_avatar (GLib.Icon avatar_icon);
 
-  public AvatarSelector (Gtk.Widget relative, Contact? contact) {
+  public AvatarSelector (Gtk.Widget relative, Individual? individual) {
     this.set_relative_to(relative);
     this.thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
-    this.contact = contact;
+    this.individual = individual;
 
     update_thumbnail_grids ();
 
@@ -158,8 +158,8 @@ public class Contacts.AvatarSelector : Popover {
   }
 
   private void update_thumbnail_grids () {
-    if (this.contact != null) {
-      foreach (var p in contact.individual.personas) {
+    if (this.individual != null) {
+      foreach (var p in individual.personas) {
         var button = thumbnail_for_persona (p);
         if (button != null)
           this.personas_thumbnail_grid.add (button);

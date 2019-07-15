@@ -88,7 +88,7 @@ public class Contacts.AccountsList : Box {
       }
       var source = (persona_store as Edsf.PersonaStore).source;
       var parent_source = eds_source_registry.ref_source (source.parent);
-      var provider_name = Contact.format_persona_store_name (persona_store);
+      var provider_name = ContactUtils.format_persona_store_name (persona_store);
 
       debug ("Contact store \"%s\"", provider_name);
 
