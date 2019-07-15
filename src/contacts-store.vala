@@ -20,14 +20,13 @@ using Folks;
 using Gee;
 
 public class Contacts.Store : GLib.Object {
-  public signal void added (Contact c);
-  public signal void removed (Contact c);
+  public signal void added (Individual c);
+  public signal void removed (Individual c);
   public signal void quiescent ();
   public signal void prepared ();
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get { return this.aggregator.backend_store; } }
-  private ArrayList<Contact> contacts;
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
@@ -43,11 +42,6 @@ public class Contacts.Store : GLib.Object {
     get { return this.aggregator.is_prepared; }
   }
 
-  public void refresh () {
-    foreach (var c in contacts)
-      c.update ();
-  }
-
   private bool individual_can_replace_at_split (Individual new_individual) {
     foreach (var p in new_individual.personas) {
       if (p.get_data<bool> ("contacts-new-contact"))
@@ -57,7 +51,7 @@ public class Contacts.Store : GLib.Object {
   }
 
   private bool individual_should_replace_at_join (Individual old_individual) {
-    var c = Contact.from_individual (old_individual);
+    var c = old_individual;
     return c.get_data<bool> ("contacts-master-at-join");
   }
 
@@ -99,18 +93,18 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
-  public bool may_suggest_link (Contact a, Contact b) {
-    foreach (var a_persona in a.individual.personas) {
+  public bool may_suggest_link (Individual a, Individual b) {
+    foreach (var a_persona in a.personas) {
       foreach (var no_link_uid in dont_suggest_link.get (a_persona.uid)) {
-	foreach (var b_persona in b.individual.personas) {
+	foreach (var b_persona in b.personas) {
 	  if (b_persona.uid == no_link_uid)
 	    return false;
 	}
       }
     }
-    foreach (var b_persona in b.individual.personas) {
+    foreach (var b_persona in b.personas) {
       foreach (var no_link_uid in dont_suggest_link.get (b_persona.uid)) {
-	foreach (var a_persona in a.individual.personas) {
+	foreach (var a_persona in a.personas) {
 	  if (a_persona.uid == no_link_uid)
 	    return false;
 	}
@@ -119,16 +113,14 @@ public class Contacts.Store : GLib.Object {
     return true;
   }
 
-  public void add_no_suggest_link (Contact a, Contact b) {
-    var persona1 = a.get_personas_for_display ().to_array ()[0];
-    var persona2 = b.get_personas_for_display ().to_array ()[0];
+  public void add_no_suggest_link (Individual a, Individual b) {
+    var persona1 = Contacts.Utils.get_personas_for_display(a).to_array ()[0];
+    var persona2 = Contacts.Utils.get_personas_for_display(b).to_array ()[0];
     dont_suggest_link.set (persona1.uid, persona2.uid);
     write_dont_suggest_db ();
   }
 
   construct {
-    contacts = new Gee.ArrayList<Contact>();
-
     dont_suggest_link = new Gee.HashMultiMap<string, string> ();
     read_dont_suggest_db ();
 
@@ -190,11 +182,10 @@ public class Contacts.Store : GLib.Object {
           replacements.add (new_individual);
         } else if (old_individual != null) {
           // Removing an old individual.
-          var c = Contact.from_individual (old_individual);
-          remove (c);
+          removed (old_individual);
         } else if (new_individual != null) {
           // Adding a new individual.
-          add (new Contact (this, new_individual));
+          added (new_individual);
         }
       }
 
@@ -215,70 +206,49 @@ public class Contacts.Store : GLib.Object {
             break;
         }
 
+        /* Not sure
         var c = Contact.from_individual (old_individual);
         c.replace_individual (main_individual);
+        */
         foreach (var i in replacements) {
           if (i != main_individual) {
             // Already replaced this old_individual, i.e. we're splitting
             // old_individual. We just make this a new one.
-            add (new Contact (this, i));
+            added (i);
           }
         }
       }
     }
   }
 
-  public delegate bool ContactMatcher (Contact c);
-  public async Contact? find_contact (ContactMatcher matcher) {
-    foreach (var c in contacts) {
-      if (matcher (c))
-	return c;
-    }
-    if (is_quiescent)
-      return null;
+  public Collection<Individual> get_contacts () {
+    return aggregator.individuals.values.read_only_view;
+  }
 
-    Contact? matched = null;
-    ulong id2, id3;
-    SourceFunc callback = find_contact.callback;
-    id2 = this.added.connect ( (c) => {
-	if (matcher (c)) {
-	  matched = c;
-	  callback ();
-	}
+  public async Individual? find_contact (Query query) {
+    // Wait that the store gets quiescent if it isn't already
+    if (!is_quiescent) {
+      ulong signal_id;
+      SourceFunc callback = find_contact.callback;
+      signal_id = this.quiescent.connect ( () => {
+        callback();
       });
-    id3 = this.quiescent.connect ( () => {
-	callback();
-      });
-    yield;
-    this.disconnect (id2);
-    this.disconnect (id3);
+      yield;
+      this.disconnect (signal_id);
+    }
+
+    Individual? matched = null;
+    // We search for the closest matching Individual
+    uint strength = 0;
+    foreach (var i in this.aggregator.individuals.values) {
+      var this_strength = query.is_match(i);
+      if (this_strength > strength) {
+        matched = i;
+        strength = this_strength;
+      }
+    }
+
     return matched;
-  }
-
-  public Contact? find_contact_with_persona (Persona persona) {
-    foreach (var contact in contacts) {
-      if (contact.individual.personas.contains (persona))
-	return contact;
-    }
-    return null;
-  }
-
-  public Collection<Contact> get_contacts () {
-    return contacts.read_only_view;
-  }
-
-  private void add (Contact c) {
-    contacts.add (c);
-    added (c);
-  }
-
-  private void remove (Contact c) {
-    var i = contacts.index_of (c);
-    if (i != contacts.size - 1)
-      contacts.set (i, contacts.get (contacts.size - 1));
-    contacts.remove_at (contacts.size - 1);
-
-    removed (c);
   }
 
 #if HAVE_TELEPATHY

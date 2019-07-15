@@ -28,24 +28,24 @@ public class Contacts.Avatar : DrawingArea {
   private Gdk.Pixbuf? pixbuf = null;
   private Gdk.Pixbuf? cache = null;
 
-  private Contact? contact = null;
+  private Individual? individual = null;
   // We want to lazily load the Pixbuf to make sure we don't draw all contact avatars at once.
   // As long as there is no need for it to be drawn, keep this to false.
   private bool avatar_loaded = false;
 
-  public Avatar (int size, Contact? contact = null) {
-    this.contact = contact;
-    if (contact != null) {
-      contact.individual.notify["avatar"].connect ( (s, p) => {
-          load_avatar.begin ();
-        });
+  public Avatar (int size, Individual? individual = null) {
+    this.individual = individual;
+    if (individual != null) {
+      individual.notify["avatar"].connect ( (s, p) => {
+        load_avatar.begin ();
+      });
     }
 
     this.size = size;
     set_size_request (size, size);
 
     // If we don't have an avatar, don't try to load it later
-    this.avatar_loaded = (contact == null || contact.individual.avatar == null);
+    this.avatar_loaded = (individual == null || individual.avatar == null);
 
     show ();
   }
@@ -60,16 +60,16 @@ public class Contacts.Avatar : DrawingArea {
   }
 
   private async void load_avatar () {
-    assert (this.contact != null);
+    assert (this.individual != null);
 
     this.avatar_loaded = true;
     try {
-      var stream = yield this.contact.individual.avatar.load_async (this.size);
+      var stream = yield this.individual.avatar.load_async (this.size);
       this.cache = null;
       this.pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream, this.size, this.size, true);
       queue_draw ();
     } catch (Error e) {
-      debug ("Couldn't load avatar of contact %s. Reason: %s", this.contact.individual.display_name, e.message);
+      debug ("Couldn't load avatar of contact %s. Reason: %s", this.individual.display_name, e.message);
     }
   }
 
@@ -102,13 +102,13 @@ public class Contacts.Avatar : DrawingArea {
   private Gdk.Pixbuf create_fallback () {
     string name = "";
     bool show_label = false;
-    if (this.contact != null && this.contact.individual != null) {
+    if (this.individual != null) {
       name = find_display_name ();
       /* If we don't have a usable name use the display_name
        * to generate the color but don't show any label
        */
       if (name == "") {
-        name = this.contact.individual.display_name;
+        name = this.individual.display_name;
       } else {
         show_label = true;
       }
@@ -126,7 +126,7 @@ public class Contacts.Avatar : DrawingArea {
   private string find_display_name () {
     string name = "";
     Persona primary_persona = null;
-    foreach (var p in this.contact.individual.personas) {
+    foreach (var p in this.individual.personas) {
       if (p.store.is_primary_store) {
         primary_persona = p;
         break;
@@ -134,12 +134,12 @@ public class Contacts.Avatar : DrawingArea {
     }
     name = look_up_alias_for_display_name (primary_persona);
     if (name == "") {
-      foreach (var p in this.contact.individual.personas) {
+      foreach (var p in this.individual.personas) {
         name = look_up_alias_for_display_name (p);
       }
     }
     if (name == "") {
-      foreach (var p in this.contact.individual.personas) {
+      foreach (var p in this.individual.personas) {
         name = look_up_name_details_for_display_name (p);
       }
     }

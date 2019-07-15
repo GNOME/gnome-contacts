@@ -33,7 +33,7 @@ public class Contacts.ContactPane : Stack {
 
   private Store store;
 
-  public Contact? contact = null;
+  public Individual? individual = null;
 
   [GtkChild]
   private Grid none_selected_page;
@@ -66,7 +66,7 @@ public class Contacts.ContactPane : Stack {
 
   /* Signals */
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
-  public signal void will_delete (Contact contact);
+  public signal void will_delete (Individual individual);
   /**
    * Passes the changed display name to all listeners after edit mode has been completed.
    */
@@ -80,16 +80,16 @@ public class Contacts.ContactPane : Stack {
     this.edit_contact_actions.add_action_entries (action_entries, this);
   }
 
-  public void add_suggestion (Contact c) {
+  public void add_suggestion (Individual i) {
     var parent_overlay = this.get_parent () as Overlay;
 
     remove_suggestion_grid ();
-    this.suggestion_grid = new LinkSuggestionGrid (c);
+    this.suggestion_grid = new LinkSuggestionGrid (i);
     parent_overlay.add_overlay (this.suggestion_grid);
 
     this.suggestion_grid.suggestion_accepted.connect ( () => {
-        var linked_contact = c.individual.display_name;
-        link_contacts.begin (contact, c, this.store, (obj, result) => {
+        var linked_contact = this.individual.display_name;
+        link_contacts.begin (this.individual, i, this.store, (obj, result) => {
             var operation = link_contacts.end (result);
             this.contacts_linked (null, linked_contact, operation);
           });
@@ -98,18 +98,18 @@ public class Contacts.ContactPane : Stack {
 
     this.suggestion_grid.suggestion_rejected.connect ( () => {
         /* TODO: Add undo */
-        store.add_no_suggest_link (contact, c);
+        store.add_no_suggest_link (this.individual, i);
         remove_suggestion_grid ();
       });
   }
 
-  public void show_contact (Contact? contact) {
-    if (this.contact == contact)
+  public void show_contact (Individual? individual) {
+    if (this.individual == individual)
       return;
 
-    this.contact = contact;
+    this.individual = individual;
 
-    if (this.contact != null) {
+    if (this.individual != null) {
       show_contact_sheet ();
     } else {
       remove_contact_sheet ();
@@ -118,18 +118,17 @@ public class Contacts.ContactPane : Stack {
   }
 
   private void show_contact_sheet () {
-    assert (this.contact != null);
+    assert (this.individual != null);
 
     remove_contact_sheet();
-    this.sheet = new ContactSheet (this.contact, this.store);
+    this.sheet = new ContactSheet (this.individual, this.store);
     this.contact_sheet_page.add (this.sheet);
     set_visible_child (this.contact_sheet_page);
 
-    var matches = this.store.aggregator.get_potential_matches (this.contact.individual, MatchResult.HIGH);
-    foreach (var ind in matches.keys) {
-      var c = Contact.from_individual (ind);
-      if (c != null && this.contact.suggest_link_to (c)) {
-        add_suggestion (c);
+    var matches = this.store.aggregator.get_potential_matches (this.individual, MatchResult.HIGH);
+    foreach (var i in matches.keys) {
+      if (i != null && Contacts.Utils.suggest_link_to (this.store, this.individual, i)) {
+        add_suggestion (i);
         break;
       }
     }
@@ -151,7 +150,8 @@ public class Contacts.ContactPane : Stack {
     if (this.editor != null)
       remove_contact_editor ();
 
-    this.editor = new ContactEditor (this.contact, this.store, this.edit_contact_actions);
+    this.editor = new ContactEditor (this.individual, this.store, this.edit_contact_actions);
+
     this.editor.linked_button.clicked.connect (linked_accounts);
     this.editor.remove_button.clicked.connect (delete_contact);
 
@@ -183,14 +183,14 @@ public class Contacts.ContactPane : Stack {
     var tok = action.name.split (".");
 
     if (tok[0] == "add") {
-      editor.add_new_row_for_property (contact.find_primary_persona (),
+      editor.add_new_row_for_property (Contacts.Utils.find_primary_persona (individual),
 				       tok[1],
 				       tok.length > 2 ? tok[2].up () : null);
     }
   }
 
   private void linked_accounts () {
-    var dialog = new LinkedPersonasDialog (this.parent_window, this.store, contact);
+    var dialog = new LinkedPersonasDialog (this.parent_window, this.store, individual);
     if (dialog.run () == ResponseType.CLOSE && dialog.any_unlinked) {
       /* update edited contact if any_unlinked */
       stop_editing ();
@@ -200,14 +200,13 @@ public class Contacts.ContactPane : Stack {
   }
 
   void delete_contact () {
-    if (contact != null) {
-      contact.hidden = true;
-      this.will_delete (contact);
+    if (individual != null) {
+      will_delete (individual);
     }
   }
 
   public void start_editing() {
-    if (this.on_edit_mode || this.contact == null)
+    if (this.on_edit_mode || this.individual == null)
       return;
 
     this.on_edit_mode = true;
@@ -228,7 +227,7 @@ public class Contacts.ContactPane : Stack {
 
     remove_contact_editor ();
 
-    if (this.contact != null)
+    if (this.individual != null)
       show_contact_sheet ();
     else
       set_visible_child (this.none_selected_page);
@@ -237,7 +236,7 @@ public class Contacts.ContactPane : Stack {
   private async void save_editor_changes () {
     foreach (var prop in this.editor.properties_changed ().entries) {
       try {
-        yield Contact.set_persona_property (prop.value.persona, prop.key, prop.value.value);
+        yield Contacts.Utils.set_persona_property (prop.value.persona, prop.key, prop.value.value);
       } catch (Error e) {
         show_message (e.message);
       }
@@ -246,7 +245,7 @@ public class Contacts.ContactPane : Stack {
     if (this.editor.name_changed ()) {
       var v = this.editor.get_full_name_value ();
       try {
-        yield this.contact.set_individual_property ("full-name", v);
+        yield Contacts.Utils.set_individual_property (individual, "full-name", v);
         display_name_changed (v.get_string ());
       } catch (Error e) {
         show_message (e.message);
@@ -256,7 +255,7 @@ public class Contacts.ContactPane : Stack {
     if (this.editor.avatar_changed ()) {
       var v = this.editor.get_avatar_value ();
       try {
-        yield this.contact.set_individual_property ("avatar", v);
+        yield Contacts.Utils.set_individual_property (individual, "avatar", v);
       } catch (Error e) {
         show_message (e.message);
       }
@@ -265,7 +264,7 @@ public class Contacts.ContactPane : Stack {
 
   public void new_contact () {
     this.on_edit_mode = true;
-    this.contact = null;
+    this.individual = null;
     remove_contact_sheet ();
     create_contact_editor ();
     set_visible_child (this.contact_editor_page);
@@ -298,22 +297,33 @@ public class Contacts.ContactPane : Stack {
       return;
     }
 
+    // Create a FakeContact temporary persona so we can show it already to the user
+    var fake_persona = new FakePersona (FakePersonaStore.the_store(), details);
+    var fake_personas = new HashSet<Persona> ();
+    fake_personas.add (fake_persona);
+    var fake_individual = new Individual(fake_personas);
+    this.parent_window.set_shown_contact (fake_individual);
+
     // Create the contact
     var primary_store = this.store.aggregator.primary_store;
     Persona? persona = null;
     try {
-      persona = yield Contact.create_primary_persona_for_details (primary_store, details);
+      persona = yield primary_store.add_persona_from_details (details);
     } catch (Error e) {
       show_message_dialog (_("Unable to create new contacts: %s").printf (e.message));
+      this.parent_window.set_shown_contact (null);
       return;
     }
 
-    // Now show it to the user
-    var contact = this.store.find_contact_with_persona (persona);
-    if (contact != null)
-      this.parent_window.set_shown_contact (contact);
-    else
+    // Now show the real persona to the user
+    var individual = persona.individual;
+    if (individual != null) {
+      //FIXME: This causes a flicker, especially visibile when a avatar is set
+      this.parent_window.set_shown_contact (individual);
+    } else {
       show_message_dialog (_("Unable to find newly created contact"));
+      this.parent_window.set_shown_contact (null);
+    }
   }
 
   private void show_message_dialog (string message) {

@@ -25,16 +25,15 @@ using Gee;
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
 public class Contacts.ContactSheet : ContactForm {
+  public ContactSheet (Individual individual, Store store) {
+    this.individual = individual;
+    this.store = store;
 
-  public ContactSheet (Contact contact, Store store) {
-      this.contact = contact;
-      this.store = store;
+    this.individual.notify.connect (update);
+    this.individual.personas_changed.connect (update);
+    this.store.quiescent.connect (update);
 
-      this.contact.individual.notify.connect (update);
-      this.contact.individual.personas_changed.connect (update);
-      this.store.quiescent.connect (update);
-
-      update ();
+    update ();
   }
 
   private Button add_row_with_button (string label, string value, bool use_link_button = false) {
@@ -87,7 +86,7 @@ public class Contacts.ContactSheet : ContactForm {
     this.last_row = 0;
     this.container_grid.foreach ((child) => this.container_grid.remove (child));
 
-    var image_frame = new Avatar (PROFILE_SIZE, this.contact);
+    var image_frame = new Avatar (PROFILE_SIZE, this.individual);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
     this.container_grid.attach (image_frame,  0, 0, 1, 3);
@@ -96,7 +95,7 @@ public class Contacts.ContactSheet : ContactForm {
 
     this.last_row += 3; // Name/Avatar takes up 3 rows
 
-    var personas = this.contact.get_personas_for_display ();
+    var personas = Contacts.Utils.get_personas_for_display (this.individual);
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
       bool is_first_persona = (this.last_row == 3);
@@ -122,7 +121,7 @@ public class Contacts.ContactSheet : ContactForm {
 
   private void update_name_label (Gtk.Label name_label) {
     var name = Markup.printf_escaped ("<span font='16'>%s</span>",
-                                      this.contact.individual.display_name);
+                                      this.individual.display_name);
     name_label.set_markup (name);
   }
 
@@ -133,9 +132,9 @@ public class Contacts.ContactSheet : ContactForm {
     name_label.selectable = true;
     this.container_grid.attach (name_label,  1, 0, 1, 3);
     update_name_label (name_label);
-    this.contact.individual.notify["display-name"].connect ((obj, spec) => {
-        update_name_label (name_label);
-      });
+    this.individual.notify["display-name"].connect ((obj, spec) => {
+      update_name_label (name_label);
+    });
   }
 
   private void add_row_for_property (Persona persona, string property) {
@@ -173,11 +172,11 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_emails (Persona persona) {
     var details = persona as EmailDetails;
     if (details != null) {
-      var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+      var emails = Contacts.Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
       foreach (var email in emails) {
           var button = add_row_with_button (TypeSet.email.format_type (email), email.value);
           button.clicked.connect (() => {
-          Utils.compose_mail ("%s <%s>".printf(this.contact.individual.display_name, email.value));
+          Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
         });
       }
     }
@@ -186,7 +185,7 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_phone_nrs (Persona persona) {
     var phone_details = persona as PhoneDetails;
     if (phone_details != null) {
-      var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+      var phones = Contacts.Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
       foreach (var phone in phones) {
 #if HAVE_TELEPATHY
         if (this.store.caller_account != null) {
@@ -213,13 +212,12 @@ public class Contacts.ContactSheet : ContactForm {
           if (persona is Tpf.Persona) {
             var button = add_row_with_button (ImService.get_display_name (protocol), id.value);
             button.clicked.connect (() => {
-                var im_persona = this.contact.find_im_persona (protocol, id.value);
-                if (im_persona != null) {
-                  var type = im_persona.presence_type;
-                  if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
-                      type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
-                    Utils.start_chat (this.contact, protocol, id.value);
-                  }
+              var im_persona = Contacts.Utils.find_im_persona (individual, protocol, id.value);
+              if (im_persona != null) {
+                var type = im_persona.presence_type;
+                if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
+                    type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
+                  Utils.start_chat (this.contact, protocol, id.value);
                 }
               });
           }
@@ -261,7 +259,7 @@ public class Contacts.ContactSheet : ContactForm {
     var addr_details = persona as PostalAddressDetails;
     if (addr_details != null) {
       foreach (var addr in addr_details.postal_addresses) {
-        var all_strs = string.joinv ("\n", Contact.format_address (addr.value));
+        var all_strs = string.joinv ("\n", Contacts.Utils.format_address (addr.value));
         add_row_with_label (TypeSet.general.format_type (addr), all_strs);
       }
     }

@@ -6,7 +6,6 @@ install_data('org.gnome.Contacts.gschema.xml',
 
 # Common library
 libcontacts_sources = files(
-  'contacts-contact.vala',
   'contacts-esd-setup.vala',
   'contacts-fake-persona-store.vala',
   'contacts-im-service.vala',

@@ -28,7 +28,7 @@ namespace Contacts {
       public Object old_value;
     }
     private Persona? _added_persona;
-    private Contact? main_contact;
+    private Individual? main_contact;
     private ArrayList<Persona>? split_out_personas;
     ArrayList<Change> changes;
 
@@ -36,14 +36,14 @@ namespace Contacts {
       changes = new ArrayList<Change> ();
     }
 
-    public void set_main_contact (Contact? contact) {
-      main_contact = contact;
+    public void set_main_contact (Individual? individual) {
+      main_contact = individual;
     }
 
-    public void set_split_out_contact (Contact? contact) {
-      if (contact != null) {
+    public void set_split_out_contact (Individual? individual) {
+      if (individual != null) {
 	split_out_personas = new ArrayList<Persona> ();
-	split_out_personas.add_all (contact.individual.personas);
+	split_out_personas.add_all (individual.personas);
       }
     }
 
@@ -521,7 +521,7 @@ namespace Contacts {
     }
   }
 
-  public async LinkOperation link_contacts (Contact main, Contact? other, Store contacts_store) {
+  public async LinkOperation link_contacts (Individual main, Individual? other, Store contacts_store) {
     // This should not be used as being replaced with the new individual
     // instead we should always pick this contact to keep around
     main.set_data ("contacts-master-at-join", true);
@@ -529,10 +529,10 @@ namespace Contacts {
     var operation = new LinkOperation ();
     operation.set_split_out_contact (other);
 
-    var main_linkables = get_linkable_attributes_for_individual (main.individual);
+    var main_linkables = get_linkable_attributes_for_individual (main);
     Set<PersonaAttribute>? other_linkables = null;
     if (other != null)
-      other_linkables = get_linkable_attributes_for_individual (other.individual);
+      other_linkables = get_linkable_attributes_for_individual (other);
     Set<PersonaAttribute>? linkables = null;
 
     // Remove all linkable data from each contact that is already in the other contact
@@ -542,7 +542,7 @@ namespace Contacts {
     }
 
     Persona? write_persona = null;
-    foreach (var p1 in main.individual.personas) {
+    foreach (var p1 in main.personas) {
       if (other_linkables != null &&
 	  persona_can_link_to (p1, other_linkables)) {
 	write_persona = p1;
@@ -554,7 +554,7 @@ namespace Contacts {
 
     if (other != null &&
 	(write_persona == null || !write_persona.store.is_primary_store)) {
-      foreach (var p2 in other.individual.personas) {
+      foreach (var p2 in other.personas) {
 	if (persona_can_link_to (p2, main_linkables)) {
 	  // Only override main persona if its a primary store persona
 	  if (write_persona == null || p2.store.is_primary_store) {
@@ -571,9 +571,9 @@ namespace Contacts {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
 	var v = Value (typeof (string));
-	v.set_string (main.individual.display_name);
+	v.set_string (main.display_name);
 	details.set ("full-name", v);
-	write_persona = yield Contact.create_primary_persona_for_details (contacts_store.aggregator.primary_store, details);
+	write_persona = yield contacts_store.aggregator.primary_store.add_persona_from_details (details);
 	operation.added_persona (write_persona);
 	linkables = main_linkables;
 	if (other_linkables != null)
@@ -592,13 +592,12 @@ namespace Contacts {
     return operation;
   }
 
-  public async LinkOperation unlink_persona (Store store, Contact contact, Persona persona_to_unlink) {
-    var individual = contact.individual;
+  public async LinkOperation unlink_persona (Store store, Individual individual, Persona persona_to_unlink) {
     var persona_to_unlink_removals = PersonaAttribute.create_set ();
     var other_personas_removals = PersonaAttribute.create_set ();
 
     var operation = new LinkOperation ();
-    operation.set_main_contact (contact);
+    operation.set_main_contact (individual);
 
     foreach (PersonaAttribute a1 in get_linkable_attributes (persona_to_unlink)) {
       // Check that this attribute actually is used to link this persona to the individual
@@ -677,7 +676,7 @@ namespace Contacts {
       var details = new HashTable<string, Value?> (str_hash, str_equal);
       try {
         main_persona = yield store.aggregator.primary_store.add_persona_from_details (details);
-        yield (main_persona as NameDetails).change_full_name (contact.individual.display_name);
+        yield (main_persona as NameDetails).change_full_name (individual.display_name);
         operation.added_persona (main_persona);
       } catch (GLib.Error e) {
 	warning ("Unable to create new persona when unlinking: %s\n", e.message);
@@ -752,12 +751,12 @@ namespace Contacts {
     }
   }
 
-  public async LinkOperation2 link_contacts_list (LinkedList<Contact> contact_list, Store contacts_store) {
+  public async LinkOperation2 link_contacts_list (LinkedList<Individual> contact_list, Store contacts_store) {
     var operation = new LinkOperation2 (contacts_store);
 
     var all_personas = new HashSet<Persona> ();
-    foreach (var c in contact_list) {
-      var ps = c.individual.personas;
+    foreach (var i in contact_list) {
+      var ps = i.personas;
       all_personas.add_all (ps);
       operation.add_persona_set (ps);
     }

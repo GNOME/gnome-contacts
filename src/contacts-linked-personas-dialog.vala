@@ -25,22 +25,22 @@ public class Contacts.LinkedPersonasDialog : Dialog {
   [GtkChild]
   private ListBox linked_accounts_view;
 
-  private Contact contact;
+  private Individual individual;
 
   public bool any_unlinked = false;
 
-  public LinkedPersonasDialog (Window main_win, Store store, Contact contact) {
+  public LinkedPersonasDialog (Window main_win, Store store, Individual individual) {
     Object (
       use_header_bar: 1,
       transient_for: main_win,
-      title: contact.individual.display_name
+      title: individual.display_name
     );
 
-    this.contact = contact;
+    this.individual = individual;
     this.linked_accounts_view.set_header_func (add_separator);
 
     // loading personas for display
-    var personas = contact.get_personas_for_display ();
+    var personas = Contacts.Utils.get_personas_for_display (individual);
     bool is_first = true;
     foreach (var p in personas) {
       if (is_first) {
@@ -50,7 +50,7 @@ public class Contacts.LinkedPersonasDialog : Dialog {
 
       var row_grid = new Grid ();
 
-      var image_frame = new Avatar (AVATAR_SIZE, contact);
+      var image_frame = new Avatar (AVATAR_SIZE, individual);
       image_frame.set_hexpand (false);
       image_frame.margin = 6;
       image_frame.margin_end = 12;
@@ -64,7 +64,7 @@ public class Contacts.LinkedPersonasDialog : Dialog {
 
       row_grid.attach (display_name, 1, 0, 1, 1);
 
-      var store_name = new Label (Contact.format_persona_store_name_for_contact (p));
+      var store_name = new Label (Contacts.Utils.format_persona_store_name_for_contact (p));
       store_name.set_halign (Align.START);
       store_name.set_valign (Align.START);
       store_name.set_hexpand (true);
@@ -79,7 +79,7 @@ public class Contacts.LinkedPersonasDialog : Dialog {
 
       /* signal */
       button.clicked.connect (() => {
-          unlink_persona.begin (store, contact, p, (obj, result) => {
+          unlink_persona.begin (store, individual, p, (obj, result) => {
               unlink_persona.end (result);
 
               row_grid.destroy ();

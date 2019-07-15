@@ -43,9 +43,9 @@ public class Contacts.ListPane : Frame {
 
   public UiState state { get; set; }
 
-  public signal void selection_changed (Contact? contact);
-  public signal void link_contacts (LinkedList<Contact> contacts);
-  public signal void delete_contacts (LinkedList<Contact> contacts);
+  public signal void selection_changed (Individual? individual);
+  public signal void link_contacts (LinkedList<Individual> individual);
+  public signal void delete_contacts (LinkedList<Individual> individual);
   public signal void contacts_marked (int contacts_marked);
 
   public ListPane (Settings settings, Store contacts_store) {
@@ -64,8 +64,8 @@ public class Contacts.ListPane : Frame {
     bind_property ("state", this.contacts_list, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     this.contacts_list_container.add (this.contacts_list);
 
-    this.contacts_list.selection_changed.connect( (l, contact) => {
-        selection_changed (contact);
+    this.contacts_list.selection_changed.connect( (l, individual) => {
+        selection_changed (individual);
       });
 
     this.contacts_list.contacts_marked.connect ((nr_contacts_marked) => {
@@ -73,6 +73,10 @@ public class Contacts.ListPane : Frame {
         this.link_button.sensitive = (nr_contacts_marked > 1);
         contacts_marked (nr_contacts_marked);
       });
+  }
+
+  public void undo_deletion () {
+    contacts_list.show_all ();
   }
 
   private void on_ui_state_changed (Object obj, ParamSpec pspec) {
@@ -89,8 +93,12 @@ public class Contacts.ListPane : Frame {
     this.filter_query.query_string = this.filter_entry.text;
   }
 
-  public void select_contact (Contact? contact) {
-    this.contacts_list.select_contact (contact);
+  public void select_contact (Individual? individual) {
+    this.contacts_list.select_contact (individual);
+  }
+  
+  public void hide_contact (Individual? individual) {
+    this.contacts_list.hide_contact (individual);
   }
 
   [GtkCallback]
@@ -100,10 +108,7 @@ public class Contacts.ListPane : Frame {
 
   [GtkCallback]
   private void on_delete_button_clicked (Gtk.Button delete_button) {
-    var marked_contacts = this.contacts_list.get_marked_contacts ();
-    foreach (var c in marked_contacts)
-      c.hidden = true;
-    delete_contacts (marked_contacts);
+    delete_contacts (this.contacts_list.get_marked_contacts_and_hide ());
   }
 
   /* Limiting width hack */
