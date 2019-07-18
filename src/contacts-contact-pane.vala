@@ -89,10 +89,12 @@ public class Contacts.ContactPane : Stack {
 
     this.suggestion_grid.suggestion_accepted.connect ( () => {
         var linked_contact = this.individual.display_name;
-        link_contacts.begin (this.individual, i, this.store, (obj, result) => {
-            var operation = link_contacts.end (result);
-            this.contacts_linked (null, linked_contact, operation);
-          });
+        var operation = new LinkOperation (this.store);
+        var to_link = new LinkedList<Individual> ();
+        to_link.add (this.individual);
+        to_link.add (i);
+        operation.do.begin (to_link);
+        this.contacts_linked (null, linked_contact, operation);
         remove_suggestion_grid ();
       });
 
@@ -259,6 +261,12 @@ public class Contacts.ContactPane : Stack {
       } catch (Error e) {
         show_message (e.message);
       }
+    }
+
+    /* unlink personas */
+    if (this.editor.get_unlink_personas ().size > 0) {
+      var operation = new UnLinkOperation (this.store);
+      operation.do.begin (this.individual, this.editor.get_unlink_personas ());
     }
   }
 

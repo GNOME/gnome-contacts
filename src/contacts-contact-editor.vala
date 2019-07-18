@@ -100,6 +100,7 @@ public class Contacts.ContactEditor : ContactForm {
     HashMap<int, RowData?> rows;
   }
 
+  private HashSet<Persona> unlink_personas;
   /* the key of the hash_map is the uid of the persona */
   private HashMap<string, HashMap<string, Field?>> writable_personas;
 
@@ -116,6 +117,7 @@ public class Contacts.ContactEditor : ContactForm {
   }
 
   construct {
+    this.unlink_personas = new HashSet<Persona> ();
     this.writable_personas = new HashMap<string, HashMap<string, Field?>> ();
     this.container_grid.size_allocate.connect(on_container_grid_size_allocate);
   }
@@ -870,6 +872,10 @@ public class Contacts.ContactEditor : ContactForm {
     }
 
     return props_set;
+  }
+
+  public HashSet<Persona> get_unlink_personas () {
+    return unlink_personas;
   }
 
   public void add_new_row_for_property (Persona? persona, string prop_name, string? type = null) {

@@ -79,15 +79,7 @@ public class Contacts.LinkedPersonasDialog : Dialog {
 
       /* signal */
       button.clicked.connect (() => {
-          unlink_persona.begin (store, individual, p, (obj, result) => {
-              unlink_persona.end (result);
-
-              row_grid.destroy ();
-
-              this.any_unlinked = true;
-              /* TODO: Support undo */
-              /* TODO: Ensure we don't get suggestion for this linkage again */
-            });
+        // TODO: handly unlinking
         });
 
       row_grid.show_all ();

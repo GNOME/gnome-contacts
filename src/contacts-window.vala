@@ -419,18 +419,16 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     set_shown_contact (null);
     this.state = UiState.NORMAL;
 
-    LinkOperation2 operation = null;
-    link_contacts_list.begin (contact_list, this.store, (obj, result) => {
-        operation = link_contacts_list.end (result);
-      });
+    var operation = new LinkOperation (this.store);
+    operation.do.begin (contact_list);
 
     string msg = ngettext ("%d contacts linked",
                            "%d contacts linked",
                            contact_list.size).printf (contact_list.size);
 
     var b = new Button.with_mnemonic (_("_Undo"));
+    var notification = new InAppNotification (msg, b);
 
-    var notification = new InAppNotification (msg);
     /* signal handlers */
     b.clicked.connect ( () => {
         /* here, we will unlink the thing in question */
