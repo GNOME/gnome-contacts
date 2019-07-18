@@ -48,11 +48,6 @@ public class Contacts.AvatarSelector : Popover {
   private Cheese.CameraDeviceMonitor camera_monitor;
 #endif
 
-  /**
-   * Fired after the user has definitely chosen a new avatar.
-   */
-  public signal void set_avatar (GLib.Icon avatar_icon);
-
   public AvatarSelector (Gtk.Widget relative, Individual? individual) {
     this.set_relative_to(relative);
     this.thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
@@ -105,7 +100,8 @@ public class Contacts.AvatarSelector : Popover {
       uint8[] buffer;
       pixbuf.save_to_buffer (out buffer, "png", null);
       var icon = new BytesIcon (new Bytes (buffer));
-      set_avatar (icon);
+      // Set the new avatar
+      this.individual.change_avatar(icon as LoadableIcon);
     } catch (GLib.Error e) {
       warning ("Failed to set avatar: %s", e.message);
       Utils.show_error_dialog (_("Failed to set avatar."),

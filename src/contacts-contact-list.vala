@@ -70,6 +70,7 @@ public class Contacts.ContactList : ListBox {
     }
 
     private void on_contact_changed (Object obj, ParamSpec pspec) {
+      //TODO: Update also the Avatar
       this.label.set_text (this.individual.display_name);
       changed ();
     }
@@ -203,8 +204,8 @@ public class Contacts.ContactList : ListBox {
   }
 
   private void contact_added_cb (Store store, Individual i) {
-    // Don't create a row for ignorable contacts
-    if (!ContactUtils.is_ignorable (i)) {
+    // Don't create a row for ignorable contacts are the individual already has a row
+    if (!ContactUtils.is_ignorable (i) && find_row_for_contact(i) == null) {
       var row =  new ContactDataRow (i);
       row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
       row.selector_button.visible = (this.state == UiState.SELECTING);

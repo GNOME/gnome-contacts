@@ -1,62 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <template class="ContactsContactPane" parent="GtkStack">
+  <template class="ContactsContactPane" parent="GtkScrolledWindow">
     <property name="visible">True</property>
-    <property name="visible-child">none_selected_page</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="shadow_type">none</property>
+    <property name="hscrollbar_policy">never</property>
+    <property name="vscrollbar_policy">automatic</property>
     <child>
-      <object class="GtkGrid" id="none_selected_page">
+      <object class="HdyColumn">
         <property name="visible">True</property>
-        <property name="width_request">300</property>
-        <property name="orientation">vertical</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
-        <property name="row_spacing">6</property>
+        <property name="maximum-width">600</property>
+        <property name="linear-growth-width">400</property>
+        <property name="margin-top">32</property>
+        <property name="margin-bottom">32</property>
+        <property name="margin-left">24</property>
+        <property name="margin-right">24</property>
         <child>
-          <object class="GtkImage">
+          <object class="GtkStack" id="stack">
             <property name="visible">True</property>
-            <property name="icon_name">avatar-default-symbolic</property>
-            <property name="vexpand">True</property>
-            <property name="valign">end</property>
-            <property name="pixel_size">144</property>
-            <style>
-              <class name="contacts-watermark"/>
-            </style>
+            <property name="visible-child">none_selected_page</property>
+            <child>
+              <object class="GtkGrid" id="none_selected_page">
+                <property name="visible">True</property>
+                <property name="width_request">300</property>
+                <property name="orientation">vertical</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="row_spacing">6</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="icon_name">avatar-default-symbolic</property>
+                    <property name="vexpand">True</property>
+                    <property name="valign">end</property>
+                    <property name="pixel_size">144</property>
+                    <style>
+                      <class name="contacts-watermark"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Select a contact</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="valign">start</property>
+                    <property name="margin_bottom">70</property>
+                    <style>
+                      <class name="contacts-watermark"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="name">none-selected-page</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="contact_sheet_page">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="name">contact-sheet-page</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="contact_editor_page">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="name">contact-editor-page</property>
+              </packing>
+            </child>
+
           </object>
         </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">Select a contact</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-            <property name="valign">start</property>
-            <property name="margin_bottom">70</property>
-            <style>
-              <class name="contacts-watermark"/>
-            </style>
-          </object>
-        </child>
       </object>
-      <packing>
-        <property name="name">none-selected-page</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="contact_sheet_page">
-        <property name="visible">True</property>
-      </object>
-      <packing>
-        <property name="name">contact-sheet-page</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="contact_editor_page">
-        <property name="visible">True</property>
-      </object>
-      <packing>
-        <property name="name">contact-editor-page</property>
-      </packing>
     </child>
   </template>
 </interface>
