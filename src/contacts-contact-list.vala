@@ -103,6 +103,9 @@ public class Contacts.ContactList : Gtk.ListBox {
 
   private bool sort_on_surname = false; // keep in sync with the setting
 
+  private Gtk.GestureLongPress long_press;
+  private bool got_long_press = false;
+
   public UiState state { get; set; }
 
   public ContactList (Settings settings, Store store, Query query) {
@@ -113,6 +116,16 @@ public class Contacts.ContactList : Gtk.ListBox {
     this.visible = true;
 
     this.notify["state"].connect (on_ui_state_changed);
+
+    // Connect long press gesture
+    this.long_press = new Gtk.GestureLongPress (this);
+    this.long_press.pressed.connect ((g, x, y) => {
+      this.got_long_press = true;
+      var row = (ContactDataRow) get_row_at_y ((int) Math.round (y));
+      if (row != null) {
+        row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
+      }
+    });
 
     this.sort_on_surname = settings.sort_on_surname;
     settings.changed["sort-on-surname"].connect(() => {
@@ -235,14 +248,26 @@ public class Contacts.ContactList : Gtk.ListBox {
       row.destroy ();
   }
 
+  public override void row_activated (Gtk.ListBoxRow row) {
+    if (!this.got_long_press) {
+      var data = row as ContactDataRow;
+      if (data != null && this.state == UiState.SELECTING)
+        data.selector_button.active = !data.selector_button.active;
+    } else {
+      this.got_long_press = false;
+    }
+  }
+
   public override void row_selected (Gtk.ListBoxRow? row) {
-    var data = (ContactDataRow?) row as ContactDataRow;
-    var individual = data != null ? data.individual : null;
-    selection_changed (individual);
+    if (this.state != UiState.SELECTING) {
+      var data = row as ContactDataRow;
+      var individual = data != null ? data.individual : null;
+      selection_changed (individual);
 #if HAVE_TELEPATHY
-    if (individual != null)
-      Utils.fetch_contact_info (individual);
+      if (individual != null)
+        Contact.fetch_contact_info (individual);
 #endif
+    }
   }
 
   private bool filter_row (Gtk.ListBoxRow row) {
@@ -306,7 +331,6 @@ public class Contacts.ContactList : Gtk.ListBox {
     if (event.button == Gdk.BUTTON_SECONDARY) {
       unowned var row = (ContactDataRow) get_row_at_y ((int) Math.round (event.y));
       if (row != null) {
-        select_row (row);
         row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
       }
     }
