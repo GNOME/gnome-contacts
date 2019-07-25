@@ -30,7 +30,7 @@ namespace Contacts.AvatarUtils {
     if (label) {
       string? initials = extract_initials_from_name(name);
       if (initials != null) {
-        string font = "Sans %d".printf((int) GLib.Math.ceil(size / 2.5));
+        string font = "Cantarell Ultra-Bold %d".printf((int) GLib.Math.ceil(size / 3));
 
         cr.set_source_rgb(1.0, 1.0, 1.0);
         Pango.Layout layout = Pango.cairo_create_layout(cr);
@@ -45,6 +45,22 @@ namespace Contacts.AvatarUtils {
           -((double) height / Pango.SCALE) / 2
           );
         Pango.cairo_show_layout(cr, layout);
+      }
+    } else {
+      try {
+        var theme = Gtk.IconTheme.get_default ();
+        var fallback_avatar = theme.lookup_icon ("avatar-default",
+                                                 size * 1/2,
+                                                 Gtk.IconLookupFlags.FORCE_SYMBOLIC);
+        Gdk.RGBA fg_color = { 1, 1, 1, 1 };
+        var icon_pixbuf = fallback_avatar.load_symbolic (fg_color);
+        var x = (double) size / 2.0 - (double) icon_pixbuf.width / 2.0;
+        // We also add a offset to the height to visually center the icon
+        var y = (double) size / 2.0 - (double) icon_pixbuf.height / 2.0 - (2 * size / 100.0);
+        Gdk.cairo_set_source_pixbuf (cr, icon_pixbuf, x, y);
+        cr.paint ();
+      } catch (Error e) {
+        warning ("Couldn't get default avatar icon: %s", e.message);
       }
     }
 
