@@ -26,6 +26,7 @@ using Gee;
 public class Contacts.Avatar : DrawingArea {
   private int size;
   private Gdk.Pixbuf? pixbuf = null;
+  private Cairo.Surface? cache = null;
 
   private Contact? contact = null;
   // We want to lazily load the Pixbuf to make sure we don't draw all contact avatars at once.
@@ -58,6 +59,7 @@ public class Contacts.Avatar : DrawingArea {
    * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
    */
   public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
+    this.cache = null;
     this.pixbuf = a_pixbuf;
     queue_draw ();
   }
@@ -68,6 +70,7 @@ public class Contacts.Avatar : DrawingArea {
     this.avatar_loaded = true;
     try {
       var stream = yield this.contact.individual.avatar.load_async (this.size);
+      this.cache = null;
       this.pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream, this.size, this.size, true);
       queue_draw ();
     } catch (Error e) {
@@ -80,23 +83,37 @@ public class Contacts.Avatar : DrawingArea {
     if (!this.avatar_loaded)
       load_avatar.begin ();
 
-    if (this.pixbuf != null)
-      draw_contact_avatar (cr);
-    else // No avatar available, draw a fallback
-      draw_fallback (cr);
+    if (this.cache != null) {
+    // Don't do anything if we have already a cached avatar
+    } else if (this.pixbuf != null)
+      this.cache = create_contact_avatar ();
+    else // No avatar or cache available, create the fallback
+      this.cache = create_fallback ();
+
+    draw_cached_avatar (cr);
 
     return true;
   }
 
-  private void draw_contact_avatar (Cairo.Context cr) {
+  private void draw_cached_avatar (Cairo.Context cr) {
+    cr.set_source_surface (this.cache, 0, 0);
+    cr.paint ();
+  }
+
+  private Cairo.Surface create_contact_avatar () {
+    Cairo.ImageSurface surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
+    Cairo.Context cr = new Cairo.Context (surface);
     Gdk.cairo_set_source_pixbuf (cr, this.pixbuf, 0, 0);
     // Clip with a circle
     create_circle (cr);
     cr.clip_preserve ();
     cr.paint ();
+    return surface;
   }
 
-  private void draw_fallback (Cairo.Context cr) {
+  private Cairo.Surface create_fallback () {
+    Cairo.ImageSurface surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
+    Cairo.Context cr = new Cairo.Context (surface);
     // The background color
     if (this.bg_color == null)
       calculate_color ();
@@ -109,7 +126,6 @@ public class Contacts.Avatar : DrawingArea {
 
     // Draw the icon
     try {
-      // FIXME we can probably cache this
       var theme = IconTheme.get_default ();
       var fallback_avatar = theme.lookup_icon ("avatar-default",
                                                this.size * 4 / 5,
@@ -122,6 +138,7 @@ public class Contacts.Avatar : DrawingArea {
     } catch (Error e) {
       warning ("Couldn't get default avatar icon: %s", e.message);
     }
+    return surface;
   }
 
   private void calculate_color () {
