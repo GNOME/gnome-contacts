@@ -26,17 +26,12 @@ using Gee;
 public class Contacts.Avatar : DrawingArea {
   private int size;
   private Gdk.Pixbuf? pixbuf = null;
-  private Cairo.Surface? cache = null;
+  private Gdk.Pixbuf? cache = null;
 
   private Contact? contact = null;
   // We want to lazily load the Pixbuf to make sure we don't draw all contact avatars at once.
   // As long as there is no need for it to be drawn, keep this to false.
   private bool avatar_loaded = false;
-
-  // The background color used in case of a fallback avatar
-  private Gdk.RGBA? bg_color = null;
-  // The color used for an initial or the fallback icon
-  private const Gdk.RGBA fg_color = { 0, 0, 0, 0.25 };
 
   public Avatar (int size, Contact? contact = null) {
     this.contact = contact;
@@ -96,69 +91,80 @@ public class Contacts.Avatar : DrawingArea {
   }
 
   private void draw_cached_avatar (Cairo.Context cr) {
-    cr.set_source_surface (this.cache, 0, 0);
+    Gdk.cairo_set_source_pixbuf (cr, this.cache, 0, 0);
     cr.paint ();
   }
 
-  private Cairo.Surface create_contact_avatar () {
-    Cairo.ImageSurface surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
-    Cairo.Context cr = new Cairo.Context (surface);
-    Gdk.cairo_set_source_pixbuf (cr, this.pixbuf, 0, 0);
-    // Clip with a circle
-    create_circle (cr);
-    cr.clip_preserve ();
-    cr.paint ();
-    return surface;
+  private Gdk.Pixbuf create_contact_avatar () {
+    return AvatarUtils.round_image(this.pixbuf);
   }
 
-  private Cairo.Surface create_fallback () {
-    Cairo.ImageSurface surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, size, size);
-    Cairo.Context cr = new Cairo.Context (surface);
-    // The background color
-    if (this.bg_color == null)
-      calculate_color ();
-
-    // Fill the background circle
-    cr.set_source_rgb (this.bg_color.red, this.bg_color.green, this.bg_color.blue);
-    cr.arc (this.size / 2, this.size / 2, this.size / 2, 0, 2*Math.PI);
-    create_circle (cr);
-    cr.fill_preserve ();
-
-    // Draw the icon
-    try {
-      var theme = IconTheme.get_default ();
-      var fallback_avatar = theme.lookup_icon ("avatar-default",
-                                               this.size * 4 / 5,
-                                               IconLookupFlags.FORCE_SYMBOLIC);
-      var icon_pixbuf = fallback_avatar.load_symbolic (fg_color);
-      create_circle (cr);
-      cr.clip_preserve ();
-      Gdk.cairo_set_source_pixbuf (cr, icon_pixbuf, 1 + this.size / 10, 1 + this.size / 5);
-      cr.paint ();
-    } catch (Error e) {
-      warning ("Couldn't get default avatar icon: %s", e.message);
+  private Gdk.Pixbuf create_fallback () {
+    string name = "";
+    bool show_label = false;
+    if (this.contact != null && this.contact.individual != null) {
+      name = find_display_name ();
+      /* If we don't have a usable name use the display_name
+       * to generate the color but don't show any label
+       */
+      if (name == "") {
+        name = this.contact.individual.display_name;
+      } else {
+        show_label = true;
+      }
     }
-    return surface;
+    var pixbuf = AvatarUtils.generate_user_picture(name, this.size, show_label);
+    pixbuf = AvatarUtils.round_image(pixbuf);
+
+    return pixbuf;
   }
 
-  private void calculate_color () {
-    // We use the hash of the id so we get the same color each time for the same contact
-    var hash = (this.contact != null)? str_hash (this.contact.individual.id) : Gdk.CURRENT_TIME;
-
-    var r = ((hash & 0xFF0000) >> 16) / 255.0;
-    var g = ((hash & 0x00FF00) >> 8) / 255.0;
-    var b = (hash & 0x0000FF) / 255.0;
-
-    // Make it a bit lighter by default (and since the foreground will be darker)
-    this.bg_color = Gdk.RGBA () {
-      red = (r + 2) / 3.0,
-      green = (g + 2) / 3.0,
-      blue = (b + 2) / 3.0,
-      alpha = 0
-    };
+  /* Find a nice name to generate the label and color for the fallback avatar
+   * This code is mostly copied from folks, but folks also tries email and phone number
+   * as a display name which we don't want to have as a label
+   */
+  private string find_display_name () {
+    string name = "";
+    Persona primary_persona = null;
+    foreach (var p in this.contact.individual.personas) {
+      if (p.store.is_primary_store) {
+        primary_persona = p;
+        break;
+      }
+    }
+    name = look_up_alias_for_display_name (primary_persona);
+    if (name == "") {
+      foreach (var p in this.contact.individual.personas) {
+        name = look_up_alias_for_display_name (p);
+      }
+    }
+    if (name == "") {
+      foreach (var p in this.contact.individual.personas) {
+        name = look_up_name_details_for_display_name (p);
+      }
+    }
+    return name;
   }
 
-  private void create_circle (Cairo.Context cr) {
-    cr.arc (this.size / 2, this.size / 2, this.size / 2, 0, 2*Math.PI);
+  private string look_up_alias_for_display_name (Persona? p) {
+    var a = p as AliasDetails;
+    if (a != null && a.alias != null)
+      return a.alias;
+
+    return "";
+  }
+
+  private string look_up_name_details_for_display_name (Persona? p) {
+    var n = p as NameDetails;
+    if (n != null) {
+      if (n.full_name != null && n.full_name != "")
+        return n.full_name;
+      else if (n.structured_name != null)
+        return n.structured_name.to_string ();
+      else if (n.nickname != "")
+        return n.nickname;
+    }
+
+    return "";
   }
 }
