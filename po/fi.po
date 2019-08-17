@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2019-02-01 08:24+0000\n"
-"PO-Revision-Date: 2019-02-05 21:48+0200\n"
+"POT-Creation-Date: 2019-05-07 08:55+0000\n"
+"PO-Revision-Date: 2019-08-17 15:56+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -55,7 +55,7 @@ msgstr ""
 "Yhteystietosovellus tuo yhteen verkossa olevat eri osoitekirjat ja linkittää "
 "automaattisesti yhteystiedot eri verkkolähteistä."
 
-#: data/org.gnome.Contacts.appdata.xml.in:270
+#: data/org.gnome.Contacts.appdata.xml.in:322
 msgid "The GNOME Project"
 msgstr "Gnome-projekti"
 
@@ -63,11 +63,6 @@ msgstr "Gnome-projekti"
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
 msgstr "friends;address book;kaverit;ystävät;henkilöt;osoitekirja;kontaktit;"
-
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Contacts.desktop.in:8
-msgid "org.gnome.Contacts"
-msgstr "org.gnome.Contacts"
 
 #: data/gtk/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -172,7 +167,7 @@ msgid "Select a contact"
 msgstr "Valitse yhteystieto"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:241
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:119
 msgid "Cancel"
 msgstr "Peru"
 
@@ -180,8 +175,7 @@ msgstr "Peru"
 msgid "Take Another…"
 msgstr "Ota toinen…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:299
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
 #: src/contacts-window.vala:230
 msgid "Done"
 msgstr "Valmis"
@@ -212,22 +206,26 @@ msgid "Contacts Setup"
 msgstr "Yhteystietoasetusten määrittely"
 
 #: data/ui/contacts-setup-window.ui:22
-msgid "Quit"
-msgstr "Lopeta"
+msgid "_Quit"
+msgstr "_Lopeta"
 
-#: data/ui/contacts-setup-window.ui:26
+#: data/ui/contacts-setup-window.ui:27
 msgid "Cancel setup and quit"
 msgstr "Peru asetukset ja lopeta"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:41
+msgid "_Done"
+msgstr "_Valmis"
+
+#: data/ui/contacts-setup-window.ui:45
 msgid "Setup complete"
 msgstr "Asetukset valmiina"
 
-#: data/ui/contacts-setup-window.ui:69
+#: data/ui/contacts-setup-window.ui:71
 msgid "Welcome"
 msgstr "Tervetuloa"
 
-#: data/ui/contacts-setup-window.ui:81
+#: data/ui/contacts-setup-window.ui:83
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -254,7 +252,6 @@ msgid "Change Address Book…"
 msgstr "Vaihda osoitekirjaa…"
 
 #: data/ui/contacts-window.ui:57
-#| msgid "Online Accounts"
 msgid "Online Accounts <sup>↗</sup>"
 msgstr "Verkkotilit <sup>↗</sup>"
 
@@ -298,36 +295,36 @@ msgstr "Ladataan"
 msgid "Local Address Book"
 msgstr "Paikallinen osoitekirja"
 
-#: src/contacts-app.vala:41
+#: src/contacts-app.vala:42
 msgid "Show contact with this individual id"
 msgstr "Näytä yhteystieto tällä yksilöllisellä tunnisteella"
 
-#: src/contacts-app.vala:42
+#: src/contacts-app.vala:43
 msgid "Show contact with this email address"
 msgstr "Näytä yhteystieto tällä sähköpostiosoitteella"
 
-#: src/contacts-app.vala:44
+#: src/contacts-app.vala:45
 msgid "Show the current version of Contacts"
 msgstr "Näytä yhteystietosovelluksen nykyinen versio"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:103
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Yhteystietoa tunnisteella %s ei löydy"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:230
+#: src/contacts-app.vala:104 src/contacts-app.vala:231
 msgid "Contact not found"
 msgstr "Yhteystietoa ei löydy"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:113
 msgid "Change Address Book"
 msgstr "Osoitekirjan vaihto"
 
-#: src/contacts-app.vala:117
+#: src/contacts-app.vala:118
 msgid "Change"
 msgstr "Vaihda"
 
-#: src/contacts-app.vala:127
+#: src/contacts-app.vala:128
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -335,25 +332,25 @@ msgstr ""
 "Uudet yhteystiedot lisätään valittuun osoitekirjaan.\n"
 "Voit myös katsella ja muokata yhteystietoja muista osoitekirjoista."
 
-#: src/contacts-app.vala:209
+#: src/contacts-app.vala:210
 msgid "translator-credits"
 msgstr ""
 "Timo Jyrinki <timo.jyrinki@iki.fi>, 2011-2012.\n"
 "Jiri Grönroos <jiri.gronroos@iki.fi>, 2012-2019."
 
-#: src/contacts-app.vala:210
+#: src/contacts-app.vala:211
 msgid "GNOME Contacts"
 msgstr "Gnomen yhteystiedot"
 
-#: src/contacts-app.vala:211
+#: src/contacts-app.vala:212
 msgid "About GNOME Contacts"
 msgstr "Tietoja Gnome-yhteystiedoista"
 
-#: src/contacts-app.vala:212
+#: src/contacts-app.vala:213
 msgid "Contact Management Application"
 msgstr "Yhteystietojen hallinta"
 
-#: src/contacts-app.vala:213
+#: src/contacts-app.vala:214
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
@@ -361,7 +358,7 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 Yhteystietosovelluksen kehittäjät"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:230
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Yhteystietoa sähköpostiosoitteella %s ei löydy"
@@ -783,14 +780,17 @@ msgstr "Onko ikkuna suurennettu?"
 msgid "Stores if the window is currently maximized."
 msgstr "Varastoi jos ikkuna on parhaillaan suurennettu."
 
+#~ msgid "org.gnome.Contacts"
+#~ msgstr "org.gnome.Contacts"
+
+#~ msgid "Quit"
+#~ msgstr "Lopeta"
+
 #~ msgid "_Help"
 #~ msgstr "_Ohje"
 
 #~ msgid "_About"
 #~ msgstr "_Tietoja"
-
-#~ msgid "_Quit"
-#~ msgstr "_Lopeta"
 
 #~ msgid "Online Accounts Settings"
 #~ msgstr "Verkkotilien asetukset"
