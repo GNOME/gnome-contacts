@@ -43,12 +43,36 @@ public class Contacts.SearchProvider : Object {
   }
 
   public async string[] GetInitialResultSet (string[] terms) throws Error {
-    return yield do_search (terms);
+    /* Wait that the aggregator has prepared some data or the search will be empty */
+    if (!this.aggregator.is_quiescent) {
+      var id = this.aggregator.notify["is-quiescent"].connect(() => {
+        GetInitialResultSet.callback ();
+      });
+
+      // Add timeout for 1.5s so we can check if we already have some results
+      var timeout = Timeout.add (1500, () => {
+        GetInitialResultSet.callback ();
+        return false;
+      });
+      yield;
+      Source.remove (timeout);
+      this.aggregator.disconnect (id);
+
+      var results = yield do_search (terms);
+      if (results.length == 0) {
+        // We still don't have any results wait some more
+        return yield GetInitialResultSet (terms);
+      } else {
+        return results;
+      }
+    } else {
+      return yield do_search (terms);
+    }
   }
 
   public async string[] GetSubsearchResultSet (string[] previous_results, string[] new_terms)
       throws Error {
-    return yield do_search (new_terms);
+    return yield GetInitialResultSet (new_terms);
   }
 
   private async string[] do_search (string[] terms) throws Error {
