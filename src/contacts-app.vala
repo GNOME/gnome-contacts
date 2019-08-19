@@ -41,7 +41,7 @@ public class Contacts.App : Gtk.Application {
   private const OptionEntry[] options = {
     { "individual",  'i', 0, OptionArg.STRING, null, N_("Show contact with this individual id") },
     { "email",       'e', 0, OptionArg.STRING, null, N_("Show contact with this email address") },
-    { "search",      's', 0, OptionArg.STRING                                                   },
+    { "search",      's', 0, OptionArg.STRING, null, N_("Show contacts with the given filter") },
     { "version",     'v', 0, OptionArg.NONE,   null, N_("Show the current version of Contacts") },
     {}
   };
