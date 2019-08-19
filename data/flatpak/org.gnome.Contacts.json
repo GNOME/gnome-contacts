@@ -178,9 +178,11 @@
         },
         {
             "name": "cheese",
+            "buildsystem": "meson",
             "config-opts": [
-                "--disable-man",
-                "--disable-lcov"
+                "-Dgtk_doc=false",
+                "-Dintrospection=true",
+                "-Dman=false",
             ],
             "sources": [
                 {
