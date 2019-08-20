@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2019-02-01 08:24+0000\n"
+"POT-Creation-Date: 2019-08-19 23:31+0000\n"
 "PO-Revision-Date: 2018-06-30 20:59+0200\n"
 "Last-Translator: Gil Forcada Codinachs <gil.gnome@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:102
-#: data/ui/contacts-window.ui:122 src/contacts-window.vala:223
+#: data/ui/contacts-window.ui:122 src/contacts-window.vala:220
 msgid "Contacts"
 msgstr "Contactes"
 
@@ -52,7 +52,7 @@ msgstr ""
 "El Contactes també s'integra amb llibretes d'adreces en línia i enllaçarà "
 "automàticament els contactes des de diferents orígens en línia."
 
-#: data/org.gnome.Contacts.appdata.xml.in:270
+#: data/org.gnome.Contacts.appdata.xml.in:323
 msgid "The GNOME Project"
 msgstr "El projecte GNOME"
 
@@ -60,11 +60,6 @@ msgstr "El projecte GNOME"
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
 msgstr "amics;llibreta d'adreces;"
-
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Contacts.desktop.in:8
-msgid "org.gnome.Contacts"
-msgstr "org.gnome.Contacts"
 
 #: data/gtk/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -169,7 +164,7 @@ msgid "Select a contact"
 msgstr "Seleccioneu un contacte"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:241
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:119
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -177,9 +172,8 @@ msgstr "Cancel·la"
 msgid "Take Another…"
 msgstr "Fes una altra…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:299
-#: src/contacts-window.vala:230
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
+#: src/contacts-window.vala:227
 msgid "Done"
 msgstr "Fet"
 
@@ -209,22 +203,26 @@ msgid "Contacts Setup"
 msgstr "Configuració del Contactes"
 
 #: data/ui/contacts-setup-window.ui:22
-msgid "Quit"
-msgstr "Surt"
+msgid "_Quit"
+msgstr "_Surt"
 
-#: data/ui/contacts-setup-window.ui:26
+#: data/ui/contacts-setup-window.ui:27
 msgid "Cancel setup and quit"
 msgstr "Cancel·la la configuració i surt"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:41
+msgid "_Done"
+msgstr "_Fet"
+
+#: data/ui/contacts-setup-window.ui:45
 msgid "Setup complete"
 msgstr "S'ha finalitzat la configuració"
 
-#: data/ui/contacts-setup-window.ui:69
+#: data/ui/contacts-setup-window.ui:71
 msgid "Welcome"
 msgstr "Us donem la benvinguda"
 
-#: data/ui/contacts-setup-window.ui:81
+#: data/ui/contacts-setup-window.ui:83
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -294,36 +292,40 @@ msgstr "S'està carregant"
 msgid "Local Address Book"
 msgstr "Llibreta d'adreces local"
 
-#: src/contacts-app.vala:41
+#: src/contacts-app.vala:42
 msgid "Show contact with this individual id"
 msgstr "Mostra el contacte amb aquest identificador individual"
 
-#: src/contacts-app.vala:42
+#: src/contacts-app.vala:43
 msgid "Show contact with this email address"
 msgstr "Mostra el contacte amb aquesta adreça electrònica"
 
 #: src/contacts-app.vala:44
+msgid "Show contacts with the given filter"
+msgstr "Mostra el contactes amb els filtres donats"
+
+#: src/contacts-app.vala:45
 msgid "Show the current version of Contacts"
 msgstr "Mostra la versió actual del Contactes"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:103
 #, c-format
 msgid "No contact with id %s found"
 msgstr "No s'ha trobat cap contacte amb l'identificador %s"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:230
+#: src/contacts-app.vala:104 src/contacts-app.vala:231
 msgid "Contact not found"
 msgstr "No s'ha trobat el contacte"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:113
 msgid "Change Address Book"
 msgstr "Canvia la llibreta d'adreces"
 
-#: src/contacts-app.vala:117
+#: src/contacts-app.vala:118
 msgid "Change"
 msgstr "Canvia"
 
-#: src/contacts-app.vala:127
+#: src/contacts-app.vala:128
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -331,51 +333,51 @@ msgstr ""
 "Els contactes nous s'afegiran a la llibreta d'adreces seleccionada.\n"
 "Podeu veure i editar els contactes d'altres llibretes d'adreces."
 
-#: src/contacts-app.vala:209
+#: src/contacts-app.vala:210
 msgid "translator-credits"
 msgstr ""
 "Gil Forcada <gilforcada@guifi.net>\n"
 "Pau Iranzo <paugnu@gmail.com>"
 
 # Deixem el nom tal qual?
-#: src/contacts-app.vala:210
+#: src/contacts-app.vala:211
 msgid "GNOME Contacts"
 msgstr "Contactes del GNOME"
 
-#: src/contacts-app.vala:211
+#: src/contacts-app.vala:212
 msgid "About GNOME Contacts"
 msgstr "Quant al Contactes del GNOME"
 
-#: src/contacts-app.vala:212
+#: src/contacts-app.vala:213
 msgid "Contact Management Application"
 msgstr "Aplicació de gestió de contactes"
 
-#: src/contacts-app.vala:213
+#: src/contacts-app.vala:214
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
 msgstr ""
 "© 2011 Red Hat, Inc.\n"
-"© 2011-2018 Els desenvolupadors del Contactes"
+"© 2011-2018 L'equip de desenvolupament del Contactes"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:230
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "No s'ha trobat cap contacte amb l'adreça electrònica %s"
 
-#: src/contacts-avatar-selector.vala:110 src/contacts-avatar-selector.vala:230
+#: src/contacts-avatar-selector.vala:111 src/contacts-avatar-selector.vala:231
 msgid "Failed to set avatar."
 msgstr "S'ha produït un error en establir l'avatar."
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:191
 msgid "Browse for more pictures"
 msgstr "Navega per més imatges"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Open"
 msgstr "_Obre"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Cancel"
 msgstr "_Cancel·la"
 
@@ -666,65 +668,65 @@ msgstr "Tèlex"
 msgid "TTY"
 msgstr "Teletip"
 
-#: src/contacts-window.vala:193
+#: src/contacts-window.vala:190
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d seleccionat"
 msgstr[1] "%d seleccionats"
 
-#: src/contacts-window.vala:230
+#: src/contacts-window.vala:227
 msgid "Add"
 msgstr "Afegeix"
 
-#: src/contacts-window.vala:252
+#: src/contacts-window.vala:249
 #, c-format
 msgid "Editing %s"
 msgstr "S'està editant %s"
 
-#: src/contacts-window.vala:308
+#: src/contacts-window.vala:305
 msgid "Unmark as favorite"
 msgstr "No el marquis més com a preferit"
 
-#: src/contacts-window.vala:309
+#: src/contacts-window.vala:306
 msgid "Mark as favorite"
 msgstr "Marca'l com a preferit"
 
-#: src/contacts-window.vala:323
+#: src/contacts-window.vala:320
 msgid "New Contact"
 msgstr "Contacte nou"
 
-#: src/contacts-window.vala:421
+#: src/contacts-window.vala:418
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d contacte enllaçat"
 msgstr[1] "%d contactes enllaçats"
 
-#: src/contacts-window.vala:425 src/contacts-window.vala:449
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:422 src/contacts-window.vala:446
+#: src/contacts-window.vala:483
 msgid "_Undo"
 msgstr "_Desfés"
 
-#: src/contacts-window.vala:444
+#: src/contacts-window.vala:441
 #, c-format
 msgid "Deleted contact %s"
 msgstr "S'ha suprimit el contacte %s"
 
-#: src/contacts-window.vala:446
+#: src/contacts-window.vala:443
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d contacte suprimit"
 msgstr[1] "%d contactes suprimits"
 
-#: src/contacts-window.vala:482
+#: src/contacts-window.vala:479
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s està enllaçat amb %s"
 
 # Caldrà vore el context per veure si aquesta traducció és correcta
-#: src/contacts-window.vala:484
+#: src/contacts-window.vala:481
 #, c-format
 msgid "%s linked to the contact"
 msgstr "S'ha enllaçat %s al contacte"
@@ -783,14 +785,3 @@ msgstr "Està la finestra maximitzada?"
 msgid "Stores if the window is currently maximized."
 msgstr "Emmagatzema si x la finestra està actualment maximitzada."
 
-#~ msgid "_Help"
-#~ msgstr "_Ajuda"
-
-#~ msgid "_About"
-#~ msgstr "_Quant a"
-
-#~ msgid "_Quit"
-#~ msgstr "_Surt"
-
-#~ msgid "Select"
-#~ msgstr "Selecciona"
