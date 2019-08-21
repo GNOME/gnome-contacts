@@ -8,11 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-20 14:50+0000\n"
-"PO-Revision-Date: 2017-09-29 18:43+0330\n"
-"Last-Translator: Arash Mousavi <mousavi.arash@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
+"POT-Creation-Date: 2019-05-07 08:55+0000\n"
+"PO-Revision-Date: 2019-08-17 16:53+0430\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
@@ -20,16 +19,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6 data/org.gnome.Contacts.desktop.in:3
-#: data/ui/contacts-window.ui:10
+#: data/ui/contacts-window.ui:102 data/ui/contacts-window.ui:122
+#: src/contacts-window.vala:223
 msgid "Contacts"
-msgstr "آشناها"
+msgstr "آشنایان"
 
 #: data/org.gnome.Contacts.appdata.xml.in:7 data/org.gnome.Contacts.desktop.in:4
 msgid "A contacts manager for GNOME"
-msgstr "یک مدیریت آشناها برای گنوم"
+msgstr "یک مدیریت آشنایان برای گنوم"
 
 #: data/org.gnome.Contacts.appdata.xml.in:9
 msgid ""
@@ -38,9 +38,9 @@ msgid ""
 "aggregates the details from all your sources providing a centralized place for "
 "managing your contacts."
 msgstr ""
-"آشناها، اطّلاعات آشنایان شما را نگه‌داری و منظّم می‌کند. شما می‌توانید قطعه‌های "
-"اطّلاعات درباره‌ی آشناهایتان را ایجاد، ویرایش و حذف یا به هم پیوند کنید. آشناها "
-"جزئیات را از همه‌ی منابعتان جمع می‌کند تا مکانی مرکزی برای مدیریت آشناهایتان را "
+"آشنایان، اطّلاعات آشنایانتان را نگه‌داری و منظّم می‌کند. می‌توانید قطعه‌های اطّلاعات "
+"دربارهٔ آشنایانتان را ایجاد، ویرایش و حذف کرده یا به هم پیوند بزنید. آشنایان "
+"جزئیات را از همهٔ منابعتان جمع می‌کند تا مکانی مرکزی برای مدیریت آشنایانیتان "
 "به‌وجود آورد."
 
 #: data/org.gnome.Contacts.appdata.xml.in:15
@@ -48,60 +48,63 @@ msgid ""
 "Contacts will also integrate with online address books and automatically link "
 "contacts from different online sources."
 msgstr ""
-"آشناها هم‌چنین با دفترچه‌های نشانی برخط یک‌پارچه شده و به صورت خودکار آشناهایی از "
-"منابع برخط مختلف را به هم پیوند می‌دهد."
+"آشنایان هم‌چنین با دفترچه‌های نشانی برخط یک‌پارچه شده و به صورت خودکار آشنایانیی "
+"از منابع برخط مختلف را به هم پیوند می‌دهد."
+
+#: data/org.gnome.Contacts.appdata.xml.in:322
+msgid "The GNOME Project"
+msgstr "پروژهٔ گنوم"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
-msgstr "friends;address book;دوستان;دفترچه نشانی;"
+msgstr "friends;address book;دوستان;دفترچه تلفن;"
 
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Contacts.desktop.in:8
-msgid "gnome-contacts"
-msgstr "gnome-contacts"
+#: data/gtk/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "Overview"
+msgstr "نمای کلّی"
 
-#: data/ui/app-menu.ui:6
-msgid "_Change Address Book…"
-msgstr "_تغییر دفترچه نشانی…"
+#: data/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Help"
+msgstr "راهنما"
 
-#: data/ui/app-menu.ui:12
-msgid "_Help"
-msgstr "_راهنما"
+#: data/gtk/help-overlay.ui:21
+msgctxt "shortcut window"
+msgid "Create a new contact"
+msgstr "ساخت آشنای جدید"
 
-#: data/ui/app-menu.ui:16
-msgid "_About"
-msgstr "_درباره"
+#: data/gtk/help-overlay.ui:28
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "جست‌وجو"
 
-#: data/ui/app-menu.ui:20
-msgid "_Quit"
-msgstr "_خروج"
+#: data/gtk/help-overlay.ui:35
+msgctxt "shortcut window"
+msgid "Shortcut list"
+msgstr "فهرست میان‌برها"
 
-#: data/ui/contacts-avatar-dialog.ui:6
-msgid "Select Picture"
-msgstr "انتخاب عکس"
+#: data/gtk/help-overlay.ui:42
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "خروج"
 
-#: data/ui/contacts-avatar-dialog.ui:33 src/contacts-window.vala:320
-msgid "New Contact"
-msgstr "آشنای جدید"
+#: data/ui/contacts-avatar-selector.ui:54
+msgid "Take a Picture…"
+msgstr "عکس گرفتن…"
 
-#: data/ui/contacts-avatar-dialog.ui:279 src/contacts-window.vala:202
-#: src/contacts-window.vala:228
-msgid "Select"
-msgstr "انتخاب"
-
-#: data/ui/contacts-avatar-dialog.ui:285 data/ui/contacts-window.ui:245
-#: data/ui/contacts-window.ui:303 src/contacts-app.vala:69
-msgid "Cancel"
-msgstr "لغو"
+#: data/ui/contacts-avatar-selector.ui:68
+msgid "Select a File…"
+msgstr "گزینش پرونده…"
 
 #: data/ui/contacts-contact-editor.ui:8
 msgid "Home email"
-msgstr "پست‌الکترونیکی خانگی"
+msgstr "رایانامه خانگی"
 
 #: data/ui/contacts-contact-editor.ui:12
 msgid "Work email"
-msgstr "پست‌الکترونیکی کاری"
+msgstr "رایانامه کاری"
 
 #: data/ui/contacts-contact-editor.ui:16
 msgid "Mobile phone"
@@ -115,18 +118,18 @@ msgstr "تلفن خانه"
 msgid "Work phone"
 msgstr "تلفن کار"
 
-#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:574
-#: src/contacts-contact-editor.vala:581 src/contacts-contact-sheet.vala:192
+#: data/ui/contacts-contact-editor.ui:28 src/contacts-contact-editor.vala:640
+#: src/contacts-contact-editor.vala:647 src/contacts-contact-sheet.vala:236
 msgid "Website"
 msgstr "پایگاه‌وب"
 
-#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:600
-#: src/contacts-contact-editor.vala:607 src/contacts-contact-sheet.vala:198
+#: data/ui/contacts-contact-editor.ui:32 src/contacts-contact-editor.vala:666
+#: src/contacts-contact-editor.vala:673 src/contacts-contact-sheet.vala:243
 msgid "Nickname"
 msgstr "نام مستعار"
 
-#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:633
-#: src/contacts-contact-editor.vala:640 src/contacts-contact-sheet.vala:205
+#: data/ui/contacts-contact-editor.ui:36 src/contacts-contact-editor.vala:699
+#: src/contacts-contact-editor.vala:706 src/contacts-contact-sheet.vala:249
 msgid "Birthday"
 msgstr "تولد"
 
@@ -142,544 +145,707 @@ msgstr "آدرس محل کار"
 msgid "Notes"
 msgstr "یادداشت‌ها"
 
-#: data/ui/contacts-contact-editor.ui:82
+#: data/ui/contacts-contact-editor.ui:72
 msgid "New Detail"
 msgstr "جزئیات جدید"
 
-#: data/ui/contacts-contact-editor.ui:100
-#: src/contacts-linked-accounts-dialog.vala:36
+#: data/ui/contacts-contact-editor.ui:90
+#: data/ui/contacts-linked-personas-dialog.ui:12
 msgid "Linked Accounts"
 msgstr "حساب‌های پیوند شده"
 
-#: data/ui/contacts-contact-editor.ui:106
+#: data/ui/contacts-contact-editor.ui:96
 msgid "Remove Contact"
 msgstr "حذف آشنا"
 
-#: data/ui/contacts-contact-pane.ui:29
+#: data/ui/contacts-contact-pane.ui:30
 msgid "Select a contact"
 msgstr "یک آشنا انتخاب کنید"
 
-#: data/ui/contacts-list-pane.ui:33
+#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:241
+#: src/contacts-app.vala:119
+msgid "Cancel"
+msgstr "لغو"
+
+#: data/ui/contacts-crop-cheese-dialog.ui:49
+msgid "Take Another…"
+msgstr "گرفتن عکسی دیگر…"
+
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
+#: src/contacts-window.vala:230
+msgid "Done"
+msgstr "انجام شد"
+
+#: data/ui/contacts-link-suggestion-grid.ui:56
+msgid "Link Contacts"
+msgstr "پیوند آشنایان"
+
+#: data/ui/contacts-linked-personas-dialog.ui:45
+msgid "You can link contacts by selecting them from the contacts list"
+msgstr "شما می‌توانید با انتخاب آشنایان در فهرست آنها را به هم پیوند کنید"
+
+#: data/ui/contacts-list-pane.ui:22
 msgid "Type to search"
 msgstr "برای جستجو تایپ کنید"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-list-pane.ui:80
+#: data/ui/contacts-list-pane.ui:54
 msgid "Link"
 msgstr "پیوند"
 
-#: data/ui/contacts-list-pane.ui:93
+#: data/ui/contacts-list-pane.ui:68
 msgid "Remove"
 msgstr "حذف"
 
-#: data/ui/contacts-window.ui:83
-msgid "Loading"
-msgstr "درحال بارگزاری"
+#: data/ui/contacts-setup-window.ui:13
+msgid "Contacts Setup"
+msgstr "برپاسازی آشنایان"
 
-#: data/ui/contacts-window.ui:122
-msgid ""
-"New contacts will be added to the selected address book. You are able to view "
-"and edit contacts from other address books."
-msgstr ""
-"آشناهای جدید به دفترچه‌نشانی انتخاب شده اضافه خواهند شد. شما می‌توانید آشناها را "
-"در دفترچه‌های نشانی دیگر ببینید یا ویرایش کنید."
+#: data/ui/contacts-setup-window.ui:22
+msgid "_Quit"
+msgstr "_خروج"
 
-#: data/ui/contacts-window.ui:167 src/contacts-window.vala:237
-msgid "All Contacts"
-msgstr "تمام آشنایان"
+#: data/ui/contacts-setup-window.ui:27
+msgid "Cancel setup and quit"
+msgstr "لغو برپاسازی و خروج"
 
-#: data/ui/contacts-window.ui:182
-msgid "Add contact"
-msgstr "اضافه‌کردن آشنا"
+#: data/ui/contacts-setup-window.ui:41
+msgid "_Done"
+msgstr "انجام _شد"
 
-#: data/ui/contacts-window.ui:210
-msgid "Selection mode"
-msgstr "حالت انتخاب"
-
-#: data/ui/contacts-window.ui:261
-msgid "Edit"
-msgstr "ویرایش"
-
-#: data/ui/contacts-window.ui:277 data/ui/contacts-window.ui:323
-#: src/contacts-window.vala:269
-msgid "Done"
-msgstr "انجام شد"
-
-#: data/ui/contacts-window.ui:294
-msgid "Select Address Book"
-msgstr "انتخاب دفترچه نشانی"
-
-#: data/ui/contacts-window.ui:306
-msgid "Cancel setup"
-msgstr "لغو نصب"
-
-#: data/ui/contacts-window.ui:326
+#: data/ui/contacts-setup-window.ui:45
 msgid "Setup complete"
 msgstr "نصب کامل شد"
 
-#: src/contacts-accounts-list.vala:48
-msgid "Online Accounts"
-msgstr "حساب‌های برخط"
+#: data/ui/contacts-setup-window.ui:71
+msgid "Welcome"
+msgstr "خوش‌آمدید"
 
-#: src/contacts-accounts-list.vala:174 src/contacts-esd-setup.c:241
+#: data/ui/contacts-setup-window.ui:83
+msgid ""
+"Please select your main address book: this is where new contacts will be added. "
+"If you keep your contacts in an online account, you can add them using the "
+"online accounts settings."
+msgstr ""
+"لطفاُ دفترچه تلفن اصلیتان که آشنایان در آن افزوده می‌شوند را برگزینید. اگر "
+"آشنایانیتان را در حسابی برخط نگه می‌دارید، می‌توانید با استفاده از تنظیمات "
+"حساب‌های برخط، بیفزاییدشان."
+
+#: data/ui/contacts-window.ui:15
+msgid "List contacts by:"
+msgstr "فهرست آشنایان بر اساس:"
+
+#: data/ui/contacts-window.ui:28
+msgid "First name"
+msgstr "نام"
+
+#: data/ui/contacts-window.ui:35
+msgid "Surname"
+msgstr "نام خانوادگی"
+
+#: data/ui/contacts-window.ui:49
+msgid "Change Address Book…"
+msgstr "تغییر دفترچه تلفن…"
+
+#: data/ui/contacts-window.ui:57
+msgid "Online Accounts <sup>↗</sup>"
+msgstr "حساب‌های برخط<sup>↗</sup>"
+
+#: data/ui/contacts-window.ui:73
+msgid "Keyboard Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+#: data/ui/contacts-window.ui:81
+msgid "Help"
+msgstr "راهنما"
+
+#: data/ui/contacts-window.ui:89
+msgid "About Contacts"
+msgstr "دربارهٔ آشنایان"
+
+#: data/ui/contacts-window.ui:130
+msgid "Create new contact"
+msgstr "ساخت آشنای جدید"
+
+#: data/ui/contacts-window.ui:134
+msgid "Add contact"
+msgstr "افزودن آشنا"
+
+#: data/ui/contacts-window.ui:173
+msgid "Cancel selection"
+msgstr "لغو گزیده"
+
+#: data/ui/contacts-window.ui:222
+msgid "Back"
+msgstr "بازگشت"
+
+#: data/ui/contacts-window.ui:259
+msgid "Edit details"
+msgstr "ویرایش جزئیات"
+
+#: data/ui/contacts-window.ui:361
+msgid "Loading"
+msgstr "درحال بارگزاری"
+
+#: src/contacts-accounts-list.vala:146 src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
-msgstr "دفترچه نشانی محلی"
+msgstr "دفترچه تلفن محلی"
 
-#: src/contacts-address-map.vala:80
-msgid "Install GNOME Maps to open location."
-msgstr "برای باز کردن مکان‌ها نقشه گنوم را نصب کنید."
+#: src/contacts-app.vala:42
+msgid "Show contact with this individual id"
+msgstr "نمایش آشنا با این شناسه یگانه"
 
-#: src/contacts-app.vala:53
+#: src/contacts-app.vala:43
+msgid "Show contact with this email address"
+msgstr "نمایش آشنا با این آدرس رایانامه"
+
+#: src/contacts-app.vala:45
+msgid "Show the current version of Contacts"
+msgstr "نمایش نگارش کنونی آشنایان"
+
+#: src/contacts-app.vala:103
 #, c-format
 msgid "No contact with id %s found"
 msgstr "هیچ آشنایی با نشاسه %s پیدا نشد"
 
-#: src/contacts-app.vala:54 src/contacts-app.vala:154
+#: src/contacts-app.vala:104 src/contacts-app.vala:231
 msgid "Contact not found"
 msgstr "آشنا پیدا نشد"
 
-#: src/contacts-app.vala:63
+#: src/contacts-app.vala:113
 msgid "Change Address Book"
-msgstr "تغییر دفترچه نشانی"
+msgstr "تغییر دفترچه تلفن"
 
-#: src/contacts-app.vala:68
+#: src/contacts-app.vala:118
 msgid "Change"
 msgstr "تغییر"
 
-#: src/contacts-app.vala:78
+#: src/contacts-app.vala:128
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
 msgstr ""
-"آشناهای جدید به دفترچه‌نشانی انتخاب شده اضافه خواهند شد.\n"
-"شما قادر خواهید بود تا آشناها را در دیگر دفترچه‌های نشانی ببینید یا ویرایش کنید."
+"آشنایانی جدید به دفترچه تلفن انتخاب شده اضافه خواهند شد.\n"
+"شما قادر خواهید بود تا آشنایان را در دیگر دفترچه‌های نشانی ببینید یا ویرایش کنید."
 
-#: src/contacts-app.vala:133
+#: src/contacts-app.vala:210
 msgid "translator-credits"
 msgstr ""
 "آرش موسوی <mousavi.arash@gmail.com>\n"
 "دانیال بهزادی <dani.behzi@ubuntu.com>"
 
-#: src/contacts-app.vala:134
+#: src/contacts-app.vala:211
 msgid "GNOME Contacts"
-msgstr "آشناهای گنوم"
+msgstr "آشنایانی گنوم"
 
-#: src/contacts-app.vala:135
+#: src/contacts-app.vala:212
 msgid "About GNOME Contacts"
-msgstr "درباره‌های آشناهای گنوم"
+msgstr "درباره‌های آشنایانی گنوم"
 
-#: src/contacts-app.vala:136
+#: src/contacts-app.vala:213
 msgid "Contact Management Application"
 msgstr "برنامه مدیریت آشنایان"
 
-#: src/contacts-app.vala:153
+#: src/contacts-app.vala:214
+msgid ""
+"© 2011 Red Hat, Inc.\n"
+"© 2011-2018 The Contacts Developers"
+msgstr ""
+"© ۲۰۱۱ شرکت ردهت\n"
+"© ۲۰۱۱-۲۰۱۸ توسعه‌دهندگان آشنایان"
+
+#: src/contacts-app.vala:230
 #, c-format
 msgid "No contact with email address %s found"
-msgstr "هیج آشنایی با آدرس پست‌الکترونیکی %s پیدا نشد"
+msgstr "هیج آشنایی با آدرس رایانامه %s پیدا نشد"
 
-#: src/contacts-app.vala:299
-msgid "Show contact with this individual id"
-msgstr "نمایش آشنا با این شناسه یگانه"
+#: src/contacts-avatar-selector.vala:110 src/contacts-avatar-selector.vala:230
+msgid "Failed to set avatar."
+msgstr "شکست در تنظیم آواتار."
 
-#: src/contacts-app.vala:301
-msgid "Show contact with this email address"
-msgstr "نمایش آشنا با این آدرس پست‌الکترونیکی"
-
-#: src/contacts-app.vala:310
-msgid "— contact management"
-msgstr "— مدیریت آشنا"
-
-#: src/contacts-avatar-dialog.vala:301
+#: src/contacts-avatar-selector.vala:190
 msgid "Browse for more pictures"
 msgstr "مرور برای عکس‌های بیشتر"
 
-#: src/contacts-avatar-dialog.vala:304
+#: src/contacts-avatar-selector.vala:193
+msgid "_Open"
+msgstr "_گشودن"
+
+#: src/contacts-avatar-selector.vala:193
 msgid "_Cancel"
 msgstr "_لغو"
 
-#: src/contacts-avatar-dialog.vala:305
-msgid "_Open"
-msgstr "_باز کردن"
-
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "Street"
 msgstr "خیابان"
 
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "Extension"
 msgstr "افزونه"
 
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "City"
 msgstr "شهر"
 
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "State/Province"
 msgstr "ایالت/استان"
 
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "Zip/Postal Code"
 msgstr "کدپستی"
 
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "PO box"
 msgstr "صندوق پستی"
 
-#: src/contacts-contact-editor.vala:28
+#: src/contacts-contact-editor.vala:27
 msgid "Country"
 msgstr "کشور"
 
-#: src/contacts-contact-editor.vala:313
+#: src/contacts-contact-editor.vala:381
 msgid "Add email"
-msgstr "اضافه کردن پست‌الکترونیکی"
+msgstr "افزودن رایانامه"
 
-#: src/contacts-contact-editor.vala:315
+#: src/contacts-contact-editor.vala:383
 msgid "Add number"
-msgstr "اضافه‌کردن شماره"
+msgstr "افزودن شماره"
 
-#: src/contacts-contact-editor.vala:319 src/contacts-contact-editor.vala:350
-#: src/contacts-contact-editor.vala:385 src/contacts-contact-editor.vala:441
-#: src/contacts-contact-editor.vala:491
+#: src/contacts-contact-editor.vala:387 src/contacts-contact-editor.vala:418
+#: src/contacts-contact-editor.vala:452 src/contacts-contact-editor.vala:507
+#: src/contacts-contact-editor.vala:557
 msgid "Delete field"
 msgstr "حذف"
 
-#: src/contacts-contact-editor.vala:655 src/contacts-contact-editor.vala:662
-#: src/contacts-contact-sheet.vala:212
+#: src/contacts-contact-editor.vala:721 src/contacts-contact-editor.vala:728
+#: src/contacts-contact-sheet.vala:256
 msgid "Note"
 msgstr "یادداشت"
 
-#: src/contacts-contact-editor.vala:1016
-msgid "Add name"
-msgstr "اضافه‌کردن نام"
-
-#: src/contacts-contact-frame.vala:40
+#: src/contacts-contact-editor.vala:909
 msgid "Change avatar"
 msgstr "تغییر آواتار"
 
-#: src/contacts-contact-pane.vala:144
-#, c-format
-msgid "Does %s from %s belong here?"
-msgstr "آیا %s از %s مربوط به اینجا می‌شود؟"
+#: src/contacts-contact-editor.vala:951
+msgid "Add name"
+msgstr "افزودن نام"
 
-#: src/contacts-contact-pane.vala:146
-#, c-format
-msgid "Do these details belong to %s?"
-msgstr "آیا این جزئیات مربوط به %s نیستند؟"
+#: src/contacts-contact-list.vala:178
+msgid "Favorites"
+msgstr "برگزیده‌ها"
 
-#: src/contacts-contact-pane.vala:158
-msgid "Yes"
-msgstr "بله"
+#: src/contacts-contact-list.vala:180 src/contacts-contact-list.vala:186
+msgid "All Contacts"
+msgstr "تمام آشنایان"
 
-#: src/contacts-contact-pane.vala:159
-msgid "No"
-msgstr "خیر"
-
-#: src/contacts-contact-pane.vala:410
+#: src/contacts-contact-pane.vala:292
 msgid "You need to enter some data"
 msgstr "لازم است مقداری اطلاعات وارد کنید"
 
-#: src/contacts-contact-pane.vala:415
+#: src/contacts-contact-pane.vala:297
 msgid "No primary addressbook configured"
-msgstr "هیچ دفترچه‌نشانی اصلی‌ای پیکربندی نشده است"
+msgstr "هیچ دفترچه تلفن اصلی‌ای پیکربندی نشده است"
 
-#: src/contacts-contact-pane.vala:425
+#: src/contacts-contact-pane.vala:307
 #, c-format
 msgid "Unable to create new contacts: %s"
-msgstr "نمی‌توان آشناهای جدیدی ساخت: %s"
+msgstr "نمی‌توان آشنایانی جدیدی ساخت: %s"
 
-#: src/contacts-contact-pane.vala:434
+#: src/contacts-contact-pane.vala:316
 msgid "Unable to find newly created contact"
 msgstr "نمی‌توان آشنا تازه ایجاد شده را پیدا کرد"
 
-#: src/contacts-contact.vala:741
-msgid "Google Talk"
-msgstr "گوگل تاک"
-
-#: src/contacts-contact.vala:742
-msgid "Ovi Chat"
-msgstr "گپ Ovi"
-
-#: src/contacts-contact.vala:743
-msgid "Facebook"
-msgstr "فیس‌بوک"
-
-#: src/contacts-contact.vala:744
-msgid "Livejournal"
-msgstr "Livejournal"
-
-#: src/contacts-contact.vala:745
-msgid "AOL Instant Messenger"
-msgstr "پیام‌رسان فوری AOL"
-
-#: src/contacts-contact.vala:746
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
-
-#: src/contacts-contact.vala:747
-msgid "Novell Groupwise"
-msgstr "Novell Groupwise"
-
-#: src/contacts-contact.vala:748
-msgid "ICQ"
-msgstr "ICQ"
-
-#: src/contacts-contact.vala:749
-msgid "IRC"
-msgstr "IRC"
-
-#: src/contacts-contact.vala:750
-msgid "Jabber"
-msgstr "Jabber"
-
-#: src/contacts-contact.vala:751
-msgid "Local network"
-msgstr "شبکه محلی"
-
-#: src/contacts-contact.vala:752
-msgid "Windows Live Messenger"
-msgstr "پیام‌رسان زنده ویندوز"
-
-#: src/contacts-contact.vala:753
-msgid "MySpace"
-msgstr "MySpace"
-
-#: src/contacts-contact.vala:754
-msgid "MXit"
-msgstr "MXit"
-
-#: src/contacts-contact.vala:755
-msgid "Napster"
-msgstr "Napster"
-
-#: src/contacts-contact.vala:756
-msgid "Tencent QQ"
-msgstr "Tencent QQ"
-
-#: src/contacts-contact.vala:757
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
-
-#: src/contacts-contact.vala:758
-msgid "SILC"
-msgstr "SILC"
-
-#: src/contacts-contact.vala:759
-msgid "sip"
-msgstr "sip"
-
-#: src/contacts-contact.vala:760
-msgid "Skype"
-msgstr "اسکایپ"
-
-#: src/contacts-contact.vala:761
-msgid "Telephony"
-msgstr "Telephony"
-
-#: src/contacts-contact.vala:762
-msgid "Trepia"
-msgstr "Trepia"
-
-#: src/contacts-contact.vala:763 src/contacts-contact.vala:764
-msgid "Yahoo! Messenger"
-msgstr "پیام‌رسان یاهو!"
-
-#: src/contacts-contact.vala:765
-msgid "Zephyr"
-msgstr "Zephyr"
-
-#: src/contacts-contact.vala:1070
+#: src/contacts-contact.vala:283
 msgid "Unexpected internal error: created contact was not found"
 msgstr "خطا داخلی غیرمنتظره: آشنا ساخته شده پیدا نشد"
 
-#: src/contacts-contact.vala:1255
+#: src/contacts-contact.vala:442
 msgid "Google Circles"
 msgstr "دایره گوگل"
 
-#: src/contacts-contact.vala:1257 src/contacts-esd-setup.c:244
-#: src/contacts-esd-setup.c:272
+#: src/contacts-contact.vala:444 src/contacts-esd-setup.vala:152
+#: src/contacts-esd-setup.vala:167
 msgid "Google"
 msgstr "گوگل"
 
-#: src/contacts-esd-setup.c:269
+#: src/contacts-crop-cheese-dialog.vala:91
+msgid "Unable to take photo."
+msgstr "نانوان در گرفتن عکس."
+
+#: src/contacts-esd-setup.vala:164
 msgid "Local Contact"
 msgstr "آشنا محلی"
 
-#: src/contacts-linked-accounts-dialog.vala:35
-#, c-format
-msgid "%s"
-msgstr "%s"
+#: src/contacts-im-service.vala:32
+msgid "AOL Instant Messenger"
+msgstr "پیام‌رسان فوری AOL"
 
-#: src/contacts-linked-accounts-dialog.vala:60
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "شما می‌توانید با انتخاب آشناها در فهرست آنها را به هم پیوند کنید"
+#: src/contacts-im-service.vala:33
+msgid "Facebook"
+msgstr "فیس‌بوک"
 
-#: src/contacts-linked-accounts-dialog.vala:104
+#: src/contacts-im-service.vala:34
+msgid "Gadu-Gadu"
+msgstr "گادو گادو"
+
+#: src/contacts-im-service.vala:35
+msgid "Google Talk"
+msgstr "گوگل تاک"
+
+#: src/contacts-im-service.vala:36
+msgid "Novell Groupwise"
+msgstr "گروپ‌وایز ناول"
+
+#: src/contacts-im-service.vala:37
+msgid "ICQ"
+msgstr "آی‌سیک‌یو"
+
+#: src/contacts-im-service.vala:38
+msgid "IRC"
+msgstr "آی‌آرسی"
+
+#: src/contacts-im-service.vala:39
+msgid "Jabber"
+msgstr "جبر"
+
+#: src/contacts-im-service.vala:40
+msgid "Livejournal"
+msgstr "لایوژورنال"
+
+#: src/contacts-im-service.vala:41
+msgid "Local network"
+msgstr "شبکه محلی"
+
+#: src/contacts-im-service.vala:42
+msgid "Windows Live Messenger"
+msgstr "پیام‌رسان زنده ویندوز"
+
+#: src/contacts-im-service.vala:43
+msgid "MySpace"
+msgstr "مای‌اسپیس"
+
+#: src/contacts-im-service.vala:44
+msgid "MXit"
+msgstr "MXit"
+
+#: src/contacts-im-service.vala:45
+msgid "Napster"
+msgstr "نپستر"
+
+#: src/contacts-im-service.vala:46
+msgid "Ovi Chat"
+msgstr "گپ Ovi"
+
+#: src/contacts-im-service.vala:47
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: src/contacts-im-service.vala:48
+msgid "IBM Lotus Sametime"
+msgstr "سیم‌تایم اوتوس آی‌بی‌ام"
+
+#: src/contacts-im-service.vala:49
+msgid "SILC"
+msgstr "سیلک"
+
+#: src/contacts-im-service.vala:50
+msgid "sip"
+msgstr "سیپ"
+
+#: src/contacts-im-service.vala:51
+msgid "Skype"
+msgstr "اسکایپ"
+
+#: src/contacts-im-service.vala:52
+msgid "Telephony"
+msgstr "تلفونی"
+
+#: src/contacts-im-service.vala:53
+msgid "Trepia"
+msgstr "ترپیا"
+
+#: src/contacts-im-service.vala:54 src/contacts-im-service.vala:55
+msgid "Yahoo! Messenger"
+msgstr "پیام‌رسان یاهو"
+
+#: src/contacts-im-service.vala:56
+msgid "Zephyr"
+msgstr "زفیر"
+
+#: src/contacts-linked-personas-dialog.vala:74
 msgid "Unlink"
 msgstr "حذف پیوند"
 
-#. Refers to the type of the detail, could be Home, Work or Other for email, and the same
-#. * for phone numbers, addresses, etc.
-#: src/contacts-types.vala:114 src/contacts-types.vala:126
-#: src/contacts-types.vala:227 src/contacts-types.vala:341
-msgid "Other"
-msgstr "بقیه"
+#: src/contacts-link-suggestion-grid.vala:54
+#, c-format
+msgid "Is this the same person as %s from %s?"
+msgstr "این همان %s در %s است؟"
+
+#: src/contacts-link-suggestion-grid.vala:55
+#, c-format
+msgid "Is this the same person as %s?"
+msgstr "این همان %s است؟"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:282 src/contacts-types.vala:306
-#: src/contacts-types.vala:337
+#: src/contacts-typeset.vala:210 src/contacts-typeset.vala:230
+#: src/contacts-typeset.vala:256 src/contacts-typeset.vala:258
 msgid "Home"
 msgstr "خانه"
 
-#: src/contacts-types.vala:283 src/contacts-types.vala:307
-#: src/contacts-types.vala:332
+#: src/contacts-typeset.vala:211 src/contacts-typeset.vala:231
+#: src/contacts-typeset.vala:250 src/contacts-typeset.vala:252
 msgid "Work"
 msgstr "کار"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:305
+#: src/contacts-typeset.vala:229
 msgid "Personal"
 msgstr "شخصی"
 
 #. List most specific first, always in upper case
-#: src/contacts-types.vala:331
+#: src/contacts-typeset.vala:249
 msgid "Assistant"
 msgstr "دستیار"
 
-#: src/contacts-types.vala:333
+#: src/contacts-typeset.vala:251
 msgid "Work Fax"
 msgstr "فکس کاری"
 
-#: src/contacts-types.vala:334
+#: src/contacts-typeset.vala:253
 msgid "Callback"
 msgstr "پاسخ به تماس"
 
-#: src/contacts-types.vala:335
+#: src/contacts-typeset.vala:254
 msgid "Car"
 msgstr "ماشین"
 
-#: src/contacts-types.vala:336
+#: src/contacts-typeset.vala:255
 msgid "Company"
 msgstr "شرکت"
 
-#: src/contacts-types.vala:338
+#: src/contacts-typeset.vala:257
 msgid "Home Fax"
 msgstr "فکس خانگی"
 
-#: src/contacts-types.vala:339
+#: src/contacts-typeset.vala:259
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/contacts-types.vala:340
+#: src/contacts-typeset.vala:260
 msgid "Mobile"
 msgstr "تلفن همراه"
 
-#: src/contacts-types.vala:342
+#: src/contacts-typeset.vala:261 src/contacts-type-descriptor.vala:85
+msgid "Other"
+msgstr "بقیه"
+
+#: src/contacts-typeset.vala:262
 msgid "Fax"
 msgstr "فکس"
 
-#: src/contacts-types.vala:343
+#: src/contacts-typeset.vala:263
 msgid "Pager"
 msgstr "پیجر"
 
-#: src/contacts-types.vala:344
+#: src/contacts-typeset.vala:264
 msgid "Radio"
 msgstr "رادیو"
 
-#: src/contacts-types.vala:345
+#: src/contacts-typeset.vala:265
 msgid "Telex"
 msgstr "تلکس"
 
 #. To translators: TTY is Teletypewriter
-#: src/contacts-types.vala:347
+#: src/contacts-typeset.vala:267
 msgid "TTY"
-msgstr "TTY"
+msgstr "دورنویس"
 
-#: src/contacts-view.vala:192
-msgid "No results matched search"
-msgstr "هیچ نتیجه‌ای با مورد جستجو منطبق نبود"
-
-#: src/contacts-view.vala:296
-msgid "Suggestions"
-msgstr "پیشنهادها"
-
-#: src/contacts-view.vala:321
-msgid "Other Contacts"
-msgstr "آشنایان دیگر"
-
-#: src/contacts-window.vala:204
+#: src/contacts-window.vala:193
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
-msgstr[0] "%Id انتخاب شد"
-msgstr[1] "%Id انتخاب شد"
+msgstr[0] "%Id گزیده"
+msgstr[1] "%Id گزیده"
 
-#: src/contacts-window.vala:254
+#: src/contacts-window.vala:230
+msgid "Add"
+msgstr "افزودن"
+
+#: src/contacts-window.vala:252
 #, c-format
 msgid "Editing %s"
 msgstr "درحال ویرایش %s"
 
-#: src/contacts-window.vala:325
-msgid "Add"
-msgstr "اضافه‌کردن"
+#: src/contacts-window.vala:308
+msgid "Unmark as favorite"
+msgstr "عدم علامت‌گذاری به عنوان برگزیده"
 
-#: src/contacts-window.vala:409
+#: src/contacts-window.vala:309
+msgid "Mark as favorite"
+msgstr "علامت‌گذاری به عنوان برگزیده"
+
+#: src/contacts-window.vala:323
+msgid "New Contact"
+msgstr "آشنای جدید"
+
+#: src/contacts-window.vala:421
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%Id آشنا پیوند شد"
 msgstr[1] "%Id آشنا پیوند شدند"
 
-#: src/contacts-window.vala:413 src/contacts-window.vala:435
-#: src/contacts-window.vala:466 src/contacts-window.vala:498
+#: src/contacts-window.vala:425 src/contacts-window.vala:449
+#: src/contacts-window.vala:486
 msgid "_Undo"
 msgstr "_برگردان"
 
-#: src/contacts-window.vala:431
+#: src/contacts-window.vala:444
+#, c-format
+msgid "Deleted contact %s"
+msgstr "%s حذف شد"
+
+#: src/contacts-window.vala:446
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%Id آشنا حذف شد"
 msgstr[1] "%Id آشنا حذف شدند"
 
-#: src/contacts-window.vala:465
-#, c-format
-msgid "Contact deleted: “%s”"
-msgstr "آشنا حذف شد: «%s»"
-
-#: src/contacts-window.vala:494
+#: src/contacts-window.vala:482
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s پیوند شده به %s"
 
-#: src/contacts-window.vala:496
+#: src/contacts-window.vala:484
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s به آشنا پیوند شد"
 
-#: src/org.gnome.Contacts.gschema.xml:5
-msgid "First-time setup done."
-msgstr "برپاسازی مرتبه‌ی اول انجام شد."
-
 #: src/org.gnome.Contacts.gschema.xml:6
-msgid "Set to true when the user ran the first-time setup wizard."
-msgstr "زمانی که کاربر برپاسازی اولیه را انجام داد بر روی درست تنظیم کنید."
+msgid "First-time setup done."
+msgstr "نخستین برپاسازی انجام شد."
 
-#: src/org.gnome.Contacts.gschema.xml:10
-msgid "View subset"
-msgstr "نمایش زیرمجموعه"
+#: src/org.gnome.Contacts.gschema.xml:7
+msgid "Set to true after the user has run the first-time setup wizard."
+msgstr "تنظیم روی درست پس از برپاسازی نخستین."
 
 #: src/org.gnome.Contacts.gschema.xml:11
-msgid "View contacts subset"
-msgstr "نمایش زیرمجموعه آشنا"
+msgid "Sort contacts on surname."
+msgstr "چینش آشنایان بر اساس نام خانوادگی."
+
+#: src/org.gnome.Contacts.gschema.xml:12
+msgid ""
+"If this is set to true, the list of contacts will be sorted on their surnames. "
+"Otherwise, it will be sorted on the first names of the contacts."
+msgstr ""
+"اگر این مورد صحیح باشد، فهرست آشنایان براساس نام خانودگیشان چیده خواهد شد. در "
+"غیر این صورت، برا اساس نام آشنایان چیده می‌شود."
+
+#: src/org.gnome.Contacts.gschema.xml:19
+msgid "The default height of the contacts window."
+msgstr "ارتفاع پیش‌گزیدهٔ پنجرهٔ آشنایان."
+
+#: src/org.gnome.Contacts.gschema.xml:20
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the height of the window."
+msgstr ""
+"اگر اندازهٔ پنجره هنوز به دست کاربر تغییر نکرده باشد، این به عنوان مفدار نخستین "
+"ارتفاع پنجره استفاده خواهد شد."
+
+#: src/org.gnome.Contacts.gschema.xml:26
+msgid "The default width of the contacts window."
+msgstr "پهنای پیش‌گزیدهٔ پنجرهٔ آشنایان."
+
+#: src/org.gnome.Contacts.gschema.xml:27
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the width of the window."
+msgstr ""
+"اگر اندازهٔ پنجره هنوز به دست کاربر تغییر نکرده باشد، این به عنوان مفدار نخستین "
+"پهنای پنجره استفاده خواهد شد."
+
+#: src/org.gnome.Contacts.gschema.xml:32
+msgid "Is the window maximized?"
+msgstr "آیا پنجره بیشینه است؟"
+
+#: src/org.gnome.Contacts.gschema.xml:33
+msgid "Stores if the window is currently maximized."
+msgstr "ذخیره می‌کند که آیا پنجره در حال حاضر بیشینه است یا نه."
+
+#~ msgid "gnome-contacts"
+#~ msgstr "gnome-contacts"
+
+#~ msgid "_About"
+#~ msgstr "_درباره"
+
+#~ msgid "Select Picture"
+#~ msgstr "انتخاب عکس"
+
+#~ msgid "Select"
+#~ msgstr "انتخاب"
+
+#~ msgid ""
+#~ "New contacts will be added to the selected address book. You are able to "
+#~ "view and edit contacts from other address books."
+#~ msgstr ""
+#~ "آشناهای جدید به دفترچه‌نشانی انتخاب شده اضافه خواهند شد. شما می‌توانید آشناها "
+#~ "را در دفترچه‌های نشانی دیگر ببینید یا ویرایش کنید."
+
+#~ msgid "Selection mode"
+#~ msgstr "حالت انتخاب"
+
+#~ msgid "Edit"
+#~ msgstr "ویرایش"
+
+#~ msgid "Select Address Book"
+#~ msgstr "انتخاب دفترچه نشانی"
+
+#~ msgid "Install GNOME Maps to open location."
+#~ msgstr "برای باز کردن مکان‌ها نقشه گنوم را نصب کنید."
+
+#~ msgid "— contact management"
+#~ msgstr "— مدیریت آشنا"
+
+#~ msgid "Does %s from %s belong here?"
+#~ msgstr "آیا %s از %s مربوط به اینجا می‌شود؟"
+
+#~ msgid "Do these details belong to %s?"
+#~ msgstr "آیا این جزئیات مربوط به %s نیستند؟"
+
+#~ msgid "Yes"
+#~ msgstr "بله"
+
+#~ msgid "No"
+#~ msgstr "خیر"
+
+#~ msgid "%s"
+#~ msgstr "%s"
+
+#~ msgid "No results matched search"
+#~ msgstr "هیچ نتیجه‌ای با مورد جستجو منطبق نبود"
+
+#~ msgid "Suggestions"
+#~ msgstr "پیشنهادها"
+
+#~ msgid "Other Contacts"
+#~ msgstr "آشنایان دیگر"
+
+#~ msgid "Contact deleted: “%s”"
+#~ msgstr "آشنا حذف شد: «%s»"
+
+#~ msgid "View subset"
+#~ msgstr "نمایش زیرمجموعه"
+
+#~ msgid "View contacts subset"
+#~ msgstr "نمایش زیرمجموعه آشنا"
 
 #~ msgid "January"
 #~ msgstr "ژانویه"
 
 #~ msgid "February"
 #~ msgstr "فوریه"
-
-#~ msgid "March"
-#~ msgstr "مارس"
 
 #~ msgid "April"
 #~ msgstr "آوریل"
@@ -717,9 +883,6 @@ msgstr "نمایش زیرمجموعه آشنا"
 #~ msgid "Personal email"
 #~ msgstr "پست‌الکترونیکی شخصی"
 
-#~ msgid "_About Contacts"
-#~ msgstr "_درباره آشناها"
-
 #~ msgid "Primary Contacts Account"
 #~ msgstr "حساب اصلی آشناها"
 
@@ -737,9 +900,6 @@ msgstr "نمایش زیرمجموعه آشنا"
 
 #~ msgid "%s - Linked Accounts"
 #~ msgstr "%s - حساب پیوند شده"
-
-#~ msgid "Create Contact"
-#~ msgstr "ساخت آشنا"
 
 #~ msgid ""
 #~ "Add or \n"
@@ -759,9 +919,6 @@ msgstr "نمایش زیرمجموعه آشنا"
 
 #~ msgid "You must specify a contact name"
 #~ msgstr "باید یک نام برای آشنا انتخاب کنید"
-
-#~ msgid "Contacts Setup"
-#~ msgstr "برپاسازی آشنایان"
 
 #~ msgid "Please select your primary contacts account"
 #~ msgstr "لطفا حساب آشناهای اصلی خود را انتخاب کنید"
@@ -804,14 +961,8 @@ msgstr "نمایش زیرمجموعه آشنا"
 #~ msgid "Add to My Contacts"
 #~ msgstr "اضافه کردن به «آشنایان من»"
 
-#~ msgid "Add detail..."
-#~ msgstr "اضافه کردن جزئیات..."
-
 #~ msgid "Select detail to add to %s"
 #~ msgstr "انتخاب جزئیات برای اضافه کردن به %s"
-
-#~ msgid "Select email address"
-#~ msgstr "انتخاب آدرس پست‌الکترونیکی"
 
 #~ msgid "Select what to call"
 #~ msgstr "برای تماس انتخاب کنید"
@@ -822,9 +973,6 @@ msgstr "نمایش زیرمجموعه آشنا"
 #~ msgctxt "contacts link action"
 #~ msgid "Link"
 #~ msgstr "پیوند"
-
-#~ msgid "Link contacts to %s"
-#~ msgstr "پیوند کردن آشناها به %s"
 
 #~ msgid "Custom..."
 #~ msgstr "سفارشی..."
