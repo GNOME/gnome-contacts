@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2019-02-01 08:24+0000\n"
-"PO-Revision-Date: 2019-03-03 13:23+0200\n"
+"POT-Creation-Date: 2019-08-19 23:31+0000\n"
+"PO-Revision-Date: 2019-08-24 16:46+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:102
-#: data/ui/contacts-window.ui:122 src/contacts-window.vala:223
+#: data/ui/contacts-window.ui:122 src/contacts-window.vala:220
 msgid "Contacts"
 msgstr "Kontakti"
 
@@ -51,7 +51,7 @@ msgstr ""
 "Kontakti arī ir integrēti ar tiešsaistes adrešu grāmatām un automātiski "
 "saista kontaktus ar dažādiem tiešsaistes avotiem."
 
-#: data/org.gnome.Contacts.appdata.xml.in:270
+#: data/org.gnome.Contacts.appdata.xml.in:323
 msgid "The GNOME Project"
 msgstr "GNOME projekts"
 
@@ -59,11 +59,6 @@ msgstr "GNOME projekts"
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
 msgstr "draugi;adrešu grāmata;"
-
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Contacts.desktop.in:8
-msgid "org.gnome.Contacts"
-msgstr "org.gnome.Contacts"
 
 #: data/gtk/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -168,7 +163,7 @@ msgid "Select a contact"
 msgstr "Izvēlieties kontaktu"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:241
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:119
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -176,9 +171,8 @@ msgstr "Atcelt"
 msgid "Take Another…"
 msgstr "Uzņemt citu…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:299
-#: src/contacts-window.vala:230
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
+#: src/contacts-window.vala:227
 msgid "Done"
 msgstr "Pabeigts"
 
@@ -208,22 +202,27 @@ msgid "Contacts Setup"
 msgstr "Kontaktu iestatīšana"
 
 #: data/ui/contacts-setup-window.ui:22
-msgid "Quit"
-msgstr "Iziet"
+msgid "_Quit"
+msgstr "_Iziet"
 
-#: data/ui/contacts-setup-window.ui:26
+#: data/ui/contacts-setup-window.ui:27
 msgid "Cancel setup and quit"
 msgstr "Atcelt iestatīšanu un iziet"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:41
+#| msgid "Done"
+msgid "_Done"
+msgstr "_Gatavs"
+
+#: data/ui/contacts-setup-window.ui:45
 msgid "Setup complete"
 msgstr "Iestatīšana ir pabeigta"
 
-#: data/ui/contacts-setup-window.ui:69
+#: data/ui/contacts-setup-window.ui:71
 msgid "Welcome"
 msgstr "Laipni lūdzam"
 
-#: data/ui/contacts-setup-window.ui:81
+#: data/ui/contacts-setup-window.ui:83
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -246,12 +245,10 @@ msgid "Surname"
 msgstr "Uzvārda"
 
 #: data/ui/contacts-window.ui:49
-#| msgid "_Change Address Book…"
 msgid "Change Address Book…"
 msgstr "Mainīt adrešu grāmatu…"
 
 #: data/ui/contacts-window.ui:57
-#| msgid "Online Accounts Settings"
 msgid "Online Accounts <sup>↗</sup>"
 msgstr "Tiešsaistes konti <sup>↗</sup>"
 
@@ -260,13 +257,10 @@ msgid "Keyboard Shortcuts"
 msgstr "Tastatūras saīsnes"
 
 #: data/ui/contacts-window.ui:81
-#| msgctxt "shortcut window"
-#| msgid "Help"
 msgid "Help"
 msgstr "Palīdzība"
 
 #: data/ui/contacts-window.ui:89
-#| msgid "About GNOME Contacts"
 msgid "About Contacts"
 msgstr "Par kontaktiem"
 
@@ -298,36 +292,41 @@ msgstr "Ielādē"
 msgid "Local Address Book"
 msgstr "Lokālā adrešu grāmata"
 
-#: src/contacts-app.vala:41
+#: src/contacts-app.vala:42
 msgid "Show contact with this individual id"
 msgstr "Rādīt kontaktu ar šo individuālo id"
 
-#: src/contacts-app.vala:42
+#: src/contacts-app.vala:43
 msgid "Show contact with this email address"
 msgstr "Rādīt kontaktus ar šo e-pasta adresi"
 
 #: src/contacts-app.vala:44
+#| msgid "Show contact with this individual id"
+msgid "Show contacts with the given filter"
+msgstr "Rādīt kontaktus, kas atbilst dotajam filtram"
+
+#: src/contacts-app.vala:45
 msgid "Show the current version of Contacts"
 msgstr "Rādīt Kontaktu pašreizējo versiju"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:103
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Nav atrasts kontakts ar id %s"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:230
+#: src/contacts-app.vala:104 src/contacts-app.vala:231
 msgid "Contact not found"
 msgstr "Kontakts nav atrasts"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:113
 msgid "Change Address Book"
 msgstr "Mainīt adrešu grāmatu"
 
-#: src/contacts-app.vala:117
+#: src/contacts-app.vala:118
 msgid "Change"
 msgstr "Mainīt"
 
-#: src/contacts-app.vala:127
+#: src/contacts-app.vala:128
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -335,25 +334,25 @@ msgstr ""
 "Jaunie kontakti tiks pievienoti izvēlētajai adrešu grāmatai.\n"
 "Jūs varat skatīt un rediģēt kontaktus no citām adrešu grāmatām."
 
-#: src/contacts-app.vala:209
+#: src/contacts-app.vala:210
 msgid "translator-credits"
 msgstr ""
 "Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Anita Reitere <nitalynx@gmail.com>"
 
-#: src/contacts-app.vala:210
+#: src/contacts-app.vala:211
 msgid "GNOME Contacts"
 msgstr "GNOME Kontakti"
 
-#: src/contacts-app.vala:211
+#: src/contacts-app.vala:212
 msgid "About GNOME Contacts"
 msgstr "Par GNOME Kontaktiem"
 
-#: src/contacts-app.vala:212
+#: src/contacts-app.vala:213
 msgid "Contact Management Application"
 msgstr "Kontaktu pārvaldnieks"
 
-#: src/contacts-app.vala:213
+#: src/contacts-app.vala:214
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
@@ -361,24 +360,24 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 kontaktu izstrādātāji"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:230
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Nav atrasti kontakti ar e-pasta adresi %s"
 
-#: src/contacts-avatar-selector.vala:110 src/contacts-avatar-selector.vala:230
+#: src/contacts-avatar-selector.vala:111 src/contacts-avatar-selector.vala:231
 msgid "Failed to set avatar."
 msgstr "Neizdevās iestatīt avataru."
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:191
 msgid "Browse for more pictures"
 msgstr "Pārlūkot, lai iegūtu vairāk attēlu"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Open"
 msgstr "_Atvērt"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Cancel"
 msgstr "At_celt"
 
@@ -667,7 +666,7 @@ msgstr "Telekss"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:193
+#: src/contacts-window.vala:190
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -675,28 +674,28 @@ msgstr[0] "%d izvēlēts"
 msgstr[1] "%d izvēlēti"
 msgstr[2] "%d izvēlētu"
 
-#: src/contacts-window.vala:230
+#: src/contacts-window.vala:227
 msgid "Add"
 msgstr "Pievienot"
 
-#: src/contacts-window.vala:252
+#: src/contacts-window.vala:249
 #, c-format
 msgid "Editing %s"
 msgstr "Rediģē %s"
 
-#: src/contacts-window.vala:308
+#: src/contacts-window.vala:305
 msgid "Unmark as favorite"
 msgstr "Noņemt no izlases"
 
-#: src/contacts-window.vala:309
+#: src/contacts-window.vala:306
 msgid "Mark as favorite"
 msgstr "Pievienot izlasei"
 
-#: src/contacts-window.vala:323
+#: src/contacts-window.vala:320
 msgid "New Contact"
 msgstr "Jauns kontakts"
 
-#: src/contacts-window.vala:421
+#: src/contacts-window.vala:418
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -704,17 +703,17 @@ msgstr[0] "Saistīts %d kontakts"
 msgstr[1] "Saistīti %d kontakti"
 msgstr[2] "Saistītu %d kontaktu"
 
-#: src/contacts-window.vala:425 src/contacts-window.vala:449
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:422 src/contacts-window.vala:446
+#: src/contacts-window.vala:483
 msgid "_Undo"
 msgstr "_Atsaukt"
 
-#: src/contacts-window.vala:444
+#: src/contacts-window.vala:441
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Dzēst kontaktu %s"
 
-#: src/contacts-window.vala:446
+#: src/contacts-window.vala:443
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -722,12 +721,12 @@ msgstr[0] "Dzēsts %d kontakts"
 msgstr[1] "Dzēsti %d kontakti"
 msgstr[2] "Dzēstu %d kontaktu"
 
-#: src/contacts-window.vala:482
+#: src/contacts-window.vala:479
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s sasaistīts ar %s"
 
-#: src/contacts-window.vala:484
+#: src/contacts-window.vala:481
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s piesaistīts kontaktam"
@@ -786,14 +785,17 @@ msgstr "Vai logs ir maksimizēts?"
 msgid "Stores if the window is currently maximized."
 msgstr "Saglabā informāciju par to, vai logs šobrīd ir maksimizēts."
 
+#~ msgid "org.gnome.Contacts"
+#~ msgstr "org.gnome.Contacts"
+
+#~ msgid "Quit"
+#~ msgstr "Iziet"
+
 #~ msgid "_Help"
 #~ msgstr "_Palīdzība"
 
 #~ msgid "_About"
 #~ msgstr "P_ar"
-
-#~ msgid "_Quit"
-#~ msgstr "_Iziet"
 
 #~ msgid "Select"
 #~ msgstr "Izvēlēties"
