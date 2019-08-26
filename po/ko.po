@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2019-02-01 08:24+0000\n"
-"PO-Revision-Date: 2019-02-25 16:10+0900\n"
+"POT-Creation-Date: 2019-08-19 23:31+0000\n"
+"PO-Revision-Date: 2019-08-26 13:56+0900\n"
 "Last-Translator: Seong-ho Cho <shcho@gnome.org>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -22,11 +22,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:102
-#: data/ui/contacts-window.ui:122 src/contacts-window.vala:223
+#: data/ui/contacts-window.ui:122 src/contacts-window.vala:220
 msgid "Contacts"
 msgstr "연락처"
 
@@ -54,7 +54,7 @@ msgstr ""
 "연락처는 온라인 주소록을 통합하며 여러 온라인 원본 연락처를 자동으로 이어줍니"
 "다."
 
-#: data/org.gnome.Contacts.appdata.xml.in:270
+#: data/org.gnome.Contacts.appdata.xml.in:323
 msgid "The GNOME Project"
 msgstr "그놈 프로젝트"
 
@@ -62,11 +62,6 @@ msgstr "그놈 프로젝트"
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
 msgstr "friends;친구;address book;주소록;"
-
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Contacts.desktop.in:8
-msgid "org.gnome.Contacts"
-msgstr "org.gnome.Contacts"
 
 #: data/gtk/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -171,7 +166,7 @@ msgid "Select a contact"
 msgstr "연락처를 선택하십시오"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:241
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:119
 msgid "Cancel"
 msgstr "취소"
 
@@ -179,9 +174,8 @@ msgstr "취소"
 msgid "Take Another…"
 msgstr "다른 항목 가져오기…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:299
-#: src/contacts-window.vala:230
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
+#: src/contacts-window.vala:227
 msgid "Done"
 msgstr "완료"
 
@@ -211,22 +205,26 @@ msgid "Contacts Setup"
 msgstr "연락처 설정"
 
 #: data/ui/contacts-setup-window.ui:22
-msgid "Quit"
-msgstr "끝내기"
+msgid "_Quit"
+msgstr "끝내기(_Q)"
 
-#: data/ui/contacts-setup-window.ui:26
+#: data/ui/contacts-setup-window.ui:27
 msgid "Cancel setup and quit"
 msgstr "설정 취소 후 끝내기"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:41
+msgid "_Done"
+msgstr "완료(_D)"
+
+#: data/ui/contacts-setup-window.ui:45
 msgid "Setup complete"
 msgstr "설정 완료"
 
-#: data/ui/contacts-setup-window.ui:69
+#: data/ui/contacts-setup-window.ui:71
 msgid "Welcome"
 msgstr "환영합니다"
 
-#: data/ui/contacts-setup-window.ui:81
+#: data/ui/contacts-setup-window.ui:83
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -295,36 +293,40 @@ msgstr "불러오는 중"
 msgid "Local Address Book"
 msgstr "로컬 주소록"
 
-#: src/contacts-app.vala:41
+#: src/contacts-app.vala:42
 msgid "Show contact with this individual id"
 msgstr "이 개별 ID의 연락처를 보여줍니다"
 
-#: src/contacts-app.vala:42
+#: src/contacts-app.vala:43
 msgid "Show contact with this email address"
 msgstr "이 전자메일 주소의 연락처를 보여줍니다"
 
 #: src/contacts-app.vala:44
+msgid "Show contacts with the given filter"
+msgstr "표시 조건에 맞는 연락처를 보여줍니다"
+
+#: src/contacts-app.vala:45
 msgid "Show the current version of Contacts"
 msgstr "연락처 현재 버전 표시"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:103
 #, c-format
 msgid "No contact with id %s found"
 msgstr "%s ID의 연락처를 찾을 수 없습니다"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:230
+#: src/contacts-app.vala:104 src/contacts-app.vala:231
 msgid "Contact not found"
 msgstr "연락처가 없습니다"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:113
 msgid "Change Address Book"
 msgstr "주소록 바꾸기"
 
-#: src/contacts-app.vala:117
+#: src/contacts-app.vala:118
 msgid "Change"
 msgstr "바꾸기"
 
-#: src/contacts-app.vala:127
+#: src/contacts-app.vala:128
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -332,23 +334,23 @@ msgstr ""
 "선택한 주소록에 새 연락처를 추가합니다.\n"
 "다른 주소록에서 연락처를 보고 편집할 수 있습니다."
 
-#: src/contacts-app.vala:209
+#: src/contacts-app.vala:210
 msgid "translator-credits"
 msgstr "조성호 <shcho@gnome.org>"
 
-#: src/contacts-app.vala:210
+#: src/contacts-app.vala:211
 msgid "GNOME Contacts"
 msgstr "그놈 연락처"
 
-#: src/contacts-app.vala:211
+#: src/contacts-app.vala:212
 msgid "About GNOME Contacts"
 msgstr "그놈 연락처 정보"
 
-#: src/contacts-app.vala:212
+#: src/contacts-app.vala:213
 msgid "Contact Management Application"
 msgstr "연락처 관리 프로그램"
 
-#: src/contacts-app.vala:213
+#: src/contacts-app.vala:214
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
@@ -356,24 +358,24 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:230
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "%s 전자메일 주소의 연락처를 찾을 수 없습니다"
 
-#: src/contacts-avatar-selector.vala:110 src/contacts-avatar-selector.vala:230
+#: src/contacts-avatar-selector.vala:111 src/contacts-avatar-selector.vala:231
 msgid "Failed to set avatar."
 msgstr "아바타 설정에 실패했습니다."
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:191
 msgid "Browse for more pictures"
 msgstr "더 많은 그림 탐색"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Open"
 msgstr "열기(_O)"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Cancel"
 msgstr "취소(_C)"
 
@@ -662,61 +664,61 @@ msgstr "텔렉스"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:193
+#: src/contacts-window.vala:190
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "선택 항목 %d개"
 
-#: src/contacts-window.vala:230
+#: src/contacts-window.vala:227
 msgid "Add"
 msgstr "추가"
 
-#: src/contacts-window.vala:252
+#: src/contacts-window.vala:249
 #, c-format
 msgid "Editing %s"
 msgstr "%s 편집"
 
-#: src/contacts-window.vala:308
+#: src/contacts-window.vala:305
 msgid "Unmark as favorite"
 msgstr "즐겨찾기 표시 취소"
 
-#: src/contacts-window.vala:309
+#: src/contacts-window.vala:306
 msgid "Mark as favorite"
 msgstr "즐겨찾기로 표시"
 
-#: src/contacts-window.vala:323
+#: src/contacts-window.vala:320
 msgid "New Contact"
 msgstr "새 연락처"
 
-#: src/contacts-window.vala:421
+#: src/contacts-window.vala:418
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "연락처 %d개를 연결했습니다"
 
-#: src/contacts-window.vala:425 src/contacts-window.vala:449
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:422 src/contacts-window.vala:446
+#: src/contacts-window.vala:483
 msgid "_Undo"
 msgstr "실행 취소(_U)"
 
-#: src/contacts-window.vala:444
+#: src/contacts-window.vala:441
 #, c-format
 msgid "Deleted contact %s"
 msgstr "%s 연락처를 삭제했습니다"
 
-#: src/contacts-window.vala:446
+#: src/contacts-window.vala:443
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "연락처 %d개를 삭제했습니다"
 
-#: src/contacts-window.vala:482
+#: src/contacts-window.vala:479
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s을(를) %s에 연결했습니다"
 
-#: src/contacts-window.vala:484
+#: src/contacts-window.vala:481
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s을(를) 연락처에 연결했습니다"
@@ -769,14 +771,17 @@ msgstr "창을 최대화 합니까?"
 msgid "Stores if the window is currently maximized."
 msgstr "현재 창을 최대화 할 지 여부 설정을 저장합니다."
 
+#~ msgid "org.gnome.Contacts"
+#~ msgstr "org.gnome.Contacts"
+
+#~ msgid "Quit"
+#~ msgstr "끝내기"
+
 #~ msgid "_Help"
 #~ msgstr "도움말(_H)"
 
 #~ msgid "_About"
 #~ msgstr "정보(_A)"
-
-#~ msgid "_Quit"
-#~ msgstr "끝내기(_Q)"
 
 #~ msgid "Select"
 #~ msgstr "선택"
