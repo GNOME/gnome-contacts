@@ -3,7 +3,7 @@
 Contacts organizes your contacts information from all your online and offline
 sources, providing a centralized place for managing your contacts.
 
-<a href='https://flathub.org/apps/details/org.gnome.Contacts'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-i-en.png'/></a>
+[![Flatpak](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Flathub-badge-en.svg/240px-Flathub-badge-en.svg.png)](https://flathub.org/apps/details/org.gnome.Contacts)
 
 ## Building
 
