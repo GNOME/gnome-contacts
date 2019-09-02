@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2019-05-07 08:55+0000\n"
-"PO-Revision-Date: 2019-08-16 10:13+0200\n"
+"POT-Creation-Date: 2019-08-19 23:31+0000\n"
+"PO-Revision-Date: 2019-09-02 02:53+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:102
-#: data/ui/contacts-window.ui:122 src/contacts-window.vala:223
+#: data/ui/contacts-window.ui:122 src/contacts-window.vala:220
 msgid "Contacts"
 msgstr "Kontakty"
 
@@ -53,7 +53,7 @@ msgstr ""
 "Kontakty rovněž integrují on-line adresáře a automaticky propojují kontakty "
 "z různých on-line zdrojů."
 
-#: data/org.gnome.Contacts.appdata.xml.in:322
+#: data/org.gnome.Contacts.appdata.xml.in:323
 msgid "The GNOME Project"
 msgstr "Projekt GNOME"
 
@@ -174,7 +174,7 @@ msgid "Take Another…"
 msgstr "Pořídit další…"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
-#: src/contacts-window.vala:230
+#: src/contacts-window.vala:227
 msgid "Done"
 msgstr "Hotovo"
 
@@ -301,6 +301,10 @@ msgstr "Zobrazit kontakt s tímto individuálním ID"
 msgid "Show contact with this email address"
 msgstr "Zobrazit kontakt s touto e-mailovou adresou"
 
+#: src/contacts-app.vala:44
+msgid "Show contacts with the given filter"
+msgstr "Zobrazit kontakty podle zadaného filtru"
+
 #: src/contacts-app.vala:45
 msgid "Show the current version of Contacts"
 msgstr "Zobrazit aktuální verzi Kontaktů"
@@ -361,19 +365,19 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "Kontakt s e-mailovou adresou %s nebyl nalezen"
 
-#: src/contacts-avatar-selector.vala:110 src/contacts-avatar-selector.vala:230
+#: src/contacts-avatar-selector.vala:111 src/contacts-avatar-selector.vala:231
 msgid "Failed to set avatar."
 msgstr "Selhalo nastavení avatára."
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:191
 msgid "Browse for more pictures"
 msgstr "Procházet další obrázky"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Open"
 msgstr "_Otevřít"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Cancel"
 msgstr "_Zrušit"
 
@@ -662,7 +666,7 @@ msgstr "Dálnopis"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:193
+#: src/contacts-window.vala:190
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -670,28 +674,28 @@ msgstr[0] "%d vybraný"
 msgstr[1] "%d vybrané"
 msgstr[2] "%d vybraných"
 
-#: src/contacts-window.vala:230
+#: src/contacts-window.vala:227
 msgid "Add"
 msgstr "Přidat"
 
-#: src/contacts-window.vala:252
+#: src/contacts-window.vala:249
 #, c-format
 msgid "Editing %s"
 msgstr "Úprava kontaktu %s"
 
-#: src/contacts-window.vala:308
+#: src/contacts-window.vala:305
 msgid "Unmark as favorite"
 msgstr "Odebrat z oblíbených"
 
-#: src/contacts-window.vala:309
+#: src/contacts-window.vala:306
 msgid "Mark as favorite"
 msgstr "Označit jako oblíbený"
 
-#: src/contacts-window.vala:323
+#: src/contacts-window.vala:320
 msgid "New Contact"
 msgstr "Nový kontakt"
 
-#: src/contacts-window.vala:421
+#: src/contacts-window.vala:418
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -699,17 +703,17 @@ msgstr[0] "%d kontakt propojen"
 msgstr[1] "%d kontakty propojeny"
 msgstr[2] "%d kontaktů propojeno"
 
-#: src/contacts-window.vala:425 src/contacts-window.vala:449
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:422 src/contacts-window.vala:446
+#: src/contacts-window.vala:483
 msgid "_Undo"
 msgstr "_Zpět"
 
-#: src/contacts-window.vala:444
+#: src/contacts-window.vala:441
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Smazán kontakt %s"
 
-#: src/contacts-window.vala:446
+#: src/contacts-window.vala:443
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -717,12 +721,12 @@ msgstr[0] "Smazán %d kontakt"
 msgstr[1] "Smazány %d kontakty"
 msgstr[2] "Smazáno %d kontaktů"
 
-#: src/contacts-window.vala:482
+#: src/contacts-window.vala:479
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s a %s propojeni"
 
-#: src/contacts-window.vala:484
+#: src/contacts-window.vala:481
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s s kontaktem propojeni"
