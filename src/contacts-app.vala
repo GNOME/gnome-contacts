@@ -389,9 +389,9 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void on_show_contact(SimpleAction action, Variant? param) {
+    activate();
+
     var individual = param as string;
-    if (window != null)
-      window.present ();
     if (individual != null)
       show_individual.begin (individual);
   }
