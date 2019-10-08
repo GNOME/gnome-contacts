@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 3.3.90\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2019-02-01 08:24+0000\n"
-"PO-Revision-Date: 2019-02-17 23:28+0800\n"
+"POT-Creation-Date: 2019-10-02 06:24+0000\n"
+"PO-Revision-Date: 2019-10-08 18:57+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 18.12.2\n"
+"X-Generator: Lokalize 19.08.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in:6
 #: data/org.gnome.Contacts.desktop.in:3 data/ui/contacts-window.ui:102
-#: data/ui/contacts-window.ui:122 src/contacts-window.vala:223
+#: data/ui/contacts-window.ui:122 src/contacts-window.vala:220
 msgid "Contacts"
 msgstr "聯絡人"
 
@@ -48,7 +48,7 @@ msgid ""
 "link contacts from different online sources."
 msgstr "《聯絡人》也會與線上通訊錄整合，並且自動連結來自不同線上來源的聯絡人。"
 
-#: data/org.gnome.Contacts.appdata.xml.in:270
+#: data/org.gnome.Contacts.appdata.xml.in:382
 msgid "The GNOME Project"
 msgstr "GNOME 專案"
 
@@ -56,11 +56,6 @@ msgstr "GNOME 專案"
 #: data/org.gnome.Contacts.desktop.in:6
 msgid "friends;address book;"
 msgstr "friends;address book;朋友;通訊錄;"
-
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Contacts.desktop.in:8
-msgid "org.gnome.Contacts"
-msgstr "org.gnome.Contacts"
 
 #: data/gtk/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -165,7 +160,7 @@ msgid "Select a contact"
 msgstr "選擇聯絡人"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:241
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:119
 msgid "Cancel"
 msgstr "取消"
 
@@ -173,9 +168,8 @@ msgstr "取消"
 msgid "Take Another…"
 msgstr "再拍另一張..."
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-setup-window.ui:40 data/ui/contacts-window.ui:299
-#: src/contacts-window.vala:230
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:299
+#: src/contacts-window.vala:227
 msgid "Done"
 msgstr "完成"
 
@@ -205,22 +199,27 @@ msgid "Contacts Setup"
 msgstr "聯絡人設定"
 
 #: data/ui/contacts-setup-window.ui:22
-msgid "Quit"
-msgstr "退出"
+msgid "_Quit"
+msgstr "退出(_Q)"
 
-#: data/ui/contacts-setup-window.ui:26
+#: data/ui/contacts-setup-window.ui:27
 msgid "Cancel setup and quit"
 msgstr "取消設置並退出"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:41
+#| msgid "Done"
+msgid "_Done"
+msgstr "完成(_D)"
+
+#: data/ui/contacts-setup-window.ui:45
 msgid "Setup complete"
 msgstr "設定完成"
 
-#: data/ui/contacts-setup-window.ui:69
+#: data/ui/contacts-setup-window.ui:71
 msgid "Welcome"
 msgstr "歡迎"
 
-#: data/ui/contacts-setup-window.ui:81
+#: data/ui/contacts-setup-window.ui:83
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -240,12 +239,10 @@ msgid "Surname"
 msgstr "名字"
 
 #: data/ui/contacts-window.ui:49
-#| msgid "_Change Address Book…"
 msgid "Change Address Book…"
 msgstr "變更通訊錄…"
 
 #: data/ui/contacts-window.ui:57
-#| msgid "Online Accounts"
 msgid "Online Accounts <sup>↗</sup>"
 msgstr "線上帳號 <sup>↗</sup>"
 
@@ -254,13 +251,10 @@ msgid "Keyboard Shortcuts"
 msgstr "鍵盤快捷鍵"
 
 #: data/ui/contacts-window.ui:81
-#| msgctxt "shortcut window"
-#| msgid "Help"
 msgid "Help"
 msgstr "說明"
 
 #: data/ui/contacts-window.ui:89
-#| msgid "_About Contacts"
 msgid "About Contacts"
 msgstr "關於連絡人"
 
@@ -292,36 +286,41 @@ msgstr "載入中"
 msgid "Local Address Book"
 msgstr "本地通訊錄"
 
-#: src/contacts-app.vala:41
-msgid "Show contact with this individual id"
-msgstr "顯示具有此個人 ID 的聯絡人"
-
 #: src/contacts-app.vala:42
 msgid "Show contact with this email address"
 msgstr "顯示具有這個電子郵件位址的聯絡人"
 
+#: src/contacts-app.vala:43
+msgid "Show contact with this individual id"
+msgstr "顯示具有此個人 ID 的聯絡人"
+
 #: src/contacts-app.vala:44
+#| msgid "Show contact with this individual id"
+msgid "Show contacts with the given filter"
+msgstr "使用提供之過濾器來顯示聯絡人"
+
+#: src/contacts-app.vala:45
 msgid "Show the current version of Contacts"
 msgstr "顯示目前的《聯絡人》版本"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:103
 #, c-format
 msgid "No contact with id %s found"
 msgstr "顯示具有 id %s 的聯絡人"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:230
+#: src/contacts-app.vala:104 src/contacts-app.vala:232
 msgid "Contact not found"
 msgstr "找不到聯絡人"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:113
 msgid "Change Address Book"
 msgstr "改變通訊錄"
 
-#: src/contacts-app.vala:117
+#: src/contacts-app.vala:118
 msgid "Change"
 msgstr "變更"
 
-#: src/contacts-app.vala:127
+#: src/contacts-app.vala:128
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -329,25 +328,25 @@ msgstr ""
 "新的聯絡人已經加入選取的通訊錄。\n"
 "您將可以檢視與編輯其他通訊錄的聯絡人。"
 
-#: src/contacts-app.vala:209
+#: src/contacts-app.vala:211
 msgid "translator-credits"
 msgstr ""
 "Cheng-Chia Tseng <pswo10680@gmail.com>, 2011.\n"
 "Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>, 2011."
 
-#: src/contacts-app.vala:210
+#: src/contacts-app.vala:212
 msgid "GNOME Contacts"
 msgstr "GNOME 聯絡人"
 
-#: src/contacts-app.vala:211
+#: src/contacts-app.vala:213
 msgid "About GNOME Contacts"
 msgstr "關於 GNOME 聯絡人"
 
-#: src/contacts-app.vala:212
+#: src/contacts-app.vala:214
 msgid "Contact Management Application"
 msgstr "聯絡人管理應用程式"
 
-#: src/contacts-app.vala:213
+#: src/contacts-app.vala:215
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
@@ -355,24 +354,24 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 聯絡人開發群"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:231
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "找不到有電子郵件位址 %s 的聯絡人"
 
-#: src/contacts-avatar-selector.vala:110 src/contacts-avatar-selector.vala:230
+#: src/contacts-avatar-selector.vala:111 src/contacts-avatar-selector.vala:231
 msgid "Failed to set avatar."
 msgstr "無法設定頭像"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:191
 msgid "Browse for more pictures"
 msgstr "瀏覽更多照片"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Open"
 msgstr "開啟(_O)"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:194
 msgid "_Cancel"
 msgstr "取消(_C)"
 
@@ -661,61 +660,61 @@ msgstr "電報"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:193
+#: src/contacts-window.vala:190
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "已選擇 %d 個"
 
-#: src/contacts-window.vala:230
+#: src/contacts-window.vala:227
 msgid "Add"
 msgstr "加入"
 
-#: src/contacts-window.vala:252
+#: src/contacts-window.vala:249
 #, c-format
 msgid "Editing %s"
 msgstr "編輯 %s"
 
-#: src/contacts-window.vala:308
+#: src/contacts-window.vala:305
 msgid "Unmark as favorite"
 msgstr "取消標記為常用"
 
-#: src/contacts-window.vala:309
+#: src/contacts-window.vala:306
 msgid "Mark as favorite"
 msgstr "標記為常用"
 
-#: src/contacts-window.vala:323
+#: src/contacts-window.vala:320
 msgid "New Contact"
 msgstr "新的聯絡人"
 
-#: src/contacts-window.vala:421
+#: src/contacts-window.vala:418
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d 個聯絡人已連結"
 
-#: src/contacts-window.vala:425 src/contacts-window.vala:449
-#: src/contacts-window.vala:486
+#: src/contacts-window.vala:422 src/contacts-window.vala:446
+#: src/contacts-window.vala:483
 msgid "_Undo"
 msgstr "復原(_U)"
 
-#: src/contacts-window.vala:444
+#: src/contacts-window.vala:441
 #, c-format
 msgid "Deleted contact %s"
 msgstr "已刪除聯絡人 %s"
 
-#: src/contacts-window.vala:446
+#: src/contacts-window.vala:443
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d 位聯絡人已刪除"
 
-#: src/contacts-window.vala:482
+#: src/contacts-window.vala:479
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s 已連結到 %s"
 
-#: src/contacts-window.vala:484
+#: src/contacts-window.vala:481
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s 已連結到聯絡人"
@@ -766,14 +765,17 @@ msgstr "是否視窗要最大化？"
 msgid "Stores if the window is currently maximized."
 msgstr "儲存是否視窗目前最大化。"
 
+#~ msgid "org.gnome.Contacts"
+#~ msgstr "org.gnome.Contacts"
+
+#~ msgid "Quit"
+#~ msgstr "退出"
+
 #~ msgid "_Help"
 #~ msgstr "求助(_H)"
 
 #~ msgid "_About"
 #~ msgstr "關於(_A)"
-
-#~ msgid "_Quit"
-#~ msgstr "退出(_Q)"
 
 #~ msgid "Online Accounts Settings"
 #~ msgstr "線上帳號設定值"
