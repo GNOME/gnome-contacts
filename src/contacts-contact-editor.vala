@@ -120,15 +120,15 @@ public class Contacts.ContactEditor : ContactForm {
     this.container_grid.size_allocate.connect(on_container_grid_size_allocate);
   }
 
-  public ContactEditor (Contact? contact, Store store, GLib.ActionGroup editor_actions) {
+  public ContactEditor (Individual? individual, Store store, GLib.ActionGroup editor_actions) {
     this.store = store;
-    this.contact = contact;
+    this.individual = individual;
 
     this.add_detail_button.get_popover ().insert_action_group ("edit", editor_actions);
 
-    if (contact != null) {
-      this.remove_button.sensitive = contact.can_remove_personas ();
-      this.linked_button.sensitive = contact.individual.personas.size > 1;
+    if (individual != null) {
+      this.remove_button.sensitive = ContactUtils.can_remove_personas (individual);
+      this.linked_button.sensitive = individual.personas.size > 1;
     } else {
       this.remove_button.hide ();
       this.linked_button.hide ();
@@ -137,7 +137,7 @@ public class Contacts.ContactEditor : ContactForm {
     create_avatar_button ();
     create_name_entry ();
 
-    if (contact != null)
+    if (individual != null)
       fill_in_contact ();
     else
       fill_in_empty ();
@@ -150,7 +150,7 @@ public class Contacts.ContactEditor : ContactForm {
     int last_store_position = 0;
     bool is_first_persona = true;
 
-    var personas = this.contact.get_personas_for_display ();
+    var personas = ContactUtils.get_personas_for_display (individual);
     foreach (var p in personas) {
       if (!is_first_persona) {
         this.container_grid.attach (create_persona_store_label (p), 0, i, 2);
@@ -587,7 +587,7 @@ public class Contacts.ContactEditor : ContactForm {
       } else {
 	var details = p as EmailDetails;
 	if (details != null) {
-	  var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+	  var emails = ContactUtils.sort_fields<EmailFieldDetails>(details.email_addresses);
 	  foreach (var email in emails) {
 	    attach_row_with_entry (row, TypeSet.email, email, email.value);
 	    rows.set (row, { email });
@@ -615,7 +615,7 @@ public class Contacts.ContactEditor : ContactForm {
       } else {
 	var details = p as PhoneDetails;
 	if (details != null) {
-	  var phones = Contact.sort_fields<PhoneFieldDetails>(details.phone_numbers);
+	  var phones = ContactUtils.sort_fields<PhoneFieldDetails>(details.phone_numbers);
 	  foreach (var phone in phones) {
 	    attach_row_with_entry (row, TypeSet.phone, phone, phone.value, type);
 	    rows.set (row, { phone });
@@ -836,8 +836,8 @@ public class Contacts.ContactEditor : ContactForm {
 	if (field_entry.value.changed && !props_set.has_key (field_entry.key)) {
 	  PropertyData p = PropertyData ();
 	  p.persona = null;
-	  if (contact != null) {
-	    p.persona = contact.find_persona_from_uid (entry.key);
+	  if (individual != null) {
+	    p.persona = ContactUtils.find_persona_from_uid (individual, entry.key);
 	  }
 
 	  switch (field_entry.key) {
@@ -872,18 +872,7 @@ public class Contacts.ContactEditor : ContactForm {
     return props_set;
   }
 
-  public void add_new_row_for_property (Persona? p, string prop_name, string? type = null) {
-    /* Somehow, I need to ensure that p is the main/default/first persona */
-    Persona persona = null;
-    if (contact != null) {
-      if (p == null) {
-        persona = new FakePersona (this.store, contact);
-        writable_personas[persona.uid] = new HashMap<string, Field?> ();
-      } else {
-        persona = p;
-      }
-    }
-
+  public void add_new_row_for_property (Persona? persona, string prop_name, string? type = null) {
     int next_idx = 0;
     foreach (var fields in writable_personas.values) {
       if (fields.has_key (prop_name)) {
@@ -903,7 +892,7 @@ public class Contacts.ContactEditor : ContactForm {
 
   // Creates the contact's current avatar in a big button on top of the Editor
   private void create_avatar_button () {
-    this.avatar = new Avatar (PROFILE_SIZE, this.contact);
+    this.avatar = new Avatar (PROFILE_SIZE, this.individual);
 
     var button = new Button ();
     button.get_accessible ().set_name (_("Change avatar"));
@@ -915,7 +904,7 @@ public class Contacts.ContactEditor : ContactForm {
 
   // Show the avatar popover when the avatar is clicked
   private void on_avatar_button_clicked (Button avatar_button) {
-    var popover = new AvatarSelector (avatar_button, this.contact);
+    var popover = new AvatarSelector (avatar_button, this.individual);
     popover.set_avatar.connect ( (icon) =>  {
         this.avatar.set_data ("value", icon);
         this.avatar.set_data ("changed", true);
@@ -951,8 +940,8 @@ public class Contacts.ContactEditor : ContactForm {
     this.name_entry.placeholder_text = _("Add name");
     this.name_entry.set_data ("changed", false);
 
-    if (this.contact != null)
-        this.name_entry.text = this.contact.individual.display_name;
+    if (this.individual != null)
+        this.name_entry.text = this.individual.display_name;
 
     /* structured name change */
     this.name_entry.changed.connect (() => {
