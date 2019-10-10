@@ -16,6 +16,7 @@
  */
 
 using Gtk;
+using Hdy;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
@@ -110,24 +111,42 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void change_address_book () {
-    var dialog = new Gtk.Dialog.with_buttons (_("Change Address Book"),
-					  (Window) window,
-					  DialogFlags.MODAL |
-					  DialogFlags.DESTROY_WITH_PARENT |
-					  DialogFlags.USE_HEADER_BAR,
-					  _("Change"), ResponseType.OK,
-					  _("Cancel"), ResponseType.CANCEL,
-					  null);
+    var dialog = new Hdy.Dialog ((Window) window);
+    dialog.title = _("Change Address Book");
+    dialog.add_buttons (_("Change"), ResponseType.OK,
+                        _("Cancel"), ResponseType.CANCEL,
+                        null);
+
+    var content_area = dialog.get_content_area () as Box;
+    content_area.border_width = 0;
 
     var ok_button = dialog.get_widget_for_response (ResponseType.OK);
     ok_button.sensitive = false;
     ok_button.get_style_context ().add_class ("suggested-action");
-    dialog.set_resizable (false);
-    dialog.set_border_width (12);
+
+    var scrolled_window = new ScrolledWindow (null, null);
+    scrolled_window.expand = true;
+    scrolled_window.hscrollbar_policy = PolicyType.NEVER;
+    scrolled_window.propagate_natural_height = true;
+    content_area.add (scrolled_window);
+
+    var column = new Column ();
+    column.margin_top = 32;
+    column.margin_bottom = 32;
+    column.margin_start = 12;
+    column.margin_end = 12;
+    column.maximum_width = 400;
+    column.linear_growth_width = 400;
+    scrolled_window.add (column);
+
+    var box = new Box (Orientation.VERTICAL, 12);
+    box.valign = Alignment.START;
+    column.add (box);
 
     var explanation_label = new Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
-    (dialog.get_content_area () as Box).add (explanation_label);
-    (dialog.get_content_area () as Box).set_spacing (12);
+    explanation_label.xalign = 0;
+    explanation_label.wrap = true;
+    box.add (explanation_label);
 
     var acc = new AccountsList (this.contacts_store);
     acc.update_contents (true);
@@ -142,7 +161,7 @@ public class Contacts.App : Gtk.Application {
     	acc.update_contents (true);
       });
 
-    (dialog.get_content_area () as Box).add (acc);
+    box.add (acc);
 
     dialog.show_all ();
     dialog.response.connect ( (response) => {

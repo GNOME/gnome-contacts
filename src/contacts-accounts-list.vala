@@ -16,13 +16,11 @@
  */
 
 using Gtk;
+using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
-public class Contacts.AccountsList : Box {
-  [GtkChild]
-  private ListBox accounts_view;
-
+public class Contacts.AccountsList : ListBox {
   private ListBoxRow last_selected_row;
 
   private Store contacts_store;
@@ -35,11 +33,10 @@ public class Contacts.AccountsList : Box {
     this.contacts_store = contacts_store;
     this.selected_store = null;
 
-    this.accounts_view.set_header_func (add_separator);
-    this.accounts_view.row_activated.connect (row_activated);
+    this.set_header_func (add_separator);
   }
 
-  private void row_activated (ListBoxRow? row) {
+  public override void row_activated (ListBoxRow row) {
     if (row == null)
       return;
 
@@ -48,31 +45,24 @@ public class Contacts.AccountsList : Box {
       return;
     }
 
-    var row_data = (row as Bin).get_child () as Grid;
-    var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
-    checkmark.set ("margin-end", 12,
-                   "valign", Align.CENTER,
-                   "halign", Align.END,
-                   "vexpand", true,
-                   "hexpand", true);
+    var checkmark = row.get_data<Image> ("checkmark");
     checkmark.show ();
-    row_data.attach (checkmark, 2, 0, 1, 2);
 
     if (last_selected_row != null) {
-      var last_row_data = (last_selected_row as Bin).get_child () as Grid;
-      if (last_row_data != null)
-        last_row_data.get_child_at (2, 0).destroy ();
+      checkmark = last_selected_row.get_data<Image> ("checkmark");
+      if (checkmark != null)
+        checkmark.hide ();
     }
 
     last_selected_row = row;
 
-    selected_store = row_data.get_data<PersonaStore> ("store");
+    selected_store = row.get_data<PersonaStore> ("store");
 
     account_selected ();
   }
 
   public void update_contents (bool select_active) {
-    foreach (var child in accounts_view.get_children ()) {
+    foreach (var child in get_children ()) {
       child.destroy ();
     }
 
@@ -98,61 +88,57 @@ public class Contacts.AccountsList : Box {
         source_account_id = goa_source_ext.account_id;
       }
 
-      var row_data = new Grid ();
-      row_data.set_data ("store", persona_store);
-      row_data.margin = 6;
-      row_data.margin_start = 5;
-      row_data.set_row_spacing (1);
-      row_data.set_column_spacing (10);
+      var row = new ActionRow ();
+      row.set_data ("store", persona_store);
 
       Gtk.Image provider_image;
       if (source_account_id != "")
         provider_image = Contacts.get_icon_for_goa_account (source_account_id);
       else
         provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
-      row_data.attach (provider_image, 0, 0, 1, 2);
-
-      var provider_label = new Label (provider_name);
-      provider_label.set_halign (Align.START);
-      provider_label.set_hexpand (true);
-      provider_label.set_valign (Align.END);
-      row_data.attach (provider_label, 1, 0, 1, 1);
-
-      var account_name = parent_source.display_name;
-      var account_label = new Label (account_name);
-      account_label.set_halign (Align.START);
-      account_label.set_hexpand (true);
-      account_label.set_valign (Align.START);
-      account_label.get_style_context ().add_class ("dim-label");
-      row_data.attach (account_label, 1, 1, 1, 1);
-
-      accounts_view.add (row_data);
+      row.add_prefix (provider_image);
+      row.title = provider_name;
+      row.subtitle = parent_source.display_name;
+      row.show_all ();
+      row.no_show_all = true;
+      var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+      checkmark.set ("margin-end", 6,
+                     "valign", Align.CENTER,
+                     "halign", Align.END,
+                     "vexpand", true,
+                     "hexpand", true);
+      row.add_action (checkmark);
+      row.set_data ("checkmark", checkmark);
+      add (row);
 
       if (select_active &&
           persona_store == this.contacts_store.aggregator.primary_store) {
-        var row = row_data.get_parent () as ListBoxRow;
         row_activated (row);
       }
     }
 
     if (local_store != null) {
-      var local_data = new Grid ();
-      local_data.margin = 6;
-      local_data.margin_start = 5;
-      local_data.set_column_spacing (10);
-      local_data.set_data ("store", local_store);
+      var local_row = new ActionRow ();
       var provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
-      local_data.add (provider_image);
-      var local_label = new Label (_("Local Address Book"));
-      local_data.add (local_label);
-      accounts_view.add (local_data);
+      local_row.add_prefix (provider_image);
+      local_row.title = _("Local Address Book");
+      local_row.show_all ();
+      local_row.no_show_all = true;
+      var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+      checkmark.set ("margin-end", 6,
+                     "valign", Align.CENTER,
+                     "halign", Align.END,
+                     "vexpand", true,
+                     "hexpand", true);
+      local_row.add_action (checkmark);
+      local_row.set_data ("checkmark", checkmark);
+      add (local_row);
       if (select_active &&
           local_store == this.contacts_store.aggregator.primary_store) {
-        var row = local_data.get_parent () as ListBoxRow;
-        row_activated (row);
+        row_activated (local_row);
       }
     }
 
-    accounts_view.show_all ();
+    show_all ();
   }
 }
