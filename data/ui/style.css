@@ -2,22 +2,9 @@
  * GNOME Contacts
  */
 
-.contacts-map {
-    background-color: @theme_bg_color;
-}
-
 /* The contacts in the left pane */
 .contacts-contact-list {
   background-color: transparent;
-}
-
-/* A single row in the contact list pane */
-row.contact-data-row {
-}
-
-/* Styles for a ContactsContactForm */
-.contacts-contact-form {
-  background-color: mix(@theme_bg_color, @theme_base_color, 0.4);
 }
 
 .contacts-suggestion {
@@ -59,4 +46,16 @@ row.contact-data-row {
 .avatar-button {
   border-radius: 50%;
   padding: 0 0;
+}
+
+/* remove padding from ListBoxRow so that the revealer doesn't jump */
+row.editor-property-row {
+  padding: 0px;
+}
+
+popover list {
+  background-color: @theme_bg_color;
+}
+popover list row:hover {
+  background-color: @theme_selected_fg_color
 }

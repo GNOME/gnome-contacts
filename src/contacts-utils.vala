@@ -164,6 +164,30 @@ namespace Contacts.Utils {
     return stores;
   }
 
+  public PersonaStore[] get_eds_address_books_from_backend (BackendStore backend_store) {
+    PersonaStore[] stores = {};
+    foreach (var backend in backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values) {
+        if (persona_store.type_id == "eds") {
+          stores += persona_store;
+        }
+      }
+    }
+    return stores;
+  }
+
+  public PersonaStore? get_key_file_address_book (Store contacts_store) {
+    foreach (var backend in contacts_store.backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values) {
+        if (persona_store.type_id == "key-file") {
+          return persona_store;
+        }
+      }
+    }
+    return null;
+  }
+
+
   public void show_error_dialog (string error, Gtk.Window toplevel) {
     var dialog = new Gtk.MessageDialog (toplevel,
                                         Gtk.DialogFlags.MODAL,

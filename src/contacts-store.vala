@@ -20,14 +20,13 @@ using Folks;
 using Gee;
 
 public class Contacts.Store : GLib.Object {
-  public signal void added (Contact c);
-  public signal void removed (Contact c);
+  public signal void added (Individual c);
+  public signal void removed (Individual c);
   public signal void quiescent ();
   public signal void prepared ();
 
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get { return this.aggregator.backend_store; } }
-  private ArrayList<Contact> contacts;
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
@@ -41,24 +40,6 @@ public class Contacts.Store : GLib.Object {
 
   public bool is_prepared {
     get { return this.aggregator.is_prepared; }
-  }
-
-  public void refresh () {
-    foreach (var c in contacts)
-      c.update ();
-  }
-
-  private bool individual_can_replace_at_split (Individual new_individual) {
-    foreach (var p in new_individual.personas) {
-      if (p.get_data<bool> ("contacts-new-contact"))
-	return false;
-    }
-    return true;
-  }
-
-  private bool individual_should_replace_at_join (Individual old_individual) {
-    var c = Contact.from_individual (old_individual);
-    return c.get_data<bool> ("contacts-master-at-join");
   }
 
   private void read_dont_suggest_db () {
@@ -99,18 +80,18 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
-  public bool may_suggest_link (Contact a, Contact b) {
-    foreach (var a_persona in a.individual.personas) {
+  public bool may_suggest_link (Individual a, Individual b) {
+    foreach (var a_persona in a.personas) {
       foreach (var no_link_uid in dont_suggest_link.get (a_persona.uid)) {
-	foreach (var b_persona in b.individual.personas) {
+	foreach (var b_persona in b.personas) {
 	  if (b_persona.uid == no_link_uid)
 	    return false;
 	}
       }
     }
-    foreach (var b_persona in b.individual.personas) {
+    foreach (var b_persona in b.personas) {
       foreach (var no_link_uid in dont_suggest_link.get (b_persona.uid)) {
-	foreach (var a_persona in a.individual.personas) {
+	foreach (var a_persona in a.personas) {
 	  if (a_persona.uid == no_link_uid)
 	    return false;
 	}
@@ -119,16 +100,14 @@ public class Contacts.Store : GLib.Object {
     return true;
   }
 
-  public void add_no_suggest_link (Contact a, Contact b) {
-    var persona1 = a.get_personas_for_display ().to_array ()[0];
-    var persona2 = b.get_personas_for_display ().to_array ()[0];
+  public void add_no_suggest_link (Individual a, Individual b) {
+    var persona1 = a.personas.to_array ()[0];
+    var persona2 = b.personas.to_array ()[0];
     dont_suggest_link.set (persona1.uid, persona2.uid);
     write_dont_suggest_db ();
   }
 
   construct {
-    contacts = new Gee.ArrayList<Contact>();
-
     dont_suggest_link = new Gee.HashMultiMap<string, string> ();
     read_dont_suggest_db ();
 
@@ -159,126 +138,56 @@ public class Contacts.Store : GLib.Object {
   }
 
   private void on_individuals_changed_detailed (MultiMap<Individual?,Individual?> changes) {
-    // Note: Apparently the current implementation doesn't necessarily pick
-    // up unlinked individual as replacements.
-    var replaced_individuals = new HashMap<Individual?, Individual?> ();
-    var old_individuals = changes.get_keys();
-
-    debug ("Individuals changed: %d old, %d new", old_individuals.size - 1, changes[null].size);
-
-    // Pick best replacements at joins
-    foreach (var old_individual in old_individuals) {
-      if (old_individual == null)
-        continue;
-      foreach (var new_individual in changes[old_individual]) {
-        if (new_individual == null)
-          continue;
-        if (!replaced_individuals.has_key (new_individual)
-            || individual_should_replace_at_join (old_individual)) {
-          replaced_individuals[new_individual] = old_individual;
-        }
+    var to_add = new HashSet<Individual> ();
+    var to_remove = new HashSet<Individual> ();
+    foreach (var i in changes.get_keys()) {
+      if (i != null)
+        to_remove.add (i);
+      foreach (var new_i in changes[i]) {
+        to_add.add (new_i);
       }
     }
 
-    foreach (var old_individual in old_individuals) {
-      HashSet<Individual>? replacements = null;
-      foreach (var new_individual in changes[old_individual]) {
-        if (old_individual != null && new_individual != null &&
-            replaced_individuals[new_individual] == old_individual) {
-          if (replacements == null)
-            replacements = new HashSet<Individual> ();
-          replacements.add (new_individual);
-        } else if (old_individual != null) {
-          // Removing an old individual.
-          var c = Contact.from_individual (old_individual);
-          remove (c);
-        } else if (new_individual != null) {
-          // Adding a new individual.
-          add (new Contact (this, new_individual));
-        }
-      }
+    // Add new individuals
+    foreach (var i in to_add) {
+      if (i.personas.size > 0)
+        added (i);
+    }
 
-      // This old_individual was split up into one or more new ones
-      // We have to pick one to be the one that we keep around
-      // in the old Contact, the rest gets new Contacts
-      // This is important to get right, as we might be displaying
-      // the contact and unlink a specific persona from the contact
-      if (replacements != null) {
-        Individual? main_individual = null;
-        foreach (var i in replacements) {
-          main_individual = i;
-          // If this was marked as being possible to replace the
-          // contact on split then we can otherwise bail immediately
-          // Otherwise need to look for other possible better
-          // replacements that we should reuse
-          if (individual_can_replace_at_split (i))
-            break;
-        }
-
-        var c = Contact.from_individual (old_individual);
-        c.replace_individual (main_individual);
-        foreach (var i in replacements) {
-          if (i != main_individual) {
-            // Already replaced this old_individual, i.e. we're splitting
-            // old_individual. We just make this a new one.
-            add (new Contact (this, i));
-          }
-        }
-      }
+    // Remove old individuals
+    foreach (var i in to_remove) {
+      removed (i);
     }
   }
 
-  public delegate bool ContactMatcher (Contact c);
-  public async Contact? find_contact (ContactMatcher matcher) {
-    foreach (var c in contacts) {
-      if (matcher (c))
-	return c;
-    }
-    if (is_quiescent)
-      return null;
+  public Collection<Individual> get_contacts () {
+    return aggregator.individuals.values.read_only_view;
+  }
 
-    Contact? matched = null;
-    ulong id2, id3;
-    SourceFunc callback = find_contact.callback;
-    id2 = this.added.connect ( (c) => {
-	if (matcher (c)) {
-	  matched = c;
-	  callback ();
-	}
+  public async Individual? find_contact (Query query) {
+    // Wait that the store gets quiescent if it isn't already
+    if (!is_quiescent) {
+      ulong signal_id;
+      SourceFunc callback = find_contact.callback;
+      signal_id = this.quiescent.connect ( () => {
+        callback();
       });
-    id3 = this.quiescent.connect ( () => {
-	callback();
-      });
-    yield;
-    this.disconnect (id2);
-    this.disconnect (id3);
+      yield;
+      this.disconnect (signal_id);
+    }
+
+    Individual? matched = null;
+    // We search for the closest matching Individual
+    uint strength = 0;
+    foreach (var i in this.aggregator.individuals.values) {
+      var this_strength = query.is_match(i);
+      if (this_strength > strength) {
+        matched = i;
+        strength = this_strength;
+      }
+    }
+
     return matched;
-  }
-
-  public Contact? find_contact_with_persona (Persona persona) {
-    foreach (var contact in contacts) {
-      if (contact.individual.personas.contains (persona))
-	return contact;
-    }
-    return null;
-  }
-
-  public Collection<Contact> get_contacts () {
-    return contacts.read_only_view;
-  }
-
-  private void add (Contact c) {
-    contacts.add (c);
-    added (c);
-  }
-
-  private void remove (Contact c) {
-    var i = contacts.index_of (c);
-    if (i != contacts.size - 1)
-      contacts.set (i, contacts.get (contacts.size - 1));
-    contacts.remove_at (contacts.size - 1);
-
-    removed (c);
   }
 
 #if HAVE_TELEPATHY

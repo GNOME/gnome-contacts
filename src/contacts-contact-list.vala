@@ -28,17 +28,16 @@ public class Contacts.ContactList : ListBox {
   private class ContactDataRow : ListBoxRow {
     private const int LIST_AVATAR_SIZE = 48;
 
-    public Contact contact;
+    public Individual individual;
     private Label label;
     private Avatar avatar;
     public CheckButton selector_button;
     // Whether the selector should always be visible (or only on hover)
     private bool checkbox_exposed = false;
 
-    public ContactDataRow(Contact c) {
-      this.contact = c;
-      this.contact.individual.notify.connect (on_contact_changed);
-      this.contact.notify["hidden"].connect ((o, p) => changed());
+    public ContactDataRow(Individual i) {
+      this.individual = i;
+      this.individual.notify.connect (on_contact_changed);
 
       get_style_context (). add_class ("contact-data-row");
 
@@ -46,9 +45,9 @@ public class Contacts.ContactList : ListBox {
       grid.margin = 3;
       grid.margin_start = 9;
       grid.set_column_spacing (10);
-      this.avatar = new Avatar (LIST_AVATAR_SIZE, this.contact);
+      this.avatar = new Avatar (LIST_AVATAR_SIZE, this.individual);
 
-      this.label = new Label (c.individual.display_name);
+      this.label = new Label (individual.display_name);
       this.label.ellipsize = Pango.EllipsizeMode.END;
       this.label.valign = Align.CENTER;
       this.label.halign = Align.START;
@@ -71,7 +70,8 @@ public class Contacts.ContactList : ListBox {
     }
 
     private void on_contact_changed (Object obj, ParamSpec pspec) {
-      this.label.set_text (this.contact.individual.display_name);
+      //TODO: Update also the Avatar
+      this.label.set_text (this.individual.display_name);
       changed ();
     }
 
@@ -94,7 +94,7 @@ public class Contacts.ContactList : ListBox {
     }
   }
 
-  public signal void selection_changed (Contact? contact);
+  public signal void selection_changed (Individual? individual);
   public signal void contacts_marked (int contacts_marked);
 
   int nr_contacts_marked = 0;
@@ -124,8 +124,8 @@ public class Contacts.ContactList : ListBox {
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
-    foreach (var c in this.store.get_contacts ())
-      contact_added_cb (this.store, c);
+    foreach (var i in this.store.get_contacts ())
+      contact_added_cb (this.store, i);
 
     get_style_context ().add_class ("contacts-contact-list");
 
@@ -148,8 +148,8 @@ public class Contacts.ContactList : ListBox {
   }
 
   private int compare_rows (ListBoxRow row_a, ListBoxRow row_b) {
-    var a = ((ContactDataRow) row_a).contact.individual;
-    var b = ((ContactDataRow) row_b).contact.individual;
+    var a = ((ContactDataRow) row_a).individual;
+    var b = ((ContactDataRow) row_b).individual;
 
     // Always prefer favourites over non-favourites.
     if (a.is_favourite != b.is_favourite)
@@ -171,7 +171,7 @@ public class Contacts.ContactList : ListBox {
   }
 
   private void update_header (ListBoxRow row, ListBoxRow? before) {
-    var current = ((ContactDataRow) row).contact.individual;
+    var current = ((ContactDataRow) row).individual;
 
     if (before == null) {
       if (current.is_favourite)
@@ -181,7 +181,7 @@ public class Contacts.ContactList : ListBox {
       return;
     }
 
-    var previous = ((ContactDataRow) before).contact.individual;
+    var previous = ((ContactDataRow) before).individual;
     if (!current.is_favourite && previous.is_favourite) {
       row.set_header (create_header_label (_("All Contacts")));
     } else {
@@ -203,12 +203,17 @@ public class Contacts.ContactList : ListBox {
     return label;
   }
 
-  private void contact_added_cb (Store store, Contact c) {
-    var row =  new ContactDataRow(c);
-    row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
-    row.selector_button.visible = (this.state == UiState.SELECTING);
+  private void contact_added_cb (Store store, Individual i) {
+    // Don't create a row for ignorable contacts are the individual already has a row
+    if (!ContactUtils.is_ignorable (i) && find_row_for_contact(i) == null) {
+      var row =  new ContactDataRow (i);
+      row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
+      row.selector_button.visible = (this.state == UiState.SELECTING);
 
-    add (row);
+      add (row);
+    } else {
+      debug ("Contact %s was ignored", i.id);
+    }
   }
 
   private void on_row_checkbox_toggled (ContactDataRow row) {
@@ -226,56 +231,76 @@ public class Contacts.ContactList : ListBox {
     contacts_marked (this.nr_contacts_marked);
   }
 
-  private void contact_removed_cb (Store store, Contact c) {
-    var row = find_row_for_contact (c);
+  private void contact_removed_cb (Store store, Individual i) {
+    var row = find_row_for_contact (i);
     if (row != null)
       row.destroy ();
   }
 
   public override void row_selected (ListBoxRow? row) {
     var data = (ContactDataRow?) row as ContactDataRow;
-    var contact = data != null ? data.contact : null;
-    selection_changed (contact);
+    var individual = data != null ? data.individual : null;
+    selection_changed (individual);
 #if HAVE_TELEPATHY
-    if (contact != null)
-      contact.fetch_contact_info ();
+    if (individual != null)
+      Contact.fetch_contact_info (individual);
 #endif
   }
 
   private bool filter_row (ListBoxRow row) {
-    var contact = ((ContactDataRow) row).contact;
-    return !contact.hidden && this.filter_query.is_match (contact.individual) > 0;
+    var individual = ((ContactDataRow) row).individual;
+    return this.filter_query.is_match (individual) > 0;
   }
 
-  public void select_contact (Contact? contact) {
-    if (contact == null) {
+  public void select_contact (Individual? individual) {
+    if (individual == null) {
       /* deselect */
       select_row (null);
       return;
     }
 
-    select_row (find_row_for_contact (contact));
+    select_row (find_row_for_contact (individual));
   }
 
-  private ContactDataRow? find_row_for_contact (Contact contact) {
+  public void hide_contact (Individual? individual) {
+    if (individual != null) {
+      find_row_for_contact (individual).hide ();
+    }
+  }
+
+
+  private ContactDataRow? find_row_for_contact (Individual individual) {
     foreach (var widget in get_children ()) {
       var row = ((ContactDataRow) widget);
-      if (row.contact == contact)
+      if (row.individual == individual)
         return row;
     }
 
     return null;
   }
 
-  public LinkedList<Contact> get_marked_contacts () {
-    var cs = new LinkedList<Contact> ();
+  public LinkedList<Individual> get_marked_contacts () {
+    var cs = new LinkedList<Individual> ();
     foreach (var widget in get_children ()) {
       var row = widget as ContactDataRow;
       if (row.selector_button.active)
-        cs.add (row.contact);
+        cs.add (row.individual);
     }
     return cs;
   }
+
+  public LinkedList<Individual> get_marked_contacts_and_hide () {
+    var cs = new LinkedList<Individual> ();
+    foreach (var widget in get_children ()) {
+      var row = widget as ContactDataRow;
+      if (row.selector_button.active) {
+        row.visible = false;
+        cs.add (row.individual);
+      }
+    }
+    return cs;
+  }
+
 
   public override bool button_press_event (Gdk.EventButton event) {
     base.button_press_event (event);

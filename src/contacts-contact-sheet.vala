@@ -24,46 +24,61 @@ using Gee;
  *
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
-public class Contacts.ContactSheet : ContactForm {
+public class Contacts.ContactSheet : Grid {
+  private int last_row = 0;
+  private Individual individual;
+  public bool narrow { get; set; default = true; }
 
-  public ContactSheet (Contact contact, Store store) {
-      this.contact = contact;
-      this.store = store;
+  private const string[] SORTED_PROPERTIES = {
+    "email-addresses",
+    "phone-numbers",
+    "im-addresses",
+    "urls",
+    "nickname",
+    "birthday",
+    "postal-addresses",
+    "notes"
+  };
 
-      this.contact.individual.notify.connect (update);
-      this.contact.individual.personas_changed.connect (update);
-      this.store.quiescent.connect (update);
+  public ContactSheet (Individual individual, Store store) {
+    Object (row_spacing: 12, column_spacing: 12);
+    this.individual = individual;
 
-      update ();
+    this.individual.notify.connect (update);
+    this.individual.personas_changed.connect (update);
+    store.quiescent.connect (update);
+
+    update ();
   }
 
-  private Button add_row_with_button (string label, string value, bool use_link_button = false) {
-    var type_label = new Label (label);
-    type_label.xalign = 1.0f;
-    type_label.set_halign (Align.END);
-    type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row);
+  private Label create_persona_store_label (Persona p) {
+    var store_name = new Label (ContactUtils.format_persona_store_name_for_contact (p));
+    var attrList = new Pango.AttrList ();
+    attrList.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
+    store_name.set_attributes (attrList);
+    store_name.set_halign (Align.START);
+    store_name.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
 
-    var value_button = use_link_button? new LinkButton (value) : new Button.with_label (value);
-    value_button.focus_on_click = false;
-    value_button.relief = ReliefStyle.NONE;
-    value_button.halign = Align.START;
-    this.container_grid.attach (value_button, 1, this.last_row);
-    this.last_row++;
-
-    (value_button.get_child () as Label).set_ellipsize (Pango.EllipsizeMode.END);
-    (value_button.get_child () as Label).wrap_mode = Pango.WrapMode.CHAR;
-
-    return value_button;
+    return store_name;
   }
 
-  void add_row_with_label (string label_value, string value) {
+  private Button create_button (string icon) {
+    var button = new Button.from_icon_name (icon, IconSize.BUTTON);
+    button.set_halign (Align.END);
+    button.get_style_context ().add_class ("flatten");
+
+    return button;
+  }
+
+  void add_row_with_label (string label_value, string value, Widget? btn1 = null, Widget? btn2 =null) {
+    if (value == "" || value == null)
+      return;
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
-    type_label.set_valign (Align.START);
+    type_label.set_valign (Align.CENTER);
     type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row, 1, 1);
+    this.attach (type_label, 0, this.last_row, 1, 1);
 
     var value_label = new Label (value);
     value_label.set_line_wrap (true);
@@ -73,46 +88,62 @@ public class Contacts.ContactSheet : ContactForm {
     value_label.wrap_mode = Pango.WrapMode.CHAR;
     value_label.set_selectable (true);
 
-    /* FIXME: hardcode gap to match the button size */
-    type_label.margin_top = 3;
-    value_label.margin_start = 6;
-    value_label.margin_top = 3;
-    value_label.margin_bottom = 3;
+    if (btn1 != null || btn2 !=null) {
+      var value_box = new Box(Orientation.HORIZONTAL, 12);
+      value_box.pack_start(value_label, false, false, 0);
 
-    this.container_grid.attach (value_label, 1, this.last_row, 1, 1);
+      if (btn1 != null)
+        value_box.pack_end(btn1, false, false, 0);
+      if (btn2 != null)
+        value_box.pack_end(btn2, false, false, 0);
+      this.attach (value_box, 1, this.last_row, 1, 1);
+    } else {
+      this.attach (value_label, 1, this.last_row, 1, 1);
+    }
     this.last_row++;
   }
 
   private void update () {
     this.last_row = 0;
-    this.container_grid.foreach ((child) => this.container_grid.remove (child));
+    this.foreach ((child) => this.remove (child));
 
-    var image_frame = new Avatar (PROFILE_SIZE, this.contact);
+    var image_frame = new Avatar (PROFILE_SIZE, this.individual);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
-    this.container_grid.attach (image_frame,  0, 0, 1, 3);
+
+    image_frame.set_display_size (PROFILE_SMALL_SIZE);
+
+    /* Resize the avatar based on the avabile space */
+    notify["narrow"].connect(() => {
+      if (narrow)
+        image_frame.set_display_size (PROFILE_SMALL_SIZE);
+      else
+        image_frame.set_display_size (PROFILE_SIZE);
+    });
+
+    this.attach (image_frame,  0, 0, 1, 3);
 
     create_name_label ();
 
     this.last_row += 3; // Name/Avatar takes up 3 rows
 
-    var personas = this.contact.get_personas_for_display ();
+    var personas = ContactUtils.get_personas_for_display (this.individual);
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
       bool is_first_persona = (this.last_row == 3);
       int persona_store_pos = this.last_row;
       if (!is_first_persona) {
-        this.container_grid.attach (create_persona_store_label (p), 0, this.last_row, 3);
+        this.attach (create_persona_store_label (p), 0, this.last_row, 3);
         this.last_row++;
       }
 
-      foreach (var prop in ContactForm.SORTED_PROPERTIES)
+      foreach (var prop in SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
       // Nothing to show in the persona: don't mention it
       bool is_empty_persona = (this.last_row == persona_store_pos + 1);
       if (!is_first_persona && is_empty_persona) {
-        this.container_grid.remove_row (persona_store_pos);
+        this.remove_row (persona_store_pos);
         this.last_row--;
       }
     }
@@ -122,7 +153,7 @@ public class Contacts.ContactSheet : ContactForm {
 
   private void update_name_label (Gtk.Label name_label) {
     var name = Markup.printf_escaped ("<span font='16'>%s</span>",
-                                      this.contact.individual.display_name);
+                                      this.individual.display_name);
     name_label.set_markup (name);
   }
 
@@ -131,11 +162,11 @@ public class Contacts.ContactSheet : ContactForm {
     name_label.ellipsize = Pango.EllipsizeMode.END;
     name_label.xalign = 0f;
     name_label.selectable = true;
-    this.container_grid.attach (name_label,  1, 0, 1, 3);
+    this.attach (name_label,  1, 0, 1, 3);
     update_name_label (name_label);
-    this.contact.individual.notify["display-name"].connect ((obj, spec) => {
-        update_name_label (name_label);
-      });
+    this.individual.notify["display-name"].connect ((obj, spec) => {
+      update_name_label (name_label);
+    });
   }
 
   private void add_row_for_property (Persona persona, string property) {
@@ -173,12 +204,13 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_emails (Persona persona) {
     var details = persona as EmailDetails;
     if (details != null) {
-      var emails = Contact.sort_fields<EmailFieldDetails>(details.email_addresses);
+      var emails = ContactUtils.sort_fields<EmailFieldDetails>(details.email_addresses);
       foreach (var email in emails) {
-          var button = add_row_with_button (TypeSet.email.format_type (email), email.value);
-          button.clicked.connect (() => {
-          Utils.compose_mail ("%s <%s>".printf(this.contact.individual.display_name, email.value));
+        var button = create_button ("mail-unread-symbolic");
+        button.clicked.connect (() => {
+          Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
         });
+        add_row_with_label (TypeSet.email.format_type (email), email.value, button);
       }
     }
   }
@@ -186,20 +218,21 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_phone_nrs (Persona persona) {
     var phone_details = persona as PhoneDetails;
     if (phone_details != null) {
-      var phones = Contact.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+      var phones = ContactUtils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
       foreach (var phone in phones) {
 #if HAVE_TELEPATHY
         if (this.store.caller_account != null) {
-          var button = add_row_with_button (TypeSet.phone.format_type (phone), phone.value);
-          button.clicked.connect (() => {
-              Utils.start_call (phone.value, this.store.caller_account);
-            });
+          var call_button = create_button ("call-start-symbolic");
+          call_button.clicked.connect (() => {
+            Utils.start_call (phone.value, this.store.caller_account);
+          });
+
+          add_row_with_label (TypeSet.phone.format_type (phone), phone.value, call_button);
         } else {
           add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
         }
-#else
-        add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
 #endif
+        add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
       }
     }
   }
@@ -211,17 +244,18 @@ public class Contacts.ContactSheet : ContactForm {
       foreach (var protocol in im_details.im_addresses.get_keys ()) {
         foreach (var id in im_details.im_addresses[protocol]) {
           if (persona is Tpf.Persona) {
-            var button = add_row_with_button (ImService.get_display_name (protocol), id.value);
+            var button = create_button ("user-available-symbolic");
             button.clicked.connect (() => {
-                var im_persona = this.contact.find_im_persona (protocol, id.value);
-                if (im_persona != null) {
-                  var type = im_persona.presence_type;
-                  if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
-                      type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
-                    Utils.start_chat (this.contact, protocol, id.value);
-                  }
+              var im_persona = ContactUtils.find_im_persona (individual, protocol, id.value);
+              if (im_persona != null) {
+                var type = im_persona.presence_type;
+                if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
+                    type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
+                  Utils.start_chat (this.contact, protocol, id.value);
                 }
-              });
+              }
+            });
+            add_row_with_label (ImService.get_display_name (protocol), id.value, button);
           }
         }
       }
@@ -232,9 +266,30 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_urls (Persona persona) {
     var url_details = persona as UrlDetails;
     if (url_details != null) {
-      foreach (var url in url_details.urls)
-        add_row_with_button (_("Website"), url.value, true);
+      foreach (var url in url_details.urls) {
+        var button = create_button ("web-browser-symbolic");
+        button.clicked.connect (() => {
+          var window = button.get_toplevel ();
+          try {
+            show_uri_on_window ((Window) window, fallback_to_http (url.value), Gdk.CURRENT_TIME);
+          } catch (Error e) {
+            debug ("Failed to open url");
+            print ("Error");
+          }
+        });
+        add_row_with_label (_("Website"), url.value, button);
+      }
     }
+  }
+
+  /* When the url doesn't contain a scheme we fallback to http
+   * We are sure that the url is a webaddress but GTK falls back to opening a file
+   */
+  private string fallback_to_http (string url) {
+    string scheme = Uri.parse_scheme (url);
+    if (scheme == null)
+      return "http://" + url;
+    return url;
   }
 
   private void add_nickname (Persona persona) {
@@ -261,7 +316,7 @@ public class Contacts.ContactSheet : ContactForm {
     var addr_details = persona as PostalAddressDetails;
     if (addr_details != null) {
       foreach (var addr in addr_details.postal_addresses) {
-        var all_strs = string.joinv ("\n", Contact.format_address (addr.value));
+        var all_strs = string.joinv ("\n", ContactUtils.format_address (addr.value));
         add_row_with_label (TypeSet.general.format_type (addr), all_strs);
       }
     }
