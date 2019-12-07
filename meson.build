@@ -1,7 +1,7 @@
 project('gnome-contacts', [ 'vala', 'c' ],
   version: '3.34',
   license: 'GPL2+',
-  meson_version: '>= 0.41',
+  meson_version: '>= 0.50',
 )
 
 gnome = import('gnome')
