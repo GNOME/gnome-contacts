@@ -47,12 +47,12 @@ contacts_deps = [
 ]
 
 # Add extra stuff given a certain set of options
-if cheese_enabled
+if get_option('cheese')
   contacts_deps += [ cheese, cheese_gtk ]
   contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
 endif
 
-if telepathy_enabled
+if get_option('telepathy')
   contacts_deps += [ folks_telepathy, telepathy_glib ]
   contacts_vala_args += [ '-D', 'HAVE_TELEPATHY' ]
 endif
@@ -102,7 +102,7 @@ contacts_c_sources = [
   'cc-crop-area.c',
 ]
 
-if cheese_enabled
+if get_option('cheese')
   contacts_c_sources += 'cheese-flash.c'
 endif
 

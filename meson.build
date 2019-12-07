@@ -13,12 +13,6 @@ add_project_arguments(
   language: 'vala'
 )
 
-# Options
-cheese_enabled = get_option('cheese')
-telepathy_enabled = get_option('telepathy')
-docs_enabled = get_option('docs')
-manpage_enabled = get_option('manpage')
-
 # Common variables
 contacts_app_id = 'org.gnome.Contacts'
 
@@ -53,12 +47,12 @@ libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 
-if cheese_enabled
+if get_option('cheese')
   cheese = dependency('cheese')
   cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91')
 endif
 
-if telepathy_enabled
+if get_option('telepathy')
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
   telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
 endif
@@ -87,7 +81,7 @@ else
   libhandy_vapidir = ''
 endif
 
-valadoc = find_program('valadoc', required: docs_enabled)
+valadoc = find_program('valadoc', required: get_option('docs'))
 
 
 # Configuration
@@ -112,8 +106,10 @@ meson.add_install_script('build-aux/meson_post_install.py')
 subdir('data')
 subdir('po')
 subdir('src')
-subdir('man')
-if docs_enabled
+if get_option('manpage')
+  subdir('man')
+endif
+if get_option('docs')
   subdir('docs')
 endif
 subdir('tests')
