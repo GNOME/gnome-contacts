@@ -351,7 +351,7 @@ public class Contacts.ContactEditor : ContactForm {
 	    child.destroy ();
 	    child = container_grid.get_child_at (1, row);
 	    child.destroy ();
-	    child = container_grid.get_child_at (3, row);
+	    child = container_grid.get_child_at (2, row);
 	    child.destroy ();
 
 	    field_entry.value.changed = true;
@@ -385,7 +385,7 @@ public class Contacts.ContactEditor : ContactForm {
 
     var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    container_grid.attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 2, row, 1, 1);
 
     /* Notify change to upper layer */
     combo.changed.connect ((c) => {
@@ -416,7 +416,7 @@ public class Contacts.ContactEditor : ContactForm {
 
     var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    container_grid.attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 2, row, 1, 1);
 
     /* Notify change to upper layer */
     value_entry.changed.connect (() => {
@@ -451,7 +451,7 @@ public class Contacts.ContactEditor : ContactForm {
     var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
     delete_button.set_valign (Align.START);
-    container_grid.attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 2, row, 1, 1);
 
     /* Notify change to upper layer */
     value_text.get_buffer ().changed.connect (() => {
@@ -505,7 +505,7 @@ public class Contacts.ContactEditor : ContactForm {
 
     var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
-    container_grid.attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 2, row, 1, 1);
 
     AdjustingDateFn fn = () => {
       int[] month_of_31 = {3, 5, 8, 10};
@@ -556,7 +556,7 @@ public class Contacts.ContactEditor : ContactForm {
     var delete_button = new Button.from_icon_name ("user-trash-symbolic", IconSize.MENU);
     delete_button.get_accessible ().set_name (_("Delete field"));
     delete_button.set_valign (Align.START);
-    container_grid.attach (delete_button, 3, row, 1, 1);
+    container_grid.attach (delete_button, 2, row, 1, 1);
 
     /* Notify change to upper layer */
     combo.changed.connect (() => {
@@ -678,7 +678,7 @@ public class Contacts.ContactEditor : ContactForm {
       }
       if (! rows.is_empty) {
 	has_nickname_row = true;
-	var delete_button = container_grid.get_child_at (3, row - 1) as Button;
+	var delete_button = container_grid.get_child_at (2, row - 1) as Button;
 	delete_button.clicked.connect (() => {
 	    has_nickname_row = false;
 	  });
@@ -948,7 +948,7 @@ public class Contacts.ContactEditor : ContactForm {
         this.name_entry.set_data ("changed", true);
       });
 
-    this.container_grid.attach (this.name_entry, 1, 0, 3, 3);
+    this.container_grid.attach (this.name_entry, 1, 0, 2, 3);
   }
 
   public bool name_changed () {
