@@ -232,6 +232,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     }
     // When selecting or editing, we get special headerbars
     this.titlebar.selection_mode = this.state == UiState.SELECTING || this.state.editing ();
+
+    // Allow the back gesture when not browsing
+    this.content_box.can_swipe_back = this.state == UiState.NORMAL ||
+                                      this.state == UiState.SHOWING ||
+                                      this.state == UiState.SELECTING;
   }
 
   [GtkCallback]
