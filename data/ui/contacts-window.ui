@@ -109,10 +109,9 @@
           <object class="HdyLeaflet" id="header">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="mode-transition-type" bind-source="content_box" bind-property="mode-transition-type" bind-flags="bidirectional|sync-create"/>
             <property name="mode-transition-duration" bind-source="content_box" bind-property="mode-transition-duration" bind-flags="bidirectional|sync-create"/>
-            <property name="child-transition-type" bind-source="content_box" bind-property="child-transition-type" bind-flags="bidirectional|sync-create"/>
             <property name="child-transition-duration" bind-source="content_box" bind-property="child-transition-duration" bind-flags="bidirectional|sync-create"/>
+            <property name="transition-type" bind-source="content_box" bind-property="transition-type" bind-flags="bidirectional|sync-create"/>
             <property name="visible-child-name" bind-source="content_box" bind-property="visible-child-name" bind-flags="bidirectional|sync-create"/>
             <child>
               <object class="GtkHeaderBar" id="left_header">
@@ -317,8 +316,7 @@
           <object class="HdyLeaflet" id="content_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="mode-transition-type">slide</property>
-            <property name="child-transition-type">slide</property>
+            <property name="transition-type">over</property>
             <signal name="notify::fold" handler="on_fold" object="ContactsWindow" after="yes" swapped="no"/>
             <signal name="notify::child-transition-running" handler="on_child_transition_running" object="ContactsWindow" after="yes" swapped="no"/>
             <child>
