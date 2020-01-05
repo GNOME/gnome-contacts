@@ -13,7 +13,7 @@ endforeach
 # The desktop file
 desktop_file = i18n.merge_file(
   input: 'org.gnome.Contacts.desktop.in',
-  output: '@BASENAME',
+  output: '@BASENAME@',
   type: 'desktop',
   po_dir: po_dir,
   install: true,
