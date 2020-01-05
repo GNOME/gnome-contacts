@@ -1,5 +1,5 @@
 docs_vapidirs = [
-  '--vapidir=@0@'.format(join_paths(meson.source_root(), 'vapi')),
+  '--vapidir=@0@'.format(meson.source_root() / 'vapi'),
 ]
 
 if libhandy_vapidir != ''

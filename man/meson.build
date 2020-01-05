@@ -4,7 +4,7 @@ custom_target('manfile-gnome-contacts',
   input: 'gnome-contacts.xml',
   output: 'gnome-contacts.1',
   install: true,
-  install_dir: join_paths(get_option('mandir'), 'man1'),
+  install_dir: get_option('mandir') / 'man1',
   command: [
     xsltproc,
     '--nonet',

@@ -9,7 +9,7 @@ i18n = import('i18n')
 
 # Add our custom VAPI dir
 add_project_arguments(
-  ['--vapidir', join_paths(meson.source_root(), 'vapi')],
+  ['--vapidir', meson.source_root() / 'vapi'],
   language: 'vala'
 )
 
@@ -18,14 +18,8 @@ contacts_app_id = 'org.gnome.Contacts'
 
 config_h_dir = include_directories('.')
 contacts_prefix = get_option('prefix')
-datadir = join_paths(contacts_prefix, get_option('datadir'))
-bindir = join_paths(contacts_prefix, get_option('bindir'))
-libdir = join_paths(contacts_prefix, get_option('libdir'))
-libexecdir = join_paths(contacts_prefix, get_option('libexecdir'))
-locale_dir = join_paths(contacts_prefix, get_option('localedir'))
-pkgdatadir = join_paths(datadir, meson.project_name())
-pkglibdir = join_paths(libdir, meson.project_name())
-po_dir = join_paths(meson.source_root(), 'po')
+locale_dir = contacts_prefix / get_option('localedir')
+po_dir = meson.source_root() / 'po'
 
 # Dependencies
 min_eds_version = '3.13.90'
@@ -76,7 +70,7 @@ if not libhandy.found()
     ]
   )
 
-  libhandy_vapidir = join_paths(meson.build_root(), 'subprojects', 'libhandy', 'src')
+  libhandy_vapidir = meson.build_root() / 'subprojects' / 'libhandy' / 'src'
 else
   libhandy_vapidir = ''
 endif
@@ -93,8 +87,6 @@ conf.set_quoted('LOCALEDIR', locale_dir)
 conf.set_quoted('PACKAGE_NAME', meson.project_name())
 conf.set_quoted('PACKAGE_STRING', meson.project_name())
 conf.set_quoted('PACKAGE_VERSION', meson.project_version())
-conf.set_quoted('PKGDATADIR', pkgdatadir)
-conf.set_quoted('PKGLIBDIR', pkglibdir)
 conf.set_quoted('VERSION', meson.project_version())
 conf.set('GOA_API_IS_SUBJECT_TO_CHANGE', true)
 configure_file(output: 'config.h', configuration: conf)

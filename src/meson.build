@@ -1,7 +1,7 @@
 # GSettings
 compiled = gnome.compile_schemas()
 install_data('org.gnome.Contacts.gschema.xml',
-  install_dir: join_paths(datadir, 'glib-2.0', 'schemas'),
+  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
 )
 
 # Common library
@@ -129,5 +129,5 @@ executable('gnome-contacts-search-provider',
   vala_args: contacts_vala_args,
   c_args: contacts_c_args,
   install: true,
-  install_dir: libexecdir,
+  install_dir: get_option('libexecdir'),
 )
