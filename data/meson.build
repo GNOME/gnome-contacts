@@ -12,8 +12,14 @@ endforeach
 
 # The desktop file
 desktop_file = i18n.merge_file(
-  input: 'org.gnome.Contacts.desktop.in',
-  output: '@BASENAME@',
+  input: configure_file(
+    input: 'org.gnome.Contacts.desktop.in.in',
+    output: '@BASENAME@',
+    configuration: {
+      'icon': contacts_app_id,
+    },
+  ),
+  output: '@0@.desktop'.format(contacts_app_id),
   type: 'desktop',
   po_dir: po_dir,
   install: true,

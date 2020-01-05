@@ -37,7 +37,7 @@ public class Contacts.Settings : GLib.Settings {
   }
 
   public Settings (App app) {
-    Object (schema_id: app.application_id);
+    Object (schema_id: "org.gnome.Contacts");
   }
 
   public void bind_default (string key, Object object, string property) {

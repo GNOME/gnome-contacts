@@ -13,9 +13,14 @@ add_project_arguments(
   language: 'vala'
 )
 
-# Common variables
-contacts_app_id = 'org.gnome.Contacts'
+# Application ID
+if get_option('profile') == 'default'
+  contacts_app_id = 'org.gnome.Contacts'
+else
+  contacts_app_id = 'org.gnome.Contacts.Devel'
+endif
 
+# Common variables
 config_h_dir = include_directories('.')
 contacts_prefix = get_option('prefix')
 locale_dir = contacts_prefix / get_option('localedir')
