@@ -108,6 +108,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     create_contact_pane ();
     connect_button_signals ();
     restore_window_size_and_position_from_settings ();
+
+    if (Config.PROFILE == "development")
+        get_style_context ().add_class ("devel");
   }
 
   private void on_sort_changed () {

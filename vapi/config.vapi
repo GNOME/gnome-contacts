@@ -2,6 +2,9 @@
 namespace Config {
 public const string APP_ID;
 
+/* Indicates a nightly build */
+public const string PROFILE;
+
 /* Package information */
 public const string PACKAGE_NAME;
 public const string PACKAGE_STRING;

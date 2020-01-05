@@ -59,6 +59,10 @@ public class Contacts.SetupWindow : Gtk.ApplicationWindow {
         var selected_store = this.setup_accounts_list.selected_store as Edsf.PersonaStore;
         setup_done (selected_store);
       });
+
+    // Make visible when we're using a nightly build
+    if (Config.PROFILE == "development")
+        get_style_context ().add_class ("devel");
   }
 
   private void fill_accounts_list (Store store) {
