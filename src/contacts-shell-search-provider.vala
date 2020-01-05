@@ -172,7 +172,7 @@ public class Contacts.SearchProvider : Object {
 
 public class Contacts.SearchProviderApp : GLib.Application {
   public SearchProviderApp () {
-    Object (application_id: "org.gnome.Contacts.SearchProvider",
+    Object (application_id: Config.APP_ID + ".SearchProvider",
             flags: ApplicationFlags.IS_SERVICE,
             inactivity_timeout: 10000);
   }

@@ -1,31 +1,18 @@
-stages:
-  - build-flatpak
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
-# We always use flatpak-builder to check if everything still works.
-flatpak:master:
+stages:
+- test
+- deploy
+
+variables:
+  BUNDLE: 'gnome-contacts.flatpak'
+
+flatpak:
   image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
-  stage: build-flatpak
-  script:
-    - flatpak-builder --stop-at=gnome-contacts app data/flatpak/org.gnome.Contacts.json
-    # Make sure to keep this in sync with the Flatpak manifest, all arguments
-    # are passed except the config-args because we build it ourselves
-    - flatpak build app meson --prefix=/app _build
-    - flatpak build app ninja -C _build test
-    - flatpak build app ninja -C _build install
-    - flatpak-builder --finish-only --repo=repo app data/flatpak/org.gnome.Contacts.json
-    # Make a Flatpak Contacts bundle for people to test
-    - flatpak build-bundle repo contacts-dev.flatpak --runtime-repo=https://sdk.gnome.org/gnome-nightly.flatpakrepo org.gnome.Contacts
-    # Run the tests
-    - bash +x ./.gitlab-ci/run-tests.sh
-  artifacts:
-    reports:
-      junit: "_build/${CI_JOB_NAME}-report.xml"
-    name: "gnome-contacts-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - contacts-dev.flatpak
-      - _build/meson-logs/
-    expire_in: 14 days
-  cache:
-    paths:
-      - .flatpak-builder/cache
+  variables:
+    MANIFEST_PATH: 'data/flatpak/org.gnome.Contacts.json'
+    MESON_ARGS: "-Dprofile=development"
+    FLATPAK_MODULE: "gnome-contacts"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    APP_ID: "org.gnome.Contacts.Devel"
+  extends: .flatpak

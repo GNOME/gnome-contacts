@@ -39,8 +39,14 @@ endif
 
 # The appdata file
 appdata_file = i18n.merge_file(
-  input: 'org.gnome.Contacts.appdata.xml.in',
-  output: 'org.gnome.Contacts.appdata.xml',
+  input: configure_file(
+    input: 'org.gnome.Contacts.appdata.xml.in.in',
+    output: '@BASENAME@',
+    configuration: {
+      'app_id': contacts_app_id,
+    },
+  ),
+  output: '@0@.appdata.xml'.format(contacts_app_id),
   type: 'xml',
   po_dir: po_dir,
   install: true,
@@ -58,14 +64,16 @@ if appstream_util.found()
 endif
 
 # DBus service files
-service_config = configuration_data()
-service_config.set('bindir', contacts_prefix / get_option('bindir'))
-service_config.set('libexecdir', contacts_prefix / get_option('libexecdir'))
+service_config = {
+  'app_id': contacts_app_id,
+  'bindir': contacts_prefix / get_option('bindir'),
+  'libexecdir': contacts_prefix / get_option('libexecdir'),
+}
 
 # The DBUS service file of the app
 configure_file(
   input: 'org.gnome.Contacts.service.in',
-  output: '@BASENAME@',
+  output: '@0@.service'.format(contacts_app_id),
   configuration: service_config,
   install: true,
   install_dir: get_option('datadir') / 'dbus-1' / 'services',
@@ -74,13 +82,19 @@ configure_file(
 # The DBUS service file of the search provider
 configure_file(
   input: 'org.gnome.Contacts.SearchProvider.service.in',
-  output: '@BASENAME@',
+  output: '@0@.SearchProvider.service'.format(contacts_app_id),
   configuration: service_config,
   install: true,
   install_dir: get_option('datadir') / 'dbus-1' / 'services',
 )
 
 # The search provider file
-install_data('org.gnome.Contacts.search-provider.ini',
+configure_file(
+  input: 'org.gnome.Contacts.search-provider.ini.in',
+  output: '@0@.search-provider.ini'.format(contacts_app_id),
+  configuration: {
+    'app_id': contacts_app_id,
+  },
+  install: true,
   install_dir: get_option('datadir') / 'gnome-shell' / 'search-providers',
 )
