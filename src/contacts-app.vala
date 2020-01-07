@@ -272,6 +272,7 @@ public class Contacts.App : Gtk.Application {
 
     this.set_accels_for_action ("app.help", {"F1"});
     this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
+    this.set_accels_for_action ("win.show-help-overlay", {"<Primary>F1", "<Primary>question"});
   }
 
   private void create_window () {
