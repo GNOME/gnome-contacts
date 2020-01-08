@@ -177,7 +177,7 @@ public class Contacts.App : Gtk.Application {
 				 "eds:%s".printf(e_store.id));
 	  }
 	}
-	contacts_store.disconnect (stores_changed_id);
+	contacts_store.backend_store.disconnect (stores_changed_id);
 	dialog.destroy ();
       });
   }
