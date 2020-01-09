@@ -14,10 +14,10 @@ add_project_arguments(
 )
 
 # Application ID
-if get_option('profile') == 'default'
-  contacts_app_id = 'org.gnome.Contacts'
-else
+if get_option('profile') == 'development'
   contacts_app_id = 'org.gnome.Contacts.Devel'
+else
+  contacts_app_id = 'org.gnome.Contacts'
 endif
 
 # Common variables
