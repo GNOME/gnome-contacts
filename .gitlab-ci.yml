@@ -16,3 +16,8 @@ flatpak:
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     APP_ID: "org.gnome.Contacts.Devel"
   extends: .flatpak
+
+nightly:
+  extends: '.publish_nightly'
+  dependencies:
+    - 'flatpak'
