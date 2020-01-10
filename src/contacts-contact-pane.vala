@@ -27,13 +27,16 @@ const int PROFILE_SIZE = 128;
  * and a ContactEditor to edit contact information.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
-public class Contacts.ContactPane : Stack {
+public class Contacts.ContactPane : ScrolledWindow {
 
   private Window parent_window;
 
   private Store store;
 
-  public Individual? individual = null;
+  public Individual? individual { get; set; default = null; }
+
+  [GtkChild]
+  private Stack stack;
 
   [GtkChild]
   private Grid none_selected_page;
@@ -46,27 +49,11 @@ public class Contacts.ContactPane : Stack {
   private Box contact_editor_page;
   private ContactEditor? editor = null;
 
-  private SimpleActionGroup edit_contact_actions = new SimpleActionGroup ();
-  private const GLib.ActionEntry[] action_entries = {
-    { "add.email-addresses.home", on_add_detail },
-    { "add.email-addresses.work", on_add_detail },
-    { "add.phone-numbers.cell", on_add_detail },
-    { "add.phone-numbers.home", on_add_detail },
-    { "add.phone-numbers.work", on_add_detail },
-    { "add.urls", on_add_detail },
-    { "add.nickname", on_add_detail },
-    { "add.birthday", on_add_detail },
-    { "add.postal-addresses.home", on_add_detail },
-    { "add.postal-addresses.work", on_add_detail },
-    { "add.notes", on_add_detail },
-  };
-
   public bool on_edit_mode = false;
   private LinkSuggestionGrid? suggestion_grid = null;
 
   /* Signals */
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
-  public signal void will_delete (Individual individual);
   /**
    * Passes the changed display name to all listeners after edit mode has been completed.
    */
@@ -76,8 +63,6 @@ public class Contacts.ContactPane : Stack {
   public ContactPane (Window parent_window, Store contacts_store) {
     this.parent_window = parent_window;
     this.store = contacts_store;
-
-    this.edit_contact_actions.add_action_entries (action_entries, this);
   }
 
   public void add_suggestion (Individual i) {
@@ -115,7 +100,7 @@ public class Contacts.ContactPane : Stack {
       show_contact_sheet ();
     } else {
       remove_contact_sheet ();
-      set_visible_child (this.none_selected_page);
+      this.stack.set_visible_child (this.none_selected_page);
     }
   }
 
@@ -125,7 +110,7 @@ public class Contacts.ContactPane : Stack {
     remove_contact_sheet();
     this.sheet = new ContactSheet (this.individual, this.store);
     this.contact_sheet_page.add (this.sheet);
-    set_visible_child (this.contact_sheet_page);
+    this.stack.set_visible_child (this.contact_sheet_page);
 
     var matches = this.store.aggregator.get_potential_matches (this.individual, MatchResult.HIGH);
     foreach (var i in matches.keys) {
@@ -149,26 +134,9 @@ public class Contacts.ContactPane : Stack {
   }
 
   private void create_contact_editor () {
-    if (this.editor != null)
-      remove_contact_editor ();
+    remove_contact_editor ();
 
-    this.editor = new ContactEditor (this.individual, this.store, this.edit_contact_actions);
-
-    this.editor.linked_button.clicked.connect (linked_accounts);
-    this.editor.remove_button.clicked.connect (delete_contact);
-
-    /* enable/disable actions*/
-    var birthday_action = this.edit_contact_actions.lookup_action ("add.birthday") as SimpleAction;
-    this.editor.bind_property ("has-birthday-row", birthday_action, "enabled",
-                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
-
-    var nickname_action = this.edit_contact_actions.lookup_action ("add.nickname") as SimpleAction;
-    this.editor.bind_property ("has-nickname-row", nickname_action, "enabled",
-                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
-
-    var notes_action = this.edit_contact_actions.lookup_action ("add.notes") as SimpleAction;
-    this.editor.bind_property ("has-notes-row", notes_action, "enabled",
-                               BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+    this.editor = new ContactEditor (this.individual, store.aggregator);
 
     this.contact_editor_page.add (this.editor);
   }
@@ -181,136 +149,89 @@ public class Contacts.ContactPane : Stack {
     this.editor = null;
   }
 
-  void on_add_detail (GLib.SimpleAction action, GLib.Variant? parameter) {
-    var tok = action.name.split (".");
-
-    if (tok[0] == "add") {
-      editor.add_new_row_for_property (Contacts.Utils.find_primary_persona (individual),
-				       tok[1],
-				       tok.length > 2 ? tok[2].up () : null);
-    }
-  }
-
-  private void linked_accounts () {
-    var dialog = new LinkedPersonasDialog (this.parent_window, this.store, individual);
-    if (dialog.run () == ResponseType.CLOSE && dialog.any_unlinked) {
-      /* update edited contact if any_unlinked */
-      stop_editing ();
-      start_editing ();
-    }
-    dialog.destroy ();
-  }
-
-  void delete_contact () {
-    if (individual != null) {
-      will_delete (individual);
-    }
-  }
-
-  public void start_editing() {
+  private void start_editing() {
     if (this.on_edit_mode || this.individual == null)
       return;
 
     this.on_edit_mode = true;
 
-    remove_contact_sheet ();
     create_contact_editor ();
-    set_visible_child (this.contact_editor_page);
+    this.stack.set_visible_child (this.contact_editor_page);
   }
 
-  public void stop_editing (bool drop_changes = false) {
+  public void stop_editing (bool cancel = false) {
     if (!this.on_edit_mode)
       return;
 
     this.on_edit_mode = false;
-    /* saving changes */
-    if (!drop_changes)
-      save_editor_changes.begin ();
-
     remove_contact_editor ();
 
-    if (this.individual != null)
-      show_contact_sheet ();
-    else
-      set_visible_child (this.none_selected_page);
+    if (cancel) {
+      var fake_individual = individual as FakeIndividual;
+      if (fake_individual != null && fake_individual.real_individual != null) {
+        // Reset individual on to the real one
+        this.individual = fake_individual.real_individual;
+        this.stack.set_visible_child (this.contact_sheet_page);
+      } else {
+        this.stack.set_visible_child (this.none_selected_page);
+      }
+      return;
+    }
+
+    /* Save changes if editing wasn't canceled */
+    apply_changes.begin ();
   }
 
-  private async void save_editor_changes () {
-    foreach (var prop in this.editor.properties_changed ().entries) {
-      try {
-        yield Contacts.Utils.set_persona_property (prop.value.persona, prop.key, prop.value.value);
-      } catch (Error e) {
-        show_message (e.message);
-      }
+  private async void apply_changes () {
+    /* Show fake contact to the user */
+    /* TODO: block changes to fake contact */
+    show_contact_sheet ();
+    var fake_individual = individual as FakeIndividual;
+    if (fake_individual != null && fake_individual.real_individual == null) {
+      // Create a new persona in the primary store based on the fake persona
+      yield create_contact (fake_individual.primary_persona);
+    } else {
+      yield fake_individual.apply_changes_to_real ();
+      /* Todo: we need to check if the changes where applied to the contact */
+      this.individual = fake_individual.real_individual;
     }
 
-    if (this.editor.name_changed ()) {
-      var v = this.editor.get_full_name_value ();
-      try {
-        yield Contacts.Utils.set_individual_property (individual, "full-name", v);
-        display_name_changed (v.get_string ());
-      } catch (Error e) {
-        show_message (e.message);
-      }
-    }
+    /* Replace fake contact with real contact */
+    show_contact_sheet ();
+  }
 
-    if (this.editor.avatar_changed ()) {
-      var v = this.editor.get_avatar_value ();
-      try {
-        yield Contacts.Utils.set_individual_property (individual, "avatar", v);
-      } catch (Error e) {
-        show_message (e.message);
-      }
-    }
-
-    /* unlink personas */
-    if (this.editor.get_unlink_personas ().size > 0) {
-      var operation = new UnLinkOperation (this.store);
-      operation.do.begin (this.individual, this.editor.get_unlink_personas ());
-    }
+  public void edit_contact () {
+    this.individual = new FakeIndividual.from_real (this.individual);
+    start_editing ();
   }
 
   public void new_contact () {
-    this.on_edit_mode = true;
-    this.individual = null;
-    remove_contact_sheet ();
-    create_contact_editor ();
-    set_visible_child (this.contact_editor_page);
+    var details = new HashTable<string, Value?> (str_hash, str_equal);
+    string[] writeable_properties;
+    // TODO: make sure we have a primary_store
+    if (this.store.aggregator.primary_store != null) {
+      // FIXME: We shouldn't use this list but there isn't an other way to find writeable_properties, and we should expect that all properties are writeable
+      writeable_properties = this.store.aggregator.primary_store.always_writeable_properties;
+    } else {
+      writeable_properties = {};
+    }
+
+    var fake_persona = new FakePersona (FakePersonaStore.the_store(), writeable_properties, details);
+    var fake_personas = new HashSet<FakePersona> ();
+    fake_personas.add (fake_persona);
+    this.individual = new FakeIndividual(fake_personas);
+
+    start_editing ();
   }
 
-  // Creates a new contact from the details in the ContactEditor
-  public async void create_contact () {
-    var details = new HashTable<string, Value?> (str_hash, str_equal);
-
-    // Collect the details from the editor
-    if (editor.name_changed ())
-      details["full-name"] = this.editor.get_full_name_value ();
-
-    if (editor.avatar_changed ())
-      details["avatar"] = this.editor.get_avatar_value ();
-
-    foreach (var prop in this.editor.properties_changed ().entries)
-      details[prop.key] = prop.value.value;
-
-    // Leave edit mode
-    stop_editing (true);
-
-    if (details.size () == 0) {
-      show_message_dialog (_("You need to enter some data"));
-      return;
-    }
+  // Create a new contact from the FakePersona
+  public async void create_contact (FakePersona fake_persona) {
+    var details = fake_persona.get_details ();
 
     if (this.store.aggregator.primary_store == null) {
       show_message_dialog (_("No primary addressbook configured"));
       return;
     }
-
-    // Create a FakeContact temporary persona so we can show it already to the user
-    var fake_persona = new FakePersona (FakePersonaStore.the_store(), details);
-    var fake_personas = new HashSet<Persona> ();
-    fake_personas.add (fake_persona);
-    var fake_individual = new Individual(fake_personas);
-    this.parent_window.set_shown_contact (fake_individual);
 
     // Create the contact
     var primary_store = this.store.aggregator.primary_store;
@@ -325,6 +246,7 @@ public class Contacts.ContactPane : Stack {
 
     // Now show the real persona to the user
     var individual = persona.individual;
+
     if (individual != null) {
       //FIXME: This causes a flicker, especially visibile when a avatar is set
       this.parent_window.set_shown_contact (individual);
@@ -343,12 +265,6 @@ public class Contacts.ContactPane : Stack {
                            "%s", message);
     dialog.run ();
     dialog.destroy ();
-  }
-
-  private void show_message (string message) {
-    var notification = new InAppNotification (message);
-    notification.show ();
-    this.parent_window.add_notification (notification);
   }
 
   private void remove_suggestion_grid () {

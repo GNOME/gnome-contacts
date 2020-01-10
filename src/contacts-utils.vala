@@ -164,6 +164,18 @@ namespace Contacts.Utils {
     return stores;
   }
 
+  public PersonaStore[] get_eds_address_books_from_backend (BackendStore backend_store) {
+    PersonaStore[] stores = {};
+    foreach (var backend in backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values) {
+        if (persona_store.type_id == "eds") {
+          stores += persona_store;
+        }
+      }
+    }
+    return stores;
+  }
+
   public PersonaStore? get_key_file_address_book (Store contacts_store) {
     foreach (var backend in contacts_store.backend_store.enabled_backends.values) {
       foreach (var persona_store in backend.persona_stores.values) {
@@ -184,6 +196,15 @@ namespace Contacts.Utils {
                                         "%s", error);
     dialog.run();
     dialog.destroy();
+  }
+
+  public bool persona_is_main (Persona persona) {
+    var store = persona.store;
+    if (!store.is_primary_store)
+      return false;
+
+    // Mark google contacts not in "My Contacts" as non-main
+    return !persona_is_google_other (persona);
   }
 
   public bool has_main_persona (Individual individual) {

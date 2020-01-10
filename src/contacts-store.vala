@@ -101,8 +101,8 @@ public class Contacts.Store : GLib.Object {
   }
 
   public void add_no_suggest_link (Individual a, Individual b) {
-    var persona1 = Contacts.Utils.get_personas_for_display(a).to_array ()[0];
-    var persona2 = Contacts.Utils.get_personas_for_display(b).to_array ()[0];
+    var persona1 = a.personas.to_array ()[0];
+    var persona2 = b.personas.to_array ()[0];
     dont_suggest_link.set (persona1.uid, persona2.uid);
     write_dont_suggest_db ();
   }
@@ -148,6 +148,8 @@ public class Contacts.Store : GLib.Object {
       }
     }
 
+    debug ("Individuals changed: %d old, %d new", to_add.size, to_remove.size);
+
     // Add new individuals
     foreach (var i in to_add) {
       if (i.personas.size > 0)
@@ -173,7 +175,7 @@ public class Contacts.Store : GLib.Object {
         callback();
       });
       yield;
-      this.disconnect (signal_id);
+      disconnect (signal_id);
     }
 
     Individual? matched = null;
@@ -198,11 +200,11 @@ public class Contacts.Store : GLib.Object {
     try {
       yield account_manager.prepare_async (null);
 
-      account_manager.account_enabled.connect (this.check_account_caps);
-      account_manager.account_disabled.connect (this.check_account_caps);
+      account_manager.account_enabled.connect (check_account_caps);
+      account_manager.account_disabled.connect (check_account_caps);
 
       foreach (var account in account_manager.dup_valid_accounts ())
-        yield this.check_account_caps (account);
+        yield check_account_caps (account);
     } catch (GLib.Error e) {
       warning ("Unable to check accounts caps %s", e.message);
     }

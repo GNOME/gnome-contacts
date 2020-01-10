@@ -33,6 +33,7 @@ namespace Contacts {
 
     /* Link individuals */
     public async void do (LinkedList<Individual> individuals) {
+      print ("LINK\n");
       var personas_to_link = new HashSet<Persona> ();
       foreach (var i in individuals) {
         var saved_personas = new HashSet<Persona> ();
@@ -42,10 +43,11 @@ namespace Contacts {
         }
         this.personas_to_link.add (saved_personas);
       }
-
-      // We don't need to unlink the individuals because we are using every persona
-      yield link_personas(this.store, this.store.aggregator, personas_to_link);
-
+      try {
+        yield this.store.aggregator.link_personas (personas_to_link);
+      } catch (Error e) {
+        error ("Coulnd't link contacts: %s", e.message);
+      }
       finished = true;
     }
 
@@ -55,54 +57,44 @@ namespace Contacts {
         .first_match(() => {return true;}).individual;
       yield store.aggregator.unlink_individual (individual);
       foreach (var personas in personas_to_link) {
-        yield link_personas (this.store, this.store.aggregator, personas);
+        try {
+          yield this.store.aggregator.link_personas (personas);
+        } catch (Error e) {
+          error ("Coulnd't link contacts: %s", e.message);
+        }
       }
     }
   }
 
   public class UnLinkOperation : Object {
     private weak Store store;
+
+    private HashSet<Persona> personas;
+
     public UnLinkOperation(Store store) {
       this.store = store;
+      this.personas = new HashSet<Persona> ();
     }
 
     /* Remove a personas from individual */
-    public async void do (Individual main, Set<Persona> personas_to_remove) {
-      var personas_to_keep = new HashSet<Persona> ();
+    public async void do (Individual main) {
       foreach (var persona in main.personas)
-        if (!personas_to_remove.contains (persona))
-          personas_to_keep.add (persona);
+          personas.add (persona);
 
       try {
         yield store.aggregator.unlink_individual (main);
       } catch (Error e) {
-        debug ("Couldn't link personas");
+        error ("Coulnd't link contacts: %s", e.message);
       }
-      yield link_personas(this.store, this.store.aggregator, personas_to_keep);
     }
 
     /* Undo the unlinking */
     public async void undo () {
+      try {
+        yield this.store.aggregator.link_personas (personas);
+      } catch (Error e) {
+        error ("Coulnd't link contacts: %s", e.message);
+      }
     }
-  }
-
- /* Workaround: link_personas creates a new persona in the primary-store,
-  * For some reason we can't change the primary-store directly,
-  * but we can change the gsettings property.
-  * Before linking we set the primary-store to be "key-file"
-  * that the linking persona isn't written to a real store
-  */
-  private async void link_personas (Store store, IndividualAggregator aggregator, Set<Persona> personas) {
-    var settings = new GLib.Settings ("org.freedesktop.folks");
-    var default_store = settings.get_string ("primary-store");
-    settings.set_string ("primary-store", "key-file:relationships.ini");
-    try {
-      yield aggregator.link_personas (personas);
-    } catch (Error e) {
-      debug ("%s", e.message);
-    }
-
-    // Rest primary-store
-    settings.set_string ("primary-store", default_store);
   }
 }

@@ -22,6 +22,14 @@ using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
 public class Contacts.Window : Gtk.ApplicationWindow {
+
+  private const GLib.ActionEntry[] action_entries = {
+    { "edit-contact",     edit_contact     },
+    { "share-contact",    share_contact    },
+    { "unlink-contact",   unlink_contact   },
+    { "delete-contact",   delete_contact   }
+  };
+
   [GtkChild]
   private Leaflet header;
   [GtkChild]
@@ -41,8 +49,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Overlay notification_overlay;
   [GtkChild]
-  private Button add_button;
-  [GtkChild]
   private Button select_cancel_button;
   [GtkChild]
   private MenuButton hamburger_menu_button;
@@ -51,10 +57,14 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private ModelButton sort_on_surname_button;
   [GtkChild]
+  private MenuButton contact_menu_button;
+  [GtkChild]
   private ToggleButton favorite_button;
   private bool ignore_favorite_button_toggled;
   [GtkChild]
-  private Button edit_button;
+  private Button unlink_button;
+  [GtkChild]
+  private Button add_button;
   [GtkChild]
   private Button cancel_button;
   [GtkChild]
@@ -90,6 +100,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       show_menubar: false,
       store: contacts_store
     );
+
+    SimpleActionGroup actions = new SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("window", actions);
 
     this.settings = settings;
     this.sort_on_firstname_button.clicked.connect (() => {
@@ -166,10 +180,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.contact_pane = new ContactPane (this, this.store);
     this.contact_pane.visible = true;
     this.contact_pane.hexpand = true;
-    this.contact_pane.will_delete.connect ( (individual) => {
-        this.list_pane.hide_contact (individual);
-        delete_contacts (new ArrayList<Individual>.wrap ({ individual }));
-     });
     this.contact_pane.contacts_linked.connect (contact_pane_contacts_linked_cb);
     this.contact_pane.display_name_changed.connect ((display_name) => {
       this.right_header.title = display_name;
@@ -213,9 +223,9 @@ public class Contacts.Window : Gtk.ApplicationWindow {
         = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 
     // UI when showing a contact
-    this.edit_button.visible
-        = this.favorite_button.visible
-        = (this.state == UiState.SHOWING);
+    this.contact_menu_button.visible
+      = this.favorite_button.visible
+      = (this.state == UiState.SHOWING);
 
     // Selecting UI
     this.select_cancel_button.visible = (this.state == UiState.SELECTING);
@@ -247,8 +257,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     show_list_pane ();
   }
 
-  [GtkCallback]
-  private void on_edit_button_clicked () {
+  private void share_contact () {
+    debug ("Share isn't implemented, yet");
+  }
+
+  private void edit_contact () {
     if (this.contact_pane.individual == null)
       return;
 
@@ -256,7 +269,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
     var name = this.contact_pane.individual.display_name;
     this.right_header.title = _("Editing %s").printf (name);
-    this.contact_pane.start_editing ();
+    this.contact_pane.edit_contact ();
   }
 
   [GtkCallback]
@@ -264,26 +277,57 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // Don't change the contact being favorite while switching between the two of them
     if (this.ignore_favorite_button_toggled)
       return;
+    if (this.contact_pane.individual == null)
+      return;
 
     var is_fav = this.contact_pane.individual.is_favourite;
     this.contact_pane.individual.is_favourite = !is_fav;
   }
 
-  private void stop_editing (bool drop_changes = false) {
-    if (this.state == UiState.CREATING) {
-      show_list_pane ();
+  private void unlink_contact () {
+    var individual = this.contact_pane.individual;
+    if (individual == null)
+      return;
 
-      if (drop_changes) {
-        this.contact_pane.stop_editing (drop_changes);
-      } else {
-        this.contact_pane.create_contact.begin ();
+    set_shown_contact (null);
+    this.state = UiState.NORMAL;
+
+    var operation = new UnLinkOperation (this.store);
+    operation.do.begin (individual);
+
+    var b = new Button.with_mnemonic (_("_Undo"));
+    var notification = new InAppNotification (_("Contacts unlinked"), b);
+
+    /* signal handlers */
+    b.clicked.connect ( () => {
+        /* here, we will link the thing in question */
+        operation.undo.begin ();
+        notification.dismiss ();
+      });
+
+    add_notification (notification);
+  }
+
+  private void delete_contact () {
+    var individual = this.contact_pane.individual;
+    if (individual == null)
+      return;
+
+    this.list_pane.hide_contact (individual);
+    delete_contacts (new ArrayList<Individual>.wrap ({ individual }));
+  }
+
+  private void stop_editing (bool cancel = false) {
+    if (this.state == UiState.CREATING) {
+      if (cancel) {
+        show_list_pane ();
       }
       this.state = UiState.NORMAL;
     } else {
       show_contact_pane ();
-      this.contact_pane.stop_editing (drop_changes);
       this.state = UiState.SHOWING;
     }
+    this.contact_pane.stop_editing (cancel);
 
     if (this.contact_pane.individual != null) {
       this.right_header.title = this.contact_pane.individual.display_name;
@@ -372,6 +416,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.select_cancel_button.clicked.connect (() => { this.state = UiState.NORMAL; });
     this.done_button.clicked.connect (() => stop_editing ());
     this.cancel_button.clicked.connect (() => stop_editing (true));
+
+    this.contact_pane.notify["individual"].connect (() => {
+      var individual = this.contact_pane.individual;
+      if (individual == null)
+        return;
+      this.unlink_button.set_visible (individual.personas.size > 1);
+    });
   }
 
   [GtkCallback]

@@ -30,13 +30,13 @@ public class Contacts.App : Gtk.Application {
   private bool is_quiescent_scheduled = false;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "quit",            quit                },
-    { "help",            show_help           },
-    { "about",           show_about          },
-    { "change-book",     change_address_book },
-    { "online-accounts", online_accounts     },
-    { "new-contact",     new_contact         },
-    { "show-contact",    on_show_contact,   "s"     }
+    { "quit",             quit                },
+    { "help",             show_help           },
+    { "about",            show_about          },
+    { "change-book",      change_address_book },
+    { "online-accounts",  online_accounts     },
+    { "new-contact",      new_contact         },
+    { "show-contact",     on_show_contact, "s"}
   };
 
   private const OptionEntry[] options = {
@@ -55,7 +55,7 @@ public class Contacts.App : Gtk.Application {
 
     this.settings = new Settings (this);
     add_main_option_entries (options);
-	create_actions ();
+	  create_actions ();
   }
 
   public override int command_line (ApplicationCommandLine command_line) {

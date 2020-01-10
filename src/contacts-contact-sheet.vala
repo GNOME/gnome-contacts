@@ -24,33 +24,61 @@ using Gee;
  *
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
-public class Contacts.ContactSheet : ContactForm {
+public class Contacts.ContactSheet : Grid {
+  private int last_row = 0;
+  private Individual individual;
+  public bool narrow { get; set; default = true; }
+
+  private const string[] SORTED_PROPERTIES = {
+    "email-addresses",
+    "phone-numbers",
+    "im-addresses",
+    "urls",
+    "nickname",
+    "birthday",
+    "postal-addresses",
+    "notes"
+  };
+
   public ContactSheet (Individual individual, Store store) {
+    Object (row_spacing: 12, column_spacing: 12);
     this.individual = individual;
-    this.store = store;
 
     this.individual.notify.connect (update);
     this.individual.personas_changed.connect (update);
-    this.store.quiescent.connect (update);
+    store.quiescent.connect (update);
 
     update ();
+  }
+
+  private Label create_persona_store_label (Persona p) {
+    var store_name = new Label (Utils.format_persona_store_name_for_contact (p));
+    var attrList = new Pango.AttrList ();
+    attrList.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
+    store_name.set_attributes (attrList);
+    store_name.set_halign (Align.START);
+    store_name.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
+
+    return store_name;
   }
 
   private Button create_button (string icon) {
     var button = new Button.from_icon_name (icon, IconSize.BUTTON);
     button.set_halign (Align.END);
-    button.get_style_context ().add_class ("contacts-flatten");
+    button.get_style_context ().add_class ("flatten");
 
     return button;
   }
 
-  void add_row_with_label (string label_value, string value, Widget? buttons = null) {
+  void add_row_with_label (string label_value, string value, Widget? btn1 = null, Widget? btn2 =null) {
+    if (value == "" || value == null)
+      return;
     var type_label = new Label (label_value);
     type_label.xalign = 1.0f;
     type_label.set_halign (Align.END);
     type_label.set_valign (Align.CENTER);
     type_label.get_style_context ().add_class ("dim-label");
-    this.container_grid.attach (type_label, 0, this.last_row, 1, 1);
+    this.attach (type_label, 0, this.last_row, 1, 1);
 
     var value_label = new Label (value);
     value_label.set_line_wrap (true);
@@ -60,47 +88,52 @@ public class Contacts.ContactSheet : ContactForm {
     value_label.wrap_mode = Pango.WrapMode.CHAR;
     value_label.set_selectable (true);
 
-    if (buttons != null) {
+    if (btn1 != null || btn2 !=null) {
       var value_box = new Box(Orientation.HORIZONTAL, 12);
       value_box.pack_start(value_label, false, false, 0);
-      value_box.pack_end(buttons, false, false, 0);
-      this.container_grid.attach (value_box, 1, this.last_row, 1, 1);
+
+      if (btn1 != null)
+        value_box.pack_end(btn1, false, false, 0);
+      if (btn2 != null)
+        value_box.pack_end(btn2, false, false, 0);
+      this.attach (value_box, 1, this.last_row, 1, 1);
     } else {
-      this.container_grid.attach (value_label, 1, this.last_row, 1, 1);
+      this.attach (value_label, 1, this.last_row, 1, 1);
     }
     this.last_row++;
   }
 
   private void update () {
     this.last_row = 0;
-    this.container_grid.foreach ((child) => this.container_grid.remove (child));
+    this.foreach ((child) => this.remove (child));
 
     var image_frame = new Avatar (PROFILE_SIZE, this.individual);
     image_frame.set_vexpand (false);
     image_frame.set_valign (Align.START);
-    this.container_grid.attach (image_frame,  0, 0, 1, 3);
+
+    this.attach (image_frame,  0, 0, 1, 3);
 
     create_name_label ();
 
     this.last_row += 3; // Name/Avatar takes up 3 rows
 
-    var personas = Contacts.Utils.get_personas_for_display (this.individual);
+    var personas = Utils.get_personas_for_display (this.individual);
     /* Cause personas are sorted properly I can do this */
     foreach (var p in personas) {
       bool is_first_persona = (this.last_row == 3);
       int persona_store_pos = this.last_row;
       if (!is_first_persona) {
-        this.container_grid.attach (create_persona_store_label (p), 0, this.last_row, 3);
+        this.attach (create_persona_store_label (p), 0, this.last_row, 3);
         this.last_row++;
       }
 
-      foreach (var prop in ContactForm.SORTED_PROPERTIES)
+      foreach (var prop in SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
       // Nothing to show in the persona: don't mention it
       bool is_empty_persona = (this.last_row == persona_store_pos + 1);
       if (!is_first_persona && is_empty_persona) {
-        this.container_grid.remove_row (persona_store_pos);
+        this.remove_row (persona_store_pos);
         this.last_row--;
       }
     }
@@ -119,7 +152,7 @@ public class Contacts.ContactSheet : ContactForm {
     name_label.ellipsize = Pango.EllipsizeMode.END;
     name_label.xalign = 0f;
     name_label.selectable = true;
-    this.container_grid.attach (name_label,  1, 0, 1, 3);
+    this.attach (name_label,  1, 0, 1, 3);
     update_name_label (name_label);
     this.individual.notify["display-name"].connect ((obj, spec) => {
       update_name_label (name_label);
@@ -161,7 +194,7 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_emails (Persona persona) {
     var details = persona as EmailDetails;
     if (details != null) {
-      var emails = Contacts.Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
+      var emails = Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
       foreach (var email in emails) {
         var button = create_button ("mail-unread-symbolic");
         button.clicked.connect (() => {
@@ -175,7 +208,7 @@ public class Contacts.ContactSheet : ContactForm {
   private void add_phone_nrs (Persona persona) {
     var phone_details = persona as PhoneDetails;
     if (phone_details != null) {
-      var phones = Contacts.Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+      var phones = Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
       foreach (var phone in phones) {
 #if HAVE_TELEPATHY
         if (this.store.caller_account != null) {
@@ -204,7 +237,7 @@ public class Contacts.ContactSheet : ContactForm {
           if (persona is Tpf.Persona) {
             var button = create_button ("user-available-symbolic");
             button.clicked.connect (() => {
-              var im_persona = Contacts.Utils.find_im_persona (individual, protocol, id.value);
+              var im_persona = Utils.find_im_persona (individual, protocol, id.value);
               if (im_persona != null) {
                 var type = im_persona.presence_type;
                 if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
@@ -280,7 +313,7 @@ public class Contacts.ContactSheet : ContactForm {
     var addr_details = persona as PostalAddressDetails;
     if (addr_details != null) {
       foreach (var addr in addr_details.postal_addresses) {
-        var all_strs = string.joinv ("\n", Contacts.Utils.format_address (addr.value));
+        var all_strs = string.joinv ("\n", Utils.format_address (addr.value));
         add_row_with_label (TypeSet.general.format_type (addr), all_strs);
       }
     }
