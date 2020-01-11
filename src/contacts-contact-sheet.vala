@@ -231,8 +231,15 @@ public class Contacts.ContactSheet : ContactForm {
           try {
             show_uri_on_window (window, fallback_to_https (url.value), Gdk.CURRENT_TIME);
           } catch (Error e) {
-            debug ("Failed to open url");
-            print ("Error");
+            var message = "Failed to open url '%s'".printf(url.value);
+
+            // Notify the user
+            var notification = new InAppNotification (message);
+            notification.show ();
+            window.add_notification (notification);
+
+            // Print details on stdout
+            debug (message + ": " + e.message);
           }
         });
         add_row_with_label (_("Website"), url.value, button);
