@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-02-03 21:10+0000\n"
-"PO-Revision-Date: 2020-02-04 10:50+0100\n"
+"POT-Creation-Date: 2020-02-05 19:25+0000\n"
+"PO-Revision-Date: 2020-02-06 11:31+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -106,6 +106,7 @@ msgstr "Seleccionar un contacto"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:213
 #: data/ui/contacts-window.ui:277 src/contacts-app.vala:120
+#: src/contacts-editor-property.vala:86
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -117,6 +118,11 @@ msgstr "Hacer otra…"
 #: src/contacts-window.vala:241
 msgid "Done"
 msgstr "Hecho"
+
+#: data/ui/contacts-editor-menu.ui:13
+#| msgid "Change Address Book"
+msgid "Change Addressbook"
+msgstr "Cambiar libreta de direcciones"
 
 #: data/ui/contacts-linked-personas-dialog.ui:12
 msgid "Linked Accounts"
@@ -245,7 +251,8 @@ msgstr "Atrás"
 msgid "Loading"
 msgstr "Cargando"
 
-#: src/contacts-accounts-list.vala:124 src/contacts-esd-setup.vala:149
+#: src/contacts-accounts-list.vala:124 src/contacts-addressbook-list.vala:112
+#: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Libreta de direcciones local"
 
@@ -274,7 +281,7 @@ msgstr "No se encontró ningún contacto con ID %s"
 msgid "Contact not found"
 msgstr "No se encontró el contacto"
 
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:118 src/contacts-editor-property.vala:84
 msgid "Change Address Book"
 msgstr "Cambiar libreta de direcciones"
 
@@ -364,25 +371,106 @@ msgstr "No se pudieron crear los contactos nuevos: %s"
 msgid "Unable to find newly created contact"
 msgstr "No se pudo encontrar el contacto nuevo creado"
 
-#: src/contacts-contact-sheet.vala:278
+#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:487
 msgid "Website"
 msgstr "Página web"
 
-#: src/contacts-contact-sheet.vala:295
+#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:497
 msgid "Nickname"
 msgstr "Apodo"
 
-#: src/contacts-contact-sheet.vala:301
+#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:561
 msgid "Birthday"
 msgstr "Cumpleaños"
 
-#: src/contacts-contact-sheet.vala:308
+#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:524
 msgid "Note"
 msgstr "Nota"
 
 #: src/contacts-crop-cheese-dialog.vala:91
 msgid "Unable to take photo."
 msgstr "No se puede hacer una foto."
+
+#: src/contacts-editor-property.vala:66
+#| msgid "May"
+msgid "Day"
+msgstr "Día"
+
+#: src/contacts-editor-property.vala:70
+msgid "Month"
+msgstr "Mes"
+
+#: src/contacts-editor-property.vala:74
+msgid "Year"
+msgstr "Año"
+
+#: src/contacts-editor-property.vala:85
+#| msgid "Street"
+msgid "Set"
+msgstr "Establecer"
+
+#: src/contacts-editor-property.vala:137
+msgid "Street"
+msgstr "Calle"
+
+#: src/contacts-editor-property.vala:137
+msgid "Extension"
+msgstr "Extensión"
+
+#: src/contacts-editor-property.vala:137
+msgid "City"
+msgstr "Ciudad"
+
+#: src/contacts-editor-property.vala:137
+msgid "State/Province"
+msgstr "Estado/Provincia"
+
+#: src/contacts-editor-property.vala:137
+msgid "Zip/Postal Code"
+msgstr "Zip/código postal"
+
+#: src/contacts-editor-property.vala:137
+msgid "PO box"
+msgstr "Apartado de correos"
+
+#: src/contacts-editor-property.vala:137
+msgid "Country"
+msgstr "País"
+
+#: src/contacts-editor-property.vala:335 src/contacts-editor-property.vala:585
+msgid "Delete field"
+msgstr "Eliminar campo"
+
+#: src/contacts-editor-property.vala:450
+#| msgid "Home address"
+msgid "Email address"
+msgstr "Dirección de corre-e"
+
+#: src/contacts-editor-property.vala:451
+msgid "Add email"
+msgstr "Añadir correo-e"
+
+#: src/contacts-editor-property.vala:468
+#| msgid "Enter phone number"
+msgid "Phone number"
+msgstr "Número de teléfono"
+
+#: src/contacts-editor-property.vala:469
+msgid "Add number"
+msgstr "Añadir número"
+
+#: src/contacts-editor-property.vala:488
+msgid "https://exmaple.com"
+msgstr "https://ejemplo.com"
+
+#: src/contacts-editor-property.vala:563 src/contacts-editor-property.vala:594
+#| msgid "Birthday"
+msgid "Set Birthday"
+msgstr "Establecer cumpleaños"
+
+#: src/contacts-editor-property.vala:612
+msgid "Address"
+msgstr "Dirección"
 
 #: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
 #: src/contacts-utils.vala:497
@@ -599,8 +687,6 @@ msgid "_Undo"
 msgstr "_Deshacer"
 
 #: src/contacts-window.vala:299
-#| msgid "%d contacts linked"
-#| msgid_plural "%d contacts linked"
 msgid "Contacts unlinked"
 msgstr "Contactos no enlazados"
 
@@ -714,9 +800,6 @@ msgstr "Guarda si la ventana está maximizada actualmente."
 #~ msgid "Work phone"
 #~ msgstr "Teléfono del trabajo"
 
-#~ msgid "Home address"
-#~ msgstr "Dirección personal"
-
 #~ msgid "Work address"
 #~ msgstr "Dirección del trabajo"
 
@@ -731,36 +814,6 @@ msgstr "Guarda si la ventana está maximizada actualmente."
 
 #~ msgid "Edit details"
 #~ msgstr "Editar los detalles"
-
-#~ msgid "Street"
-#~ msgstr "Calle"
-
-#~ msgid "Extension"
-#~ msgstr "Extensión"
-
-#~ msgid "City"
-#~ msgstr "Ciudad"
-
-#~ msgid "State/Province"
-#~ msgstr "Estado/Provincia"
-
-#~ msgid "Zip/Postal Code"
-#~ msgstr "Zip/código postal"
-
-#~ msgid "PO box"
-#~ msgstr "Apartado de correos"
-
-#~ msgid "Country"
-#~ msgstr "País"
-
-#~ msgid "Add email"
-#~ msgstr "Añadir correo-e"
-
-#~ msgid "Add number"
-#~ msgstr "Añadir número"
-
-#~ msgid "Delete field"
-#~ msgstr "Eliminar campo"
 
 #~ msgid "You need to enter some data"
 #~ msgstr "Debe introducir algunos datos"
@@ -851,9 +904,6 @@ msgstr "Guarda si la ventana está maximizada actualmente."
 #~ msgid "April"
 #~ msgstr "Abril"
 
-#~ msgid "May"
-#~ msgstr "Mayo"
-
 #~ msgid "June"
 #~ msgstr "Junio"
 
@@ -902,9 +952,6 @@ msgstr "Guarda si la ventana está maximizada actualmente."
 
 #~ msgid "Phone"
 #~ msgstr "Teléfono"
-
-#~ msgid "Address"
-#~ msgstr "Dirección"
 
 #~ msgid "You must specify a contact name"
 #~ msgstr "Debe especificar un nombre de contacto"
@@ -1050,9 +1097,6 @@ msgstr "Guarda si la ventana está maximizada actualmente."
 
 #~ msgid "Enter alias"
 #~ msgstr "Introducir alias"
-
-#~ msgid "Enter phone number"
-#~ msgstr "Introducir número de teléfono"
 
 #~ msgid "Address copied to clipboard"
 #~ msgstr "Dirección copiada al portapapeles"
