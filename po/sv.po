@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-02-03 21:10+0000\n"
-"PO-Revision-Date: 2020-02-04 21:14+0100\n"
+"POT-Creation-Date: 2020-02-08 14:35+0000\n"
+"PO-Revision-Date: 2020-02-10 19:17+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -73,20 +73,25 @@ msgstr "Hjälp"
 
 #: data/gtk/help-overlay.ui:21
 msgctxt "shortcut window"
+msgid "Open menu"
+msgstr "Öppna meny"
+
+#: data/gtk/help-overlay.ui:28
+msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "Skapa en ny kontakt"
 
-#: data/gtk/help-overlay.ui:28
+#: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Sök"
 
-#: data/gtk/help-overlay.ui:35
+#: data/gtk/help-overlay.ui:42
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "Genvägslista"
 
-#: data/gtk/help-overlay.ui:42
+#: data/gtk/help-overlay.ui:49
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Avsluta"
@@ -103,8 +108,9 @@ msgstr "Välj en fil…"
 msgid "Select a contact"
 msgstr "Välj en kontakt"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:213
-#: data/ui/contacts-window.ui:277 src/contacts-app.vala:120
+#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
+#: data/ui/contacts-window.ui:278 src/contacts-app.vala:120
+#: src/contacts-editor-property.vala:86
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -112,10 +118,14 @@ msgstr "Avbryt"
 msgid "Take Another…"
 msgstr "Ta en till…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:334
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
 #: src/contacts-window.vala:241
 msgid "Done"
 msgstr "Färdig"
+
+#: data/ui/contacts-editor-menu.ui:13
+msgid "Change Addressbook"
+msgstr "Byt adressbok"
 
 #: data/ui/contacts-linked-personas-dialog.ui:12
 msgid "Linked Accounts"
@@ -232,19 +242,20 @@ msgstr "Skapa ny kontakt"
 msgid "Add contact"
 msgstr "Lägg till kontakt"
 
-#: data/ui/contacts-window.ui:214
+#: data/ui/contacts-window.ui:215
 msgid "Cancel selection"
 msgstr "Avbryt markering"
 
-#: data/ui/contacts-window.ui:258
+#: data/ui/contacts-window.ui:259
 msgid "Back"
 msgstr "Bakåt"
 
-#: data/ui/contacts-window.ui:396
+#: data/ui/contacts-window.ui:397
 msgid "Loading"
 msgstr "Läser in"
 
-#: src/contacts-accounts-list.vala:124 src/contacts-esd-setup.vala:149
+#: src/contacts-accounts-list.vala:124 src/contacts-addressbook-list.vala:112
+#: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Lokal adressbok"
 
@@ -273,7 +284,7 @@ msgstr "Ingen kontakt med id %s hittades"
 msgid "Contact not found"
 msgstr "Kontakten hittades inte"
 
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:118 src/contacts-editor-property.vala:84
 msgid "Change Address Book"
 msgstr "Byt adressbok"
 
@@ -369,25 +380,102 @@ msgstr "Kunde inte skapa nya kontakter: %s"
 msgid "Unable to find newly created contact"
 msgstr "Kunde inte hitta nyligen skapad kontakt"
 
-#: src/contacts-contact-sheet.vala:278
+#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:487
 msgid "Website"
 msgstr "Webbplats"
 
-#: src/contacts-contact-sheet.vala:295
+#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:497
 msgid "Nickname"
 msgstr "Smeknamn"
 
-#: src/contacts-contact-sheet.vala:301
+#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:561
 msgid "Birthday"
 msgstr "Födelsedag"
 
-#: src/contacts-contact-sheet.vala:308
+#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:524
 msgid "Note"
 msgstr "Anteckning"
 
 #: src/contacts-crop-cheese-dialog.vala:91
 msgid "Unable to take photo."
 msgstr "Kunde inte ta ett foto."
+
+#: src/contacts-editor-property.vala:66
+msgid "Day"
+msgstr "Dag"
+
+#: src/contacts-editor-property.vala:70
+msgid "Month"
+msgstr "Månad"
+
+#: src/contacts-editor-property.vala:74
+msgid "Year"
+msgstr "År"
+
+#: src/contacts-editor-property.vala:85
+msgid "Set"
+msgstr "Ställ in"
+
+#: src/contacts-editor-property.vala:137
+msgid "Street"
+msgstr "Gata"
+
+#: src/contacts-editor-property.vala:137
+msgid "Extension"
+msgstr "Anknytning"
+
+#: src/contacts-editor-property.vala:137
+msgid "City"
+msgstr "Stad"
+
+#: src/contacts-editor-property.vala:137
+msgid "State/Province"
+msgstr "Län/Provins"
+
+#: src/contacts-editor-property.vala:137
+msgid "Zip/Postal Code"
+msgstr "Postnummer"
+
+#: src/contacts-editor-property.vala:137
+msgid "PO box"
+msgstr "Box"
+
+#: src/contacts-editor-property.vala:137
+msgid "Country"
+msgstr "Land"
+
+#: src/contacts-editor-property.vala:335 src/contacts-editor-property.vala:585
+msgid "Delete field"
+msgstr "Ta bort fält"
+
+#: src/contacts-editor-property.vala:450
+msgid "Email address"
+msgstr "E-postadress"
+
+#: src/contacts-editor-property.vala:451
+msgid "Add email"
+msgstr "Lägg till e-post"
+
+#: src/contacts-editor-property.vala:468
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#: src/contacts-editor-property.vala:469
+msgid "Add number"
+msgstr "Lägg till nummer"
+
+# https://gitlab.gnome.org/GNOME/gnome-contacts/issues/162
+#: src/contacts-editor-property.vala:488
+msgid "https://exmaple.com"
+msgstr "https://example.com"
+
+#: src/contacts-editor-property.vala:563 src/contacts-editor-property.vala:594
+msgid "Set Birthday"
+msgstr "Ställ in födelsedag"
+
+#: src/contacts-editor-property.vala:612
+msgid "Address"
+msgstr "Adress"
 
 #: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
 #: src/contacts-utils.vala:497
@@ -717,9 +805,6 @@ msgstr "Lagrar om fönstret för närvarande är maximerat."
 #~ msgid "Work phone"
 #~ msgstr "Arbetstelefon"
 
-#~ msgid "Home address"
-#~ msgstr "Hemadress"
-
 #~ msgid "Work address"
 #~ msgstr "Jobbadress"
 
@@ -734,36 +819,6 @@ msgstr "Lagrar om fönstret för närvarande är maximerat."
 
 #~ msgid "Edit details"
 #~ msgstr "Redigera detaljer"
-
-#~ msgid "Street"
-#~ msgstr "Gata"
-
-#~ msgid "Extension"
-#~ msgstr "Anknytning"
-
-#~ msgid "City"
-#~ msgstr "Stad"
-
-#~ msgid "State/Province"
-#~ msgstr "Län/Provins"
-
-#~ msgid "Zip/Postal Code"
-#~ msgstr "Postnummer"
-
-#~ msgid "PO box"
-#~ msgstr "Box"
-
-#~ msgid "Country"
-#~ msgstr "Land"
-
-#~ msgid "Add email"
-#~ msgstr "Lägg till e-post"
-
-#~ msgid "Add number"
-#~ msgstr "Lägg till nummer"
-
-#~ msgid "Delete field"
-#~ msgstr "Ta bort fält"
 
 #~ msgid "You need to enter some data"
 #~ msgstr "Du behöver ange någon information"
@@ -849,9 +904,6 @@ msgstr "Lagrar om fönstret för närvarande är maximerat."
 
 #~ msgid "April"
 #~ msgstr "April"
-
-#~ msgid "May"
-#~ msgstr "Maj"
 
 #~ msgid "June"
 #~ msgstr "Juni"
