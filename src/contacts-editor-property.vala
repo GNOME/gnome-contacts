@@ -485,7 +485,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
 
     var box = new EditorPropertyRow ("urls");
     box.add_base_label (_("Website"));
-    box.add_base_entry_url (set, details, _("https://exmaple.com"));
+    box.add_base_entry_url (set, details, _("https://example.com"));
     box.add_base_delete (set, details);
 
     box.sensitive = this.writeable;
