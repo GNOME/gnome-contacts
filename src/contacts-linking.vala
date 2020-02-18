@@ -33,7 +33,6 @@ namespace Contacts {
 
     /* Link individuals */
     public async void do (LinkedList<Individual> individuals) {
-      print ("LINK\n");
       var personas_to_link = new HashSet<Persona> ();
       foreach (var i in individuals) {
         var saved_personas = new HashSet<Persona> ();
