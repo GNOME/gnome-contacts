@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-02-03 21:10+0000\n"
-"PO-Revision-Date: 2020-02-04 14:02+0700\n"
+"POT-Creation-Date: 2020-02-12 10:44+0000\n"
+"PO-Revision-Date: 2020-02-23 21:32+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -72,20 +72,25 @@ msgstr "Bantuan"
 
 #: data/gtk/help-overlay.ui:21
 msgctxt "shortcut window"
+msgid "Open menu"
+msgstr "Buka menu"
+
+#: data/gtk/help-overlay.ui:28
+msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "Buat kontak baru"
 
-#: data/gtk/help-overlay.ui:28
+#: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Cari"
 
-#: data/gtk/help-overlay.ui:35
+#: data/gtk/help-overlay.ui:42
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "Daftar pintasan"
 
-#: data/gtk/help-overlay.ui:42
+#: data/gtk/help-overlay.ui:49
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Keluar"
@@ -102,8 +107,9 @@ msgstr "Pilih Berkas…"
 msgid "Select a contact"
 msgstr "Pilih suatu kontak"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:213
-#: data/ui/contacts-window.ui:277 src/contacts-app.vala:120
+#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
+#: data/ui/contacts-window.ui:278 src/contacts-app.vala:120
+#: src/contacts-editor-property.vala:86
 msgid "Cancel"
 msgstr "Batal"
 
@@ -111,10 +117,14 @@ msgstr "Batal"
 msgid "Take Another…"
 msgstr "Ambil yang Lain…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:334
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
 #: src/contacts-window.vala:241
 msgid "Done"
 msgstr "Selesai"
+
+#: data/ui/contacts-editor-menu.ui:13
+msgid "Change Addressbook"
+msgstr "Ubah Buku Alamat"
 
 #: data/ui/contacts-linked-personas-dialog.ui:12
 msgid "Linked Accounts"
@@ -231,19 +241,20 @@ msgstr "Buat kontak baru"
 msgid "Add contact"
 msgstr "Tambah kontak"
 
-#: data/ui/contacts-window.ui:214
+#: data/ui/contacts-window.ui:215
 msgid "Cancel selection"
 msgstr "Batalkan pilihan"
 
-#: data/ui/contacts-window.ui:258
+#: data/ui/contacts-window.ui:259
 msgid "Back"
 msgstr "Kembali"
 
-#: data/ui/contacts-window.ui:396
+#: data/ui/contacts-window.ui:397
 msgid "Loading"
 msgstr "Sedang memuat"
 
-#: src/contacts-accounts-list.vala:124 src/contacts-esd-setup.vala:149
+#: src/contacts-accounts-list.vala:124 src/contacts-addressbook-list.vala:112
+#: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Buku Alamat Lokal"
 
@@ -272,7 +283,7 @@ msgstr "Tak ditemukan kontak dengan id %s"
 msgid "Contact not found"
 msgstr "Kontak tak ditemukan"
 
-#: src/contacts-app.vala:118
+#: src/contacts-app.vala:118 src/contacts-editor-property.vala:84
 msgid "Change Address Book"
 msgstr "Ubah Buku Alamat"
 
@@ -365,25 +376,101 @@ msgstr "Tak bisa membuat kontak baru: %s"
 msgid "Unable to find newly created contact"
 msgstr "Tak bisa temukan kontak yang baru dibuat"
 
-#: src/contacts-contact-sheet.vala:278
+#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:487
 msgid "Website"
 msgstr "Situs web"
 
-#: src/contacts-contact-sheet.vala:295
+#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:497
 msgid "Nickname"
 msgstr "Nama panggilan"
 
-#: src/contacts-contact-sheet.vala:301
+#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:561
 msgid "Birthday"
 msgstr "Tanggal lahir"
 
-#: src/contacts-contact-sheet.vala:308
+#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:524
 msgid "Note"
 msgstr "Catatan"
 
 #: src/contacts-crop-cheese-dialog.vala:91
 msgid "Unable to take photo."
 msgstr "Tidak dapat mengambil foto."
+
+#: src/contacts-editor-property.vala:66
+msgid "Day"
+msgstr "Hari"
+
+#: src/contacts-editor-property.vala:70
+msgid "Month"
+msgstr "Bulan"
+
+#: src/contacts-editor-property.vala:74
+msgid "Year"
+msgstr "Tahun"
+
+#: src/contacts-editor-property.vala:85
+msgid "Set"
+msgstr "Atur"
+
+#: src/contacts-editor-property.vala:137
+msgid "Street"
+msgstr "Jalan"
+
+#: src/contacts-editor-property.vala:137
+msgid "Extension"
+msgstr "Ekstensi"
+
+#: src/contacts-editor-property.vala:137
+msgid "City"
+msgstr "Kota"
+
+#: src/contacts-editor-property.vala:137
+msgid "State/Province"
+msgstr "Negara Bagian/Provinsi"
+
+#: src/contacts-editor-property.vala:137
+msgid "Zip/Postal Code"
+msgstr "Kode Pos"
+
+#: src/contacts-editor-property.vala:137
+msgid "PO box"
+msgstr "Kotak pos"
+
+#: src/contacts-editor-property.vala:137
+msgid "Country"
+msgstr "Negara"
+
+#: src/contacts-editor-property.vala:335 src/contacts-editor-property.vala:585
+msgid "Delete field"
+msgstr "Hapus kolom"
+
+#: src/contacts-editor-property.vala:450
+msgid "Email address"
+msgstr "Alamat surel"
+
+#: src/contacts-editor-property.vala:451
+msgid "Add email"
+msgstr "Tambah surel"
+
+#: src/contacts-editor-property.vala:468
+msgid "Phone number"
+msgstr "Nomor telepon"
+
+#: src/contacts-editor-property.vala:469
+msgid "Add number"
+msgstr "Tambah nomor"
+
+#: src/contacts-editor-property.vala:488
+msgid "https://example.com"
+msgstr "https://contoh.com"
+
+#: src/contacts-editor-property.vala:563 src/contacts-editor-property.vala:594
+msgid "Set Birthday"
+msgstr "Atur Tanggal Lahir"
+
+#: src/contacts-editor-property.vala:612
+msgid "Address"
+msgstr "Alamat"
 
 #: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
 #: src/contacts-utils.vala:497
@@ -713,9 +800,6 @@ msgstr "Simpan jika jendela saat ini dimaksimalkan."
 #~ msgid "Work phone"
 #~ msgstr "Telepon kantor"
 
-#~ msgid "Home address"
-#~ msgstr "Alamat rumah"
-
 #~ msgid "Work address"
 #~ msgstr "Alamat kantor"
 
@@ -730,33 +814,6 @@ msgstr "Simpan jika jendela saat ini dimaksimalkan."
 
 #~ msgid "Edit details"
 #~ msgstr "Sunting rincian"
-
-#~ msgid "Street"
-#~ msgstr "Jalan"
-
-#~ msgid "Extension"
-#~ msgstr "Ekstensi"
-
-#~ msgid "City"
-#~ msgstr "Kota"
-
-#~ msgid "State/Province"
-#~ msgstr "Negara Bagian/Provinsi"
-
-#~ msgid "Zip/Postal Code"
-#~ msgstr "Kode Pos"
-
-#~ msgid "PO box"
-#~ msgstr "Kotak pos"
-
-#~ msgid "Country"
-#~ msgstr "Negara"
-
-#~ msgid "Add email"
-#~ msgstr "Tambah surel"
-
-#~ msgid "Add number"
-#~ msgstr "Tambah nomor"
 
 #~ msgid "You need to enter some data"
 #~ msgstr "Anda perlu memasukkan beberapa data"
