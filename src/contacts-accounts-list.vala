@@ -132,6 +132,7 @@ public class Contacts.AccountsList : ListBox {
                      "hexpand", true);
       local_row.add_action (checkmark);
       local_row.set_data ("checkmark", checkmark);
+      local_row.set_data ("store", local_store);
       add (local_row);
       if (select_active &&
           local_store == this.contacts_store.aggregator.primary_store) {
