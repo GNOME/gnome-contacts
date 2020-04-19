@@ -306,71 +306,71 @@ PostalAddressDetails
     // TODO Implement the interface for the commented properties
     switch (property_name) {
       case "alias":
-        //alias = (persona as AliasDetails).alias;
+        //alias = ((AliasDetails) persona).alias;
         break;
       case "avatar":
-        avatar = (persona as AvatarDetails).avatar;
+        avatar = ((AvatarDetails) persona).avatar;
         break;
       case "birthday":
-        birthday = (persona as BirthdayDetails).birthday;
+        birthday = ((BirthdayDetails) persona).birthday;
         break;
       case "calendar-event-id":
-        calendar_event_id = (persona as BirthdayDetails).calendar_event_id;
+        calendar_event_id = ((BirthdayDetails) persona).calendar_event_id;
         break;
       case "email-addresses":
-        foreach (var e in (persona as EmailDetails).email_addresses) {
+        foreach (var e in ((EmailDetails) persona).email_addresses) {
           email_addresses.add (new EmailFieldDetails (e.value, e.parameters));
         }
         break;
       case "is-favourite":
-        //is_favourite = (persona as FavouriteDetails).is_favourite;
+        //is_favourite = ((FavouriteDetails) persona).is_favourite;
         break;
       case "gender":
-        //gender = (persona as GenderDetails).gender;
+        //gender = ((GenderDetails) persona).gender;
         break;
       case "groups":
-        //groups = (persona as GroupDetails).groups;
+        //groups = ((GroupDetails) persona).groups;
         break;
       case "im-addresses":
-        im_addresses = (persona as ImDetails).im_addresses;
+        im_addresses = ((ImDetails) persona).im_addresses;
         break;
       case "local-ids":
-        //local_ids = (persona as LocalIdDetails).local_ids;
+        //local_ids = ((LocalIdDetails) persona).local_ids;
         break;
       case "structured-name":
-        structured_name = (persona as NameDetails).structured_name;
+        structured_name = ((NameDetails) persona).structured_name;
         break;
       case "full-name":
-        full_name = (persona as NameDetails).full_name;
+        full_name = ((NameDetails) persona).full_name;
         break;
       case "nickname":
-        nickname = (persona as NameDetails).nickname;
+        nickname = ((NameDetails) persona).nickname;
         break;
       case "notes":
-        foreach (var e in (persona as NoteDetails).notes) {
+        foreach (var e in ((NoteDetails) persona).notes) {
           notes.add (new NoteFieldDetails (e.value, e.parameters, e.id));
         }
         break;
       case "phone-numbers":
-        foreach (var e in (persona as PhoneDetails).phone_numbers) {
+        foreach (var e in ((PhoneDetails) persona).phone_numbers) {
           phone_numbers.add (new PhoneFieldDetails (e.value, e.parameters));
         }
         break;
       case "postal-addresses":
-        foreach (var e in (persona as PostalAddressDetails).postal_addresses) {
+        foreach (var e in ((PostalAddressDetails) persona).postal_addresses) {
           postal_addresses.add (new PostalAddressFieldDetails (e.value, e.parameters));
         }
         break;
       case "roles":
-        //roles (persona as RoleDetails).roles;
+        //roles ((RoleDetails) persona).roles;
         break;
       case "urls":
-        foreach (var e in (persona as UrlDetails).urls) {
+        foreach (var e in ((UrlDetails) persona).urls) {
           urls.add (new UrlFieldDetails (e.value, e.parameters));
         }
         break;
       case "web-service-addresses":
-        //web_service_addresses.add_all((persona as WebServiceDetails).web_service_addresses);
+        //web_service_addresses.add_all(((WebServiceDetails) persona).web_service_addresses);
         break;
       default:
         debug ("Unknown property '%s' in FakePersona.get_property_from_real().", property_name);
@@ -408,16 +408,16 @@ PostalAddressDetails
                                           string property_name, Value new_value) throws PropertyError, IndividualAggregatorError, PropertyError {
     switch (property_name) {
       case "alias":
-        yield (persona as AliasDetails).change_alias ((string) new_value);
+        yield ((AliasDetails) persona).change_alias ((string) new_value);
         break;
       case "avatar":
-        yield (persona as AvatarDetails).change_avatar ((LoadableIcon?) new_value);
+        yield ((AvatarDetails) persona).change_avatar ((LoadableIcon?) new_value);
         break;
       case "birthday":
-        yield (persona as BirthdayDetails).change_birthday ((DateTime?) new_value);
+        yield ((BirthdayDetails) persona).change_birthday ((DateTime?) new_value);
         break;
       case "calendar-event-id":
-        yield (persona as BirthdayDetails).change_calendar_event_id ((string?) new_value);
+        yield ((BirthdayDetails) persona).change_calendar_event_id ((string?) new_value);
         break;
       case "email-addresses":
         var original = (Set<EmailFieldDetails>) new_value;
@@ -426,31 +426,31 @@ PostalAddressDetails
           if (e.value != null && e.value != "")
             copy.add (new EmailFieldDetails (e.value, e.parameters));
         }
-        yield (persona as EmailDetails).change_email_addresses (copy);
+        yield ((EmailDetails) persona).change_email_addresses (copy);
         break;
       case "is-favourite":
-        yield (persona as FavouriteDetails).change_is_favourite ((bool) new_value);
+        yield ((FavouriteDetails) persona).change_is_favourite ((bool) new_value);
         break;
       case "gender":
-        yield (persona as GenderDetails).change_gender ((Gender) new_value);
+        yield ((GenderDetails) persona).change_gender ((Gender) new_value);
         break;
       case "groups":
-        yield (persona as GroupDetails).change_groups ((Set<string>) new_value);
+        yield ((GroupDetails) persona).change_groups ((Set<string>) new_value);
         break;
       case "im-addresses":
-        yield (persona as ImDetails).change_im_addresses ((MultiMap<string, ImFieldDetails>) new_value);
+        yield ((ImDetails) persona).change_im_addresses ((MultiMap<string, ImFieldDetails>) new_value);
         break;
       case "local-ids":
-        yield (persona as LocalIdDetails).change_local_ids ((Set<string>) new_value);
+        yield ((LocalIdDetails) persona).change_local_ids ((Set<string>) new_value);
         break;
       case "structured-name":
-        yield (persona as NameDetails).change_structured_name ((StructuredName?) new_value);
+        yield ((NameDetails) persona).change_structured_name ((StructuredName?) new_value);
         break;
       case "full-name":
-        yield (persona as NameDetails).change_full_name ((string) new_value);
+        yield ((NameDetails) persona).change_full_name ((string) new_value);
         break;
       case "nickname":
-        yield (persona as NameDetails).change_nickname ((string) new_value);
+        yield ((NameDetails) persona).change_nickname ((string) new_value);
         break;
       case "notes":
         var original = (Set<NoteFieldDetails>) new_value;
@@ -459,7 +459,7 @@ PostalAddressDetails
           if (e.value != null && e.value != "")
             copy.add (new NoteFieldDetails (e.value, e.parameters));
         }
-        yield (persona as NoteDetails).change_notes (copy);
+        yield ((NoteDetails) persona).change_notes (copy);
         break;
       case "phone-numbers":
         var original = (Set<PhoneFieldDetails>) new_value;
@@ -468,7 +468,7 @@ PostalAddressDetails
           if (e.value != null && e.value != "")
             copy.add (new PhoneFieldDetails (e.value, e.parameters));
         }
-        yield (persona as PhoneDetails).change_phone_numbers (copy);
+        yield ((PhoneDetails) persona).change_phone_numbers (copy);
         break;
       case "postal-addresses":
         var original = (Set<PostalAddressFieldDetails>) new_value;
@@ -478,10 +478,10 @@ PostalAddressDetails
           if (e.value != null)
             copy.add (new PostalAddressFieldDetails (e.value, e.parameters));
         }
-        yield (persona as PostalAddressDetails).change_postal_addresses (copy);
+        yield ((PostalAddressDetails) persona).change_postal_addresses (copy);
         break;
       case "roles":
-        yield (persona as RoleDetails).change_roles ((Set<RoleFieldDetails>) new_value);
+        yield ((RoleDetails) persona).change_roles ((Set<RoleFieldDetails>) new_value);
         break;
       case "urls":
         var original = (Set<UrlFieldDetails>) new_value;
@@ -490,10 +490,10 @@ PostalAddressDetails
           if (e.value != null && e.value != "")
             copy.add (new UrlFieldDetails (e.value, e.parameters));
         }
-        yield (persona as UrlDetails).change_urls (copy);
+        yield ((UrlDetails) persona).change_urls (copy);
         break;
       case "web-service-addresses":
-        yield (persona as WebServiceDetails).change_web_service_addresses ((MultiMap<string, WebServiceFieldDetails>) new_value);
+        yield ((WebServiceDetails) persona).change_web_service_addresses ((MultiMap<string, WebServiceFieldDetails>) new_value);
         break;
       default:
         critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);
