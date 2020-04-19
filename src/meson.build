@@ -48,7 +48,7 @@ contacts_deps = [
 
 # Add extra stuff given a certain set of options
 if cheese_dep.found() and cheese_gtk_dep.found()
-  contacts_deps += [ cheese, cheese_gtk ]
+  contacts_deps += [ cheese_dep, cheese_gtk_dep ]
   contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
 endif
 
