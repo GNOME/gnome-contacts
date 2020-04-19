@@ -259,7 +259,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     combo.changed.connect (() => {
       combo.active_descriptor.save_to_field_details(details);
       // Workaround: we shouldn't do a manual signal
-      (set as FakeHashSet).changed ();
+      ((FakeHashSet) set).changed ();
       debug ("Property phone changed");
     });
   }
@@ -280,7 +280,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     value_entry.changed.connect (() => {
       details.value = value_entry.get_text ();
       // Workaround: we shouldn't do a manual signal
-      (set as FakeHashSet).changed ();
+      ((FakeHashSet) set).changed ();
       debug ("Property email changed");
       this.is_empty = value_entry.get_text () == "";
     });
@@ -301,7 +301,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     value_entry.changed.connect (() => {
       details.value = value_entry.get_text ();
       // Workaround: we shouldn't do a manual signal
-      (set as FakeHashSet).changed ();
+      ((FakeHashSet) set).changed ();
       debug ("Property type changed");
 
       this.is_empty = value_entry.get_text () == "";
@@ -323,7 +323,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     value_entry.changed.connect (() => {
       details.value = value_entry.get_text ();
       // Workaround: we shouldn't do a manual signal
-      (set as FakeHashSet).changed ();
+      ((FakeHashSet) set).changed ();
       debug ("Property type changed");
 
       this.is_empty = value_entry.get_text () == "";
@@ -364,7 +364,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     create_for_property (persona, property_name, only_new);
   }
 
-  void create_for_property (Persona p, string prop_name, bool only_new) {
+  private void create_for_property (Persona p, string prop_name, bool only_new) {
     switch (prop_name) {
       case "email-addresses":
         var details = p as EmailDetails;
@@ -540,7 +540,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
       value_text.get_buffer ().get_end_iter (out end);
       details.value = value_text.get_buffer ().get_text (start, end, true);
       // Workaround: we shouldn't do a manual signal
-      (set as FakeHashSet).changed ();
+      ((FakeHashSet) set).changed ();
       debug ("Property changed");
       box.is_empty = details.value == "";
     });
@@ -618,7 +618,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
 
     value_address.changed.connect (() => {
       // Workaround: we shouldn't do a manual signal
-      (set as FakeHashSet).changed ();
+      ((FakeHashSet) set).changed ();
       debug ("Address changed");
       box.is_empty = value_address.is_empty ();
     });
