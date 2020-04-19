@@ -47,7 +47,7 @@ contacts_deps = [
 ]
 
 # Add extra stuff given a certain set of options
-if get_option('cheese')
+if cheese_dep.found() and cheese_gtk_dep.found()
   contacts_deps += [ cheese, cheese_gtk ]
   contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
 endif
@@ -103,7 +103,7 @@ contacts_c_sources = [
   'cc-crop-area.c',
 ]
 
-if get_option('cheese')
+if cheese_dep.found() and cheese_gtk_dep.found()
   contacts_c_sources += 'cheese-flash.c'
 endif
 

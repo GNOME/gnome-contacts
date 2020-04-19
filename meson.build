@@ -46,10 +46,8 @@ libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
 
-if get_option('cheese')
-  cheese = dependency('cheese')
-  cheese_gtk = dependency('cheese-gtk', version: '>= 3.3.91')
-endif
+cheese_dep = dependency('cheese', required: get_option('cheese'))
+cheese_gtk_dep = dependency('cheese-gtk', version: '>= 3.3.91', required: get_option('cheese'))
 
 if get_option('telepathy')
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
