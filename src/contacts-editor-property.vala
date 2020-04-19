@@ -247,7 +247,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     this.header.pack_start (title_label);
   }
 
-  public void add_base_combo (Set<AbstractFieldDetails> set, string label, TypeSet combo_type, AbstractFieldDetails details) {
+  public void add_base_combo (Set<AbstractFieldDetails> details_set, string label, TypeSet combo_type, AbstractFieldDetails details) {
     var title_label = new Label (label);
     title_label.set_halign (Align.START);
     this.header.pack_start (title_label);
@@ -259,13 +259,13 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     combo.changed.connect (() => {
       combo.active_descriptor.save_to_field_details(details);
       // Workaround: we shouldn't do a manual signal
-      ((FakeHashSet) set).changed ();
+      ((FakeHashSet) details_set).changed ();
       debug ("Property phone changed");
     });
   }
 
   //FIXME: create only one add_base_entry
-  public void add_base_entry_email (Set<AbstractFieldDetails> set,
+  public void add_base_entry_email (Set<AbstractFieldDetails> details_set,
                                     EmailFieldDetails details,
                                     string placeholder) {
     var value_entry = new Entry ();
@@ -280,13 +280,13 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     value_entry.changed.connect (() => {
       details.value = value_entry.get_text ();
       // Workaround: we shouldn't do a manual signal
-      ((FakeHashSet) set).changed ();
+      ((FakeHashSet) details_set).changed ();
       debug ("Property email changed");
       this.is_empty = value_entry.get_text () == "";
     });
   }
 
-  public void add_base_entry_phone (Set<AbstractFieldDetails> set,
+  public void add_base_entry_phone (Set<AbstractFieldDetails> details_set,
                                     PhoneFieldDetails details,
                                     string placeholder) {
     var value_entry = new Entry ();
@@ -301,14 +301,14 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     value_entry.changed.connect (() => {
       details.value = value_entry.get_text ();
       // Workaround: we shouldn't do a manual signal
-      ((FakeHashSet) set).changed ();
+      ((FakeHashSet) details_set).changed ();
       debug ("Property type changed");
 
       this.is_empty = value_entry.get_text () == "";
     });
   }
 
-  public void add_base_entry_url (Set<AbstractFieldDetails> set,
+  public void add_base_entry_url (Set<AbstractFieldDetails> details_set,
                                   UrlFieldDetails details,
                                   string placeholder) {
     var value_entry = new Entry ();
@@ -323,14 +323,15 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     value_entry.changed.connect (() => {
       details.value = value_entry.get_text ();
       // Workaround: we shouldn't do a manual signal
-      ((FakeHashSet) set).changed ();
+      ((FakeHashSet) details_set).changed ();
       debug ("Property type changed");
 
       this.is_empty = value_entry.get_text () == "";
     });
   }
 
-  public void add_base_delete (Set<AbstractFieldDetails> set, AbstractFieldDetails details) {
+  public void add_base_delete (Set<AbstractFieldDetails> details_set,
+                               AbstractFieldDetails details) {
     var delete_button = new Button.from_icon_name ("user-trash-symbolic");
     delete_button.get_accessible ().set_name (_("Delete field"));
     delete_button.set_valign (Align.START);
@@ -341,7 +342,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     delete_button.clicked.connect (() => {
       debug ("Property removed");
       this.remove ();
-      set.remove (details);
+      details_set.remove (details);
     });
   }
 }
@@ -512,12 +513,13 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
   }
 
   // TODO: support different types of nodes
-  private EditorPropertyRow create_for_note (Set<NoteFieldDetails> set, NoteFieldDetails? details = null) {
+  private EditorPropertyRow create_for_note (Set<NoteFieldDetails> details_set,
+                                             NoteFieldDetails? details = null) {
     if (details == null) {
       var parameters = new HashMultiMap<string, string> ();
       parameters["type"] = "PERSONAL";
       var new_details = new NoteFieldDetails ("", parameters);
-      set.add(new_details);
+      details_set.add(new_details);
       details = new_details;
     }
     var box = new EditorPropertyRow ("notes");
@@ -532,7 +534,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     sw.add (value_text);
     box.container.pack_start (sw);
 
-    box.add_base_delete (set, details);
+    box.add_base_delete (details_set, details);
 
     value_text.get_buffer ().changed.connect (() => {
       TextIter start, end;
@@ -540,7 +542,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
       value_text.get_buffer ().get_end_iter (out end);
       details.value = value_text.get_buffer ().get_text (start, end, true);
       // Workaround: we shouldn't do a manual signal
-      ((FakeHashSet) set).changed ();
+      ((FakeHashSet) details_set).changed ();
       debug ("Property changed");
       box.is_empty = details.value == "";
     });
@@ -598,27 +600,27 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     return box;
   }
 
-  private EditorPropertyRow create_for_address (Set<PostalAddressFieldDetails> set,
+  private EditorPropertyRow create_for_address (Set<PostalAddressFieldDetails> details_set,
                                                 PostalAddressFieldDetails? details = null) {
     if (details == null) {
       var parameters = new HashMultiMap<string, string> ();
       parameters["type"] = "HOME";
       var address = new PostalAddress(null, null, null, null, null, null, null, null, null);
       var new_details = new PostalAddressFieldDetails (address, parameters);
-      set.add(new_details);
+      details_set.add(new_details);
       details = new_details;
     }
     var box = new EditorPropertyRow ("postal-addresses");
-    box.add_base_combo (set, _("Address"), TypeSet.general, details);
+    box.add_base_combo (details_set, _("Address"), TypeSet.general, details);
 
     var value_address = new AddressEditor (details);
     box.container.pack_start (value_address);
 
-    box.add_base_delete (set, details);
+    box.add_base_delete (details_set, details);
 
     value_address.changed.connect (() => {
       // Workaround: we shouldn't do a manual signal
-      ((FakeHashSet) set).changed ();
+      ((FakeHashSet) details_set).changed ();
       debug ("Address changed");
       box.is_empty = value_address.is_empty ();
     });
