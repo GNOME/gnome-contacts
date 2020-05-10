@@ -55,7 +55,6 @@ public class Contacts.App : Gtk.Application {
 
     this.settings = new Settings (this);
     add_main_option_entries (options);
-	  create_actions ();
   }
 
   public override int command_line (ApplicationCommandLine command_line) {
@@ -267,14 +266,6 @@ public class Contacts.App : Gtk.Application {
     }
   }
 
-  private void create_actions () {
-    this.add_action_entries (action_entries, this);
-
-    this.set_accels_for_action ("app.help", {"F1"});
-    this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
-    this.set_accels_for_action ("win.show-help-overlay", {"<Primary>question"});
-  }
-
   private void create_window () {
     this.window = new Contacts.Window (this.settings, this, this.contacts_store);
   }
@@ -343,6 +334,15 @@ public class Contacts.App : Gtk.Application {
     base.startup ();
 
     load_styling ();
+	create_actions ();
+  }
+
+  private void create_actions () {
+    this.add_action_entries (action_entries, this);
+
+    this.set_accels_for_action ("app.help", {"F1"});
+    this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
+    this.set_accels_for_action ("win.show-help-overlay", {"<Primary>question"});
   }
 
   public void load_styling () {
