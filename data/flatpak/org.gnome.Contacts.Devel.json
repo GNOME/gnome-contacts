@@ -9,25 +9,16 @@
       "Nightly"
     ],
     "finish-args": [
-        /* X11 + XShm access */
         "--share=ipc", "--socket=fallback-x11",
-        /* Wayland access */
         "--socket=wayland",
         "--device=dri",
-        /* Webcam access */
-        /* FIMXE: Remove when the webcam portal is available */
         "--device=all",
-        /* Notification access */
         "--talk-name=org.freedesktop.Notifications",
-        /* GNOME Control Center (for the Online Accounts panel) */
         "--talk-name=org.gnome.ControlCenter",
-        /* GNOME Online Accounts */
         "--talk-name=org.gnome.OnlineAccounts",
-        /* Evolution Data server */
         "--talk-name=org.gnome.evolution.dataserver.AddressBook10",
         "--talk-name=org.gnome.evolution.dataserver.Sources5",
         "--talk-name=org.gnome.evolution.dataserver.Subprocess.Backend.*",
-        /* Access for the default avatars */
         "--filesystem=xdg-data/pixmaps/faces:ro:create"
     ],
     "cleanup": [
@@ -41,7 +32,6 @@
     ],
     "modules": [
         {
-            /* Needed by g-o-a */
             "name": "librest",
             "sources": [
                 {
