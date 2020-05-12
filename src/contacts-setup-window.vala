@@ -36,7 +36,7 @@ public class Contacts.SetupWindow : Gtk.ApplicationWindow {
   public signal void setup_done (Edsf.PersonaStore selected_address_book);
 
   public SetupWindow (App app, Store store) {
-    Object (application: app);
+    Object (application: app, icon_name: Config.APP_ID);
     this.setup_accounts_list = new AccountsList (store);
     this.setup_accounts_list.hexpand = true;
     this.setup_accounts_list.show ();
