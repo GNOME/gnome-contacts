@@ -69,6 +69,7 @@ public class Contacts.ContactEditor : Box {
     this.name_entry = new Entry ();
     this.name_entry.hexpand = true;
     this.name_entry.valign = Align.CENTER;
+    this.name_entry.input_purpose = Gtk.InputPurpose.NAME;
     this.name_entry.placeholder_text = _("Add name");
 
     // Get primary persona from this.individual
