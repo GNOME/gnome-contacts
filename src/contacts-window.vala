@@ -98,6 +98,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     Object (
       application: app,
       show_menubar: false,
+      visible: true,
       store: contacts_store
     );
 
@@ -187,9 +188,14 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     this.contact_pane_container.add (this.contact_pane);
   }
 
-  public void set_list_pane () {
-    /* FIXME: if no contact is loaded per backend, I must place a sign
-     * saying "import your contacts/add online account" */
+  /**
+   * This shows the contact list on the left. This needs to be called
+   * explicitly when contacts are loaded, as the original setup will
+   * only show a loading spinner.
+   */
+  public void show_contact_list () {
+    // FIXME: if no contact is loaded per backend, I must place a sign
+    // saying "import your contacts/add online account"
     if (list_pane != null)
       return;
 
