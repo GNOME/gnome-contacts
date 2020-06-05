@@ -329,8 +329,8 @@ update_cursor (CcCropArea *area,
         case BOTTOM_RIGHT:
                 cursor_type = GDK_BOTTOM_RIGHT_CORNER;
                 break;
-	default:
-		g_assert_not_reached ();
+        default:
+                g_assert_not_reached ();
         }
 
         if (cursor_type != area->current_cursor) {
