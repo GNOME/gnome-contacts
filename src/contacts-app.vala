@@ -100,11 +100,9 @@ public class Contacts.App : Gtk.Application {
       var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
                                           _("No contact with id %s found"), id);
-      dialog.set_title(_("Contact not found"));
-      dialog.show ();
-      dialog.response.connect ( (id) => {
-          dialog.destroy ();
-        });
+      dialog.set_title (_("Contact not found"));
+      dialog.run ();
+      dialog.destroy ();
     }
   }
 
@@ -182,11 +180,9 @@ public class Contacts.App : Gtk.Application {
       var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
                                           _("No contact with email address %s found"), email_address);
-      dialog.set_title(_("Contact not found"));
-      dialog.show ();
-      dialog.response.connect ( (id) => {
-          dialog.destroy ();
-        });
+      dialog.set_title (_("Contact not found"));
+      dialog.run ();
+      dialog.destroy ();
     }
   }
 
