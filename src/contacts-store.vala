@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
 
 public class Contacts.Store : GLib.Object {
   public signal void added (Individual c);
@@ -137,9 +135,9 @@ public class Contacts.Store : GLib.Object {
 #endif
   }
 
-  private void on_individuals_changed_detailed (MultiMap<Individual?,Individual?> changes) {
-    var to_add = new HashSet<Individual> ();
-    var to_remove = new HashSet<Individual> ();
+  private void on_individuals_changed_detailed (Gee.MultiMap<Individual?,Individual?> changes) {
+    var to_add = new Gee.HashSet<Individual> ();
+    var to_remove = new Gee.HashSet<Individual> ();
     foreach (var i in changes.get_keys()) {
       if (i != null)
         to_remove.add (i);
@@ -162,8 +160,8 @@ public class Contacts.Store : GLib.Object {
     }
   }
 
-  public Collection<Individual> get_contacts () {
-    return aggregator.individuals.values.read_only_view;
+  public Gee.Collection<Individual> get_contacts () {
+    return this.aggregator.individuals.values.read_only_view;
   }
 
   public async Individual? find_contact (Query query) {
