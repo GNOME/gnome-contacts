@@ -17,13 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Hdy;
-using Gtk;
 using Folks;
 
-public class Contacts.AddressbookList : ListBox {
+public class Contacts.AddressbookList : Gtk.ListBox {
   private BackendStore store;
-  private Widget? checkmark;
   private AddressbookRow? marked_row;
   private bool show_icon;
 
@@ -37,33 +34,29 @@ public class Contacts.AddressbookList : ListBox {
     this.update ();
   }
 
-  void list_box_update_header_func (ListBoxRow row, ListBoxRow? before) {
+  void list_box_update_header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
     if (before == null) {
       row.set_header (null);
     } else if (row.get_header () == null) {
-      var header = new Separator (Orientation.HORIZONTAL);
+      var header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
       header.show ();
       row.set_header (header);
     }
   }
 
-  public override void row_activated (ListBoxRow row) {
+  public override void row_activated (Gtk.ListBoxRow row) {
     var addressbook = row as AddressbookRow;
     if (addressbook == null)
       return;
 
-    if (marked_row != null &&
-        marked_row == addressbook) {
+    if (this.marked_row != null && this.marked_row == addressbook)
       return;
-    }
 
-
-    if (marked_row != null) {
-      marked_row.unselect ();
-    }
+    if (this.marked_row != null)
+      this.marked_row.unselect ();
 
     addressbook.select ();
-    marked_row = addressbook;
+    this.marked_row = addressbook;
 
     addressbook_selected ();
   }
@@ -95,12 +88,12 @@ public class Contacts.AddressbookList : ListBox {
         source_account_id = goa_source_ext.account_id;
       }
 
-      Gtk.Image provider_image = null;
+      Gtk.Image? provider_image = null;
       if (this.show_icon) {
         if (source_account_id != "")
           provider_image = Contacts.get_icon_for_goa_account (source_account_id);
         else
-          provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
+          provider_image = new Gtk.Image.from_icon_name (Config.APP_ID, Gtk.IconSize.DIALOG);
       }
 
       var row = new AddressbookRow (provider_name, parent_source.display_name, provider_image);
@@ -108,7 +101,7 @@ public class Contacts.AddressbookList : ListBox {
     }
 
     if (local_store != null) {
-      var provider_image = (this.show_icon) ? new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG) : null;
+      var provider_image = this.show_icon? new Gtk.Image.from_icon_name (Config.APP_ID, Gtk.IconSize.DIALOG) : null;
       var local_row = new AddressbookRow (_("Local Address Book"), null, provider_image);
       add (local_row);
     }
@@ -125,8 +118,8 @@ public class Contacts.AddressbookList : ListBox {
 }
 
 public class Contacts.AddressbookRow : Hdy.ActionRow {
-  Widget checkmark;
-  public AddressbookRow (string title, string? subtitle, Widget? image = null) {
+  Gtk.Widget checkmark;
+  public AddressbookRow (string title, string? subtitle, Gtk.Widget? image = null) {
     this.set_selectable (false);
     if (image != null) {
       this.add_prefix (image);
@@ -137,10 +130,10 @@ public class Contacts.AddressbookRow : Hdy.ActionRow {
     }
     this.show_all ();
     this.no_show_all = true;
-    this.checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+    this.checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic", Gtk.IconSize.MENU);
     this.checkmark.set ("margin-end", 6,
-                        "valign", Align.CENTER,
-                        "halign", Align.END,
+                        "valign", Gtk.Align.CENTER,
+                        "halign", Gtk.Align.END,
                         "vexpand", true,
                         "hexpand", true);
     this.add_action (this.checkmark);
