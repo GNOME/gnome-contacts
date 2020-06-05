@@ -1,4 +1,3 @@
-/* -*- Mode: vala; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  *
@@ -16,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
 using Gee;
 
@@ -31,7 +29,7 @@ namespace Contacts {
       this.personas_to_link = new HashSet<HashSet<Persona>> ();
     }
 
-    /* Link individuals */
+    // Link individuals
     public async void do (LinkedList<Individual> individuals) {
       var personas_to_link = new HashSet<Persona> ();
       foreach (var i in individuals) {
@@ -47,19 +45,26 @@ namespace Contacts {
       } catch (Error e) {
         error ("Coulnd't link contacts: %s", e.message);
       }
-      finished = true;
+      this.finished = true;
     }
 
     /* Undo the linking */
     public async void undo () {
       var individual = this.personas_to_link.first_match(() => {return true;})
         .first_match(() => {return true;}).individual;
-      yield store.aggregator.unlink_individual (individual);
+
+      try {
+        yield store.aggregator.unlink_individual (individual);
+      } catch (Error e) {
+          warning ("Couldn't unlink individual: %s", e.message);
+          return;
+      }
+
       foreach (var personas in personas_to_link) {
         try {
           yield this.store.aggregator.link_personas (personas);
         } catch (Error e) {
-          error ("Coulnd't link contacts: %s", e.message);
+          warning ("Coulnd't link contacts: %s", e.message);
         }
       }
     }
@@ -83,7 +88,7 @@ namespace Contacts {
       try {
         yield store.aggregator.unlink_individual (main);
       } catch (Error e) {
-        error ("Coulnd't link contacts: %s", e.message);
+        warning ("Coulnd't link contacts: %s", e.message);
       }
     }
 
@@ -92,7 +97,7 @@ namespace Contacts {
       try {
         yield this.store.aggregator.link_personas (personas);
       } catch (Error e) {
-        error ("Coulnd't link contacts: %s", e.message);
+        warning ("Coulnd't link contacts: %s", e.message);
       }
     }
   }
