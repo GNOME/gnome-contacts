@@ -271,7 +271,7 @@ cheese_flash_fire (CheeseFlash *flash)
     parent = gtk_widget_get_toplevel (priv->parent);
   screen  = gtk_widget_get_screen (parent);
   monitor = gdk_screen_get_monitor_at_window (screen,
-					      gtk_widget_get_window (parent));
+                                              gtk_widget_get_window (parent));
 
   gdk_screen_get_monitor_geometry (screen, monitor, &rect);
   gdk_screen_get_monitor_workarea (screen, monitor, &work_rect);

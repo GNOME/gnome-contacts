@@ -42,21 +42,24 @@ public class Contacts.Store : GLib.Object {
 
   private void read_dont_suggest_db () {
     dont_suggest_link.clear ();
+
+    var path = Path.build_filename (Environment.get_user_config_dir (), "gnome-contacts", "dont_suggest.db");
     try {
-      var path = Path.build_filename (Environment.get_user_config_dir (), "gnome-contacts", "dont_suggest.db");
       string contents;
-      if (FileUtils.get_contents (path, out contents)) {
-	var rows = contents.split ("\n");
-	foreach (var r in rows) {
-	  var ids = r.split (" ");
-	  if (ids.length == 2) {
-	    dont_suggest_link.set (ids[0], ids[1]);
-	  }
-	}
+      FileUtils.get_contents (path, out contents))
+
+      var rows = contents.split ("\n");
+      foreach (var r in rows) {
+        var ids = r.split (" ");
+        if (ids.length == 2) {
+          dont_suggest_link.set (ids[0], ids[1]);
+        }
       }
     } catch (GLib.Error e) {
-      if (!(e is FileError.NOENT))
-	warning ("error loading no suggestion db: %s\n", e.message);
+      if (e is FileError.NOENT)
+        return;
+
+      warning ("error loading no suggestion db: %s\n", e.message);
     }
   }
 
@@ -68,9 +71,8 @@ public class Contacts.Store : GLib.Object {
 
       var s = new StringBuilder ();
       foreach (var key in dont_suggest_link.get_keys ()) {
-	foreach (var value in dont_suggest_link.get (key)) {
-	  s.append_printf ("%s %s\n", key, value);
-	}
+        foreach (var value in dont_suggest_link.get (key))
+          s.append_printf ("%s %s\n", key, value);
       }
       FileUtils.set_contents (path, s.str, s.len);
     } catch (GLib.Error e) {
@@ -81,18 +83,18 @@ public class Contacts.Store : GLib.Object {
   public bool may_suggest_link (Individual a, Individual b) {
     foreach (var a_persona in a.personas) {
       foreach (var no_link_uid in dont_suggest_link.get (a_persona.uid)) {
-	foreach (var b_persona in b.personas) {
-	  if (b_persona.uid == no_link_uid)
-	    return false;
-	}
+        foreach (var b_persona in b.personas) {
+          if (b_persona.uid == no_link_uid)
+            return false;
+        }
       }
     }
     foreach (var b_persona in b.personas) {
       foreach (var no_link_uid in dont_suggest_link.get (b_persona.uid)) {
-	foreach (var a_persona in a.personas) {
-	  if (a_persona.uid == no_link_uid)
-	    return false;
-	}
+        foreach (var a_persona in a.personas) {
+          if (a_persona.uid == no_link_uid)
+            return false;
+        }
       }
     }
     return true;
@@ -112,20 +114,20 @@ public class Contacts.Store : GLib.Object {
     var backend_store = BackendStore.dup ();
 
     this.aggregator = IndividualAggregator.dup_with_backend_store (backend_store);
-    aggregator.notify["is-quiescent"].connect ( (obj, pspec) => {
-	// We seem to get this before individuals_changed, so hack around it
-	Idle.add( () => {
-	    this.quiescent ();
-	    return false;
-	  });
+    aggregator.notify["is-quiescent"].connect ((obj, pspec) => {
+      // We seem to get this before individuals_changed, so hack around it
+      Idle.add( () => {
+        this.quiescent ();
+        return false;
       });
+    });
 
-    aggregator.notify["is-prepared"].connect ( (obj, pspec) => {
-	Idle.add( () => {
-	    this.prepared ();
-	    return false;
-	  });
+    aggregator.notify["is-prepared"].connect ((obj, pspec) => {
+      Idle.add( () => {
+        this.prepared ();
+        return false;
       });
+    });
 
     this.aggregator.individuals_changed_detailed.connect (on_individuals_changed_detailed);
     aggregator.prepare.begin ();
@@ -213,9 +215,9 @@ public class Contacts.Store : GLib.Object {
     if (!account.is_prepared (addressing)) {
       GLib.Quark[] features = { addressing };
       try {
-	yield account.prepare_async (features);
+        yield account.prepare_async (features);
       } catch (GLib.Error e) {
-	warning ("Unable to prepare account %s", e.message);
+        warning ("Unable to prepare account %s", e.message);
       }
     }
 
