@@ -527,11 +527,13 @@ public class Contacts.Window : Gtk.ApplicationWindow {
           foreach (var i in individuals)
             foreach (var p in i.personas) {
               // TODO: make sure it is acctally removed
-              try {
-                p.store.remove_persona.begin (p);
-              } catch (Error e) {
-                debug ("Coudln't remove persona");
-              }
+              p.store.remove_persona.begin (p, (obj, res) => {
+                try {
+                  p.store.remove_persona.end (res);
+                } catch (Error e) {
+                  debug ("Coudln't remove persona: %s", e.message);
+                }
+              });
             }
       });
 
