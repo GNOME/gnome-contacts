@@ -22,9 +22,6 @@ using Folks;
  * A widget representing a persona in the {@link ContactEditor}.
  */
 public class Contacts.EditorPersona : Gtk.Box {
-  private const GLib.ActionEntry[] action_entries = {
-    { "change-addressbook", change_addressbook },
-  };
 
   // List of important properties and a list of secoundary properties
   private const string[] PROPERTIES = {
@@ -55,10 +52,6 @@ public class Contacts.EditorPersona : Gtk.Box {
     this.content.set_header_func (list_box_update_header_func);
     frame.add (this.content);
     add (frame);
-
-    SimpleActionGroup actions = new SimpleActionGroup ();
-    actions.add_action_entries (action_entries, this);
-    this.insert_action_group ("persona", actions);
   }
 
   private void list_box_update_header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
@@ -79,8 +72,7 @@ public class Contacts.EditorPersona : Gtk.Box {
     this.persona = persona;
     this.aggregator = aggregator;
     create_label ();
-    /* TODO: implement the possibility of changing the addressbook of a persona
-    create_button (); */
+    // TODO: implement the possibility of changing the addressbook of a persona
 
     // Add most important properites
     foreach (var property in PROPERTIES) {
@@ -160,10 +152,6 @@ public class Contacts.EditorPersona : Gtk.Box {
     }
   }
 
-  private void change_addressbook () {
-    /* Not yet implemented */
-  }
-
   private void create_label () {
     string title = "";
     FakePersona fake_persona = this.persona as FakePersona;
@@ -175,16 +163,5 @@ public class Contacts.EditorPersona : Gtk.Box {
 
     Gtk.Label addressbook = new Gtk.Label (title);
     this.header.pack_start (addressbook, false, false, 0);
-  }
-
-  private void create_button () {
-    var image = new Gtk.Image.from_icon_name ("emblem-system-symbolic",
-                                              Gtk.IconSize.BUTTON);
-    var button = new Gtk.MenuButton ();
-    button.set_image (image);
-    var builder = new Gtk.Builder.from_resource ("/org/gnome/Contacts/ui/contacts-editor-menu.ui");
-    var menu = builder.get_object ("editor_menu") as Gtk.Widget;
-    button.set_popover (menu);
-    this.header.pack_end (button, false, false, 0);
   }
 }
