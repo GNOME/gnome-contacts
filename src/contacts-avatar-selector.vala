@@ -101,11 +101,19 @@ public class Contacts.AvatarSelector : Popover {
       pixbuf.save_to_buffer (out buffer, "png", null);
       var icon = new BytesIcon (new Bytes (buffer));
       // Set the new avatar
-      this.individual.change_avatar(icon as LoadableIcon);
+      this.individual.change_avatar.begin(icon as LoadableIcon, (obj, res) => {
+        try {
+          this.individual.change_avatar.end(res);
+        } catch (Error e) {
+          warning ("Failed to set avatar: %s", e.message);
+          Utils.show_error_dialog (_("Failed to set avatar."),
+                                   this.get_toplevel() as Gtk.Window);
+        }
+      });
     } catch (GLib.Error e) {
       warning ("Failed to set avatar: %s", e.message);
       Utils.show_error_dialog (_("Failed to set avatar."),
-	                       this.get_toplevel() as Gtk.Window);
+                               this.get_toplevel() as Gtk.Window);
     }
   }
 
