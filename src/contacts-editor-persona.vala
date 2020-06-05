@@ -16,14 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
 
 /**
  * A widget representing a persona in the {@link ContactEditor}.
  */
-public class Contacts.EditorPersona : Box {
+public class Contacts.EditorPersona : Gtk.Box {
   private const GLib.ActionEntry[] action_entries = {
     { "change-addressbook", change_addressbook },
   };
@@ -42,18 +40,18 @@ public class Contacts.EditorPersona : Box {
     "notes"
   };
 
-  private Persona persona;
-  private Box header;
-  private ListBox content;
+  private Folks.Persona persona;
+  private Gtk.Box header;
+  private Gtk.ListBox content;
 
-  private IndividualAggregator aggregator;
+  private Folks.IndividualAggregator aggregator;
 
   construct {
-    this.header = new Box (Orientation.HORIZONTAL, 0);
+    this.header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
     add (this.header);
 
-    var frame = new Frame (null);
-    this.content = new ListBox ();
+    var frame = new Gtk.Frame (null);
+    this.content = new Gtk.ListBox ();
     this.content.set_header_func (list_box_update_header_func);
     frame.add (this.content);
     add (frame);
@@ -63,21 +61,21 @@ public class Contacts.EditorPersona : Box {
     this.insert_action_group ("persona", actions);
   }
 
-  private void list_box_update_header_func (ListBoxRow row, ListBoxRow? before) {
+  private void list_box_update_header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
     if (before == null) {
       row.set_header (null);
       return;
     }
 
     if (row.get_header () == null) {
-      var header = new Separator (Orientation.HORIZONTAL);
+      var header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
       header.show ();
       row.set_header (header);
     }
   }
 
   public EditorPersona (Persona persona, IndividualAggregator aggregator) {
-    Object (orientation: Orientation.VERTICAL, spacing: 6);
+    Object (orientation: Gtk.Orientation.VERTICAL, spacing: 6);
     this.persona = persona;
     this.aggregator = aggregator;
     create_label ();
@@ -95,7 +93,7 @@ public class Contacts.EditorPersona : Box {
       }
     }
     // Add a row with a button to show all properties
-    ListBoxRow show_all_row = new ListBoxRow ();
+    Gtk.ListBoxRow show_all_row = new Gtk.ListBoxRow ();
     show_all_row.set_selectable (false);
     // Add less important property when the show_more button is clicked
     this.content.row_activated.connect ((current_row) => {
@@ -112,7 +110,8 @@ public class Contacts.EditorPersona : Box {
         show_all_row.destroy ();
       }
     });
-    Image show_all = new Image.from_icon_name ("view-more-symbolic", IconSize.BUTTON);
+    Gtk.Image show_all = new Gtk.Image.from_icon_name ("view-more-symbolic",
+                                                       Gtk.IconSize.BUTTON);
     show_all.margin = 12;
     show_all_row.add (show_all);
     this.content.add (show_all_row);
@@ -150,7 +149,7 @@ public class Contacts.EditorPersona : Box {
     return count;
   }
 
-  private void destroy_empty_rows (ListBoxRow current_row, string type) {
+  private void destroy_empty_rows (Gtk.ListBoxRow current_row, string type) {
     foreach (var row in this.content.get_children ()) {
       if (current_row != row) {
         var prop = (row as EditorPropertyRow);
@@ -174,16 +173,17 @@ public class Contacts.EditorPersona : Box {
       title = this.aggregator.primary_store.display_name;
     }
 
-    Label addressbook = new Label (title);
+    Gtk.Label addressbook = new Gtk.Label (title);
     this.header.pack_start (addressbook, false, false, 0);
   }
 
   private void create_button () {
-    var image = new Image.from_icon_name ("emblem-system-symbolic", IconSize.BUTTON);
-    var button = new MenuButton ();
+    var image = new Gtk.Image.from_icon_name ("emblem-system-symbolic",
+                                              Gtk.IconSize.BUTTON);
+    var button = new Gtk.MenuButton ();
     button.set_image (image);
-    var builder = new Builder.from_resource ("/org/gnome/Contacts/ui/contacts-editor-menu.ui");
-    var menu = builder.get_object ("editor_menu") as Widget;
+    var builder = new Gtk.Builder.from_resource ("/org/gnome/Contacts/ui/contacts-editor-menu.ui");
+    var menu = builder.get_object ("editor_menu") as Gtk.Widget;
     button.set_popover (menu);
     this.header.pack_end (button, false, false, 0);
   }
