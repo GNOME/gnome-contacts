@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-using Hdy;
 using Folks;
 
 public class Contacts.App : Gtk.Application {
@@ -102,8 +100,9 @@ public class Contacts.App : Gtk.Application {
     if (contact != null) {
       show_contact (contact);
     } else {
-      var dialog = new MessageDialog (this.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
-                                      _("No contact with id %s found"), id);
+      var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
+                                          _("No contact with id %s found"), id);
       dialog.set_title(_("Contact not found"));
       dialog.show ();
       dialog.response.connect ( (id) => {
@@ -115,24 +114,24 @@ public class Contacts.App : Gtk.Application {
   public void change_address_book () {
     var dialog = new Hdy.Dialog ((Window) window);
     dialog.title = _("Change Address Book");
-    dialog.add_buttons (_("Change"), ResponseType.OK,
-                        _("Cancel"), ResponseType.CANCEL,
+    dialog.add_buttons (_("Change"), Gtk.ResponseType.OK,
+                        _("Cancel"), Gtk.ResponseType.CANCEL,
                         null);
 
-    var content_area = dialog.get_content_area () as Box;
+    var content_area = dialog.get_content_area () as Gtk.Box;
     content_area.border_width = 0;
 
-    var ok_button = dialog.get_widget_for_response (ResponseType.OK);
+    var ok_button = dialog.get_widget_for_response (Gtk.ResponseType.OK);
     ok_button.sensitive = false;
     ok_button.get_style_context ().add_class ("suggested-action");
 
-    var scrolled_window = new ScrolledWindow (null, null);
+    var scrolled_window = new Gtk.ScrolledWindow (null, null);
     scrolled_window.expand = true;
-    scrolled_window.hscrollbar_policy = PolicyType.NEVER;
+    scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
     scrolled_window.propagate_natural_height = true;
     content_area.add (scrolled_window);
 
-    var column = new Column ();
+    var column = new Hdy.Column ();
     column.margin_top = 32;
     column.margin_bottom = 32;
     column.margin_start = 12;
@@ -141,11 +140,11 @@ public class Contacts.App : Gtk.Application {
     column.linear_growth_width = 400;
     scrolled_window.add (column);
 
-    var box = new Box (Orientation.VERTICAL, 12);
-    box.valign = Align.START;
+    var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+    box.valign = Gtk.Align.START;
     column.add (box);
 
-    var explanation_label = new Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
+    var explanation_label = new Gtk.Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
     explanation_label.xalign = 0;
     explanation_label.wrap = true;
     box.add (explanation_label);
@@ -167,7 +166,7 @@ public class Contacts.App : Gtk.Application {
 
     dialog.show_all ();
     dialog.response.connect ( (response) => {
-	if (response == ResponseType.OK) {
+	if (response == Gtk.ResponseType.OK) {
 	  var e_store = acc.selected_store as Edsf.PersonaStore;
 	  if (e_store != null) {
 	    eds_source_registry.set_default_address_book (e_store.source);
@@ -246,8 +245,9 @@ public class Contacts.App : Gtk.Application {
     if (individual != null) {
       show_contact (individual);
     } else {
-      var dialog = new MessageDialog (this.window, DialogFlags.DESTROY_WITH_PARENT, MessageType.ERROR, ButtonsType.CLOSE,
-                                      _("No contact with email address %s found"), email_address);
+      var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
+                                          _("No contact with email address %s found"), email_address);
       dialog.set_title(_("Contact not found"));
       dialog.show ();
       dialog.response.connect ( (id) => {
@@ -348,9 +348,9 @@ public class Contacts.App : Gtk.Application {
   public void load_styling () {
     var provider = new Gtk.CssProvider ();
     provider.load_from_resource ("/org/gnome/Contacts/ui/style.css");
-    StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
-                                          provider,
-                                          Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
+                                              provider,
+                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
   }
 
   public override void activate () {
