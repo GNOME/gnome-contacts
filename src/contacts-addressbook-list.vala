@@ -83,7 +83,7 @@ public class Contacts.AddressbookList : ListBox {
         local_store = persona_store;
         continue;
       }
-      var source = (persona_store as Edsf.PersonaStore).source;
+      var source = ((Edsf.PersonaStore) persona_store).source;
       var parent_source = eds_source_registry.ref_source (source.parent);
       var provider_name = Utils.format_persona_store_name (persona_store);
 
