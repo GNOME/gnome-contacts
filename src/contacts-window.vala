@@ -15,9 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-using Gtk;
-using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
@@ -31,44 +28,44 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   };
 
   [GtkChild]
-  private Leaflet header;
+  private Hdy.Leaflet header;
   [GtkChild]
-  private Leaflet content_box;
+  private Hdy.Leaflet content_box;
   [GtkChild]
-  private Revealer back_revealer;
+  private Gtk.Revealer back_revealer;
   [GtkChild]
-  private Stack list_pane_stack;
+  private Gtk.Stack list_pane_stack;
   [GtkChild]
-  private Container contact_pane_container;
+  private Gtk.Container contact_pane_container;
   [GtkChild]
-  private TitleBar titlebar;
+  private Hdy.TitleBar titlebar;
   [GtkChild]
   private Gtk.HeaderBar left_header;
   [GtkChild]
   private Gtk.HeaderBar right_header;
   [GtkChild]
-  private Overlay notification_overlay;
+  private Gtk.Overlay notification_overlay;
   [GtkChild]
-  private Button select_cancel_button;
+  private Gtk.Button select_cancel_button;
   [GtkChild]
-  private MenuButton hamburger_menu_button;
+  private Gtk.MenuButton hamburger_menu_button;
   [GtkChild]
-  private ModelButton sort_on_firstname_button;
+  private Gtk.ModelButton sort_on_firstname_button;
   [GtkChild]
-  private ModelButton sort_on_surname_button;
+  private Gtk.ModelButton sort_on_surname_button;
   [GtkChild]
-  private MenuButton contact_menu_button;
+  private Gtk.MenuButton contact_menu_button;
   [GtkChild]
-  private ToggleButton favorite_button;
+  private Gtk.ToggleButton favorite_button;
   private bool ignore_favorite_button_toggled;
   [GtkChild]
-  private Button unlink_button;
+  private Gtk.Button unlink_button;
   [GtkChild]
-  private Button add_button;
+  private Gtk.Button add_button;
   [GtkChild]
-  private Button cancel_button;
+  private Gtk.Button cancel_button;
   [GtkChild]
-  private Button done_button;
+  private Gtk.Button done_button;
 
   // The 2 panes the window consists of
   private ListPane list_pane;
@@ -78,15 +75,10 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   /** Holds the current width. */
   public int window_width { get; set; }
-  private const string WINDOW_WIDTH_PROP = "window-width";
-
   /** Holds the current height. */
   public int window_height { get; set; }
-  private const string WINDOW_HEIGHT_PROP = "window-height";
-
   /** Holds true if the window is currently maximized. */
   public bool window_maximized { get; set; }
-  private const string WINDOW_MAXIMIZED_PROP = "window-maximized";
 
   private Settings settings;
 
@@ -247,7 +239,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       this.done_button.label = (this.state == UiState.CREATING)? _("Add") : _("Done");
       // Cast is required because Gtk.Button.set_focus_on_click is deprecated and
       // we have to use Gtk.Widget.set_focus_on_click instead
-      ((Widget) this.done_button).set_focus_on_click (true);
+      ((Gtk.Widget) this.done_button).set_focus_on_click (true);
     }
     // When selecting or editing, we get special headerbars
     this.titlebar.selection_mode = this.state == UiState.SELECTING || this.state.editing ();
@@ -279,7 +271,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void on_favorite_button_toggled (ToggleButton button) {
+  private void on_favorite_button_toggled (Gtk.ToggleButton button) {
     // Don't change the contact being favorite while switching between the two of them
     if (this.ignore_favorite_button_toggled)
       return;
@@ -301,7 +293,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     var operation = new UnLinkOperation (this.store);
     operation.do.begin (individual);
 
-    var b = new Button.with_mnemonic (_("_Undo"));
+    var b = new Gtk.Button.with_mnemonic (_("_Undo"));
     var notification = new InAppNotification (_("Contacts unlinked"), b);
 
     /* signal handlers */
@@ -320,7 +312,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       return;
 
     this.list_pane.hide_contact (individual);
-    delete_contacts (new ArrayList<Individual>.wrap ({ individual }));
+    delete_contacts (new Gee.ArrayList<Individual>.wrap ({ individual }));
   }
 
   private void stop_editing (bool cancel = false) {
@@ -384,12 +376,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void on_cancel_visible () {
-    update ();
+    update_header ();
   }
 
   [GtkCallback]
   private void on_fold () {
-    update ();
+    update_header ();
   }
 
   [GtkCallback]
@@ -398,20 +390,26 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       this.list_pane.select_contact (null);
   }
 
-  private void update () {
-    left_header.show_close_button = this.content_box.fold == Fold.UNFOLDED || header.visible_child == left_header;
-    right_header.show_close_button = this.content_box.fold == Fold.UNFOLDED || header.visible_child == right_header;
-    back_revealer.reveal_child = back_revealer.visible = this.content_box.fold == Fold.FOLDED && !this.cancel_button.visible && header.visible_child == right_header;
+  private void update_header () {
+    this.left_header.show_close_button =
+      this.content_box.fold == Hdy.Fold.UNFOLDED || this.header.visible_child == this.left_header;
+    this.right_header.show_close_button =
+      this.content_box.fold == Hdy.Fold.UNFOLDED || this.header.visible_child == this.right_header;
+    this.back_revealer.reveal_child =
+      this.back_revealer.visible =
+      this.content_box.fold == Hdy.Fold.FOLDED &&
+        !this.cancel_button.visible &&
+        this.header.visible_child == this.right_header;
   }
 
   private void show_list_pane () {
     content_box.visible_child_name = "list-pane";
-    update ();
+    update_header ();
   }
 
   private void show_contact_pane () {
     content_box.visible_child_name = "contact-pane";
-    update ();
+    update_header ();
   }
 
   public void show_search (string query) {
@@ -472,7 +470,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       show_contact_pane ();
   }
 
-  void list_pane_link_contacts_cb (LinkedList<Individual> contact_list) {
+  void list_pane_link_contacts_cb (Gee.LinkedList<Individual> contact_list) {
     set_shown_contact (null);
     this.state = UiState.NORMAL;
 
@@ -483,7 +481,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
                            "%d contacts linked",
                            contact_list.size).printf (contact_list.size);
 
-    var b = new Button.with_mnemonic (_("_Undo"));
+    var b = new Gtk.Button.with_mnemonic (_("_Undo"));
     var notification = new InAppNotification (msg, b);
 
     /* signal handlers */
@@ -507,7 +505,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       msg = ngettext ("%d contact deleted", "%d contacts deleted", individuals.size)
               .printf (individuals.size);
 
-    var b = new Button.with_mnemonic (_("_Undo"));
+    var b = new Gtk.Button.with_mnemonic (_("_Undo"));
 
     var notification = new InAppNotification (msg, b);
 
@@ -553,7 +551,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     else
       msg = _("%s linked to the contact").printf (linked_contact);
 
-    var b = new Button.with_mnemonic (_("_Undo"));
+    var b = new Gtk.Button.with_mnemonic (_("_Undo"));
     var notification = new InAppNotification (msg, b);
 
     b.clicked.connect ( () => {
@@ -565,8 +563,8 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   private void bind_dimension_properties_to_settings () {
-    this.settings.bind_default (Settings.WINDOW_WIDTH_KEY, this, WINDOW_WIDTH_PROP);
-    this.settings.bind_default (Settings.WINDOW_HEIGHT_KEY, this, WINDOW_HEIGHT_PROP);
-    this.settings.bind_default (Settings.WINDOW_MAXIMIZED_KEY, this, WINDOW_MAXIMIZED_PROP);
+    this.settings.bind_default (Settings.WINDOW_WIDTH_KEY, this, "window-width");
+    this.settings.bind_default (Settings.WINDOW_HEIGHT_KEY, this, "window-height");
+    this.settings.bind_default (Settings.WINDOW_MAXIMIZED_KEY, this, "window-maximized");
   }
 }
