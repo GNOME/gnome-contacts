@@ -46,7 +46,7 @@ public class Contacts.Store : GLib.Object {
     var path = Path.build_filename (Environment.get_user_config_dir (), "gnome-contacts", "dont_suggest.db");
     try {
       string contents;
-      FileUtils.get_contents (path, out contents))
+      FileUtils.get_contents (path, out contents);
 
       var rows = contents.split ("\n");
       foreach (var r in rows) {
