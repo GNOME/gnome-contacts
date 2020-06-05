@@ -21,6 +21,7 @@ else
 endif
 
 # Common variables
+valac = meson.get_compiler('vala')
 config_h_dir = include_directories('.')
 contacts_prefix = get_option('prefix')
 locale_dir = contacts_prefix / get_option('localedir')
@@ -75,10 +76,12 @@ if not libhandy.found()
 
   # We need to add this, since Vala queries the pkgconfig version on its own
   # and will error out if that is lower then required one
-  add_project_arguments(
-    [ '--disable-since-check' ],
-    language: 'vala'
-  )
+  if valac.version().version_compare('>= 0.31.1')
+    add_project_arguments(
+      [ '--disable-since-check' ],
+      language: 'vala'
+    )
+  endif
 
   libhandy_vapidir = meson.build_root() / 'subprojects' / 'libhandy' / 'src'
 else
