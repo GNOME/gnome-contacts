@@ -75,6 +75,7 @@ libcontacts_dep = declare_dependency(
 # The gnome-contacts binary
 contacts_vala_sources = files(
   'contacts-addressbook-list.vala',
+  'contacts-addressbook-dialog.vala',
   'contacts-accounts-list.vala',
   'contacts-app.vala',
   'contacts-avatar.vala',

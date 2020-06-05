@@ -112,72 +112,9 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void change_address_book () {
-    var dialog = new Hdy.Dialog ((Window) window);
-    dialog.title = _("Change Address Book");
-    dialog.add_buttons (_("Change"), Gtk.ResponseType.OK,
-                        _("Cancel"), Gtk.ResponseType.CANCEL,
-                        null);
-
-    var content_area = dialog.get_content_area () as Gtk.Box;
-    content_area.border_width = 0;
-
-    var ok_button = dialog.get_widget_for_response (Gtk.ResponseType.OK);
-    ok_button.sensitive = false;
-    ok_button.get_style_context ().add_class ("suggested-action");
-
-    var scrolled_window = new Gtk.ScrolledWindow (null, null);
-    scrolled_window.expand = true;
-    scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
-    scrolled_window.propagate_natural_height = true;
-    content_area.add (scrolled_window);
-
-    var column = new Hdy.Column ();
-    column.margin_top = 32;
-    column.margin_bottom = 32;
-    column.margin_start = 12;
-    column.margin_end = 12;
-    column.maximum_width = 400;
-    column.linear_growth_width = 400;
-    scrolled_window.add (column);
-
-    var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
-    box.valign = Gtk.Align.START;
-    column.add (box);
-
-    var explanation_label = new Gtk.Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
-    explanation_label.xalign = 0;
-    explanation_label.wrap = true;
-    box.add (explanation_label);
-
-    var acc = new AccountsList (this.contacts_store);
-    acc.update_contents (true);
-
-    ulong active_button_once = 0;
-    active_button_once = acc.account_selected.connect (() => {
-	ok_button.sensitive = true;
-	acc.disconnect (active_button_once);
-      });
-
-    ulong stores_changed_id = contacts_store.backend_store.backend_available.connect (() => {
-    	acc.update_contents (true);
-      });
-
-    box.add (acc);
-
-    dialog.show_all ();
-    dialog.response.connect ( (response) => {
-	if (response == Gtk.ResponseType.OK) {
-	  var e_store = acc.selected_store as Edsf.PersonaStore;
-	  if (e_store != null) {
-	    eds_source_registry.set_default_address_book (e_store.source);
-	    var settings = new GLib.Settings ("org.freedesktop.folks");
-	    settings.set_string ("primary-store",
-				 "eds:%s".printf(e_store.id));
-	  }
-	}
-	contacts_store.backend_store.disconnect (stores_changed_id);
-	dialog.destroy ();
-      });
+    var dialog = new AddressbookDialog (this.contacts_store, this.window);
+    dialog.run ();
+    dialog.destroy ();
   }
 
   public void online_accounts () {
