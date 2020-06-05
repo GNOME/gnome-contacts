@@ -73,6 +73,13 @@ if not libhandy.found()
     ]
   )
 
+  # We need to add this, since Vala queries the pkgconfig version on its own
+  # and will error out if that is lower then required one
+  add_project_arguments(
+    [ '--disable-since-check' ],
+    language: 'vala'
+  )
+
   libhandy_vapidir = meson.build_root() / 'subprojects' / 'libhandy' / 'src'
 else
   libhandy_vapidir = ''
