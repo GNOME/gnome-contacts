@@ -32,6 +32,13 @@ min_eds_version = '3.13.90'
 min_folks_version = '0.11.4'
 min_glib_version = '2.44' # We also use this value for --target-glib, so scratch the micro version.
 
+# We know that compiling on a lower version doesn't work
+min_vala_version = '0.40.10'
+if valac.version().version_compare('<' + min_vala_version)
+  error('Your Vala installation is too old (@0@).'.format(valac.version())
+      + ' Please make sure you have at least Vala ' + min_vala_version)
+endif
+
 math = meson.get_compiler('c').find_library('m')
 
 folks = dependency('folks', version: '>=' + min_folks_version)
@@ -76,12 +83,10 @@ if not libhandy.found()
 
   # We need to add this, since Vala queries the pkgconfig version on its own
   # and will error out if that is lower then required one
-  if valac.version().version_compare('>= 0.31.1')
-    add_project_arguments(
-      [ '--disable-since-check' ],
-      language: 'vala'
-    )
-  endif
+  add_project_arguments(
+    [ '--disable-since-check' ],
+    language: 'vala'
+  )
 
   libhandy_vapidir = meson.build_root() / 'subprojects' / 'libhandy' / 'src'
 else
