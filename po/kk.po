@@ -1,14 +1,14 @@
 # Kazakh translation for gnome-contacts.
 # Copyright (C) 2013 gnome-contacts's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-contacts package.
-# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2013-2016.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2013-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-06-19 11:32+0000\n"
-"PO-Revision-Date: 2020-06-24 09:47+0500\n"
+"POT-Creation-Date: 2020-06-24 04:50+0000\n"
+"PO-Revision-Date: 2020-07-05 15:44+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "Language: kk\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-window.ui:144
-#: data/ui/contacts-window.ui:162 src/contacts-window.vala:234
+#: data/ui/contacts-window.ui:162 src/contacts-window.vala:232
 msgid "Contacts"
 msgstr "Контакттар"
 
@@ -49,7 +49,7 @@ msgstr ""
 "Сонымен қатар, контакттар сіздің желідегі адрестік кітаптарды қолданады және "
 "бірнеше желідегі көзден контакттарды автоматты түрде қолжетерлік қылады."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:445
+#: data/org.gnome.Contacts.appdata.xml.in.in:433
 msgid "The GNOME Project"
 msgstr "GNOME жобасы"
 
@@ -106,7 +106,7 @@ msgid "Select a contact"
 msgstr "Контактты таңдау"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
-#: data/ui/contacts-window.ui:278 src/contacts-app.vala:119
+#: data/ui/contacts-window.ui:278 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:86
 msgid "Cancel"
 msgstr "Бас тарту"
@@ -116,7 +116,7 @@ msgid "Take Another…"
 msgstr "Басқа суретті түсіру…"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
-#: src/contacts-window.vala:241
+#: src/contacts-window.vala:239
 msgid "Done"
 msgstr "Дайын"
 
@@ -252,45 +252,20 @@ msgstr "Артқа"
 msgid "Loading"
 msgstr "Жүктеу"
 
-#: src/contacts-accounts-list.vala:124 src/contacts-addressbook-list.vala:112
+#: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
 #: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Жергілікті адрестік кітапшасы"
 
-#: src/contacts-app.vala:43
-msgid "Show contact with this email address"
-msgstr "Эл. поштасы осы болатын контактты көрсету"
-
-#: src/contacts-app.vala:44
-msgid "Show contact with this individual id"
-msgstr "Жеке id осы болатын контактты көрсету"
-
-#: src/contacts-app.vala:45
-msgid "Show contacts with the given filter"
-msgstr "Көрсетілген сүзгімен контактты көрсету"
-
-#: src/contacts-app.vala:46
-msgid "Show the current version of Contacts"
-msgstr "Контакттар қолданбасының ағымдағы нұсқасын көрсетеді"
-
-#: src/contacts-app.vala:106
-#, c-format
-msgid "No contact with id %s found"
-msgstr "Идентификаторы %s болатын контакт табылмады"
-
-#: src/contacts-app.vala:107 src/contacts-app.vala:251
-msgid "Contact not found"
-msgstr "Контакт табылмады"
-
-#: src/contacts-app.vala:117 src/contacts-editor-property.vala:84
+#: src/contacts-addressbook-dialog.vala:27 src/contacts-editor-property.vala:84
 msgid "Change Address Book"
 msgstr "Адрестік кітапшасын ауыстыру"
 
-#: src/contacts-app.vala:118
+#: src/contacts-addressbook-dialog.vala:31
 msgid "Change"
 msgstr "Өзгерту"
 
-#: src/contacts-app.vala:148
+#: src/contacts-addressbook-dialog.vala:61
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -298,56 +273,85 @@ msgstr ""
 "Жаңа контакттар таңдалған адрестік кітапшасына қосылады.\n"
 "Сіз басқа адрестік кітапшалар контакттарын көріп, түзете аласыз."
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:38
+msgid "Show contact with this email address"
+msgstr "Эл. поштасы осы болатын контактты көрсету"
+
+#: src/contacts-app.vala:39
+msgid "Show contact with this individual id"
+msgstr "Жеке id осы болатын контактты көрсету"
+
+#: src/contacts-app.vala:40
+msgid "Show contacts with the given filter"
+msgstr "Көрсетілген сүзгімен контактты көрсету"
+
+#: src/contacts-app.vala:41
+msgid "Show the current version of Contacts"
+msgstr "Контакттар қолданбасының ағымдағы нұсқасын көрсетеді"
+
+#: src/contacts-app.vala:102
+#, c-format
+msgid "No contact with id %s found"
+msgstr "Идентификаторы %s болатын контакт табылмады"
+
+#: src/contacts-app.vala:103 src/contacts-app.vala:183
+msgid "Contact not found"
+msgstr "Контакт табылмады"
+
+#: src/contacts-app.vala:162
 msgid "translator-credits"
 msgstr "Baurzhan Muftakhidinov <baurthefirst@gmail.com>"
 
-#: src/contacts-app.vala:232
+#: src/contacts-app.vala:163
 msgid "GNOME Contacts"
 msgstr "GNOME контакттары"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:164
 msgid "About GNOME Contacts"
 msgstr "GNOME контакттары туралы"
 
-#: src/contacts-app.vala:234
+#: src/contacts-app.vala:165
 msgid "Contact Management Application"
 msgstr "Контакттарды басқару қолданбасы"
 
-#: src/contacts-app.vala:235
+#: src/contacts-app.vala:166
+#| msgid ""
+#| "© 2011 Red Hat, Inc.\n"
+#| "© 2011-2018 The Contacts Developers"
 msgid ""
 "© 2011 Red Hat, Inc.\n"
-"© 2011-2018 The Contacts Developers"
+"© 2011-2020 The Contacts Developers"
 msgstr ""
 "© 2011 Red Hat, Inc.\n"
-"© 2011-2018 The Contacts Developers"
+"© 2011-2020 The Contacts әзірлеушілері"
 
-#: src/contacts-app.vala:250
+#: src/contacts-app.vala:182
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Эл. поштасы %s болатын контакт табылмады"
 
-#: src/contacts-avatar-selector.vala:107 src/contacts-avatar-selector.vala:227
+#: src/contacts-avatar-selector.vala:109 src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:235
 msgid "Failed to set avatar."
 msgstr "Аватарды орнату қатемен аяқталды."
 
-#: src/contacts-avatar-selector.vala:187
+#: src/contacts-avatar-selector.vala:195
 msgid "Browse for more pictures"
 msgstr "Көбірек суретті шолу"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:198
 msgid "_Open"
 msgstr "_Ашу"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:198
 msgid "_Cancel"
 msgstr "Ба_с тарту"
 
-#: src/contacts-contact-editor.vala:52
+#: src/contacts-contact-editor.vala:50
 msgid "Change avatar"
 msgstr "Аватарды өзгерту"
 
-#: src/contacts-contact-editor.vala:72
+#: src/contacts-contact-editor.vala:71
 msgid "Add name"
 msgstr "Атын қосу"
 
@@ -372,19 +376,19 @@ msgstr "Жаңа контакттарды жасау мүмкін емес: %s"
 msgid "Unable to find newly created contact"
 msgstr "Жаңадан жасалған контактты табу мүмкін емес"
 
-#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:487
+#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:488
 msgid "Website"
 msgstr "Веб сайт"
 
-#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:497
+#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:498
 msgid "Nickname"
 msgstr "Ник аты"
 
-#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:561
+#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:563
 msgid "Birthday"
 msgstr "Туған күні"
 
-#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:524
+#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:526
 msgid "Note"
 msgstr "Естелік"
 
@@ -436,35 +440,35 @@ msgstr "Пошта жәшігі"
 msgid "Country"
 msgstr "Ел"
 
-#: src/contacts-editor-property.vala:335 src/contacts-editor-property.vala:585
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:587
 msgid "Delete field"
 msgstr "Өрісті өшіру"
 
-#: src/contacts-editor-property.vala:450
+#: src/contacts-editor-property.vala:451
 msgid "Email address"
 msgstr "Эл. пошта адресі"
 
-#: src/contacts-editor-property.vala:451
+#: src/contacts-editor-property.vala:452
 msgid "Add email"
 msgstr "Эл. пошта адресін қосу"
 
-#: src/contacts-editor-property.vala:468
+#: src/contacts-editor-property.vala:469
 msgid "Phone number"
 msgstr "Телефон нөмірі"
 
-#: src/contacts-editor-property.vala:469
+#: src/contacts-editor-property.vala:470
 msgid "Add number"
 msgstr "Нөмірді қосу"
 
-#: src/contacts-editor-property.vala:488
+#: src/contacts-editor-property.vala:489
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:563 src/contacts-editor-property.vala:594
+#: src/contacts-editor-property.vala:565 src/contacts-editor-property.vala:596
 msgid "Set Birthday"
 msgstr "Туған күнді орнату"
 
-#: src/contacts-editor-property.vala:612
+#: src/contacts-editor-property.vala:614
 msgid "Address"
 msgstr "Адрес"
 
@@ -661,65 +665,65 @@ msgstr "TTY"
 msgid "Google Circles"
 msgstr "Google Circles"
 
-#: src/contacts-window.vala:204
+#: src/contacts-window.vala:202
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d таңдалды"
 
-#: src/contacts-window.vala:241
+#: src/contacts-window.vala:239
 msgid "Add"
 msgstr "Қосу"
 
-#: src/contacts-window.vala:271
+#: src/contacts-window.vala:269
 #, c-format
 msgid "Editing %s"
 msgstr "%s түзету"
 
-#: src/contacts-window.vala:298 src/contacts-window.vala:480
-#: src/contacts-window.vala:504 src/contacts-window.vala:548
+#: src/contacts-window.vala:296 src/contacts-window.vala:484
+#: src/contacts-window.vala:508 src/contacts-window.vala:554
 msgid "_Undo"
 msgstr "Бол_дырмау"
 
-#: src/contacts-window.vala:299
+#: src/contacts-window.vala:297
 msgid "Contacts unlinked"
 msgstr "Контакттар өзара ажыратылған"
 
-#: src/contacts-window.vala:358
+#: src/contacts-window.vala:356
 msgid "Unmark as favorite"
 msgstr "Таңдамалы емес ретінде белгілеу"
 
-#: src/contacts-window.vala:359
+#: src/contacts-window.vala:357
 msgid "Mark as favorite"
 msgstr "Таңдамалы ретінде белгілеу"
 
-#: src/contacts-window.vala:373
+#: src/contacts-window.vala:371
 msgid "New Contact"
 msgstr "Жаңа контакт"
 
-#: src/contacts-window.vala:476
+#: src/contacts-window.vala:480
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d контакт байланыстырылған"
 
-#: src/contacts-window.vala:499
+#: src/contacts-window.vala:503
 #, c-format
 msgid "Deleted contact %s"
 msgstr "%s контакты өшірілді"
 
-#: src/contacts-window.vala:501
+#: src/contacts-window.vala:505
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d контакт өшірілген"
 
-#: src/contacts-window.vala:544
+#: src/contacts-window.vala:550
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s байланысқан: %s"
 
-#: src/contacts-window.vala:546
+#: src/contacts-window.vala:552
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s контактқа байланысқан"
