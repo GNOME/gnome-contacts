@@ -32,25 +32,17 @@
     ],
     "cleanup": [
         "/include",
-        "/lib/pkgconfig", "/share/pkgconfig",
+        "/lib/pkgconfig",
+        "/share/pkgconfig",
         "/share/aclocal",
-        "/man", "/share/man",
+        "/man",
+        "/share/man",
         "/share/gtk-doc",
         "/share/vala",
-        "*.la", "*.a"
+        "*.la",
+        "*.a"
     ],
     "modules": [
-        {
-            /* Needed by g-o-a */
-            "name": "librest",
-            "sources": [
-                {
-                    "type": "git",
-                    "branch": "librest-0-7",
-                    "url": "https://gitlab.gnome.org/GNOME/librest.git"
-                }
-            ]
-        },
         {
             "name": "gnome-online-accounts",
             "cleanup": [ "/bin", "/share/GConf" ],
@@ -59,6 +51,18 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/GNOME/gnome-online-accounts.git"
+                }
+            ],
+            "modules": [
+                {
+                    "name": "librest",
+                    "sources": [
+                        {
+                            "type": "git",
+                            "branch": "librest-0-7",
+                            "url": "https://gitlab.gnome.org/GNOME/librest.git"
+                        }
+                    ]
                 }
             ]
         },
@@ -170,7 +174,10 @@
             "buildsystem": "meson",
             "builddir": true,
             "config-opts": [
+                "-Dtests=false",
+                "-Dexamples=false",
                 "-Dglade_catalog=disabled"
+
             ],
             "sources": [
                 {
