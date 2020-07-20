@@ -136,7 +136,7 @@ public class Contacts.AddressbookRow : Hdy.ActionRow {
                         "halign", Gtk.Align.END,
                         "vexpand", true,
                         "hexpand", true);
-    this.add_action (this.checkmark);
+    this.add (this.checkmark);
   }
 
   public void unselect () {

@@ -108,7 +108,7 @@ public class Contacts.AccountsList : ListBox {
                      "halign", Align.END,
                      "vexpand", true,
                      "hexpand", true);
-      row.add_action (checkmark);
+      row.add (checkmark);
       row.set_data ("checkmark", checkmark);
       add (row);
 
@@ -131,7 +131,7 @@ public class Contacts.AccountsList : ListBox {
                      "halign", Align.END,
                      "vexpand", true,
                      "hexpand", true);
-      local_row.add_action (checkmark);
+      local_row.add (checkmark);
       local_row.set_data ("checkmark", checkmark);
       local_row.set_data ("store", local_store);
       add (local_row);
