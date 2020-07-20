@@ -216,8 +216,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
         = this.hamburger_menu_button.visible
-        = this.left_header.show_close_button
-        = this.right_header.show_close_button
         = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 
     // UI when showing a contact
@@ -391,10 +389,6 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   private void update_header () {
-    this.left_header.show_close_button =
-      !this.content_box.folded || this.header.visible_child == this.left_header;
-    this.right_header.show_close_button =
-      !this.content_box.folded || this.header.visible_child == this.right_header;
     this.back_revealer.reveal_child =
       this.back_revealer.visible =
         this.content_box.folded &&

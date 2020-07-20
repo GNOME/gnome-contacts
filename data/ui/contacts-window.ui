@@ -446,7 +446,8 @@
       <widget name="contact_pane_container"/>
     </widgets>
   </object>
-  <object class="HdyHeaderGroup" id="header_group">
+  <object class="HdyHeaderGroup">
+    <property name="decorate-all" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
     <headerbars>
       <headerbar name="left_header"/>
       <headerbar name="right_header"/>
