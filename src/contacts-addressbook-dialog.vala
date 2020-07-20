@@ -45,18 +45,17 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
     scrolled_window.propagate_natural_height = true;
     content_area.add (scrolled_window);
 
-    var column = new Hdy.Column ();
-    column.margin_top = 32;
-    column.margin_bottom = 32;
-    column.margin_start = 12;
-    column.margin_end = 12;
-    column.maximum_width = 400;
-    column.linear_growth_width = 400;
-    scrolled_window.add (column);
+    var clamp = new Hdy.Clamp ();
+    clamp.margin_top = 32;
+    clamp.margin_bottom = 32;
+    clamp.margin_start = 12;
+    clamp.margin_end = 12;
+    clamp.maximum_size = 400;
+    scrolled_window.add (clamp);
 
     var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
     box.valign = Gtk.Align.START;
-    column.add (box);
+    clamp.add (box);
 
     var explanation_label = new Gtk.Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
     explanation_label.xalign = 0;
