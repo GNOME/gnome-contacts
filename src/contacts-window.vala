@@ -380,7 +380,7 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void on_fold () {
+  private void on_folded () {
     update_header ();
   }
 
@@ -392,12 +392,12 @@ public class Contacts.Window : Gtk.ApplicationWindow {
 
   private void update_header () {
     this.left_header.show_close_button =
-      this.content_box.fold == Hdy.Fold.UNFOLDED || this.header.visible_child == this.left_header;
+      !this.content_box.folded || this.header.visible_child == this.left_header;
     this.right_header.show_close_button =
-      this.content_box.fold == Hdy.Fold.UNFOLDED || this.header.visible_child == this.right_header;
+      !this.content_box.folded || this.header.visible_child == this.right_header;
     this.back_revealer.reveal_child =
       this.back_revealer.visible =
-      this.content_box.fold == Hdy.Fold.FOLDED &&
+        this.content_box.folded &&
         !this.cancel_button.visible &&
         this.header.visible_child == this.right_header;
   }

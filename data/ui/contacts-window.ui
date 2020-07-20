@@ -361,8 +361,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="can-swipe-back">True</property>
-            <property name="transition-type">over</property>
-            <signal name="notify::fold" handler="on_fold" object="ContactsWindow" after="yes" swapped="no"/>
+            <signal name="notify::folded" handler="on_folded" object="ContactsWindow" after="yes" swapped="no"/>
             <signal name="notify::child-transition-running" handler="on_child_transition_running" object="ContactsWindow" after="yes" swapped="no"/>
             <child>
               <object class="GtkStack" id="list_pane_stack">
