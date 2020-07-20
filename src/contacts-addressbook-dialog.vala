@@ -17,7 +17,7 @@
 
 using Folks;
 
-public class Contacts.AddressbookDialog : Hdy.Dialog {
+public class Contacts.AddressbookDialog : Gtk.Dialog {
 
   private AccountsList accounts_list;
 

@@ -21,7 +21,7 @@ using Folks;
 using Gee;
 
 
-public class Contacts.BirthdayEditor : Hdy.Dialog {
+public class Contacts.BirthdayEditor : Gtk.Dialog {
   private SpinButton day_spin;
   private ComboBoxText month_combo;
   private SpinButton year_spin;
