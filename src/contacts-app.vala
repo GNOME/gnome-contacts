@@ -234,6 +234,8 @@ public class Contacts.App : Gtk.Application {
     this.contacts_store = new Store ();
     base.startup ();
 
+    Hdy.init ();
+
     load_styling ();
     create_actions ();
   }
