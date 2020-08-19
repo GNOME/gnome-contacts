@@ -109,6 +109,7 @@ public class Contacts.AccountsList : ListBox {
                      "vexpand", true,
                      "hexpand", true);
       row.add (checkmark);
+      row.set_activatable_widget (checkmark);
       row.set_data ("checkmark", checkmark);
       add (row);
 
@@ -132,6 +133,7 @@ public class Contacts.AccountsList : ListBox {
                      "vexpand", true,
                      "hexpand", true);
       local_row.add (checkmark);
+      local_row.set_activatable_widget (checkmark);
       local_row.set_data ("checkmark", checkmark);
       local_row.set_data ("store", local_store);
       add (local_row);
