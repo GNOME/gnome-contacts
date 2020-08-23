@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-02-12 10:44+0000\n"
+"POT-Creation-Date: 2020-08-10 12:49+0000\n"
 "PO-Revision-Date: 2020-02-15 00:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-window.ui:144
-#: data/ui/contacts-window.ui:162 src/contacts-window.vala:234
+#: data/ui/contacts-window.ui:162 src/contacts-window.vala:230
 msgid "Contacts"
 msgstr "連絡先"
 
@@ -58,7 +58,7 @@ msgstr ""
 "オンラインのアドレス帳と連動させることで、複数のオンラインソースに存在する連"
 "絡先も自動的にリンクできます。"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:420
+#: data/org.gnome.Contacts.appdata.xml.in.in:433
 msgid "The GNOME Project"
 msgstr "The GNOME Project"
 
@@ -110,12 +110,12 @@ msgstr "写真を撮る…"
 msgid "Select a File…"
 msgstr "ファイルを選択…"
 
-#: data/ui/contacts-contact-pane.ui:47
+#: data/ui/contacts-contact-pane.ui:45
 msgid "Select a contact"
 msgstr "連絡先を選択してください"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
-#: data/ui/contacts-window.ui:278 src/contacts-app.vala:120
+#: data/ui/contacts-window.ui:278 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:86
 msgid "Cancel"
 msgstr "キャンセル"
@@ -125,7 +125,7 @@ msgid "Take Another…"
 msgstr "もう一度…"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
-#: src/contacts-window.vala:241
+#: src/contacts-window.vala:237
 msgid "Done"
 msgstr "完了"
 
@@ -158,31 +158,31 @@ msgstr "リンク"
 msgid "Remove"
 msgstr "削除"
 
-#: data/ui/contacts-setup-window.ui:13
+#: data/ui/contacts-setup-window.ui:11
 msgid "Contacts Setup"
 msgstr "連絡先の設定"
 
-#: data/ui/contacts-setup-window.ui:22
+#: data/ui/contacts-setup-window.ui:20
 msgid "_Quit"
 msgstr "終了(_Q)"
 
-#: data/ui/contacts-setup-window.ui:27
+#: data/ui/contacts-setup-window.ui:25
 msgid "Cancel setup and quit"
 msgstr "セットアップをキャンセルして終了"
 
-#: data/ui/contacts-setup-window.ui:41
+#: data/ui/contacts-setup-window.ui:39
 msgid "_Done"
 msgstr "完了(_D)"
 
-#: data/ui/contacts-setup-window.ui:45
+#: data/ui/contacts-setup-window.ui:43
 msgid "Setup complete"
 msgstr "セットアップ完了"
 
-#: data/ui/contacts-setup-window.ui:86
+#: data/ui/contacts-setup-window.ui:82
 msgid "Welcome"
 msgstr "ようこそ"
 
-#: data/ui/contacts-setup-window.ui:98
+#: data/ui/contacts-setup-window.ui:94
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -256,49 +256,24 @@ msgstr "選択をキャンセルします"
 msgid "Back"
 msgstr "戻る"
 
-#: data/ui/contacts-window.ui:397
+#: data/ui/contacts-window.ui:396
 msgid "Loading"
 msgstr "読み込み中"
 
-#: src/contacts-accounts-list.vala:124 src/contacts-addressbook-list.vala:112
+#: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
 #: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "ローカルのアドレス帳"
 
-#: src/contacts-app.vala:43
-msgid "Show contact with this email address"
-msgstr "このメールアドレスの連絡先を表示する"
-
-#: src/contacts-app.vala:44
-msgid "Show contact with this individual id"
-msgstr "この個別 ID の連絡先を表示する"
-
-#: src/contacts-app.vala:45
-msgid "Show contacts with the given filter"
-msgstr "指定したフィルターの連絡先を表示する"
-
-#: src/contacts-app.vala:46
-msgid "Show the current version of Contacts"
-msgstr "このアプリケーションの現在のバージョンを表示する"
-
-#: src/contacts-app.vala:107
-#, c-format
-msgid "No contact with id %s found"
-msgstr "ID %s に該当する連絡先はありません"
-
-#: src/contacts-app.vala:108 src/contacts-app.vala:252
-msgid "Contact not found"
-msgstr "連絡先が見つかりません"
-
-#: src/contacts-app.vala:118 src/contacts-editor-property.vala:84
+#: src/contacts-addressbook-dialog.vala:27 src/contacts-editor-property.vala:84
 msgid "Change Address Book"
 msgstr "アドレス帳を変更"
 
-#: src/contacts-app.vala:119
+#: src/contacts-addressbook-dialog.vala:31
 msgid "Change"
 msgstr "変更"
 
-#: src/contacts-app.vala:149
+#: src/contacts-addressbook-dialog.vala:60
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -306,7 +281,32 @@ msgstr ""
 "新規に作成する連絡先は、選択したアドレス帳に追加されます。\n"
 "他のアドレス帳に登録された連絡先を参照・編集することもできます。"
 
-#: src/contacts-app.vala:232
+#: src/contacts-app.vala:38
+msgid "Show contact with this email address"
+msgstr "このメールアドレスの連絡先を表示する"
+
+#: src/contacts-app.vala:39
+msgid "Show contact with this individual id"
+msgstr "この個別 ID の連絡先を表示する"
+
+#: src/contacts-app.vala:40
+msgid "Show contacts with the given filter"
+msgstr "指定したフィルターの連絡先を表示する"
+
+#: src/contacts-app.vala:41
+msgid "Show the current version of Contacts"
+msgstr "このアプリケーションの現在のバージョンを表示する"
+
+#: src/contacts-app.vala:102
+#, c-format
+msgid "No contact with id %s found"
+msgstr "ID %s に該当する連絡先はありません"
+
+#: src/contacts-app.vala:103 src/contacts-app.vala:183
+msgid "Contact not found"
+msgstr "連絡先が見つかりません"
+
+#: src/contacts-app.vala:162
 msgid "translator-credits"
 msgstr ""
 "松澤 二郎 <jmatsuzawa@gnome.org>\n"
@@ -319,52 +319,57 @@ msgstr ""
 "sujiniku <sujinikusityuu@gmail.com>\n"
 "Zhou Fang <houshuu@live.jp>"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:163
 msgid "GNOME Contacts"
 msgstr "GNOME Contacts"
 
-#: src/contacts-app.vala:234
+#: src/contacts-app.vala:164
 msgid "About GNOME Contacts"
 msgstr "このアプリケーションについて"
 
-#: src/contacts-app.vala:235
+#: src/contacts-app.vala:165
 msgid "Contact Management Application"
 msgstr "連絡先管理アプリケーション"
 
-#: src/contacts-app.vala:236
+#: src/contacts-app.vala:166
+#, fuzzy
+#| msgid ""
+#| "© 2011 Red Hat, Inc.\n"
+#| "© 2011-2018 The Contacts Developers"
 msgid ""
 "© 2011 Red Hat, Inc.\n"
-"© 2011-2018 The Contacts Developers"
+"© 2011-2020 The Contacts Developers"
 msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2018 The Contacts Developers"
 
-#: src/contacts-app.vala:251
+#: src/contacts-app.vala:182
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "メールアドレス %s に該当する連絡先はありません"
 
-#: src/contacts-avatar-selector.vala:107 src/contacts-avatar-selector.vala:227
+#: src/contacts-avatar-selector.vala:109 src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:235
 msgid "Failed to set avatar."
 msgstr "アバターの設定に失敗しました。"
 
-#: src/contacts-avatar-selector.vala:187
+#: src/contacts-avatar-selector.vala:195
 msgid "Browse for more pictures"
 msgstr "もっと写真を見る"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:198
 msgid "_Open"
 msgstr "開く(_O)"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:198
 msgid "_Cancel"
 msgstr "キャンセル(_C)"
 
-#: src/contacts-contact-editor.vala:52
+#: src/contacts-contact-editor.vala:50
 msgid "Change avatar"
 msgstr "アバターを変更"
 
-#: src/contacts-contact-editor.vala:72
+#: src/contacts-contact-editor.vala:71
 msgid "Add name"
 msgstr "名前を追加"
 
@@ -389,19 +394,19 @@ msgstr "新しい連絡先を作成できません: %s"
 msgid "Unable to find newly created contact"
 msgstr "新しく作成した連絡先が見つかりません"
 
-#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:487
+#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:488
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:497
+#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:498
 msgid "Nickname"
 msgstr "ニックネーム"
 
-#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:561
+#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:563
 msgid "Birthday"
 msgstr "誕生日"
 
-#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:524
+#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:526
 msgid "Note"
 msgstr "メモ"
 
@@ -453,35 +458,35 @@ msgstr "私書箱"
 msgid "Country"
 msgstr "国"
 
-#: src/contacts-editor-property.vala:335 src/contacts-editor-property.vala:585
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:587
 msgid "Delete field"
 msgstr "項目を削除"
 
-#: src/contacts-editor-property.vala:450
+#: src/contacts-editor-property.vala:451
 msgid "Email address"
 msgstr "メールアドレス"
 
-#: src/contacts-editor-property.vala:451
+#: src/contacts-editor-property.vala:452
 msgid "Add email"
 msgstr "メールアドレスを追加"
 
-#: src/contacts-editor-property.vala:468
+#: src/contacts-editor-property.vala:469
 msgid "Phone number"
 msgstr "電話番号"
 
-#: src/contacts-editor-property.vala:469
+#: src/contacts-editor-property.vala:470
 msgid "Add number"
 msgstr "電話番号を追加"
 
-#: src/contacts-editor-property.vala:488
+#: src/contacts-editor-property.vala:489
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:563 src/contacts-editor-property.vala:594
+#: src/contacts-editor-property.vala:565 src/contacts-editor-property.vala:596
 msgid "Set Birthday"
 msgstr "誕生日を設定"
 
-#: src/contacts-editor-property.vala:612
+#: src/contacts-editor-property.vala:614
 msgid "Address"
 msgstr "住所"
 
@@ -678,54 +683,54 @@ msgstr "テレタイプライター"
 msgid "Google Circles"
 msgstr "Google サークル"
 
-#: src/contacts-window.vala:204
+#: src/contacts-window.vala:202
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d 件選択"
 
-#: src/contacts-window.vala:241
+#: src/contacts-window.vala:237
 msgid "Add"
 msgstr "追加"
 
-#: src/contacts-window.vala:271
+#: src/contacts-window.vala:267
 #, c-format
 msgid "Editing %s"
 msgstr "%s を編集"
 
-#: src/contacts-window.vala:298 src/contacts-window.vala:480
-#: src/contacts-window.vala:504 src/contacts-window.vala:548
+#: src/contacts-window.vala:294 src/contacts-window.vala:478
+#: src/contacts-window.vala:502 src/contacts-window.vala:548
 msgid "_Undo"
 msgstr "戻す(_U)"
 
-#: src/contacts-window.vala:299
+#: src/contacts-window.vala:295
 msgid "Contacts unlinked"
 msgstr "連絡先のリンクを解除しました"
 
-#: src/contacts-window.vala:358
+#: src/contacts-window.vala:354
 msgid "Unmark as favorite"
 msgstr "お気に入りから削除します"
 
-#: src/contacts-window.vala:359
+#: src/contacts-window.vala:355
 msgid "Mark as favorite"
 msgstr "お気に入りに追加します"
 
-#: src/contacts-window.vala:373
+#: src/contacts-window.vala:369
 msgid "New Contact"
 msgstr "新しい連絡先"
 
-#: src/contacts-window.vala:476
+#: src/contacts-window.vala:474
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "連絡先を %d 件リンクしました"
 
-#: src/contacts-window.vala:499
+#: src/contacts-window.vala:497
 #, c-format
 msgid "Deleted contact %s"
 msgstr "連絡先 %s を削除しました"
 
-#: src/contacts-window.vala:501
+#: src/contacts-window.vala:499
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
