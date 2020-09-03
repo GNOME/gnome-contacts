@@ -616,6 +616,8 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     var value_address = new AddressEditor (details);
     box.container.pack_start (value_address);
 
+    box.is_empty = value_address.is_empty ();
+
     box.add_base_delete (details_set, details);
 
     value_address.changed.connect (() => {
