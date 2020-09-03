@@ -474,8 +474,7 @@ PostalAddressDetails
         var original = (Set<PostalAddressFieldDetails>) new_value;
         var copy = new HashSet<PostalAddressFieldDetails> ();
         foreach (var e in original) {
-          // TODO: make sure that the Postal Address isn't empty
-          if (e.value != null)
+          if (e.value != null && !e.value.is_empty ())
             copy.add (new PostalAddressFieldDetails (e.value, e.parameters));
         }
         yield ((PostalAddressDetails) persona).change_postal_addresses (copy);
