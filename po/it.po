@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-02-12 10:44+0000\n"
-"PO-Revision-Date: 2020-02-21 13:39+0100\n"
+"POT-Creation-Date: 2020-08-10 12:49+0000\n"
+"PO-Revision-Date: 2020-09-07 10:05+0200\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: tp@lists.linux.it\n"
 "Language: it\n"
@@ -16,19 +16,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-window.ui:144
-#: data/ui/contacts-window.ui:162 src/contacts-window.vala:234
+#: data/ui/contacts-window.ui:162 src/contacts-window.vala:230
 msgid "Contacts"
 msgstr "Contatti"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:7
 #: data/org.gnome.Contacts.desktop.in.in:4
 msgid "A contacts manager for GNOME"
-msgstr "Un gestore di contatti per GNOME"
+msgstr "Un gestore di contatti per GNOME1"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:9
 msgid ""
@@ -50,7 +50,7 @@ msgstr ""
 "Inoltre verranno integrate le rubriche online e verranno automaticamente "
 "uniti i contatti da diverse sorgenti online."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:420
+#: data/org.gnome.Contacts.appdata.xml.in.in:433
 msgid "The GNOME Project"
 msgstr "Il progetto GNOME"
 
@@ -102,12 +102,12 @@ msgstr "Cattura una foto…"
 msgid "Select a File…"
 msgstr "Seleziona un file…"
 
-#: data/ui/contacts-contact-pane.ui:47
+#: data/ui/contacts-contact-pane.ui:45
 msgid "Select a contact"
 msgstr "Seleziona un contatto"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
-#: data/ui/contacts-window.ui:278 src/contacts-app.vala:120
+#: data/ui/contacts-window.ui:278 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:86
 msgid "Cancel"
 msgstr "Annulla"
@@ -117,7 +117,7 @@ msgid "Take Another…"
 msgstr "Scatta un'altra…"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
-#: src/contacts-window.vala:241
+#: src/contacts-window.vala:237
 msgid "Done"
 msgstr "Fatto"
 
@@ -150,31 +150,31 @@ msgstr "Unisci"
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: data/ui/contacts-setup-window.ui:13
+#: data/ui/contacts-setup-window.ui:11
 msgid "Contacts Setup"
 msgstr "Configurazione contatti"
 
-#: data/ui/contacts-setup-window.ui:22
+#: data/ui/contacts-setup-window.ui:20
 msgid "_Quit"
 msgstr "_Esci"
 
-#: data/ui/contacts-setup-window.ui:27
+#: data/ui/contacts-setup-window.ui:25
 msgid "Cancel setup and quit"
 msgstr "Annulla ed esce"
 
-#: data/ui/contacts-setup-window.ui:41
+#: data/ui/contacts-setup-window.ui:39
 msgid "_Done"
 msgstr "_Fatto"
 
-#: data/ui/contacts-setup-window.ui:45
+#: data/ui/contacts-setup-window.ui:43
 msgid "Setup complete"
 msgstr "Impostazioni completate"
 
-#: data/ui/contacts-setup-window.ui:86
+#: data/ui/contacts-setup-window.ui:82
 msgid "Welcome"
 msgstr "Benvenuti"
 
-#: data/ui/contacts-setup-window.ui:98
+#: data/ui/contacts-setup-window.ui:94
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -248,49 +248,24 @@ msgstr "Annulla selezione"
 msgid "Back"
 msgstr "Indietro"
 
-#: data/ui/contacts-window.ui:397
+#: data/ui/contacts-window.ui:396
 msgid "Loading"
 msgstr "Caricamento"
 
-#: src/contacts-accounts-list.vala:124 src/contacts-addressbook-list.vala:112
+#: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
 #: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Rubrica locale"
 
-#: src/contacts-app.vala:43
-msgid "Show contact with this email address"
-msgstr "Mostra contatto con questo indirizzo email"
-
-#: src/contacts-app.vala:44
-msgid "Show contact with this individual id"
-msgstr "Mostra contatto con questo ID"
-
-#: src/contacts-app.vala:45
-msgid "Show contacts with the given filter"
-msgstr "Mostra contatti con questo filtro"
-
-#: src/contacts-app.vala:46
-msgid "Show the current version of Contacts"
-msgstr "Mostra la versione corrente di Contatti"
-
-#: src/contacts-app.vala:107
-#, c-format
-msgid "No contact with id %s found"
-msgstr "Non è stato trovato alcun contatto con ID %s"
-
-#: src/contacts-app.vala:108 src/contacts-app.vala:252
-msgid "Contact not found"
-msgstr "Contatto non trovato"
-
-#: src/contacts-app.vala:118 src/contacts-editor-property.vala:84
+#: src/contacts-addressbook-dialog.vala:27 src/contacts-editor-property.vala:84
 msgid "Change Address Book"
 msgstr "Cambia rubrica"
 
-#: src/contacts-app.vala:119
+#: src/contacts-addressbook-dialog.vala:31
 msgid "Change"
 msgstr "Cambia"
 
-#: src/contacts-app.vala:149
+#: src/contacts-addressbook-dialog.vala:60
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -298,58 +273,87 @@ msgstr ""
 "I nuovi contatti verranno aggiunti alla rubrica selezionata.\n"
 "Sarà comunque possibile visualizzare e modificare contatti da altre rubriche."
 
-#: src/contacts-app.vala:232
+#: src/contacts-app.vala:38
+msgid "Show contact with this email address"
+msgstr "Mostra contatto con questo indirizzo email"
+
+#: src/contacts-app.vala:39
+msgid "Show contact with this individual id"
+msgstr "Mostra contatto con questo ID"
+
+#: src/contacts-app.vala:40
+msgid "Show contacts with the given filter"
+msgstr "Mostra contatti con questo filtro"
+
+#: src/contacts-app.vala:41
+msgid "Show the current version of Contacts"
+msgstr "Mostra la versione corrente di Contatti"
+
+#: src/contacts-app.vala:102
+#, c-format
+msgid "No contact with id %s found"
+msgstr "Non è stato trovato alcun contatto con ID %s"
+
+#: src/contacts-app.vala:103 src/contacts-app.vala:183
+msgid "Contact not found"
+msgstr "Contatto non trovato"
+
+#: src/contacts-app.vala:162
 msgid "translator-credits"
 msgstr ""
 "Milo Casagrande <milo@milo.name>\n"
 "Claudio Arseni <claudio.arseni@ubuntu.com>"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:163
 msgid "GNOME Contacts"
 msgstr "Contatti di GNOME"
 
-#: src/contacts-app.vala:234
+#: src/contacts-app.vala:164
 msgid "About GNOME Contacts"
 msgstr "Informazioni su Contatti di GNOME"
 
-#: src/contacts-app.vala:235
+#: src/contacts-app.vala:165
 msgid "Contact Management Application"
 msgstr "Applicazione per gestire contatti"
 
-#: src/contacts-app.vala:236
+#: src/contacts-app.vala:166
+#| msgid ""
+#| "© 2011 Red Hat, Inc.\n"
+#| "© 2011-2018 The Contacts Developers"
 msgid ""
 "© 2011 Red Hat, Inc.\n"
-"© 2011-2018 The Contacts Developers"
+"© 2011-2020 The Contacts Developers"
 msgstr ""
 "© 2011 Red Hat, Inc.\n"
-"© 2011-2018 The Contacts Developers"
+"© 2011-2020 gli sviluppatori di Contatti"
 
-#: src/contacts-app.vala:251
+#: src/contacts-app.vala:182
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Non è stato trovato alcun contatto con indirizzo email %s"
 
-#: src/contacts-avatar-selector.vala:107 src/contacts-avatar-selector.vala:227
+#: src/contacts-avatar-selector.vala:109 src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:235
 msgid "Failed to set avatar."
 msgstr "Impostazione avatar non riuscita."
 
-#: src/contacts-avatar-selector.vala:187
+#: src/contacts-avatar-selector.vala:195
 msgid "Browse for more pictures"
 msgstr "Cerca ulteriori immagini"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:198
 msgid "_Open"
 msgstr "_Apri"
 
-#: src/contacts-avatar-selector.vala:190
+#: src/contacts-avatar-selector.vala:198
 msgid "_Cancel"
 msgstr "A_nnulla"
 
-#: src/contacts-contact-editor.vala:52
+#: src/contacts-contact-editor.vala:50
 msgid "Change avatar"
 msgstr "Cambia avatar"
 
-#: src/contacts-contact-editor.vala:72
+#: src/contacts-contact-editor.vala:71
 msgid "Add name"
 msgstr "Aggiungi nome"
 
@@ -374,19 +378,19 @@ msgstr "Impossibile creare nuovi contatti: %s"
 msgid "Unable to find newly created contact"
 msgstr "Impossibile trovare il contatto appena creato"
 
-#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:487
+#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:488
 msgid "Website"
 msgstr "Sito web"
 
-#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:497
+#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:498
 msgid "Nickname"
 msgstr "Soprannome"
 
-#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:561
+#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:563
 msgid "Birthday"
 msgstr "Compleanno"
 
-#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:524
+#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:526
 msgid "Note"
 msgstr "Nota"
 
@@ -438,35 +442,35 @@ msgstr "Casella postale"
 msgid "Country"
 msgstr "Paese"
 
-#: src/contacts-editor-property.vala:335 src/contacts-editor-property.vala:585
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:587
 msgid "Delete field"
 msgstr "Elimina campo"
 
-#: src/contacts-editor-property.vala:450
+#: src/contacts-editor-property.vala:451
 msgid "Email address"
 msgstr "Indirizzo email"
 
-#: src/contacts-editor-property.vala:451
+#: src/contacts-editor-property.vala:452
 msgid "Add email"
 msgstr "Aggiungi email"
 
-#: src/contacts-editor-property.vala:468
+#: src/contacts-editor-property.vala:469
 msgid "Phone number"
 msgstr "Numero di telefono"
 
-#: src/contacts-editor-property.vala:469
+#: src/contacts-editor-property.vala:470
 msgid "Add number"
 msgstr "Aggiungi numero"
 
-#: src/contacts-editor-property.vala:488
+#: src/contacts-editor-property.vala:489
 msgid "https://example.com"
 msgstr "https://esempio.com"
 
-#: src/contacts-editor-property.vala:563 src/contacts-editor-property.vala:594
+#: src/contacts-editor-property.vala:565 src/contacts-editor-property.vala:596
 msgid "Set Birthday"
 msgstr "Imposta compleanno"
 
-#: src/contacts-editor-property.vala:612
+#: src/contacts-editor-property.vala:614
 msgid "Address"
 msgstr "Indirizzo"
 
@@ -663,56 +667,56 @@ msgstr "TTY"
 msgid "Google Circles"
 msgstr "Cerchie di Google"
 
-#: src/contacts-window.vala:204
+#: src/contacts-window.vala:202
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d selezionato"
 msgstr[1] "%d selezionati"
 
-#: src/contacts-window.vala:241
+#: src/contacts-window.vala:237
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/contacts-window.vala:271
+#: src/contacts-window.vala:267
 #, c-format
 msgid "Editing %s"
 msgstr "Modifica di %s"
 
-#: src/contacts-window.vala:298 src/contacts-window.vala:480
-#: src/contacts-window.vala:504 src/contacts-window.vala:548
+#: src/contacts-window.vala:294 src/contacts-window.vala:478
+#: src/contacts-window.vala:502 src/contacts-window.vala:548
 msgid "_Undo"
 msgstr "_Annulla"
 
-#: src/contacts-window.vala:299
+#: src/contacts-window.vala:295
 msgid "Contacts unlinked"
 msgstr "Contatti scollegati"
 
-#: src/contacts-window.vala:358
+#: src/contacts-window.vala:354
 msgid "Unmark as favorite"
 msgstr "Rimuovi dai preferiti"
 
-#: src/contacts-window.vala:359
+#: src/contacts-window.vala:355
 msgid "Mark as favorite"
 msgstr "Aggiungi ai preferiti"
 
-#: src/contacts-window.vala:373
+#: src/contacts-window.vala:369
 msgid "New Contact"
 msgstr "Nuovo contatto"
 
-#: src/contacts-window.vala:476
+#: src/contacts-window.vala:474
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d contatto unito"
 msgstr[1] "%d contatti uniti"
 
-#: src/contacts-window.vala:499
+#: src/contacts-window.vala:497
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Contatto %s eliminato"
 
-#: src/contacts-window.vala:501
+#: src/contacts-window.vala:499
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
