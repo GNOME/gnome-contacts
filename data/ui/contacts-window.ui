@@ -136,7 +136,7 @@
       </object>
     </child>
   </object>
-  <template class="ContactsWindow" parent="GtkApplicationWindow">
+  <template class="ContactsWindow" parent="HdyApplicationWindow">
     <property name="can_focus">False</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
@@ -144,9 +144,10 @@
     <property name="title" translatable="yes">Contacts</property>
     <signal name="key-press-event" handler="key_press_event_cb" object="ContactsWindow" after="yes" swapped="no"/>
     <signal name="delete-event" handler="delete_event_cb" object="ContactsWindow" after="no" swapped="no"/>
-    <child type="titlebar">
-      <object class="HdyTitleBar" id="titlebar">
+    <child>
+      <object class="GtkBox">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="HdyLeaflet" id="header">
             <property name="visible">True</property>
@@ -155,7 +156,7 @@
             <property name="child-transition-duration" bind-source="content_box" bind-property="child-transition-duration" bind-flags="bidirectional|sync-create"/>
             <property name="transition-type" bind-source="content_box" bind-property="transition-type" bind-flags="bidirectional|sync-create"/>
             <child>
-              <object class="GtkHeaderBar" id="left_header">
+              <object class="HdyHeaderBar" id="left_header">
                 <property name="visible">True</property>
                 <property name="hexpand">False</property>
                 <property name="can_focus">False</property>
@@ -193,7 +194,7 @@
                     <property name="can_focus">True</property>
                     <property name="focus_on_click">False</property>
                     <property name="popover">hamburger_menu_popover</property>
-					<accelerator key="F10" signal="clicked"/>
+                                        <accelerator key="F10" signal="clicked"/>
                     <child>
                       <object class="GtkImage">
                         <property name="visible">True</property>
@@ -235,7 +236,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHeaderBar" id="right_header">
+              <object class="HdyHeaderBar" id="right_header">
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="show_close_button">True</property>
@@ -350,82 +351,82 @@
             </child>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkOverlay" id="notification_overlay">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <child>
-          <object class="HdyLeaflet" id="content_box">
+          <object class="GtkOverlay" id="notification_overlay">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="can-swipe-back">True</property>
-            <signal name="notify::folded" handler="on_folded" object="ContactsWindow" after="yes" swapped="no"/>
-            <signal name="notify::child-transition-running" handler="on_child_transition_running" object="ContactsWindow" after="yes" swapped="no"/>
             <child>
-              <object class="GtkStack" id="list_pane_stack">
+              <object class="HdyLeaflet" id="content_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">False</property>
+                <property name="can-swipe-back">True</property>
+                <signal name="notify::folded" handler="on_folded" object="ContactsWindow" after="yes" swapped="no"/>
+                <signal name="notify::child-transition-running" handler="on_child_transition_running" object="ContactsWindow" after="yes" swapped="no"/>
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkStack" id="list_pane_stack">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
-                    <property name="width_request">300</property>
-                    <property name="homogeneous">True</property>
+                    <property name="hexpand">False</property>
                     <child>
-                      <object class="GtkSpinner">
+                      <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="active">True</property>
-                        <property name="valign">end</property>
-                        <property name="halign">center</property>
-                        <style>
-                          <class name="contacts-watermark"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="valign">start</property>
-                        <property name="halign">center</property>
-                        <property name="label" translatable="yes">Loading</property>
-                        <style>
-                          <class name="contacts-watermark"/>
-                        </style>
+                        <property name="orientation">vertical</property>
+                        <property name="width_request">300</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkSpinner">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="active">True</property>
+                            <property name="valign">end</property>
+                            <property name="halign">center</property>
+                            <style>
+                              <class name="contacts-watermark"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="valign">start</property>
+                            <property name="halign">center</property>
+                            <property name="label" translatable="yes">Loading</property>
+                            <style>
+                              <class name="contacts-watermark"/>
+                            </style>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
+                  <packing>
+                    <property name="name">list-pane</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <style>
+                      <class name="sidebar"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="navigatable">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkOverlay" id="contact_pane_container">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">contact-pane</property>
+                  </packing>
                 </child>
               </object>
-              <packing>
-                <property name="name">list-pane</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparator">
-                <property name="visible">True</property>
-                <style>
-                  <class name="sidebar"/>
-                </style>
-              </object>
-              <packing>
-                <property name="navigatable">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkOverlay" id="contact_pane_container">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-              </object>
-              <packing>
-                <property name="name">contact-pane</property>
-              </packing>
             </child>
           </object>
         </child>

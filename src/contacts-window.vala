@@ -18,7 +18,7 @@
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
-public class Contacts.Window : Gtk.ApplicationWindow {
+public class Contacts.Window : Hdy.ApplicationWindow {
 
   private const GLib.ActionEntry[] action_entries = {
     { "edit-contact",     edit_contact     },
@@ -38,11 +38,11 @@ public class Contacts.Window : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Container contact_pane_container;
   [GtkChild]
-  private Hdy.TitleBar titlebar;
+  private Hdy.HeaderBar left_header;
   [GtkChild]
-  private Gtk.HeaderBar left_header;
+  private Gtk.Separator header_separator;
   [GtkChild]
-  private Gtk.HeaderBar right_header;
+  private Hdy.HeaderBar right_header;
   [GtkChild]
   private Gtk.Overlay notification_overlay;
   [GtkChild]
@@ -240,12 +240,27 @@ public class Contacts.Window : Gtk.ApplicationWindow {
       ((Gtk.Widget) this.done_button).set_focus_on_click (true);
     }
     // When selecting or editing, we get special headerbars
-    this.titlebar.selection_mode = this.state == UiState.SELECTING || this.state.editing ();
+    set_selection_mode (this.state == UiState.SELECTING || this.state.editing ());
 
     // Allow the back gesture when not browsing
     this.content_box.can_swipe_back = this.state == UiState.NORMAL ||
                                       this.state == UiState.SHOWING ||
                                       this.state == UiState.SELECTING;
+  }
+
+  private void set_selection_mode (bool selection_mode) {
+    var left_ctx = this.left_header.get_style_context ();
+    var separator_ctx = this.header_separator.get_style_context ();
+    var right_ctx = this.right_header.get_style_context ();
+    if (selection_mode) {
+      left_ctx.add_class ("selection-mode");
+      separator_ctx.add_class ("selection-mode");
+      right_ctx.add_class ("selection-mode");
+    } else {
+      left_ctx.remove_class ("selection-mode");
+      separator_ctx.remove_class ("selection-mode");
+      right_ctx.remove_class ("selection-mode");
+    }
   }
 
   [GtkCallback]
