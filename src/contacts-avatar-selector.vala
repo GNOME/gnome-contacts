@@ -119,8 +119,7 @@ public class Contacts.AvatarSelector : Popover {
 
   private FlowBoxChild create_thumbnail (Gdk.Pixbuf source_pixbuf) {
     var avatar = new Avatar (ICONS_SIZE);
-    var pixbuf = source_pixbuf.scale_simple (ICONS_SIZE, ICONS_SIZE, Gdk.InterpType.HYPER);
-    avatar.set_pixbuf (pixbuf);
+    avatar.set_pixbuf (source_pixbuf);
 
     var button = new Button ();
     button.get_style_context ().add_class (AVATAR_BUTTON_CSS_NAME);

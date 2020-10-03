@@ -23,85 +23,15 @@ using Gee;
  * The Avatar of a Contact is responsible for showing an {@link Folks.Individual}'s
  * avatar, or a fallback if it's not available.
  */
-public class Contacts.Avatar : DrawingArea {
-  private int size;
-  private Gdk.Pixbuf? pixbuf = null;
-  private Gdk.Pixbuf? cache = null;
+public class Contacts.Avatar : Bin {
+  private Hdy.Avatar widget;
 
   private Individual? individual = null;
-  // We want to lazily load the Pixbuf to make sure we don't draw all contact avatars at once.
-  // As long as there is no need for it to be drawn, keep this to false.
-  private bool avatar_loaded = false;
 
   public Avatar (int size, Individual? individual = null) {
     this.individual = individual;
-    if (individual != null) {
-      individual.notify["avatar"].connect ( (s, p) => {
-        load_avatar.begin ();
-      });
-    }
-
-    this.size = size;
-    set_size_request (size, size);
-
-    // If we don't have an avatar, don't try to load it later
-    this.avatar_loaded = (individual == null || individual.avatar == null);
-
-    show ();
-  }
-
-  /**
-   * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
-   */
-  public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
-    this.cache = null;
-    this.pixbuf = a_pixbuf;
-    queue_draw ();
-  }
-
-  private async void load_avatar () {
-    assert (this.individual != null);
-
-    this.avatar_loaded = true;
-    try {
-      var stream = yield this.individual.avatar.load_async (this.size);
-      this.cache = null;
-      this.pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream, this.size, this.size, true);
-      queue_draw ();
-    } catch (Error e) {
-      debug ("Couldn't load avatar of contact %s. Reason: %s", this.individual.display_name, e.message);
-    }
-  }
-
-  public override bool draw (Cairo.Context cr) {
-    // This exists to implement lazy loading: i.e. only load the avatar on the first draw()
-    if (!this.avatar_loaded)
-      load_avatar.begin ();
-
-    if (this.cache != null) {
-    // Don't do anything if we have already a cached avatar
-    } else if (this.pixbuf != null)
-      this.cache = create_contact_avatar ();
-    else // No avatar or cache available, create the fallback
-      this.cache = create_fallback ();
-
-    draw_cached_avatar (cr);
-
-    return true;
-  }
-
-  private void draw_cached_avatar (Cairo.Context cr) {
-    Gdk.cairo_set_source_pixbuf (cr, this.cache, 0, 0);
-    cr.paint ();
-  }
-
-  private Gdk.Pixbuf create_contact_avatar () {
-    return AvatarUtils.round_image(this.pixbuf);
-  }
-
-  private Gdk.Pixbuf create_fallback () {
     string name = "";
-    bool show_label = false;
+    bool show_initials = false;
     if (this.individual != null) {
       name = find_display_name ();
       /* If we don't have a usable name use the display_name
@@ -110,13 +40,39 @@ public class Contacts.Avatar : DrawingArea {
       if (name == "") {
         name = this.individual.display_name;
       } else {
-        show_label = true;
+        show_initials = true;
       }
     }
-    var pixbuf = AvatarUtils.generate_user_picture(name, this.size, show_label);
-    pixbuf = AvatarUtils.round_image(pixbuf);
 
-    return pixbuf;
+    this.widget = new Hdy.Avatar (size, name, show_initials);
+    this.widget.set_image_load_func (size => load_avatar (size));
+    this.widget.show ();
+    add(this.widget);
+
+    show ();
+  }
+
+  /**
+   * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
+   */
+  public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
+    this.widget.set_image_load_func (size => load_avatar (size, a_pixbuf));
+  }
+
+  private Gdk.Pixbuf? load_avatar (int size, Gdk.Pixbuf? pixbuf = null) {
+    if (pixbuf != null) {
+      return pixbuf.scale_simple (size, size, Gdk.InterpType.HYPER);
+    } else {
+      if (this.individual != null && this.individual.avatar != null) {
+        try {
+          var stream = this.individual.avatar.load (size, null);
+          return new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
+        } catch (Error e) {
+          debug ("Couldn't load avatar of contact %s. Reason: %s", this.individual.display_name, e.message);
+        }
+      }
+    }
+    return null;
   }
 
   /* Find a nice name to generate the label and color for the fallback avatar
