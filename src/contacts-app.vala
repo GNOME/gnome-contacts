@@ -88,6 +88,16 @@ public class Contacts.App : Gtk.Application {
   }
 
   public async void show_individual (string id) {
+    if (contacts_store.is_quiescent) {
+      show_individual_ready.begin (id);
+    } else {
+      contacts_store.quiescent.connect( () => {
+        show_individual_ready.begin (id);
+      });
+    }
+  }
+
+  private async void show_individual_ready (string id) {
     Individual? contact = null;
     try {
       contact = yield contacts_store.aggregator.look_up_individual (id);
