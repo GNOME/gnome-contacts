@@ -106,7 +106,9 @@ PostalAddressDetails
   public LoadableIcon? avatar {
     get {
       unowned Value? value = this.properties.get ("avatar");
-      return (LoadableIcon?) value;
+      // Casting a Value internally makes it use g_value_get_object(),
+      // which is of course not allowed for a NULL value
+      return (value != null)? (LoadableIcon?) value : null;
     }
     set {
       this.properties.set ("avatar", value);
