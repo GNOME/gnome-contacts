@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
 using Gee;
 
@@ -24,14 +23,14 @@ using Gee;
  * the left. It is contained by the {@link ListPane}, which also provides other
  * functionality, such as an action bar.
  */
-public class Contacts.ContactList : ListBox {
-  private class ContactDataRow : ListBoxRow {
+public class Contacts.ContactList : Gtk.ListBox {
+  private class ContactDataRow : Gtk.ListBoxRow {
     private const int LIST_AVATAR_SIZE = 48;
 
     public Individual individual;
-    private Label label;
+    private Gtk.Label label;
     private Avatar avatar;
-    public CheckButton selector_button;
+    public Gtk.CheckButton selector_button;
     // Whether the selector should always be visible (or only on hover)
     private bool checkbox_exposed = false;
 
@@ -41,23 +40,23 @@ public class Contacts.ContactList : ListBox {
 
       get_style_context (). add_class ("contact-data-row");
 
-      Grid grid = new Grid ();
+      Gtk.Grid grid = new Gtk.Grid ();
       grid.margin = 3;
       grid.margin_start = 9;
       grid.set_column_spacing (10);
       this.avatar = new Avatar (LIST_AVATAR_SIZE, this.individual);
 
-      this.label = new Label (individual.display_name);
+      this.label = new Gtk.Label (individual.display_name);
       this.label.ellipsize = Pango.EllipsizeMode.END;
-      this.label.valign = Align.CENTER;
-      this.label.halign = Align.START;
+      this.label.valign = Gtk.Align.CENTER;
+      this.label.halign = Gtk.Align.START;
       // Make sure it doesn't "twitch" when the checkbox becomes visible
       this.label.xalign = 0;
 
-      this.selector_button = new CheckButton ();
+      this.selector_button = new Gtk.CheckButton ();
       this.selector_button.visible = false;
-      this.selector_button.valign = Align.CENTER;
-      this.selector_button.halign = Align.END;
+      this.selector_button.valign = Gtk.Align.CENTER;
+      this.selector_button.halign = Gtk.Align.END;
       this.selector_button.hexpand = true;
       // Make sure it doesn't overlap with the scrollbar
       this.selector_button.margin_end = 12;
@@ -79,15 +78,15 @@ public class Contacts.ContactList : ListBox {
     public void expose_checkbox (bool expose) {
       this.checkbox_exposed = expose;
 
-      var hovering = StateFlags.PRELIGHT in get_state_flags ();
+      var hovering = Gtk.StateFlags.PRELIGHT in get_state_flags ();
       this.selector_button.visible = expose || hovering;
     }
 
     // Normally, we would use the (enter/leave)_notify_event here, but since ListBoxRow
     // doesn't have its own Gdk.Window, this won't work (at least in GTK+3).
-    public override void state_flags_changed (StateFlags previous_state) {
-      var hovering_now = StateFlags.PRELIGHT in get_state_flags ();
-      var was_hovering = StateFlags.PRELIGHT in previous_state;
+    public override void state_flags_changed (Gtk.StateFlags previous_state) {
+      var hovering_now = Gtk.StateFlags.PRELIGHT in get_state_flags ();
+      var was_hovering = Gtk.StateFlags.PRELIGHT in previous_state;
 
       if (hovering_now != was_hovering) // If hovering changed
         this.selector_button.visible = checkbox_exposed || hovering_now;
@@ -147,7 +146,7 @@ public class Contacts.ContactList : ListBox {
       this.nr_contacts_marked = 0;
   }
 
-  private int compare_rows (ListBoxRow row_a, ListBoxRow row_b) {
+  private int compare_rows (Gtk.ListBoxRow row_a, Gtk.ListBoxRow row_b) {
     var a = ((ContactDataRow) row_a).individual;
     var b = ((ContactDataRow) row_b).individual;
 
@@ -170,7 +169,7 @@ public class Contacts.ContactList : ListBox {
     return indiv.display_name;
   }
 
-  private void update_header (ListBoxRow row, ListBoxRow? before) {
+  private void update_header (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
     var current = ((ContactDataRow) row).individual;
 
     if (before == null) {
@@ -189,9 +188,9 @@ public class Contacts.ContactList : ListBox {
     }
   }
 
-  private Label create_header_label (string text) {
-    var label = new Label (text);
-    label.halign = Align.START;
+  private Gtk.Label create_header_label (string text) {
+    var label = new Gtk.Label (text);
+    label.halign = Gtk.Align.START;
     label.margin = 3;
     label.margin_start = 6;
     label.margin_top = 6;
@@ -237,7 +236,7 @@ public class Contacts.ContactList : ListBox {
       row.destroy ();
   }
 
-  public override void row_selected (ListBoxRow? row) {
+  public override void row_selected (Gtk.ListBoxRow? row) {
     var data = (ContactDataRow?) row as ContactDataRow;
     var individual = data != null ? data.individual : null;
     selection_changed (individual);
@@ -247,7 +246,7 @@ public class Contacts.ContactList : ListBox {
 #endif
   }
 
-  private bool filter_row (ListBoxRow row) {
+  private bool filter_row (Gtk.ListBoxRow row) {
     var individual = ((ContactDataRow) row).individual;
     return this.filter_query.is_match (individual) > 0;
   }
