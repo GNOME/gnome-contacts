@@ -27,6 +27,7 @@ using Gee;
 public class Contacts.ContactSheet : Grid {
   private int last_row = 0;
   private Individual individual;
+  private unowned Store store;
   public bool narrow { get; set; default = true; }
 
   private const string[] SORTED_PROPERTIES = {
@@ -43,6 +44,7 @@ public class Contacts.ContactSheet : Grid {
   public ContactSheet (Individual individual, Store store) {
     Object (row_spacing: 12, column_spacing: 12);
     this.individual = individual;
+    this.store = store;
 
     this.individual.notify.connect (update);
     this.individual.personas_changed.connect (update);
@@ -242,7 +244,7 @@ public class Contacts.ContactSheet : Grid {
                 var type = im_persona.presence_type;
                 if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
                     type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
-                  Utils.start_chat (this.contact, protocol, id.value);
+                  Utils.start_chat (this.individual, protocol, id.value);
                 }
               }
             });

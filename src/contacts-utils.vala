@@ -80,8 +80,8 @@ namespace Contacts.Utils {
   }
 
 #if HAVE_TELEPATHY
-  public void start_chat (Contact contact, string protocol, string id) {
-    var im_persona = contact.find_im_persona (protocol, id);
+  public void start_chat (Individual individual, string protocol, string id) {
+    var im_persona = Utils.find_im_persona (individual, protocol, id);
     var account = (im_persona.store as Tpf.PersonaStore).account;
     var request_dict = new HashTable<string, Value?>(str_hash, str_equal);
     request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
