@@ -82,7 +82,7 @@ public class Contacts.TypeSet : Object  {
   /**
    * Returns the display name for the type of the given AbstractFieldDetails.
    */
-  public string format_type (AbstractFieldDetails detail) {
+  public unowned string format_type (AbstractFieldDetails detail) {
     var d = lookup_descriptor_for_field_details (detail);
     return d.display_name;
   }

@@ -334,7 +334,7 @@ namespace Contacts.Utils {
   public Tpf.Persona? find_im_persona (Individual individual, string protocol, string im_address) {
     var iid = protocol + ":" + im_address;
     foreach (var p in individual.personas) {
-      var tp = p as Tpf.Persona;
+      unowned var tp = p as Tpf.Persona;
       if (tp != null && tp.iid == iid) {
         return tp;
       }
@@ -355,8 +355,8 @@ namespace Contacts.Utils {
 
   public Gee.List<Persona> get_personas_for_display (Individual individual) {
     CompareDataFunc<Persona> compare_persona_by_store = (a, b) => {
-      var store_a = a.store;
-      var store_b = b.store;
+      unowned var store_a = a.store;
+      unowned var store_b = b.store;
 
       // In the same store, sort Google 'other' contacts last
       if (store_a == store_b) {
@@ -470,7 +470,7 @@ namespace Contacts.Utils {
     if (!persona_is_google (persona))
       return false;
 
-    var p = persona as Edsf.Persona;
+    unowned var p = persona as Edsf.Persona;
     return p != null && !p.in_google_personal_group;
   }
 
@@ -478,7 +478,7 @@ namespace Contacts.Utils {
     if (!persona_is_google_other (persona))
       return false;
 
-    var u = persona as UrlDetails;
+    unowned var u = persona as UrlDetails;
     if (u != null && u.urls.size == 1) {
       foreach (var url in u.urls) {
         if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
@@ -489,7 +489,7 @@ namespace Contacts.Utils {
   }
 
   public string format_persona_store_name_for_contact (Persona persona) {
-    var store = persona.store;
+    unowned var store = persona.store;
     if (store.type_id == "eds") {
       if (persona_is_google_profile (persona))
         return _("Google Circles");
@@ -502,7 +502,7 @@ namespace Contacts.Utils {
     }
 #if HAVE_TELEPATHY
     if (store.type_id == "telepathy") {
-      var account = (store as Tpf.PersonaStore).account;
+      unowned var account = (store as Tpf.PersonaStore).account;
       return Contacts.ImService.get_display_name (account.service);
     }
 #endif
@@ -595,7 +595,7 @@ namespace Contacts.Utils {
   public void fetch_contact_info (Individual individual) {
     /* TODO: Ideally Folks should have API for this (#675131) */
     foreach (var p in individual.personas) {
-      var tp = p as Tpf.Persona;
+      unowned var tp = p as Tpf.Persona;
       if (tp != null) {
         tp.contact.request_contact_info_async.begin (null);
       }

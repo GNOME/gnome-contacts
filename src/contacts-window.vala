@@ -126,7 +126,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
   }
 
   private void restore_window_size_and_position_from_settings () {
-    var screen = get_screen();
+    unowned var screen = get_screen ();
     if (screen != null && this.window_width <= screen.get_width () && this.window_height <= screen.get_height ()) {
       set_default_size (this.window_width, this.window_height);
     }
@@ -150,7 +150,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
   public override void size_allocate (Gtk.Allocation allocation) {
     base.size_allocate (allocation);
 
-    var screen = get_screen ();
+    unowned var screen = get_screen ();
     if (screen != null && !this.window_maximized) {
       // Get the size via ::get_size instead of the allocation
       // so that the window isn't ever-expanding.
@@ -249,9 +249,9 @@ public class Contacts.Window : Hdy.ApplicationWindow {
   }
 
   private void set_selection_mode (bool selection_mode) {
-    var left_ctx = this.left_header.get_style_context ();
-    var separator_ctx = this.header_separator.get_style_context ();
-    var right_ctx = this.right_header.get_style_context ();
+    unowned var left_ctx = this.left_header.get_style_context ();
+    unowned var separator_ctx = this.header_separator.get_style_context ();
+    unowned var right_ctx = this.right_header.get_style_context ();
     if (selection_mode) {
       left_ctx.add_class ("selection-mode");
       separator_ctx.add_class ("selection-mode");
@@ -278,7 +278,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
 
     this.state = UiState.UPDATING;
 
-    var name = this.contact_pane.individual.display_name;
+    unowned var name = this.contact_pane.individual.display_name;
     this.right_header.title = _("Editing %s").printf (name);
     this.contact_pane.edit_contact ();
   }
@@ -431,7 +431,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
     this.cancel_button.clicked.connect (() => stop_editing (true));
 
     this.contact_pane.notify["individual"].connect (() => {
-      var individual = this.contact_pane.individual;
+      unowned var individual = this.contact_pane.individual;
       if (individual == null)
         return;
       this.unlink_button.set_visible (individual.personas.size > 1);

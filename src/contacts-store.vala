@@ -49,7 +49,7 @@ public class Contacts.Store : GLib.Object {
       FileUtils.get_contents (path, out contents);
 
       var rows = contents.split ("\n");
-      foreach (var r in rows) {
+      foreach (unowned string r in rows) {
         var ids = r.split (" ");
         if (ids.length == 2) {
           dont_suggest_link.set (ids[0], ids[1]);

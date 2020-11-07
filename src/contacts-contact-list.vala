@@ -27,7 +27,7 @@ public class Contacts.ContactList : Gtk.ListBox {
   private class ContactDataRow : Gtk.ListBoxRow {
     private const int LIST_AVATAR_SIZE = 48;
 
-    public Individual individual;
+    public unowned Individual individual;
     private Gtk.Label label;
     private Avatar avatar;
     public Gtk.CheckButton selector_button;
@@ -147,16 +147,16 @@ public class Contacts.ContactList : Gtk.ListBox {
   }
 
   private int compare_rows (Gtk.ListBoxRow row_a, Gtk.ListBoxRow row_b) {
-    var a = ((ContactDataRow) row_a).individual;
-    var b = ((ContactDataRow) row_b).individual;
+    unowned var a = ((ContactDataRow) row_a).individual;
+    unowned var b = ((ContactDataRow) row_b).individual;
 
     // Always prefer favourites over non-favourites.
     if (a.is_favourite != b.is_favourite)
       return a.is_favourite? -1 : 1;
 
     // Both are (non-)favourites: sort by either first name or surname (user preference)
-    unowned string? a_name = this.sort_on_surname? try_get_surname(a) : a.display_name;
-    unowned string? b_name = this.sort_on_surname? try_get_surname(b) : b.display_name;
+    unowned var a_name = this.sort_on_surname? try_get_surname (a) : a.display_name;
+    unowned var b_name = this.sort_on_surname? try_get_surname (b) : b.display_name;
 
     return a_name.collate (b_name);
   }
@@ -170,7 +170,7 @@ public class Contacts.ContactList : Gtk.ListBox {
   }
 
   private void update_header (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
-    var current = ((ContactDataRow) row).individual;
+    unowned var current = ((ContactDataRow) row).individual;
 
     if (before == null) {
       if (current.is_favourite)
@@ -180,7 +180,7 @@ public class Contacts.ContactList : Gtk.ListBox {
       return;
     }
 
-    var previous = ((ContactDataRow) before).individual;
+    unowned var previous = ((ContactDataRow) before).individual;
     if (!current.is_favourite && previous.is_favourite) {
       row.set_header (create_header_label (_("All Contacts")));
     } else {
@@ -268,9 +268,9 @@ public class Contacts.ContactList : Gtk.ListBox {
   }
 
 
-  private ContactDataRow? find_row_for_contact (Individual individual) {
-    foreach (var widget in get_children ()) {
-      var row = ((ContactDataRow) widget);
+  private unowned ContactDataRow? find_row_for_contact (Individual individual) {
+    foreach (weak Gtk.Widget widget in get_children ()) {
+      unowned var row = ((ContactDataRow) widget);
       if (row.individual == individual)
         return row;
     }
@@ -280,8 +280,8 @@ public class Contacts.ContactList : Gtk.ListBox {
 
   public LinkedList<Individual> get_marked_contacts () {
     var cs = new LinkedList<Individual> ();
-    foreach (var widget in get_children ()) {
-      var row = widget as ContactDataRow;
+    foreach (weak Gtk.Widget widget in get_children ()) {
+      unowned var row = widget as ContactDataRow;
       if (row.selector_button.active)
         cs.add (row.individual);
     }
@@ -290,8 +290,8 @@ public class Contacts.ContactList : Gtk.ListBox {
 
   public LinkedList<Individual> get_marked_contacts_and_hide () {
     var cs = new LinkedList<Individual> ();
-    foreach (var widget in get_children ()) {
-      var row = widget as ContactDataRow;
+    foreach (weak Gtk.Widget widget in get_children ()) {
+      unowned var row = widget as ContactDataRow;
       if (row.selector_button.active) {
         row.visible = false;
         cs.add (row.individual);
@@ -305,7 +305,7 @@ public class Contacts.ContactList : Gtk.ListBox {
     base.button_press_event (event);
 
     if (event.button == Gdk.BUTTON_SECONDARY) {
-      var row = (ContactDataRow) get_row_at_y ((int) Math.round (event.y));
+      unowned var row = (ContactDataRow) get_row_at_y ((int) Math.round (event.y));
       if (row != null) {
         select_row (row);
         row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
