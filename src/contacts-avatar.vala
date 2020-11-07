@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
 using Gee;
 
@@ -23,10 +22,10 @@ using Gee;
  * The Avatar of a Contact is responsible for showing an {@link Folks.Individual}'s
  * avatar, or a fallback if it's not available.
  */
-public class Contacts.Avatar : Bin {
+public class Contacts.Avatar : Gtk.Bin {
   private Hdy.Avatar widget;
 
-  private Individual? individual = null;
+  private unowned Individual? individual = null;
 
   public Avatar (int size, Individual? individual = null) {
     this.individual = individual;
@@ -103,7 +102,7 @@ public class Contacts.Avatar : Bin {
   }
 
   private string look_up_alias_for_display_name (Persona? p) {
-    var a = p as AliasDetails;
+    unowned var a = p as AliasDetails;
     if (a != null && a.alias != null)
       return a.alias;
 
@@ -111,7 +110,7 @@ public class Contacts.Avatar : Bin {
   }
 
   private string look_up_name_details_for_display_name (Persona? p) {
-    var n = p as NameDetails;
+    unowned var n = p as NameDetails;
     if (n != null) {
       if (n.full_name != null && n.full_name != "")
         return n.full_name;
