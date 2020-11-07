@@ -20,7 +20,7 @@ using Folks;
 using Gee;
 
 /**
- * The ContactList is the actual list of {@link Contact}s that the user sees on
+ * The ContactList is the actual list of {@link Individual}s that the user sees on
  * the left. It is contained by the {@link ListPane}, which also provides other
  * functionality, such as an action bar.
  */
