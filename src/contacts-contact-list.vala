@@ -243,7 +243,7 @@ public class Contacts.ContactList : ListBox {
     selection_changed (individual);
 #if HAVE_TELEPATHY
     if (individual != null)
-      Contact.fetch_contact_info (individual);
+      Utils.fetch_contact_info (individual);
 #endif
   }
 
