@@ -30,7 +30,7 @@ namespace Contacts {
     }
 
     // Link individuals
-    public async void do (LinkedList<Individual> individuals) {
+    public async void execute (LinkedList<Individual> individuals) {
       var personas_to_link = new HashSet<Persona> ();
       foreach (var i in individuals) {
         var saved_personas = new HashSet<Persona> ();
@@ -81,7 +81,7 @@ namespace Contacts {
     }
 
     /* Remove a personas from individual */
-    public async void do (Individual main) {
+    public async void execute (Individual main) {
       foreach (var persona in main.personas)
           personas.add (persona);
 

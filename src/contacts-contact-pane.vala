@@ -78,7 +78,7 @@ public class Contacts.ContactPane : ScrolledWindow {
         var to_link = new LinkedList<Individual> ();
         to_link.add (this.individual);
         to_link.add (i);
-        operation.do.begin (to_link);
+        operation.execute.begin (to_link);
         this.contacts_linked (null, linked_contact, operation);
         remove_suggestion_grid ();
       });

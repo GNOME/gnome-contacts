@@ -305,7 +305,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
     this.state = UiState.NORMAL;
 
     var operation = new UnLinkOperation (this.store);
-    operation.do.begin (individual);
+    operation.execute.begin (individual);
 
     var b = new Gtk.Button.with_mnemonic (_("_Undo"));
     var notification = new InAppNotification (_("Contacts unlinked"), b);
@@ -491,7 +491,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
     this.state = UiState.NORMAL;
 
     var operation = new LinkOperation (this.store);
-    operation.do.begin (contact_list);
+    operation.execute.begin (contact_list);
 
     string msg = ngettext ("%d contacts linked",
                            "%d contacts linked",
