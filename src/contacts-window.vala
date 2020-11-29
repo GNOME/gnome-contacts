@@ -234,7 +234,8 @@ public class Contacts.Window : Hdy.ApplicationWindow {
         = this.done_button.visible
         = this.state.editing ();
     if (this.state.editing ()) {
-      this.done_button.label = (this.state == UiState.CREATING)? _("Add") : _("Done");
+      this.done_button.use_underline = true;
+      this.done_button.label = (this.state == UiState.CREATING)? _("_Add") : _("Done");
       // Cast is required because Gtk.Button.set_focus_on_click is deprecated and
       // we have to use Gtk.Widget.set_focus_on_click instead
       ((Gtk.Widget) this.done_button).set_focus_on_click (true);
