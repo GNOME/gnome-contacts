@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
 
 /**
  * ImService is a helper struct that maps a service identifier to the
@@ -59,8 +57,8 @@ public struct Contacts.ImService {
   /**
    * Returns the display name for the given IM service in a nicely presented way.
    */
-  public static string get_display_name (string service_name) {
-    foreach (var d in data)
+  public static unowned string get_display_name (string service_name) {
+    foreach (unowned ImService d in data)
       if (d.service_name == service_name)
         return dgettext (Config.GETTEXT_PACKAGE, d.display_name);
 

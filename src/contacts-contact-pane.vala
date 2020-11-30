@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
 
 const int PROFILE_SIZE = 128;
 
@@ -27,26 +25,26 @@ const int PROFILE_SIZE = 128;
  * and a ContactEditor to edit contact information.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
-public class Contacts.ContactPane : ScrolledWindow {
+public class Contacts.ContactPane : Gtk.ScrolledWindow {
 
-  private Window parent_window;
+  private Contacts.Window parent_window;
 
   private Store store;
 
   public Individual? individual { get; set; default = null; }
 
   [GtkChild]
-  private Stack stack;
+  private Gtk.Stack stack;
 
   [GtkChild]
-  private Grid none_selected_page;
+  private Gtk.Grid none_selected_page;
 
   [GtkChild]
-  private Container contact_sheet_page;
+  private Gtk.Container contact_sheet_page;
   private ContactSheet? sheet = null;
 
   [GtkChild]
-  private Box contact_editor_page;
+  private Gtk.Box contact_editor_page;
   private ContactEditor? editor = null;
 
   public bool on_edit_mode = false;
@@ -60,13 +58,13 @@ public class Contacts.ContactPane : ScrolledWindow {
   public signal void display_name_changed (string new_display_name);
 
 
-  public ContactPane (Window parent_window, Store contacts_store) {
+  public ContactPane (Contacts.Window parent_window, Store contacts_store) {
     this.parent_window = parent_window;
     this.store = contacts_store;
   }
 
   public void add_suggestion (Individual i) {
-    var parent_overlay = this.get_parent () as Overlay;
+    var parent_overlay = this.get_parent () as Gtk.Overlay;
 
     remove_suggestion_grid ();
     this.suggestion_grid = new LinkSuggestionGrid (i);
@@ -75,7 +73,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     this.suggestion_grid.suggestion_accepted.connect ( () => {
         var linked_contact = this.individual.display_name;
         var operation = new LinkOperation (this.store);
-        var to_link = new LinkedList<Individual> ();
+        var to_link = new Gee.LinkedList<Individual> ();
         to_link.add (this.individual);
         to_link.add (i);
         operation.execute.begin (to_link);
@@ -217,7 +215,7 @@ public class Contacts.ContactPane : ScrolledWindow {
     }
 
     var fake_persona = new FakePersona (FakePersonaStore.the_store(), writeable_properties, details);
-    var fake_personas = new HashSet<FakePersona> ();
+    var fake_personas = new Gee.HashSet<FakePersona> ();
     fake_personas.add (fake_persona);
     this.individual = new FakeIndividual(fake_personas);
 
@@ -258,11 +256,11 @@ public class Contacts.ContactPane : ScrolledWindow {
 
   private void show_message_dialog (string message) {
     var dialog =
-        new MessageDialog (this.parent_window,
-                           DialogFlags.DESTROY_WITH_PARENT | DialogFlags.MODAL,
-                           MessageType.ERROR,
-                           ButtonsType.OK,
-                           "%s", message);
+        new Gtk.MessageDialog (this.parent_window,
+                               Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
+                               Gtk.MessageType.ERROR,
+                               Gtk.ButtonsType.OK,
+                               "%s", message);
     dialog.run ();
     dialog.destroy ();
   }

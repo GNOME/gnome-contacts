@@ -15,12 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-using Gtk;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-list-pane.ui")]
-public class Contacts.ListPane : Frame {
+public class Contacts.ListPane : Gtk.Frame {
   private Store store;
 
   [GtkChild]
@@ -28,23 +26,23 @@ public class Contacts.ListPane : Frame {
   private ContactList contacts_list;
 
   [GtkChild]
-  public SearchEntry filter_entry;
+  public Gtk.SearchEntry filter_entry;
   private SimpleQuery filter_query;
 
   [GtkChild]
-  private Button link_button;
+  private Gtk.Button link_button;
 
   [GtkChild]
-  private Button delete_button;
+  private Gtk.Button delete_button;
 
   [GtkChild]
-  private ActionBar actions_bar;
+  private Gtk.ActionBar actions_bar;
 
   public UiState state { get; set; }
 
   public signal void selection_changed (Individual? individual);
-  public signal void link_contacts (LinkedList<Individual> individual);
-  public signal void delete_contacts (LinkedList<Individual> individual);
+  public signal void link_contacts (Gee.LinkedList<Individual> individual);
+  public signal void delete_contacts (Gee.LinkedList<Individual> individual);
   public signal void contacts_marked (int contacts_marked);
 
   public ListPane (Settings settings, Store contacts_store) {
@@ -88,7 +86,7 @@ public class Contacts.ListPane : Frame {
   }
 
   [GtkCallback]
-  private void filter_entry_changed (Editable editable) {
+  private void filter_entry_changed (Gtk.Editable editable) {
     this.filter_query.query_string = this.filter_entry.text;
   }
 

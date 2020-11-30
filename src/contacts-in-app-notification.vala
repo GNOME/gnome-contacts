@@ -15,19 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-in-app-notification.ui")]
-public class Contacts.InAppNotification : Revealer {
+public class Contacts.InAppNotification : Gtk.Revealer {
   // Close the in-app notification after 5 seconds by default.
   private const uint DEFAULT_KEEPALIVE = 5;
 
   [GtkChild]
-  private Grid grid;
+  private Gtk.Grid grid;
 
   [GtkChild]
-  private Label label;
-  public Label message_label {
+  private Gtk.Label label;
+  public Gtk.Label message_label {
     get { return this.label; }
   }
 
@@ -39,7 +37,7 @@ public class Contacts.InAppNotification : Revealer {
   /**
    * Creates an in-app notification with the given message, and an accompanying button if not null.
    */
-  public InAppNotification (string message, Button? button = null) {
+  public InAppNotification (string message, Gtk.Button? button = null) {
     this.label.label = message;
 
     if (button != null) {
@@ -73,7 +71,7 @@ public class Contacts.InAppNotification : Revealer {
   }
 
   [GtkCallback]
-  private void on_close_button_clicked(Button close_button) {
+  private void on_close_button_clicked(Gtk.Button close_button) {
     dismiss();
   }
 }

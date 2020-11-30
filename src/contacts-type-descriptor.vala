@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-using Gee;
 using Folks;
 
 /**
@@ -47,7 +45,7 @@ public class Contacts.TypeDescriptor : Object {
   private Source source;
   public string? name = null;
   public string[]? vcard_types = null;
-  public TreeIter iter;
+  public Gtk.TreeIter iter;
 
   /**
    * Returns the translated name for this property.
@@ -93,7 +91,7 @@ public class Contacts.TypeDescriptor : Object {
     debug ("Saving type %s", to_string ());
 
     var old_parameters = details.parameters;
-    var new_parameters = new HashMultiMap<string, string> ();
+    var new_parameters = new Gee.HashMultiMap<string, string> ();
 
     // Check whether PREF VCard "flag" is set
     bool has_pref = false;

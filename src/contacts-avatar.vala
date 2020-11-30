@@ -16,7 +16,6 @@
  */
 
 using Folks;
-using Gee;
 
 /**
  * The Avatar of a Contact is responsible for showing an {@link Folks.Individual}'s

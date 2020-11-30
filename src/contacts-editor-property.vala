@@ -16,35 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
-
 
 public class Contacts.BirthdayEditor : Gtk.Dialog {
-  private SpinButton day_spin;
-  private ComboBoxText month_combo;
-  private SpinButton year_spin;
+  private Gtk.SpinButton day_spin;
+  private Gtk.ComboBoxText month_combo;
+  private Gtk.SpinButton year_spin;
   public bool is_set { get; set; default = false; }
 
   public signal void changed ();
   delegate void AdjustingDateFn ();
 
-  public DateTime get_birthday () {
-    return new DateTime.local (year_spin.get_value_as_int (),
-    month_combo.get_active () + 1,
-    day_spin.get_value_as_int (),
-    0, 0, 0).to_utc ();
+  public GLib.DateTime get_birthday () {
+    return new GLib.DateTime.local (year_spin.get_value_as_int (),
+                                    month_combo.get_active () + 1,
+                                    day_spin.get_value_as_int (),
+                                    0, 0, 0).to_utc ();
   }
 
-  public BirthdayEditor (Window window, DateTime birthday) {
+  public BirthdayEditor (Gtk.Window window, DateTime birthday) {
     Object (transient_for: window, use_header_bar: 1);
-    day_spin = new SpinButton.with_range (1.0, 31.0, 1.0);
+    day_spin = new Gtk.SpinButton.with_range (1.0, 31.0, 1.0);
     day_spin.set_digits (0);
     day_spin.numeric = true;
     day_spin.set_value ((double)birthday.to_local ().get_day_of_month ());
 
-    month_combo = new ComboBoxText ();
+    month_combo = new Gtk.ComboBoxText ();
     var january = new DateTime.local (1, 1, 1, 1, 1, 1);
     for (int i = 0; i < 12; i++) {
       var month = january.add_months (i);
@@ -53,47 +50,47 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
     month_combo.set_active (birthday.to_local ().get_month () - 1);
     month_combo.hexpand = true;
 
-    year_spin = new SpinButton.with_range (1800, 3000, 1);
+    year_spin = new Gtk.SpinButton.with_range (1800, 3000, 1);
     year_spin.set_digits (0);
     year_spin.numeric = true;
     year_spin.set_value ((double)birthday.to_local ().get_year ());
 
     // Create grid and labels
-    Box box = new Box (Orientation.VERTICAL, 12);
-    Grid grid = new Grid ();
+    var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+    var grid = new Gtk.Grid ();
     grid.set_column_spacing (12);
     grid.set_row_spacing (12);
-    Label day = new Label(_("Day"));
-    day.set_halign (Align.END);
+    Gtk.Label day = new Gtk.Label(_("Day"));
+    day.set_halign (Gtk.Align.END);
     grid.attach (day, 0, 0);
     grid.attach (day_spin, 1, 0);
-    Label month = new Label(_("Month"));
-    month.set_halign (Align.END);
+    Gtk.Label month = new Gtk.Label(_("Month"));
+    month.set_halign (Gtk.Align.END);
     grid.attach (month, 0, 1);
     grid.attach (month_combo, 1, 1);
-    Label year = new Label(_("Year"));
-    year.set_halign (Align.END);
+    Gtk.Label year = new Gtk.Label(_("Year"));
+    year.set_halign (Gtk.Align.END);
     grid.attach (year, 0, 2);
     grid.attach (year_spin, 1, 2);
     box.pack_start (grid);
 
     var content = this.get_content_area ();
-    content.set_valign (Align.CENTER);
+    content.set_valign (Gtk.Align.CENTER);
     content.add (box);
 
     this.title = _("Change Address Book");
-    add_buttons (_("Set"), ResponseType.OK,
-                      _("Cancel"), ResponseType.CANCEL,
-                      null);
-    var ok_button = this.get_widget_for_response (ResponseType.OK);
+    add_buttons (_("Set"), Gtk.ResponseType.OK,
+                 _("Cancel"), Gtk.ResponseType.CANCEL,
+                 null);
+    var ok_button = this.get_widget_for_response (Gtk.ResponseType.OK);
     ok_button.get_style_context ().add_class ("suggested-action");
     this.response.connect ((id) => {
       switch (id) {
-        case ResponseType.OK:
+        case Gtk.ResponseType.OK:
           this.is_set = true;
           changed ();
           break;
-        case ResponseType.CANCEL:
+        case Gtk.ResponseType.CANCEL:
           break;
       }
       this.destroy ();
@@ -130,8 +127,8 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
   }
 }
 
-public class Contacts.AddressEditor : Box {
-  private Entry? entries[7];  /* must be the number of elements in postal_element_props */
+public class Contacts.AddressEditor : Gtk.Box {
+  private Gtk.Entry? entries[7];  /* must be the number of elements in postal_element_props */
 
   private const string[] postal_element_props = {"street", "extension", "locality", "region", "postal_code", "po_box", "country"};
   private static string[] postal_element_names = {_("Street"), _("Extension"), _("City"), _("State/Province"), _("Zip/Postal Code"), _("PO box"), _("Country")};
@@ -140,13 +137,13 @@ public class Contacts.AddressEditor : Box {
 
   public AddressEditor (PostalAddressFieldDetails details) {
     set_hexpand (true);
-    set_orientation (Orientation.VERTICAL);
+    set_orientation (Gtk.Orientation.VERTICAL);
 
     for (int i = 0; i < entries.length; i++) {
       string postal_part;
       details.value.get (AddressEditor.postal_element_props[i], out postal_part);
 
-      entries[i] = new Entry ();
+      entries[i] = new Gtk.Entry ();
       entries[i].set_hexpand (true);
       entries[i].set ("placeholder-text", AddressEditor.postal_element_names[i]);
 
@@ -179,23 +176,23 @@ public class Contacts.AddressEditor : Box {
   }
 }
 
-public class Contacts.EditorPropertyRow : ListBoxRow {
+public class Contacts.EditorPropertyRow : Gtk.ListBoxRow {
   public bool is_empty { get; set; default = true; }
   public bool is_removed { get; set; default = false; }
   public string ptype { get; private set; }
-  public Box container;
-  public Box header;
-  public Revealer revealer;
+  public Gtk.Box container;
+  public Gtk.Box header;
+  public Gtk.Revealer revealer;
 
   construct {
-    this.revealer = new Revealer ();
+    this.revealer = new Gtk.Revealer ();
     //TODO: bind orientation property to available space
-    var box = new Box (Orientation.VERTICAL, 6);
-    box.set_valign (Align.START);
+    var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
+    box.set_valign (Gtk.Align.START);
     box.set_can_focus (false);
-    this.container = new Box (Orientation.HORIZONTAL, 6);
+    this.container = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     this.container.set_can_focus (false);
-    this.header = new Box (Orientation.HORIZONTAL, 6);
+    this.header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     this.header.set_can_focus (false);
     box.pack_start (this.header);
     box.pack_end (this.container);
@@ -240,16 +237,19 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
   }
 
   public void add_base_label (string label) {
-    var title_label = new Label (label);
+    var title_label = new Gtk.Label (label);
     title_label.set_hexpand (false);
-    title_label.set_halign (Align.START);
+    title_label.set_halign (Gtk.Align.START);
     title_label.margin_end = 6;
     this.header.pack_start (title_label);
   }
 
-  public void add_base_combo (Set<AbstractFieldDetails> details_set, string label, TypeSet combo_type, AbstractFieldDetails details) {
-    var title_label = new Label (label);
-    title_label.set_halign (Align.START);
+  public void add_base_combo (Gee.Set<AbstractFieldDetails> details_set,
+                              string label,
+                              TypeSet combo_type,
+                              AbstractFieldDetails details) {
+    var title_label = new Gtk.Label (label);
+    title_label.set_halign (Gtk.Align.START);
     this.header.pack_start (title_label);
     TypeCombo combo = new TypeCombo (combo_type);
     combo.set_hexpand (false);
@@ -265,11 +265,11 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
   }
 
   //FIXME: create only one add_base_entry
-  public void add_base_entry_email (Set<AbstractFieldDetails> details_set,
+  public void add_base_entry_email (Gee.Set<AbstractFieldDetails> details_set,
                                     EmailFieldDetails details,
                                     string placeholder) {
-    var value_entry = new Entry ();
-    value_entry.set_input_purpose (InputPurpose.EMAIL);
+    var value_entry = new Gtk.Entry ();
+    value_entry.set_input_purpose (Gtk.InputPurpose.EMAIL);
     value_entry.placeholder_text = placeholder;
     value_entry.set_text (details.value);
     value_entry.set_hexpand (true);
@@ -286,11 +286,11 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     });
   }
 
-  public void add_base_entry_phone (Set<AbstractFieldDetails> details_set,
+  public void add_base_entry_phone (Gee.Set<AbstractFieldDetails> details_set,
                                     PhoneFieldDetails details,
                                     string placeholder) {
-    var value_entry = new Entry ();
-    value_entry.set_input_purpose (InputPurpose.PHONE);
+    var value_entry = new Gtk.Entry ();
+    value_entry.set_input_purpose (Gtk.InputPurpose.PHONE);
     value_entry.placeholder_text = placeholder;
     value_entry.set_text (details.value);
     value_entry.set_hexpand (true);
@@ -308,12 +308,12 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     });
   }
 
-  public void add_base_entry_url (Set<AbstractFieldDetails> details_set,
+  public void add_base_entry_url (Gee.Set<AbstractFieldDetails> details_set,
                                   UrlFieldDetails details,
                                   string placeholder) {
-    var value_entry = new Entry ();
+    var value_entry = new Gtk.Entry ();
     value_entry.placeholder_text = placeholder;
-    value_entry.set_input_purpose (InputPurpose.URL);
+    value_entry.set_input_purpose (Gtk.InputPurpose.URL);
     value_entry.set_text (details.value);
     value_entry.set_hexpand (true);
     this.container.pack_start (value_entry);
@@ -330,11 +330,11 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
     });
   }
 
-  public void add_base_delete (Set<AbstractFieldDetails> details_set,
+  public void add_base_delete (Gee.Set<AbstractFieldDetails> details_set,
                                AbstractFieldDetails details) {
-    var delete_button = new Button.from_icon_name ("user-trash-symbolic");
+    var delete_button = new Gtk.Button.from_icon_name ("user-trash-symbolic");
     delete_button.get_accessible ().set_name (_("Delete field"));
-    delete_button.set_valign (Align.START);
+    delete_button.set_valign (Gtk.Align.START);
     this.bind_property ("is-empty", delete_button, "sensitive", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
     this.container.pack_end (delete_button, false);
 
@@ -351,7 +351,7 @@ public class Contacts.EditorPropertyRow : ListBoxRow {
  * A widget representing a property of a persona in the editor {@link Contact}.
  * We can have more then one property in one properity e.g. Emails therefore we need to return a List
  */
-public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
+public class Contacts.EditorProperty : Gee.ArrayList<EditorPropertyRow> {
   public bool writeable { get; private set; default = false; }
 
   public EditorProperty (Persona persona, string property_name, bool only_new = false) {
@@ -439,9 +439,10 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     }
   }
 
-  private EditorPropertyRow create_for_email (Set<AbstractFieldDetails> set, EmailFieldDetails? details = null) {
+  private EditorPropertyRow create_for_email (Gee.Set<AbstractFieldDetails> set,
+                                              EmailFieldDetails? details = null) {
     if (details == null) {
-      var parameters = new HashMultiMap<string, string> ();
+      var parameters = new Gee.HashMultiMap<string, string> ();
       parameters["type"] = "PERSONAL";
       var new_details = new EmailFieldDetails ("", parameters);
       set.add(new_details);
@@ -456,9 +457,10 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     return box;
   }
 
-  private EditorPropertyRow create_for_phone (Set<AbstractFieldDetails> set, PhoneFieldDetails? details = null) {
+  private EditorPropertyRow create_for_phone (Gee.Set<AbstractFieldDetails> set,
+                                              PhoneFieldDetails? details = null) {
     if (details == null) {
-      var parameters = new HashMultiMap<string, string> ();
+      var parameters = new Gee.HashMultiMap<string, string> ();
       parameters["type"] = "CELL";
       var new_details = new PhoneFieldDetails ("", parameters);
       set.add(new_details);
@@ -475,9 +477,10 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
   }
 
   // TODO: add support for different types of urls
-  private EditorPropertyRow create_for_url (Set<AbstractFieldDetails> set, UrlFieldDetails? details = null) {
+  private EditorPropertyRow create_for_url (Gee.Set<AbstractFieldDetails> set,
+                                            UrlFieldDetails? details = null) {
     if (details == null) {
-      var parameters = new HashMultiMap<string, string> ();
+      var parameters = new Gee.HashMultiMap<string, string> ();
       parameters["type"] = "PERSONAL";
       var new_details = new UrlFieldDetails ("", parameters);
       set.add(new_details);
@@ -497,7 +500,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     var box = new EditorPropertyRow ("nickname");
     box.add_base_label (_("Nickname"));
 
-    var value_entry = new Entry ();
+    var value_entry = new Gtk.Entry ();
     value_entry.set_text (details.nickname);
     value_entry.set_hexpand (true);
     box.container.pack_start (value_entry);
@@ -513,10 +516,10 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
   }
 
   // TODO: support different types of nodes
-  private EditorPropertyRow create_for_note (Set<NoteFieldDetails> details_set,
+  private EditorPropertyRow create_for_note (Gee.Set<NoteFieldDetails> details_set,
                                              NoteFieldDetails? details = null) {
     if (details == null) {
-      var parameters = new HashMultiMap<string, string> ();
+      var parameters = new Gee.HashMultiMap<string, string> ();
       parameters["type"] = "PERSONAL";
       var new_details = new NoteFieldDetails ("", parameters);
       details_set.add(new_details);
@@ -525,10 +528,10 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     var box = new EditorPropertyRow ("notes");
     box.add_base_label (_("Note"));
 
-    var sw = new ScrolledWindow (null, null);
-    sw.set_shadow_type (ShadowType.OUT);
+    var sw = new Gtk.ScrolledWindow (null, null);
+    sw.set_shadow_type (Gtk.ShadowType.OUT);
     sw.set_size_request (-1, 100);
-    var value_text = new TextView ();
+    var value_text = new Gtk.TextView ();
     value_text.get_buffer ().set_text (details.value);
     value_text.set_hexpand (true);
     sw.add (value_text);
@@ -537,7 +540,7 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     box.add_base_delete (details_set, details);
 
     value_text.get_buffer ().changed.connect (() => {
-      TextIter start, end;
+      Gtk.TextIter start, end;
       value_text.get_buffer ().get_start_iter (out start);
       value_text.get_buffer ().get_end_iter (out end);
       details.value = value_text.get_buffer ().get_text (start, end, true);
@@ -562,11 +565,11 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     var box = new EditorPropertyRow ("birthday");
     box.add_base_label (_("Birthday"));
 
-    var button = new Button.with_label (_("Set Birthday"));
+    var button = new Gtk.Button.with_label (_("Set Birthday"));
     box.container.pack_start (button);
 
     button.clicked.connect (() => {
-      Window parent_window = button.get_toplevel () as Window;
+      var parent_window = button.get_toplevel () as Gtk.Window;
       if (parent_window != null) {
         var dialog = new BirthdayEditor (parent_window, date);
 
@@ -583,9 +586,9 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
 
     box.is_empty = details.birthday == null;
 
-    var delete_button = new Button.from_icon_name ("user-trash-symbolic");
+    var delete_button = new Gtk.Button.from_icon_name ("user-trash-symbolic");
     delete_button.get_accessible ().set_name (_("Delete field"));
-    delete_button.set_valign (Align.START);
+    delete_button.set_valign (Gtk.Align.START);
     box.bind_property ("is-empty", delete_button, "sensitive", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
     box.container.pack_end (delete_button, false);
 
@@ -600,10 +603,10 @@ public class Contacts.EditorProperty : ArrayList<EditorPropertyRow> {
     return box;
   }
 
-  private EditorPropertyRow create_for_address (Set<PostalAddressFieldDetails> details_set,
+  private EditorPropertyRow create_for_address (Gee.Set<PostalAddressFieldDetails> details_set,
                                                 PostalAddressFieldDetails? details = null) {
     if (details == null) {
-      var parameters = new HashMultiMap<string, string> ();
+      var parameters = new Gee.HashMultiMap<string, string> ();
       parameters["type"] = "HOME";
       var address = new PostalAddress(null, null, null, null, null, null, null, null, null);
       var new_details = new PostalAddressFieldDetails (address, parameters);

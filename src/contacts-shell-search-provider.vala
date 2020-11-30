@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
 using Folks;
 
 [DBus (name = "org.gnome.Shell.SearchProvider2")]
@@ -104,8 +103,8 @@ public class Contacts.SearchProvider : Object {
   private async HashTable<string, Variant>[] get_metas (owned string[] ids) throws Error {
     this.app.hold ();
 
-    var results = new ArrayList<HashTable> ();
-    foreach (var id in ids) {
+    var results = new Gee.ArrayList<HashTable> ();
+    foreach (unowned string id in ids) {
       Individual indiv = null;
       try {
         indiv = yield aggregator.look_up_individual (id);

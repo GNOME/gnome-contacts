@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-using Gee;
 using Folks;
 
 /**
@@ -44,7 +42,7 @@ internal struct Contacts.VcardTypeMapping {
    * For example: [ HOME, FOO, PREF, BLAH ] should match the [ HOME ] VCard
    * type, but not [ HOME, FAX ]
    */
-  public bool matches (Collection<string> types) {
+  public bool matches (Gee.Collection<string> types) {
     for (int i = 0; i < MAX_TYPES && this.types[i] != null; i++) {
       bool occurs_in_list = false;
       foreach (var type in types) {

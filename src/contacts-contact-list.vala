@@ -16,7 +16,6 @@
  */
 
 using Folks;
-using Gee;
 
 /**
  * The ContactList is the actual list of {@link Individual}s that the user sees on
@@ -278,8 +277,8 @@ public class Contacts.ContactList : Gtk.ListBox {
     return null;
   }
 
-  public LinkedList<Individual> get_marked_contacts () {
-    var cs = new LinkedList<Individual> ();
+  public Gee.LinkedList<Individual> get_marked_contacts () {
+    var cs = new Gee.LinkedList<Individual> ();
     foreach (weak Gtk.Widget widget in get_children ()) {
       unowned var row = widget as ContactDataRow;
       if (row.selector_button.active)
@@ -288,8 +287,8 @@ public class Contacts.ContactList : Gtk.ListBox {
     return cs;
   }
 
-  public LinkedList<Individual> get_marked_contacts_and_hide () {
-    var cs = new LinkedList<Individual> ();
+  public Gee.LinkedList<Individual> get_marked_contacts_and_hide () {
+    var cs = new Gee.LinkedList<Individual> ();
     foreach (weak Gtk.Widget widget in get_children ()) {
       unowned var row = widget as ContactDataRow;
       if (row.selector_button.active) {

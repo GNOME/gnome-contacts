@@ -15,13 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
-public class Contacts.AccountsList : ListBox {
-  private ListBoxRow last_selected_row;
+public class Contacts.AccountsList : Gtk.ListBox {
+  private Gtk.ListBoxRow last_selected_row;
 
   private Store contacts_store;
 
@@ -36,7 +34,7 @@ public class Contacts.AccountsList : ListBox {
     this.set_header_func (add_separator);
   }
 
-  public override void row_activated (ListBoxRow row) {
+  public override void row_activated (Gtk.ListBoxRow row) {
     if (row == null)
       return;
 
@@ -45,11 +43,11 @@ public class Contacts.AccountsList : ListBox {
       return;
     }
 
-    var checkmark = row.get_data<Image> ("checkmark");
+    var checkmark = row.get_data<Gtk.Image> ("checkmark");
     checkmark.show ();
 
     if (last_selected_row != null) {
-      checkmark = last_selected_row.get_data<Image> ("checkmark");
+      checkmark = last_selected_row.get_data<Gtk.Image> ("checkmark");
       if (checkmark != null)
         checkmark.hide ();
     }
@@ -89,23 +87,25 @@ public class Contacts.AccountsList : ListBox {
         source_account_id = goa_source_ext.account_id;
       }
 
-      var row = new ActionRow ();
+      var row = new Hdy.ActionRow ();
       row.set_data ("store", persona_store);
 
       Gtk.Image provider_image;
       if (source_account_id != "")
         provider_image = Contacts.get_icon_for_goa_account (source_account_id);
       else
-        provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
+        provider_image = new Gtk.Image.from_icon_name (Config.APP_ID,
+                                                       Gtk.IconSize.DIALOG);
       row.add_prefix (provider_image);
       row.title = provider_name;
       row.subtitle = parent_source.display_name;
       row.show_all ();
       row.no_show_all = true;
-      var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+      var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic",
+                                                    Gtk.IconSize.MENU);
       checkmark.set ("margin-end", 6,
-                     "valign", Align.CENTER,
-                     "halign", Align.END,
+                     "valign", Gtk.Align.CENTER,
+                     "halign", Gtk.Align.END,
                      "vexpand", true,
                      "hexpand", true);
       row.add (checkmark);
@@ -120,16 +120,17 @@ public class Contacts.AccountsList : ListBox {
     }
 
     if (local_store != null) {
-      var local_row = new ActionRow ();
-      var provider_image = new Image.from_icon_name (Config.APP_ID, IconSize.DIALOG);
+      var local_row = new Hdy.ActionRow ();
+      var provider_image = new Gtk.Image.from_icon_name (Config.APP_ID,
+                                                         Gtk.IconSize.DIALOG);
       local_row.add_prefix (provider_image);
       local_row.title = _("Local Address Book");
       local_row.show_all ();
       local_row.no_show_all = true;
-      var checkmark = new Image.from_icon_name ("object-select-symbolic", IconSize.MENU);
+      var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic", Gtk.IconSize.MENU);
       checkmark.set ("margin-end", 6,
-                     "valign", Align.CENTER,
-                     "halign", Align.END,
+                     "valign", Gtk.Align.CENTER,
+                     "halign", Gtk.Align.END,
                      "vexpand", true,
                      "hexpand", true);
       local_row.add (checkmark);

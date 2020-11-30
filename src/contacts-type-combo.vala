@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-using Gee;
 using Folks;
 
 /**
@@ -25,7 +23,7 @@ using Folks;
  * to choose between "Personal", "Home" and "Work" for email addresses,
  * together with all the custom labels it has encountered since then.
  */
-public class Contacts.TypeCombo : ComboBox  {
+public class Contacts.TypeCombo : Gtk.ComboBox  {
 
   private unowned TypeSet type_set;
 
@@ -34,7 +32,7 @@ public class Contacts.TypeCombo : ComboBox  {
    */
   public TypeDescriptor active_descriptor {
     get {
-      TreeIter iter;
+      Gtk.TreeIter iter;
 
       get_active_iter (out iter);
       assert (!is_separator (this.model, iter));
@@ -49,12 +47,12 @@ public class Contacts.TypeCombo : ComboBox  {
   }
 
   construct {
-    this.valign = Align.START;
-    this.halign = Align.FILL;
+    this.valign = Gtk.Align.START;
+    this.halign = Gtk.Align.FILL;
     this.hexpand = true;
     this.visible = true;
 
-    var renderer = new CellRendererText ();
+    var renderer = new Gtk.CellRendererText ();
     pack_start (renderer, true);
     set_attributes (renderer, "text", 0);
 
@@ -71,7 +69,7 @@ public class Contacts.TypeCombo : ComboBox  {
     this.model = type_set.store;
   }
 
-  private bool is_separator (TreeModel model, TreeIter iter) {
+  private bool is_separator (Gtk.TreeModel model, Gtk.TreeIter iter) {
     unowned string? s;
     model.get (iter, 0, out s);
     return s == null;
@@ -89,7 +87,7 @@ public class Contacts.TypeCombo : ComboBox  {
    * (for example "HOME" or "WORK").
    */
   public void set_active_from_vcard_type (string type) {
-    TreeIter iter;
+    Gtk.TreeIter iter;
     this.type_set.get_iter_for_vcard_type (type, out iter);
     set_active_iter (iter);
   }

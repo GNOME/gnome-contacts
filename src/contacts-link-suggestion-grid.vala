@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
 
 /**
  * The LinkSuggestionGrid is show at the bottom of the ContactPane.
@@ -25,7 +23,7 @@ using Gee;
  * and another (hopefully) similar contact.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-link-suggestion-grid.ui")]
-public class Contacts.LinkSuggestionGrid : Grid {
+public class Contacts.LinkSuggestionGrid : Gtk.Grid {
   private const int AVATAR_SIZE = 54;
 
   [GtkChild]

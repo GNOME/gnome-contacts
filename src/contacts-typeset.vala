@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-using Gee;
 using Folks;
 
 /**
@@ -51,28 +49,32 @@ public class Contacts.TypeSet : Object  {
   }
 
   /**
-   * Returns the TreeIter which corresponds to the type of the given
-   * AbstractFieldDetails.
+   * Returns the {@link Gtk.TreeIter} which corresponds to the type of the
+   * given {@link Folks.AbstractFieldDetails}.
    */
-  public void get_iter_for_field_details (AbstractFieldDetails detail, out TreeIter iter) {
+  public void get_iter_for_field_details (AbstractFieldDetails detail,
+                                          out Gtk.TreeIter iter) {
     // Note that we shouldn't have null here, but it's there just to be sure.
     var d = lookup_descriptor_for_field_details (detail);
     iter = d.iter;
   }
 
   /**
-   * Returns the TreeIter which corresponds the best to the given vcard type.
+   * Returns the {@link Gtk.TreeIter} which corresponds the best to the given
+   * vcard type.
+   *
    * @param type A VCard-like type, such as "HOME" or "CELL".
    */
-  public void get_iter_for_vcard_type (string type, out TreeIter iter) {
+  public void get_iter_for_vcard_type (string type, out Gtk.TreeIter iter) {
     unowned TypeDescriptor? d = lookup_descriptor_by_vcard_type (type);
     iter = (d != null)? d.iter : this.other_dummy.iter;
   }
 
   /**
-   * Returns the TreeIter which corresponds the best to the given custom label.
+   * Returns the {@link Gtk.TreeIter} which corresponds the best to the given
+   * custom label.
    */
-  public void get_iter_for_custom_label (string label, out TreeIter iter) {
+  public void get_iter_for_custom_label (string label, out Gtk.TreeIter iter) {
     var descr = get_descriptor_for_custom_label (label);
     if (descr == null)
       descr = create_descriptor_for_custom_label (label);
@@ -110,7 +112,7 @@ public class Contacts.TypeSet : Object  {
    * @return The appropriate TypeDescriptor or null if no match was found.
    */
   public unowned TypeDescriptor? lookup_descriptor_in_store (string display_name) {
-    TreeIter iter;
+    Gtk.TreeIter iter;
 
     // Make sure we handle an empty store
     if (!this.store.get_iter_first (out iter))

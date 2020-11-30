@@ -15,14 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-crop-cheese-dialog.ui")]
 public class Contacts.CropCheeseDialog : Gtk.Window {
   [GtkChild]
-  private Stack stack;
+  private Gtk.Stack stack;
   [GtkChild]
-  private Button take_another_button;
+  private Gtk.Button take_another_button;
 
   private Cc.CropArea crop_area;
   private const string STACK_NAME_CROP = "crop";
@@ -65,19 +63,19 @@ public class Contacts.CropCheeseDialog : Gtk.Window {
   }
 
   [GtkCallback]
-  private void on_cancel_clicked (Button button) {
+  private void on_cancel_clicked (Gtk.Button button) {
     this.destroy ();
   }
 
   [GtkCallback]
-  private void on_take_another_clicked (Button button) {
+  private void on_take_another_clicked (Gtk.Button button) {
 #if HAVE_CHEESE
     this.stack.set_visible_child_name (STACK_NAME_CHEESE);
 #endif
   }
 
   [GtkCallback]
-  private void on_take_pic_clicked (Button button) {
+  private void on_take_pic_clicked (Gtk.Button button) {
 #if HAVE_CHEESE
     var camera = this.cheese.get_camera () as Cheese.Camera;
     this.flash.fire ();
@@ -94,11 +92,11 @@ public class Contacts.CropCheeseDialog : Gtk.Window {
   }
 
   [GtkCallback]
-  private void on_done_clicked (Button button) {
+  private void on_done_clicked (Gtk.Button button) {
     picture_selected (this.crop_area.get_picture ());
     destroy();
   }
-  
+
   [GtkCallback]
   private void on_destroy () {
 #if HAVE_CHEESE

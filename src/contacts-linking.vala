@@ -16,24 +16,23 @@
  */
 
 using Folks;
-using Gee;
 
 namespace Contacts {
   public class LinkOperation : Object {
     private weak Store store;
-    private HashSet<HashSet<Persona>> personas_to_link;
+    private Gee.HashSet<Gee.HashSet<Persona>> personas_to_link;
     private bool finished { get; set; default = false; }
 
     public LinkOperation(Store store) {
       this.store = store;
-      this.personas_to_link = new HashSet<HashSet<Persona>> ();
+      this.personas_to_link = new Gee.HashSet<Gee.HashSet<Persona>> ();
     }
 
     // Link individuals
-    public async void execute (LinkedList<Individual> individuals) {
-      var personas_to_link = new HashSet<Persona> ();
+    public async void execute (Gee.LinkedList<Individual> individuals) {
+      var personas_to_link = new Gee.HashSet<Persona> ();
       foreach (var i in individuals) {
-        var saved_personas = new HashSet<Persona> ();
+        var saved_personas = new Gee.HashSet<Persona> ();
         foreach (var persona in i.personas) {
           personas_to_link.add (persona);
           saved_personas.add (persona);
@@ -73,11 +72,11 @@ namespace Contacts {
   public class UnLinkOperation : Object {
     private weak Store store;
 
-    private HashSet<Persona> personas;
+    private Gee.HashSet<Persona> personas;
 
     public UnLinkOperation(Store store) {
       this.store = store;
-      this.personas = new HashSet<Persona> ();
+      this.personas = new Gee.HashSet<Persona> ();
     }
 
     /* Remove a personas from individual */

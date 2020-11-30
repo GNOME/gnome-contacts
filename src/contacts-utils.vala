@@ -15,20 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
-using DBus;
-using GLib;
-using Gdk;
 
 namespace Contacts {
   public bool is_set (string? str) {
     return str != null && str != "";
   }
 
-  public void add_separator (ListBoxRow row, ListBoxRow? before_row) {
-    row.set_header (new Separator (Orientation.HORIZONTAL));
+  public void add_separator (Gtk.ListBoxRow row, Gtk.ListBoxRow? before_row) {
+    row.set_header (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
   }
 
   [DBus (name = "org.freedesktop.Application")]
@@ -47,7 +42,7 @@ namespace Contacts {
 
     try {
       string object_path = "/" + app_id.replace(".", "/");
-      Display display = Display.get_default ();
+      Gdk.Display display = Gdk.Display.get_default ();
       DesktopAppInfo info = new DesktopAppInfo (app_id + ".desktop");
       Gdk.AppLaunchContext context = display.get_app_launch_context ();
 
@@ -64,7 +59,7 @@ namespace Contacts {
       data.insert ("desktop-startup-id", new Variant.string (startup_id));
       con.ActivateAction (action, param_array, data);
     } catch (Error e) {
-      debug ("Failed to activate action" + action);
+      debug ("Failed to activate action '%s': %s", action, e.message);
     }
   }
 }
@@ -114,14 +109,14 @@ namespace Contacts.Utils {
   }
 #endif
 
-  public T? get_first<T> (Collection<T> collection) {
+  public T? get_first<T> (Gee.Collection<T> collection) {
     var i = collection.iterator();
     if (i.next())
       return i.get();
     return null;
   }
 
-  public void grab_entry_focus_no_select (Entry entry) {
+  public void grab_entry_focus_no_select (Gtk.Entry entry) {
     int start, end;
     if (!entry.get_selection_bounds (out start, out end)) {
       start = end = entry.get_position ();
@@ -293,8 +288,8 @@ namespace Contacts.Utils {
     return 0;
   }
 
-  public Gee.List<T> sort_fields<T> (Collection<T> fields) {
-    var res = new ArrayList<T>();
+  public Gee.List<T> sort_fields<T> (Gee.Collection<T> fields) {
+    var res = new Gee.ArrayList<T>();
     res.add_all (fields);
     res.sort (Contacts.Utils.compare_fields);
     return res;
@@ -380,7 +375,7 @@ namespace Contacts.Utils {
       return strcmp (store_a.id, store_b.id);
     };
 
-    var persona_list = new ArrayList<Persona>();
+    var persona_list = new Gee.ArrayList<Persona>();
     foreach (var persona in individual.personas)
       if (persona.store.type_id != "key-file")
         persona_list.add (persona);
@@ -508,8 +503,6 @@ namespace Contacts.Utils {
 
   public async void set_persona_property (Persona persona,
                                           string property_name, Value new_value) throws PropertyError, IndividualAggregatorError {
-    /* FIXME: It should be possible to move these all to being delegates which are
-     * passed to the functions which currently call this one; but only once bgo#604827 is fixed. */
     switch (property_name) {
       case "alias":
         yield ((AliasDetails) persona).change_alias ((string) new_value);
@@ -524,7 +517,7 @@ namespace Contacts.Utils {
         yield ((BirthdayDetails) persona).change_calendar_event_id ((string?) new_value);
         break;
       case "email-addresses":
-        yield ((EmailDetails) persona).change_email_addresses ((Set<EmailFieldDetails>) new_value);
+        yield ((EmailDetails) persona).change_email_addresses ((Gee.Set<EmailFieldDetails>) new_value);
         break;
       case "is-favourite":
         yield ((FavouriteDetails) persona).change_is_favourite ((bool) new_value);
@@ -533,13 +526,13 @@ namespace Contacts.Utils {
         yield ((GenderDetails) persona).change_gender ((Gender) new_value);
         break;
       case "groups":
-        yield ((GroupDetails) persona).change_groups ((Set<string>) new_value);
+        yield ((GroupDetails) persona).change_groups ((Gee.Set<string>) new_value);
         break;
       case "im-addresses":
-        yield ((ImDetails) persona).change_im_addresses ((MultiMap<string, ImFieldDetails>) new_value);
+        yield ((ImDetails) persona).change_im_addresses ((Gee.MultiMap<string, ImFieldDetails>) new_value);
         break;
       case "local-ids":
-        yield ((LocalIdDetails) persona).change_local_ids ((Set<string>) new_value);
+        yield ((LocalIdDetails) persona).change_local_ids ((Gee.Set<string>) new_value);
         break;
       case "structured-name":
         yield ((NameDetails) persona).change_structured_name ((StructuredName?) new_value);
@@ -551,22 +544,22 @@ namespace Contacts.Utils {
         yield ((NameDetails) persona).change_nickname ((string) new_value);
         break;
       case "notes":
-        yield ((NoteDetails) persona).change_notes ((Set<NoteFieldDetails>) new_value);
+        yield ((NoteDetails) persona).change_notes ((Gee.Set<NoteFieldDetails>) new_value);
         break;
       case "phone-numbers":
-        yield ((PhoneDetails) persona).change_phone_numbers ((Set<PhoneFieldDetails>) new_value);
+        yield ((PhoneDetails) persona).change_phone_numbers ((Gee.Set<PhoneFieldDetails>) new_value);
         break;
       case "postal-addresses":
-        yield ((PostalAddressDetails) persona).change_postal_addresses ((Set<PostalAddressFieldDetails>) new_value);
+        yield ((PostalAddressDetails) persona).change_postal_addresses ((Gee.Set<PostalAddressFieldDetails>) new_value);
         break;
       case "roles":
-        yield ((RoleDetails) persona).change_roles ((Set<RoleFieldDetails>) new_value);
+        yield ((RoleDetails) persona).change_roles ((Gee.Set<RoleFieldDetails>) new_value);
         break;
       case "urls":
-        yield ((UrlDetails) persona).change_urls ((Set<UrlFieldDetails>) new_value);
+        yield ((UrlDetails) persona).change_urls ((Gee.Set<UrlFieldDetails>) new_value);
         break;
       case "web-service-addresses":
-        yield ((WebServiceDetails) persona).change_web_service_addresses ((MultiMap<string, WebServiceFieldDetails>) new_value);
+        yield ((WebServiceDetails) persona).change_web_service_addresses ((Gee.MultiMap<string, WebServiceFieldDetails>) new_value);
         break;
       default:
         critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);

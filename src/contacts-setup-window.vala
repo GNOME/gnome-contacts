@@ -15,18 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-using Gtk;
-using Hdy;
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-setup-window.ui")]
 public class Contacts.SetupWindow : Gtk.ApplicationWindow {
   [GtkChild]
-  private Clamp content;
+  private Hdy.Clamp content;
 
   [GtkChild]
-  private Button setup_done_button;
+  private Gtk.Button setup_done_button;
 
   private AccountsList setup_accounts_list;
 

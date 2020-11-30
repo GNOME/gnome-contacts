@@ -15,16 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 using Folks;
-using Gee;
 
 /**
  * The contact sheet displays the actual information of a contact.
  *
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
-public class Contacts.ContactSheet : Grid {
+public class Contacts.ContactSheet : Gtk.Grid {
   private int last_row = 0;
   private Individual individual;
   private unowned Store store;
@@ -53,51 +51,54 @@ public class Contacts.ContactSheet : Grid {
     update ();
   }
 
-  private Label create_persona_store_label (Persona p) {
-    var store_name = new Label (Utils.format_persona_store_name_for_contact (p));
+  private Gtk.Label create_persona_store_label (Persona p) {
+    var store_name = new Gtk.Label (Utils.format_persona_store_name_for_contact (p));
     var attrList = new Pango.AttrList ();
     attrList.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
     store_name.set_attributes (attrList);
-    store_name.set_halign (Align.START);
+    store_name.set_halign (Gtk.Align.START);
     store_name.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
 
     return store_name;
   }
 
-  private Button create_button (string icon) {
-    var button = new Button.from_icon_name (icon, IconSize.BUTTON);
-    button.set_halign (Align.END);
+  private Gtk.Button create_button (string icon) {
+    var button = new Gtk.Button.from_icon_name (icon, Gtk.IconSize.BUTTON);
+    button.set_halign (Gtk.Align.END);
     button.get_style_context ().add_class ("flatten");
 
     return button;
   }
 
-  void add_row_with_label (string label_value, string value, Widget? btn1 = null, Widget? btn2 =null) {
+  void add_row_with_label (string label_value,
+                           string value,
+                           Gtk.Widget? btn1 = null,
+                           Gtk.Widget? btn2 =null) {
     if (value == "" || value == null)
       return;
-    var type_label = new Label (label_value);
+    var type_label = new Gtk.Label (label_value);
     type_label.xalign = 1.0f;
-    type_label.set_halign (Align.END);
-    type_label.set_valign (Align.CENTER);
+    type_label.set_halign (Gtk.Align.END);
+    type_label.set_valign (Gtk.Align.CENTER);
     type_label.get_style_context ().add_class ("dim-label");
     this.attach (type_label, 0, this.last_row, 1, 1);
 
-    var value_label = new Label (value);
+    var value_label = new Gtk.Label (value);
     value_label.set_line_wrap (true);
     value_label.xalign = 0.0f;
-    value_label.set_halign (Align.START);
+    value_label.set_halign (Gtk.Align.START);
     value_label.set_ellipsize (Pango.EllipsizeMode.END);
     value_label.wrap_mode = Pango.WrapMode.CHAR;
     value_label.set_selectable (true);
 
     if (btn1 != null || btn2 !=null) {
-      var value_box = new Box(Orientation.HORIZONTAL, 12);
-      value_box.pack_start(value_label, false, false, 0);
+      var value_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+      value_box.pack_start (value_label, false, false, 0);
 
       if (btn1 != null)
-        value_box.pack_end(btn1, false, false, 0);
+        value_box.pack_end (btn1, false, false, 0);
       if (btn2 != null)
-        value_box.pack_end(btn2, false, false, 0);
+        value_box.pack_end (btn2, false, false, 0);
       this.attach (value_box, 1, this.last_row, 1, 1);
     } else {
       this.attach (value_label, 1, this.last_row, 1, 1);
@@ -111,7 +112,7 @@ public class Contacts.ContactSheet : Grid {
 
     var image_frame = new Avatar (PROFILE_SIZE, this.individual);
     image_frame.set_vexpand (false);
-    image_frame.set_valign (Align.START);
+    image_frame.set_valign (Gtk.Align.START);
 
     this.attach (image_frame,  0, 0, 1, 3);
 
@@ -150,7 +151,7 @@ public class Contacts.ContactSheet : Grid {
   }
 
   private void create_name_label () {
-    var name_label = new Label ("");
+    var name_label = new Gtk.Label ("");
     name_label.ellipsize = Pango.EllipsizeMode.END;
     name_label.xalign = 0f;
     name_label.selectable = true;
@@ -262,9 +263,11 @@ public class Contacts.ContactSheet : Grid {
       foreach (var url in url_details.urls) {
         var button = create_button ("web-browser-symbolic");
         button.clicked.connect (() => {
-          var window = (Window) button.get_toplevel ();
+          var window = (Contacts.Window) button.get_toplevel ();
           try {
-            show_uri_on_window (window, fallback_to_https (url.value), Gdk.CURRENT_TIME);
+            Gtk.show_uri_on_window (window,
+                                    fallback_to_https (url.value),
+                                    Gdk.CURRENT_TIME);
           } catch (Error e) {
             var message = "Failed to open url '%s'".printf(url.value);
 

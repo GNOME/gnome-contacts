@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-
 void main (string[] args) {
   Test.init (ref args);
   Test.add_func ("/utils/get_first", Contacts.UtilsTests.get_first);
@@ -25,7 +23,7 @@ void main (string[] args) {
 
 namespace Contacts.UtilsTests {
   private void get_first () {
-    Collection<Object> empty = Collection.empty ();
+    Gee.Collection<Object> empty = Gee.Collection.empty ();
     assert_true (Utils.get_first (empty) == null);
   }
 }

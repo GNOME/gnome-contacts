@@ -16,7 +16,6 @@
  */
 
 using Folks;
-using Gee;
 
 /**
  * A "dummy" store which is used to have an equivalent of a PersonaStore for a
@@ -29,18 +28,18 @@ public class Contacts.FakePersonaStore : PersonaStore {
       _the_store = new FakePersonaStore ();
     return _the_store;
   }
-  private HashMap<string, Persona> _personas;
-  private Map<string, Persona> _personas_ro;
+  private Gee.HashMap<string, Persona> _personas;
+  private Gee.Map<string, Persona> _personas_ro;
 
   public override string type_id { get { return "fake"; } }
 
   public FakePersonaStore () {
     Object (id: "uri", display_name: "fake store");
-    this._personas = new HashMap<string, Persona> ();
+    this._personas = new Gee.HashMap<string, Persona> ();
     this._personas_ro = this._personas.read_only_view;
   }
 
-  public override Map<string, Persona> personas {
+  public override Gee.Map<string, Persona> personas {
     get { return this._personas_ro; }
   }
 
@@ -71,16 +70,16 @@ public class Contacts.FakePersonaStore : PersonaStore {
 const string BACKEND_NAME = "fake-store";
 
 public class Contacts.FakePersona : Persona,
-AvatarDetails,
-BirthdayDetails,
-EmailDetails,
-ImDetails,
-NameDetails,
-NoteDetails,
-PhoneDetails,
-UrlDetails,
-PostalAddressDetails
-{
+                                    AvatarDetails,
+                                    BirthdayDetails,
+                                    EmailDetails,
+                                    ImDetails,
+                                    NameDetails,
+                                    NoteDetails,
+                                    PhoneDetails,
+                                    UrlDetails,
+                                    PostalAddressDetails {
+
   private HashTable<string, Value?> properties;
   // Keep track of the persona in the actual store
   public weak Persona real_persona { get; set; default = null; }
@@ -97,10 +96,10 @@ PostalAddressDetails
     }
   }
 
-  private ArrayList<string> _changed_properties;
+  private Gee.ArrayList<string> _changed_properties;
 
   construct {
-    this._changed_properties = new ArrayList<string> ();
+    this._changed_properties = new Gee.ArrayList<string> ();
   }
 
   public LoadableIcon? avatar {
@@ -149,72 +148,72 @@ PostalAddressDetails
     set {}
   }
 
-  public Set<PhoneFieldDetails> phone_numbers {
+  public Gee.Set<PhoneFieldDetails> phone_numbers {
     get {
       unowned Value? value = this.properties.get ("phone-numbers");
       if (value == null) {
-        var new_value = Value (typeof (Set));
+        var new_value = GLib.Value (typeof (Gee.Set));
         var set = new FakeHashSet<PhoneFieldDetails> ();
         new_value.set_object (set);
         set.changed.connect (() => { notify_property ("phone-numbers"); });
         this.properties.set ("phone-numbers", new_value);
         value = this.properties.get ("phone-numbers");
       }
-      return (Set<PhoneFieldDetails>) value;
+      return (Gee.Set<PhoneFieldDetails>) value;
     }
     set {
       this.properties.set ("phone-numbers", value);
     }
   }
 
-  public Set<UrlFieldDetails> urls {
+  public Gee.Set<UrlFieldDetails> urls {
     get { 
       unowned Value? value = this.properties.get ("urls");
       if (value == null) {
-        var new_value = Value (typeof (Set));
+        var new_value = Value (typeof (Gee.Set));
         var set = new FakeHashSet<UrlFieldDetails> ();
         new_value.set_object (set);
         set.changed.connect (() => { notify_property ("urls"); });
         this.properties.set ("urls", new_value);
         value = new_value;
       }
-      return (Set<UrlFieldDetails>) value;
+      return (Gee.Set<UrlFieldDetails>) value;
     }
     set {
       this.properties.set ("urls", value);
     }
   }
 
-  public Set<PostalAddressFieldDetails> postal_addresses {
+  public Gee.Set<PostalAddressFieldDetails> postal_addresses {
     get {
       unowned Value? value = this.properties.get ("postal-addresses");
       if (value == null) {
-        var new_value = Value (typeof (Set));
+        var new_value = Value (typeof (Gee.Set));
         var set = new FakeHashSet<PostalAddressFieldDetails> ();
         new_value.set_object (set);
         set.changed.connect (() => { notify_property ("postal-addresses"); });
         this.properties.set ("postal-addresses", new_value);
         value = new_value;
       }
-      return (Set<PostalAddressFieldDetails>) value;
+      return (Gee.Set<PostalAddressFieldDetails>) value;
     }
     set {
       this.properties.set ("postal-addresses", value);
     }
   }
 
-  public Set<NoteFieldDetails> notes {
+  public Gee.Set<NoteFieldDetails> notes {
     get {
       unowned Value? value = this.properties.get ("notes");
       if (value == null) {
-        var new_value = Value (typeof (Set));
+        var new_value = Value (typeof (Gee.Set));
         var set = new FakeHashSet<NoteFieldDetails> ();
         new_value.set_object (set);
         set.changed.connect (() => { notify_property ("notes"); });
         this.properties.set ("notes", new_value);
         value = new_value;
       }
-      return (Set<NoteFieldDetails>) value;
+      return (Gee.Set<NoteFieldDetails>) value;
     }
     set {
       this.properties.set ("notes", value);
@@ -238,36 +237,36 @@ PostalAddressDetails
     set {}
   }
 
-  public MultiMap<string,ImFieldDetails> im_addresses {
+  public Gee.MultiMap<string,ImFieldDetails> im_addresses {
     get {
       unowned Value? value = this.properties.get ("im-addresses");
       if (value == null) {
-        var new_value = Value (typeof (MultiMap));
+        var new_value = Value (typeof (Gee.MultiMap));
         var set = new FakeHashMultiMap<string, ImFieldDetails> ();
         new_value.set_object (set);
         this.properties.set ("im-addresses", new_value);
         set.changed.connect (() => { notify_property ("im-addresses"); });
         value = new_value;
       }
-      return (MultiMap<string, ImFieldDetails>) value;
+      return (Gee.MultiMap<string, ImFieldDetails>) value;
     }
     set {
       this.properties.set ("im-addresses", value);
     }
   }
 
-  public Set<EmailFieldDetails> email_addresses {
+  public Gee.Set<EmailFieldDetails> email_addresses {
     get {
       unowned Value? value = this.properties.get ("email-addresses");
       if (value == null) {
-        var new_value = Value (typeof (Set));
+        var new_value = Value (typeof (Gee.Set));
         var set = new FakeHashSet<EmailFieldDetails> ();
         set.changed.connect (() => { notify_property ("email-addresses"); });
         new_value.set_object (set);
         this.properties.set ("email-addresses", new_value);
         value = new_value;
       }
-      return (Set<EmailFieldDetails>) value;
+      return (Gee.Set<EmailFieldDetails>) value;
     }
     set {
       this.properties.set ("email-addresses", value);
@@ -422,8 +421,8 @@ PostalAddressDetails
         yield ((BirthdayDetails) persona).change_calendar_event_id ((string?) new_value);
         break;
       case "email-addresses":
-        var original = (Set<EmailFieldDetails>) new_value;
-        var copy = new HashSet<EmailFieldDetails> ();
+        var original = (Gee.Set<EmailFieldDetails>) new_value;
+        var copy = new Gee.HashSet<EmailFieldDetails> ();
         foreach (var e in original) {
           if (e.value != null && e.value != "")
             copy.add (new EmailFieldDetails (e.value, e.parameters));
@@ -437,13 +436,13 @@ PostalAddressDetails
         yield ((GenderDetails) persona).change_gender ((Gender) new_value);
         break;
       case "groups":
-        yield ((GroupDetails) persona).change_groups ((Set<string>) new_value);
+        yield ((GroupDetails) persona).change_groups ((Gee.Set<string>) new_value);
         break;
       case "im-addresses":
-        yield ((ImDetails) persona).change_im_addresses ((MultiMap<string, ImFieldDetails>) new_value);
+        yield ((ImDetails) persona).change_im_addresses ((Gee.MultiMap<string, ImFieldDetails>) new_value);
         break;
       case "local-ids":
-        yield ((LocalIdDetails) persona).change_local_ids ((Set<string>) new_value);
+        yield ((LocalIdDetails) persona).change_local_ids ((Gee.Set<string>) new_value);
         break;
       case "structured-name":
         yield ((NameDetails) persona).change_structured_name ((StructuredName?) new_value);
@@ -455,8 +454,8 @@ PostalAddressDetails
         yield ((NameDetails) persona).change_nickname ((string) new_value);
         break;
       case "notes":
-        var original = (Set<NoteFieldDetails>) new_value;
-        var copy = new HashSet<NoteFieldDetails> ();
+        var original = (Gee.Set<NoteFieldDetails>) new_value;
+        var copy = new Gee.HashSet<NoteFieldDetails> ();
         foreach (var e in original) {
           if (e.value != null && e.value != "")
             copy.add (new NoteFieldDetails (e.value, e.parameters));
@@ -464,8 +463,8 @@ PostalAddressDetails
         yield ((NoteDetails) persona).change_notes (copy);
         break;
       case "phone-numbers":
-        var original = (Set<PhoneFieldDetails>) new_value;
-        var copy = new HashSet<PhoneFieldDetails> ();
+        var original = (Gee.Set<PhoneFieldDetails>) new_value;
+        var copy = new Gee.HashSet<PhoneFieldDetails> ();
         foreach (var e in original) {
           if (e.value != null && e.value != "")
             copy.add (new PhoneFieldDetails (e.value, e.parameters));
@@ -473,8 +472,8 @@ PostalAddressDetails
         yield ((PhoneDetails) persona).change_phone_numbers (copy);
         break;
       case "postal-addresses":
-        var original = (Set<PostalAddressFieldDetails>) new_value;
-        var copy = new HashSet<PostalAddressFieldDetails> ();
+        var original = (Gee.Set<PostalAddressFieldDetails>) new_value;
+        var copy = new Gee.HashSet<PostalAddressFieldDetails> ();
         foreach (var e in original) {
           if (e.value != null && !e.value.is_empty ())
             copy.add (new PostalAddressFieldDetails (e.value, e.parameters));
@@ -482,11 +481,11 @@ PostalAddressDetails
         yield ((PostalAddressDetails) persona).change_postal_addresses (copy);
         break;
       case "roles":
-        yield ((RoleDetails) persona).change_roles ((Set<RoleFieldDetails>) new_value);
+        yield ((RoleDetails) persona).change_roles ((Gee.Set<RoleFieldDetails>) new_value);
         break;
       case "urls":
-        var original = (Set<UrlFieldDetails>) new_value;
-        var copy = new HashSet<UrlFieldDetails> ();
+        var original = (Gee.Set<UrlFieldDetails>) new_value;
+        var copy = new Gee.HashSet<UrlFieldDetails> ();
         foreach (var e in original) {
           if (e.value != null && e.value != "")
             copy.add (new UrlFieldDetails (e.value, e.parameters));
@@ -494,7 +493,7 @@ PostalAddressDetails
         yield ((UrlDetails) persona).change_urls (copy);
         break;
       case "web-service-addresses":
-        yield ((WebServiceDetails) persona).change_web_service_addresses ((MultiMap<string, WebServiceFieldDetails>) new_value);
+        yield ((WebServiceDetails) persona).change_web_service_addresses ((Gee.MultiMap<string, WebServiceFieldDetails>) new_value);
         break;
       default:
         critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);
@@ -509,7 +508,7 @@ PostalAddressDetails
 public class Contacts.FakeIndividual : Individual {
   public weak Individual real_individual { get; set; default = null; }
   public weak FakePersona primary_persona { get; set; default = null; }
-  public FakeIndividual (Set<FakePersona>? personas) {
+  public FakeIndividual (Gee.Set<FakePersona>? personas) {
     base (personas);
     foreach (var p in personas) {
       // Keep track of the main persona
@@ -519,7 +518,7 @@ public class Contacts.FakeIndividual : Individual {
   }
 
   public FakeIndividual.from_real (Individual individual) {
-    var fake_personas = new HashSet<FakePersona> ();
+    var fake_personas = new Gee.HashSet<FakePersona> ();
     foreach (var p in individual.personas) {
       var fake_p = new FakePersona.from_real (p);
       // Keep track of the main persona
