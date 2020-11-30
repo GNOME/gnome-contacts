@@ -106,13 +106,6 @@ public class Contacts.AddressbookList : Gtk.ListBox {
       add (local_row);
     }
 
-    /*
-       if (select_active &&
-       local_store == this.contacts_store.aggregator.primary_store) {
-       row_activated (local_row);
-       }
-     */
-
     show_all ();
   }
 }
