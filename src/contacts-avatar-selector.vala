@@ -142,8 +142,8 @@ public class Contacts.AvatarSelector : Popover {
     try {
       var stream = details.avatar.load (MAIN_SIZE, null);
       return create_thumbnail (new Gdk.Pixbuf.from_stream (stream));
-    } catch {
-      debug ("Couldn't create frame for persona \"%s\".", persona.display_id);
+    } catch (Error e) {
+      debug ("Couldn't create frame for persona '%s': %s", persona.display_id, e.message);
     }
 
     return null;
@@ -152,8 +152,8 @@ public class Contacts.AvatarSelector : Popover {
   private FlowBoxChild? thumbnail_for_filename (string filename) {
     try {
       return create_thumbnail (new Gdk.Pixbuf.from_file (filename));
-    } catch {
-      debug ("Couldn't create frame for file \"%s\".", filename);
+    } catch (Error e) {
+      debug ("Couldn't create frame for file '%s': %s", filename, e.message);
     }
 
     return null;
@@ -256,9 +256,10 @@ public class Contacts.AvatarSelector : Popover {
           var mime_type = file_info.get_content_type ();
 
           if (mime_type != null)
-            pixbuf = thumbnail_factory.generate_thumbnail (uri, mime_type);
+            pixbuf = this.thumbnail_factory.generate_thumbnail (uri, mime_type);
         }
-      } catch {
+      } catch (Error e) {
+        debug ("Couldn't generate thumbnail for file '%s': %s", uri, e.message);
       }
 
       if (chooser is Dialog)
