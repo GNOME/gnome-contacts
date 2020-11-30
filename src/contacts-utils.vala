@@ -450,8 +450,7 @@ namespace Contacts.Utils {
     bool all_unlinkable = true;
 
     foreach (var p in individual.personas) {
-      if (!persona_is_google_other (p) ||
-          persona_is_google_profile (p))
+      if (!persona_is_google_other (p))
         all_unlinkable = false;
     }
 
@@ -474,26 +473,10 @@ namespace Contacts.Utils {
     return p != null && !p.in_google_personal_group;
   }
 
-  public bool persona_is_google_profile (Persona persona) {
-    if (!persona_is_google_other (persona))
-      return false;
-
-    unowned var u = persona as UrlDetails;
-    if (u != null && u.urls.size == 1) {
-      foreach (var url in u.urls) {
-        if (/https?:\/\/www.google.com\/profiles\/[0-9]+$/.match(url.value))
-          return true;
-      }
-    }
-    return false;
-  }
-
   public string format_persona_store_name_for_contact (Persona persona) {
     unowned var store = persona.store;
     if (store.type_id == "eds") {
-      if (persona_is_google_profile (persona))
-        return _("Google Circles");
-      else if (persona_is_google_other (persona))
+      if (persona_is_google_other (persona))
         return _("Google");
 
       string? eds_name = lookup_esource_name_by_uid_for_contact (store.id);
