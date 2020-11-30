@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright 2009  Red Hat, Inc,
  *
  * This program is free software; you can redistribute it and/or modify
