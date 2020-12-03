@@ -299,6 +299,6 @@ cheese_flash_new (GtkWidget *parent)
 {
   return g_object_new (CHEESE_TYPE_FLASH,
                        "parent", parent,
-		       "type", GTK_WINDOW_POPUP,
+                       "type", GTK_WINDOW_POPUP,
                        NULL);
 }
