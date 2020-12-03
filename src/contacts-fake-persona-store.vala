@@ -167,7 +167,7 @@ public class Contacts.FakePersona : Persona,
   }
 
   public Gee.Set<UrlFieldDetails> urls {
-    get { 
+    get {
       unowned Value? value = this.properties.get ("urls");
       if (value == null) {
         var new_value = Value (typeof (Gee.Set));

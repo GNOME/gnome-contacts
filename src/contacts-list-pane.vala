@@ -93,7 +93,7 @@ public class Contacts.ListPane : Gtk.Frame {
   public void select_contact (Individual? individual) {
     this.contacts_list.select_contact (individual);
   }
-  
+
   public void hide_contact (Individual? individual) {
     this.contacts_list.hide_contact (individual);
   }
