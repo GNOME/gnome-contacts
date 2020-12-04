@@ -1,0 +1,79 @@
+<?xml version='1.0'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+        "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<refentry id="gnome-contacts">
+
+    <refentryinfo>
+        <title>gnome-contacts</title>
+        <productname>GNOME</productname>
+
+        <authorgroup>
+            <author>
+                <contrib>Maintainer</contrib>
+                <firstname>Niels</firstname>
+                <surname>De Graef</surname>
+                <email>nielsdegraef@gmail.com</email>
+            </author>
+        </authorgroup>
+    </refentryinfo>
+
+    <refmeta>
+        <refentrytitle>gnome-contacts</refentrytitle>
+        <manvolnum>1</manvolnum>
+        <refmiscinfo class="manual">User Commands</refmiscinfo>
+    </refmeta>
+
+    <refnamediv>
+        <refname>gnome-contacts</refname>
+        <refpurpose>Access and store information about contacts</refpurpose>
+    </refnamediv>
+
+    <refsynopsisdiv>
+        <cmdsynopsis>
+            <command>gnome-contacts <arg choice="opt" rep="repeat">OPTION</arg></command>
+        </cmdsynopsis>
+    </refsynopsisdiv>
+
+    <refsect1>
+        <title>Description</title>
+
+        <para><command>gnome-contacts</command> is a graphical user interface
+        to access and store information about your contacts.</para>
+
+        <para>gnome-contacts uses the folks library to pull together contact
+        information from various sources, including evolution-data-server, your
+        configured GNOME online accounts, etc.</para>
+    </refsect1>
+
+    <refsect1>
+        <title>Options</title>
+
+        <variablelist>
+            <varlistentry>
+                <term><option>-?</option>, <option>--help</option></term>
+
+                <listitem><para>Prints a short help text and exits.</para></listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term><option>-e</option>, <option>--email</option></term>
+
+                <listitem><para>Show contact with this email address.</para></listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term><option>-i</option>, <option>--individual</option></term>
+
+                <listitem><para>Show contact with this individual id.</para></listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term><option>-v</option>, <option>--version</option></term>
+
+                <listitem><para>Show the current version of Contacts.</para></listitem>
+            </varlistentry>
+        </variablelist>
+    </refsect1>
+
+</refentry>

@@ -88,9 +88,6 @@ meson.add_install_script('build-aux/meson_post_install.py')
 subdir('data')
 subdir('po')
 subdir('src')
-if get_option('manpage')
-  subdir('man')
-endif
 if get_option('docs')
   subdir('docs')
 endif
