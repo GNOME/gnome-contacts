@@ -2,10 +2,6 @@ docs_vapidirs = [
   '--vapidir=@0@'.format(meson.source_root() / 'vapi'),
 ]
 
-if libhandy_vapidir != ''
-  docs_vapidirs += '--vapidir=@0@'.format(libhandy_vapidir )
-endif
-
 custom_target('docs',
   input: contacts_vala_sources,
   output: 'docs',

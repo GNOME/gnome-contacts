@@ -10,9 +10,6 @@ i18n = import('i18n')
 # Add our custom VAPI dir
 add_project_arguments(
   ['--vapidir', meson.source_root() / 'vapi'],
-  # We need to add this, since Vala queries the pkgconfig version on its own
-  # and will error out if that is lower then required one
-  '--disable-since-check',
   language: 'vala'
 )
 
@@ -53,40 +50,18 @@ gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_versi
 gnome_desktop = dependency('gnome-desktop-3.0')
 goa = dependency('goa-1.0')
 gtk = dependency('gtk+-3.0', version: '>= 3.23.1')
+libhandy = dependency('libhandy-1', version: '>= 1.0.0')
+# E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
-
+# Cheese
 cheese_dep = dependency('cheese', required: get_option('cheese'))
 cheese_gtk_dep = dependency('cheese-gtk', version: '>= 3.3.91', required: get_option('cheese'))
 
 if get_option('telepathy')
   folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
   telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
-endif
-
-libhandy = dependency('libhandy-1', version: '>= 1.0.0', required: false)
-if not libhandy.found()
-  libhandy_subproj = subproject(
-    'libhandy',
-    default_options: [
-      'examples=false',
-      'glade_catalog=disabled',
-      'tests=false',
-    ]
-  )
-
-  # When using libhandy as subproject, make sure we get the VAPI file
-  libhandy = declare_dependency(
-    dependencies: [
-      libhandy_subproj.get_variable('libhandy_dep'),
-      libhandy_subproj.get_variable('libhandy_vapi'),
-    ]
-  )
-
-  libhandy_vapidir = meson.build_root() / 'subprojects' / 'libhandy' / 'src'
-else
-  libhandy_vapidir = ''
 endif
 
 valadoc = find_program('valadoc', required: get_option('docs'))
