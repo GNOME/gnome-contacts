@@ -8,7 +8,7 @@ source "$scriptdir/junit-report.sh"
 
 
 TESTNAME="No tabs"
-tabs_occurrences="$(fgrep -nR $'\t' src data)"
+tabs_occurrences="$(fgrep -nRI $'\t' src data)"
 if [[ -z "$tabs_occurrences" ]]; then
   append_passed_test_case "$TESTNAME"
 else
@@ -18,7 +18,7 @@ fi
 
 
 TESTNAME="No trailing whitespace"
-trailing_ws_occurrences="$(grep -nri '[[:blank:]]$' src data)"
+trailing_ws_occurrences="$(grep -nRI '[[:blank:]]$' src data)"
 if [[ -z "$trailing_ws_occurrences" ]]; then
   append_passed_test_case "$TESTNAME"
 else
