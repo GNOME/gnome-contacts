@@ -77,7 +77,7 @@ private async void on_credentials_required (E.Source source, E.SourceCredentials
     return;
 
   if (reason == E.SourceCredentialsReason.ERROR && err != null) {
-    warning ("Failed to autheticate for source \"%s\": %s", source.display_name, err.message);
+    warning ("Failed to authenticate for source \"%s\": %s", source.display_name, err.message);
     return;
   }
 

@@ -498,7 +498,7 @@ namespace Contacts.Utils {
           yield set_persona_property (p, property_name, value);
         }
       }
-      //TODO: Add fallback if we can't write to any persona (Do we wan't to support that?)
+      //TODO: Add fallback if we can't write to any persona (Do we want to support that?)
     }
 
   public async void set_persona_property (Persona persona,

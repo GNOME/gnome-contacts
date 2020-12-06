@@ -28,7 +28,7 @@ public class Contacts.SetupWindow : Gtk.ApplicationWindow {
   private AccountsList setup_accounts_list;
 
   /**
-   * Fired after the user has succesfully performed the setup proess.
+   * Fired after the user has successfully performed the setup proess.
    */
   public signal void setup_done (Edsf.PersonaStore selected_address_book);
 

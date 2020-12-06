@@ -246,7 +246,7 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
     var individual = persona.individual;
 
     if (individual != null) {
-      //FIXME: This causes a flicker, especially visibile when a avatar is set
+      //FIXME: This causes a flicker, especially visible when an avatar is set
       this.parent_window.set_shown_contact (individual);
     } else {
       show_message_dialog (_("Unable to find newly created contact"));

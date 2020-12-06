@@ -213,7 +213,7 @@ public class Contacts.EditorPropertyRow : Gtk.ListBoxRow {
   // This hides the widget with an animation and then destroys it
   public new void remove () {
     this.revealer.set_reveal_child (false);
-    // Remove the seperator during the animation to make it look a little better
+    // Remove the separator during the animation to make it look a little better
     Timeout.add (this.revealer.get_transition_duration ()/2, () => {
       this.set_header (null);
       return false;
