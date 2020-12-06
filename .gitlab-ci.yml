@@ -18,6 +18,19 @@ style-check:
     paths:
       - "style-check-junit-report.xml"
 
+commit-check:
+  stage: review
+  script:
+    - ./.gitlab/ci/commit-check.sh
+  allow_failure: true
+  artifacts:
+    expire_in: 1 week
+    name: "style-check-junit-report"
+    when: always
+    reports:
+      junit: commit-check-junit-report.xml
+    paths:
+      - "commit-check-junit-report.xml"
 
 flatpak:
   image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
