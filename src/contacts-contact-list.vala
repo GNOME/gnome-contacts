@@ -154,8 +154,13 @@ public class Contacts.ContactList : Gtk.ListBox {
         row.selector_button.active = false;
     }
 
-    if (this.state != UiState.SELECTING)
+    // Disalbe highlighted (blue) selection since we use the checkbox to show selection
+    if (this.state == UiState.SELECTING) {
+      this.selection_mode = Gtk.SelectionMode.NONE;
+    } else {
+      this.selection_mode = Gtk.SelectionMode.BROWSE;
       this.nr_contacts_marked = 0;
+    }
   }
 
   private int compare_rows (Gtk.ListBoxRow row_a, Gtk.ListBoxRow row_b) {
