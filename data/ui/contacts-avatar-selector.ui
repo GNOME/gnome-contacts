@@ -1,54 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="3.22"/>
-  <template class="ContactsAvatarSelector" parent="GtkPopover">
+  <template class="ContactsAvatarSelector" parent="GtkWindow">
     <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="default_width">400</property>
+    <property name="default_height">400</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="skip_taskbar_hint">True</property>
+    <signal name="delete-event" handler="on_delete_event" swapped="no"/>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Cancel</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_cancel_clicked" swapped="no"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Done</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_done_clicked" swapped="no"/>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="margin_left">10</property>
-        <property name="margin_right">10</property>
-        <property name="margin_top">10</property>
-        <property name="margin_bottom">10</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
         <child>
-          <object class="GtkFlowBox" id="personas_thumbnail_grid">
+          <object class="GtkScrolledWindow">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="column_spacing">5</property>
-            <property name="row_spacing">5</property>
-            <property name="selection_mode">none</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">10</property>
+                <child>
+                  <object class="GtkFlowBox" id="thumbnail_grid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="column_spacing">5</property>
+                    <property name="row_spacing">5</property>
+                    <property name="max_children_per_line">8</property>
+                    <property name="selection_mode">single</property>
+                    <property name="homogeneous">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkFlowBox" id="stock_thumbnail_grid">
+          <object class="GtkSeparator">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="column_spacing">5</property>
-            <property name="row_spacing">5</property>
-            <property name="min_children_per_line">5</property>
-            <property name="max_children_per_line">8</property>
-            <property name="selection_mode">none</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
+          </object>>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">center</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
             <property name="spacing">10</property>
+            <property name="halign">center</property>
             <child>
               <object class="GtkButton" id="cheese_button">
                 <property name="label" translatable="yes">Take a Picture…</property>
@@ -57,11 +105,6 @@
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_cheese_clicked" swapped="no"/>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkButton">
@@ -71,17 +114,10 @@
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_file_clicked" swapped="no"/>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="pack_type">end</property>
           </packing>
         </child>
       </object>

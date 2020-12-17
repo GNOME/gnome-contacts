@@ -17,6 +17,44 @@
 
 using Folks;
 
+const int MAIN_SIZE = 128;
+const int ICONS_SIZE = 64;
+
+private class Contacts.Thumbnail : Gtk.FlowBoxChild {
+  public Gdk.Pixbuf? source_pixbuf { get; construct set; }
+  private Thumbnail (Gdk.Pixbuf? source_pixbuf = null) {
+    Object (visible: true, halign : Gtk.Align.CENTER, source_pixbuf: source_pixbuf);
+    this.get_style_context ().add_class ("circular");
+    var avatar = new Avatar (ICONS_SIZE);
+    avatar.set_pixbuf (source_pixbuf);
+    add (avatar);
+  }
+
+  public Thumbnail.for_persona (Persona persona) {
+    Gdk.Pixbuf? pixbuf = null;
+    var details = persona as AvatarDetails;
+    if (details != null && details.avatar != null) {
+      try {
+        var stream = details.avatar.load (MAIN_SIZE, null);
+        pixbuf = new Gdk.Pixbuf.from_stream (stream);
+      } catch (Error e) {
+        debug ("Couldn't create frame for persona '%s': %s", persona.display_id, e.message);
+      }
+    }
+    this (pixbuf);
+  }
+
+  public Thumbnail.for_filename (string filename) {
+    Gdk.Pixbuf? pixbuf = null;
+    try {
+      pixbuf = new Gdk.Pixbuf.from_file (filename);
+    } catch (Error e) {
+      debug ("Couldn't create frame for file '%s': %s", filename, e.message);
+    }
+    this (pixbuf);
+  }
+}
+
 /**
  * The AvatarSelector can be used to choose the avatar for a contact.
  * This can be done by either choosing a stock thumbnail, an image file
@@ -25,9 +63,7 @@ using Folks;
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-selector.ui")]
-public class Contacts.AvatarSelector : Gtk.Popover {
-  const int ICONS_SIZE = 64;
-  const int MAIN_SIZE = 128;
+public class Contacts.AvatarSelector : Gtk.Window {
   const string AVATAR_BUTTON_CSS_NAME = "avatar-button";
 
   // This will provide the default thumbnails
@@ -35,9 +71,7 @@ public class Contacts.AvatarSelector : Gtk.Popover {
   private Individual individual;
 
   [GtkChild]
-  private Gtk.FlowBox personas_thumbnail_grid;
-  [GtkChild]
-  private Gtk.FlowBox stock_thumbnail_grid;
+  private Gtk.FlowBox thumbnail_grid;
 
 #if HAVE_CHEESE
   [GtkChild]
@@ -46,12 +80,19 @@ public class Contacts.AvatarSelector : Gtk.Popover {
   private Cheese.CameraDeviceMonitor camera_monitor;
 #endif
 
-  public AvatarSelector (Gtk.Widget relative, Individual? individual) {
-    this.set_relative_to(relative);
+  public AvatarSelector (Individual? individual, Gtk.Window? window = null) {
+    Object (transient_for: window);
     this.thumbnail_factory = new Gnome.DesktopThumbnailFactory (Gnome.ThumbnailSize.NORMAL);
     this.individual = individual;
 
-    update_thumbnail_grids ();
+    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class (get_class ());
+    Gtk.BindingEntry.add_signal (binding_set,
+                                 Gdk.Key.Escape,
+                                 0,
+                                 "close",
+                                 0);
+
+    update_thumbnail_grid ();
 
 #if HAVE_CHEESE
     this.cheese_button.visible = true;
@@ -73,6 +114,16 @@ public class Contacts.AvatarSelector : Gtk.Popover {
         return null;
       });
 #endif
+  }
+
+  [Signal (action = true)]
+  public new virtual signal void close () {
+    base.close ();
+  }
+
+  [GtkCallback]
+  public bool on_delete_event () {
+    return hide_on_delete ();
   }
 
   private Gdk.Pixbuf scale_pixbuf_for_avatar_use (Gdk.Pixbuf pixbuf) {
@@ -114,67 +165,22 @@ public class Contacts.AvatarSelector : Gtk.Popover {
                                get_toplevel() as Gtk.Window);
     }
   }
-
-  private Gtk.FlowBoxChild create_thumbnail (Gdk.Pixbuf source_pixbuf) {
-    var avatar = new Avatar (ICONS_SIZE);
-    avatar.set_pixbuf (source_pixbuf);
-
-    var button = new Gtk.Button ();
-    button.get_style_context ().add_class (AVATAR_BUTTON_CSS_NAME);
-    button.image = avatar;
-    button.clicked.connect ( () => {
-        selected_pixbuf (scale_pixbuf_for_avatar_use (source_pixbuf));
-        this.popdown ();
-      });
-    var child = new Gtk.FlowBoxChild ();
-    child.add (button);
-    child.set_halign (Gtk.Align.START);
-
-    return child;
-  }
-
-  private Gtk.FlowBoxChild? thumbnail_for_persona (Persona persona) {
-    var details = persona as AvatarDetails;
-    if (details == null || details.avatar == null)
-      return null;
-
-    try {
-      var stream = details.avatar.load (MAIN_SIZE, null);
-      return create_thumbnail (new Gdk.Pixbuf.from_stream (stream));
-    } catch (Error e) {
-      debug ("Couldn't create frame for persona '%s': %s", persona.display_id, e.message);
-    }
-
-    return null;
-  }
-
-  private Gtk.FlowBoxChild? thumbnail_for_filename (string filename) {
-    try {
-      return create_thumbnail (new Gdk.Pixbuf.from_file (filename));
-    } catch (Error e) {
-      debug ("Couldn't create frame for file '%s': %s", filename, e.message);
-    }
-
-    return null;
-  }
-
-  private void update_thumbnail_grids () {
+  private void update_thumbnail_grid () {
     if (this.individual != null) {
       foreach (var p in individual.personas) {
-        var button = thumbnail_for_persona (p);
-        if (button != null)
-          this.personas_thumbnail_grid.add (button);
+        var widget = new Thumbnail.for_persona (p);
+        if (widget.source_pixbuf != null)
+          this.thumbnail_grid.add (widget);
       }
     }
-    this.personas_thumbnail_grid.show_all ();
 
     var stock_files = Utils.get_stock_avatars ();
     foreach (var file_name in stock_files) {
-      var button = thumbnail_for_filename (file_name);
-      if (button != null)
-        this.stock_thumbnail_grid.add (button);
+      var widget = new Thumbnail.for_filename (file_name);
+      if (widget.source_pixbuf != null)
+        this.thumbnail_grid.add (widget);
     }
-    this.stock_thumbnail_grid.show_all ();
+    this.thumbnail_grid.show_all ();
   }
 
   [GtkCallback]
@@ -183,8 +189,25 @@ public class Contacts.AvatarSelector : Gtk.Popover {
     dialog.show_all ();
     dialog.picture_selected.connect ( (pix) => {
       selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
+      this.close ();
     });
-    this.popdown ();
+  }
+
+  [GtkCallback]
+  private void on_cancel_clicked (Gtk.Button button) {
+    this.close ();
+  }
+
+  [GtkCallback]
+  private void on_done_clicked (Gtk.Button button) {
+    var selected_children = thumbnail_grid.get_selected_children ();
+    if (selected_children != null) {
+      var thumbnail = (selected_children.data as Thumbnail);
+      if (thumbnail != null)
+        selected_pixbuf (scale_pixbuf_for_avatar_use (thumbnail.source_pixbuf));
+    }
+
+    this.close ();
   }
 
   [GtkCallback]
@@ -233,11 +256,11 @@ public class Contacts.AvatarSelector : Gtk.Popover {
                                    this.get_toplevel() as Gtk.Window);
         }
 
-        chooser.destroy ();
-      });
+      chooser.destroy ();
+    });
 
     chooser.run ();
-    this.popdown();
+    this.close ();
   }
 
   private void update_preview (Gtk.FileChooser chooser) {

@@ -57,7 +57,7 @@ public class Contacts.ContactEditor : Gtk.Box {
   // Show the avatar popover when the avatar is clicked
   private void on_avatar_button_clicked (Gtk.Button avatar_button) {
     if (this.avatar_selector == null)
-      this.avatar_selector = new AvatarSelector (avatar_button, this.individual);
+      this.avatar_selector = new AvatarSelector (this.individual, (Gtk.Window) this.get_toplevel());
     this.avatar_selector.show();
   }
 
