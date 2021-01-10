@@ -78,7 +78,7 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
     content.set_valign (Gtk.Align.CENTER);
     content.add (box);
 
-    this.title = _("Change Address Book");
+    this.title = _("Change Birthday");
     add_buttons (_("Set"), Gtk.ResponseType.OK,
                  _("Cancel"), Gtk.ResponseType.CANCEL,
                  null);
