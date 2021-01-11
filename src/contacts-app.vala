@@ -37,7 +37,8 @@ public class Contacts.App : Adw.Application {
     { "help",             show_help           },
     { "about",            show_about          },
     { "show-preferences", show_preferences },
-    { "show-contact",     on_show_contact, "s"}
+    { "show-contact", on_show_contact, "s" },
+    { "import", on_import }
   };
 
   private const OptionEntry[] options = {
@@ -306,5 +307,97 @@ public class Contacts.App : Adw.Application {
       }
       base.quit ();
     });
+  }
+
+  private void on_import (SimpleAction action, Variant? param) {
+    var chooser = new Gtk.FileChooserNative ("Select contact file",
+                                             this.window,
+                                             Gtk.FileChooserAction.OPEN,
+                                             _("Import"),
+                                             _("Cancel"));
+    chooser.modal = true;
+    chooser.select_multiple = false;
+
+    // TODO: somehow get this from the list of importers we have
+    var filter = new Gtk.FileFilter ();
+    filter.set_filter_name ("VCard files");
+    filter.add_pattern ("*.vcf");
+    filter.add_pattern ("*.vcard");
+    chooser.add_filter (filter);
+
+    chooser.response.connect ((response) => {
+        if (response != Gtk.ResponseType.ACCEPT) {
+          chooser.destroy ();
+          return;
+        }
+
+        if (chooser.get_file () == null) {
+          debug ("No file selected, or no path available");
+          chooser.destroy ();
+        }
+
+        import_file.begin (chooser.get_file ());
+        chooser.destroy ();
+    });
+    chooser.show ();
+  }
+
+  private async void import_file (GLib.File file) {
+    // First step: parse the data
+    var parse_op = new Io.ParseOperation (file);
+    HashTable<string, Value?>[]? parse_result = null;
+    try {
+      yield parse_op.execute ();
+      debug ("Successfully parsed a contact");
+      parse_result = parse_op.steal_parsed_result ();
+    } catch (GLib.Error err) {
+      warning ("Couldn't parse file: %s", err.message);
+      var dialog = new Adw.MessageDialog (this.window,
+                                          _("Error reading file"),
+                                          _("An error occurred reading the file '%s'".printf (file.get_basename ())));
+      dialog.add_response ("ok", _("_OK"));
+      dialog.set_default_response ("ok");
+      dialog.present ();
+      return;
+    }
+
+    if (parse_result.length == 0) {
+      var dialog = new Adw.MessageDialog (this.window,
+                                          _("No contacts founds"),
+                                          _("The imported file does not seem to contain any contacts"));
+      dialog.add_response ("ok", _("_OK"));
+      dialog.set_default_response ("ok");
+      dialog.present ();
+      return;
+    }
+
+    // Second step: ask the user for confirmation
+    var body = ngettext ("By continuing, you will import %u contact",
+                         "By continuing, you will import %u contacts",
+                         parse_result.length).printf (parse_result.length);
+    var dialog = new Adw.MessageDialog (this.window, _("Continue Import?"), body);
+    dialog.add_response ("continue", _("C_ontinue"));
+    dialog.set_default_response ("continue");
+    dialog.set_response_appearance ("continue", Adw.ResponseAppearance.SUGGESTED);
+
+    dialog.add_response ("cancel", _("_Cancel"));
+    dialog.set_close_response ("cancel");
+
+    dialog.response.connect ((response) => {
+      if (response != "continue")
+        return;
+
+      // Third step: import the parsed data
+      var import_op = new ImportOperation (this.contacts_store, parse_result);
+      import_op.execute.begin ((obj, res) => {
+        try {
+          import_op.execute.end (res);
+          debug ("Successfully imported a contact");
+        } catch (GLib.Error err) {
+          warning ("Couldn't import contacts: %s", err.message);
+        }
+      });
+    });
+    dialog.present ();
   }
 }

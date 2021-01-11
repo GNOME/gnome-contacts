@@ -1,3 +1,5 @@
+subdir ('io')
+
 # GSettings
 compiled = gnome.compile_schemas()
 install_data('org.gnome.Contacts.gschema.xml',
@@ -10,6 +12,7 @@ libcontacts_sources = files(
   'contacts-esd-setup.vala',
   'contacts-fake-persona-store.vala',
   'contacts-im-service.vala',
+  'contacts-import-operation.vala',
   'contacts-individual-sorter.vala',
   'contacts-link-operation.vala',
   'contacts-operation.vala',
@@ -21,6 +24,11 @@ libcontacts_sources = files(
   'contacts-unlink-operation.vala',
   'contacts-utils.vala',
   'contacts-vcard-type-mapping.vala',
+
+  'io/contacts-io-export-operation.vala',
+  'io/contacts-io-vcard-export-operation.vala',
+  'io/contacts-io-parse-operation.vala',
+  'io/contacts-io.vala',
 )
 
 contacts_vala_args = [

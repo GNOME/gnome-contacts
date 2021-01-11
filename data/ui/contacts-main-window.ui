@@ -16,6 +16,12 @@
     </section>
     <section>
       <item>
+        <attribute name="label" translatable="yes">Import…</attribute>
+        <attribute name="action">app.import</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
         <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.show-preferences</attribute>
       </item>
@@ -152,9 +158,17 @@
                               <object class="GtkActionBar" id="actions_bar">
                                 <property name="revealed">False</property>
                                 <child>
+                                  <object class="GtkButton" id="export_button">
+                                    <property name="label" translatable="yes" comments="Export refers to the verb">Export</property>
+                                    <property name="tooltip-text" translatable="yes">Export Selected Contacts</property>
+                                    <property name="action-name">win.export-marked-contacts</property>
+                                  </object>
+                                </child>
+                                <child>
                                   <object class="GtkButton" id="link_button">
                                     <property name="focus_on_click">False</property>
                                     <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
+                                    <property name="tooltip-text" translatable="yes">Link Selected Contacts Together</property>
                                     <property name="action-name">win.link-marked-contacts</property>
                                   </object>
                                 </child>

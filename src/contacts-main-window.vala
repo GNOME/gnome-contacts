@@ -27,6 +27,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     { "stop-editing-contact", stop_editing_contact, "b" },
     { "link-marked-contacts", link_marked_contacts },
     { "delete-marked-contacts", delete_marked_contacts },
+    { "export-marked-contacts", export_marked_contacts },
     // { "share-contact", share_contact },
     { "unlink-contact", unlink_contact },
     { "delete-contact", delete_contact },
@@ -177,6 +178,9 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     // Update related actions
     unowned var action = lookup_action ("delete-marked-contacts");
+    ((SimpleAction) action).set_enabled (n_selected > 0);
+
+    action = lookup_action ("export-marked-contacts");
     ((SimpleAction) action).set_enabled (n_selected > 0);
 
     action = lookup_action ("link-marked-contacts");
@@ -541,6 +545,58 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     }
     this.toast_overlay.add_toast (toast);
     return toast;
+  }
+
+  private void export_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
+    // Take a copy, since we'll unselect everything later
+    var selection = this.marked_contacts.get_selection ().copy ();
+
+    // Go back to normal state as much as possible
+    this.store.selection.unselect_all ();
+    this.marked_contacts.unselect_all ();
+    this.state = UiState.NORMAL;
+
+    // Open up a file chooser
+    var chooser = new Gtk.FileChooserNative (_("Export to file"),
+                                             this,
+                                             Gtk.FileChooserAction.SAVE,
+                                             _("_Export"),
+                                             _("_Cancel"));
+    chooser.set_current_name ("contacts.vcf");
+    chooser.modal = true;
+    chooser.response.connect ((response) => {
+      if (response != Gtk.ResponseType.ACCEPT) {
+        chooser.destroy ();
+        return;
+      }
+
+      // Do the actual export
+      var individuals = bitset_to_individuals (this.store.filter_model,
+                                               selection);
+
+      OutputStream filestream = null;
+      try {
+        filestream = chooser.get_file ().replace (null, false, FileCreateFlags.NONE);
+      } catch (Error err) {
+        warning ("Couldn't create file: %s", err.message);
+        return;
+      }
+
+      var op = new Io.VCardExportOperation (individuals, filestream);
+      this.operations.execute.begin (op, null, (obj, res) => {
+        try {
+          this.operations.execute.end (res);
+          filestream.close ();
+        } catch (Error e) {
+          warning ("ERROR: %s", e.message);
+        }
+      });
+
+      chooser.destroy ();
+      add_toast_for_operation (op);
+    });
+
+    chooser.show ();
   }
 
   // Little helper
