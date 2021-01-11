@@ -31,7 +31,8 @@ public class Contacts.App : Gtk.Application {
     { "change-book",      change_address_book },
     { "online-accounts",  online_accounts     },
     { "new-contact",      new_contact         },
-    { "show-contact",     on_show_contact, "s"}
+    { "show-contact",     on_show_contact, "s"},
+    { "import",           on_import           }
   };
 
   private const OptionEntry[] options = {
@@ -305,4 +306,43 @@ public class Contacts.App : Gtk.Application {
       show_individual.begin (individual);
   }
 
+  private void on_import(SimpleAction action, Variant? param) {
+    var chooser = new Gtk.FileChooserNative ("Select contact file",
+                                             this.window,
+                                             Gtk.FileChooserAction.OPEN,
+                                             _("Import"),
+                                             _("Cancel"));
+    chooser.modal = true;
+    chooser.select_multiple = false;
+
+    // TODO: somehow get this from the list of importers we have
+    var filter = new Gtk.FileFilter ();
+    filter.set_filter_name ("VCard files");
+    filter.add_pattern ("*.vcf");
+    filter.add_pattern ("*.vcard");
+    chooser.add_filter (filter);
+
+    chooser.response.connect ((response) => {
+        if (response != Gtk.ResponseType.ACCEPT) {
+          chooser.destroy ();
+          return;
+        }
+
+        if (chooser.get_filename () == null) {
+          debug ("No file selected, or no path available");
+          chooser.destroy ();
+        }
+
+        try {
+          var file = File.new_for_path (chooser.get_filename ());
+          var import = new ImportOperation (file);
+          import.execute ();
+        } catch (GLib.Error err) {
+          warning ("Couldn't import file: %s", err.message);
+        }
+
+        chooser.destroy ();
+    });
+    chooser.run ();
+  }
 }

@@ -1,3 +1,5 @@
+subdir ('io')
+
 # GSettings
 compiled = gnome.compile_schemas()
 install_data('org.gnome.Contacts.gschema.xml',
@@ -9,6 +11,7 @@ libcontacts_sources = files(
   'contacts-esd-setup.vala',
   'contacts-fake-persona-store.vala',
   'contacts-im-service.vala',
+  'contacts-importer-launcher.vala',
   'contacts-store.vala',
   'contacts-typeset.vala',
   'contacts-type-descriptor.vala',
@@ -56,7 +59,7 @@ if get_option('telepathy')
 endif
 
 libcontacts = static_library('contacts',
-  libcontacts_sources,
+  [ libcontacts_sources, contacts_io_sources ],
   include_directories: config_h_dir,
   vala_args: contacts_vala_args,
   c_args: contacts_c_args,
