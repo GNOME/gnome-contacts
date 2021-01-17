@@ -22,7 +22,7 @@ public class Contacts.App : Gtk.Application {
 
   private Store contacts_store;
 
-  private Window window;
+  private MainWindow window;
 
   private const GLib.ActionEntry[] action_entries = {
     { "quit",             quit                },
@@ -207,7 +207,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void create_window () {
-    this.window = new Contacts.Window (this.settings, this, this.contacts_store);
+    this.window = new MainWindow (this.settings, this, this.contacts_store);
 
     show_contact_list ();
   }

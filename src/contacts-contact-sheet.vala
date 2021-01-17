@@ -263,7 +263,10 @@ public class Contacts.ContactSheet : Gtk.Grid {
       foreach (var url in url_details.urls) {
         var button = create_button ("web-browser-symbolic");
         button.clicked.connect (() => {
-          var window = (Contacts.Window) button.get_toplevel ();
+          unowned var window = button.get_toplevel () as MainWindow;
+          if (window == null)
+            return;
+
           try {
             Gtk.show_uri_on_window (window,
                                     fallback_to_https (url.value),

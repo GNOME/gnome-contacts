@@ -17,8 +17,8 @@
 
 using Folks;
 
-[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-window.ui")]
-public class Contacts.Window : Hdy.ApplicationWindow {
+[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-main-window.ui")]
+public class Contacts.MainWindow : Hdy.ApplicationWindow {
 
   private const GLib.ActionEntry[] action_entries = {
     { "edit-contact",     edit_contact     },
@@ -86,7 +86,7 @@ public class Contacts.Window : Hdy.ApplicationWindow {
     get; construct set;
   }
 
-  public Window (Settings settings, App app, Store contacts_store) {
+  public MainWindow (Settings settings, App app, Store contacts_store) {
     Object (
       application: app,
       show_menubar: false,

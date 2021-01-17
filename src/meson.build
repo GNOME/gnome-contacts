@@ -90,11 +90,11 @@ contacts_vala_sources = files(
   'contacts-linked-personas-dialog.vala',
   'contacts-linking.vala',
   'contacts-list-pane.vala',
+  'contacts-main-window.vala',
   'contacts-settings.vala',
   'contacts-setup-window.vala',
   'contacts-type-combo.vala',
   'contacts-ui-state.vala',
-  'contacts-window.vala',
   'main.vala',
 )
 

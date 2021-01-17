@@ -105,13 +105,13 @@ public class Contacts.AvatarSelector : Gtk.Popover {
         } catch (Error e) {
           warning ("Failed to set avatar: %s", e.message);
           Utils.show_error_dialog (_("Failed to set avatar."),
-                                   this.get_toplevel() as Gtk.Window);
+                                   get_toplevel() as Gtk.Window);
         }
       });
     } catch (GLib.Error e) {
       warning ("Failed to set avatar: %s", e.message);
       Utils.show_error_dialog (_("Failed to set avatar."),
-                               this.get_toplevel() as Gtk.Window);
+                               get_toplevel() as Gtk.Window);
     }
   }
 
@@ -179,7 +179,7 @@ public class Contacts.AvatarSelector : Gtk.Popover {
 
   [GtkCallback]
   private void on_cheese_clicked (Gtk.Button button) {
-    var dialog = new CropCheeseDialog.for_cheese ((Window) this.get_toplevel());
+    var dialog = new CropCheeseDialog.for_cheese (get_toplevel() as Gtk.Window);
     dialog.show_all ();
     dialog.picture_selected.connect ( (pix) => {
       selected_pixbuf (scale_pixbuf_for_avatar_use (pix));
@@ -190,7 +190,7 @@ public class Contacts.AvatarSelector : Gtk.Popover {
   [GtkCallback]
   private void on_file_clicked (Gtk.Button button) {
     var chooser = new Gtk.FileChooserNative (_("Browse for more pictures"),
-                                             (Gtk.Window) this.get_toplevel (),
+                                             get_toplevel () as Gtk.Window,
                                              Gtk.FileChooserAction.OPEN,
                                              _("_Open"), _("_Cancel"));
     chooser.set_modal (true);
@@ -218,7 +218,7 @@ public class Contacts.AvatarSelector : Gtk.Popover {
           var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
           in_stream.close ();
           if (pixbuf.get_width () > MAIN_SIZE || pixbuf.get_height () > MAIN_SIZE) {
-            var dialog = new CropCheeseDialog.for_crop ((Window) this.get_toplevel(),
+            var dialog = new CropCheeseDialog.for_crop (get_toplevel () as Gtk.Window,
                                                         pixbuf);
             dialog.picture_selected.connect ( (pix) => {
               selected_pixbuf (scale_pixbuf_for_avatar_use (pix));

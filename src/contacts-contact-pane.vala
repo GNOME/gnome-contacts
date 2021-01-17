@@ -27,7 +27,7 @@ const int PROFILE_SIZE = 128;
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
 public class Contacts.ContactPane : Gtk.ScrolledWindow {
 
-  private Contacts.Window parent_window;
+  private MainWindow main_window;
 
   private Store store;
 
@@ -58,8 +58,8 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
   public signal void display_name_changed (string new_display_name);
 
 
-  public ContactPane (Contacts.Window parent_window, Store contacts_store) {
-    this.parent_window = parent_window;
+  public ContactPane (MainWindow main_window, Store contacts_store) {
+    this.main_window = main_window;
     this.store = contacts_store;
   }
 
@@ -238,7 +238,7 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
       persona = yield primary_store.add_persona_from_details (details);
     } catch (Error e) {
       show_message_dialog (_("Unable to create new contacts: %s").printf (e.message));
-      this.parent_window.set_shown_contact (null);
+      this.main_window.set_shown_contact (null);
       return;
     }
 
@@ -247,16 +247,16 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
 
     if (individual != null) {
       //FIXME: This causes a flicker, especially visible when an avatar is set
-      this.parent_window.set_shown_contact (individual);
+      this.main_window.set_shown_contact (individual);
     } else {
       show_message_dialog (_("Unable to find newly created contact"));
-      this.parent_window.set_shown_contact (null);
+      this.main_window.set_shown_contact (null);
     }
   }
 
   private void show_message_dialog (string message) {
     var dialog =
-        new Gtk.MessageDialog (this.parent_window,
+        new Gtk.MessageDialog (this.main_window,
                                Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
                                Gtk.MessageType.ERROR,
                                Gtk.ButtonsType.OK,
