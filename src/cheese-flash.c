@@ -97,10 +97,6 @@ cheese_flash_init (CheeseFlash *self)
   gtk_window_set_accept_focus (window, FALSE);
   gtk_window_set_focus_on_map (window, FALSE);
 
-  /* Make it white */
-  gtk_widget_override_background_color (GTK_WIDGET (window), GTK_STATE_NORMAL,
-                                        &white);
-
   /* Don't consume input */
   gtk_widget_realize (GTK_WIDGET (window));
   input_region = cairo_region_create ();
@@ -132,7 +128,7 @@ cheese_flash_set_property (GObject      *object,
       GObject *parent;
       parent = g_value_get_object (value);
       if (object != NULL)
-        priv->parent = g_object_ref (parent);
+        priv->parent = GTK_WIDGET (g_object_ref (parent));
       else
         priv->parent = NULL;
     }
@@ -241,9 +237,9 @@ cheese_flash_fire (CheeseFlash *flash)
 {
     CheeseFlashPrivate *priv;
   GtkWidget          *parent;
-  GdkScreen          *screen;
+  GdkDisplay         *display;
+  GdkMonitor         *monitor;
   GdkRectangle        rect, work_rect;
-  int                 monitor;
   GtkWindow *flash_window;
 
   g_return_if_fail (CHEESE_IS_FLASH (flash));
@@ -266,15 +262,15 @@ cheese_flash_fire (CheeseFlash *flash)
         priv->fade_timeout_tag = 0;
     }
 
-    priv->opacity = 1.0;
+  priv->opacity = 1.0;
 
-    parent = gtk_widget_get_toplevel (priv->parent);
-  screen  = gtk_widget_get_screen (parent);
-  monitor = gdk_screen_get_monitor_at_window (screen,
-                                              gtk_widget_get_window (parent));
+  parent = gtk_widget_get_toplevel (priv->parent);
+  display = gdk_display_get_default ();
+  monitor = gdk_display_get_monitor_at_window (display,
+                                               gtk_widget_get_window (parent));
 
-  gdk_screen_get_monitor_geometry (screen, monitor, &rect);
-  gdk_screen_get_monitor_workarea (screen, monitor, &work_rect);
+  gdk_monitor_get_geometry (monitor, &rect);
+  gdk_monitor_get_workarea (monitor, &work_rect);
   gdk_rectangle_intersect (&work_rect, &rect, &rect);
 
   gtk_window_set_transient_for (GTK_WINDOW (flash_window), GTK_WINDOW (parent));
