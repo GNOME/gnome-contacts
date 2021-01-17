@@ -16,31 +16,41 @@
  */
 
 /**
- * Provides a convenient interface to deal with the settings.
+ * Provides a convenient interface to deal with Contacts' settings.
+ *
+ * When editing this, make sure you keep it in sync with the schema file!
  */
 public class Contacts.Settings : GLib.Settings {
 
-  public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
-  public const string SORT_ON_SURNAME_KEY = "sort-on-surname";
-  public const string WINDOW_WIDTH_KEY = "window-width";
-  public const string WINDOW_HEIGHT_KEY = "window-height";
-  public const string WINDOW_MAXIMIZED_KEY = "window-maximized";
-
   public bool did_initial_setup {
-    get { return get_boolean (DID_INITIAL_SETUP_KEY); }
-    set { set_boolean (DID_INITIAL_SETUP_KEY, value); }
+    get { return get_boolean ("did-initial-setup"); }
+    set { set_boolean ("did-initial-setup", value); }
   }
 
   public bool sort_on_surname {
-    get { return get_boolean (SORT_ON_SURNAME_KEY); }
-    set { set_boolean (SORT_ON_SURNAME_KEY, value); }
+    get { return get_boolean ("sort-on-surname"); }
+    set { set_boolean ("sort-on-surname", value); }
+  }
+
+  // Window state
+  public int window_width {
+    get { return get_int ("window-width"); }
+    set { set_int ("window-width", value); }
+  }
+  public int window_height {
+    get { return get_int ("window-height"); }
+    set { set_int ("window-height", value); }
+  }
+  public bool window_maximized {
+    get { return get_boolean ("window-maximized"); }
+    set { set_boolean ("window-maximized", value); }
+  }
+  public bool window_fullscreen {
+    get { return get_boolean ("window-fullscreen"); }
+    set { set_boolean ("window-fullscreen", value); }
   }
 
   public Settings (App app) {
     Object (schema_id: "org.gnome.Contacts");
-  }
-
-  public void bind_default (string key, Object object, string property) {
-    bind (key, object, property, GLib.SettingsBindFlags.DEFAULT);
   }
 }

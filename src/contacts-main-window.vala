@@ -73,32 +73,23 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
 
   public UiState state { get; set; default = UiState.NORMAL; }
 
-  /** Holds the current width. */
+  // Window state
   public int window_width { get; set; }
-  /** Holds the current height. */
   public int window_height { get; set; }
-  /** Holds true if the window is currently maximized. */
   public bool window_maximized { get; set; }
+  public bool window_fullscreen { get; set; }
 
-  private Settings settings;
+  public Settings settings { get; construct set; }
 
   public Store store {
     get; construct set;
   }
 
-  public MainWindow (Settings settings, App app, Store contacts_store) {
-    Object (
-      application: app,
-      show_menubar: false,
-      visible: true,
-      store: contacts_store
-    );
-
+  construct {
     SimpleActionGroup actions = new SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
-    this.insert_action_group ("window", actions);
+    insert_action_group ("window", actions);
 
-    this.settings = settings;
     this.sort_on_firstname_button.clicked.connect (() => {
       this.settings.sort_on_surname = false;
       on_sort_changed ();
@@ -111,13 +102,22 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
 
     this.notify["state"].connect (on_ui_state_changed);
 
-    bind_dimension_properties_to_settings ();
     create_contact_pane ();
     connect_button_signals ();
-    restore_window_size_and_position_from_settings ();
+    restore_window_state ();
 
     if (Config.PROFILE == "development")
         get_style_context ().add_class ("devel");
+  }
+
+  public MainWindow (Settings settings, App app, Store contacts_store) {
+    Object (
+      application: app,
+      settings: settings,
+      show_menubar: false,
+      visible: true,
+      store: contacts_store
+    );
   }
 
   private void on_sort_changed () {
@@ -125,24 +125,26 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
     this.sort_on_surname_button.active = this.settings.sort_on_surname;
   }
 
-  private void restore_window_size_and_position_from_settings () {
-    unowned var screen = get_screen ();
-    if (screen != null && this.window_width <= screen.get_width () && this.window_height <= screen.get_height ()) {
+  private void restore_window_state () {
+    // Load initial values
+    this.window_width = this.settings.window_width;
+    this.window_height = this.settings.window_height;
+    this.window_maximized = this.settings.window_maximized;
+    this.window_fullscreen = this.settings.window_fullscreen;
+
+    // Apply them
+    if (this.window_width > 0 && this.window_height > 0)
       set_default_size (this.window_width, this.window_height);
-    }
-    if (this.window_maximized) {
-      maximize();
-    }
-    // always put the window into the center position to avoid losing it somewhere at the screen boundaries.
-    this.window_position = Gtk.WindowPosition.CENTER;
+    if (this.window_maximized)
+      maximize ();
+    if (this.window_fullscreen)
+      fullscreen ();
   }
 
   public override bool window_state_event (Gdk.EventWindowState event) {
-    if (!(Gdk.WindowState.WITHDRAWN in event.new_window_state)) {
-      bool maximized = (Gdk.WindowState.MAXIMIZED in event.new_window_state);
-      if (this.window_maximized != maximized)
-        this.window_maximized = maximized;
-    }
+    this.window_maximized = (Gdk.WindowState.MAXIMIZED in event.new_window_state);
+    this.window_fullscreen = (Gdk.WindowState.FULLSCREEN in event.new_window_state);
+
     return base.window_state_event (event);
   }
 
@@ -150,23 +152,17 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
   public override void size_allocate (Gtk.Allocation allocation) {
     base.size_allocate (allocation);
 
-    unowned var screen = get_screen ();
-    if (screen != null && !this.window_maximized) {
-      // Get the size via ::get_size instead of the allocation
-      // so that the window isn't ever-expanding.
-      int width = 0;
-      int height = 0;
-      get_size(out width, out height);
+    if (this.window_fullscreen || this.window_maximized)
+      return;
 
-      // Only store if the values have changed and are
-      // reasonable-looking.
-      if (this.window_width != width && width > 0 && width <= screen.get_width ()) {
-        this.window_width = width;
-      }
-      if (this.window_height != height && height > 0 && height <= screen.get_height ()) {
-        this.window_height = height;
-      }
-    }
+    // Get the size via widget.get_size() instead of the allocation
+    // so that the window isn't ever-expanding (in case of CSD).
+    int width = 0;
+    int height = 0;
+    get_size(out width, out height);
+
+    this.window_width = width;
+    this.window_height = height;
   }
 
   private void create_contact_pane () {
@@ -578,9 +574,13 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
     add_notification (notification);
   }
 
-  private void bind_dimension_properties_to_settings () {
-    this.settings.bind_default (Settings.WINDOW_WIDTH_KEY, this, "window-width");
-    this.settings.bind_default (Settings.WINDOW_HEIGHT_KEY, this, "window-height");
-    this.settings.bind_default (Settings.WINDOW_MAXIMIZED_KEY, this, "window-maximized");
+  // Override the default destroy() to save the window state
+  public override void destroy () {
+    this.settings.window_width = this.window_width;
+    this.settings.window_height = this.window_height;
+    this.settings.window_maximized = this.window_maximized;
+    this.settings.window_fullscreen = this.window_fullscreen;
+
+    base.destroy ();
   }
 }
