@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 3.38.x\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-09-19 08:17+0000\n"
-"PO-Revision-Date: 2020-12-04 15:54+0100\n"
+"POT-Creation-Date: 2020-12-04 14:56+0000\n"
+"PO-Revision-Date: 2021-01-25 15:40+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -48,7 +48,7 @@ msgstr ""
 "Kontakter kan også integreres med adressebøker på nett, og lenker automatisk "
 "sammen kontakter fra forskjellige kilder på nettet."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:482
+#: data/org.gnome.Contacts.appdata.xml.in.in:500
 msgid "The GNOME Project"
 msgstr "GNOME prosjektet"
 
@@ -177,7 +177,10 @@ msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
 "using the online accounts settings."
-msgstr "Velg din hovedadressebok: her vil nye kontakter legges til. Hvis du beholder dine kontakter i en adressebok på nettet kan du legge dem til via innstillinger for kontoer på nettet."
+msgstr ""
+"Velg din hovedadressebok: her vil nye kontakter legges til. Hvis du beholder "
+"dine kontakter i en adressebok på nettet kan du legge dem til via "
+"innstillinger for kontoer på nettet."
 
 #: data/ui/contacts-window.ui:15
 msgid "List contacts by:"
@@ -196,9 +199,8 @@ msgid "Change Address Book…"
 msgstr "Bytt adressebok …"
 
 #: data/ui/contacts-window.ui:57
-#, fuzzy
 msgid "Online Accounts <sup>↗</sup>"
-msgstr "Nettkontoer"
+msgstr "Nettkontoer <sup>↗</sup>"
 
 #: data/ui/contacts-window.ui:73
 msgid "Keyboard Shortcuts"
@@ -285,32 +287,32 @@ msgstr "Vis kontakter med gitt filter"
 msgid "Show the current version of Contacts"
 msgstr "Vis versjon av Kontakter"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:112
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Fant ingen kontakter med ID %s"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:183
+#: src/contacts-app.vala:113 src/contacts-app.vala:193
 msgid "Contact not found"
 msgstr "Fant ikke kontakten"
 
-#: src/contacts-app.vala:162
+#: src/contacts-app.vala:172
 msgid "translator-credits"
 msgstr "Kjartan Maraas <kmaraas@gnome.org>"
 
-#: src/contacts-app.vala:163
+#: src/contacts-app.vala:173
 msgid "GNOME Contacts"
 msgstr "GNOME kontakter"
 
-#: src/contacts-app.vala:164
+#: src/contacts-app.vala:174
 msgid "About GNOME Contacts"
 msgstr "Om GNOME kontakter"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:175
 msgid "Contact Management Application"
 msgstr "Håndtering av kontakter"
 
-#: src/contacts-app.vala:166
+#: src/contacts-app.vala:176
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -318,7 +320,7 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Utviklerene av Kontakter"
 
-#: src/contacts-app.vala:182
+#: src/contacts-app.vala:192
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Fant ingen kontakt med e-postadresse %s"
@@ -369,19 +371,19 @@ msgstr "Klarte ikke å opprette nye kontakter: %s"
 msgid "Unable to find newly created contact"
 msgstr "Fant ikke nylig opprettet kontakt"
 
-#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:488
+#: src/contacts-contact-sheet.vala:280 src/contacts-editor-property.vala:488
 msgid "Website"
 msgstr "Nettsted"
 
-#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:498
+#: src/contacts-contact-sheet.vala:297 src/contacts-editor-property.vala:498
 msgid "Nickname"
 msgstr "Kallenavn"
 
-#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:563
+#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:563
 msgid "Birthday"
 msgstr "Fødselsdag"
 
-#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:526
+#: src/contacts-contact-sheet.vala:310 src/contacts-editor-property.vala:526
 msgid "Note"
 msgstr "Notat"
 
@@ -402,7 +404,6 @@ msgid "Year"
 msgstr "År"
 
 #: src/contacts-editor-property.vala:85
-#, fuzzy
 msgid "Set"
 msgstr "Sett"
 
@@ -459,9 +460,8 @@ msgid "https://example.com"
 msgstr "https://eksempel.no"
 
 #: src/contacts-editor-property.vala:565 src/contacts-editor-property.vala:596
-#, fuzzy
 msgid "Set Birthday"
-msgstr "Fødselsdag"
+msgstr "Sett fødselsdag"
 
 #: src/contacts-editor-property.vala:614
 msgid "Address"
@@ -676,8 +676,8 @@ msgstr "Legg til"
 msgid "Editing %s"
 msgstr "Redigerer %s"
 
-#: src/contacts-window.vala:294 src/contacts-window.vala:478
-#: src/contacts-window.vala:502 src/contacts-window.vala:548
+#: src/contacts-window.vala:294 src/contacts-window.vala:484
+#: src/contacts-window.vala:508 src/contacts-window.vala:554
 msgid "_Undo"
 msgstr "_Angre"
 
@@ -697,31 +697,31 @@ msgstr "Merk som favoritt"
 msgid "New Contact"
 msgstr "Ny kontakt"
 
-#: src/contacts-window.vala:474
+#: src/contacts-window.vala:480
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%d kontakter koblet sammen"
 msgstr[1] "%d kontakter koblet sammen"
 
-#: src/contacts-window.vala:497
+#: src/contacts-window.vala:503
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Slettet kontakt %s"
 
-#: src/contacts-window.vala:499
+#: src/contacts-window.vala:505
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%d kontakt slettet"
 msgstr[1] "%d kontakter slettet"
 
-#: src/contacts-window.vala:544
+#: src/contacts-window.vala:550
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s lenket til %s"
 
-#: src/contacts-window.vala:546
+#: src/contacts-window.vala:552
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s lenket til kontakten"
@@ -731,8 +731,6 @@ msgid "First-time setup done."
 msgstr "Førstegangsoppsett er ferdig."
 
 #: src/org.gnome.Contacts.gschema.xml:7
-#, fuzzy
-#| msgid "Set to true when the user ran the first-time setup wizard."
 msgid "Set to true after the user has run the first-time setup wizard."
 msgstr "Sett til true når bruker har kjørt assistent for førstegangsoppsett."
 
