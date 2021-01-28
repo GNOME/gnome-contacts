@@ -270,7 +270,7 @@ public class Contacts.ContactList : Gtk.ListBox {
       selection_changed (individual);
 #if HAVE_TELEPATHY
       if (individual != null)
-        Contact.fetch_contact_info (individual);
+        Contacts.Utils.fetch_contact_info (individual);
 #endif
     }
   }
