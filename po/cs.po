@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-01-10 18:23+0000\n"
-"PO-Revision-Date: 2021-01-11 17:27+0100\n"
+"POT-Creation-Date: 2021-01-25 14:41+0000\n"
+"PO-Revision-Date: 2021-01-29 13:25+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -23,8 +23,8 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.7\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-window.ui:144
-#: data/ui/contacts-window.ui:163 src/contacts-window.vala:230
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
 msgid "Contacts"
 msgstr "Kontakty"
 
@@ -109,8 +109,9 @@ msgstr "Vybrat soubor…"
 msgid "Select a contact"
 msgstr "Vyberte kontakt"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:215
-#: src/contacts-addressbook-dialog.vala:32 src/contacts-editor-property.vala:83
+#: data/ui/contacts-crop-cheese-dialog.ui:27
+#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -118,8 +119,8 @@ msgstr "Zrušit"
 msgid "Take Another…"
 msgstr "Pořídit další…"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:337
-#: src/contacts-window.vala:238
+#: data/ui/contacts-crop-cheese-dialog.ui:64
+#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
 msgid "Done"
 msgstr "Hotovo"
 
@@ -151,6 +152,79 @@ msgstr "Propojit"
 #: data/ui/contacts-list-pane.ui:68
 msgid "Remove"
 msgstr "Odstranit"
+
+#: data/ui/contacts-main-window.ui:15
+msgid "List contacts by:"
+msgstr "Řadit kontakty podle:"
+
+#: data/ui/contacts-main-window.ui:28
+msgid "First name"
+msgstr "jména"
+
+#: data/ui/contacts-main-window.ui:35
+msgid "Surname"
+msgstr "příjmení"
+
+#: data/ui/contacts-main-window.ui:49
+msgid "Change Address Book…"
+msgstr "Změnit adresář…"
+
+#: data/ui/contacts-main-window.ui:57
+msgid "Online Accounts <sup>↗</sup>"
+msgstr "Účty on-line <sup>↗</sup>"
+
+#: data/ui/contacts-main-window.ui:73
+msgid "Keyboard Shortcuts"
+msgstr "Klávesové zkratky"
+
+#: data/ui/contacts-main-window.ui:81
+msgid "Help"
+msgstr "Nápověda"
+
+#: data/ui/contacts-main-window.ui:89
+msgid "About Contacts"
+msgstr "O aplikaci Kontakty"
+
+#: data/ui/contacts-main-window.ui:107
+msgid "Share"
+msgstr "Sdílet"
+
+#: data/ui/contacts-main-window.ui:114
+msgid "Edit"
+msgstr "Upravit"
+
+#: data/ui/contacts-main-window.ui:121
+#: src/contacts-linked-personas-dialog.vala:73
+msgid "Unlink"
+msgstr "Rozdělit"
+
+#: data/ui/contacts-main-window.ui:133
+msgid "Delete"
+msgstr "Smazat"
+
+#: data/ui/contacts-main-window.ui:171
+msgid "Create new contact"
+msgstr "Vytvořit nový kontakt"
+
+#: data/ui/contacts-main-window.ui:175
+msgid "Add contact"
+msgstr "Přidat kontakt"
+
+#: data/ui/contacts-main-window.ui:216
+msgid "Cancel selection"
+msgstr "Zrušit výběr"
+
+#: data/ui/contacts-main-window.ui:260
+msgid "Back"
+msgstr "Zpět"
+
+#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:195
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: data/ui/contacts-main-window.ui:396
+msgid "Loading"
+msgstr "Načítá se"
 
 #: data/ui/contacts-setup-window.ui:11
 msgid "Contacts Setup"
@@ -185,78 +259,6 @@ msgstr ""
 "Vyberte prosím svůj hlavní adresář: do něj budou přidávány nové kontakty. "
 "Pokud své kontakty uchováváte v účtu on-line, můžete jej přidat pomocí "
 "nastavení Účty on-line."
-
-#: data/ui/contacts-window.ui:15
-msgid "List contacts by:"
-msgstr "Řadit kontakty podle:"
-
-#: data/ui/contacts-window.ui:28
-msgid "First name"
-msgstr "jména"
-
-#: data/ui/contacts-window.ui:35
-msgid "Surname"
-msgstr "příjmení"
-
-#: data/ui/contacts-window.ui:49
-msgid "Change Address Book…"
-msgstr "Změnit adresář…"
-
-#: data/ui/contacts-window.ui:57
-msgid "Online Accounts <sup>↗</sup>"
-msgstr "Účty on-line <sup>↗</sup>"
-
-#: data/ui/contacts-window.ui:73
-msgid "Keyboard Shortcuts"
-msgstr "Klávesové zkratky"
-
-#: data/ui/contacts-window.ui:81
-msgid "Help"
-msgstr "Nápověda"
-
-#: data/ui/contacts-window.ui:89
-msgid "About Contacts"
-msgstr "O aplikaci Kontakty"
-
-#: data/ui/contacts-window.ui:107
-msgid "Share"
-msgstr "Sdílet"
-
-#: data/ui/contacts-window.ui:114
-msgid "Edit"
-msgstr "Upravit"
-
-#: data/ui/contacts-window.ui:121 src/contacts-linked-personas-dialog.vala:73
-msgid "Unlink"
-msgstr "Rozdělit"
-
-#: data/ui/contacts-window.ui:133
-msgid "Delete"
-msgstr "Smazat"
-
-#: data/ui/contacts-window.ui:171
-msgid "Create new contact"
-msgstr "Vytvořit nový kontakt"
-
-#: data/ui/contacts-window.ui:175
-msgid "Add contact"
-msgstr "Přidat kontakt"
-
-#: data/ui/contacts-window.ui:216
-msgid "Cancel selection"
-msgstr "Zrušit výběr"
-
-#: data/ui/contacts-window.ui:260
-msgid "Back"
-msgstr "Zpět"
-
-#: data/ui/contacts-window.ui:279 src/contacts-avatar-selector.vala:195
-msgid "_Cancel"
-msgstr "_Zrušit"
-
-#: data/ui/contacts-window.ui:396
-msgid "Loading"
-msgstr "Načítá se"
 
 #: src/contacts-accounts-list.vala:127 src/contacts-addressbook-list.vala:105
 #: src/contacts-esd-setup.vala:149
@@ -356,11 +358,11 @@ msgstr "Změnit avatára"
 msgid "Add name"
 msgstr "Přidat jméno"
 
-#: src/contacts-contact-list.vala:176
+#: src/contacts-contact-list.vala:194
 msgid "Favorites"
 msgstr "Oblíbené"
 
-#: src/contacts-contact-list.vala:178 src/contacts-contact-list.vala:184
+#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
 msgid "All Contacts"
 msgstr "Všechny kontakty"
 
@@ -377,19 +379,19 @@ msgstr "Nelze vytvořit nový kontakt: %s"
 msgid "Unable to find newly created contact"
 msgstr "Nelze najít nově vytvořený kontakt"
 
-#: src/contacts-contact-sheet.vala:283 src/contacts-editor-property.vala:491
+#: src/contacts-contact-sheet.vala:286 src/contacts-editor-property.vala:491
 msgid "Website"
 msgstr "Webové stránky"
 
-#: src/contacts-contact-sheet.vala:300 src/contacts-editor-property.vala:501
+#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:501
 msgid "Nickname"
 msgstr "Přezdívka"
 
-#: src/contacts-contact-sheet.vala:306 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:309 src/contacts-editor-property.vala:566
 msgid "Birthday"
 msgstr "Narozeniny"
 
-#: src/contacts-contact-sheet.vala:313 src/contacts-editor-property.vala:529
+#: src/contacts-contact-sheet.vala:316 src/contacts-editor-property.vala:529
 msgid "Note"
 msgstr "Poznámka"
 
@@ -592,6 +594,75 @@ msgstr "Jedná se o stejnou osobu jako %s z kontaktů %s?"
 msgid "Is this the same person as %s?"
 msgstr "Jedná se o stejnou osobu jako %s?"
 
+#: src/contacts-main-window.vala:198
+#, c-format
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "%d vybraný"
+msgstr[1] "%d vybrané"
+msgstr[2] "%d vybraných"
+
+#: src/contacts-main-window.vala:234
+msgid "_Add"
+msgstr "Přid_at"
+
+#: src/contacts-main-window.vala:279
+#, c-format
+msgid "Editing %s"
+msgstr "Úprava kontaktu %s"
+
+#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:496
+#: src/contacts-main-window.vala:520 src/contacts-main-window.vala:566
+msgid "_Undo"
+msgstr "_Zpět"
+
+#: src/contacts-main-window.vala:307
+msgid "Contacts unlinked"
+msgstr "Kontakty byly rozděleny"
+
+#: src/contacts-main-window.vala:366
+msgid "Unmark as favorite"
+msgstr "Odebrat z oblíbených"
+
+#: src/contacts-main-window.vala:367
+msgid "Mark as favorite"
+msgstr "Označit jako oblíbený"
+
+#: src/contacts-main-window.vala:381
+msgid "New Contact"
+msgstr "Nový kontakt"
+
+#: src/contacts-main-window.vala:492
+#, c-format
+msgid "%d contacts linked"
+msgid_plural "%d contacts linked"
+msgstr[0] "%d kontakt propojen"
+msgstr[1] "%d kontakty propojeny"
+msgstr[2] "%d kontaktů propojeno"
+
+#: src/contacts-main-window.vala:515
+#, c-format
+msgid "Deleted contact %s"
+msgstr "Smazán kontakt %s"
+
+#: src/contacts-main-window.vala:517
+#, c-format
+msgid "%d contact deleted"
+msgid_plural "%d contacts deleted"
+msgstr[0] "Smazán %d kontakt"
+msgstr[1] "Smazány %d kontakty"
+msgstr[2] "Smazáno %d kontaktů"
+
+#: src/contacts-main-window.vala:562
+#, c-format
+msgid "%s linked to %s"
+msgstr "%s a %s propojeni"
+
+#: src/contacts-main-window.vala:564
+#, c-format
+msgid "%s linked to the contact"
+msgstr "%s s kontaktem propojeni"
+
 #: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:263
 msgid "Other"
 msgstr "Jiný"
@@ -666,75 +737,6 @@ msgstr "Dálnopis"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/contacts-window.vala:202
-#, c-format
-msgid "%d Selected"
-msgid_plural "%d Selected"
-msgstr[0] "%d vybraný"
-msgstr[1] "%d vybrané"
-msgstr[2] "%d vybraných"
-
-#: src/contacts-window.vala:238
-msgid "_Add"
-msgstr "Přid_at"
-
-#: src/contacts-window.vala:283
-#, c-format
-msgid "Editing %s"
-msgstr "Úprava kontaktu %s"
-
-#: src/contacts-window.vala:310 src/contacts-window.vala:500
-#: src/contacts-window.vala:524 src/contacts-window.vala:570
-msgid "_Undo"
-msgstr "_Zpět"
-
-#: src/contacts-window.vala:311
-msgid "Contacts unlinked"
-msgstr "Kontakty byly rozděleny"
-
-#: src/contacts-window.vala:370
-msgid "Unmark as favorite"
-msgstr "Odebrat z oblíbených"
-
-#: src/contacts-window.vala:371
-msgid "Mark as favorite"
-msgstr "Označit jako oblíbený"
-
-#: src/contacts-window.vala:385
-msgid "New Contact"
-msgstr "Nový kontakt"
-
-#: src/contacts-window.vala:496
-#, c-format
-msgid "%d contacts linked"
-msgid_plural "%d contacts linked"
-msgstr[0] "%d kontakt propojen"
-msgstr[1] "%d kontakty propojeny"
-msgstr[2] "%d kontaktů propojeno"
-
-#: src/contacts-window.vala:519
-#, c-format
-msgid "Deleted contact %s"
-msgstr "Smazán kontakt %s"
-
-#: src/contacts-window.vala:521
-#, c-format
-msgid "%d contact deleted"
-msgid_plural "%d contacts deleted"
-msgstr[0] "Smazán %d kontakt"
-msgstr[1] "Smazány %d kontakty"
-msgstr[2] "Smazáno %d kontaktů"
-
-#: src/contacts-window.vala:566
-#, c-format
-msgid "%s linked to %s"
-msgstr "%s a %s propojeni"
-
-#: src/contacts-window.vala:568
-#, c-format
-msgid "%s linked to the contact"
-msgstr "%s s kontaktem propojeni"
-
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
 msgstr "Prvotní nastavení hotovo."
@@ -785,6 +787,11 @@ msgstr ""
 msgid "Is the window maximized?"
 msgstr "Je okno maximalizované?"
 
-#: src/org.gnome.Contacts.gschema.xml:33
+#: src/org.gnome.Contacts.gschema.xml:33 src/org.gnome.Contacts.gschema.xml:38
 msgid "Stores if the window is currently maximized."
 msgstr "Uchovává informaci, zda je okno momentálně maximalizované."
+
+#: src/org.gnome.Contacts.gschema.xml:37
+msgid "Is the window fullscreen"
+msgstr "Je okno na celé obrazovce?"
+
