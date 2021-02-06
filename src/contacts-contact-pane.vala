@@ -25,7 +25,7 @@ const int PROFILE_SIZE = 128;
  * and a ContactEditor to edit contact information.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
-public class Contacts.ContactPane : Gtk.ScrolledWindow {
+public class Contacts.ContactPane : Gtk.Bin {
 
   private MainWindow main_window;
 
@@ -40,8 +40,14 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
   private Hdy.StatusPage none_selected_page;
 
   [GtkChild]
+  private unowned Gtk.ScrolledWindow contact_sheet_view;
+
+  [GtkChild]
   private Gtk.Container contact_sheet_page;
   private ContactSheet? sheet = null;
+
+  [GtkChild]
+  private unowned Gtk.ScrolledWindow contact_editor_view;
 
   [GtkChild]
   private Gtk.Box contact_editor_page;
@@ -108,7 +114,7 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
     remove_contact_sheet();
     this.sheet = new ContactSheet (this.individual, this.store);
     this.contact_sheet_page.add (this.sheet);
-    this.stack.set_visible_child (this.contact_sheet_page);
+    this.stack.set_visible_child (this.contact_sheet_view);
 
     var matches = this.store.aggregator.get_potential_matches (this.individual, MatchResult.HIGH);
     foreach (var i in matches.keys) {
@@ -154,7 +160,7 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
     this.on_edit_mode = true;
 
     create_contact_editor ();
-    this.stack.set_visible_child (this.contact_editor_page);
+    this.stack.set_visible_child (this.contact_editor_view);
   }
 
   public void stop_editing (bool cancel = false) {
@@ -169,7 +175,7 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
       if (fake_individual != null && fake_individual.real_individual != null) {
         // Reset individual on to the real one
         this.individual = fake_individual.real_individual;
-        this.stack.set_visible_child (this.contact_sheet_page);
+        this.stack.set_visible_child (this.contact_sheet_view);
       } else {
         this.stack.set_visible_child (this.none_selected_page);
       }
