@@ -162,6 +162,7 @@ public class Contacts.EditorPersona : Gtk.Box {
     }
 
     Gtk.Label addressbook = new Gtk.Label (title);
+    addressbook.get_style_context ().add_class ("heading");
     this.header.pack_start (addressbook, false, false, 0);
   }
 }
