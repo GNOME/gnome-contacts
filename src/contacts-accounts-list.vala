@@ -30,8 +30,6 @@ public class Contacts.AccountsList : Gtk.ListBox {
   public AccountsList (Store contacts_store) {
     this.contacts_store = contacts_store;
     this.selected_store = null;
-
-    this.set_header_func (add_separator);
   }
 
   public override void row_activated (Gtk.ListBoxRow row) {
