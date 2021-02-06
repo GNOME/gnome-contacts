@@ -37,7 +37,7 @@ public class Contacts.ContactPane : Gtk.ScrolledWindow {
   private Gtk.Stack stack;
 
   [GtkChild]
-  private Gtk.Grid none_selected_page;
+  private Hdy.StatusPage none_selected_page;
 
   [GtkChild]
   private Gtk.Container contact_sheet_page;

@@ -20,38 +20,12 @@
             <property name="visible">True</property>
             <property name="visible-child">none_selected_page</property>
             <child>
-              <object class="GtkGrid" id="none_selected_page">
+              <object class="HdyStatusPage" id="none_selected_page">
                 <property name="visible">True</property>
-                <property name="width_request">300</property>
-                <property name="orientation">vertical</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="row_spacing">6</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="icon_name">avatar-default-symbolic</property>
-                    <property name="vexpand">True</property>
-                    <property name="valign">end</property>
-                    <property name="pixel_size">144</property>
-                    <style>
-                      <class name="contacts-watermark"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Select a contact</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="valign">start</property>
-                    <property name="margin_bottom">70</property>
-                    <style>
-                      <class name="contacts-watermark"/>
-                    </style>
-                  </object>
-                </child>
+                <property name="icon_name">avatar-default-symbolic</property>
+                <property name="title" translatable="yes">Select a Contact</property>
               </object>
               <packing>
                 <property name="name">none-selected-page</property>
