@@ -47,24 +47,9 @@ public class Contacts.EditorPersona : Gtk.Box {
     this.header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
     add (this.header);
 
-    var frame = new Gtk.Frame (null);
     this.content = new Gtk.ListBox ();
-    this.content.set_header_func (list_box_update_header_func);
-    frame.add (this.content);
-    add (frame);
-  }
-
-  private void list_box_update_header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
-    if (before == null) {
-      row.set_header (null);
-      return;
-    }
-
-    if (row.get_header () == null) {
-      var header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-      header.show ();
-      row.set_header (header);
-    }
+    this.content.get_style_context ().add_class ("content");
+    add (this.content);
   }
 
   public EditorPersona (Persona persona, IndividualAggregator aggregator) {
