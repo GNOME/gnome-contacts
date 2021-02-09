@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-01-25 14:41+0000\n"
-"PO-Revision-Date: 2021-01-26 11:54+0100\n"
+"POT-Creation-Date: 2021-02-06 12:44+0000\n"
+"PO-Revision-Date: 2021-02-09 16:17+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -97,11 +97,24 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Salir"
 
-#: data/ui/contacts-avatar-selector.ui:54
+#: data/ui/contacts-avatar-selector.ui:19
+#: data/ui/contacts-crop-cheese-dialog.ui:27
+#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: src/contacts-editor-property.vala:83
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: data/ui/contacts-avatar-selector.ui:28
+#: data/ui/contacts-crop-cheese-dialog.ui:64
+#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+msgid "Done"
+msgstr "Hecho"
+
+#: data/ui/contacts-avatar-selector.ui:102
 msgid "Take a Picture…"
 msgstr "Hacer una foto…"
 
-#: data/ui/contacts-avatar-selector.ui:68
+#: data/ui/contacts-avatar-selector.ui:111
 msgid "Select a File…"
 msgstr "Seleccionar archivo…"
 
@@ -109,20 +122,9 @@ msgstr "Seleccionar archivo…"
 msgid "Select a contact"
 msgstr "Seleccionar un contacto"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
-#: src/contacts-editor-property.vala:83
-msgid "Cancel"
-msgstr "Cancelar"
-
 #: data/ui/contacts-crop-cheese-dialog.ui:49
 msgid "Take Another…"
 msgstr "Hacer otra…"
-
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
-msgid "Done"
-msgstr "Hecho"
 
 #: data/ui/contacts-editor-menu.ui:13
 msgid "Change Addressbook"
@@ -154,11 +156,13 @@ msgid "Remove"
 msgstr "Quitar"
 
 #: data/ui/contacts-main-window.ui:15
-msgid "List contacts by:"
+#| msgid "List contacts by:"
+msgid "List Contacts By:"
 msgstr "Listar contactos por:"
 
 #: data/ui/contacts-main-window.ui:28
-msgid "First name"
+#| msgid "First name"
+msgid "First Name"
 msgstr "Nombre"
 
 #: data/ui/contacts-main-window.ui:35
@@ -218,7 +222,7 @@ msgstr "Cancelar selección"
 msgid "Back"
 msgstr "Atrás"
 
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:195
+#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -335,16 +339,16 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "No se encontró el contacto con la dirección de correo-e %s"
 
-#: src/contacts-avatar-selector.vala:107 src/contacts-avatar-selector.vala:113
-#: src/contacts-avatar-selector.vala:232
+#: src/contacts-avatar-selector.vala:158 src/contacts-avatar-selector.vala:164
+#: src/contacts-avatar-selector.vala:255
 msgid "Failed to set avatar."
 msgstr "Falló al establecer el avatar"
 
-#: src/contacts-avatar-selector.vala:192
+#: src/contacts-avatar-selector.vala:215
 msgid "Browse for more pictures"
 msgstr "Examinar para buscar más imágenes"
 
-#: src/contacts-avatar-selector.vala:195
+#: src/contacts-avatar-selector.vala:218
 msgid "_Open"
 msgstr "_Abrir"
 
@@ -787,7 +791,6 @@ msgid "Stores if the window is currently maximized."
 msgstr "Guarda si la ventana está maximizada actualmente."
 
 #: src/org.gnome.Contacts.gschema.xml:37
-#| msgid "Is the window maximized?"
 msgid "Is the window fullscreen"
 msgstr "¿Está la ventana en modo a pantalla completa?"
 
