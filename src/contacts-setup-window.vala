@@ -18,7 +18,7 @@
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-setup-window.ui")]
-public class Contacts.SetupWindow : Gtk.ApplicationWindow {
+public class Contacts.SetupWindow : Hdy.ApplicationWindow {
   [GtkChild]
   private Hdy.Clamp content;
 

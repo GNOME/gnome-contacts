@@ -1,103 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.22 -->
-  <template class="ContactsSetupWindow" parent="GtkApplicationWindow">
+  <template class="ContactsSetupWindow" parent="HdyApplicationWindow">
     <property name="default_width">800</property>
     <property name="default_height">600</property>
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="title" translatable="yes">Contacts Setup</property>
-        <property name="show_close_button">False</property>
-        <style>
-          <class name="titlebar"/>
-        </style>
-        <child>
-          <object class="GtkButton" id="setup_quit_button">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="label" translatable="yes">_Quit</property>
-            <property name="use-underline">True</property>
-            <property name="action_name">app.quit</property>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="setup_quit_button_atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes">Cancel setup and quit</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="pack_type">start</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="setup_done_button">
-            <property name="visible">True</property>
-            <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="label" translatable="yes">_Done</property>
-            <property name="use-underline">True</property>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="setup_done_button_atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes">Setup complete</property>
-              </object>
-            </child>
-            <style>
-              <class name="text-button"/>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-          </packing>
-        </child>
-      </object>
-    </child>
     <child>
-      <object class="GtkScrolledWindow">
+      <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="hscrollbar_policy">never</property>
-        <property name="propagate_natural_height">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="HdyClamp">
+          <object class="HdyHeaderBar">
             <property name="visible">True</property>
-            <property name="margin_top">32</property>
-            <property name="margin_bottom">32</property>
-            <property name="margin_start">12</property>
-            <property name="margin_end">12</property>
+            <property name="can_focus">False</property>
+            <property name="title" translatable="yes">Contacts Setup</property>
+            <property name="show_close_button">False</property>
+            <style>
+              <class name="titlebar"/>
+            </style>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkButton" id="setup_quit_button">
                 <property name="visible">True</property>
-                <property name="valign">center</property>
-                <property name="halign">center</property>
-                <property name="border_width">12</property>
-                <property name="row_spacing">24</property>
-                <property name="orientation">vertical</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">_Quit</property>
+                <property name="use-underline">True</property>
+                <property name="action_name">app.quit</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="setup_quit_button_atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes">Cancel setup and quit</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">start</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="setup_done_button">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="label" translatable="yes">_Done</property>
+                <property name="use-underline">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="setup_done_button_atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes">Setup complete</property>
+                  </object>
+                </child>
+                <style>
+                  <class name="text-button"/>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="propagate_natural_height">True</property>
+            <child>
+              <object class="HdyClamp">
+                <property name="visible">True</property>
+                <property name="margin_top">32</property>
+                <property name="margin_bottom">32</property>
+                <property name="margin_start">12</property>
+                <property name="margin_end">12</property>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkGrid">
                     <property name="visible">True</property>
+                    <property name="valign">center</property>
                     <property name="halign">center</property>
-                    <property name="ellipsize">end</property>
-                    <property name="label" translatable="yes">Welcome</property>
-                    <attributes>
-                      <attribute name="scale" value="3.5"/>
-                    </attributes>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="halign">start</property>
-                    <property name="wrap">True</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="HdyClamp" id="content">
-                    <property name="visible">True</property>
-                    <property name="maximum_size">400</property>
+                    <property name="border_width">12</property>
+                    <property name="row_spacing">24</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="halign">center</property>
+                        <property name="ellipsize">end</property>
+                        <property name="label" translatable="yes">Welcome</property>
+                        <style>
+                          <class name="large-title"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="halign">start</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="HdyClamp" id="content">
+                        <property name="visible">True</property>
+                        <property name="maximum_size">400</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
