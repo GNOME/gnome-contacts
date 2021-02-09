@@ -366,6 +366,8 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
       this.favorite_button.tooltip_text = (i.is_favourite)? _("Unmark as favorite")
                                                                      : _("Mark as favorite");
       this.right_header.title = i.display_name;
+    } else {
+      this.right_header.title = "";
     }
   }
 
