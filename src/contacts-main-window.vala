@@ -425,7 +425,13 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
   }
 
   private void connect_button_signals () {
-    this.select_cancel_button.clicked.connect (() => { this.state = UiState.NORMAL; });
+    this.select_cancel_button.clicked.connect (() => {
+        if (this.contact_pane.individual != null) {
+            this.state = UiState.SHOWING;
+        } else {
+            this.state = UiState.NORMAL;
+        }
+    });
     this.done_button.clicked.connect (() => stop_editing ());
     this.cancel_button.clicked.connect (() => stop_editing (true));
 
