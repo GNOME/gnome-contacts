@@ -81,7 +81,6 @@ cheese_flash_init (CheeseFlash *self)
     CheeseFlashPrivate *priv = cheese_flash_get_instance_private (self);
   cairo_region_t *input_region;
   GtkWindow *window = GTK_WINDOW (self);
-  const GdkRGBA white = { 1.0, 1.0, 1.0, 1.0 };
 
   priv->flash_timeout_tag = 0;
   priv->fade_timeout_tag  = 0;
