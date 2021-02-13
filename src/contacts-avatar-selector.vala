@@ -71,11 +71,11 @@ public class Contacts.AvatarSelector : Gtk.Window {
   private Individual individual;
 
   [GtkChild]
-  private Gtk.FlowBox thumbnail_grid;
+  private unowned Gtk.FlowBox thumbnail_grid;
 
 #if HAVE_CHEESE
   [GtkChild]
-  private Gtk.Button cheese_button;
+  private unowned Gtk.Button cheese_button;
   private int num_cameras;
   private Cheese.CameraDeviceMonitor camera_monitor;
 #endif

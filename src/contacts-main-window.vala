@@ -28,44 +28,44 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
   };
 
   [GtkChild]
-  private Hdy.Leaflet header;
+  private unowned Hdy.Leaflet header;
   [GtkChild]
-  private Hdy.Leaflet content_box;
+  private unowned Hdy.Leaflet content_box;
   [GtkChild]
-  private Gtk.Revealer back_revealer;
+  private unowned Gtk.Revealer back_revealer;
   [GtkChild]
-  private Gtk.Stack list_pane_stack;
+  private unowned Gtk.Stack list_pane_stack;
   [GtkChild]
-  private Gtk.Container contact_pane_container;
+  private unowned Gtk.Container contact_pane_container;
   [GtkChild]
-  private Hdy.HeaderBar left_header;
+  private unowned Hdy.HeaderBar left_header;
   [GtkChild]
-  private Gtk.Separator header_separator;
+  private unowned Gtk.Separator header_separator;
   [GtkChild]
-  private Hdy.HeaderBar right_header;
+  private unowned Hdy.HeaderBar right_header;
   [GtkChild]
-  private Gtk.Overlay notification_overlay;
+  private unowned Gtk.Overlay notification_overlay;
   [GtkChild]
-  private Gtk.Button select_cancel_button;
+  private unowned Gtk.Button select_cancel_button;
   [GtkChild]
-  private Gtk.MenuButton hamburger_menu_button;
+  private unowned Gtk.MenuButton hamburger_menu_button;
   [GtkChild]
-  private Gtk.ModelButton sort_on_firstname_button;
+  private unowned Gtk.ModelButton sort_on_firstname_button;
   [GtkChild]
-  private Gtk.ModelButton sort_on_surname_button;
+  private unowned Gtk.ModelButton sort_on_surname_button;
   [GtkChild]
-  private Gtk.MenuButton contact_menu_button;
+  private unowned Gtk.MenuButton contact_menu_button;
   [GtkChild]
-  private Gtk.ToggleButton favorite_button;
+  private unowned Gtk.ToggleButton favorite_button;
   private bool ignore_favorite_button_toggled;
   [GtkChild]
-  private Gtk.Button unlink_button;
+  private unowned Gtk.Button unlink_button;
   [GtkChild]
-  private Gtk.Button add_button;
+  private unowned Gtk.Button add_button;
   [GtkChild]
-  private Gtk.Button cancel_button;
+  private unowned Gtk.Button cancel_button;
   [GtkChild]
-  private Gtk.Button done_button;
+  private unowned Gtk.Button done_button;
 
   // The 2 panes the window consists of
   private ListPane list_pane;

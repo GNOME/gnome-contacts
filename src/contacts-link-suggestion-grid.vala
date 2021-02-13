@@ -27,13 +27,13 @@ public class Contacts.LinkSuggestionGrid : Gtk.Grid {
   private const int AVATAR_SIZE = 54;
 
   [GtkChild]
-  private Gtk.Label description_label;
+  private unowned Gtk.Label description_label;
   [GtkChild]
-  private Gtk.Label extra_info_label;
+  private unowned Gtk.Label extra_info_label;
   [GtkChild]
-  private Gtk.Button accept_button;
+  private unowned Gtk.Button accept_button;
   [GtkChild]
-  private Gtk.Button reject_button;
+  private unowned Gtk.Button reject_button;
 
   public signal void suggestion_accepted ();
   public signal void suggestion_rejected ();

@@ -22,7 +22,7 @@ public class Contacts.LinkedPersonasDialog : Gtk.Dialog {
   private const int AVATAR_SIZE = 54;
 
   [GtkChild]
-  private Gtk.ListBox linked_accounts_view;
+  private unowned Gtk.ListBox linked_accounts_view;
 
   private Individual individual;
 

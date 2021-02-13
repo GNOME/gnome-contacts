@@ -34,23 +34,23 @@ public class Contacts.ContactPane : Gtk.Bin {
   public Individual? individual { get; set; default = null; }
 
   [GtkChild]
-  private Gtk.Stack stack;
+  private unowned Gtk.Stack stack;
 
   [GtkChild]
-  private Hdy.StatusPage none_selected_page;
+  private unowned Hdy.StatusPage none_selected_page;
 
   [GtkChild]
   private unowned Gtk.ScrolledWindow contact_sheet_view;
 
   [GtkChild]
-  private Gtk.Container contact_sheet_page;
+  private unowned Gtk.Container contact_sheet_page;
   private ContactSheet? sheet = null;
 
   [GtkChild]
   private unowned Gtk.ScrolledWindow contact_editor_view;
 
   [GtkChild]
-  private Gtk.Box contact_editor_page;
+  private unowned Gtk.Box contact_editor_page;
   private ContactEditor? editor = null;
 
   public bool on_edit_mode = false;

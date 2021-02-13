@@ -21,10 +21,10 @@ public class Contacts.InAppNotification : Gtk.Revealer {
   private const uint DEFAULT_KEEPALIVE = 5;
 
   [GtkChild]
-  private Gtk.Grid grid;
+  private unowned Gtk.Grid grid;
 
   [GtkChild]
-  private Gtk.Label label;
+  private unowned Gtk.Label label;
   public Gtk.Label message_label {
     get { return this.label; }
   }

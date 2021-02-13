@@ -18,9 +18,9 @@
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-crop-cheese-dialog.ui")]
 public class Contacts.CropCheeseDialog : Gtk.Window {
   [GtkChild]
-  private Gtk.Stack stack;
+  private unowned Gtk.Stack stack;
   [GtkChild]
-  private Gtk.Button take_another_button;
+  private unowned Gtk.Button take_another_button;
 
   private Cc.CropArea crop_area;
   private const string STACK_NAME_CROP = "crop";

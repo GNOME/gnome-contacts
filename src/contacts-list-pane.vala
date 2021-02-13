@@ -22,21 +22,21 @@ public class Contacts.ListPane : Gtk.Frame {
   private Store store;
 
   [GtkChild]
-  private Gtk.ScrolledWindow contacts_list_container;
+  private unowned Gtk.ScrolledWindow contacts_list_container;
   private ContactList contacts_list;
 
   [GtkChild]
-  public Gtk.SearchEntry filter_entry;
+  public unowned Gtk.SearchEntry filter_entry;
   private SimpleQuery filter_query;
 
   [GtkChild]
-  private Gtk.Button link_button;
+  private unowned Gtk.Button link_button;
 
   [GtkChild]
-  private Gtk.Button delete_button;
+  private unowned Gtk.Button delete_button;
 
   [GtkChild]
-  private Gtk.ActionBar actions_bar;
+  private unowned Gtk.ActionBar actions_bar;
 
   public UiState state { get; set; }
 
