@@ -90,6 +90,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     value_label.set_ellipsize (Pango.EllipsizeMode.END);
     value_label.wrap_mode = Pango.WrapMode.CHAR;
     value_label.set_selectable (true);
+    value_label.set_can_focus (false);
 
     if (btn1 != null || btn2 !=null) {
       var value_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
@@ -155,6 +156,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     name_label.ellipsize = Pango.EllipsizeMode.END;
     name_label.xalign = 0f;
     name_label.selectable = true;
+    name_label.set_can_focus (false);
     this.attach (name_label,  1, 0, 1, 3);
     update_name_label (name_label);
     this.individual.notify["display-name"].connect ((obj, spec) => {
