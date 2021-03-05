@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-06-05 13:39+0000\n"
-"PO-Revision-Date: 2020-07-06 00:15+0300\n"
-"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
+"POT-Creation-Date: 2021-02-13 09:52+0000\n"
+"PO-Revision-Date: 2021-03-05 23:40+0200\n"
+"Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
 "Language-Team: Greek, Modern (1453-) <gnome-el-list@gnome.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -23,8 +23,8 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-window.ui:144
-#: data/ui/contacts-window.ui:162 src/contacts-window.vala:240
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
 msgid "Contacts"
 msgstr "Επαφές"
 
@@ -54,7 +54,7 @@ msgstr ""
 "Η εφαρμογή επαφές ενσωματώνεται με διαδικτυακά βιβλία διευθύνσεων και "
 "αυτόματα συνδέονται οι επαφές από διαφορετικές διαδικτυακές πηγές."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:433
+#: data/org.gnome.Contacts.appdata.xml.in.in:482
 msgid "The GNOME Project"
 msgstr "Το έργο GNOME"
 
@@ -98,32 +98,34 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: data/ui/contacts-avatar-selector.ui:54
+#: data/ui/contacts-avatar-selector.ui:19
+#: data/ui/contacts-crop-cheese-dialog.ui:27
+#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: src/contacts-editor-property.vala:83
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: data/ui/contacts-avatar-selector.ui:28
+#: data/ui/contacts-crop-cheese-dialog.ui:64
+#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+msgid "Done"
+msgstr "Ολοκληρώθηκε"
+
+#: data/ui/contacts-avatar-selector.ui:102
 msgid "Take a Picture…"
 msgstr "Λήψη φωτογραφίας…"
 
-#: data/ui/contacts-avatar-selector.ui:68
+#: data/ui/contacts-avatar-selector.ui:111
 msgid "Select a File…"
 msgstr "Επιλογή αρχείου…"
 
-#: data/ui/contacts-contact-pane.ui:47
-msgid "Select a contact"
-msgstr "Επιλέξτε μια επαφή"
-
-#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
-#: data/ui/contacts-window.ui:278 src/contacts-addressbook-dialog.vala:32
-#: src/contacts-editor-property.vala:86
-msgid "Cancel"
-msgstr "Ακύρωση"
+#: data/ui/contacts-contact-pane.ui:18
+msgid "Select a Contact"
+msgstr "Επιλογή επαφής"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:49
 msgid "Take Another…"
 msgstr "Λήψη άλλης…"
-
-#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
-#: src/contacts-window.vala:247
-msgid "Done"
-msgstr "Ολοκληρώθηκε"
 
 #: data/ui/contacts-editor-menu.ui:13
 msgid "Change Addressbook"
@@ -154,31 +156,104 @@ msgstr "Σύνδεση"
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: data/ui/contacts-setup-window.ui:12
+#: data/ui/contacts-main-window.ui:15
+msgid "List Contacts By:"
+msgstr "Λίστα επαφών κατά:"
+
+#: data/ui/contacts-main-window.ui:28
+msgid "First Name"
+msgstr "Όνομα"
+
+#: data/ui/contacts-main-window.ui:35
+msgid "Surname"
+msgstr "Επώνυμο"
+
+#: data/ui/contacts-main-window.ui:49
+msgid "Change Address Book…"
+msgstr "Αλλαγή βιβλίου διευθύνσεων…"
+
+#: data/ui/contacts-main-window.ui:57
+msgid "Online Accounts <sup>↗</sup>"
+msgstr "Διαδικτυακοί λογαριασμοί <sup>↗</sup>"
+
+#: data/ui/contacts-main-window.ui:73
+msgid "Keyboard Shortcuts"
+msgstr "Συντομεύσεις πληκτρολογίου"
+
+#: data/ui/contacts-main-window.ui:81
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: data/ui/contacts-main-window.ui:89
+msgid "About Contacts"
+msgstr "Περί του Επαφές"
+
+#: data/ui/contacts-main-window.ui:107
+msgid "Share"
+msgstr "Διαμοιρασμός"
+
+#: data/ui/contacts-main-window.ui:114
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: data/ui/contacts-main-window.ui:121
+#: src/contacts-linked-personas-dialog.vala:73
+msgid "Unlink"
+msgstr "Αποσύνδεση"
+
+#: data/ui/contacts-main-window.ui:133
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: data/ui/contacts-main-window.ui:171
+msgid "Create new contact"
+msgstr "Δημιουργία νέας επαφής"
+
+#: data/ui/contacts-main-window.ui:175
+msgid "Add contact"
+msgstr "Προσθήκη επαφής"
+
+#: data/ui/contacts-main-window.ui:216
+msgid "Cancel selection"
+msgstr "Ακύρωση επιλογής"
+
+#: data/ui/contacts-main-window.ui:260
+msgid "Back"
+msgstr "Πίσω"
+
+#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+msgid "_Cancel"
+msgstr "_Άκυρο"
+
+#: data/ui/contacts-main-window.ui:396
+msgid "Loading"
+msgstr "Γίνεται φόρτωση"
+
+#: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
 msgstr "Ρύθμιση επαφών"
 
-#: data/ui/contacts-setup-window.ui:21
+#: data/ui/contacts-setup-window.ui:24
 msgid "_Quit"
 msgstr "Έ_ξοδος"
 
-#: data/ui/contacts-setup-window.ui:26
+#: data/ui/contacts-setup-window.ui:29
 msgid "Cancel setup and quit"
 msgstr "Ακύρωση εγκατάστασης και έξοδος"
 
-#: data/ui/contacts-setup-window.ui:40
+#: data/ui/contacts-setup-window.ui:43
 msgid "_Done"
 msgstr "_Ολοκληρώθηκε"
 
-#: data/ui/contacts-setup-window.ui:44
+#: data/ui/contacts-setup-window.ui:47
 msgid "Setup complete"
 msgstr "Ολοκληρώθηκε η εγκατάσταση"
 
-#: data/ui/contacts-setup-window.ui:85
+#: data/ui/contacts-setup-window.ui:86
 msgid "Welcome"
 msgstr "Καλώς ήλθατε"
 
-#: data/ui/contacts-setup-window.ui:97
+#: data/ui/contacts-setup-window.ui:98
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -188,80 +263,12 @@ msgstr ""
 "διατηρείτε τις επαφές σας σε έναν ηλεκτρονικό λογαριασμό, μπορείτε να τις "
 "προσθέσετε χρησιμοποιώντας τις ρυθμίσεις διαδικτυακών λογαριασμών."
 
-#: data/ui/contacts-window.ui:15
-msgid "List contacts by:"
-msgstr "Λίστα επαφών κατά:"
-
-#: data/ui/contacts-window.ui:28
-msgid "First name"
-msgstr "Όνομα"
-
-#: data/ui/contacts-window.ui:35
-msgid "Surname"
-msgstr "Επώνυμο"
-
-#: data/ui/contacts-window.ui:49
-msgid "Change Address Book…"
-msgstr "Αλλαγή βιβλίου διευθύνσεων…"
-
-#: data/ui/contacts-window.ui:57
-msgid "Online Accounts <sup>↗</sup>"
-msgstr "Διαδικτυακοί λογαριασμοί <sup>↗</sup>"
-
-#: data/ui/contacts-window.ui:73
-msgid "Keyboard Shortcuts"
-msgstr "Συντομεύσεις πληκτρολογίου"
-
-#: data/ui/contacts-window.ui:81
-msgid "Help"
-msgstr "Βοήθεια"
-
-#: data/ui/contacts-window.ui:89
-msgid "About Contacts"
-msgstr "Περί του Επαφές"
-
-#: data/ui/contacts-window.ui:107
-msgid "Share"
-msgstr "Διαμοιρασμός"
-
-#: data/ui/contacts-window.ui:114
-msgid "Edit"
-msgstr "Επεξεργασία"
-
-#: data/ui/contacts-window.ui:121 src/contacts-linked-personas-dialog.vala:74
-msgid "Unlink"
-msgstr "Αποσύνδεση"
-
-#: data/ui/contacts-window.ui:133
-msgid "Delete"
-msgstr "Διαγραφή"
-
-#: data/ui/contacts-window.ui:170
-msgid "Create new contact"
-msgstr "Δημιουργία νέας επαφής"
-
-#: data/ui/contacts-window.ui:174
-msgid "Add contact"
-msgstr "Προσθήκη επαφής"
-
-#: data/ui/contacts-window.ui:215
-msgid "Cancel selection"
-msgstr "Ακύρωση επιλογής"
-
-#: data/ui/contacts-window.ui:259
-msgid "Back"
-msgstr "Πίσω"
-
-#: data/ui/contacts-window.ui:397
-msgid "Loading"
-msgstr "Γίνεται φόρτωση"
-
 #: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
 #: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "Τοπικό βιβλίο διευθύνσεων"
 
-#: src/contacts-addressbook-dialog.vala:27 src/contacts-editor-property.vala:84
+#: src/contacts-addressbook-dialog.vala:27
 msgid "Change Address Book"
 msgstr "Αλλαγή βιβλίου διευθύνσεων"
 
@@ -269,7 +276,7 @@ msgstr "Αλλαγή βιβλίου διευθύνσεων"
 msgid "Change"
 msgstr "Αλλαγή"
 
-#: src/contacts-addressbook-dialog.vala:61
+#: src/contacts-addressbook-dialog.vala:60
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -294,16 +301,16 @@ msgstr "Εμφάνιση επαφών με το δεδομένο φίλτρο"
 msgid "Show the current version of Contacts"
 msgstr "Εμφάνιση της τρέχουσας έκδοσης του Επαφές"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:112
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Δε βρέθηκε επαφή με αναγνωριστικό %s"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:185
+#: src/contacts-app.vala:113 src/contacts-app.vala:193
 msgid "Contact not found"
 msgstr "Δε βρέθηκε η επαφή"
 
-#: src/contacts-app.vala:164
+#: src/contacts-app.vala:172
 msgid "translator-credits"
 msgstr ""
 "Ελληνική μεταφραστική ομάδα GNOME\n"
@@ -315,19 +322,19 @@ msgstr ""
 "Για περισσότερες πληροφορίες, επισκεφθείτε τη σελίδα\n"
 "http://gnome.gr/"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:173
 msgid "GNOME Contacts"
 msgstr "Επαφές του GNOME"
 
-#: src/contacts-app.vala:166
+#: src/contacts-app.vala:174
 msgid "About GNOME Contacts"
 msgstr "Περί Επαφές του GNOME"
 
-#: src/contacts-app.vala:167
+#: src/contacts-app.vala:175
 msgid "Contact Management Application"
 msgstr "Εφαρμογή διαχείρισης επαφών"
 
-#: src/contacts-app.vala:168
+#: src/contacts-app.vala:176
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -335,27 +342,23 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Οι προγραμματιστές του Επαφές"
 
-#: src/contacts-app.vala:184
+#: src/contacts-app.vala:192
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Δε βρέθηκε επαφή με διεύθυνση ηλεκτρονικού ταχυδρομείου %s"
 
-#: src/contacts-avatar-selector.vala:109 src/contacts-avatar-selector.vala:115
-#: src/contacts-avatar-selector.vala:235
+#: src/contacts-avatar-selector.vala:158 src/contacts-avatar-selector.vala:164
+#: src/contacts-avatar-selector.vala:255
 msgid "Failed to set avatar."
 msgstr "Αποτυχία ορισμού προσωπικής εικόνας."
 
-#: src/contacts-avatar-selector.vala:195
+#: src/contacts-avatar-selector.vala:215
 msgid "Browse for more pictures"
 msgstr "Αναζήτηση για περισσότερες φωτογραφίες"
 
-#: src/contacts-avatar-selector.vala:198
+#: src/contacts-avatar-selector.vala:218
 msgid "_Open"
 msgstr "Ά_νοιγμα"
-
-#: src/contacts-avatar-selector.vala:198
-msgid "_Cancel"
-msgstr "_Άκυρο"
 
 #: src/contacts-contact-editor.vala:50
 msgid "Change avatar"
@@ -365,125 +368,129 @@ msgstr "Αλλαγή προσωπικής εικόνας"
 msgid "Add name"
 msgstr "Προσθήκη ονόματος"
 
-#: src/contacts-contact-list.vala:178
+#: src/contacts-contact-list.vala:194
 msgid "Favorites"
 msgstr "Αγαπημένα"
 
-#: src/contacts-contact-list.vala:180 src/contacts-contact-list.vala:186
+#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
 msgid "All Contacts"
 msgstr "Όλες οι επαφές"
 
-#: src/contacts-contact-pane.vala:232
+#: src/contacts-contact-pane.vala:236
 msgid "No primary addressbook configured"
 msgstr "Δεν έχει ρυθμιστεί το αρχικό βιβλίο διευθύνσεων"
 
-#: src/contacts-contact-pane.vala:242
+#: src/contacts-contact-pane.vala:246
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Αδυναμία δημιουργίας νέων επαφών: %s"
 
-#: src/contacts-contact-pane.vala:254
+#: src/contacts-contact-pane.vala:258
 msgid "Unable to find newly created contact"
 msgstr "Αδυναμία εύρεσης επαφών που δημιουργήθηκαν πρόσφατα"
 
-#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:488
+#: src/contacts-contact-sheet.vala:286 src/contacts-editor-property.vala:491
 msgid "Website"
 msgstr "Ιστότοπος"
 
-#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:498
+#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:501
 msgid "Nickname"
 msgstr "Ψευδώνυμο"
 
-#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:563
+#: src/contacts-contact-sheet.vala:309 src/contacts-editor-property.vala:566
 msgid "Birthday"
 msgstr "Γενέθλια"
 
-#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:526
+#: src/contacts-contact-sheet.vala:316 src/contacts-editor-property.vala:529
 msgid "Note"
 msgstr "Σημείωση"
 
-#: src/contacts-crop-cheese-dialog.vala:91
+#: src/contacts-crop-cheese-dialog.vala:88
 msgid "Unable to take photo."
 msgstr "Αδυναμία λήψης φωτογραφίας."
 
-#: src/contacts-editor-property.vala:66
+#: src/contacts-editor-property.vala:63
 msgid "Day"
 msgstr "Ημέρα"
 
-#: src/contacts-editor-property.vala:70
+#: src/contacts-editor-property.vala:67
 msgid "Month"
 msgstr "Μήνας"
 
-#: src/contacts-editor-property.vala:74
+#: src/contacts-editor-property.vala:71
 msgid "Year"
 msgstr "Έτος"
 
-#: src/contacts-editor-property.vala:85
+#: src/contacts-editor-property.vala:81
+msgid "Change Birthday"
+msgstr "Αλλαγή γενεθλίων"
+
+#: src/contacts-editor-property.vala:82
 msgid "Set"
 msgstr "Καθορισμός"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Street"
 msgstr "Οδός"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Extension"
 msgstr "Επέκταση"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "City"
 msgstr "Πόλη"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "State/Province"
 msgstr "Επαρχία"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Zip/Postal Code"
 msgstr "Ταχυδρομικός κώδικας"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "PO box"
 msgstr "Ταχυδρομική θυρίδα"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Country"
 msgstr "Χώρα"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:587
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
 msgid "Delete field"
 msgstr "Διαγραφή πεδίου"
 
-#: src/contacts-editor-property.vala:451
+#: src/contacts-editor-property.vala:452
 msgid "Email address"
 msgstr "Ηλεκτρονική διεύθυνση"
 
-#: src/contacts-editor-property.vala:452
+#: src/contacts-editor-property.vala:453
 msgid "Add email"
 msgstr "Προσθήκη ηλ. αλληλογραφίας"
 
-#: src/contacts-editor-property.vala:469
+#: src/contacts-editor-property.vala:471
 msgid "Phone number"
 msgstr "Αριθμός τηλεφώνου"
 
-#: src/contacts-editor-property.vala:470
+#: src/contacts-editor-property.vala:472
 msgid "Add number"
 msgstr "Αριθμός νούμερου"
 
-#: src/contacts-editor-property.vala:489
+#: src/contacts-editor-property.vala:492
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:565 src/contacts-editor-property.vala:596
+#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
 msgid "Set Birthday"
 msgstr "Ορισμός γενεθλίων"
 
-#: src/contacts-editor-property.vala:614
+#: src/contacts-editor-property.vala:617
 msgid "Address"
 msgstr "Διεύθυνση"
 
 #: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
-#: src/contacts-utils.vala:497
+#: src/contacts-utils.vala:475
 msgid "Google"
 msgstr "Google"
 
@@ -491,255 +498,251 @@ msgstr "Google"
 msgid "Local Contact"
 msgstr "Τοπική επαφή"
 
-#: src/contacts-im-service.vala:32
+#: src/contacts-im-service.vala:30
 msgid "AOL Instant Messenger"
 msgstr "Αποστολέας άμεσων μηνυμάτων AOL"
 
-#: src/contacts-im-service.vala:33
+#: src/contacts-im-service.vala:31
 msgid "Facebook"
 msgstr "Facebook"
 
-#: src/contacts-im-service.vala:34
+#: src/contacts-im-service.vala:32
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: src/contacts-im-service.vala:35
+#: src/contacts-im-service.vala:33
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: src/contacts-im-service.vala:36
+#: src/contacts-im-service.vala:34
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: src/contacts-im-service.vala:37
+#: src/contacts-im-service.vala:35
 msgid "ICQ"
 msgstr "ICQ"
 
-#: src/contacts-im-service.vala:38
+#: src/contacts-im-service.vala:36
 msgid "IRC"
 msgstr "IRC"
 
-#: src/contacts-im-service.vala:39
+#: src/contacts-im-service.vala:37
 msgid "Jabber"
 msgstr "Jabber"
 
-#: src/contacts-im-service.vala:40
+#: src/contacts-im-service.vala:38
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: src/contacts-im-service.vala:41
+#: src/contacts-im-service.vala:39
 msgid "Local network"
 msgstr "Τοπικό δίκτυο"
 
-#: src/contacts-im-service.vala:42
+#: src/contacts-im-service.vala:40
 msgid "Windows Live Messenger"
 msgstr "Αποστολέας μηνυμάτων Windows Live"
 
-#: src/contacts-im-service.vala:43
+#: src/contacts-im-service.vala:41
 msgid "MySpace"
 msgstr "MySpace"
 
-#: src/contacts-im-service.vala:44
+#: src/contacts-im-service.vala:42
 msgid "MXit"
 msgstr "MXit"
 
-#: src/contacts-im-service.vala:45
+#: src/contacts-im-service.vala:43
 msgid "Napster"
 msgstr "Napster"
 
-#: src/contacts-im-service.vala:46
+#: src/contacts-im-service.vala:44
 msgid "Ovi Chat"
 msgstr "Συνομιλία Ovi"
 
-#: src/contacts-im-service.vala:47
+#: src/contacts-im-service.vala:45
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: src/contacts-im-service.vala:48
+#: src/contacts-im-service.vala:46
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: src/contacts-im-service.vala:49
+#: src/contacts-im-service.vala:47
 msgid "SILC"
 msgstr "SILC"
 
-#: src/contacts-im-service.vala:50
+#: src/contacts-im-service.vala:48
 msgid "sip"
 msgstr "sip"
 
-#: src/contacts-im-service.vala:51
+#: src/contacts-im-service.vala:49
 msgid "Skype"
 msgstr "Skype"
 
-#: src/contacts-im-service.vala:52
+#: src/contacts-im-service.vala:50
 msgid "Telephony"
 msgstr "Τηλεφωνία"
 
-#: src/contacts-im-service.vala:53
+#: src/contacts-im-service.vala:51
 msgid "Trepia"
 msgstr "Trepia"
 
-#: src/contacts-im-service.vala:54 src/contacts-im-service.vala:55
+#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
 msgid "Yahoo! Messenger"
 msgstr "Αποστολέας μηνυμάτων Yahoo!"
 
-#: src/contacts-im-service.vala:56
+#: src/contacts-im-service.vala:54
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-link-suggestion-grid.vala:54
+#: src/contacts-link-suggestion-grid.vala:52
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "Είναι το ίδιο άτομο όπως το %s από το %s;"
 
-#: src/contacts-link-suggestion-grid.vala:57
+#: src/contacts-link-suggestion-grid.vala:55
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Είναι το ίδιο άτομο όπως το %s;"
 
-#: src/contacts-type-descriptor.vala:85 src/contacts-typeset.vala:261
-msgid "Other"
-msgstr "Άλλο"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:210 src/contacts-typeset.vala:230
-#: src/contacts-typeset.vala:256 src/contacts-typeset.vala:258
-msgid "Home"
-msgstr "Οικία"
-
-#: src/contacts-typeset.vala:211 src/contacts-typeset.vala:231
-#: src/contacts-typeset.vala:250 src/contacts-typeset.vala:252
-msgid "Work"
-msgstr "Εργασία"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:229
-msgid "Personal"
-msgstr "Προσωπικό"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:249
-msgid "Assistant"
-msgstr "Βοηθός"
-
-#: src/contacts-typeset.vala:251
-msgid "Work Fax"
-msgstr "Φαξ εργασίας"
-
-#: src/contacts-typeset.vala:253
-msgid "Callback"
-msgstr "Επανάκληση"
-
-#: src/contacts-typeset.vala:254
-msgid "Car"
-msgstr "Αυτοκίνητο"
-
-#: src/contacts-typeset.vala:255
-msgid "Company"
-msgstr "Εταιρία"
-
-#: src/contacts-typeset.vala:257
-msgid "Home Fax"
-msgstr "Φαξ οικίας"
-
-#: src/contacts-typeset.vala:259
-msgid "ISDN"
-msgstr "ISDN"
-
-#: src/contacts-typeset.vala:260
-msgid "Mobile"
-msgstr "Κινητό τηλέφωνο"
-
-#: src/contacts-typeset.vala:262
-msgid "Fax"
-msgstr "Φαξ"
-
-#: src/contacts-typeset.vala:263
-msgid "Pager"
-msgstr "Ειδοποιητής"
-
-#: src/contacts-typeset.vala:264
-msgid "Radio"
-msgstr "Ραδιόφωνο"
-
-#: src/contacts-typeset.vala:265
-msgid "Telex"
-msgstr "Τηλέτυπο"
-
-#. To translators: TTY is Teletypewriter
-#: src/contacts-typeset.vala:267
-msgid "TTY"
-msgstr "TTY"
-
-#: src/contacts-utils.vala:495
-msgid "Google Circles"
-msgstr "Κύκλοι Google"
-
-#: src/contacts-window.vala:210
+#: src/contacts-main-window.vala:198
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d επιλεγμένο"
 msgstr[1] "%d επιλεγμένα"
 
-#: src/contacts-window.vala:247
-msgid "Add"
-msgstr "Προσθήκη"
+#: src/contacts-main-window.vala:234
+msgid "_Add"
+msgstr "_Προσθήκη"
 
-#: src/contacts-window.vala:277
+#: src/contacts-main-window.vala:279
 #, c-format
 msgid "Editing %s"
 msgstr "Επεξεργασία %s"
 
-#: src/contacts-window.vala:304 src/contacts-window.vala:486
-#: src/contacts-window.vala:510 src/contacts-window.vala:556
+#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:496
+#: src/contacts-main-window.vala:520 src/contacts-main-window.vala:566
 msgid "_Undo"
 msgstr "Α_ναίρεση"
 
-#: src/contacts-window.vala:305
+#: src/contacts-main-window.vala:307
 msgid "Contacts unlinked"
 msgstr "Ασύνδετες επαφές"
 
-#: src/contacts-window.vala:364
+#: src/contacts-main-window.vala:366
 msgid "Unmark as favorite"
 msgstr "Αναίρεση σημείωσης ως αγαπημένη"
 
-#: src/contacts-window.vala:365
+#: src/contacts-main-window.vala:367
 msgid "Mark as favorite"
 msgstr "Σημείωση ως αγαπημένη"
 
-#: src/contacts-window.vala:379
+#: src/contacts-main-window.vala:381
 msgid "New Contact"
 msgstr "Νέα επαφή"
 
-#: src/contacts-window.vala:482
+#: src/contacts-main-window.vala:492
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "Συνδέθηκε %d επαφή"
 msgstr[1] "Συνδέθηκαν %d επαφές"
 
-#: src/contacts-window.vala:505
+#: src/contacts-main-window.vala:515
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Διαγραμμένη επαφή %s"
 
-#: src/contacts-window.vala:507
+#: src/contacts-main-window.vala:517
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "Διαγράφηκε %d επαφή"
 msgstr[1] "Διαγράφηκαν %d επαφές"
 
-#: src/contacts-window.vala:552
+#: src/contacts-main-window.vala:562
 #, c-format
 msgid "%s linked to %s"
 msgstr "Το %s συνδέθηκε με %s"
 
-#: src/contacts-window.vala:554
+#: src/contacts-main-window.vala:564
 #, c-format
 msgid "%s linked to the contact"
 msgstr "Το %s συνδέθηκε με την επαφή"
+
+#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:263
+msgid "Other"
+msgstr "Άλλο"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:212 src/contacts-typeset.vala:232
+#: src/contacts-typeset.vala:258 src/contacts-typeset.vala:260
+msgid "Home"
+msgstr "Οικία"
+
+#: src/contacts-typeset.vala:213 src/contacts-typeset.vala:233
+#: src/contacts-typeset.vala:252 src/contacts-typeset.vala:254
+msgid "Work"
+msgstr "Εργασία"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:231
+msgid "Personal"
+msgstr "Προσωπικό"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:251
+msgid "Assistant"
+msgstr "Βοηθός"
+
+#: src/contacts-typeset.vala:253
+msgid "Work Fax"
+msgstr "Φαξ εργασίας"
+
+#: src/contacts-typeset.vala:255
+msgid "Callback"
+msgstr "Επανάκληση"
+
+#: src/contacts-typeset.vala:256
+msgid "Car"
+msgstr "Αυτοκίνητο"
+
+#: src/contacts-typeset.vala:257
+msgid "Company"
+msgstr "Εταιρία"
+
+#: src/contacts-typeset.vala:259
+msgid "Home Fax"
+msgstr "Φαξ οικίας"
+
+#: src/contacts-typeset.vala:261
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/contacts-typeset.vala:262
+msgid "Mobile"
+msgstr "Κινητό τηλέφωνο"
+
+#: src/contacts-typeset.vala:264
+msgid "Fax"
+msgstr "Φαξ"
+
+#: src/contacts-typeset.vala:265
+msgid "Pager"
+msgstr "Ειδοποιητής"
+
+#: src/contacts-typeset.vala:266
+msgid "Radio"
+msgstr "Ραδιόφωνο"
+
+#: src/contacts-typeset.vala:267
+msgid "Telex"
+msgstr "Τηλέτυπο"
+
+#. To translators: TTY is Teletypewriter
+#: src/contacts-typeset.vala:269
+msgid "TTY"
+msgstr "TTY"
 
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
@@ -791,9 +794,19 @@ msgstr ""
 msgid "Is the window maximized?"
 msgstr "Είναι το παράθυρο μεγιστοποιημένο;"
 
-#: src/org.gnome.Contacts.gschema.xml:33
+#: src/org.gnome.Contacts.gschema.xml:33 src/org.gnome.Contacts.gschema.xml:38
 msgid "Stores if the window is currently maximized."
 msgstr "Αποθηκεύει εάν το παράθυρο είναι μεγιστοποιημένο."
+
+#: src/org.gnome.Contacts.gschema.xml:37
+msgid "Is the window fullscreen"
+msgstr "Είναι το παράθυρο σε πλήρη οθόνη"
+
+#~ msgid "Google Circles"
+#~ msgstr "Κύκλοι Google"
+
+#~ msgid "Add"
+#~ msgstr "Προσθήκη"
 
 #~ msgid "Home email"
 #~ msgstr "Ηλ. διεύθυνση οικίας"
