@@ -1,7 +1,7 @@
 # Korean translation for gnome-contacts.
 # Copyright (C) 2011-2013 Seong-ho Cho et al.
 # This file is distributed under the same license as the gnome-contacts package.
-# Seong-ho Cho <shcho@gnome.org>, 2011-2020.
+# Seong-ho Cho <shcho@gnome.org>, 2011-2021.
 #
 # 번역하신 분은 'translator-credits' 에 한글 이름과 email 주소를 적어주십시오.
 # 참고:
@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2020-08-10 12:49+0000\n"
-"PO-Revision-Date: 2020-08-30 03:42+0900\n"
+"POT-Creation-Date: 2021-02-13 09:52+0000\n"
+"PO-Revision-Date: 2021-03-06 10:57+0900\n"
 "Last-Translator: Seong-ho Cho <shcho@gnome.org>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -25,8 +25,8 @@ msgstr ""
 "X-Generator: Poedit 2.3.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-window.ui:144
-#: data/ui/contacts-window.ui:162 src/contacts-window.vala:230
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
 msgid "Contacts"
 msgstr "연락처"
 
@@ -54,7 +54,7 @@ msgstr ""
 "연락처는 온라인 주소록을 통합하며 여러 온라인 원본 연락처를 자동으로 이어줍니"
 "다."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:433
+#: data/org.gnome.Contacts.appdata.xml.in.in:482
 msgid "The GNOME Project"
 msgstr "그놈 프로젝트"
 
@@ -98,32 +98,34 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "끝내기"
 
-#: data/ui/contacts-avatar-selector.ui:54
+#: data/ui/contacts-avatar-selector.ui:19
+#: data/ui/contacts-crop-cheese-dialog.ui:27
+#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: src/contacts-editor-property.vala:83
+msgid "Cancel"
+msgstr "취소"
+
+#: data/ui/contacts-avatar-selector.ui:28
+#: data/ui/contacts-crop-cheese-dialog.ui:64
+#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+msgid "Done"
+msgstr "완료"
+
+#: data/ui/contacts-avatar-selector.ui:102
 msgid "Take a Picture…"
 msgstr "사진 촬영…"
 
-#: data/ui/contacts-avatar-selector.ui:68
+#: data/ui/contacts-avatar-selector.ui:111
 msgid "Select a File…"
 msgstr "파일 선택…"
 
-#: data/ui/contacts-contact-pane.ui:45
-msgid "Select a contact"
+#: data/ui/contacts-contact-pane.ui:18
+msgid "Select a Contact"
 msgstr "연락처를 선택하십시오"
-
-#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-window.ui:214
-#: data/ui/contacts-window.ui:278 src/contacts-addressbook-dialog.vala:32
-#: src/contacts-editor-property.vala:86
-msgid "Cancel"
-msgstr "취소"
 
 #: data/ui/contacts-crop-cheese-dialog.ui:49
 msgid "Take Another…"
 msgstr "다른 항목 가져오기…"
-
-#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-window.ui:335
-#: src/contacts-window.vala:237
-msgid "Done"
-msgstr "완료"
 
 #: data/ui/contacts-editor-menu.ui:13
 msgid "Change Addressbook"
@@ -154,31 +156,104 @@ msgstr "연결"
 msgid "Remove"
 msgstr "제거"
 
-#: data/ui/contacts-setup-window.ui:11
+#: data/ui/contacts-main-window.ui:15
+msgid "List Contacts By:"
+msgstr "연락처 목록 정렬 기준:"
+
+#: data/ui/contacts-main-window.ui:28
+msgid "First Name"
+msgstr "이름"
+
+#: data/ui/contacts-main-window.ui:35
+msgid "Surname"
+msgstr "성"
+
+#: data/ui/contacts-main-window.ui:49
+msgid "Change Address Book…"
+msgstr "주소록 바꾸기…"
+
+#: data/ui/contacts-main-window.ui:57
+msgid "Online Accounts <sup>↗</sup>"
+msgstr "온라인 계정 <sup>↗</sup>"
+
+#: data/ui/contacts-main-window.ui:73
+msgid "Keyboard Shortcuts"
+msgstr "키보드 바로 가기"
+
+#: data/ui/contacts-main-window.ui:81
+msgid "Help"
+msgstr "도움말"
+
+#: data/ui/contacts-main-window.ui:89
+msgid "About Contacts"
+msgstr "연락처 프로그램 정보"
+
+#: data/ui/contacts-main-window.ui:107
+msgid "Share"
+msgstr "공유"
+
+#: data/ui/contacts-main-window.ui:114
+msgid "Edit"
+msgstr "편집"
+
+#: data/ui/contacts-main-window.ui:121
+#: src/contacts-linked-personas-dialog.vala:73
+msgid "Unlink"
+msgstr "링크 끊기"
+
+#: data/ui/contacts-main-window.ui:133
+msgid "Delete"
+msgstr "삭제"
+
+#: data/ui/contacts-main-window.ui:171
+msgid "Create new contact"
+msgstr "새 연락처 만들기"
+
+#: data/ui/contacts-main-window.ui:175
+msgid "Add contact"
+msgstr "연락처 추가"
+
+#: data/ui/contacts-main-window.ui:216
+msgid "Cancel selection"
+msgstr "설정 취소"
+
+#: data/ui/contacts-main-window.ui:260
+msgid "Back"
+msgstr "뒤로"
+
+#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+msgid "_Cancel"
+msgstr "취소(_C)"
+
+#: data/ui/contacts-main-window.ui:396
+msgid "Loading"
+msgstr "불러오는 중"
+
+#: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
 msgstr "연락처 설정"
 
-#: data/ui/contacts-setup-window.ui:20
+#: data/ui/contacts-setup-window.ui:24
 msgid "_Quit"
 msgstr "끝내기(_Q)"
 
-#: data/ui/contacts-setup-window.ui:25
+#: data/ui/contacts-setup-window.ui:29
 msgid "Cancel setup and quit"
 msgstr "설정 취소 후 끝내기"
 
-#: data/ui/contacts-setup-window.ui:39
+#: data/ui/contacts-setup-window.ui:43
 msgid "_Done"
 msgstr "완료(_D)"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:47
 msgid "Setup complete"
 msgstr "설정 완료"
 
-#: data/ui/contacts-setup-window.ui:82
+#: data/ui/contacts-setup-window.ui:86
 msgid "Welcome"
 msgstr "환영합니다"
 
-#: data/ui/contacts-setup-window.ui:94
+#: data/ui/contacts-setup-window.ui:98
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -187,80 +262,12 @@ msgstr ""
 "주 연락처를 선택하십시오: 새 연락처를 추가할 연락처입니다. 온라인 계정의 연락"
 "처 내용을 유지한다면 온라인 계정 설정에 추가할 수 있습니다."
 
-#: data/ui/contacts-window.ui:15
-msgid "List contacts by:"
-msgstr "연락처 목록 정렬 기준:"
-
-#: data/ui/contacts-window.ui:28
-msgid "First name"
-msgstr "이름"
-
-#: data/ui/contacts-window.ui:35
-msgid "Surname"
-msgstr "성"
-
-#: data/ui/contacts-window.ui:49
-msgid "Change Address Book…"
-msgstr "주소록 바꾸기…"
-
-#: data/ui/contacts-window.ui:57
-msgid "Online Accounts <sup>↗</sup>"
-msgstr "온라인 계정 <sup>↗</sup>"
-
-#: data/ui/contacts-window.ui:73
-msgid "Keyboard Shortcuts"
-msgstr "키보드 바로 가기"
-
-#: data/ui/contacts-window.ui:81
-msgid "Help"
-msgstr "도움말"
-
-#: data/ui/contacts-window.ui:89
-msgid "About Contacts"
-msgstr "연락처 프로그램 정보"
-
-#: data/ui/contacts-window.ui:107
-msgid "Share"
-msgstr "공유"
-
-#: data/ui/contacts-window.ui:114
-msgid "Edit"
-msgstr "편집"
-
-#: data/ui/contacts-window.ui:121 src/contacts-linked-personas-dialog.vala:74
-msgid "Unlink"
-msgstr "링크 끊기"
-
-#: data/ui/contacts-window.ui:133
-msgid "Delete"
-msgstr "삭제"
-
-#: data/ui/contacts-window.ui:170
-msgid "Create new contact"
-msgstr "새 연락처 만들기"
-
-#: data/ui/contacts-window.ui:174
-msgid "Add contact"
-msgstr "연락처 추가"
-
-#: data/ui/contacts-window.ui:215
-msgid "Cancel selection"
-msgstr "설정 취소"
-
-#: data/ui/contacts-window.ui:259
-msgid "Back"
-msgstr "뒤로"
-
-#: data/ui/contacts-window.ui:396
-msgid "Loading"
-msgstr "불러오는 중"
-
 #: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
 #: src/contacts-esd-setup.vala:149
 msgid "Local Address Book"
 msgstr "로컬 주소록"
 
-#: src/contacts-addressbook-dialog.vala:27 src/contacts-editor-property.vala:84
+#: src/contacts-addressbook-dialog.vala:27
 msgid "Change Address Book"
 msgstr "주소록 바꾸기"
 
@@ -292,35 +299,32 @@ msgstr "표시 조건에 맞는 연락처를 보여줍니다"
 msgid "Show the current version of Contacts"
 msgstr "연락처 현재 버전 표시"
 
-#: src/contacts-app.vala:102
+#: src/contacts-app.vala:112
 #, c-format
 msgid "No contact with id %s found"
 msgstr "%s ID의 연락처를 찾을 수 없습니다"
 
-#: src/contacts-app.vala:103 src/contacts-app.vala:183
+#: src/contacts-app.vala:113 src/contacts-app.vala:193
 msgid "Contact not found"
 msgstr "연락처가 없습니다"
 
-#: src/contacts-app.vala:162
+#: src/contacts-app.vala:172
 msgid "translator-credits"
 msgstr "조성호 <shcho@gnome.org>"
 
-#: src/contacts-app.vala:163
+#: src/contacts-app.vala:173
 msgid "GNOME Contacts"
 msgstr "그놈 연락처"
 
-#: src/contacts-app.vala:164
+#: src/contacts-app.vala:174
 msgid "About GNOME Contacts"
 msgstr "그놈 연락처 정보"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:175
 msgid "Contact Management Application"
 msgstr "연락처 관리 프로그램"
 
-#: src/contacts-app.vala:166
-#| msgid ""
-#| "© 2011 Red Hat, Inc.\n"
-#| "© 2011-2018 The Contacts Developers"
+#: src/contacts-app.vala:176
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -328,27 +332,23 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
 
-#: src/contacts-app.vala:182
+#: src/contacts-app.vala:192
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "%s 전자메일 주소의 연락처를 찾을 수 없습니다"
 
-#: src/contacts-avatar-selector.vala:109 src/contacts-avatar-selector.vala:115
-#: src/contacts-avatar-selector.vala:235
+#: src/contacts-avatar-selector.vala:158 src/contacts-avatar-selector.vala:164
+#: src/contacts-avatar-selector.vala:255
 msgid "Failed to set avatar."
 msgstr "아바타 설정에 실패했습니다."
 
-#: src/contacts-avatar-selector.vala:195
+#: src/contacts-avatar-selector.vala:215
 msgid "Browse for more pictures"
 msgstr "더 많은 그림 탐색"
 
-#: src/contacts-avatar-selector.vala:198
+#: src/contacts-avatar-selector.vala:218
 msgid "_Open"
 msgstr "열기(_O)"
-
-#: src/contacts-avatar-selector.vala:198
-msgid "_Cancel"
-msgstr "취소(_C)"
 
 #: src/contacts-contact-editor.vala:50
 msgid "Change avatar"
@@ -358,125 +358,129 @@ msgstr "아바타 바꾸기"
 msgid "Add name"
 msgstr "이름 추가"
 
-#: src/contacts-contact-list.vala:178
+#: src/contacts-contact-list.vala:194
 msgid "Favorites"
 msgstr "즐겨찾기"
 
-#: src/contacts-contact-list.vala:180 src/contacts-contact-list.vala:186
+#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
 msgid "All Contacts"
 msgstr "모든 연락처"
 
-#: src/contacts-contact-pane.vala:232
+#: src/contacts-contact-pane.vala:236
 msgid "No primary addressbook configured"
 msgstr "설정한 주 주소록이 없습니다"
 
-#: src/contacts-contact-pane.vala:242
+#: src/contacts-contact-pane.vala:246
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "새 연락처를 만들 수 없습니다: %s"
 
-#: src/contacts-contact-pane.vala:254
+#: src/contacts-contact-pane.vala:258
 msgid "Unable to find newly created contact"
 msgstr "새로 만든 연락처를 찾을 수 없습니다"
 
-#: src/contacts-contact-sheet.vala:278 src/contacts-editor-property.vala:488
+#: src/contacts-contact-sheet.vala:286 src/contacts-editor-property.vala:491
 msgid "Website"
 msgstr "웹사이트"
 
-#: src/contacts-contact-sheet.vala:295 src/contacts-editor-property.vala:498
+#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:501
 msgid "Nickname"
 msgstr "닉네임"
 
-#: src/contacts-contact-sheet.vala:301 src/contacts-editor-property.vala:563
+#: src/contacts-contact-sheet.vala:309 src/contacts-editor-property.vala:566
 msgid "Birthday"
 msgstr "생년월일"
 
-#: src/contacts-contact-sheet.vala:308 src/contacts-editor-property.vala:526
+#: src/contacts-contact-sheet.vala:316 src/contacts-editor-property.vala:529
 msgid "Note"
 msgstr "참고"
 
-#: src/contacts-crop-cheese-dialog.vala:91
+#: src/contacts-crop-cheese-dialog.vala:88
 msgid "Unable to take photo."
 msgstr "사진을 촬영할 수 없습니다."
 
-#: src/contacts-editor-property.vala:66
+#: src/contacts-editor-property.vala:63
 msgid "Day"
 msgstr "일"
 
-#: src/contacts-editor-property.vala:70
+#: src/contacts-editor-property.vala:67
 msgid "Month"
 msgstr "월"
 
-#: src/contacts-editor-property.vala:74
+#: src/contacts-editor-property.vala:71
 msgid "Year"
 msgstr "년"
 
-#: src/contacts-editor-property.vala:85
+#: src/contacts-editor-property.vala:81
+msgid "Change Birthday"
+msgstr "생년월일 설정"
+
+#: src/contacts-editor-property.vala:82
 msgid "Set"
 msgstr "설정"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Street"
 msgstr "거리"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Extension"
 msgstr "확장"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "City"
 msgstr "시"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "State/Province"
 msgstr "주/도"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Zip/Postal Code"
 msgstr "우편 번호"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "PO box"
 msgstr "사서함"
 
-#: src/contacts-editor-property.vala:137
+#: src/contacts-editor-property.vala:134
 msgid "Country"
 msgstr "국가"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:587
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
 msgid "Delete field"
 msgstr "내용 삭제"
 
-#: src/contacts-editor-property.vala:451
+#: src/contacts-editor-property.vala:452
 msgid "Email address"
 msgstr "전자메일 주소"
 
-#: src/contacts-editor-property.vala:452
+#: src/contacts-editor-property.vala:453
 msgid "Add email"
 msgstr "전자메일 주소 추가"
 
-#: src/contacts-editor-property.vala:469
+#: src/contacts-editor-property.vala:471
 msgid "Phone number"
 msgstr "전화 번호"
 
-#: src/contacts-editor-property.vala:470
+#: src/contacts-editor-property.vala:472
 msgid "Add number"
 msgstr "번호 추가"
 
-#: src/contacts-editor-property.vala:489
+#: src/contacts-editor-property.vala:492
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:565 src/contacts-editor-property.vala:596
+#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
 msgid "Set Birthday"
 msgstr "생년월일 설정"
 
-#: src/contacts-editor-property.vala:614
+#: src/contacts-editor-property.vala:617
 msgid "Address"
 msgstr "주소"
 
 #: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
-#: src/contacts-utils.vala:497
+#: src/contacts-utils.vala:475
 msgid "Google"
 msgstr "구글"
 
@@ -484,252 +488,248 @@ msgstr "구글"
 msgid "Local Contact"
 msgstr "지역 연락처"
 
-#: src/contacts-im-service.vala:32
+#: src/contacts-im-service.vala:30
 msgid "AOL Instant Messenger"
 msgstr "AOL 인스턴트 메신저"
 
-#: src/contacts-im-service.vala:33
+#: src/contacts-im-service.vala:31
 msgid "Facebook"
 msgstr "페이스북"
 
-#: src/contacts-im-service.vala:34
+#: src/contacts-im-service.vala:32
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: src/contacts-im-service.vala:35
+#: src/contacts-im-service.vala:33
 msgid "Google Talk"
 msgstr "구글 토크"
 
-#: src/contacts-im-service.vala:36
+#: src/contacts-im-service.vala:34
 msgid "Novell Groupwise"
 msgstr "노벨 그룹와이즈"
 
-#: src/contacts-im-service.vala:37
+#: src/contacts-im-service.vala:35
 msgid "ICQ"
 msgstr "ICQ"
 
-#: src/contacts-im-service.vala:38
+#: src/contacts-im-service.vala:36
 msgid "IRC"
 msgstr "IRC"
 
-#: src/contacts-im-service.vala:39
+#: src/contacts-im-service.vala:37
 msgid "Jabber"
 msgstr "재버"
 
-#: src/contacts-im-service.vala:40
+#: src/contacts-im-service.vala:38
 msgid "Livejournal"
 msgstr "라이브저널"
 
-#: src/contacts-im-service.vala:41
+#: src/contacts-im-service.vala:39
 msgid "Local network"
 msgstr "지역 네트워크"
 
-#: src/contacts-im-service.vala:42
+#: src/contacts-im-service.vala:40
 msgid "Windows Live Messenger"
 msgstr "윈도우 라이브 메신저"
 
-#: src/contacts-im-service.vala:43
+#: src/contacts-im-service.vala:41
 msgid "MySpace"
 msgstr "마이스페이스"
 
-#: src/contacts-im-service.vala:44
+#: src/contacts-im-service.vala:42
 msgid "MXit"
 msgstr "MXit"
 
-#: src/contacts-im-service.vala:45
+#: src/contacts-im-service.vala:43
 msgid "Napster"
 msgstr "냅스터"
 
-#: src/contacts-im-service.vala:46
+#: src/contacts-im-service.vala:44
 msgid "Ovi Chat"
 msgstr "Ovi 대화"
 
-#: src/contacts-im-service.vala:47
+#: src/contacts-im-service.vala:45
 msgid "Tencent QQ"
 msgstr "텐센트 QQ"
 
-#: src/contacts-im-service.vala:48
+#: src/contacts-im-service.vala:46
 msgid "IBM Lotus Sametime"
 msgstr "IBM 로터스 새임타임"
 
-#: src/contacts-im-service.vala:49
+#: src/contacts-im-service.vala:47
 msgid "SILC"
 msgstr "SILC"
 
-#: src/contacts-im-service.vala:50
+#: src/contacts-im-service.vala:48
 msgid "sip"
 msgstr "sip"
 
-#: src/contacts-im-service.vala:51
+#: src/contacts-im-service.vala:49
 msgid "Skype"
 msgstr "스카이프"
 
-#: src/contacts-im-service.vala:52
+#: src/contacts-im-service.vala:50
 msgid "Telephony"
 msgstr "텔레포니"
 
-#: src/contacts-im-service.vala:53
+#: src/contacts-im-service.vala:51
 msgid "Trepia"
 msgstr "트레피아"
 
-#: src/contacts-im-service.vala:54 src/contacts-im-service.vala:55
+#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
 msgid "Yahoo! Messenger"
 msgstr "야후! 메신저"
 
-#: src/contacts-im-service.vala:56
+#: src/contacts-im-service.vala:54
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-link-suggestion-grid.vala:54
+#: src/contacts-link-suggestion-grid.vala:52
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "%2$s님과 %1$s님은 같은 분입니까?"
 
-#: src/contacts-link-suggestion-grid.vala:57
+#: src/contacts-link-suggestion-grid.vala:55
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "%s님과 같은 분입니까?"
 
-#: src/contacts-type-descriptor.vala:85 src/contacts-typeset.vala:261
-msgid "Other"
-msgstr "기타"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:210 src/contacts-typeset.vala:230
-#: src/contacts-typeset.vala:256 src/contacts-typeset.vala:258
-msgid "Home"
-msgstr "집"
-
-#: src/contacts-typeset.vala:211 src/contacts-typeset.vala:231
-#: src/contacts-typeset.vala:250 src/contacts-typeset.vala:252
-msgid "Work"
-msgstr "직업"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:229
-msgid "Personal"
-msgstr "개인"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:249
-msgid "Assistant"
-msgstr "비서"
-
-#: src/contacts-typeset.vala:251
-msgid "Work Fax"
-msgstr "업무 팩스"
-
-#: src/contacts-typeset.vala:253
-msgid "Callback"
-msgstr "콜백"
-
-#: src/contacts-typeset.vala:254
-msgid "Car"
-msgstr "차"
-
-#: src/contacts-typeset.vala:255
-msgid "Company"
-msgstr "회사"
-
-#: src/contacts-typeset.vala:257
-msgid "Home Fax"
-msgstr "집 팩스"
-
-#: src/contacts-typeset.vala:259
-msgid "ISDN"
-msgstr "ISDN"
-
-#: src/contacts-typeset.vala:260
-msgid "Mobile"
-msgstr "모바일"
-
-#: src/contacts-typeset.vala:262
-msgid "Fax"
-msgstr "팩스"
-
-#: src/contacts-typeset.vala:263
-msgid "Pager"
-msgstr "문자 수신기"
-
-#: src/contacts-typeset.vala:264
-msgid "Radio"
-msgstr "라디오"
-
-#: src/contacts-typeset.vala:265
-msgid "Telex"
-msgstr "텔렉스"
-
-#. To translators: TTY is Teletypewriter
-#: src/contacts-typeset.vala:267
-msgid "TTY"
-msgstr "TTY"
-
-#: src/contacts-utils.vala:495
-msgid "Google Circles"
-msgstr "구글 서클"
-
-#: src/contacts-window.vala:202
+#: src/contacts-main-window.vala:198
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "선택 항목 %d개"
 
-#: src/contacts-window.vala:237
-msgid "Add"
-msgstr "추가"
+#: src/contacts-main-window.vala:234
+msgid "_Add"
+msgstr "추가(_A)"
 
-#: src/contacts-window.vala:267
+#: src/contacts-main-window.vala:279
 #, c-format
 msgid "Editing %s"
 msgstr "%s 편집"
 
-#: src/contacts-window.vala:294 src/contacts-window.vala:478
-#: src/contacts-window.vala:502 src/contacts-window.vala:548
+#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:496
+#: src/contacts-main-window.vala:520 src/contacts-main-window.vala:566
 msgid "_Undo"
 msgstr "실행 취소(_U)"
 
-#: src/contacts-window.vala:295
+#: src/contacts-main-window.vala:307
 msgid "Contacts unlinked"
 msgstr "연락처 연결을 해제했습니다"
 
-#: src/contacts-window.vala:354
+#: src/contacts-main-window.vala:366
 msgid "Unmark as favorite"
 msgstr "즐겨찾기 표시 취소"
 
-#: src/contacts-window.vala:355
+#: src/contacts-main-window.vala:367
 msgid "Mark as favorite"
 msgstr "즐겨찾기로 표시"
 
-#: src/contacts-window.vala:369
+#: src/contacts-main-window.vala:381
 msgid "New Contact"
 msgstr "새 연락처"
 
-#: src/contacts-window.vala:474
+#: src/contacts-main-window.vala:492
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "연락처 %d개를 연결했습니다"
 
-#: src/contacts-window.vala:497
+#: src/contacts-main-window.vala:515
 #, c-format
 msgid "Deleted contact %s"
 msgstr "%s 연락처를 삭제했습니다"
 
-#: src/contacts-window.vala:499
+#: src/contacts-main-window.vala:517
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "연락처 %d개를 삭제했습니다"
 
-#: src/contacts-window.vala:544
+#: src/contacts-main-window.vala:562
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s을(를) %s에 연결했습니다"
 
-#: src/contacts-window.vala:546
+#: src/contacts-main-window.vala:564
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s을(를) 연락처에 연결했습니다"
+
+#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:263
+msgid "Other"
+msgstr "기타"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:212 src/contacts-typeset.vala:232
+#: src/contacts-typeset.vala:258 src/contacts-typeset.vala:260
+msgid "Home"
+msgstr "집"
+
+#: src/contacts-typeset.vala:213 src/contacts-typeset.vala:233
+#: src/contacts-typeset.vala:252 src/contacts-typeset.vala:254
+msgid "Work"
+msgstr "직업"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:231
+msgid "Personal"
+msgstr "개인"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:251
+msgid "Assistant"
+msgstr "비서"
+
+#: src/contacts-typeset.vala:253
+msgid "Work Fax"
+msgstr "업무 팩스"
+
+#: src/contacts-typeset.vala:255
+msgid "Callback"
+msgstr "콜백"
+
+#: src/contacts-typeset.vala:256
+msgid "Car"
+msgstr "차"
+
+#: src/contacts-typeset.vala:257
+msgid "Company"
+msgstr "회사"
+
+#: src/contacts-typeset.vala:259
+msgid "Home Fax"
+msgstr "집 팩스"
+
+#: src/contacts-typeset.vala:261
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/contacts-typeset.vala:262
+msgid "Mobile"
+msgstr "모바일"
+
+#: src/contacts-typeset.vala:264
+msgid "Fax"
+msgstr "팩스"
+
+#: src/contacts-typeset.vala:265
+msgid "Pager"
+msgstr "문자 수신기"
+
+#: src/contacts-typeset.vala:266
+msgid "Radio"
+msgstr "라디오"
+
+#: src/contacts-typeset.vala:267
+msgid "Telex"
+msgstr "텔렉스"
+
+#. To translators: TTY is Teletypewriter
+#: src/contacts-typeset.vala:269
+msgid "TTY"
+msgstr "TTY"
 
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
@@ -775,9 +775,19 @@ msgstr "사용자가 창 크기를 조정하지 않았을 경우의 초기 창 �
 msgid "Is the window maximized?"
 msgstr "창을 최대화 합니까?"
 
-#: src/org.gnome.Contacts.gschema.xml:33
+#: src/org.gnome.Contacts.gschema.xml:33 src/org.gnome.Contacts.gschema.xml:38
 msgid "Stores if the window is currently maximized."
 msgstr "현재 창을 최대화 할 지 여부 설정을 저장합니다."
+
+#: src/org.gnome.Contacts.gschema.xml:37
+msgid "Is the window fullscreen"
+msgstr "창 최대화 여부"
+
+#~ msgid "Google Circles"
+#~ msgstr "구글 서클"
+
+#~ msgid "Add"
+#~ msgstr "추가"
 
 #~ msgid "Home email"
 #~ msgstr "집 전자메일"
