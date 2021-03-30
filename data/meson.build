@@ -54,9 +54,7 @@ appdata_file = i18n.merge_file(
 )
 # Validate the appdata file
 appstream_util = find_program('appstream-util', required: false)
-# Disabling this test for now, see https://github.com/hughsie/appstream-glib/issues/391
-# if appstream_util.found()
-if false
+if appstream_util.found()
   test('validate-appdata', appstream_util,
     suite: 'data',
     args: [
