@@ -197,6 +197,8 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
         if (nr_contacts != 0)
           this.left_header.title = ngettext ("%d Selected", "%d Selected", nr_contacts)
                                        .printf (nr_contacts);
+        else
+          this.left_header.title = _("Contacts");
       });
 
     list_pane_stack.add (list_pane);
