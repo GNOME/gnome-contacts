@@ -33,7 +33,10 @@ if desktop_file_validate.found()
     suite: 'data',
     args: [
       desktop_file.full_path()
-    ]
+    ],
+    depends: [
+      desktop_file,
+    ],
   )
 endif
 
@@ -59,7 +62,10 @@ if appstream_util.found()
     suite: 'data',
     args: [
       'validate-relax', '--nonet', appdata_file.full_path()
-    ]
+    ],
+    depends: [
+      appdata_file,
+    ],
   )
 endif
 
