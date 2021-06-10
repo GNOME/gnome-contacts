@@ -556,16 +556,18 @@ public class Contacts.EditorProperty : Gee.ArrayList<EditorPropertyRow> {
 
   private EditorPropertyRow create_for_birthday (BirthdayDetails? details) {
     DateTime date;
+    Gtk.Button button;
     if (details.birthday == null) {
       date = new DateTime.now ();
+      button = new Gtk.Button.with_label (_("Set Birthday"));
     } else {
       date = details.birthday;
+      button = new Gtk.Button.with_label (details.birthday.to_local ().format ("%x"));
     }
 
     var box = new EditorPropertyRow ("birthday");
     box.add_base_label (_("Birthday"));
 
-    var button = new Gtk.Button.with_label (_("Set Birthday"));
     box.container.pack_start (button);
 
     button.clicked.connect (() => {
