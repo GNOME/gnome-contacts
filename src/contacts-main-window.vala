@@ -338,6 +338,7 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
       this.state = UiState.SHOWING;
     }
     this.contact_pane.stop_editing (cancel);
+    this.list_pane.scroll_to_contact ();
 
     if (this.contact_pane.individual != null) {
       this.right_header.title = this.contact_pane.individual.display_name;

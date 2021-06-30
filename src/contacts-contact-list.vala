@@ -287,7 +287,24 @@ public class Contacts.ContactList : Gtk.ListBox {
       return;
     }
 
-    select_row (find_row_for_contact (individual));
+    ContactDataRow? row = find_row_for_contact (individual);
+    select_row (row);
+    scroll_to_contact (row);
+  }
+
+  public void scroll_to_contact (Gtk.ListBoxRow? row = null) {
+    unowned ContactDataRow? selected_row = null;
+
+    if (row == null)
+      selected_row = get_selected_row () as ContactDataRow;
+    else
+      selected_row = row as ContactDataRow;
+
+    GLib.Timeout.add (100, () => {
+      if (selected_row != null)
+        selected_row.grab_focus ();
+      return GLib.Source.REMOVE;
+    });
   }
 
   public void hide_contact (Individual? individual) {

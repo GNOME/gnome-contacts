@@ -94,6 +94,10 @@ public class Contacts.ListPane : Gtk.Frame {
     this.contacts_list.select_contact (individual);
   }
 
+  public void scroll_to_contact () {
+    this.contacts_list.scroll_to_contact ();
+  }
+
   public void hide_contact (Individual? individual) {
     this.contacts_list.hide_contact (individual);
   }
