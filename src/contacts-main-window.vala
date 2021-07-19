@@ -66,6 +66,8 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
   private unowned Gtk.Button cancel_button;
   [GtkChild]
   private unowned Gtk.Button done_button;
+  [GtkChild]
+  private unowned Gtk.Button selection_button;
 
   // The 2 panes the window consists of
   private ListPane list_pane;
@@ -223,6 +225,7 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
 
     // Selecting UI
     this.select_cancel_button.visible = (this.state == UiState.SELECTING);
+    this.selection_button.visible = !(this.state == UiState.SELECTING || this.state.editing ());
 
     if (this.state != UiState.SELECTING)
       this.left_header.title = _("Contacts");
@@ -292,6 +295,11 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
 
     var is_fav = this.contact_pane.individual.is_favourite;
     this.contact_pane.individual.is_favourite = !is_fav;
+  }
+
+  [GtkCallback]
+  private void on_selection_button_clicked () {
+    this.state = UiState.SELECTING;
   }
 
   private void unlink_contact () {
