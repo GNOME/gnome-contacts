@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-02-13 09:52+0000\n"
-"PO-Revision-Date: 2021-02-13 15:32+0200\n"
+"POT-Creation-Date: 2021-07-25 09:52+0000\n"
+"PO-Revision-Date: 2021-07-25 18:01+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -17,12 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
-"X-Generator: Lokalize 20.11.70\n"
+"X-Generator: Lokalize 20.12.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:201
+#: src/contacts-main-window.vala:228
 msgid "Contacts"
 msgstr "Контакти"
 
@@ -51,7 +52,7 @@ msgstr ""
 "Контакти також інтегровані з мережевими адресними книгами і автоматично "
 "сполучать контакти з різних джерел."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:482
+#: data/org.gnome.Contacts.appdata.xml.in.in:545
 msgid "The GNOME Project"
 msgstr "Проєкт GNOME"
 
@@ -97,14 +98,14 @@ msgstr "Ви_йти"
 
 #: data/ui/contacts-avatar-selector.ui:19
 #: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:216 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "Скасувати"
 
 #: data/ui/contacts-avatar-selector.ui:28
 #: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+#: data/ui/contacts-main-window.ui:339 src/contacts-main-window.vala:236
 msgid "Done"
 msgstr "Завершено"
 
@@ -117,7 +118,6 @@ msgid "Select a File…"
 msgstr "Вибрати адресу пошти"
 
 #: data/ui/contacts-contact-pane.ui:18
-#| msgid "Select a contact"
 msgid "Select a Contact"
 msgstr "Виберіть контакт"
 
@@ -211,19 +211,29 @@ msgstr "Створити контакт"
 msgid "Add contact"
 msgstr "Додати контакт"
 
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:198
+msgid "Menu"
+msgstr ""
+"Меню"
+
+#: data/ui/contacts-main-window.ui:217
 msgid "Cancel selection"
 msgstr "Скасувати налаштування"
 
-#: data/ui/contacts-main-window.ui:260
+#: data/ui/contacts-main-window.ui:261
 msgid "Back"
 msgstr "Назад"
 
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:280 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "_Скасувати"
 
-#: data/ui/contacts-main-window.ui:396
+#: data/ui/contacts-main-window.ui:320
+msgid "Main Menu"
+msgstr ""
+"Головне меню"
+
+#: data/ui/contacts-main-window.ui:398
 msgid "Loading"
 msgstr "Завантаження"
 
@@ -378,19 +388,19 @@ msgstr "Неможливо створити нові контакти: %s"
 msgid "Unable to find newly created contact"
 msgstr "Неможливо знайти новостворений контакт"
 
-#: src/contacts-contact-sheet.vala:286 src/contacts-editor-property.vala:491
+#: src/contacts-contact-sheet.vala:288 src/contacts-editor-property.vala:491
 msgid "Website"
 msgstr "Сайт"
 
-#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:501
+#: src/contacts-contact-sheet.vala:305 src/contacts-editor-property.vala:501
 msgid "Nickname"
 msgstr "Прізвисько"
 
-#: src/contacts-contact-sheet.vala:309 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
 msgid "Birthday"
 msgstr "День народження"
 
-#: src/contacts-contact-sheet.vala:316 src/contacts-editor-property.vala:529
+#: src/contacts-contact-sheet.vala:318 src/contacts-editor-property.vala:529
 msgid "Note"
 msgstr "Примітка"
 
@@ -446,7 +456,7 @@ msgstr "Поштова скринька"
 msgid "Country"
 msgstr "Країна"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
 msgid "Delete field"
 msgstr "Вилучити поле"
 
@@ -470,11 +480,11 @@ msgstr "Додати номер"
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
 msgid "Set Birthday"
 msgstr "Встановити день народження"
 
-#: src/contacts-editor-property.vala:617
+#: src/contacts-editor-property.vala:619
 msgid "Address"
 msgstr "Адреса"
 
@@ -602,37 +612,37 @@ msgstr[1] "%d вибрано"
 msgstr[2] "%d вибрано"
 msgstr[3] "%d вибрано"
 
-#: src/contacts-main-window.vala:234
+#: src/contacts-main-window.vala:236
 msgid "_Add"
 msgstr "_Додати"
 
-#: src/contacts-main-window.vala:279
+#: src/contacts-main-window.vala:281
 #, c-format
 msgid "Editing %s"
 msgstr "Редагування %s"
 
-#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:496
-#: src/contacts-main-window.vala:520 src/contacts-main-window.vala:566
+#: src/contacts-main-window.vala:308 src/contacts-main-window.vala:507
+#: src/contacts-main-window.vala:531 src/contacts-main-window.vala:577
 msgid "_Undo"
 msgstr "_Повернути"
 
-#: src/contacts-main-window.vala:307
+#: src/contacts-main-window.vala:309
 msgid "Contacts unlinked"
 msgstr "Контакти роз'єднано"
 
-#: src/contacts-main-window.vala:366
+#: src/contacts-main-window.vala:369
 msgid "Unmark as favorite"
 msgstr "Вилучити з улюблених"
 
-#: src/contacts-main-window.vala:367
+#: src/contacts-main-window.vala:370
 msgid "Mark as favorite"
 msgstr "Додати до улюблених"
 
-#: src/contacts-main-window.vala:381
+#: src/contacts-main-window.vala:386
 msgid "New Contact"
 msgstr "Створити контакт"
 
-#: src/contacts-main-window.vala:492
+#: src/contacts-main-window.vala:503
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -641,12 +651,12 @@ msgstr[1] "%d контакти сполучено"
 msgstr[2] "%d контактів сполучено"
 msgstr[3] "%d контакт сполучено"
 
-#: src/contacts-main-window.vala:515
+#: src/contacts-main-window.vala:526
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Вилучений контакт %s"
 
-#: src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:528
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -655,12 +665,12 @@ msgstr[1] "%d контакти вилучено"
 msgstr[2] "%d контактів вилучено"
 msgstr[3] "%d контакт вилучено"
 
-#: src/contacts-main-window.vala:562
+#: src/contacts-main-window.vala:573
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s сполучений з %s"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:575
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s сполучений з контактом"
