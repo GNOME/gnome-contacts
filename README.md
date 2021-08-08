@@ -51,5 +51,5 @@ To discuss issues with developers and other users, you can post to the
 or join [#contacts](irc://irc.gnome.org/contacts) on irc.gnome.org.
 
 If you would like to get involved with GNOME projects, please also visit our
-[Newcomers page](https://wiki.gnome.org/TranslationProject/JoiningTranslation)
+[Newcomers page](https://wiki.gnome.org/Newcomers)
 on the Wiki.
