@@ -239,11 +239,6 @@ public class Contacts.ContactList : Gtk.ListBox {
     if (row.selector_button.active && this.nr_contacts_marked == 1)
       this.state = UiState.SELECTING;
 
-
-    // User deselected the last checkbox: leave selection mode
-    if (!row.selector_button.active && this.nr_contacts_marked == 0)
-      this.state = UiState.SHOWING;
-
     contacts_marked (this.nr_contacts_marked);
   }
 
