@@ -30,8 +30,6 @@ public class Contacts.ContactList : Gtk.ListBox {
     private Gtk.Label label;
     private Avatar avatar;
     public Gtk.CheckButton selector_button;
-    // Whether the selector should always be visible (or only on hover)
-    private bool checkbox_exposed = false;
 
     public ContactDataRow(Individual i) {
       this.individual = i;
@@ -71,24 +69,6 @@ public class Contacts.ContactList : Gtk.ListBox {
       //TODO: Update also the Avatar
       this.label.set_text (this.individual.display_name);
       changed ();
-    }
-
-    // Sets whether the checbox should always be shown (and not only on hover)
-    public void expose_checkbox (bool expose) {
-      this.checkbox_exposed = expose;
-
-      var hovering = Gtk.StateFlags.PRELIGHT in get_state_flags ();
-      this.selector_button.visible = expose || hovering;
-    }
-
-    // Normally, we would use the (enter/leave)_notify_event here, but since ListBoxRow
-    // doesn't have its own Gdk.Window, this won't work (at least in GTK+3).
-    public override void state_flags_changed (Gtk.StateFlags previous_state) {
-      var hovering_now = Gtk.StateFlags.PRELIGHT in get_state_flags ();
-      var was_hovering = Gtk.StateFlags.PRELIGHT in previous_state;
-
-      if (hovering_now != was_hovering) // If hovering changed
-        this.selector_button.visible = checkbox_exposed || hovering_now;
     }
   }
 
@@ -148,7 +128,7 @@ public class Contacts.ContactList : Gtk.ListBox {
   private void on_ui_state_changed (Object obj, ParamSpec pspec) {
     foreach (var widget in get_children ()) {
       var row = widget as ContactDataRow;
-      row.expose_checkbox (this.state == UiState.SELECTING);
+      row.selector_button.visible = (this.state == UiState.SELECTING);
 
       if (this.state != UiState.SELECTING)
         row.selector_button.active = false;
