@@ -4,15 +4,14 @@
 # This file is distributed under the same license as the gnome-contacts package.
 # Ngô Chin <ndtrung4419@gmail.com>, 2011.
 # Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2011-2013.
-# Trần Ngọc Quân <vnwildman@gmail.com>, 2013, 2014, 2015, 2016.
+# Trần Ngọc Quân <vnwildman@gmail.com>, 2013-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"contacts&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-04-09 19:37+0000\n"
-"PO-Revision-Date: 2016-04-10 09:00+0700\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
+"POT-Creation-Date: 2021-08-14 11:45+0000\n"
+"PO-Revision-Date: 2021-08-16 13:34+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
 "Language: vi\n"
@@ -20,20 +19,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:1
-#: ../data/org.gnome.Contacts.search-provider.ini.in.in.h:1
-#: ../src/contacts-app.vala:129
-msgid "GNOME Contacts"
-msgstr "Danh bạ GNOME"
+#: data/org.gnome.Contacts.appdata.xml.in.in:6
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:201
+#: src/contacts-main-window.vala:228
+msgid "Contacts"
+msgstr "Danh bạ"
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:2
-#: ../data/org.gnome.Contacts.desktop.in.in.h:2
+#: data/org.gnome.Contacts.appdata.xml.in.in:7
+#: data/org.gnome.Contacts.desktop.in.in:4
 msgid "A contacts manager for GNOME"
 msgstr "Bộ quản lý danh bạ dành cho GNOME"
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:3
+#: data/org.gnome.Contacts.appdata.xml.in.in:9
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
@@ -45,7 +45,7 @@ msgstr ""
 "hợp từ mọi nguồn và cung cấp cho bạn một nơi tập trung để quản lý các liên "
 "lạc của mình."
 
-#: ../data/org.gnome.Contacts.appdata.xml.in.h:4
+#: data/org.gnome.Contacts.appdata.xml.in.in:15
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
@@ -53,51 +53,240 @@ msgstr ""
 "Sổ danh bạ cũng được kết hợp với các sổ địa chỉ trên mạng khác và tự động "
 "liên kết các liên lạc từ các nguồn khác nhau trên mạng."
 
-#: ../data/org.gnome.Contacts.desktop.in.in.h:1
-msgid "Contacts"
-msgstr "Danh bạ"
+#: data/org.gnome.Contacts.appdata.xml.in.in:545
+msgid "The GNOME Project"
+msgstr "Dự án GNOME"
 
-#: ../data/org.gnome.Contacts.desktop.in.in.h:3
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Contacts.desktop.in.in:6
 msgid "friends;address book;"
 msgstr ""
 "friends;bạn;bè;ban;be;danh;ba;bạ;address book;sổ;địa;chỉ;so;dia;chi;liên;lạc;"
 "lien;lac;"
 
-#: ../src/contacts-accounts-list.vala:48
-msgid "Online Accounts"
-msgstr "Tài khoản trực tuyến"
+#: data/gtk/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "Overview"
+msgstr "Miêu tả chung"
 
-#: ../src/contacts-accounts-list.vala:174 ../src/contacts-esd-setup.c:241
-msgid "Local Address Book"
-msgstr "Sổ địa chỉ nội bộ"
+#: data/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Help"
+msgstr "Trợ giúp"
 
-#: ../src/contacts-address-map.vala:80
-msgid "Install GNOME Maps to open location."
-msgstr "Cài đặt Bản đồ GNOME để mở vị trí."
+#: data/gtk/help-overlay.ui:21
+msgctxt "shortcut window"
+msgid "Open menu"
+msgstr "Mở trình đơn"
 
-#: ../src/contacts-app.vala:46
-#, c-format
-msgid "No contact with id %s found"
-msgstr "Không tìm thấy liên lạc với id %s"
+#: data/gtk/help-overlay.ui:28
+msgctxt "shortcut window"
+msgid "Create a new contact"
+msgstr "Tạo một liên lạc mới"
 
-#: ../src/contacts-app.vala:47 ../src/contacts-app.vala:149
-msgid "Contact not found"
-msgstr "Không tìm thấy liên lạc"
+#: data/gtk/help-overlay.ui:35
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Tìm kiếm"
 
-#: ../src/contacts-app.vala:56
-msgid "Change Address Book"
-msgstr "Đổi sổ địa chỉ"
+#: data/gtk/help-overlay.ui:42
+msgctxt "shortcut window"
+msgid "Shortcut list"
+msgstr "Danh sách phím tắt"
 
-#: ../src/contacts-app.vala:61
-msgid "Change"
-msgstr "Đổi"
+#: data/gtk/help-overlay.ui:49
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Thoát"
 
-#: ../src/contacts-app.vala:62 ../src/contacts-avatar-dialog.vala:255
-#: ../data/ui/contacts-window.ui.h:6
+#: data/ui/contacts-avatar-selector.ui:19
+#: data/ui/contacts-crop-cheese-dialog.ui:27
+#: data/ui/contacts-main-window.ui:216 src/contacts-addressbook-dialog.vala:32
+#: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "Thôi"
 
-#: ../src/contacts-app.vala:71
+#: data/ui/contacts-avatar-selector.ui:28
+#: data/ui/contacts-crop-cheese-dialog.ui:64
+#: data/ui/contacts-main-window.ui:339 src/contacts-main-window.vala:236
+msgid "Done"
+msgstr "Xong"
+
+#: data/ui/contacts-avatar-selector.ui:102
+msgid "Take a Picture…"
+msgstr "Chụp một Bức ảnh…"
+
+#: data/ui/contacts-avatar-selector.ui:111
+msgid "Select a File…"
+msgstr "Chọn một Tập tin…"
+
+#: data/ui/contacts-contact-pane.ui:18
+msgid "Select a Contact"
+msgstr "Chọn một Liên lạc"
+
+#: data/ui/contacts-crop-cheese-dialog.ui:49
+msgid "Take Another…"
+msgstr "Thêm một cái khác…"
+
+#: data/ui/contacts-editor-menu.ui:13
+msgid "Change Addressbook"
+msgstr "Đổi Sổ địa chỉ"
+
+#: data/ui/contacts-linked-personas-dialog.ui:12
+msgid "Linked Accounts"
+msgstr "Những tài khoản đã liên kết"
+
+#: data/ui/contacts-linked-personas-dialog.ui:45
+msgid "You can link contacts by selecting them from the contacts list"
+msgstr ""
+"Bạn có thể liên kết liên lạc bằng cách chọn chúng từ danh sách liên lạc"
+
+#: data/ui/contacts-link-suggestion-grid.ui:56
+msgid "Link Contacts"
+msgstr "Liên kết Liên lạc"
+
+#: data/ui/contacts-list-pane.ui:22
+msgid "Type to search"
+msgstr "Gõ từ cần tìm"
+
+#. Link refers to the verb, from linking contacts together
+#: data/ui/contacts-list-pane.ui:54
+msgid "Link"
+msgstr "Liên kết"
+
+#: data/ui/contacts-list-pane.ui:68
+msgid "Remove"
+msgstr "Loại bỏ"
+
+#: data/ui/contacts-main-window.ui:15
+msgid "List Contacts By:"
+msgstr "Liệt kê Liên lạc bởi:"
+
+#: data/ui/contacts-main-window.ui:28
+msgid "First Name"
+msgstr "Tên"
+
+#: data/ui/contacts-main-window.ui:35
+msgid "Surname"
+msgstr "Họ"
+
+#: data/ui/contacts-main-window.ui:49
+msgid "Change Address Book…"
+msgstr "Đổi Sổ địa chỉ…"
+
+#: data/ui/contacts-main-window.ui:57
+msgid "Online Accounts <sup>↗</sup>"
+msgstr "Tài khoản trực tuyến sup>↗</sup>"
+
+#: data/ui/contacts-main-window.ui:73
+msgid "Keyboard Shortcuts"
+msgstr "Phím tắt bàn phím"
+
+#: data/ui/contacts-main-window.ui:81
+msgid "Help"
+msgstr "Trợ giúp"
+
+#: data/ui/contacts-main-window.ui:89
+msgid "About Contacts"
+msgstr "Giới thiệu Danh bạ"
+
+#: data/ui/contacts-main-window.ui:107
+msgid "Share"
+msgstr "Chia sẻ"
+
+#: data/ui/contacts-main-window.ui:114
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+#: data/ui/contacts-main-window.ui:121
+#: src/contacts-linked-personas-dialog.vala:73
+msgid "Unlink"
+msgstr "Bỏ liên kết"
+
+#: data/ui/contacts-main-window.ui:133
+msgid "Delete"
+msgstr "Xóa"
+
+#: data/ui/contacts-main-window.ui:171
+msgid "Create new contact"
+msgstr "Tạo liên lạc mới"
+
+#: data/ui/contacts-main-window.ui:175
+msgid "Add contact"
+msgstr "Thêm liên lạc"
+
+#: data/ui/contacts-main-window.ui:198
+msgid "Menu"
+msgstr "Trình đơn"
+
+#: data/ui/contacts-main-window.ui:217
+msgid "Cancel selection"
+msgstr "Hủy lựu chọn"
+
+#: data/ui/contacts-main-window.ui:261
+msgid "Back"
+msgstr "Quay lại"
+
+#: data/ui/contacts-main-window.ui:280 src/contacts-avatar-selector.vala:218
+msgid "_Cancel"
+msgstr "Thô_i"
+
+#: data/ui/contacts-main-window.ui:320
+msgid "Main Menu"
+msgstr "Trình đơn chính"
+
+#: data/ui/contacts-main-window.ui:398
+msgid "Loading"
+msgstr "Đang tải"
+
+#: data/ui/contacts-setup-window.ui:15
+msgid "Contacts Setup"
+msgstr "Cài đặt danh bạ"
+
+#: data/ui/contacts-setup-window.ui:24
+msgid "_Quit"
+msgstr "T_hoát"
+
+#: data/ui/contacts-setup-window.ui:29
+msgid "Cancel setup and quit"
+msgstr "Hủy cài đặt và thoát"
+
+#: data/ui/contacts-setup-window.ui:43
+msgid "_Done"
+msgstr "_Xong"
+
+#: data/ui/contacts-setup-window.ui:47
+msgid "Setup complete"
+msgstr "Cài đặt đã hoàn tất"
+
+#: data/ui/contacts-setup-window.ui:86
+msgid "Welcome"
+msgstr "Chào mừng"
+
+#: data/ui/contacts-setup-window.ui:98
+msgid ""
+"Please select your main address book: this is where new contacts will be "
+"added. If you keep your contacts in an online account, you can add them "
+"using the online accounts settings."
+msgstr ""
+"Vui lòng chọn sổ địa chỉ chính của bạn: đây là nơi mà liên lạc mới sẽ được "
+"lưu vào. Nếu bạn lưu liên lạc trong tài khoản trực tuyến, bạn có thể thêm "
+"chúng thông qua mục cài đặt tài khoản trực tuyến."
+
+#: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
+#: src/contacts-esd-setup.vala:149
+msgid "Local Address Book"
+msgstr "Sổ địa chỉ nội bộ"
+
+#: src/contacts-addressbook-dialog.vala:27
+msgid "Change Address Book"
+msgstr "Đổi sổ địa chỉ"
+
+#: src/contacts-addressbook-dialog.vala:31
+msgid "Change"
+msgstr "Đổi"
+
+#: src/contacts-addressbook-dialog.vala:60
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -105,632 +294,645 @@ msgstr ""
 "Liên lạc mới sẽ được thêm vào sổ danh bạ đã chọn.\n"
 "Bạn có thể xem và sửa các liên lạc từ sổ danh bạ khác."
 
-#: ../src/contacts-app.vala:128
-msgid "translator-credits"
-msgstr "Nhóm Việt hóa GNOME <gnome-vi-list@gnome.org>"
-
-#: ../src/contacts-app.vala:130
-msgid "About GNOME Contacts"
-msgstr "Giới thiệu Danh bạ GNOME"
-
-#: ../src/contacts-app.vala:131
-msgid "Contact Management Application"
-msgstr "Ứng dụng quản lý Danh bạ"
-
-#: ../src/contacts-app.vala:148
-#, c-format
-msgid "No contact with email address %s found"
-msgstr "Không tìm thấy liên lạc với địa chỉ thư điện tử %s"
-
-#: ../src/contacts-app.vala:320
-msgid "Show contact with this individual id"
-msgstr "Hiện liên lạc với mã số cá nhân này"
-
-#: ../src/contacts-app.vala:322
+#: src/contacts-app.vala:38
 msgid "Show contact with this email address"
 msgstr "Hiện liên lạc với địa chỉ thư điện tử này"
 
-#: ../src/contacts-app.vala:331
-msgid "— contact management"
-msgstr "- quản lý danh bạ"
+#: src/contacts-app.vala:39
+msgid "Show contact with this individual id"
+msgstr "Hiện liên lạc với mã số cá nhân này"
 
-#: ../src/contacts-avatar-dialog.vala:200
+#: src/contacts-app.vala:40
+msgid "Show contacts with the given filter"
+msgstr "Hiện liên lạc với bộ lọc đã cung cấp"
+
+#: src/contacts-app.vala:41
+msgid "Show the current version of Contacts"
+msgstr "Hiện phiên bản hiện tại của Danh bạ"
+
+#: src/contacts-app.vala:112
+#, c-format
+msgid "No contact with id %s found"
+msgstr "Không tìm thấy liên lạc với id %s"
+
+#: src/contacts-app.vala:113 src/contacts-app.vala:193
+msgid "Contact not found"
+msgstr "Không tìm thấy liên lạc"
+
+#: src/contacts-app.vala:172
+msgid "translator-credits"
+msgstr "Nhóm Việt hóa GNOME <gnome-vi-list@gnome.org>"
+
+#: src/contacts-app.vala:173
+msgid "GNOME Contacts"
+msgstr "Danh bạ GNOME"
+
+#: src/contacts-app.vala:174
+msgid "About GNOME Contacts"
+msgstr "Giới thiệu Danh bạ GNOME"
+
+#: src/contacts-app.vala:175
+msgid "Contact Management Application"
+msgstr "Ứng dụng quản lý Danh bạ"
+
+#: src/contacts-app.vala:176
+msgid ""
+"© 2011 Red Hat, Inc.\n"
+"© 2011-2020 The Contacts Developers"
+msgstr ""
+"© 2011 Red Hat, Inc.\n"
+"© 2011-2020 The Contacts Developers"
+
+#: src/contacts-app.vala:192
+#, c-format
+msgid "No contact with email address %s found"
+msgstr "Không tìm thấy liên lạc có địa chỉ thư điện tử %s"
+
+#: src/contacts-avatar-selector.vala:158 src/contacts-avatar-selector.vala:164
+#: src/contacts-avatar-selector.vala:255
+msgid "Failed to set avatar."
+msgstr "Không thể đặt ảnh đại diện."
+
+#: src/contacts-avatar-selector.vala:215
 msgid "Browse for more pictures"
 msgstr "Duyệt thêm các ảnh khác"
 
-#: ../src/contacts-avatar-dialog.vala:203
-msgid "_Cancel"
-msgstr "_Thôi"
-
-#: ../src/contacts-avatar-dialog.vala:204
+#: src/contacts-avatar-selector.vala:218
 msgid "_Open"
 msgstr "_Mở"
 
-#: ../src/contacts-avatar-dialog.vala:249
-msgid "Select Picture"
-msgstr "Chọn ảnh"
+#: src/contacts-contact-editor.vala:50
+msgid "Change avatar"
+msgstr "Đổi ảnh đại diện"
 
-#: ../src/contacts-avatar-dialog.vala:253 ../src/contacts-window.vala:198
-#: ../src/contacts-window.vala:224
-msgid "Select"
-msgstr "Chọn"
-
-#: ../src/contacts-avatar-dialog.vala:281 ../src/contacts-window.vala:315
-msgid "New Contact"
-msgstr "Danh bạ mới"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "Street"
-msgstr "Đường"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "Extension"
-msgstr "Ngõ/phố/phường"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "City"
-msgstr "Thành phố"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "State/Province"
-msgstr "Tỉnh/Bang"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "Zip/Postal Code"
-msgstr "Mã bưu điện (Zip)"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "PO box"
-msgstr "Hộp bưu điện"
-
-#: ../src/contacts-contact-editor.vala:28
-msgid "Country"
-msgstr "Quốc gia"
-
-#: ../src/contacts-contact-editor.vala:293
-msgid "Add email"
-msgstr "Thêm thư điện tử"
-
-#: ../src/contacts-contact-editor.vala:295
-msgid "Add number"
-msgstr "Thêm số điện thoại"
-
-#: ../src/contacts-contact-editor.vala:299
-#: ../src/contacts-contact-editor.vala:330
-#: ../src/contacts-contact-editor.vala:365
-#: ../src/contacts-contact-editor.vala:428
-#: ../src/contacts-contact-editor.vala:478
-msgid "Delete field"
-msgstr "Xóa trường"
-
-#: ../src/contacts-contact-editor.vala:400
-msgid "January"
-msgstr "Tháng giêng"
-
-#: ../src/contacts-contact-editor.vala:401
-msgid "February"
-msgstr "Tháng hai"
-
-#: ../src/contacts-contact-editor.vala:402
-msgid "March"
-msgstr "Tháng ba"
-
-#: ../src/contacts-contact-editor.vala:403
-msgid "April"
-msgstr "Tháng tư"
-
-#: ../src/contacts-contact-editor.vala:404
-msgid "May"
-msgstr "Tháng năm"
-
-#: ../src/contacts-contact-editor.vala:405
-msgid "June"
-msgstr "Tháng sáu"
-
-#: ../src/contacts-contact-editor.vala:406
-msgid "July"
-msgstr "Tháng bảy"
-
-#: ../src/contacts-contact-editor.vala:407
-msgid "August"
-msgstr "Tháng tám"
-
-#: ../src/contacts-contact-editor.vala:408
-msgid "September"
-msgstr "Tháng chín"
-
-#: ../src/contacts-contact-editor.vala:409
-msgid "October"
-msgstr "Tháng mười"
-
-#: ../src/contacts-contact-editor.vala:410
-msgid "November"
-msgstr "Tháng mười một"
-
-#: ../src/contacts-contact-editor.vala:411
-msgid "December"
-msgstr "Tháng mười hai"
-
-#: ../src/contacts-contact-editor.vala:561
-#: ../src/contacts-contact-editor.vala:568
-#: ../src/contacts-contact-sheet.vala:190 ../data/ui/app-menu.ui.h:10
-msgid "Website"
-msgstr "Trang thông tin điện tử"
-
-#: ../src/contacts-contact-editor.vala:587
-#: ../src/contacts-contact-editor.vala:594
-#: ../src/contacts-contact-sheet.vala:196 ../data/ui/app-menu.ui.h:11
-msgid "Nickname"
-msgstr "Biệt hiệu"
-
-#: ../src/contacts-contact-editor.vala:620
-#: ../src/contacts-contact-editor.vala:627
-#: ../src/contacts-contact-sheet.vala:203 ../data/ui/app-menu.ui.h:12
-msgid "Birthday"
-msgstr "Ngày sinh"
-
-#: ../src/contacts-contact-editor.vala:642
-#: ../src/contacts-contact-editor.vala:649
-#: ../src/contacts-contact-sheet.vala:210
-msgid "Note"
-msgstr "Ghi chú"
-
-#: ../src/contacts-contact-editor.vala:795
-msgid "New Detail"
-msgstr "Chi tiết mới"
-
-#: ../src/contacts-contact-editor.vala:801
-#: ../src/contacts-linked-accounts-dialog.vala:36
-msgid "Linked Accounts"
-msgstr "Tài khoản liên kết"
-
-#: ../src/contacts-contact-editor.vala:804
-msgid "Remove Contact"
-msgstr "Loại bỏ liên lạc"
-
-#: ../src/contacts-contact-editor.vala:862
-#: ../src/contacts-contact-editor.vala:1062
+#: src/contacts-contact-editor.vala:71
 msgid "Add name"
 msgstr "Thêm tên"
 
-#: ../src/contacts-contact-pane.vala:137
-#, c-format
-msgid "Does %s from %s belong here?"
-msgstr "Có phải %s từ %s có thuộc về đây?"
+#: src/contacts-contact-list.vala:194
+msgid "Favorites"
+msgstr "Yêu thích"
 
-#: ../src/contacts-contact-pane.vala:139
-#, c-format
-msgid "Do these details belong to %s?"
-msgstr "Những chi tiết này có thuộc về %s?"
+#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
+msgid "All Contacts"
+msgstr "Mọi liên lạc"
 
-#: ../src/contacts-contact-pane.vala:151
-msgid "Yes"
-msgstr "Có"
-
-#: ../src/contacts-contact-pane.vala:152
-msgid "No"
-msgstr "Không"
-
-#: ../src/contacts-contact-pane.vala:323
-msgid "Select a contact"
-msgstr "Chọn một danh bạ"
-
-#: ../src/contacts-contact-pane.vala:455
-msgid "You need to enter some data"
-msgstr "Bạn cần nhập vào một ít dữ liệu"
-
-#: ../src/contacts-contact-pane.vala:467
+#: src/contacts-contact-pane.vala:236
 msgid "No primary addressbook configured"
 msgstr "Chưa cấu hình sổ địa chỉ chính"
 
-#: ../src/contacts-contact-pane.vala:486
+#: src/contacts-contact-pane.vala:246
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Không thể tạo liên lạc mới: %s"
 
-#: ../src/contacts-contact-pane.vala:497
+#: src/contacts-contact-pane.vala:258
 msgid "Unable to find newly created contact"
 msgstr "Không thể tìm thấy liên lạc vừa mới tạo"
 
-#: ../src/contacts-contact-frame.vala:40
-msgid "Change avatar"
-msgstr "Đổi avatar"
+#: src/contacts-contact-sheet.vala:288 src/contacts-editor-property.vala:491
+msgid "Website"
+msgstr "Trang thông tin điện tử"
 
-#: ../src/contacts-contact.vala:741
-msgid "Google Talk"
-msgstr "Google Talk"
+#: src/contacts-contact-sheet.vala:305 src/contacts-editor-property.vala:501
+msgid "Nickname"
+msgstr "Biệt hiệu"
 
-#: ../src/contacts-contact.vala:742
-msgid "Ovi Chat"
-msgstr "Ovi Chat"
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
+msgid "Birthday"
+msgstr "Ngày sinh"
 
-#: ../src/contacts-contact.vala:743
-msgid "Facebook"
-msgstr "Facebook"
+#: src/contacts-contact-sheet.vala:318 src/contacts-editor-property.vala:529
+msgid "Note"
+msgstr "Ghi chú"
 
-#: ../src/contacts-contact.vala:744
-msgid "Livejournal"
-msgstr "Livejournal"
+#: src/contacts-crop-cheese-dialog.vala:88
+msgid "Unable to take photo."
+msgstr "Không thể chụp ảnh."
 
-#: ../src/contacts-contact.vala:745
-msgid "AOL Instant Messenger"
-msgstr "AOL Instant Messenger"
+#: src/contacts-editor-property.vala:63
+msgid "Day"
+msgstr "Ngày"
 
-#: ../src/contacts-contact.vala:746
-msgid "Gadu-Gadu"
-msgstr "Gadu-Gadu"
+#: src/contacts-editor-property.vala:67
+msgid "Month"
+msgstr "Tháng"
 
-#: ../src/contacts-contact.vala:747
-msgid "Novell Groupwise"
-msgstr "Novell Groupwise"
+#: src/contacts-editor-property.vala:71
+msgid "Year"
+msgstr "Năm"
 
-#: ../src/contacts-contact.vala:748
-msgid "ICQ"
-msgstr "ICQ"
+#: src/contacts-editor-property.vala:81
+msgid "Change Birthday"
+msgstr "Đổi ngày sinh"
 
-#: ../src/contacts-contact.vala:749
-msgid "IRC"
-msgstr "IRC"
+#: src/contacts-editor-property.vala:82
+msgid "Set"
+msgstr "Đặt"
 
-#: ../src/contacts-contact.vala:750
-msgid "Jabber"
-msgstr "Jabber"
+#: src/contacts-editor-property.vala:134
+msgid "Street"
+msgstr "Đường"
 
-#: ../src/contacts-contact.vala:751
-msgid "Local network"
-msgstr "Mạng nội bộ"
+#: src/contacts-editor-property.vala:134
+msgid "Extension"
+msgstr "Ngõ/phố/phường"
 
-#: ../src/contacts-contact.vala:752
-msgid "Windows Live Messenger"
-msgstr "Windows Live Messenger"
+#: src/contacts-editor-property.vala:134
+msgid "City"
+msgstr "Thành phố"
 
-#: ../src/contacts-contact.vala:753
-msgid "MySpace"
-msgstr "MySpace"
+#: src/contacts-editor-property.vala:134
+msgid "State/Province"
+msgstr "Tỉnh/Bang"
 
-#: ../src/contacts-contact.vala:754
-msgid "MXit"
-msgstr "MXit"
+#: src/contacts-editor-property.vala:134
+msgid "Zip/Postal Code"
+msgstr "Mã bưu điện (Zip)"
 
-#: ../src/contacts-contact.vala:755
-msgid "Napster"
-msgstr "Napster"
+#: src/contacts-editor-property.vala:134
+msgid "PO box"
+msgstr "Hộp bưu điện"
 
-#: ../src/contacts-contact.vala:756
-msgid "Tencent QQ"
-msgstr "Tencent QQ"
+#: src/contacts-editor-property.vala:134
+msgid "Country"
+msgstr "Quốc gia"
 
-#: ../src/contacts-contact.vala:757
-msgid "IBM Lotus Sametime"
-msgstr "IBM Lotus Sametime"
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
+msgid "Delete field"
+msgstr "Xóa trường"
 
-#: ../src/contacts-contact.vala:758
-msgid "SILC"
-msgstr "SILC"
+#: src/contacts-editor-property.vala:452
+msgid "Email address"
+msgstr "Địa chỉ thư điện tử"
 
-#: ../src/contacts-contact.vala:759
-msgid "sip"
-msgstr "sip"
+#: src/contacts-editor-property.vala:453
+msgid "Add email"
+msgstr "Thêm thư điện tử"
 
-#: ../src/contacts-contact.vala:760
-msgid "Skype"
-msgstr "Skype"
+#: src/contacts-editor-property.vala:471
+msgid "Phone number"
+msgstr "Số điện thoại"
 
-#: ../src/contacts-contact.vala:761
-msgid "Telephony"
-msgstr "Telephony"
+#: src/contacts-editor-property.vala:472
+msgid "Add number"
+msgstr "Thêm số điện thoại"
 
-#: ../src/contacts-contact.vala:762
-msgid "Trepia"
-msgstr "Trepia"
+#: src/contacts-editor-property.vala:492
+msgid "https://example.com"
+msgstr "https://example.com"
 
-#: ../src/contacts-contact.vala:763 ../src/contacts-contact.vala:764
-msgid "Yahoo! Messenger"
-msgstr "Yahoo! Messenger"
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
+msgid "Set Birthday"
+msgstr "Đặt ngày sinh"
 
-#: ../src/contacts-contact.vala:765
-msgid "Zephyr"
-msgstr "Zephyr"
+#: src/contacts-editor-property.vala:619
+msgid "Address"
+msgstr "Địa chỉ"
 
-#: ../src/contacts-contact.vala:1070
-msgid "Unexpected internal error: created contact was not found"
-msgstr "Lỗi nội bộ bất ngờ: không tìm thấy liên lạc vừa tạo"
-
-#: ../src/contacts-contact.vala:1255
-msgid "Google Circles"
-msgstr "Google Circles"
-
-#: ../src/contacts-contact.vala:1257 ../src/contacts-esd-setup.c:244
-#: ../src/contacts-esd-setup.c:272
+#: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
+#: src/contacts-utils.vala:475
 msgid "Google"
 msgstr "Google"
 
-#: ../src/contacts-esd-setup.c:269
+#: src/contacts-esd-setup.vala:164
 msgid "Local Contact"
 msgstr "Danh bạ cục bộ"
 
-#: ../src/contacts-linked-accounts-dialog.vala:35
+#: src/contacts-im-service.vala:30
+msgid "AOL Instant Messenger"
+msgstr "AOL Instant Messenger"
+
+#: src/contacts-im-service.vala:31
+msgid "Facebook"
+msgstr "Facebook"
+
+#: src/contacts-im-service.vala:32
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: src/contacts-im-service.vala:33
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: src/contacts-im-service.vala:34
+msgid "Novell Groupwise"
+msgstr "Novell Groupwise"
+
+#: src/contacts-im-service.vala:35
+msgid "ICQ"
+msgstr "ICQ"
+
+#: src/contacts-im-service.vala:36
+msgid "IRC"
+msgstr "IRC"
+
+#: src/contacts-im-service.vala:37
+msgid "Jabber"
+msgstr "Jabber"
+
+#: src/contacts-im-service.vala:38
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: src/contacts-im-service.vala:39
+msgid "Local network"
+msgstr "Mạng nội bộ"
+
+#: src/contacts-im-service.vala:40
+msgid "Windows Live Messenger"
+msgstr "Windows Live Messenger"
+
+#: src/contacts-im-service.vala:41
+msgid "MySpace"
+msgstr "MySpace"
+
+#: src/contacts-im-service.vala:42
+msgid "MXit"
+msgstr "MXit"
+
+#: src/contacts-im-service.vala:43
+msgid "Napster"
+msgstr "Napster"
+
+#: src/contacts-im-service.vala:44
+msgid "Ovi Chat"
+msgstr "Ovi Chat"
+
+#: src/contacts-im-service.vala:45
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: src/contacts-im-service.vala:46
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: src/contacts-im-service.vala:47
+msgid "SILC"
+msgstr "SILC"
+
+#: src/contacts-im-service.vala:48
+msgid "sip"
+msgstr "sip"
+
+#: src/contacts-im-service.vala:49
+msgid "Skype"
+msgstr "Skype"
+
+#: src/contacts-im-service.vala:50
+msgid "Telephony"
+msgstr "Telephony"
+
+#: src/contacts-im-service.vala:51
+msgid "Trepia"
+msgstr "Trepia"
+
+#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
+msgid "Yahoo! Messenger"
+msgstr "Yahoo! Messenger"
+
+#: src/contacts-im-service.vala:54
+msgid "Zephyr"
+msgstr "Zephyr"
+
+#: src/contacts-link-suggestion-grid.vala:52
 #, c-format
-msgid "%s"
-msgstr "%s"
+msgid "Is this the same person as %s from %s?"
+msgstr "Đây có phải cùng một người với %s từ %s?"
 
-#: ../src/contacts-linked-accounts-dialog.vala:60
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr ""
-"Bạn có thể liên kết liên lạc bằng cách chọn chúng từ danh sách liên lạc"
+#: src/contacts-link-suggestion-grid.vala:55
+#, c-format
+msgid "Is this the same person as %s?"
+msgstr "Đây có phải cùng một người với %s?"
 
-#: ../src/contacts-linked-accounts-dialog.vala:104
-msgid "Unlink"
-msgstr "Bỏ liên kết"
-
-#. Refers to the type of the detail, could be Home, Work or Other for email, and the same
-#. * for phone numbers, addresses, etc.
-#: ../src/contacts-types.vala:115 ../src/contacts-types.vala:127
-#: ../src/contacts-types.vala:228 ../src/contacts-types.vala:342
-msgid "Other"
-msgstr "Khác"
-
-#. List most specific first, always in upper case
-#: ../src/contacts-types.vala:283 ../src/contacts-types.vala:307
-#: ../src/contacts-types.vala:338
-msgid "Home"
-msgstr "Nhà riêng"
-
-#: ../src/contacts-types.vala:284 ../src/contacts-types.vala:308
-#: ../src/contacts-types.vala:333
-msgid "Work"
-msgstr "Cơ quan"
-
-#. List most specific first, always in upper case
-#: ../src/contacts-types.vala:306
-msgid "Personal"
-msgstr "Cá nhân"
-
-#. List most specific first, always in upper case
-#: ../src/contacts-types.vala:332
-msgid "Assistant"
-msgstr "Trợ lý"
-
-#: ../src/contacts-types.vala:334
-msgid "Work Fax"
-msgstr "Fax cơ quan"
-
-#: ../src/contacts-types.vala:335
-msgid "Callback"
-msgstr "Số gọi lại"
-
-#: ../src/contacts-types.vala:336
-msgid "Car"
-msgstr "Ôtô"
-
-#: ../src/contacts-types.vala:337
-msgid "Company"
-msgstr "Công ty"
-
-#: ../src/contacts-types.vala:339
-msgid "Home Fax"
-msgstr "Fax nhà riêng"
-
-#: ../src/contacts-types.vala:340
-msgid "ISDN"
-msgstr "ISDN"
-
-#: ../src/contacts-types.vala:341
-msgid "Mobile"
-msgstr "Di động"
-
-#: ../src/contacts-types.vala:343
-msgid "Fax"
-msgstr "Fax"
-
-#: ../src/contacts-types.vala:344
-msgid "Pager"
-msgstr "Máy nhắn tin"
-
-#: ../src/contacts-types.vala:345
-msgid "Radio"
-msgstr "Đài phát thanh"
-
-#: ../src/contacts-types.vala:346
-msgid "Telex"
-msgstr "Telex"
-
-#. To translators: TTY is Teletypewriter
-#: ../src/contacts-types.vala:348
-msgid "TTY"
-msgstr "TTY"
-
-#: ../src/contacts-view.vala:194
-msgid "No results matched search"
-msgstr "Không tìm thấy kết quả nào khớp"
-
-#: ../src/contacts-view.vala:298
-msgid "Suggestions"
-msgstr "Gợi ý"
-
-#: ../src/contacts-view.vala:323
-msgid "Other Contacts"
-msgstr "Liên lạc khác"
-
-#: ../src/contacts-window.vala:200
+#: src/contacts-main-window.vala:198
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "Đã chọn %d"
 
-#: ../src/contacts-window.vala:233 ../data/ui/contacts-window.ui.h:3
-msgid "All Contacts"
-msgstr "Mọi liên lạc"
+#: src/contacts-main-window.vala:236
+msgid "_Add"
+msgstr "_Thêm"
 
-#: ../src/contacts-window.vala:250
+#: src/contacts-main-window.vala:281
 #, c-format
 msgid "Editing %s"
 msgstr "Đang sửa %s"
 
-#: ../src/contacts-window.vala:265 ../data/ui/contacts-window.ui.h:8
-msgid "Done"
-msgstr "Xong"
+#: src/contacts-main-window.vala:308 src/contacts-main-window.vala:507
+#: src/contacts-main-window.vala:531 src/contacts-main-window.vala:577
+msgid "_Undo"
+msgstr "Hoà_n tác"
 
-#: ../src/contacts-window.vala:320
-msgid "Add"
-msgstr "Thêm"
+#: src/contacts-main-window.vala:309
+msgid "Contacts unlinked"
+msgstr "Liên lạc đã hủy liên kết"
 
-#: ../src/contacts-window.vala:411
+#: src/contacts-main-window.vala:369
+msgid "Unmark as favorite"
+msgstr "Hủy đánh dấu yêu thích"
+
+#: src/contacts-main-window.vala:370
+msgid "Mark as favorite"
+msgstr "Đánh dấu yêu thích"
+
+#: src/contacts-main-window.vala:386
+msgid "New Contact"
+msgstr "Liên lạc mới"
+
+#: src/contacts-main-window.vala:503
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "đã liên kết %d liên lạc"
 
-#: ../src/contacts-window.vala:415 ../src/contacts-window.vala:447
-#: ../src/contacts-window.vala:489 ../src/contacts-window.vala:525
-msgid "_Undo"
-msgstr "_Hoàn tác"
+#: src/contacts-main-window.vala:526
+#, c-format
+msgid "Deleted contact %s"
+msgstr "Đã xóa liên lạc %s"
 
-#: ../src/contacts-window.vala:443
+#: src/contacts-main-window.vala:528
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "đã xóa %d liên lạc"
 
-#: ../src/contacts-window.vala:486
-#, c-format
-msgid "Contact deleted: \"%s\""
-msgstr "Đã xóa liên lạc: \"%s\""
-
-#: ../src/contacts-window.vala:521
+#: src/contacts-main-window.vala:573
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s liên kết đến %s"
 
-#: ../src/contacts-window.vala:523
+#: src/contacts-main-window.vala:575
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s liên kết đến danh bạ"
 
-#: ../data/ui/app-menu.ui.h:1
-msgid "_Change Address Book..."
-msgstr "Đổ_i sổ địa chỉ…"
+#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:263
+msgid "Other"
+msgstr "Khác"
 
-#: ../data/ui/app-menu.ui.h:2
-msgid "_Help"
-msgstr "Trợ _giúp"
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:212 src/contacts-typeset.vala:232
+#: src/contacts-typeset.vala:258 src/contacts-typeset.vala:260
+msgid "Home"
+msgstr "Nhà riêng"
 
-#: ../data/ui/app-menu.ui.h:3
-msgid "_About"
-msgstr "_Giới thiệu"
+#: src/contacts-typeset.vala:213 src/contacts-typeset.vala:233
+#: src/contacts-typeset.vala:252 src/contacts-typeset.vala:254
+msgid "Work"
+msgstr "Cơ quan"
 
-#: ../data/ui/app-menu.ui.h:4
-msgid "_Quit"
-msgstr "T_hoát"
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:231
+msgid "Personal"
+msgstr "Cá nhân"
 
-#: ../data/ui/app-menu.ui.h:5
-msgid "Home email"
-msgstr "Thư điện tử ở nhà"
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:251
+msgid "Assistant"
+msgstr "Trợ lý"
 
-#: ../data/ui/app-menu.ui.h:6
-msgid "Work email"
-msgstr "Thư điện tử công việc"
+#: src/contacts-typeset.vala:253
+msgid "Work Fax"
+msgstr "Fax cơ quan"
 
-#: ../data/ui/app-menu.ui.h:7
-msgid "Mobile phone"
-msgstr "Điện thoại di động"
+#: src/contacts-typeset.vala:255
+msgid "Callback"
+msgstr "Số gọi lại"
 
-#: ../data/ui/app-menu.ui.h:8
-msgid "Home phone"
-msgstr "Điện thoại nhà"
+#: src/contacts-typeset.vala:256
+msgid "Car"
+msgstr "Ôtô"
 
-#: ../data/ui/app-menu.ui.h:9
-msgid "Work phone"
-msgstr "Điện thoại cơ quan"
+#: src/contacts-typeset.vala:257
+msgid "Company"
+msgstr "Công ty"
 
-#: ../data/ui/app-menu.ui.h:13
-msgid "Home address"
-msgstr "Địa chỉ nhà riêng"
+#: src/contacts-typeset.vala:259
+msgid "Home Fax"
+msgstr "Fax nhà riêng"
 
-#: ../data/ui/app-menu.ui.h:14
-msgid "Work address"
-msgstr "Địa chỉ cơ quan"
+#: src/contacts-typeset.vala:261
+msgid "ISDN"
+msgstr "ISDN"
 
-#: ../data/ui/app-menu.ui.h:15
-msgid "Notes"
-msgstr "Ghi chú"
+#: src/contacts-typeset.vala:262
+msgid "Mobile"
+msgstr "Di động"
 
-#: ../data/ui/contacts-list-pane.ui.h:1
-msgid "Type to search"
-msgstr "Gõ từ cần tìm"
+#: src/contacts-typeset.vala:264
+msgid "Fax"
+msgstr "Fax"
 
-#. Link refers to the verb, from linking contacts together
-#: ../data/ui/contacts-list-pane.ui.h:3
-msgid "Link"
-msgstr "Liên kết"
+#: src/contacts-typeset.vala:265
+msgid "Pager"
+msgstr "Máy nhắn tin"
 
-#: ../data/ui/contacts-list-pane.ui.h:4
-msgid "Delete"
-msgstr "Xóa"
+#: src/contacts-typeset.vala:266
+msgid "Radio"
+msgstr "Đài phát thanh"
 
-#: ../data/ui/contacts-window.ui.h:1
-msgid "Loading"
-msgstr "Đang tải"
+#: src/contacts-typeset.vala:267
+msgid "Telex"
+msgstr "Telex"
 
-#: ../data/ui/contacts-window.ui.h:2
-msgid ""
-"New contacts will be added to the selected address book. You are able to "
-"view and edit contacts from other address books."
-msgstr ""
-"Các liên lạc mới sẽ được thêm vào sổ danh bạ đã chọn. Bạn có thể xem và sửa "
-"các liên lạc từ các sổ danh bạ khác."
+#. To translators: TTY is Teletypewriter
+#: src/contacts-typeset.vala:269
+msgid "TTY"
+msgstr "TTY"
 
-#: ../data/ui/contacts-window.ui.h:4
-msgid "Add contact"
-msgstr "Thêm liên lạc"
-
-#: ../data/ui/contacts-window.ui.h:5
-msgid "Selection mode"
-msgstr "Chế độ chọn"
-
-#: ../data/ui/contacts-window.ui.h:7
-msgid "Edit"
-msgstr "Chỉnh sửa"
-
-#: ../data/ui/contacts-window.ui.h:9
-msgid "Select Address Book"
-msgstr "Chọn Sổ địa chỉ"
-
-#: ../data/ui/contacts-window.ui.h:10
-msgid "Cancel setup"
-msgstr "Hủy cài đặt"
-
-#: ../data/ui/contacts-window.ui.h:11
-msgid "Setup complete"
-msgstr "Cài đặt đã hoàn tất"
-
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:1
+#: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
 msgstr "Cài đặt lần đầu hoàn tất."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:2
-msgid "Set to true when the user ran the first-time setup wizard."
-msgstr "Đặt là đúng khi người dùng đã chạy bộ cấu hình tự động lần đầu."
+#: src/org.gnome.Contacts.gschema.xml:7
+msgid "Set to true after the user has run the first-time setup wizard."
+msgstr "Gán là đúng sau khi người dùng đã chạy trình cài đặt tự động lần đầu."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:3
-msgid "View subset"
-msgstr "Xem tập con"
+#: src/org.gnome.Contacts.gschema.xml:11
+msgid "Sort contacts on surname."
+msgstr "Sắp xếp liên lạc theo họ."
 
-#: ../src/org.gnome.Contacts.gschema.xml.in.h:4
-msgid "View contacts subset"
-msgstr "Xem tập con liên lạc"
+#: src/org.gnome.Contacts.gschema.xml:12
+msgid ""
+"If this is set to true, the list of contacts will be sorted on their "
+"surnames. Otherwise, it will be sorted on the first names of the contacts."
+msgstr ""
+"Nếu cái này được gán là đúng, danh sách liên lạc sẽ được sắp xếp theo họ. "
+"Nếu không, nó sẽ được sắp xếp theo tên của liên lạc."
+
+#: src/org.gnome.Contacts.gschema.xml:19
+msgid "The default height of the contacts window."
+msgstr "Chiều cao mặc định của cửa sổ liên lạc."
+
+#: src/org.gnome.Contacts.gschema.xml:20
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the height of the window."
+msgstr ""
+"Nếu kích cỡ cửa số chưa được thay đổi bởi người dùng, cái này sẽ được dùng "
+"như là giá trị ban đầu cho chiều cao cửa sổ."
+
+#: src/org.gnome.Contacts.gschema.xml:26
+msgid "The default width of the contacts window."
+msgstr "Chiều rộng mặc định của cửa sổ liên lạc."
+
+#: src/org.gnome.Contacts.gschema.xml:27
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the width of the window."
+msgstr ""
+"Nếu kích cỡ cửa số chưa được thay đổi bởi người dùng, cái này sẽ được dùng "
+"như là giá trị ban đầu cho chiều rộng cửa sổ."
+
+#: src/org.gnome.Contacts.gschema.xml:32
+msgid "Is the window maximized?"
+msgstr "Cửa sổ có đang được phóng to tối đa?"
+
+#: src/org.gnome.Contacts.gschema.xml:33 src/org.gnome.Contacts.gschema.xml:38
+msgid "Stores if the window is currently maximized."
+msgstr "Lưu trữ nếu cửa sổ đang được phóng to tối đa."
+
+#: src/org.gnome.Contacts.gschema.xml:37
+msgid "Is the window fullscreen"
+msgstr "Cửa sổ có đang phóng to toàn màn hình"
+
+#~ msgid "Install GNOME Maps to open location."
+#~ msgstr "Cài đặt Bản đồ GNOME để mở vị trí."
+
+#~ msgid "— contact management"
+#~ msgstr "- quản lý danh bạ"
+
+#~ msgid "Select Picture"
+#~ msgstr "Chọn ảnh"
+
+#~ msgid "January"
+#~ msgstr "Tháng giêng"
+
+#~ msgid "February"
+#~ msgstr "Tháng hai"
+
+#~ msgid "April"
+#~ msgstr "Tháng tư"
+
+#~ msgid "June"
+#~ msgstr "Tháng sáu"
+
+#~ msgid "July"
+#~ msgstr "Tháng bảy"
+
+#~ msgid "August"
+#~ msgstr "Tháng tám"
+
+#~ msgid "September"
+#~ msgstr "Tháng chín"
+
+#~ msgid "October"
+#~ msgstr "Tháng mười"
+
+#~ msgid "November"
+#~ msgstr "Tháng mười một"
+
+#~ msgid "December"
+#~ msgstr "Tháng mười hai"
+
+#~ msgid "New Detail"
+#~ msgstr "Chi tiết mới"
+
+#~ msgid "Remove Contact"
+#~ msgstr "Loại bỏ liên lạc"
+
+#~ msgid "Does %s from %s belong here?"
+#~ msgstr "Có phải %s từ %s có thuộc về đây?"
+
+#~ msgid "Do these details belong to %s?"
+#~ msgstr "Những chi tiết này có thuộc về %s?"
+
+#~ msgid "Yes"
+#~ msgstr "Có"
+
+#~ msgid "No"
+#~ msgstr "Không"
+
+#~ msgid "You need to enter some data"
+#~ msgstr "Bạn cần nhập vào một ít dữ liệu"
+
+#~ msgid "Unexpected internal error: created contact was not found"
+#~ msgstr "Lỗi nội bộ bất ngờ: không tìm thấy liên lạc vừa tạo"
+
+#~ msgid "Google Circles"
+#~ msgstr "Google Circles"
+
+#~ msgid "%s"
+#~ msgstr "%s"
+
+#~ msgid "No results matched search"
+#~ msgstr "Không tìm thấy kết quả nào khớp"
+
+#~ msgid "Suggestions"
+#~ msgstr "Gợi ý"
+
+#~ msgid "Add"
+#~ msgstr "Thêm"
+
+#~ msgid "Contact deleted: \"%s\""
+#~ msgstr "Đã xóa liên lạc: \"%s\""
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "Đổ_i sổ địa chỉ…"
+
+#~ msgid "_About"
+#~ msgstr "_Giới thiệu"
+
+#~ msgid "Home email"
+#~ msgstr "Thư điện tử ở nhà"
+
+#~ msgid "Work email"
+#~ msgstr "Thư điện tử công việc"
+
+#~ msgid "Mobile phone"
+#~ msgstr "Điện thoại di động"
+
+#~ msgid "Home phone"
+#~ msgstr "Điện thoại nhà"
+
+#~ msgid "Work phone"
+#~ msgstr "Điện thoại cơ quan"
+
+#~ msgid "Home address"
+#~ msgstr "Địa chỉ nhà riêng"
+
+#~ msgid "Work address"
+#~ msgstr "Địa chỉ cơ quan"
+
+#~ msgid "Notes"
+#~ msgstr "Ghi chú"
+
+#~ msgid ""
+#~ "New contacts will be added to the selected address book. You are able to "
+#~ "view and edit contacts from other address books."
+#~ msgstr ""
+#~ "Các liên lạc mới sẽ được thêm vào sổ danh bạ đã chọn. Bạn có thể xem và "
+#~ "sửa các liên lạc từ các sổ danh bạ khác."
+
+#~ msgid "Selection mode"
+#~ msgstr "Chế độ chọn"
+
+#~ msgid "Select Address Book"
+#~ msgstr "Chọn Sổ địa chỉ"
+
+#~ msgid "View subset"
+#~ msgstr "Xem tập con"
+
+#~ msgid "View contacts subset"
+#~ msgstr "Xem tập con liên lạc"
 
 #~ msgid "Personal email"
 #~ msgstr "Thư điện tử cá nhân"
 
 #~ msgid "View"
 #~ msgstr "Trình bày"
-
-#~ msgid "Main contacts"
-#~ msgstr "Liên kết chính"
-
-#~ msgid "_About Contacts"
-#~ msgstr "_Giới thiệu Danh bạ"
 
 #~ msgid "New"
 #~ msgstr "Mới"
@@ -749,12 +951,6 @@ msgstr "Xem tập con liên lạc"
 
 #~ msgid "%s - Linked Accounts"
 #~ msgstr "%s - Tài khoản liên kết"
-
-#~ msgid "Remove"
-#~ msgstr "Loại bỏ"
-
-#~ msgid "Create Contact"
-#~ msgstr "Tạo liên lạc"
 
 #~ msgid ""
 #~ "Add or \n"
@@ -789,9 +985,6 @@ msgstr "Xem tập con liên lạc"
 #~ msgid "Use Local Address Book"
 #~ msgstr "Dùng sổ địa chỉ cục bộ"
 
-#~ msgid "Contacts Setup"
-#~ msgstr "Cài đặt danh bạ"
-
 #~ msgctxt "Addresses on the Web"
 #~ msgid "Links"
 #~ msgstr "Liên kết"
@@ -803,9 +996,6 @@ msgstr "Xem tập con liên lạc"
 #~ msgid "Chat"
 #~ msgstr "Chat"
 
-#~ msgid "Addresses"
-#~ msgstr "Địa chỉ"
-
 #~ msgid "Add to My Contacts"
 #~ msgstr "Thêm vào danh bạ"
 
@@ -814,9 +1004,6 @@ msgstr "Xem tập con liên lạc"
 
 #~ msgid "Select detail to add to %s"
 #~ msgstr "Chọn chi tiết cần thêm vào %s"
-
-#~ msgid "Select email address"
-#~ msgstr "Chọn địa chỉ email"
 
 #~ msgid "Select what to call"
 #~ msgstr "Chọn gọi gì"
