@@ -196,7 +196,7 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
     list_pane.delete_contacts.connect (delete_contacts);
 
     list_pane.contacts_marked.connect ((nr_contacts) => {
-        if (nr_contacts != 0)
+        if (this.state == UiState.SELECTING)
           this.left_header.title = ngettext ("%d Selected", "%d Selected", nr_contacts)
                                        .printf (nr_contacts);
         else
@@ -300,6 +300,8 @@ public class Contacts.MainWindow : Hdy.ApplicationWindow {
   [GtkCallback]
   private void on_selection_button_clicked () {
     this.state = UiState.SELECTING;
+    this.left_header.title = ngettext ("%d Selected", "%d Selected", 0)
+                                       .printf (0);
   }
 
   private void unlink_contact () {
