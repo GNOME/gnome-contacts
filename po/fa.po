@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-02-13 09:52+0000\n"
-"PO-Revision-Date: 2021-03-10 14:43+0000\n"
+"POT-Creation-Date: 2021-08-20 11:41+0000\n"
+"PO-Revision-Date: 2021-09-01 14:27+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
@@ -23,7 +23,8 @@ msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:203
+#: src/contacts-main-window.vala:231
 msgid "Contacts"
 msgstr "آشنایان"
 
@@ -52,7 +53,7 @@ msgstr ""
 "آشنایان هم‌چنین با دفترچه‌های نشانی برخط یک‌پارچه شده و به صورت خودکار آشنایانیی "
 "از منابع برخط مختلف را به هم پیوند می‌دهد."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:482
+#: data/org.gnome.Contacts.appdata.xml.in.in:545
 msgid "The GNOME Project"
 msgstr "پروژهٔ گنوم"
 
@@ -97,14 +98,14 @@ msgid "Quit"
 msgstr "خروج"
 
 #: data/ui/contacts-avatar-selector.ui:19
-#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-main-window.ui:215
+#: data/ui/contacts-crop-cheese-dialog.ui:27 data/ui/contacts-main-window.ui:241
 #: src/contacts-addressbook-dialog.vala:32 src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "لغو"
 
 #: data/ui/contacts-avatar-selector.ui:28
-#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-main-window.ui:337
-#: src/contacts-main-window.vala:234
+#: data/ui/contacts-crop-cheese-dialog.ui:64 data/ui/contacts-main-window.ui:364
+#: src/contacts-main-window.vala:239
 msgid "Done"
 msgstr "انجام شد"
 
@@ -210,19 +211,31 @@ msgstr "ساخت آشنای جدید"
 msgid "Add contact"
 msgstr "افزودن آشنا"
 
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:198
+msgid "Select Items"
+msgstr "گزینش موارد"
+
+#: data/ui/contacts-main-window.ui:222
+msgid "Menu"
+msgstr "فهرست"
+
+#: data/ui/contacts-main-window.ui:242
 msgid "Cancel selection"
 msgstr "لغو گزیده"
 
-#: data/ui/contacts-main-window.ui:260
+#: data/ui/contacts-main-window.ui:286
 msgid "Back"
 msgstr "بازگشت"
 
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:305 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "_لغو"
 
-#: data/ui/contacts-main-window.ui:396
+#: data/ui/contacts-main-window.ui:345
+msgid "Main Menu"
+msgstr "فهرست اصلی"
+
+#: data/ui/contacts-main-window.ui:423
 msgid "Loading"
 msgstr "درحال بارگزاری"
 
@@ -359,11 +372,11 @@ msgstr "تغییر آواتار"
 msgid "Add name"
 msgstr "افزودن نام"
 
-#: src/contacts-contact-list.vala:194
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "برگزیده‌ها"
 
-#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "تمام آشنایان"
 
@@ -380,19 +393,19 @@ msgstr "نمی‌توان آشنایانی جدیدی ساخت: %s"
 msgid "Unable to find newly created contact"
 msgstr "نمی‌توان آشنا تازه ایجاد شده را پیدا کرد"
 
-#: src/contacts-contact-sheet.vala:286 src/contacts-editor-property.vala:491
+#: src/contacts-contact-sheet.vala:288 src/contacts-editor-property.vala:491
 msgid "Website"
 msgstr "پایگاه‌وب"
 
-#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:501
+#: src/contacts-contact-sheet.vala:305 src/contacts-editor-property.vala:501
 msgid "Nickname"
 msgstr "نام مستعار"
 
-#: src/contacts-contact-sheet.vala:309 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
 msgid "Birthday"
 msgstr "تولد"
 
-#: src/contacts-contact-sheet.vala:316 src/contacts-editor-property.vala:529
+#: src/contacts-contact-sheet.vala:318 src/contacts-editor-property.vala:529
 msgid "Note"
 msgstr "یادداشت"
 
@@ -448,7 +461,7 @@ msgstr "صندوق پستی"
 msgid "Country"
 msgstr "کشور"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
 msgid "Delete field"
 msgstr "حذف"
 
@@ -472,11 +485,11 @@ msgstr "افزودن شماره"
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
 msgid "Set Birthday"
 msgstr "تنظیم تاریخ تولد"
 
-#: src/contacts-editor-property.vala:617
+#: src/contacts-editor-property.vala:619
 msgid "Address"
 msgstr "نشانی"
 
@@ -595,68 +608,68 @@ msgstr "این همان %s در %s است؟"
 msgid "Is this the same person as %s?"
 msgstr "این همان %s است؟"
 
-#: src/contacts-main-window.vala:198
+#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:303
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%Id گزیده"
 msgstr[1] "%Id گزیده"
 
-#: src/contacts-main-window.vala:234
+#: src/contacts-main-window.vala:239
 msgid "_Add"
 msgstr "_افزودن"
 
-#: src/contacts-main-window.vala:279
+#: src/contacts-main-window.vala:284
 #, c-format
 msgid "Editing %s"
 msgstr "درحال ویرایش %s"
 
-#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:496
-#: src/contacts-main-window.vala:520 src/contacts-main-window.vala:566
+#: src/contacts-main-window.vala:318 src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:541 src/contacts-main-window.vala:587
 msgid "_Undo"
 msgstr "_برگردان"
 
-#: src/contacts-main-window.vala:307
+#: src/contacts-main-window.vala:319
 msgid "Contacts unlinked"
 msgstr "پیوند آشنایان برداشته شد"
 
-#: src/contacts-main-window.vala:366
+#: src/contacts-main-window.vala:379
 msgid "Unmark as favorite"
 msgstr "عدم علامت‌گذاری به عنوان برگزیده"
 
-#: src/contacts-main-window.vala:367
+#: src/contacts-main-window.vala:380
 msgid "Mark as favorite"
 msgstr "علامت‌گذاری به عنوان برگزیده"
 
-#: src/contacts-main-window.vala:381
+#: src/contacts-main-window.vala:396
 msgid "New Contact"
 msgstr "آشنای جدید"
 
-#: src/contacts-main-window.vala:492
+#: src/contacts-main-window.vala:513
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "%Id آشنا پیوند شد"
 msgstr[1] "%Id آشنا پیوند شدند"
 
-#: src/contacts-main-window.vala:515
+#: src/contacts-main-window.vala:536
 #, c-format
 msgid "Deleted contact %s"
 msgstr "%s حذف شد"
 
-#: src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:538
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "%Id آشنا حذف شد"
 msgstr[1] "%Id آشنا حذف شدند"
 
-#: src/contacts-main-window.vala:562
+#: src/contacts-main-window.vala:583
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s پیوند شده به %s"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:585
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s به آشنا پیوند شد"
@@ -838,9 +851,6 @@ msgstr "آیا پنجره تمام‌صفحه است"
 
 #~ msgid "_About"
 #~ msgstr "_درباره"
-
-#~ msgid "Select Picture"
-#~ msgstr "انتخاب عکس"
 
 #~ msgid "Select"
 #~ msgstr "انتخاب"
