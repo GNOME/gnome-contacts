@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-02-13 09:52+0000\n"
-"PO-Revision-Date: 2021-02-13 11:41+0100\n"
+"POT-Creation-Date: 2021-08-20 11:41+0000\n"
+"PO-Revision-Date: 2021-09-02 18:43+0200\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team\n"
 "Language: ro\n"
@@ -18,13 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:203
+#: src/contacts-main-window.vala:231
 msgid "Contacts"
 msgstr "Contacte"
 
@@ -53,7 +54,7 @@ msgstr ""
 "Contacte va integra și agendele de contacte online și va conecta automat "
 "contacte de la surse online diferite."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:482
+#: data/org.gnome.Contacts.appdata.xml.in.in:545
 msgid "The GNOME Project"
 msgstr "Proiectul GNOME"
 
@@ -99,14 +100,14 @@ msgstr "Ieșire"
 
 #: data/ui/contacts-avatar-selector.ui:19
 #: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:241 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "Anulează"
 
 #: data/ui/contacts-avatar-selector.ui:28
 #: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+#: data/ui/contacts-main-window.ui:364 src/contacts-main-window.vala:239
 msgid "Done"
 msgstr "Gata"
 
@@ -212,19 +213,31 @@ msgstr "Creează un contact nou"
 msgid "Add contact"
 msgstr "Adaugă contact"
 
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:198
+msgid "Select Items"
+msgstr "Selectează elementele"
+
+#: data/ui/contacts-main-window.ui:222
+msgid "Menu"
+msgstr "Meniu"
+
+#: data/ui/contacts-main-window.ui:242
 msgid "Cancel selection"
 msgstr "Anulează selecția"
 
-#: data/ui/contacts-main-window.ui:260
+#: data/ui/contacts-main-window.ui:286
 msgid "Back"
 msgstr "Înapoi"
 
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:305 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "_Anulează"
 
-#: data/ui/contacts-main-window.ui:396
+#: data/ui/contacts-main-window.ui:345
+msgid "Main Menu"
+msgstr "Meniu principal"
+
+#: data/ui/contacts-main-window.ui:423
 msgid "Loading"
 msgstr "Se încarcă"
 
@@ -361,11 +374,11 @@ msgstr "Modifică avatarul"
 msgid "Add name"
 msgstr "Adaugă nume"
 
-#: src/contacts-contact-list.vala:194
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "Preferate"
 
-#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "Toate contactele"
 
@@ -382,19 +395,19 @@ msgstr "Nu s-au putut crea contactele noi: %s"
 msgid "Unable to find newly created contact"
 msgstr "Nu s-a putut găsi contactul nou creat"
 
-#: src/contacts-contact-sheet.vala:286 src/contacts-editor-property.vala:491
+#: src/contacts-contact-sheet.vala:288 src/contacts-editor-property.vala:491
 msgid "Website"
 msgstr "Pagină web"
 
-#: src/contacts-contact-sheet.vala:303 src/contacts-editor-property.vala:501
+#: src/contacts-contact-sheet.vala:305 src/contacts-editor-property.vala:501
 msgid "Nickname"
 msgstr "Pseudonim"
 
-#: src/contacts-contact-sheet.vala:309 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
 msgid "Birthday"
 msgstr "Zi de naștere"
 
-#: src/contacts-contact-sheet.vala:316 src/contacts-editor-property.vala:529
+#: src/contacts-contact-sheet.vala:318 src/contacts-editor-property.vala:529
 msgid "Note"
 msgstr "Notițe"
 
@@ -450,7 +463,7 @@ msgstr "Căsuță poștală"
 msgid "Country"
 msgstr "Țară"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
 msgid "Delete field"
 msgstr "Șterge câmpul"
 
@@ -474,11 +487,11 @@ msgstr "Adaugă număr"
 msgid "https://example.com"
 msgstr "https://exemplu.ro"
 
-#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
 msgid "Set Birthday"
 msgstr "Stabilește zi de naștere"
 
-#: src/contacts-editor-property.vala:617
+#: src/contacts-editor-property.vala:619
 msgid "Address"
 msgstr "Adresă"
 
@@ -597,7 +610,7 @@ msgstr "Este aceasta aceeași persoană ca %s de la %s?"
 msgid "Is this the same person as %s?"
 msgstr "Este aceasta aceeași persoană ca %s?"
 
-#: src/contacts-main-window.vala:198
+#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:303
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -605,37 +618,37 @@ msgstr[0] "%d selectat"
 msgstr[1] "%d selectate"
 msgstr[2] "%d selectate"
 
-#: src/contacts-main-window.vala:234
+#: src/contacts-main-window.vala:239
 msgid "_Add"
 msgstr "_Adaugă"
 
-#: src/contacts-main-window.vala:279
+#: src/contacts-main-window.vala:284
 #, c-format
 msgid "Editing %s"
 msgstr "Se editează %s"
 
-#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:496
-#: src/contacts-main-window.vala:520 src/contacts-main-window.vala:566
+#: src/contacts-main-window.vala:318 src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:541 src/contacts-main-window.vala:587
 msgid "_Undo"
 msgstr "An_ulează"
 
-#: src/contacts-main-window.vala:307
+#: src/contacts-main-window.vala:319
 msgid "Contacts unlinked"
 msgstr "Contacte decuplate"
 
-#: src/contacts-main-window.vala:366
+#: src/contacts-main-window.vala:379
 msgid "Unmark as favorite"
 msgstr "Demarchează ca preferat"
 
-#: src/contacts-main-window.vala:367
+#: src/contacts-main-window.vala:380
 msgid "Mark as favorite"
 msgstr "Marchează ca preferat"
 
-#: src/contacts-main-window.vala:381
+#: src/contacts-main-window.vala:396
 msgid "New Contact"
 msgstr "Contact nou"
 
-#: src/contacts-main-window.vala:492
+#: src/contacts-main-window.vala:513
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -643,12 +656,12 @@ msgstr[0] "%d contact conectat"
 msgstr[1] "%d contacte conectate"
 msgstr[2] "%d de contacte conectate"
 
-#: src/contacts-main-window.vala:515
+#: src/contacts-main-window.vala:536
 #, c-format
 msgid "Deleted contact %s"
 msgstr "S-a șters contactul %s"
 
-#: src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:538
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -656,12 +669,12 @@ msgstr[0] "%d contact șters"
 msgstr[1] "%d contacte șterse"
 msgstr[2] "%d de contacte șterse"
 
-#: src/contacts-main-window.vala:562
+#: src/contacts-main-window.vala:583
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s conectat la %s"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:585
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s conectat la contact"
@@ -851,9 +864,6 @@ msgstr "Este fereastra pe tot ecranul"
 
 #~ msgid "_About"
 #~ msgstr "_Despre"
-
-#~ msgid "Select"
-#~ msgstr "Selectați"
 
 #~ msgid "Enter nickname"
 #~ msgstr "Introduceți pseudonimul"
