@@ -20,7 +20,7 @@ using Folks;
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-setup-window.ui")]
 public class Contacts.SetupWindow : Hdy.ApplicationWindow {
   [GtkChild]
-  private unowned Hdy.Clamp content;
+  private unowned Gtk.Box content;
 
   [GtkChild]
   private unowned Gtk.Button setup_done_button;

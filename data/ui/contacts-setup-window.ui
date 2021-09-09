@@ -66,17 +66,16 @@
             <child>
               <object class="HdyClamp">
                 <property name="visible">True</property>
-                <property name="margin_top">32</property>
-                <property name="margin_bottom">32</property>
+                <property name="margin_top">24</property>
+                <property name="margin_bottom">24</property>
                 <property name="margin_start">12</property>
                 <property name="margin_end">12</property>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkBox" id="content">
                     <property name="visible">True</property>
                     <property name="valign">center</property>
                     <property name="halign">center</property>
-                    <property name="border_width">12</property>
-                    <property name="row_spacing">24</property>
+                    <property name="spacing">24</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel">
@@ -96,12 +95,6 @@
                         <property name="wrap">True</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="HdyClamp" id="content">
-                        <property name="visible">True</property>
-                        <property name="maximum_size">400</property>
                       </object>
                     </child>
                   </object>
