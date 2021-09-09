@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts gnome-3-22\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-06-15 06:13+0000\n"
-"PO-Revision-Date: 2021-09-06 12:00+0200\n"
+"POT-Creation-Date: 2021-09-06 10:01+0000\n"
+"PO-Revision-Date: 2021-09-09 17:39+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -17,11 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:203
+#: src/contacts-main-window.vala:231
 msgid "Contacts"
 msgstr "Kontakti"
 
@@ -50,7 +51,7 @@ msgstr ""
 "Kontakti će se isto integrirati s mrežnim adresarom i automatski povezati "
 "kontakte sa različitih mrežnih izvora."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:545
+#: data/org.gnome.Contacts.appdata.xml.in.in:575
 msgid "The GNOME Project"
 msgstr "GNOME projekt"
 
@@ -96,14 +97,14 @@ msgstr "Zatvori"
 
 #: data/ui/contacts-avatar-selector.ui:19
 #: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:241 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "Odustani"
 
 #: data/ui/contacts-avatar-selector.ui:28
 #: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+#: data/ui/contacts-main-window.ui:364 src/contacts-main-window.vala:239
 msgid "Done"
 msgstr "Završeno"
 
@@ -209,19 +210,31 @@ msgstr "Stvori novi kontakt"
 msgid "Add contact"
 msgstr "Dodaj kontakt"
 
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:198
+msgid "Select Items"
+msgstr "Odaberi stavke"
+
+#: data/ui/contacts-main-window.ui:222
+msgid "Menu"
+msgstr "Izbornik"
+
+#: data/ui/contacts-main-window.ui:242
 msgid "Cancel selection"
 msgstr "Prekini odabir"
 
-#: data/ui/contacts-main-window.ui:260
+#: data/ui/contacts-main-window.ui:286
 msgid "Back"
 msgstr "Natrag"
 
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:305 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "_Odustani"
 
-#: data/ui/contacts-main-window.ui:396
+#: data/ui/contacts-main-window.ui:345
+msgid "Main Menu"
+msgstr "Glavni izbornik"
+
+#: data/ui/contacts-main-window.ui:423
 msgid "Loading"
 msgstr "Učitavanje"
 
@@ -357,11 +370,11 @@ msgstr "Promijeni avatar"
 msgid "Add name"
 msgstr "Dodaj ime"
 
-#: src/contacts-contact-list.vala:194
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "Omiljeni"
 
-#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "Svi kontakti"
 
@@ -386,7 +399,7 @@ msgstr "Web stranica"
 msgid "Nickname"
 msgstr "Nadimak"
 
-#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
 msgid "Birthday"
 msgstr "Rođendan"
 
@@ -446,7 +459,7 @@ msgstr "Poštanski pretinac"
 msgid "Country"
 msgstr "Zemlja"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
 msgid "Delete field"
 msgstr "Obriši polje"
 
@@ -470,11 +483,11 @@ msgstr "Dodaj broj"
 msgid "https://example.com"
 msgstr "https://primjer.com"
 
-#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
 msgid "Set Birthday"
 msgstr "Postavi rođendan"
 
-#: src/contacts-editor-property.vala:617
+#: src/contacts-editor-property.vala:619
 msgid "Address"
 msgstr "Adresa"
 
@@ -593,7 +606,7 @@ msgstr "Je li to ista osoba kao i %s iz %s?"
 msgid "Is this the same person as %s?"
 msgstr "Je li to ista osoba kao i %s?"
 
-#: src/contacts-main-window.vala:198
+#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:303
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -601,37 +614,37 @@ msgstr[0] "%d odabran"
 msgstr[1] "%d odabrana"
 msgstr[2] "%d odabrano"
 
-#: src/contacts-main-window.vala:234
+#: src/contacts-main-window.vala:239
 msgid "_Add"
 msgstr "_Dodaj"
 
-#: src/contacts-main-window.vala:279
+#: src/contacts-main-window.vala:284
 #, c-format
 msgid "Editing %s"
 msgstr "Uređujem %s"
 
-#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:504
-#: src/contacts-main-window.vala:528 src/contacts-main-window.vala:574
+#: src/contacts-main-window.vala:318 src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:541 src/contacts-main-window.vala:587
 msgid "_Undo"
 msgstr "_Vrati"
 
-#: src/contacts-main-window.vala:307
+#: src/contacts-main-window.vala:319
 msgid "Contacts unlinked"
 msgstr "Prekinuto povezivanje kontakta"
 
-#: src/contacts-main-window.vala:366
+#: src/contacts-main-window.vala:379
 msgid "Unmark as favorite"
 msgstr "Ukloni iz omiljenih"
 
-#: src/contacts-main-window.vala:367
+#: src/contacts-main-window.vala:380
 msgid "Mark as favorite"
 msgstr "Označi kao omiljeni"
 
-#: src/contacts-main-window.vala:383
+#: src/contacts-main-window.vala:396
 msgid "New Contact"
 msgstr "Novi kontakt"
 
-#: src/contacts-main-window.vala:500
+#: src/contacts-main-window.vala:513
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -639,12 +652,12 @@ msgstr[0] "%d kontakt povezan"
 msgstr[1] "%d kontakta povezana"
 msgstr[2] "%d kontakata povezano"
 
-#: src/contacts-main-window.vala:523
+#: src/contacts-main-window.vala:536
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Obrisani kontakt %s"
 
-#: src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:538
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -652,12 +665,12 @@ msgstr[0] "%d kontakt obrisan"
 msgstr[1] "%d kontakta obrisana"
 msgstr[2] "%d kontakata obrisano"
 
-#: src/contacts-main-window.vala:570
+#: src/contacts-main-window.vala:583
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s povezan sa %s"
 
-#: src/contacts-main-window.vala:572
+#: src/contacts-main-window.vala:585
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s povezan s kontaktom"
@@ -847,9 +860,6 @@ msgstr "Je li ovaj prozor u cjelozaslonskom prikazu?"
 
 #~ msgid "_About"
 #~ msgstr "_O programu"
-
-#~ msgid "Select"
-#~ msgstr "Odaberi"
 
 #~ msgid ""
 #~ "New contacts will be added to the selected address book. You are able to "
