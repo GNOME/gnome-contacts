@@ -155,6 +155,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     var name_label = new Gtk.Label ("");
     name_label.ellipsize = Pango.EllipsizeMode.END;
     name_label.xalign = 0f;
+    name_label.lines = 4;
     name_label.selectable = true;
     name_label.set_can_focus (false);
     this.attach (name_label,  1, 0, 1, 3);
