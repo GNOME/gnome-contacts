@@ -14,20 +14,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 40\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-03-23 08:07+0000\n"
-"PO-Revision-Date: 2021-03-29 02:06+0800\n"
+"POT-Creation-Date: 2021-09-06 10:01+0000\n"
+"PO-Revision-Date: 2021-09-15 11:22-0400\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.4.3\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:203
+#: src/contacts-main-window.vala:231
 msgid "Contacts"
 msgstr "联系人"
 
@@ -53,7 +54,7 @@ msgid ""
 "link contacts from different online sources."
 msgstr "联系人也可以整合在线地址簿，并自动链接到各种在线帐号的联系人。"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:545
+#: data/org.gnome.Contacts.appdata.xml.in.in:575
 msgid "The GNOME Project"
 msgstr "GNOME 项目"
 
@@ -99,14 +100,14 @@ msgstr "退出"
 
 #: data/ui/contacts-avatar-selector.ui:19
 #: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:241 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "取消"
 
 #: data/ui/contacts-avatar-selector.ui:28
 #: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+#: data/ui/contacts-main-window.ui:364 src/contacts-main-window.vala:239
 msgid "Done"
 msgstr "完成"
 
@@ -119,7 +120,6 @@ msgid "Select a File…"
 msgstr "选择文件…"
 
 #: data/ui/contacts-contact-pane.ui:18
-#| msgid "Select a contact"
 msgid "Select a Contact"
 msgstr "选择联系人"
 
@@ -157,12 +157,10 @@ msgid "Remove"
 msgstr "移除"
 
 #: data/ui/contacts-main-window.ui:15
-#| msgid "List contacts by:"
 msgid "List Contacts By:"
 msgstr "联系人排列方式："
 
 #: data/ui/contacts-main-window.ui:28
-#| msgid "First name"
 msgid "First Name"
 msgstr "名字"
 
@@ -215,19 +213,31 @@ msgstr "新建联系人"
 msgid "Add contact"
 msgstr "添加联系人"
 
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:198
+msgid "Select Items"
+msgstr "选择项目"
+
+#: data/ui/contacts-main-window.ui:222
+msgid "Menu"
+msgstr "菜单"
+
+#: data/ui/contacts-main-window.ui:242
 msgid "Cancel selection"
 msgstr "取消选择"
 
-#: data/ui/contacts-main-window.ui:260
+#: data/ui/contacts-main-window.ui:286
 msgid "Back"
 msgstr "返回"
 
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:305 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: data/ui/contacts-main-window.ui:396
+#: data/ui/contacts-main-window.ui:345
+msgid "Main Menu"
+msgstr "主菜单"
+
+#: data/ui/contacts-main-window.ui:423
 msgid "Loading"
 msgstr "加载中"
 
@@ -367,11 +377,11 @@ msgstr "更换头像"
 msgid "Add name"
 msgstr "添加姓名"
 
-#: src/contacts-contact-list.vala:194
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "收藏"
 
-#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "全部联系人"
 
@@ -396,7 +406,7 @@ msgstr "网站"
 msgid "Nickname"
 msgstr "昵称"
 
-#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
 msgid "Birthday"
 msgstr "生日"
 
@@ -456,7 +466,7 @@ msgstr "邮政信箱"
 msgid "Country"
 msgstr "国家"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
 msgid "Delete field"
 msgstr "删除字段"
 
@@ -480,11 +490,11 @@ msgstr "添加号码"
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
 msgid "Set Birthday"
 msgstr "设置生日"
 
-#: src/contacts-editor-property.vala:617
+#: src/contacts-editor-property.vala:619
 msgid "Address"
 msgstr "地址"
 
@@ -603,65 +613,65 @@ msgstr "此人跟来自 %2$s 的 %1$s 是不是同个人？"
 msgid "Is this the same person as %s?"
 msgstr "此人跟 %s 是不是同个人？"
 
-#: src/contacts-main-window.vala:198
+#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:303
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "已选中 %d 个联系人"
 
-#: src/contacts-main-window.vala:234
+#: src/contacts-main-window.vala:239
 msgid "_Add"
 msgstr "添加(_A)"
 
-#: src/contacts-main-window.vala:279
+#: src/contacts-main-window.vala:284
 #, c-format
 msgid "Editing %s"
 msgstr "正在编辑 %s"
 
-#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:504
-#: src/contacts-main-window.vala:528 src/contacts-main-window.vala:574
+#: src/contacts-main-window.vala:318 src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:541 src/contacts-main-window.vala:587
 msgid "_Undo"
 msgstr "撤消(_U)"
 
-#: src/contacts-main-window.vala:307
+#: src/contacts-main-window.vala:319
 msgid "Contacts unlinked"
 msgstr "联系人已解除绑定"
 
-#: src/contacts-main-window.vala:366
+#: src/contacts-main-window.vala:379
 msgid "Unmark as favorite"
 msgstr "取消收藏标记"
 
-#: src/contacts-main-window.vala:367
+#: src/contacts-main-window.vala:380
 msgid "Mark as favorite"
 msgstr "标记以收藏"
 
-#: src/contacts-main-window.vala:383
+#: src/contacts-main-window.vala:396
 msgid "New Contact"
 msgstr "新建联系人"
 
-#: src/contacts-main-window.vala:500
+#: src/contacts-main-window.vala:513
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
 msgstr[0] "已绑定 %d 个联系人"
 
-#: src/contacts-main-window.vala:523
+#: src/contacts-main-window.vala:536
 #, c-format
 msgid "Deleted contact %s"
 msgstr "已删除联系人 %s"
 
-#: src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:538
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
 msgstr[0] "已删除 %d 个联系人"
 
-#: src/contacts-main-window.vala:570
+#: src/contacts-main-window.vala:583
 #, c-format
 msgid "%s linked to %s"
 msgstr "%s 已绑定到 %s"
 
-#: src/contacts-main-window.vala:572
+#: src/contacts-main-window.vala:585
 #, c-format
 msgid "%s linked to the contact"
 msgstr "%s 已绑定到该联系人"
@@ -849,9 +859,6 @@ msgstr "窗口是否全屏"
 
 #~ msgid "_Help"
 #~ msgstr "帮助(_H)"
-
-#~ msgid "Select"
-#~ msgstr "选择"
 
 #~ msgid ""
 #~ "New contacts will be added to the selected address book. You are able to "
