@@ -104,8 +104,9 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
       if (month_combo.get_active () in month_of_31) {
         day_spin.set_range (1, 30);
       } else if (month_combo.get_active () == 1) {
-        if (year_spin.get_value_as_int () % 4 == 0 &&
-            year_spin.get_value_as_int () % 100 != 0) {
+        if (year_spin.get_value_as_int () % 400 == 0 ||
+            (year_spin.get_value_as_int () % 4 == 0 &&
+             year_spin.get_value_as_int () % 100 != 0)) {
           day_spin.set_range (1, 29);
         } else {
           day_spin.set_range (1, 28);
