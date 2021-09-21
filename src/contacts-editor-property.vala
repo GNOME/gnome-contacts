@@ -110,6 +110,8 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
         } else {
           day_spin.set_range (1, 28);
         }
+      } else {
+        day_spin.set_range (1, 31);
       }
     };
 
