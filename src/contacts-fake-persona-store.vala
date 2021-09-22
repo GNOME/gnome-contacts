@@ -521,9 +521,6 @@ public class Contacts.FakeIndividual : Individual {
     var fake_personas = new Gee.HashSet<FakePersona> ();
     foreach (var p in individual.personas) {
       var fake_p = new FakePersona.from_real (p);
-      // Keep track of the main persona
-      if (Contacts.Utils.persona_is_main (p) || individual.personas.size == 1)
-        primary_persona = fake_p;
       fake_personas.add (fake_p);
     }
     this (fake_personas);
