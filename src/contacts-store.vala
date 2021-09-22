@@ -144,7 +144,8 @@ public class Contacts.Store : GLib.Object {
       if (i != null)
         to_remove.add (i);
       foreach (var new_i in changes[i]) {
-        to_add.add (new_i);
+        if (new_i != null)
+          to_add.add (new_i);
       }
     }
 
