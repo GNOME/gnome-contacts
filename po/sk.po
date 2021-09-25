@@ -3,27 +3,28 @@
 # This file is distributed under the same license as the gnome-contacts package.
 # Pavol Klačanský <pavol@klacansky.com>, 2011.
 # Marián Čavojský <cavo+gnomel10n@cavo.sk>, 2011-2013.
-# Dušan Kazik <prescott66@gmail.com>, 2015.
+# Dušan Kazik <prescott66@gmail.com>, 2015-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-03-23 08:13+0000\n"
-"PO-Revision-Date: 2021-06-15 08:12+0200\n"
+"POT-Creation-Date: 2021-08-20 11:41+0000\n"
+"PO-Revision-Date: 2021-09-25 11:35+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0\n"
+"X-Generator: Gtranslator 40.0\n"
 
 # desktop entry name
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:226
+#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:203
+#: src/contacts-main-window.vala:231
 msgid "Contacts"
 msgstr "Kontakty"
 
@@ -105,14 +106,14 @@ msgstr "Ukončenie"
 # button
 #: data/ui/contacts-avatar-selector.ui:19
 #: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:215 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:241 src/contacts-addressbook-dialog.vala:32
 #: src/contacts-editor-property.vala:83
 msgid "Cancel"
 msgstr "Zrušiť"
 
 #: data/ui/contacts-avatar-selector.ui:28
 #: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:337 src/contacts-main-window.vala:234
+#: data/ui/contacts-main-window.ui:364 src/contacts-main-window.vala:239
 msgid "Done"
 msgstr "Dokončiť"
 
@@ -236,21 +237,35 @@ msgid "Add contact"
 msgstr "Pridať kontakt"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:198
+#| msgid "Select"
+msgid "Select Items"
+msgstr "Vyberie položky"
+
+#: data/ui/contacts-main-window.ui:222
+msgid "Menu"
+msgstr "Ponuka"
+
+# tooltip
+#: data/ui/contacts-main-window.ui:242
 msgid "Cancel selection"
 msgstr "Zruší výber"
 
-#: data/ui/contacts-main-window.ui:260
+#: data/ui/contacts-main-window.ui:286
 msgid "Back"
 msgstr "Späť"
 
 # button
-#: data/ui/contacts-main-window.ui:279 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:305 src/contacts-avatar-selector.vala:218
 msgid "_Cancel"
 msgstr "_Zrušiť"
 
+#: data/ui/contacts-main-window.ui:345
+msgid "Main Menu"
+msgstr "Hlavná ponuka"
+
 # DK:GtkLabel
-#: data/ui/contacts-main-window.ui:396
+#: data/ui/contacts-main-window.ui:423
 msgid "Loading"
 msgstr "Načítava sa"
 
@@ -401,12 +416,12 @@ msgstr "Zmeniť podobizeň"
 msgid "Add name"
 msgstr "Pridať meno"
 
-#: src/contacts-contact-list.vala:194
+#: src/contacts-contact-list.vala:174
 msgid "Favorites"
 msgstr "Obľúbené"
 
 # menu item
-#: src/contacts-contact-list.vala:196 src/contacts-contact-list.vala:202
+#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
 msgid "All Contacts"
 msgstr "Všetky kontakty"
 
@@ -432,7 +447,7 @@ msgstr "Webová stránka"
 msgid "Nickname"
 msgstr "Prezývka"
 
-#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:566
+#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
 msgid "Birthday"
 msgstr "Narodeniny"
 
@@ -500,7 +515,7 @@ msgstr "P.O. Box"
 msgid "Country"
 msgstr "Krajina"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:590
+#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
 msgid "Delete field"
 msgstr "Odstrániť pole"
 
@@ -526,12 +541,12 @@ msgid "https://example.com"
 msgstr "https://priklad.sk"
 
 # buton label
-#: src/contacts-editor-property.vala:568 src/contacts-editor-property.vala:599
+#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
 msgid "Set Birthday"
 msgstr "Nastaviť narodeniny"
 
 # menu item
-#: src/contacts-editor-property.vala:617
+#: src/contacts-editor-property.vala:619
 msgid "Address"
 msgstr "Adresa"
 
@@ -678,7 +693,7 @@ msgid "Is this the same person as %s?"
 msgstr "Je to tá istá osoba ako %s?"
 
 # MǙ: kontakt
-#: src/contacts-main-window.vala:198
+#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:303
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -686,42 +701,42 @@ msgstr[0] "%d vybratých"
 msgstr[1] "%d vybratý"
 msgstr[2] "%d vybraté"
 
-#: src/contacts-main-window.vala:234
+#: src/contacts-main-window.vala:239
 msgid "_Add"
 msgstr "_Pridať"
 
 # label
-#: src/contacts-main-window.vala:279
+#: src/contacts-main-window.vala:284
 #, c-format
 msgid "Editing %s"
 msgstr "Upravuje sa %s"
 
-#: src/contacts-main-window.vala:306 src/contacts-main-window.vala:504
-#: src/contacts-main-window.vala:528 src/contacts-main-window.vala:574
+#: src/contacts-main-window.vala:318 src/contacts-main-window.vala:517
+#: src/contacts-main-window.vala:541 src/contacts-main-window.vala:587
 msgid "_Undo"
 msgstr "_Vrátiť"
 
 # notification label
-#: src/contacts-main-window.vala:307
+#: src/contacts-main-window.vala:319
 msgid "Contacts unlinked"
 msgstr "Prepojenie kontaktov bolo zrušené"
 
 # tooltip
-#: src/contacts-main-window.vala:366
+#: src/contacts-main-window.vala:379
 msgid "Unmark as favorite"
 msgstr "Zruší označenie ako obľúbený"
 
 # tooltip
-#: src/contacts-main-window.vala:367
+#: src/contacts-main-window.vala:380
 msgid "Mark as favorite"
 msgstr "Označí ako obľúbený"
 
-#: src/contacts-main-window.vala:383
+#: src/contacts-main-window.vala:396
 msgid "New Contact"
 msgstr "Nový kontakt"
 
 # notification label
-#: src/contacts-main-window.vala:500
+#: src/contacts-main-window.vala:513
 #, c-format
 msgid "%d contacts linked"
 msgid_plural "%d contacts linked"
@@ -731,13 +746,13 @@ msgstr[2] "%d prepojené kontakty"
 
 # MČ: zobrazí sa, keď nie je vybraný kontakt
 # label
-#: src/contacts-main-window.vala:523
+#: src/contacts-main-window.vala:536
 #, c-format
 msgid "Deleted contact %s"
 msgstr "Kontakt %s odstránený"
 
 # notification label
-#: src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:538
 #, c-format
 msgid "%d contact deleted"
 msgid_plural "%d contacts deleted"
@@ -746,12 +761,12 @@ msgstr[1] "%d odstránený kontakt"
 msgstr[2] "%d odstránené kontakty"
 
 #  kontakt %s s kontaktom %s
-#: src/contacts-main-window.vala:570
+#: src/contacts-main-window.vala:583
 #, c-format
 msgid "%s linked to %s"
 msgstr "kontakt %s prepojený s kontaktom %s"
 
-#: src/contacts-main-window.vala:572
+#: src/contacts-main-window.vala:585
 #, c-format
 msgid "%s linked to the contact"
 msgstr "kontakt %s prepojený s kontaktom"
@@ -983,10 +998,6 @@ msgstr "Okno je v režime na celú obrazovku"
 # menu
 #~ msgid "Quit"
 #~ msgstr "Ukončiť"
-
-# button
-#~ msgid "Select"
-#~ msgstr "Vybrať"
 
 # DK:label
 #~ msgid ""
