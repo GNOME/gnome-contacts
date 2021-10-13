@@ -7,69 +7,95 @@
   background-color: transparent;
 }
 
-.contacts-suggestion {
+/* The search entry to filter the list of contacts */
+.contacts-filter-entry {
+  margin: 6px;
+}
+
+/* Draw a little shadow about the contact list when scrolling */
+.contacts-list-scrolled-window undershoot.top {
+  box-shadow: inset 0 1px @borders;
+}
+
+/* The link suggestion widget */
+.contacts-link-suggestion {
   border-top: 1px solid @borders;
   background-color: shade(@theme_bg_color, 0.9);
 }
 
-/* Give the avatar in the ContactSheet some margin,
- * so it doesn't jump when switching to the editor. */
-.contacts-contact-sheet .contacts-avatar {
-  margin: 4px 8px;
-}
-
-.contacts-postal-entry {
- border-radius: 0 0 0 0;
- border-width: 1px 1px 0 1px;
-}
-
-.contacts-postal-entry:nth-child(first) {
- border-radius: 4px 4px 0 0;
-}
-
-.contacts-postal-entry:nth-child(last) {
- border-radius: 0 0 4px 4px;
- border-width: 1px;
-}
-
-/* The style for the background "watermark" image and text.
- * (copied from dim-label) */
-.contacts-watermark {
-  opacity: 0.55;
-  text-shadow: none;
-}
+  .contacts-link-suggestion avatar {
+    margin: 12px;
+  }
 
 .contacts-avatar-popover .contact-display-name {
   font-size: 20px;
 }
+
 flowboxchild.circular {
   padding: 4px;
   border-radius: 9999px;
-  -gtk-outline-radius: 9999px;
 }
 
-.avatar-button {
-  border-radius: 50%;
-  padding: 0 0;
+/* Contact Sheet/Editor common */
+/* --------------------------- */
+
+.contacts-sheet-container,
+.contacts-contact-editor-container {
+  margin: 32px 36px;
 }
 
-.contacts-flatten:not(:hover) {
-  background-color: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0), 0 1px rgba(255, 255, 255, 0);
-  text-shadow: none; -gtk-icon-shadow: none;
-  border: 1px solid rgba(205, 199, 194, 0.5);
+.contacts-sheet-property,
+.contacts-editor-property {
+  margin: 9px 6px;
 }
 
-/* remove padding from ListBoxRow so that the revealer doesn't jump */
-row.editor-property-row {
-  padding: 0px;
+/* Contact Sheet-related CSS class */
+/* ------------------------------- */
+
+.contacts-sheet {
 }
 
-popover list {
-  background-color: @theme_bg_color;
+.contacts-sheet-header {
+  margin: 0 0 12px 0;
 }
-popover list row:hover {
-  background-color: @theme_selected_fg_color
+
+.contacts-sheet-property {
+}
+
+
+/* Contact Editor-related CSS classes */
+/* ---------------------------------- */
+
+/* Common class for all widgets editing a property  */
+.contacts-editor-property {
+}
+
+  .contacts-editor-property .contacts-property-icon,
+  .contacts-editor-property .contacts-editor-main-entry image {
+    margin: 12px;
+  }
+
+  .contacts-editor-property .contacts-editor-main-entry {
+    padding: 6px 6px 6px 0; /* left padding is for the icon */
+  }
+
+/* Class for editing postal address */
+.contacts-editor-address entry {
+  border-radius: 0;
+  border-width: 1px 1px 0 1px;
+  padding: 6px 6px;
+}
+
+  .contacts-editor-address entry:first-child {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .contacts-editor-address entry:last-child {
+    border-radius: 0 0 4px 4px;
+    border-width: 1px;
+  }
+
+/* Widget to edit a birthday */
+.contacts-editor-birthday {
+  margin: 12px;
 }

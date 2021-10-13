@@ -18,9 +18,10 @@
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-setup-window.ui")]
-public class Contacts.SetupWindow : Hdy.ApplicationWindow {
+public class Contacts.SetupWindow : Adw.ApplicationWindow {
+
   [GtkChild]
-  private unowned Gtk.Box content;
+  private unowned Adw.Clamp clamp;
 
   [GtkChild]
   private unowned Gtk.Button setup_done_button;
@@ -36,8 +37,7 @@ public class Contacts.SetupWindow : Hdy.ApplicationWindow {
     Object (application: app, icon_name: Config.APP_ID);
     this.setup_accounts_list = new AccountsList (store);
     this.setup_accounts_list.hexpand = true;
-    this.setup_accounts_list.show ();
-    this.content.add (this.setup_accounts_list);
+    this.clamp.set_child (this.setup_accounts_list);
 
     // Listen for changes
     store.backend_store.backend_available.connect  ( () => {
@@ -46,14 +46,14 @@ public class Contacts.SetupWindow : Hdy.ApplicationWindow {
 
     ulong id2 = 0;
     id2 = this.setup_accounts_list.account_selected.connect (() => {
-        this.setup_done_button.set_sensitive (true);
+        this.setup_done_button.sensitive = true;
         this.setup_accounts_list.disconnect (id2);
       });
 
     fill_accounts_list (store);
 
     this.setup_done_button.clicked.connect (() => {
-        var selected_store = this.setup_accounts_list.selected_store as Edsf.PersonaStore;
+        unowned var selected_store = this.setup_accounts_list.selected_store as Edsf.PersonaStore;
         setup_done (selected_store);
       });
 

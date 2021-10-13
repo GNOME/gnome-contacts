@@ -18,77 +18,47 @@
 using Folks;
 
 /**
- * The TypeCombo is a widget that fills itself with the types of a certain
+ * The TypeComboRow is a widget that fills itself with the types of a certain
  * category (using {@link Contacts.TypeSet}). For example, it allows the user
  * to choose between "Personal", "Home" and "Work" for email addresses,
  * together with all the custom labels it has encountered since then.
  */
-public class Contacts.TypeCombo : Gtk.ComboBox  {
+public class Contacts.TypeComboRow : Adw.ComboRow  {
 
-  private unowned TypeSet type_set;
-
-  /**
-   * The {@link Contacts.TypeDescriptor} that is currently shown
-   */
-  public TypeDescriptor active_descriptor {
-    get {
-      Gtk.TreeIter iter;
-
-      get_active_iter (out iter);
-      assert (!is_separator (this.model, iter));
-
-      unowned TypeDescriptor descriptor;
-      this.model.get (iter, 1, out descriptor);
-      return descriptor;
-    }
-    set {
-      set_active_iter (value.iter);
-    }
+  public TypeDescriptor selected_descriptor {
+    get { return (TypeDescriptor) this.selected_item; }
   }
 
-  construct {
-    this.valign = Gtk.Align.START;
-    this.halign = Gtk.Align.FILL;
-    this.hexpand = true;
-    this.visible = true;
-
-    var renderer = new Gtk.CellRendererText ();
-    pack_start (renderer, true);
-    set_attributes (renderer, "text", 0);
-
-    set_row_separator_func (is_separator);
+  public TypeSet type_set {
+    get { return (TypeSet) this.model; }
   }
 
   /**
-   * Creates a TypeCombo for the given TypeSet. To set the active value,
-   * use the "current-decsriptor" property, set_active_from_field_details(),
-   * or set_active_from_vcard_type()
+   * Creates a TypeComboRow for the given TypeSet.
    */
-  public TypeCombo (TypeSet type_set) {
-    this.type_set = type_set;
-    this.model = type_set.store;
-  }
-
-  private bool is_separator (Gtk.TreeModel model, Gtk.TreeIter iter) {
-    unowned string? s;
-    model.get (iter, 0, out s);
-    return s == null;
+  public TypeComboRow (TypeSet type_set) {
+    Object (
+      model: type_set,
+      expression: new Gtk.PropertyExpression (typeof (TypeDescriptor), null, "display-name")
+    );
   }
 
   /**
    * Sets the value to the type of the given {@link Folks.AbstractFieldDetails}.
    */
-  public void set_active_from_field_details (AbstractFieldDetails details) {
-    this.active_descriptor = this.type_set.lookup_descriptor_for_field_details (details);
+  public void set_selected_from_field_details (AbstractFieldDetails details) {
+    uint position = 0;
+    this.type_set.lookup_by_field_details (details, out position);
+    this.selected = position;
   }
 
   /**
    * Sets the value to the type that best matches the given vcard type
    * (for example "HOME" or "WORK").
    */
-  public void set_active_from_vcard_type (string type) {
-    Gtk.TreeIter iter;
-    this.type_set.get_iter_for_vcard_type (type, out iter);
-    set_active_iter (iter);
+  public void set_selected_from_vcard_type (string type) {
+    uint position = 0;
+    this.type_set.lookup_by_vcard_type (type, out position);
+    this.selected = position;
   }
 }

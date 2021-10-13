@@ -17,16 +17,42 @@
 
 using Folks;
 
+public class Contacts.ContactSheetRow : Adw.ActionRow {
+
+  public ContactSheetRow (string property_name, string title, string? subtitle = null) {
+    unowned var icon_name = Utils.get_icon_name_for_property (property_name);
+    if (icon_name != null) {
+      var icon = new Gtk.Image.from_icon_name (icon_name);
+      icon.add_css_class ("contacts-property-icon");
+      icon.tooltip_text = Utils.get_display_name_for_property (property_name);
+      this.add_prefix (icon);
+    }
+
+    this.title = Markup.escape_text (title);
+
+    if (subtitle != null)
+      this.subtitle = subtitle;
+  }
+
+  public Gtk.Button add_button (string icon) {
+    var button = new Gtk.Button.from_icon_name (icon);
+    button.valign = Gtk.Align.CENTER;
+    button.add_css_class ("flat");
+    this.add_suffix (button);
+    return button;
+  }
+}
+
 /**
  * The contact sheet displays the actual information of a contact.
  *
  * (Note: to edit a contact, use the {@link ContactEditor} instead.
  */
 public class Contacts.ContactSheet : Gtk.Grid {
+
   private int last_row = 0;
-  private Individual individual;
+  private unowned Individual individual;
   private unowned Store store;
-  public bool narrow { get; set; default = true; }
 
   private const string[] SORTED_PROPERTIES = {
     "email-addresses",
@@ -39,8 +65,11 @@ public class Contacts.ContactSheet : Gtk.Grid {
     "notes"
   };
 
+  construct {
+    this.add_css_class ("contacts-sheet");
+  }
+
   public ContactSheet (Individual individual, Store store) {
-    Object (row_spacing: 12, column_spacing: 12);
     this.individual = individual;
     this.store = store;
 
@@ -56,140 +85,112 @@ public class Contacts.ContactSheet : Gtk.Grid {
     var attrList = new Pango.AttrList ();
     attrList.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
     store_name.set_attributes (attrList);
-    store_name.set_halign (Gtk.Align.START);
-    store_name.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
+    store_name.halign = Gtk.Align.START;
+    store_name.ellipsize = Pango.EllipsizeMode.MIDDLE;
 
     return store_name;
   }
 
-  private Gtk.Button create_button (string icon) {
-    var button = new Gtk.Button.from_icon_name (icon, Gtk.IconSize.BUTTON);
-    button.set_halign (Gtk.Align.END);
-    button.get_style_context ().add_class ("flatten");
+  // Helper function that attaches a row to our grid
+  private void attach_row (Gtk.ListBoxRow row) {
+    var list_box = new Gtk.ListBox ();
+    list_box.selection_mode = Gtk.SelectionMode.NONE;
+    list_box.add_css_class ("boxed-list");
+    list_box.add_css_class ("contacts-sheet-property");
+    list_box.append (row);
 
-    return button;
-  }
-
-  void add_row_with_label (string label_value,
-                           string value,
-                           Gtk.Widget? btn1 = null,
-                           Gtk.Widget? btn2 =null) {
-    if (value == "" || value == null)
-      return;
-    var type_label = new Gtk.Label (label_value);
-    type_label.xalign = 1.0f;
-    type_label.set_halign (Gtk.Align.END);
-    type_label.set_valign (Gtk.Align.CENTER);
-    type_label.get_style_context ().add_class ("dim-label");
-    this.attach (type_label, 0, this.last_row, 1, 1);
-
-    var value_label = new Gtk.Label (value);
-    value_label.set_line_wrap (true);
-    value_label.xalign = 0.0f;
-    value_label.set_halign (Gtk.Align.START);
-    value_label.set_ellipsize (Pango.EllipsizeMode.END);
-    value_label.wrap_mode = Pango.WrapMode.CHAR;
-    value_label.set_selectable (true);
-    value_label.set_can_focus (false);
-
-    if (btn1 != null || btn2 !=null) {
-      var value_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-      value_box.pack_start (value_label, false, false, 0);
-
-      if (btn1 != null)
-        value_box.pack_end (btn1, false, false, 0);
-      if (btn2 != null)
-        value_box.pack_end (btn2, false, false, 0);
-      this.attach (value_box, 1, this.last_row, 1, 1);
-    } else {
-      this.attach (value_label, 1, this.last_row, 1, 1);
-    }
+    this.attach (list_box, 0, this.last_row, 3, 1);
     this.last_row++;
   }
 
   private void update () {
     this.last_row = 0;
-    this.foreach ((child) => this.remove (child));
 
-    var image_frame = new Avatar (PROFILE_SIZE, this.individual);
-    image_frame.set_vexpand (false);
-    image_frame.set_valign (Gtk.Align.START);
+    // Remove all fields
+    unowned var child = get_first_child ();
+    while (child != null) {
+      unowned var next = child.get_next_sibling ();
+      remove (child);
+      child = next;
+    }
 
-    this.attach (image_frame,  0, 0, 1, 3);
+    var header = create_header ();
+    this.attach (header, 0, 0, 1, 1);
 
-    create_name_label ();
-
-    this.last_row += 3; // Name/Avatar takes up 3 rows
+    this.last_row++;
 
     var personas = Utils.get_personas_for_display (this.individual);
     /* Cause personas are sorted properly I can do this */
-    foreach (var p in personas) {
-      bool is_first_persona = (this.last_row == 3);
+    for (int i = 0; i < personas.get_n_items (); i++) {
+      var p = (Persona) personas.get_item (i);
       int persona_store_pos = this.last_row;
-      if (!is_first_persona) {
+
+      if (i > 0) {
         this.attach (create_persona_store_label (p), 0, this.last_row, 3);
         this.last_row++;
       }
 
-      foreach (var prop in SORTED_PROPERTIES)
+      foreach (unowned var prop in SORTED_PROPERTIES)
         add_row_for_property (p, prop);
 
       // Nothing to show in the persona: don't mention it
       bool is_empty_persona = (this.last_row == persona_store_pos + 1);
-      if (!is_first_persona && is_empty_persona) {
+      if (i > 0 && is_empty_persona) {
         this.remove_row (persona_store_pos);
         this.last_row--;
       }
     }
-
-    show_all ();
   }
 
-  private void update_name_label (Gtk.Label name_label) {
-    var name = Markup.printf_escaped ("<span font='16'>%s</span>",
-                                      this.individual.display_name);
-    name_label.set_markup (name);
-  }
+  private Gtk.Widget create_header () {
+    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
+    header.add_css_class ("contacts-sheet-header");
 
-  private void create_name_label () {
+    var image_frame = new Avatar (PROFILE_SIZE, this.individual);
+    image_frame.vexpand = false;
+    image_frame.valign = Gtk.Align.START;
+    header.append (image_frame);
+
     var name_label = new Gtk.Label ("");
-    name_label.ellipsize = Pango.EllipsizeMode.END;
+    name_label.set_markup (this.individual.display_name);
+    name_label.hexpand = true;
     name_label.xalign = 0f;
+    name_label.wrap = true;
     name_label.lines = 4;
+    name_label.width_chars = 10;
     name_label.selectable = true;
-    name_label.set_can_focus (false);
-    this.attach (name_label,  1, 0, 1, 3);
-    update_name_label (name_label);
-    this.individual.notify["display-name"].connect ((obj, spec) => {
-      update_name_label (name_label);
-    });
+    name_label.can_focus = false;
+    name_label.add_css_class ("title-1");
+    header.append (name_label);
+
+    return header;
   }
 
   private void add_row_for_property (Persona persona, string property) {
     switch (property) {
       case "email-addresses":
-        add_emails (persona);
+        add_emails (persona, property);
         break;
       case "phone-numbers":
-        add_phone_nrs (persona);
+        add_phone_nrs (persona, property);
         break;
       case "im-addresses":
-        add_im_addresses (persona);
+        add_im_addresses (persona, property);
         break;
       case "urls":
-        add_urls (persona);
+        add_urls (persona, property);
         break;
       case "nickname":
-        add_nickname (persona);
+        add_nickname (persona, property);
         break;
       case "birthday":
-        add_birthday (persona);
+        add_birthday (persona, property);
         break;
       case "notes":
-        add_notes (persona);
+        add_notes (persona, property);
         break;
       case "postal-addresses":
-        add_postal_addresses (persona);
+        add_postal_addresses (persona, property);
         break;
       default:
         debug ("Unsupported property: %s", property);
@@ -197,97 +198,114 @@ public class Contacts.ContactSheet : Gtk.Grid {
     }
   }
 
-  private void add_emails (Persona persona) {
-    var details = persona as EmailDetails;
-    if (details != null) {
-      var emails = Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
-      foreach (var email in emails) {
-        var button = create_button ("mail-unread-symbolic");
+  private void add_emails (Persona persona, string property) {
+    unowned var details = persona as EmailDetails;
+    if (details == null)
+      return;
+
+    var emails = Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
+    foreach (var email in emails) {
+      if (email.value == "")
+        continue;
+
+      var row = new ContactSheetRow (property,
+                                     email.value,
+                                     TypeSet.email.format_type (email));
+
+      var button = row.add_button ("mail-send-symbolic");
+      button.tooltip_text = _("Send an email to %s".printf (email.value));
+      button.clicked.connect (() => {
+        Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
+      });
+
+      this.attach_row (row);
+    }
+  }
+
+  private void add_phone_nrs (Persona persona, string property) {
+    unowned var phone_details = persona as PhoneDetails;
+    if (phone_details == null)
+      return;
+
+    var phones = Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+    foreach (var phone in phones) {
+      if (phone.value == "")
+        continue;
+
+      var row = new ContactSheetRow (property,
+                                     phone.value,
+                                     TypeSet.phone.format_type (phone));
+
+#if HAVE_TELEPATHY
+      if (this.store.caller_account != null) {
+        var button = row.add_button ("call-start-symbolic");
+        button.tooltip_text = _("Start a call");
         button.clicked.connect (() => {
-          Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
+          Utils.start_call (phone.value, this.store.caller_account);
         });
-        add_row_with_label (TypeSet.email.format_type (email), email.value, button);
       }
-    }
-  }
-
-  private void add_phone_nrs (Persona persona) {
-    var phone_details = persona as PhoneDetails;
-    if (phone_details != null) {
-      var phones = Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
-      foreach (var phone in phones) {
-#if HAVE_TELEPATHY
-        if (this.store.caller_account != null) {
-          var call_button = create_button ("call-start-symbolic");
-          call_button.clicked.connect (() => {
-            Utils.start_call (phone.value, this.store.caller_account);
-          });
-
-          add_row_with_label (TypeSet.phone.format_type (phone), phone.value, call_button);
-        } else {
-          add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
-        }
-#else
-        add_row_with_label (TypeSet.phone.format_type (phone), phone.value);
 #endif
-      }
+
+      this.attach_row (row);
     }
   }
 
-  private void add_im_addresses (Persona persona) {
+  private void add_im_addresses (Persona persona, string property) {
 #if HAVE_TELEPATHY
-    var im_details = persona as ImDetails;
-    if (im_details != null) {
-      foreach (var protocol in im_details.im_addresses.get_keys ()) {
-        foreach (var id in im_details.im_addresses[protocol]) {
-          if (persona is Tpf.Persona) {
-            var button = create_button ("user-available-symbolic");
-            button.clicked.connect (() => {
-              var im_persona = Utils.find_im_persona (individual, protocol, id.value);
-              if (im_persona != null) {
-                var type = im_persona.presence_type;
-                if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
-                    type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
-                  Utils.start_chat (this.individual, protocol, id.value);
-                }
-              }
-            });
-            add_row_with_label (ImService.get_display_name (protocol), id.value, button);
-          }
-        }
-      }
-    }
-#endif
-  }
+    unowned var im_details = persona as ImDetails;
+    if (im_details == null)
+      return;
 
-  private void add_urls (Persona persona) {
-    var url_details = persona as UrlDetails;
-    if (url_details != null) {
-      foreach (var url in url_details.urls) {
-        var button = create_button ("web-browser-symbolic");
+    foreach (var protocol in im_details.im_addresses.get_keys ()) {
+      foreach (var id in im_details.im_addresses[protocol]) {
+        if (!(persona is Tpf.Persona))
+          continue;
+
+        var row = new ContactSheetRow (property,
+                                       id.value,
+                                       ImService.get_display_name (protocol));
+        var button = row.add_button ("user-available-symbolic");
         button.clicked.connect (() => {
-          unowned var window = button.get_toplevel () as MainWindow;
-          if (window == null)
-            return;
-
-          try {
-            Gtk.show_uri_on_window (window,
-                                    fallback_to_https (url.value),
-                                    Gdk.CURRENT_TIME);
-          } catch (Error e) {
-            var message = "Failed to open url '%s'".printf(url.value);
-
-            // Notify the user
-            var notification = new InAppNotification (message);
-            notification.show ();
-            window.add_notification (notification);
-
-            // Print details on stdout
-            debug (message + ": " + e.message);
+          var im_persona = Utils.find_im_persona (individual, protocol, id.value);
+          if (im_persona != null) {
+            var type = im_persona.presence_type;
+            if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
+                type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
+              Utils.start_chat (this.individual, protocol, id.value);
+            }
           }
         });
-        add_row_with_label (_("Website"), url.value, button);
+        this.attach_row (row);
       }
+    }
+#endif
+  }
+
+  private void add_urls (Persona persona, string property) {
+    unowned var url_details = persona as UrlDetails;
+    if (url_details == null)
+      return;
+
+    foreach (var url in url_details.urls) {
+      if (url.value == "")
+        continue;
+
+      var row = new ContactSheetRow (property, url.value);
+
+      var button = row.add_button ("external-link-symbolic");
+      button.tooltip_text = _("Visit website");
+      button.clicked.connect (() => {
+        unowned var window = button.get_root () as MainWindow;
+        if (window == null)
+          return;
+
+        // FIXME: use show_uri_full so we can show errors
+        Gtk.show_uri (window,
+                      fallback_to_https (url.value),
+                      Gdk.CURRENT_TIME);
+      });
+
+      this.attach_row (row);
     }
   }
 
@@ -300,33 +318,52 @@ public class Contacts.ContactSheet : Gtk.Grid {
     return url;
   }
 
-  private void add_nickname (Persona persona) {
-    var name_details = persona as NameDetails;
-    if (name_details != null && is_set (name_details.nickname))
-      add_row_with_label (_("Nickname"), name_details.nickname);
+  private void add_nickname (Persona persona, string property) {
+    unowned var name_details = persona as NameDetails;
+    if (name_details == null || name_details.nickname == "")
+      return;
+
+    var row = new ContactSheetRow (property, name_details.nickname);
+    this.attach_row (row);
   }
 
-  private void add_birthday (Persona persona) {
-    var birthday_details = persona as BirthdayDetails;
-    if (birthday_details != null && birthday_details.birthday != null)
-      add_row_with_label (_("Birthday"), birthday_details.birthday.to_local ().format ("%x"));
+  private void add_birthday (Persona persona, string property) {
+    unowned var birthday_details = persona as BirthdayDetails;
+    if (birthday_details == null || birthday_details.birthday == null)
+      return;
+
+    var birthday_str = birthday_details.birthday.to_local ().format ("%x");
+    var row = new ContactSheetRow (property, birthday_str);
+    this.attach_row (row);
   }
 
-  private void add_notes (Persona persona) {
-    var note_details = persona as NoteDetails;
-    if (note_details != null) {
-      foreach (var note in note_details.notes)
-        add_row_with_label (_("Note"), note.value);
+  private void add_notes (Persona persona, string property) {
+    unowned var note_details = persona as NoteDetails;
+    if (note_details == null)
+      return;
+
+    foreach (var note in note_details.notes) {
+      if (note.value == "")
+        continue;
+
+      var row = new ContactSheetRow (property, note.value);
+      this.attach_row (row);
     }
   }
 
-  private void add_postal_addresses (Persona persona) {
-    var addr_details = persona as PostalAddressDetails;
-    if (addr_details != null) {
-      foreach (var addr in addr_details.postal_addresses) {
-        var all_strs = string.joinv ("\n", Utils.format_address (addr.value));
-        add_row_with_label (TypeSet.general.format_type (addr), all_strs);
-      }
+  private void add_postal_addresses (Persona persona, string property) {
+    unowned var addr_details = persona as PostalAddressDetails;
+    if (addr_details == null)
+      return;
+
+    foreach (var addr in addr_details.postal_addresses) {
+      if (addr.value.is_empty ())
+        continue;
+
+      var row = new ContactSheetRow (property,
+                                     string.joinv ("\n", Utils.format_address (addr.value)),
+                                     TypeSet.general.format_type (addr));
+      this.attach_row (row);
     }
   }
 }

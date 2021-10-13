@@ -22,7 +22,7 @@ using Folks;
  * phone number can be both for a personal phone, a work phone or even a fax
  * machine.
  */
-public class Contacts.TypeSet : Object  {
+public class Contacts.TypeSet : Object, GLib.ListModel  {
 
   /** Returns the category of typeset (mostly used for debugging). */
   public string category { get; construct set; }
@@ -31,61 +31,23 @@ public class Contacts.TypeSet : Object  {
   private TypeDescriptor other_dummy = new TypeDescriptor.other ();
 
   // List of VcardTypeMapping. This makes sure of keeping the correct order
-  private Gee.List<VcardTypeMapping?> vcard_type_mappings
-      = new Gee.ArrayList<VcardTypeMapping?> ();
+  private GenericArray<VcardTypeMapping?> vcard_type_mappings
+      = new GenericArray<VcardTypeMapping?> ();
 
-  // Contains 2 columns:
-  // 1. The type's display name (or null for a separator)
-  // 2. The TypeDescriptor
-  public Gtk.ListStore store { get; private set; }
+  private GenericArray<TypeDescriptor> descriptors = new GenericArray<TypeDescriptor> ();
 
   /**
    * Creates a TypeSet for the given category, e.g. "phones" (used for debugging)
    */
   private TypeSet (string? category) {
     Object (category: category);
-
-    this.store = new Gtk.ListStore (2, typeof (unowned string?), typeof (TypeDescriptor));
-  }
-
-  /**
-   * Returns the {@link Gtk.TreeIter} which corresponds to the type of the
-   * given {@link Folks.AbstractFieldDetails}.
-   */
-  public void get_iter_for_field_details (AbstractFieldDetails detail,
-                                          out Gtk.TreeIter iter) {
-    // Note that we shouldn't have null here, but it's there just to be sure.
-    var d = lookup_descriptor_for_field_details (detail);
-    iter = d.iter;
-  }
-
-  /**
-   * Returns the {@link Gtk.TreeIter} which corresponds the best to the given
-   * vcard type.
-   *
-   * @param type A VCard-like type, such as "HOME" or "CELL".
-   */
-  public void get_iter_for_vcard_type (string type, out Gtk.TreeIter iter) {
-    unowned TypeDescriptor? d = lookup_descriptor_by_vcard_type (type);
-    iter = (d != null)? d.iter : this.other_dummy.iter;
-  }
-
-  /**
-   * Returns the {@link Gtk.TreeIter} which corresponds the best to the given
-   * custom label.
-   */
-  public void get_iter_for_custom_label (string label, out Gtk.TreeIter iter) {
-    var descr = get_descriptor_for_custom_label (label);
-    if (descr == null)
-      descr = create_descriptor_for_custom_label (label);
-    iter = descr.iter;
   }
 
   /**
    * Returns the display name for the type of the given AbstractFieldDetails.
    */
   public unowned string format_type (AbstractFieldDetails detail) {
-    var d = lookup_descriptor_for_field_details (detail);
+    var d = lookup_by_field_details (detail);
     return d.display_name;
   }
 
@@ -93,15 +55,10 @@ public class Contacts.TypeSet : Object  {
    * Adds the TypeDescriptor to the {@link TypeSet}'s store.
    * @param descriptor The TypeDescription to be added
    */
-  private void add_descriptor_to_store (TypeDescriptor descriptor) {
+  private void add_descriptor (TypeDescriptor descriptor) {
     debug ("%s: Adding type %s to store", this.category, descriptor.to_string ());
-
-    if (descriptor.is_custom ())
-      this.store.insert_before (out descriptor.iter, null);
-    else
-      this.store.append (out descriptor.iter);
-
-    store.set (descriptor.iter, 0, descriptor.display_name, 1, descriptor);
+    this.descriptors.add (descriptor);
+    this.items_changed (this.descriptors.length - 1, 0, 1);
   }
 
   /**
@@ -111,60 +68,57 @@ public class Contacts.TypeSet : Object  {
    * @param display_name The translated display name
    * @return The appropriate TypeDescriptor or null if no match was found.
    */
-  public unowned TypeDescriptor? lookup_descriptor_in_store (string display_name) {
-    Gtk.TreeIter iter;
+  public unowned TypeDescriptor? lookup_by_display_name (string display_name,
+                                                         out uint position) {
+    for (int i = 0; i < this.descriptors.length; i++) {
+      unowned var type_descr = this.descriptors[i];
 
-    // Make sure we handle an empty store
-    if (!this.store.get_iter_first (out iter))
-      return null;
+      if (display_name.ascii_casecmp (type_descr.display_name) != 0)
+        continue;
+      if (display_name.ascii_casecmp (type_descr.name) != 0)
+        continue;
 
-    do {
-      unowned TypeDescriptor? type_descr;
-      this.store.get (iter, 1, out type_descr);
-
-      if (display_name.ascii_casecmp (type_descr.display_name) == 0)
-        return type_descr;
-      if (display_name.ascii_casecmp (type_descr.name) == 0)
-        return type_descr;
-    } while (this.store.iter_next (ref iter));
+      position = i;
+      return type_descr;
+    }
 
     // Nothing was found
+    position = 0;
     return null;
   }
 
   private void add_vcard_mapping (VcardTypeMapping vcard_mapping) {
-    TypeDescriptor? descriptor = lookup_descriptor_in_store (vcard_mapping.name);
+    uint position;
+    var descriptor = lookup_by_display_name (vcard_mapping.name, out position);
     if (descriptor == null) {
       descriptor = new TypeDescriptor.vcard (vcard_mapping.name, vcard_mapping.types);
-      add_descriptor_to_store (descriptor);
+      debug ("%s: Adding VCard type %s to store", this.category, descriptor.to_string ());
+      this.add_descriptor (descriptor);
     }
 
     this.vcard_type_mappings.add (vcard_mapping);
   }
 
-  // Refers to the type of the detail, i.e. "Other" instead of "Personal" or "Work"
-  private void add_type_other () {
-    store.append (out other_dummy.iter);
-    store.set (other_dummy.iter, 0, other_dummy.display_name, 1, other_dummy);
-  }
-
   /**
    * Tries to find the TypeDescriptor matching the given custom label, or null if none.
    */
-  public unowned TypeDescriptor? get_descriptor_for_custom_label (string label) {
+  public TypeDescriptor? lookup_by_custom_label (string label,
+                                                 out uint position) {
     // Check in the current display names
-    unowned TypeDescriptor? descriptor = lookup_descriptor_in_store (label);
+    unowned var descriptor = lookup_by_display_name (label, out position);
     if (descriptor != null)
       return descriptor;
 
     // Try again, but use the vcard types too
-    descriptor = lookup_descriptor_by_vcard_type (label);
+    descriptor = lookup_by_vcard_type (label, out position);
     return descriptor;
   }
 
   private TypeDescriptor create_descriptor_for_custom_label (string label) {
     var new_descriptor = new TypeDescriptor.custom (label);
-    add_descriptor_to_store (new_descriptor);
+    debug ("%s: Adding custom type %s to store",
+           this.category, new_descriptor.to_string ());
+    this.add_descriptor (new_descriptor);
     return new_descriptor;
   }
 
@@ -172,19 +126,26 @@ public class Contacts.TypeSet : Object  {
    * Returns the TypeDescriptor which corresponds the best to the given vcard type.
    * @param str A VCard-like type, such as "HOME" or "CELL".
    */
-  private unowned TypeDescriptor? lookup_descriptor_by_vcard_type (string str) {
-    foreach (VcardTypeMapping? mapping in this.vcard_type_mappings) {
+  public unowned TypeDescriptor? lookup_by_vcard_type (string str,
+                                                       out uint position) {
+    foreach (unowned var mapping in this.vcard_type_mappings) {
       if (mapping.contains (str))
-        return lookup_descriptor_in_store (mapping.name);
+        return lookup_by_display_name (mapping.name, out position);
     }
 
+    position = 0;
     return null;
   }
 
-  public TypeDescriptor lookup_descriptor_for_field_details (AbstractFieldDetails detail) {
+  /**
+   * Looks up the TypeDescriptor for the given field details. If the descriptor
+   * is not found, it will be created and returned, so this never returns null.
+   */
+  public TypeDescriptor lookup_by_field_details (AbstractFieldDetails detail,
+                                                 out uint position = null) {
     if (detail.parameters.contains (TypeDescriptor.X_GOOGLE_LABEL)) {
       var label = Utils.get_first<string> (detail.parameters[TypeDescriptor.X_GOOGLE_LABEL]);
-      var descriptor = get_descriptor_for_custom_label (label);
+      var descriptor = lookup_by_custom_label (label, out position);
       // Still didn't find it => create it
       if (descriptor == null)
         descriptor = create_descriptor_for_custom_label (label);
@@ -197,14 +158,28 @@ public class Contacts.TypeSet : Object  {
       return this.other_dummy;
     }
 
-    foreach (VcardTypeMapping? d in this.vcard_type_mappings) {
-      if (d.matches (types))
-        return lookup_descriptor_in_store (d.name);
+    foreach (unowned var mapping in this.vcard_type_mappings) {
+      if (mapping.matches (types))
+        return lookup_by_display_name (mapping.name, out position);
     }
 
     return this.other_dummy;
   }
 
+  public GLib.Type get_item_type () {
+    return typeof (TypeDescriptor);
+  }
+
+  public uint get_n_items () {
+    return this.descriptors.length;
+  }
+
+  public GLib.Object? get_item (uint i) {
+    if (i > this.descriptors.length)
+      return null;
+
+    return this.descriptors[i];
+  }
 
   private static TypeSet _general;
   private const VcardTypeMapping[] general_data = {
@@ -218,7 +193,8 @@ public class Contacts.TypeSet : Object  {
         _general = new TypeSet ("General");
         for (int i = 0; i < general_data.length; i++)
           _general.add_vcard_mapping (general_data[i]);
-        _general.add_type_other ();
+
+        _general.add_descriptor (general.other_dummy);
       }
 
       return _general;
@@ -238,7 +214,7 @@ public class Contacts.TypeSet : Object  {
         _email = new TypeSet ("Emails");
         for (int i = 0; i < email_data.length; i++)
           _email.add_vcard_mapping (email_data[i]);
-        _email.add_type_other ();
+        _email.add_descriptor (_email.other_dummy);
       }
 
       return _email;
@@ -275,7 +251,7 @@ public class Contacts.TypeSet : Object  {
         _phone = new TypeSet ("Phones");
         for (int i = 0; i < phone_data.length; i++)
           _phone.add_vcard_mapping (phone_data[i]);
-        _phone.add_type_other ();
+        _phone.add_descriptor (_phone.other_dummy);
       }
 
       return _phone;

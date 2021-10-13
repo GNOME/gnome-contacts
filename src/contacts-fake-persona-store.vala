@@ -557,7 +557,7 @@ public class Contacts.FakeHashSet<T> : Gee.HashSet<T> {
   public override bool add (T element) {
     var res = base.add (element);
     if (res) {
-      added();
+      added ();
       changed ();
     }
     return res;

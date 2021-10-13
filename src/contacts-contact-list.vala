@@ -22,58 +22,7 @@ using Folks;
  * the left. It is contained by the {@link ListPane}, which also provides other
  * functionality, such as an action bar.
  */
-public class Contacts.ContactList : Gtk.ListBox {
-  private class ContactDataRow : Gtk.ListBoxRow {
-    private const int LIST_AVATAR_SIZE = 48;
-
-    public unowned Individual individual;
-    private Gtk.Label label;
-    private Avatar avatar;
-    public Gtk.CheckButton selector_button;
-
-    public ContactDataRow(Individual i) {
-      this.individual = i;
-      this.individual.notify.connect (on_contact_changed);
-
-      get_style_context (). add_class ("contact-data-row");
-
-      Gtk.Grid grid = new Gtk.Grid ();
-      grid.margin = 3;
-      grid.margin_start = 9;
-      grid.set_column_spacing (10);
-      this.avatar = new Avatar (LIST_AVATAR_SIZE, this.individual);
-
-      this.label = new Gtk.Label (individual.display_name);
-      this.label.ellipsize = Pango.EllipsizeMode.END;
-      this.label.valign = Gtk.Align.CENTER;
-      this.label.halign = Gtk.Align.START;
-      // Make sure it doesn't "twitch" when the checkbox becomes visible
-      this.label.xalign = 0;
-
-      this.selector_button = new Gtk.CheckButton ();
-      this.selector_button.visible = false;
-      this.selector_button.valign = Gtk.Align.CENTER;
-      this.selector_button.halign = Gtk.Align.END;
-      this.selector_button.hexpand = true;
-      // Make sure it doesn't overlap with the scrollbar
-      this.selector_button.margin_end = 12;
-
-      grid.attach (this.avatar, 0, 0);
-      grid.attach (this.label, 1, 0);
-      grid.attach (this.selector_button, 2, 0);
-      this.add (grid);
-      this.show_all ();
-    }
-
-    private void on_contact_changed (Object obj, ParamSpec pspec) {
-      //TODO: Update also the Avatar
-      this.label.set_text (this.individual.display_name);
-      changed ();
-    }
-  }
-
-  public signal void selection_changed (Individual? individual);
-  public signal void contacts_marked (int contacts_marked);
+public class Contacts.ContactList : Adw.Bin {
 
   int nr_contacts_marked = 0;
 
@@ -83,51 +32,87 @@ public class Contacts.ContactList : Gtk.ListBox {
 
   private bool sort_on_surname = false; // keep in sync with the setting
 
-  private Gtk.GestureLongPress long_press;
   private bool got_long_press = false;
 
   public UiState state { get; set; }
 
-  public ContactList (Settings settings, Store store, Query query) {
-    this.selection_mode = Gtk.SelectionMode.BROWSE;
+  private unowned Gtk.ListBox listbox;
+
+  // The vertical adjustment of the scrolled window
+  private unowned Gtk.Adjustment vadjustment;
+
+  public signal void selection_changed (Individual? individual);
+  public signal void contacts_marked (int contacts_marked);
+
+  construct {
+    // First construct a ScrolledWindow with a Viewport
+    var sw = new Gtk.ScrolledWindow ();
+    sw.hscrollbar_policy = Gtk.PolicyType.NEVER;
+    sw.add_css_class ("contact-list-scrolled-window");
+    this.vadjustment = sw.vadjustment;
+    sw.vadjustment.value_changed.connect ((vadj) => { this.load_visible_avatars (); });
+    this.child = sw;
+
+    var viewport = new Gtk.Viewport (sw.hadjustment, sw.vadjustment);
+    viewport.scroll_to_focus = true;
+    sw.set_child (viewport);
+
+    // Then create the listbox
+    var list_box = new Gtk.ListBox ();
+    this.listbox = list_box;
+    viewport.set_child (list_box);
+
+    this.listbox.selection_mode = Gtk.SelectionMode.BROWSE;
+    this.listbox.set_sort_func (compare_rows);
+    this.listbox.set_filter_func (filter_row);
+    this.listbox.set_header_func (update_header);
+    this.listbox.add_css_class ("navigation-sidebar");
+
+    this.add_css_class ("contacts-contact-list");
+
+    // Row selection/activation
+    this.listbox.row_activated.connect (on_row_activated);
+    this.listbox.row_selected.connect (on_row_selected);
+
+    // Connect events right-click and long-press
+    var secondary_click_gesture = new Gtk.GestureClick ();
+    secondary_click_gesture.button = Gdk.BUTTON_SECONDARY;
+    secondary_click_gesture.pressed.connect (on_right_click);
+    this.listbox.add_controller (secondary_click_gesture);
+
+    var long_press_gesture = new Gtk.GestureLongPress ();
+    long_press_gesture.pressed.connect (on_long_press);
+    this.listbox.add_controller (long_press_gesture);
+  }
+
+  public ContactList (Settings settings,
+                      Store    store,
+                      Query    query) {
     this.store = store;
     this.filter_query = query;
-    this.filter_query.notify.connect (() => { invalidate_filter (); });
-    this.visible = true;
+    this.filter_query.notify.connect (() => { this.listbox.invalidate_filter ();
+                                      });
 
     this.notify["state"].connect (on_ui_state_changed);
 
-    // Connect long press gesture
-    this.long_press = new Gtk.GestureLongPress (this);
-    this.long_press.pressed.connect ((g, x, y) => {
-      this.got_long_press = true;
-      var row = (ContactDataRow) get_row_at_y ((int) Math.round (y));
-      if (row != null) {
-        row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
-      }
-    });
-
     this.sort_on_surname = settings.sort_on_surname;
-    settings.changed["sort-on-surname"].connect(() => {
-        this.sort_on_surname = settings.sort_on_surname;
-        invalidate_sort();
-      });
+    settings.changed["sort-on-surname"].connect (() => {
+      this.sort_on_surname = settings.sort_on_surname;
+      this.listbox.invalidate_sort ();
+    });
 
     this.store.added.connect (contact_added_cb);
     this.store.removed.connect (contact_removed_cb);
     foreach (var i in this.store.get_contacts ())
       contact_added_cb (this.store, i);
-
-    get_style_context ().add_class ("contacts-contact-list");
-
-    set_sort_func (compare_rows);
-    set_filter_func (filter_row);
-    set_header_func (update_header);
   }
 
   private void on_ui_state_changed (Object obj, ParamSpec pspec) {
-    foreach (var widget in get_children ()) {
-      var row = widget as ContactDataRow;
+    for (int i = 0; true; i++) {
+      unowned var row = (ContactDataRow) this.listbox.get_row_at_index (i);
+      if (row == null)
+        break;
+
       row.selector_button.visible = (this.state == UiState.SELECTING);
 
       if (this.state != UiState.SELECTING)
@@ -136,9 +121,9 @@ public class Contacts.ContactList : Gtk.ListBox {
 
     // Disalbe highlighted (blue) selection since we use the checkbox to show selection
     if (this.state == UiState.SELECTING) {
-      this.selection_mode = Gtk.SelectionMode.NONE;
+      this.listbox.selection_mode = Gtk.SelectionMode.NONE;
     } else {
-      this.selection_mode = Gtk.SelectionMode.BROWSE;
+      this.listbox.selection_mode = Gtk.SelectionMode.BROWSE;
       this.nr_contacts_marked = 0;
     }
   }
@@ -188,14 +173,12 @@ public class Contacts.ContactList : Gtk.ListBox {
   private Gtk.Label create_header_label (string text) {
     var label = new Gtk.Label (text);
     label.halign = Gtk.Align.START;
-    label.margin = 3;
     label.margin_start = 6;
+    label.margin_end = 3;
     label.margin_top = 6;
-    var attrs = new Pango.AttrList ();
-    attrs.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
-    attrs.insert (Pango.attr_scale_new ((Pango.Scale.SMALL + Pango.Scale.MEDIUM) / 2.0));
-    attrs.insert (Pango.attr_foreground_alpha_new (30000));
-    label.attributes = attrs;
+    label.margin_bottom = 3;
+    label.add_css_class ("heading");
+    label.add_css_class ("dim-label");
     return label;
   }
 
@@ -203,10 +186,10 @@ public class Contacts.ContactList : Gtk.ListBox {
     // Don't create a row for ignorable contacts are the individual already has a row
     if (!Contacts.Utils.is_ignorable (i) && find_row_for_contact(i) == null) {
       var row =  new ContactDataRow (i);
-      row.selector_button.toggled.connect ( () => { on_row_checkbox_toggled (row); });
+      row.selector_button.toggled.connect (() => { on_row_checkbox_toggled (row); });
       row.selector_button.visible = (this.state == UiState.SELECTING);
 
-      add (row);
+      this.listbox.append (row);
     } else {
       debug ("Contact %s was ignored", i.id);
     }
@@ -228,9 +211,9 @@ public class Contacts.ContactList : Gtk.ListBox {
       row.destroy ();
   }
 
-  public override void row_activated (Gtk.ListBoxRow row) {
+  private void on_row_activated (Gtk.ListBox listbox, Gtk.ListBoxRow row) {
     if (!this.got_long_press) {
-      var data = row as ContactDataRow;
+      unowned var data = row as ContactDataRow;
       if (data != null && this.state == UiState.SELECTING)
         data.selector_button.active = !data.selector_button.active;
     } else {
@@ -238,10 +221,10 @@ public class Contacts.ContactList : Gtk.ListBox {
     }
   }
 
-  public override void row_selected (Gtk.ListBoxRow? row) {
+  private void on_row_selected (Gtk.ListBox listbox, Gtk.ListBoxRow? row) {
     if (this.state != UiState.SELECTING) {
-      var data = row as ContactDataRow;
-      var individual = data != null ? data.individual : null;
+      unowned var data = (ContactDataRow?) row;
+      unowned var individual = data != null? data.individual : null;
       selection_changed (individual);
 #if HAVE_TELEPATHY
       if (individual != null)
@@ -251,29 +234,32 @@ public class Contacts.ContactList : Gtk.ListBox {
   }
 
   private bool filter_row (Gtk.ListBoxRow row) {
-    var individual = ((ContactDataRow) row).individual;
+    unowned var individual = ((ContactDataRow) row).individual;
     return this.filter_query.is_match (individual) > 0;
   }
 
   public void select_contact (Individual? individual) {
     if (individual == null) {
       /* deselect */
-      select_row (null);
+      this.listbox.select_row (null);
       return;
     }
 
-    ContactDataRow? row = find_row_for_contact (individual);
-    select_row (row);
+    unowned var row = find_row_for_contact (individual);
+    this.listbox.select_row (row);
     scroll_to_contact (row);
+  }
+
+  private void load_visible_avatars () {
+    // FIXME: use the vadjustment to load only the avatars of the visible rows
   }
 
   public void scroll_to_contact (Gtk.ListBoxRow? row = null) {
     unowned ContactDataRow? selected_row = null;
-
     if (row == null)
-      selected_row = get_selected_row () as ContactDataRow;
+      selected_row = (ContactDataRow?) this.listbox.get_selected_row ();
     else
-      selected_row = row as ContactDataRow;
+      selected_row = (ContactDataRow) row;
 
     GLib.Timeout.add (100, () => {
       if (selected_row != null)
@@ -282,16 +268,18 @@ public class Contacts.ContactList : Gtk.ListBox {
     });
   }
 
-  public void hide_contact (Individual? individual) {
+  public void set_contact_visible (Individual? individual, bool visible) {
     if (individual != null) {
-      find_row_for_contact (individual).hide ();
+      find_row_for_contact (individual).visible = visible;
     }
   }
 
-
   private unowned ContactDataRow? find_row_for_contact (Individual individual) {
-    foreach (weak Gtk.Widget widget in get_children ()) {
-      unowned var row = ((ContactDataRow) widget);
+    for (int i = 0; true; i++) {
+      unowned var row = (ContactDataRow) this.listbox.get_row_at_index (i);
+      if (row == null)
+        break;
+
       if (row.individual == individual)
         return row;
     }
@@ -301,18 +289,27 @@ public class Contacts.ContactList : Gtk.ListBox {
 
   public Gee.LinkedList<Individual> get_marked_contacts () {
     var cs = new Gee.LinkedList<Individual> ();
-    foreach (weak Gtk.Widget widget in get_children ()) {
-      unowned var row = widget as ContactDataRow;
+
+    for (int i = 0; true; i++) {
+      unowned var row = (ContactDataRow) this.listbox.get_row_at_index (i);
+      if (row == null)
+        break;
+
       if (row.selector_button.active)
         cs.add (row.individual);
     }
+
     return cs;
   }
 
   public Gee.LinkedList<Individual> get_marked_contacts_and_hide () {
     var cs = new Gee.LinkedList<Individual> ();
-    foreach (weak Gtk.Widget widget in get_children ()) {
-      unowned var row = widget as ContactDataRow;
+
+    for (int i = 0; true; i++) {
+      unowned var row = (ContactDataRow) this.listbox.get_row_at_index (i);
+      if (row == null)
+        break;
+
       if (row.selector_button.active) {
         row.visible = false;
         cs.add (row.individual);
@@ -321,17 +318,71 @@ public class Contacts.ContactList : Gtk.ListBox {
     return cs;
   }
 
+  private void on_right_click (Gtk.GestureClick gesture, int n_press, double x, double y) {
+    unowned var row = (ContactDataRow) this.listbox.get_row_at_y ((int) Math.round (y));
+    if (row != null) {
+      row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
+    }
+  }
 
-  public override bool button_press_event (Gdk.EventButton event) {
-    base.button_press_event (event);
+  private void on_long_press (Gtk.GestureLongPress gesture, double x, double y) {
+    this.got_long_press = true;
+    unowned var row = (ContactDataRow) this.listbox.get_row_at_y ((int) Math.round (y));
+    if (row != null) {
+      row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
+    }
+  }
 
-    if (event.button == Gdk.BUTTON_SECONDARY) {
-      unowned var row = (ContactDataRow) get_row_at_y ((int) Math.round (event.y));
-      if (row != null) {
-        row.selector_button.active = this.state != UiState.SELECTING || !row.selector_button.active;
-      }
+  // A class for the ListBoxRows
+  private class ContactDataRow : Gtk.ListBoxRow {
+    private const int LIST_AVATAR_SIZE = 48;
+
+    public unowned Individual individual;
+    private unowned Gtk.Label label;
+    private unowned Avatar avatar;
+    public unowned Gtk.CheckButton selector_button;
+
+    public ContactDataRow (Individual i) {
+      this.individual = i;
+      this.individual.notify.connect (on_contact_changed);
+
+      add_css_class ("contact-data-row");
+
+      var box = new Gtk.Box (HORIZONTAL, 12);
+      box.margin_top = 6;
+      box.margin_bottom = 6;
+
+      var avatar = new Avatar (LIST_AVATAR_SIZE, this.individual);
+      box.append (avatar);
+      this.avatar = avatar;
+
+      var label = new Gtk.Label (individual.display_name);
+      label.ellipsize = Pango.EllipsizeMode.END;
+      label.valign = Gtk.Align.CENTER;
+      label.halign = Gtk.Align.START;
+      // Make sure it doesn't "twitch" when the checkbox becomes visible
+      label.xalign = 0;
+      box.append (label);
+      this.label = label;
+
+      var selector_button = new Gtk.CheckButton ();
+      selector_button.visible = false;
+      selector_button.valign = Gtk.Align.CENTER;
+      selector_button.halign = Gtk.Align.END;
+      selector_button.hexpand = true;
+      selector_button.add_css_class ("selection-mode");
+      // Make sure it doesn't overlap with the scrollbar
+      selector_button.margin_end = 12;
+      box.append (selector_button);
+      this.selector_button = selector_button;
+
+      this.set_child (box);
     }
 
-    return false;
+    private void on_contact_changed (Object obj, ParamSpec pspec) {
+      //TODO: Update also the Avatar
+      this.label.set_text (this.individual.display_name);
+      changed ();
+    }
   }
 }

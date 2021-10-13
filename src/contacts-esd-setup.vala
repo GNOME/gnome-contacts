@@ -16,14 +16,10 @@
  *
  */
 
-// FIXME: the async bindings seem to be broken for this function.
-extern void e_trust_prompt_run_for_source (Gtk.Window parent, E.Source source, string certificate_pem, GLib.TlsCertificateFlags certificate_errors, string? error_text, bool allow_source_save, GLib.Cancellable? cancellable, AsyncReadyCallback callback);
-extern bool e_trust_prompt_run_for_source_finish (E.Source source, AsyncResult result, out E.TrustPromptResponse response) throws GLib.Error;
-
 namespace Contacts {
 
 public E.SourceRegistry? eds_source_registry = null;
-private E.CredentialsPrompter? eds_credentials_prompter = null;
+// private E.CredentialsPrompter? eds_credentials_prompter = null;
 
 public bool ensure_eds_accounts (bool allow_interaction) {
   if (eds_source_registry != null)
@@ -39,6 +35,8 @@ public bool ensure_eds_accounts (bool allow_interaction) {
     return false;
   }
 
+  // FIXME Do when GTK4 port of e-d-s-ui is done
+#if 0
   eds_credentials_prompter = new E.CredentialsPrompter (eds_source_registry);
 
   if (!allow_interaction)
@@ -64,28 +62,32 @@ public bool ensure_eds_accounts (bool allow_interaction) {
   // The eds_credentials_prompter responses to REQUIRED and REJECTED reasons,
   // the SSL_FAILED should be handled elsewhere.
   eds_source_registry.credentials_required.connect((src, reason, cert_pem, cert_err, err) => {
-    on_credentials_required.begin (src, reason, cert_pem, cert_err, err);
+      on_credentials_required.begin (src, reason, cert_pem, cert_err, err);
   });
 
   eds_credentials_prompter.process_awaiting_credentials ();
+#endif
 
   return true;
 }
 
+// FIXME Do when GTK4 port of e-d-s-ui is done
+#if 0
 private async void on_credentials_required (E.Source source, E.SourceCredentialsReason reason, string cert_pem, TlsCertificateFlags cert_errors, Error err) {
   if (eds_credentials_prompter.get_auto_prompt_disabled_for (source))
     return;
 
-  if (reason == E.SourceCredentialsReason.ERROR && err != null) {
-    warning ("Failed to authenticate for source \"%s\": %s", source.display_name, err.message);
-    return;
-  }
+   if (reason == E.SourceCredentialsReason.ERROR && err != null) {
+     warning ("Failed to authenticate for source \"%s\": %s",
+              source.display_name, err.message);
+     return;
+   }
 
-  if (reason == E.SourceCredentialsReason.SSL_FAILED) {
-    e_trust_prompt_run_for_source (eds_credentials_prompter.get_dialog_parent (),
+   if (reason == E.SourceCredentialsReason.SSL_FAILED) {
+     e_trust_prompt_run_for_source (eds_credentials_prompter.get_dialog_parent (),
         source, cert_pem, cert_errors, (err != null)? err.message : null, true,
         null, (obj, res) => on_source_trust_prompt_has_run.begin (source, res));
-  }
+   }
 }
 
 private async void on_source_trust_prompt_has_run (E.Source source, AsyncResult res) {
@@ -103,6 +105,7 @@ private async void on_source_trust_prompt_has_run (E.Source source, AsyncResult 
     warning ("Failed to invoke authenticate() for source \"%s\": %s", source.display_name, e.message);
   }
 }
+#endif
 
 public bool has_goa_account () {
   foreach (var source in eds_source_registry.list_sources (E.SOURCE_EXTENSION_GOA)) {
@@ -154,7 +157,7 @@ public string? lookup_esource_name_by_uid (string uid) {
   return source.display_name;
 }
 
-public string? lookup_esource_name_by_uid_for_contact (string uid) {
+public unowned string? lookup_esource_name_by_uid_for_contact (string uid) {
   var source = eds_source_registry.ref_source (uid);
   if (source == null)
     return null;
@@ -188,6 +191,6 @@ public Gtk.Image? get_icon_for_goa_account (string goa_id) {
     return null;
   }
 
-  return new Gtk.Image.from_gicon (provider_icon, Gtk.IconSize.DIALOG);
+  return new Gtk.Image.from_gicon (provider_icon);
 }
 }

@@ -1,89 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Thu Aug 15 15:33:02 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
-  <template class="ContactsListPane" parent="GtkFrame">
-    <property name="can_focus">False</property>
-    <property name="hexpand">False</property>
-    <property name="hexpand_set">True</property>
-    <property name="shadow_type">none</property>
+  <template class="ContactsListPane" parent="AdwBin">
     <child>
-      <object class="GtkGrid">
+      <object class="GtkBox" id="box">
         <property name="orientation">vertical</property>
-        <property name="visible">True</property>
         <child>
           <object class="GtkSearchEntry" id="filter_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="primary_icon_name">edit-find-symbolic</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">False</property>
-            <property name="margin">6</property>
-            <property name="placeholder_text" translatable="yes">Type to search</property>
-            <signal name="search_changed" handler="filter_entry_changed" object="ContactsListPane" after="no" swapped="no"/>
+            <property name="placeholder-text" translatable="yes">Type to search</property>
+            <signal name="search-changed" handler="filter_entry_changed"/>
+            <style>
+              <class name="contacts-filter-entry"/>
+            </style>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="contacts_list_container">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
+          <object class="AdwBin" id="contacts_list_container">
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="hscrollbar_policy">never</property>
-            <property name="no_show_all">True</property>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
         </child>
         <child>
           <object class="GtkActionBar" id="actions_bar">
-            <property name="visible">False</property>
+            <property name="revealed">False</property>
             <child>
               <object class="GtkButton" id="link_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
-                <property name="width_request">70</property>
                 <property name="sensitive">False</property>
                 <signal name="clicked" handler="on_link_button_clicked"/>
               </object>
-              <packing>
-                <property name="pack_type">start</property>
-              </packing>
             </child>
-            <child>
+            <child type="end">
               <object class="GtkButton" id="delete_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="label" translatable="yes">Remove</property>
-                <property name="width_request">70</property>
                 <property name="sensitive">False</property>
                 <signal name="clicked" handler="on_delete_button_clicked"/>
                 <style>
                   <class name="destructive-action"/>
                 </style>
               </object>
-              <packing>
-                <property name="pack_type">end</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
         </child>
       </object>
     </child>

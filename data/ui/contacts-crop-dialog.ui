@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContactsCropDialog" parent="GtkDialog">
+    <property name="modal">True</property>
+    <property name="default-width">400</property>
+    <property name="default-height">400</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="title"></property>
+
+    <child type="action">
+      <object class="GtkButton" id="cancel_button">
+        <property name="label" translatable="yes">Cancel</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkButton" id="done_button">
+        <property name="label" translatable="yes">Done</property>
+        <style>
+          <class name="suggested-action"/>
+        </style>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="cancel">cancel_button</action-widget>
+      <action-widget response="accept" default="true">done_button</action-widget>
+    </action-widgets>
+
+    <child internal-child="content_area">
+      <object class="GtkBox" id="box">
+        <property name="orientation">vertical</property>
+      </object>
+    </child>
+  </template>
+</interface>

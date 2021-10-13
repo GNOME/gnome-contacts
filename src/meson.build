@@ -6,12 +6,16 @@ install_data('org.gnome.Contacts.gschema.xml',
 
 # Common library
 libcontacts_sources = files(
+  'contacts-delete-operation.vala',
   'contacts-esd-setup.vala',
   'contacts-fake-persona-store.vala',
   'contacts-im-service.vala',
+  'contacts-link-operation.vala',
+  'contacts-operation.vala',
   'contacts-store.vala',
   'contacts-typeset.vala',
   'contacts-type-descriptor.vala',
+  'contacts-unlink-operation.vala',
   'contacts-utils.vala',
   'contacts-vcard-type-mapping.vala',
 )
@@ -24,7 +28,6 @@ contacts_vala_args = [
 
 contacts_c_args = [
   '-include', 'config.h',
-  '-DGNOME_DESKTOP_USE_UNSTABLE_API',
   '-DLOCALEDIR="@0@"'.format(locale_dir),
 ]
 
@@ -34,21 +37,15 @@ contacts_deps = [
   gee,
   gio_unix,
   glib,
-  gnome_desktop,
   goa,
-  gtk,
+  gtk4_dep,
+  libadwaita_dep,
   libebook,
   libedataserver,
-  libedataserverui,
-  libhandy,
+  # libedataserverui,
+  libportal_dep,
   math,
 ]
-
-# Add extra stuff given a certain set of options
-if cheese_dep.found() and cheese_gtk_dep.found()
-  contacts_deps += [ cheese_dep, cheese_gtk_dep ]
-  contacts_vala_args += [ '-D', 'HAVE_CHEESE' ]
-endif
 
 if get_option('telepathy')
   contacts_deps += [ folks_telepathy, telepathy_glib ]
@@ -82,13 +79,11 @@ contacts_vala_sources = files(
   'contacts-contact-list.vala',
   'contacts-contact-pane.vala',
   'contacts-contact-sheet.vala',
-  'contacts-crop-cheese-dialog.vala',
+  'contacts-crop-dialog.vala',
   'contacts-editor-persona.vala',
   'contacts-editor-property.vala',
-  'contacts-in-app-notification.vala',
   'contacts-link-suggestion-grid.vala',
   'contacts-linked-personas-dialog.vala',
-  'contacts-linking.vala',
   'contacts-list-pane.vala',
   'contacts-main-window.vala',
   'contacts-settings.vala',
@@ -102,9 +97,9 @@ contacts_c_sources = [
   'cc-crop-area.c',
 ]
 
-if cheese_dep.found() and cheese_gtk_dep.found()
-  contacts_c_sources += 'cheese-flash.c'
-endif
+# if cheese_dep.found() and cheese_gtk_dep.found()
+#   contacts_c_sources += 'cheese-flash.c'
+# endif
 
 contacts_sources = [
   contacts_c_sources,

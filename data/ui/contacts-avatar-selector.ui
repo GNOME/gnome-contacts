@@ -1,124 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.22"/>
-  <template class="ContactsAvatarSelector" parent="GtkWindow">
-    <property name="can_focus">False</property>
+  <template class="ContactsAvatarSelector" parent="GtkDialog">
     <property name="modal">True</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="skip_taskbar_hint">True</property>
-    <signal name="delete-event" handler="on_delete_event" swapped="no"/>
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">Cancel</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_cancel_clicked" swapped="no"/>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">Done</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_done_clicked" swapped="no"/>
-            <style>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-          </packing>
-        </child>
+    <property name="title" translatable="yes">Select a new avatar</property>
+
+    <child type="action">
+      <object class="GtkButton" id="cancel_button">
+        <property name="label" translatable="yes">Cancel</property>
+        <property name="receives_default">True</property>
       </object>
     </child>
-    <child>
+    <child type="action">
+      <object class="GtkButton" id="done_button">
+        <property name="label" translatable="yes">Done</property>
+        <style>
+          <class name="suggested-action"/>
+        </style>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="cancel">cancel_button</action-widget>
+      <action-widget response="accept" default="true">done_button</action-widget>
+    </action-widgets>
+
+
+    <child internal-child="content_area">
       <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkScrolledWindow">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="hscrollbar_policy">never</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">10</property>
+              <object class="GtkViewport">
+                <property name="scroll-to-focus">True</property>
                 <child>
-                  <object class="GtkFlowBox" id="thumbnail_grid">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="column_spacing">5</property>
-                    <property name="row_spacing">5</property>
-                    <property name="max_children_per_line">8</property>
-                    <property name="selection_mode">single</property>
-                    <property name="homogeneous">False</property>
+                  <object class="GtkBox">
+                    <property name="margin-start">10</property>
+                    <property name="margin-end">10</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkFlowBox" id="thumbnail_grid">
+                        <property name="column_spacing">5</property>
+                        <property name="row_spacing">5</property>
+                        <property name="max_children_per_line">8</property>
+                        <property name="selection_mode">single</property>
+                        <property name="homogeneous">False</property>
+                      </object>
+                    </child>
                   </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
             </child>
           </object>
         </child>
         <child>
-          <object class="GtkSeparator">
-            <property name="visible">True</property>
-          </object>>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">10</property>
-            <property name="margin_right">10</property>
-            <property name="margin_top">10</property>
-            <property name="margin_bottom">10</property>
-            <property name="spacing">10</property>
+          <object class="GtkActionBar">
             <property name="halign">center</property>
             <child>
-              <object class="GtkButton" id="cheese_button">
+              <object class="GtkButton" id="camera_button">
+                <property name="visible">False</property>
                 <property name="label" translatable="yes">Take a Picture…</property>
-                <property name="can_focus">True</property>
-                <property name="no_show_all">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_cheese_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_camera_button_clicked"/>
               </object>
             </child>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Select a File…</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_file_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_file_clicked"/>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="pack_type">end</property>
-          </packing>
         </child>
       </object>
     </child>

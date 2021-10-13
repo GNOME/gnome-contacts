@@ -21,13 +21,17 @@ using Folks;
  * The Avatar of a Contact is responsible for showing an {@link Folks.Individual}'s
  * avatar, or a fallback if it's not available.
  */
-public class Contacts.Avatar : Gtk.Bin {
-  private Hdy.Avatar widget;
+public class Contacts.Avatar : Adw.Bin {
 
   private unowned Individual? individual = null;
 
+  private int avatar_size;
+  private bool load_avatar_started = false;
+
   public Avatar (int size, Individual? individual = null) {
     this.individual = individual;
+    this.avatar_size = size;
+
     string name = "";
     bool show_initials = false;
     if (this.individual != null) {
@@ -42,35 +46,43 @@ public class Contacts.Avatar : Gtk.Bin {
       }
     }
 
-    this.widget = new Hdy.Avatar (size, name, show_initials);
-    this.widget.set_image_load_func (size => load_avatar (size));
-    this.widget.show ();
-    add(this.widget);
+    this.child = new Adw.Avatar (size, name, show_initials);
 
-    show ();
+    // FIXME: ideally we lazy-load this only when we become visible for the
+    // first time
+    this.load_avatar.begin ();
+  }
+
+  public async void load_avatar() {
+    if (this.load_avatar_started)
+      return;
+
+    if (individual == null || individual.avatar == null)
+      return;
+
+    this.load_avatar_started = true;
+
+    try {
+      var stream = yield this.individual.avatar.load_async (this.avatar_size,
+                                                            null);
+      var pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream,
+                                                                    this.avatar_size,
+                                                                    this.avatar_size,
+                                                                    true);
+      this.set_pixbuf (pixbuf);
+    } catch (Error e) {
+      warning ("Couldn't load avatar of '%s': %s", this.individual.display_name, e.message);
+    }
   }
 
   /**
    * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
    */
   public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
-    this.widget.set_image_load_func (size => load_avatar (size, a_pixbuf));
-  }
-
-  private Gdk.Pixbuf? load_avatar (int size, Gdk.Pixbuf? pixbuf = null) {
-    if (pixbuf != null) {
-      return pixbuf.scale_simple (size, size, Gdk.InterpType.HYPER);
-    } else {
-      if (this.individual != null && this.individual.avatar != null) {
-        try {
-          var stream = this.individual.avatar.load (size, null);
-          return new Gdk.Pixbuf.from_stream_at_scale (stream, size, size, true);
-        } catch (Error e) {
-          debug ("Couldn't load avatar of contact %s. Reason: %s", this.individual.display_name, e.message);
-        }
-      }
-    }
-    return null;
+    if (a_pixbuf != null)
+      ((Adw.Avatar) this.child).set_custom_image (Gdk.Texture.for_pixbuf (a_pixbuf));
+    else
+      ((Adw.Avatar) this.child).set_icon_name ("avatar-default-symbolic");
   }
 
   /* Find a nice name to generate the label and color for the fallback avatar
@@ -78,29 +90,33 @@ public class Contacts.Avatar : Gtk.Bin {
    * as a display name which we don't want to have as a label
    */
   private string find_display_name () {
-    string name = "";
-    Persona primary_persona = null;
+    unowned Persona primary_persona = null;
     foreach (var p in this.individual.personas) {
       if (p.store.is_primary_store) {
         primary_persona = p;
         break;
       }
     }
-    name = look_up_alias_for_display_name (primary_persona);
-    if (name == "") {
-      foreach (var p in this.individual.personas) {
-        name = look_up_alias_for_display_name (p);
-      }
+
+    unowned string alias = look_up_alias_for_display_name (primary_persona);
+    if (alias != "")
+      return alias;
+
+    foreach (var p in this.individual.personas) {
+      alias = look_up_alias_for_display_name (p);
+      if (alias != "")
+        return alias;
     }
-    if (name == "") {
-      foreach (var p in this.individual.personas) {
-        name = look_up_name_details_for_display_name (p);
-      }
+
+    foreach (var p in this.individual.personas) {
+      string name = look_up_name_details_for_display_name (p);
+      if (name != "")
+        return name;
     }
-    return name;
+    return "";
   }
 
-  private string look_up_alias_for_display_name (Persona? p) {
+  private unowned string look_up_alias_for_display_name (Persona? p) {
     unowned var a = p as AliasDetails;
     if (a != null && a.alias != null)
       return a.alias;

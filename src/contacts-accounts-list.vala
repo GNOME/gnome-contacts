@@ -18,26 +18,31 @@
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
-public class Contacts.AccountsList : Gtk.ListBox {
-  private Gtk.ListBoxRow last_selected_row;
+public class Contacts.AccountsList : Adw.Bin {
+
+  [GtkChild]
+  private unowned Gtk.ListBox listbox;
+  private unowned Gtk.ListBoxRow? last_selected_row = null;
 
   private Store contacts_store;
-
-  public PersonaStore? selected_store;
+  public PersonaStore? selected_store = null;
 
   public signal void account_selected ();
 
-  public AccountsList (Store contacts_store) {
-    this.contacts_store = contacts_store;
-    this.selected_store = null;
+  construct {
+    this.listbox.row_activated.connect (on_row_activated);
   }
 
-  public override void row_activated (Gtk.ListBoxRow row) {
+  public AccountsList (Store contacts_store) {
+    this.contacts_store = contacts_store;
+  }
+
+  private void on_row_activated (Gtk.ListBox listbox, Gtk.ListBoxRow? row) {
     if (row == null)
       return;
 
-    if (last_selected_row != null &&
-        last_selected_row == row) {
+    if (this.last_selected_row != null &&
+        this.last_selected_row == row) {
       return;
     }
 
@@ -45,29 +50,33 @@ public class Contacts.AccountsList : Gtk.ListBox {
     checkmark.show ();
 
     if (last_selected_row != null) {
-      checkmark = last_selected_row.get_data<Gtk.Image> ("checkmark");
+      checkmark = this.last_selected_row.get_data<Gtk.Image> ("checkmark");
       if (checkmark != null)
         checkmark.hide ();
     }
 
-    last_selected_row = row;
-
-    selected_store = row.get_data<PersonaStore> ("store");
+    // Update the fields
+    this.last_selected_row = row;
+    this.selected_store = row.get_data<PersonaStore> ("store");
 
     account_selected ();
   }
 
   public void update_contents (bool select_active) {
-    foreach (var child in get_children ()) {
-      child.destroy ();
+    // Remove all entries
+    unowned var child = this.listbox.get_first_child ();
+    while (child != null) {
+      unowned var next = child.get_next_sibling ();
+      this.listbox.remove (child);
+      child = next;
     }
 
     // Fill the list with address book
     PersonaStore[] eds_stores = Utils.get_eds_address_books (this.contacts_store);
     debug ("Found %d EDS stores", eds_stores.length);
 
-    PersonaStore? local_store = null;
-    foreach (var persona_store in eds_stores) {
+    unowned PersonaStore? local_store = null;
+    foreach (unowned var persona_store in eds_stores) {
       if (persona_store.id == "system-address-book") {
         local_store = persona_store;
         continue;
@@ -85,63 +94,60 @@ public class Contacts.AccountsList : Gtk.ListBox {
         source_account_id = goa_source_ext.account_id;
       }
 
-      var row = new Hdy.ActionRow ();
+      var row = new Adw.ActionRow ();
       row.set_data ("store", persona_store);
 
       Gtk.Image provider_image;
       if (source_account_id != "")
         provider_image = Contacts.get_icon_for_goa_account (source_account_id);
       else
-        provider_image = new Gtk.Image.from_icon_name (Config.APP_ID,
-                                                       Gtk.IconSize.DIALOG);
+        provider_image = new Gtk.Image.from_icon_name (Config.APP_ID);
+      provider_image.icon_size = Gtk.IconSize.LARGE;
       row.add_prefix (provider_image);
       row.title = provider_name;
       row.subtitle = parent_source.display_name;
-      row.show_all ();
-      row.no_show_all = true;
-      var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic",
-                                                    Gtk.IconSize.MENU);
-      checkmark.set ("margin-end", 6,
-                     "valign", Gtk.Align.CENTER,
-                     "halign", Gtk.Align.END,
-                     "vexpand", true,
-                     "hexpand", true);
-      row.add (checkmark);
+
+      var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic");
+      checkmark.margin_end = 6;
+      checkmark.valign = Gtk.Align.CENTER;
+      checkmark.halign = Gtk.Align.END;
+      checkmark.hexpand = true;
+      checkmark.vexpand = true;
+      checkmark.visible = (persona_store == this.contacts_store.aggregator.primary_store);
+      row.add_suffix (checkmark);
       row.set_activatable_widget (checkmark);
       row.set_data ("checkmark", checkmark);
-      add (row);
+
+      this.listbox.append (row);
 
       if (select_active &&
           persona_store == this.contacts_store.aggregator.primary_store) {
-        row_activated (row);
+        this.listbox.row_activated (row);
       }
     }
 
     if (local_store != null) {
-      var local_row = new Hdy.ActionRow ();
-      var provider_image = new Gtk.Image.from_icon_name (Config.APP_ID,
-                                                         Gtk.IconSize.DIALOG);
+      var local_row = new Adw.ActionRow ();
+      var provider_image = new Gtk.Image.from_icon_name (Config.APP_ID);
+      provider_image.icon_size = Gtk.IconSize.LARGE;
       local_row.add_prefix (provider_image);
       local_row.title = _("Local Address Book");
-      local_row.show_all ();
-      local_row.no_show_all = true;
-      var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic", Gtk.IconSize.MENU);
-      checkmark.set ("margin-end", 6,
-                     "valign", Gtk.Align.CENTER,
-                     "halign", Gtk.Align.END,
-                     "vexpand", true,
-                     "hexpand", true);
-      local_row.add (checkmark);
+      var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic");
+      checkmark.margin_end = 6;
+      checkmark.valign = Gtk.Align.CENTER;
+      checkmark.halign = Gtk.Align.END;
+      checkmark.hexpand = true;
+      checkmark.vexpand = true;
+      checkmark.visible = (local_store == this.contacts_store.aggregator.primary_store);
+      local_row.add_suffix (checkmark);
       local_row.set_activatable_widget (checkmark);
       local_row.set_data ("checkmark", checkmark);
       local_row.set_data ("store", local_store);
-      add (local_row);
+      this.listbox.append (local_row);
       if (select_active &&
           local_store == this.contacts_store.aggregator.primary_store) {
-        row_activated (local_row);
+        this.listbox.row_activated (local_row);
       }
     }
-
-    show_all ();
   }
 }

@@ -19,18 +19,28 @@
 
 using Folks;
 
-public class Contacts.AddressbookList : Gtk.ListBox {
+public class Contacts.AddressbookList : Adw.Bin {
+
   private BackendStore store;
-  private AddressbookRow? marked_row;
   private bool show_icon;
 
+  private unowned Gtk.ListBox listbox;
+  private AddressbookRow? marked_row = null;
+
   public signal void addressbook_selected ();
+
+  construct {
+    var list_box = new Gtk.ListBox ();
+    list_box.row_activated.connect (on_row_activated);
+    list_box.set_header_func (list_box_update_header_func);
+    this.listbox = list_box;
+    this.child = this.listbox;
+  }
 
   public AddressbookList (BackendStore store, bool icon = true) {
     this.store = store;
     this.show_icon = icon;
 
-    this.set_header_func (list_box_update_header_func);
     this.update ();
   }
 
@@ -44,7 +54,7 @@ public class Contacts.AddressbookList : Gtk.ListBox {
     }
   }
 
-  public override void row_activated (Gtk.ListBoxRow row) {
+  private void on_row_activated (Gtk.ListBox listbox, Gtk.ListBoxRow row) {
     var addressbook = row as AddressbookRow;
     if (addressbook == null)
       return;
@@ -62,8 +72,12 @@ public class Contacts.AddressbookList : Gtk.ListBox {
   }
 
   public void update () {
-    foreach (var child in get_children ()) {
-      child.destroy ();
+    // Remove all entries
+    unowned var child = this.listbox.get_first_child ();
+    while (child != null) {
+      unowned var next = child.get_next_sibling ();
+      this.listbox.remove (child);
+      child = next;
     }
 
     // Fill the list with address book
@@ -93,25 +107,24 @@ public class Contacts.AddressbookList : Gtk.ListBox {
         if (source_account_id != "")
           provider_image = Contacts.get_icon_for_goa_account (source_account_id);
         else
-          provider_image = new Gtk.Image.from_icon_name (Config.APP_ID, Gtk.IconSize.DIALOG);
+          provider_image = new Gtk.Image.from_icon_name (Config.APP_ID);
       }
 
       var row = new AddressbookRow (provider_name, parent_source.display_name, provider_image);
-      add (row);
+      this.listbox.append (row);
     }
 
     if (local_store != null) {
-      var provider_image = this.show_icon? new Gtk.Image.from_icon_name (Config.APP_ID, Gtk.IconSize.DIALOG) : null;
+      var provider_image = this.show_icon? new Gtk.Image.from_icon_name (Config.APP_ID) : null;
       var local_row = new AddressbookRow (_("Local Address Book"), null, provider_image);
-      add (local_row);
+      this.listbox.append (local_row);
     }
-
-    show_all ();
   }
 }
 
-public class Contacts.AddressbookRow : Hdy.ActionRow {
+public class Contacts.AddressbookRow : Adw.ActionRow {
   Gtk.Widget checkmark;
+
   public AddressbookRow (string title, string? subtitle, Gtk.Widget? image = null) {
     this.set_selectable (false);
     if (image != null) {
@@ -121,15 +134,13 @@ public class Contacts.AddressbookRow : Hdy.ActionRow {
     if (subtitle != null) {
       this.subtitle = subtitle;
     }
-    this.show_all ();
-    this.no_show_all = true;
-    this.checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic", Gtk.IconSize.MENU);
+    this.checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic");
     this.checkmark.set ("margin-end", 6,
                         "valign", Gtk.Align.CENTER,
                         "halign", Gtk.Align.END,
                         "vexpand", true,
                         "hexpand", true);
-    this.add (this.checkmark);
+    this.set_child (this.checkmark);
   }
 
   public void unselect () {

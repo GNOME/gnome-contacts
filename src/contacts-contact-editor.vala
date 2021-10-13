@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
  * Copyright (C) 2019 Purism SPC
+ * Copyright (C) 2021 Niels De Graef <nielsdegraef@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +23,29 @@ using Folks;
  * A widget that allows the user to edit a given {@link Contact}.
  */
 public class Contacts.ContactEditor : Gtk.Box {
+
   private Individual individual;
   private Gtk.Entry name_entry;
-  private AvatarSelector avatar_selector = null;
   private Avatar avatar;
 
+  construct {
+    this.orientation = Gtk.Orientation.VERTICAL;
+    this.spacing = 12;
+
+    this.add_css_class ("contacts-contact-editor");
+  }
+
   public ContactEditor (Individual individual, IndividualAggregator aggregator) {
-    Object (orientation: Gtk.Orientation.VERTICAL, spacing: 24);
     this.individual = individual;
 
     Gtk.Box header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-    header.add (create_avatar_button ());
-    header.add (create_name_entry ());
-    add (header);
+    header.append (create_avatar_button ());
+    header.append (create_name_entry ());
+    append (header);
 
     foreach (var p in individual.personas) {
-      add (new EditorPersona (p, aggregator));
+      append (new EditorPersona (p, aggregator));
     }
-    show_all ();
   }
 
   // Creates the contact's current avatar in a big button on top of the Editor
@@ -47,8 +53,8 @@ public class Contacts.ContactEditor : Gtk.Box {
     this.avatar = new Avatar (PROFILE_SIZE, this.individual);
 
     var button = new Gtk.Button ();
-    button.get_accessible ().set_name (_("Change avatar"));
-    button.image = this.avatar;
+    button.tooltip_text = _("Change avatar");
+    button.set_child (this.avatar);
     button.clicked.connect (on_avatar_button_clicked);
 
     return button;
@@ -56,9 +62,11 @@ public class Contacts.ContactEditor : Gtk.Box {
 
   // Show the avatar popover when the avatar is clicked
   private void on_avatar_button_clicked (Gtk.Button avatar_button) {
-    if (this.avatar_selector == null)
-      this.avatar_selector = new AvatarSelector (this.individual, (Gtk.Window) this.get_toplevel());
-    this.avatar_selector.show();
+    var avatar_selector = new AvatarSelector (this.individual, get_root () as Gtk.Window);
+    avatar_selector.response.connect (() => {
+      avatar_selector.destroy ();
+    });
+    avatar_selector.show ();
   }
 
   // Creates the big name entry on the top

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.22 -->
-  <template class="ContactsAccountsList" parent="GtkListBox">
-    <property name="visible">True</property>
-    <property name="selection_mode">none</property>
+  <template class="ContactsAccountsList" parent="AdwBin">
     <style>
-      <class name="content"/>
+      <class name="contacts-accounts-list"/>
     </style>
+    <child>
+      <object class="GtkListBox" id="listbox">
+        <property name="selection_mode">none</property>
+        <style>
+          <class name="boxed-list"/>
+        </style>
+      </object>
+    </child>
   </template>
 </interface>

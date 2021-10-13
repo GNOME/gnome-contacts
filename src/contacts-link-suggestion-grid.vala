@@ -24,6 +24,7 @@ using Folks;
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-link-suggestion-grid.ui")]
 public class Contacts.LinkSuggestionGrid : Gtk.Grid {
+
   private const int AVATAR_SIZE = 54;
 
   [GtkChild]
@@ -39,13 +40,9 @@ public class Contacts.LinkSuggestionGrid : Gtk.Grid {
   public signal void suggestion_rejected ();
 
   public LinkSuggestionGrid (Individual individual) {
-    get_style_context ().add_class ("contacts-suggestion");
-
     var image_frame = new Avatar (AVATAR_SIZE, individual);
     image_frame.hexpand = false;
-    image_frame.margin = 12;
-    image_frame.show ();
-    attach (image_frame, 0, 0, 1, 2);
+    this.attach (image_frame, 0, 0, 1, 2);
 
     this.description_label.xalign = 0;
     this.description_label.label = Contacts.Utils.has_main_persona (individual) ?
@@ -56,7 +53,6 @@ public class Contacts.LinkSuggestionGrid : Gtk.Grid {
 
     var extra_info = find_extra_description (individual);
     if (extra_info != null) {
-      this.extra_info_label.show ();
       this.extra_info_label.label = extra_info;
     }
 
@@ -66,22 +62,22 @@ public class Contacts.LinkSuggestionGrid : Gtk.Grid {
 
   private string? find_extra_description (Individual individual) {
     // First try an email address
-    var emails = individual.email_addresses;
+    unowned var emails = individual.email_addresses;
     if (!emails.is_empty)
       return Utils.get_first<EmailFieldDetails> (emails).value;
 
     // Maybe a website? Works well with e.g. social media profiles
-    var urls = individual.urls;
+    unowned var urls = individual.urls;
     if (!urls.is_empty)
       return Utils.get_first<UrlFieldDetails> (urls).value;
 
     // Try a phone number
-    var phones = individual.phone_numbers;
+    unowned var phones = individual.phone_numbers;
     if (!phones.is_empty)
       return Utils.get_first<PhoneFieldDetails> (phones).value;
 
     // A postal address maybe?
-    var addresses = individual.postal_addresses;
+    unowned var addresses = individual.postal_addresses;
     if (!addresses.is_empty)
       return Utils.get_first<PostalAddressFieldDetails> (addresses).value.to_string ();
 

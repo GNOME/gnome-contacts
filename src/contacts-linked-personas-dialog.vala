@@ -40,18 +40,15 @@ public class Contacts.LinkedPersonasDialog : Gtk.Dialog {
 
     // loading personas for display
     var personas = Contacts.Utils.get_personas_for_display (individual);
-    bool is_first = true;
-    foreach (var p in personas) {
-      if (is_first) {
-        is_first = false;
-        continue;
-      }
-
+    for (int i = 1; i < personas.get_n_items (); i++) {
+      var p = (Persona) personas.get_item (i);
       var row_grid = new Gtk.Grid ();
 
       var image_frame = new Avatar (AVATAR_SIZE, individual);
       image_frame.set_hexpand (false);
-      image_frame.margin = 6;
+      image_frame.margin_top = 6;
+      image_frame.margin_bottom = 6;
+      image_frame.margin_start = 6;
       image_frame.margin_end = 12;
       row_grid.attach (image_frame, 0, 0, 1, 2);
 
@@ -73,7 +70,7 @@ public class Contacts.LinkedPersonasDialog : Gtk.Dialog {
       var button = new Gtk.Button.with_label (_("Unlink"));
       button.margin_end = 6;
       button.set_valign (Gtk.Align.CENTER);
-      button.get_child ().margin = 1;
+      // button.get_child ().margin = 1; XXX
       row_grid.attach (button, 2, 0, 1, 2);
 
       /* signal */
@@ -81,8 +78,7 @@ public class Contacts.LinkedPersonasDialog : Gtk.Dialog {
         // TODO: handly unlinking
         });
 
-      row_grid.show_all ();
-      this.linked_accounts_view.add (row_grid);
+      this.linked_accounts_view.append (row_grid);
     }
   }
 }

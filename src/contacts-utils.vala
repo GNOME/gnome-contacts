@@ -65,13 +65,10 @@ namespace Contacts {
 }
 
 namespace Contacts.Utils {
+
   public void compose_mail (string email) {
     var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
-    try {
-      Gtk.show_uri_on_window (null, mailto_uri, 0);
-    } catch (Error e) {
-      debug ("Couldn't launch URI \"%s\": %s", mailto_uri, e.message);
-    }
+    Gtk.show_uri (null, mailto_uri, 0);
   }
 
 #if HAVE_TELEPATHY
@@ -116,7 +113,7 @@ namespace Contacts.Utils {
     return null;
   }
 
-  public void grab_entry_focus_no_select (Gtk.Entry entry) {
+  public void grab_entry_focus_no_select (Gtk.SearchEntry entry) {
     int start, end;
     if (!entry.get_selection_bounds (out start, out end)) {
       start = end = entry.get_position ();
@@ -189,8 +186,8 @@ namespace Contacts.Utils {
                                         Gtk.MessageType.ERROR,
                                         Gtk.ButtonsType.OK,
                                         "%s", error);
-    dialog.run();
-    dialog.destroy();
+    dialog.response.connect(() => { dialog.destroy(); });
+    dialog.show();
   }
 
   public bool persona_is_main (Persona persona) {
@@ -348,18 +345,23 @@ namespace Contacts.Utils {
     return false;
   }
 
-  public Gee.List<Persona> get_personas_for_display (Individual individual) {
-    CompareDataFunc<Persona> compare_persona_by_store = (a, b) => {
-      unowned var store_a = a.store;
-      unowned var store_b = b.store;
+  public ListModel get_personas_for_display (Individual individual) {
+    var persona_list = new ListStore(typeof(Persona));
+    foreach (var persona in individual.personas)
+      if (persona.store.type_id != "key-file")
+        persona_list.append (persona);
+
+    persona_list.sort ((a, b) => {
+      unowned var store_a = ((Persona) a).store;
+      unowned var store_b = ((Persona) b).store;
 
       // In the same store, sort Google 'other' contacts last
       if (store_a == store_b) {
-        if (!persona_is_google (a))
+        if (!persona_is_google ((Persona) a))
           return 0;
 
-        var a_is_other = persona_is_google_other (a);
-        if (a_is_other != persona_is_google_other (b))
+        var a_is_other = persona_is_google_other ((Persona) a);
+        if (a_is_other != persona_is_google_other ((Persona) b))
           return a_is_other? 1 : -1;
       }
 
@@ -373,14 +375,8 @@ namespace Contacts.Utils {
 
       // Normal case: use alphabetical sorting
       return strcmp (store_a.id, store_b.id);
-    };
+    });
 
-    var persona_list = new Gee.ArrayList<Persona>();
-    foreach (var persona in individual.personas)
-      if (persona.store.type_id != "key-file")
-        persona_list.add (persona);
-
-    persona_list.sort ((owned) compare_persona_by_store);
     return persona_list;
   }
 
@@ -565,6 +561,50 @@ namespace Contacts.Utils {
         critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);
         break;
     }
+  }
+
+  // A helper struct to keep track on general properties on how each Persona
+  // property should be displayed
+  private struct PropertyDisplayInfo {
+    string property_name;
+    string display_name;
+    string icon_name;
+  }
+
+  private const PropertyDisplayInfo[] display_infos = {
+    { "alias", N_("Alias"), null },
+    { "avatar", N_("Avatar"), "emblem-photos-symbolic" },
+    { "birthday", N_("Birthday"), "birthday-symbolic" },
+    { "calendar-event-id", N_("Calendar event"), "x-office-calendar-symbolic" },
+    { "email-addresses", N_("Email address"), "mail-unread-symbolic" },
+    { "full-name", N_("Full name"), null },
+    { "gender", N_("Gender"), null },
+    { "groups", N_("Group"), null },
+    { "im-addresses", N_("Instant messaging"), "user-available-symbolic" },
+    { "is-favourite", N_("Favourite"), "emblem-favorite-symbolic" },
+    { "local-ids", N_("Local ID"), null },
+    { "nickname", N_("Nickname"), "avatar-default-symbolic" },
+    { "notes", N_("Note"), "note-symbolic" },
+    { "phone-numbers", N_("Phone number"), "phone-symbolic" },
+    { "postal-addresses", N_("Address"), "mark-location-symbolic" },
+    { "roles", N_("Role"), null },
+    { "structured-name", N_("Structured name"), "avatar-default-symbolic" },
+    { "urls", N_("Website"), "web-browser-symbolic" },
+    { "web-service-addresses", N_("Web service"), null },
+  };
+
+  public unowned string get_display_name_for_property (string property_name) {
+    foreach (unowned var info in display_infos)
+      if (info.property_name == property_name)
+        return gettext (info.display_name);
+    return_val_if_reached (null);
+  }
+
+  public unowned string? get_icon_name_for_property (string property_name) {
+    foreach (unowned var info in display_infos)
+      if (info.property_name == property_name)
+        return info.icon_name;
+    return null;
   }
 
 #if HAVE_TELEPATHY

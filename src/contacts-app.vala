@@ -17,12 +17,12 @@
 
 using Folks;
 
-public class Contacts.App : Gtk.Application {
+public class Contacts.App : Adw.Application {
   private Settings settings;
 
   private Store contacts_store;
 
-  private MainWindow window;
+  private unowned MainWindow window;
 
   private const GLib.ActionEntry[] action_entries = {
     { "quit",             quit                },
@@ -30,7 +30,6 @@ public class Contacts.App : Gtk.Application {
     { "about",            show_about          },
     { "change-book",      change_address_book },
     { "online-accounts",  online_accounts     },
-    { "new-contact",      new_contact         },
     { "show-contact",     on_show_contact, "s"}
   };
 
@@ -45,6 +44,7 @@ public class Contacts.App : Gtk.Application {
   public App () {
     Object (
       application_id: Config.APP_ID,
+      resource_base_path: "/org/gnome/Contacts",
       flags: ApplicationFlags.HANDLES_COMMAND_LINE
     );
 
@@ -84,14 +84,14 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void show_contact (Individual? individual) {
-    window.set_shown_contact (individual);
+    this.window.set_shown_contact (individual);
   }
 
   public async void show_individual (string id) {
     if (contacts_store.is_quiescent) {
       show_individual_ready.begin (id);
     } else {
-      contacts_store.quiescent.connect( () => {
+      contacts_store.quiescent.connect (() => {
         show_individual_ready.begin (id);
       });
     }
@@ -111,15 +111,15 @@ public class Contacts.App : Gtk.Application {
                                           Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
                                           _("No contact with id %s found"), id);
       dialog.set_title (_("Contact not found"));
-      dialog.run ();
-      dialog.destroy ();
+      dialog.response.connect ((_) => { dialog.close (); });
+      dialog.show ();
     }
   }
 
   public void change_address_book () {
     var dialog = new AddressbookDialog (this.contacts_store, this.window);
-    dialog.run ();
-    dialog.destroy ();
+    dialog.response.connect ((_) => dialog.close ());
+    dialog.show ();
   }
 
   public void online_accounts () {
@@ -131,7 +131,7 @@ public class Contacts.App : Gtk.Application {
                                               "/org/gnome/ControlCenter",
                                               "org.gtk.Actions");
 
-      var builder = new VariantBuilder (new VariantType ("av") );
+      var builder = new VariantBuilder (new VariantType ("av"));
       builder.add ("v", new Variant.string (""));
       var param = new Variant.tuple ({
         new Variant.string ("launch-panel"),
@@ -149,11 +149,8 @@ public class Contacts.App : Gtk.Application {
   }
 
   public void show_help () {
-    try {
-      Gtk.show_uri_on_window (window, "help:gnome-help/contacts", Gtk.get_current_event_time ());
-    } catch (GLib.Error e1) {
-      warning ("Error showing help: %s", e1.message);
-    }
+    // FIXME: use show_uri_full(), so we can report errors
+    Gtk.show_uri (this.window, "help:gnome-help/contacts", Gdk.CURRENT_TIME);
   }
 
   public void show_about () {
@@ -166,11 +163,10 @@ public class Contacts.App : Gtk.Application {
     string[] artists = {
       "Allan Day <allanpday@gmail.com>"
     };
-    Gtk.show_about_dialog (window,
+    Gtk.show_about_dialog (this.window,
                            "artists", artists,
                            "authors", authors,
                            "translator-credits", _("translator-credits"),
-                           "program-name", _("GNOME Contacts"),
                            "title", _("About GNOME Contacts"),
                            "comments", _("Contact Management Application"),
                            "copyright", _("© 2011 Red Hat, Inc.\n© 2011-2020 The Contacts Developers"),
@@ -182,7 +178,7 @@ public class Contacts.App : Gtk.Application {
   }
 
   public async void show_by_email (string email_address) {
-    var query = new SimpleQuery(email_address, { "email-addresses" });
+    var query = new SimpleQuery (email_address, { "email-addresses" });
     Individual individual = yield contacts_store.find_contact (query);
     if (individual != null) {
       show_contact (individual);
@@ -191,23 +187,25 @@ public class Contacts.App : Gtk.Application {
                                           Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
                                           _("No contact with email address %s found"), email_address);
       dialog.set_title (_("Contact not found"));
-      dialog.run ();
-      dialog.destroy ();
+      dialog.response.connect ((_) => dialog.close ());
+      dialog.show ();
     }
   }
 
   public void show_search (string query) {
     if (contacts_store.is_quiescent) {
-      window.show_search (query);
+      this.window.show_search (query);
     } else {
       contacts_store.quiescent.connect_after (() => {
-        window.show_search (query);
+        this.window.show_search (query);
       });
     }
   }
 
   private void create_window () {
-    this.window = new MainWindow (this.settings, this, this.contacts_store);
+    var win = new MainWindow (this.settings, this, this.contacts_store);
+    win.show ();
+    this.window = win;
 
     show_contact_list ();
   }
@@ -244,8 +242,6 @@ public class Contacts.App : Gtk.Application {
     this.contacts_store = new Store ();
     base.startup ();
 
-    Hdy.init ();
-
     load_styling ();
     create_actions ();
   }
@@ -254,16 +250,15 @@ public class Contacts.App : Gtk.Application {
     this.add_action_entries (action_entries, this);
 
     this.set_accels_for_action ("app.help", {"F1"});
-    this.set_accels_for_action ("app.new-contact", {"<Primary>n"});
-    this.set_accels_for_action ("win.show-help-overlay", {"<Primary>question"});
+    this.set_accels_for_action ("app.quit", {"<Control>q"});
   }
 
   public void load_styling () {
     var provider = new Gtk.CssProvider ();
     provider.load_from_resource ("/org/gnome/Contacts/ui/style.css");
-    Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default(),
-                                              provider,
-                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (),
+                                               provider,
+                                               Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
   }
 
   public override void activate () {
@@ -275,26 +270,24 @@ public class Contacts.App : Gtk.Application {
   }
 
   private void run_setup () {
-    // Disable the change-book action (don't want the user to do that during setup)
-    var change_book_action = lookup_action ("change-book") as SimpleAction;
+    debug ("Running initial setup");
+
+    // Disable change-book action (don't want the user to do that during setup)
+    unowned var change_book_action = lookup_action ("change-book") as SimpleAction;
     change_book_action.set_enabled (false);
 
     // Create and show the setup window
     var setup_window = new SetupWindow (this, this.contacts_store);
-    setup_window.setup_done.connect ( (selected_store) => {
-        setup_window.destroy ();
+    setup_window.setup_done.connect ((selected_store) => {
+      setup_window.destroy ();
 
-        eds_source_registry.set_default_address_book (selected_store.source);
-        this.settings.did_initial_setup = true;
+      eds_source_registry.set_default_address_book (selected_store.source);
+      this.settings.did_initial_setup = true;
 
-        change_book_action.set_enabled (true); // re-enable change-book action
-        create_window ();
-      });
+      change_book_action.set_enabled (true);   // re-enable change-book action
+      create_window ();
+    });
     setup_window.show ();
-  }
-
-  public void new_contact () {
-    this.window.new_contact ();
   }
 
   private void on_show_contact(SimpleAction action, Variant? param) {

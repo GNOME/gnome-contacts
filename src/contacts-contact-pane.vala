@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011 Alexander Larsson <alexl@redhat.com>
+ * Copyright (C) 2021 Niels De Graef <nielsdegraef@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +26,7 @@ const int PROFILE_SIZE = 128;
  * and a ContactEditor to edit contact information.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
-public class Contacts.ContactPane : Gtk.Bin {
+public class Contacts.ContactPane : Adw.Bin {
 
   private MainWindow main_window;
 
@@ -37,21 +38,12 @@ public class Contacts.ContactPane : Gtk.Bin {
   private unowned Gtk.Stack stack;
 
   [GtkChild]
-  private unowned Hdy.StatusPage none_selected_page;
+  private unowned Adw.Clamp contact_sheet_clamp;
+  private unowned ContactSheet? sheet = null;
 
   [GtkChild]
-  private unowned Gtk.ScrolledWindow contact_sheet_view;
-
-  [GtkChild]
-  private unowned Gtk.Container contact_sheet_page;
-  private ContactSheet? sheet = null;
-
-  [GtkChild]
-  private unowned Gtk.ScrolledWindow contact_editor_view;
-
-  [GtkChild]
-  private unowned Gtk.Box contact_editor_page;
-  private ContactEditor? editor = null;
+  private unowned Gtk.Box contact_editor_box;
+  private unowned ContactEditor? editor = null;
 
   public bool on_edit_mode = false;
   private LinkSuggestionGrid? suggestion_grid = null;
@@ -70,28 +62,29 @@ public class Contacts.ContactPane : Gtk.Bin {
   }
 
   public void add_suggestion (Individual i) {
-    var parent_overlay = this.get_parent () as Gtk.Overlay;
+    unowned var parent_overlay = this.get_parent () as Gtk.Overlay;
 
     remove_suggestion_grid ();
     this.suggestion_grid = new LinkSuggestionGrid (i);
+    this.suggestion_grid.valign = Gtk.Align.END;
     parent_overlay.add_overlay (this.suggestion_grid);
 
-    this.suggestion_grid.suggestion_accepted.connect ( () => {
-        var linked_contact = this.individual.display_name;
-        var operation = new LinkOperation (this.store);
-        var to_link = new Gee.LinkedList<Individual> ();
-        to_link.add (this.individual);
-        to_link.add (i);
-        operation.execute.begin (to_link);
-        this.contacts_linked (null, linked_contact, operation);
-        remove_suggestion_grid ();
-      });
+    this.suggestion_grid.suggestion_accepted.connect (() => {
+      var linked_contact = this.individual.display_name;
+      var to_link = new Gee.LinkedList<Individual> ();
+      to_link.add (this.individual);
+      to_link.add (i);
+      var operation = new LinkOperation (this.store, to_link);
+      operation.execute.begin ();
+      this.contacts_linked (null, linked_contact, operation);
+      remove_suggestion_grid ();
+    });
 
-    this.suggestion_grid.suggestion_rejected.connect ( () => {
-        /* TODO: Add undo */
-        store.add_no_suggest_link (this.individual, i);
-        remove_suggestion_grid ();
-      });
+    this.suggestion_grid.suggestion_rejected.connect (() => {
+      /* TODO: Add undo */
+      store.add_no_suggest_link (this.individual, i);
+      remove_suggestion_grid ();
+    });
   }
 
   public void show_contact (Individual? individual) {
@@ -104,17 +97,19 @@ public class Contacts.ContactPane : Gtk.Bin {
       show_contact_sheet ();
     } else {
       remove_contact_sheet ();
-      this.stack.set_visible_child (this.none_selected_page);
+      this.stack.set_visible_child_name ("none-selected-page");
     }
   }
 
   private void show_contact_sheet () {
-    assert (this.individual != null);
+    return_if_fail (this.individual != null);
 
-    remove_contact_sheet();
-    this.sheet = new ContactSheet (this.individual, this.store);
-    this.contact_sheet_page.add (this.sheet);
-    this.stack.set_visible_child (this.contact_sheet_view);
+    remove_contact_sheet ();
+    var contacts_sheet = new ContactSheet (this.individual, this.store);
+    contacts_sheet.hexpand = true;
+    this.sheet = contacts_sheet;
+    this.contact_sheet_clamp.set_child (this.sheet);
+    this.stack.set_visible_child_name ("contact-sheet-page");
 
     var matches = this.store.aggregator.get_potential_matches (this.individual, MatchResult.HIGH);
     foreach (var i in matches.keys) {
@@ -132,24 +127,24 @@ public class Contacts.ContactPane : Gtk.Bin {
     // Remove the suggestion grid that goes along with it.
     remove_suggestion_grid ();
 
-    this.contact_sheet_page.remove (this.sheet);
-    this.sheet.destroy();
+    this.contact_sheet_clamp.set_child (null);
     this.sheet = null;
   }
 
   private void create_contact_editor () {
     remove_contact_editor ();
 
-    this.editor = new ContactEditor (this.individual, store.aggregator);
+    var contact_editor = new ContactEditor (this.individual, store.aggregator);
+    this.editor = contact_editor;
 
-    this.contact_editor_page.add (this.editor);
+    this.contact_editor_box.append (this.editor);
   }
 
   private void remove_contact_editor () {
     if (this.editor == null)
       return;
 
-    this.contact_editor_page.remove (this.editor);
+    this.contact_editor_box.remove (this.editor);
     this.editor = null;
   }
 
@@ -160,7 +155,7 @@ public class Contacts.ContactPane : Gtk.Bin {
     this.on_edit_mode = true;
 
     create_contact_editor ();
-    this.stack.set_visible_child (this.contact_editor_view);
+    this.stack.set_visible_child_name ("contact-editor-page");
   }
 
   public void stop_editing (bool cancel = false) {
@@ -175,9 +170,9 @@ public class Contacts.ContactPane : Gtk.Bin {
       if (fake_individual != null && fake_individual.real_individual != null) {
         // Reset individual on to the real one
         this.individual = fake_individual.real_individual;
-        this.stack.set_visible_child (this.contact_sheet_view);
+        this.stack.set_visible_child_name ("contact-sheet-page");
       } else {
-        this.stack.set_visible_child (this.none_selected_page);
+        this.stack.set_visible_child_name ("none-selected-page");
       }
       return;
     }
@@ -220,10 +215,10 @@ public class Contacts.ContactPane : Gtk.Bin {
       writeable_properties = {};
     }
 
-    var fake_persona = new FakePersona (FakePersonaStore.the_store(), writeable_properties, details);
+    var fake_persona = new FakePersona (FakePersonaStore.the_store (), writeable_properties, details);
     var fake_personas = new Gee.HashSet<FakePersona> ();
     fake_personas.add (fake_persona);
-    this.individual = new FakeIndividual(fake_personas);
+    this.individual = new FakeIndividual (fake_personas);
 
     start_editing ();
   }
@@ -262,20 +257,21 @@ public class Contacts.ContactPane : Gtk.Bin {
 
   private void show_message_dialog (string message) {
     var dialog =
-        new Gtk.MessageDialog (this.main_window,
-                               Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
-                               Gtk.MessageType.ERROR,
-                               Gtk.ButtonsType.OK,
-                               "%s", message);
-    dialog.run ();
-    dialog.destroy ();
+      new Gtk.MessageDialog (this.main_window,
+                             Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
+                             Gtk.MessageType.ERROR,
+                             Gtk.ButtonsType.OK,
+                             "%s", message);
+    dialog.response.connect ((_) => dialog.close ());
+    dialog.show ();
   }
 
   private void remove_suggestion_grid () {
     if (this.suggestion_grid == null)
       return;
 
-    this.suggestion_grid.destroy ();
+    unowned var parent_overlay = this.get_parent () as Gtk.Overlay;
+    parent_overlay.remove_overlay (suggestion_grid);
     this.suggestion_grid = null;
   }
 }

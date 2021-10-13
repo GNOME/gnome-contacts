@@ -23,6 +23,8 @@ main (string[] args) {
   Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
+  GLib.Environment.set_application_name (_("Contacts"));
+
 #if HAVE_CHEESE
   GtkCheese.init (ref args);
 #endif

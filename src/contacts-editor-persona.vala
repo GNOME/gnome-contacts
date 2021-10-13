@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Purism SPC
  * Author: Julian Sparber <julian.sparber@puri.sm>
+ * Copyright (C) 2021 Niels De Graef <nielsdegraef@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,19 +38,21 @@ public class Contacts.EditorPersona : Gtk.Box {
     "notes"
   };
 
-  private Folks.Persona persona;
-  private Gtk.Box header;
-  private Gtk.ListBox content;
+  private unowned Folks.Persona persona;
+  private unowned Gtk.Box header;
+  private unowned Gtk.Box content;
 
-  private Folks.IndividualAggregator aggregator;
+  private unowned Folks.IndividualAggregator aggregator;
 
   construct {
-    this.header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-    add (this.header);
+    var _header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+    this.append (_header);
+    this.header = _header;
 
-    this.content = new Gtk.ListBox ();
-    this.content.get_style_context ().add_class ("content");
-    add (this.content);
+    var listbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+    this.content = listbox;
+    this.content.add_css_class ("boxed-list");
+    this.append (this.content);
   }
 
   public EditorPersona (Persona persona, IndividualAggregator aggregator) {
@@ -57,45 +60,48 @@ public class Contacts.EditorPersona : Gtk.Box {
     this.persona = persona;
     this.aggregator = aggregator;
     create_label ();
-    // TODO: implement the possibility of changing the addressbook of a persona
+    // TODO: implement the possibility f changing the addressbook of a persona
 
     // Add most important properites
-    foreach (var property in PROPERTIES) {
+    foreach (unowned var property in PROPERTIES) {
       debug ("Create property entry for %s", property);
-      var rows = new EditorProperty (persona, property);
-      foreach (var row in rows) {
+      var prop_editor = new EditorProperty (persona, property);
+
+      for (int i = 0; i < prop_editor.get_n_items (); i++) {
+        var row = (EditorPropertyRow) prop_editor.get_item (i);
         row.show_with_animation (false);
         connect_row (row);
-        this.content.add (row);
+        this.content.append (row);
       }
     }
-    // Add a row with a button to show all properties
-    Gtk.ListBoxRow show_all_row = new Gtk.ListBoxRow ();
-    show_all_row.set_selectable (false);
-    // Add less important property when the show_more button is clicked
-    this.content.row_activated.connect ((current_row) => {
-      if (current_row == show_all_row) {
-        foreach (var property in OTHER_PROPERTIES) {
-          debug ("Create property entry for %s", property);
-          var rows = new EditorProperty (persona, property);
-          foreach (var row in rows) {
-            connect_row (row);
-            this.content.add (row);
-            row.show_with_animation ();
-          }
+
+    // Add less important properties when the show_more button is clicked
+    var show_more_button = new Gtk.Button ();
+    var show_more_content = new Adw.ButtonContent ();
+    show_more_content.icon_name = "view-more-symbolic";
+    show_more_content.label = _("Show More");
+    show_more_button.set_child (show_more_content);
+    show_more_button.halign = Gtk.Align.CENTER;
+    show_more_button.add_css_class ("flat");
+    show_more_button.clicked.connect ((current_row) => {
+      foreach (unowned string property in OTHER_PROPERTIES) {
+        debug ("Create property entry for %s", property);
+        var prop_editor = new EditorProperty (persona, property);
+
+        for (int i = 0; i < prop_editor.get_n_items (); i++) {
+          var row = (EditorPropertyRow) prop_editor.get_item (i);
+          connect_row (row);
+          this.content.append (row);
+          row.show_with_animation ();
         }
-        show_all_row.destroy ();
       }
+      this.content.remove (show_more_button);
     });
-    Gtk.Image show_all = new Gtk.Image.from_icon_name ("view-more-symbolic",
-                                                       Gtk.IconSize.BUTTON);
-    show_all.margin = 12;
-    show_all_row.add (show_all);
-    this.content.add (show_all_row);
+    this.content.append (show_more_button);
   }
 
   private void connect_row (EditorPropertyRow row) {
-    row.notify["is-empty"].connect ( () => {
+    row.notify["is-empty"].connect (() => {
       var empty_rows_count = this.count_empty_rows (row.ptype);
       if (row.is_empty) {
         // destroy all rows of our type which is not us
@@ -104,10 +110,10 @@ public class Contacts.EditorPersona : Gtk.Box {
       if (!row.is_empty && empty_rows_count == 0) {
         // We are sure that we only created one new row
         var new_rows = new EditorProperty (persona, row.ptype, true);
-        if (new_rows.size > 0) {
-          this.content.insert (new_rows[0], row.get_index () + 1);
-          connect_row (new_rows[0]);
-          new_rows[0].show_with_animation ();
+        if (new_rows.get_n_items () > 0) {
+          var first_row = (EditorPropertyRow) new_rows.get_item (0);
+          this.content.insert_child_after (first_row, row);
+          connect_row (first_row);
         } else {
           debug ("Couldn't add new row with type %s", row.ptype);
         }
@@ -117,8 +123,10 @@ public class Contacts.EditorPersona : Gtk.Box {
 
   private uint count_empty_rows (string type) {
     uint count = 0;
-    foreach (var row in this.content.get_children ()) {
-      var prop = (row as EditorPropertyRow);
+    for (unowned Gtk.Widget? child = this.content.get_first_child ();
+         child != null;
+         child = child.get_next_sibling ()) {
+      unowned var prop = (child as EditorPropertyRow);
       if (prop != null && !prop.is_removed && prop.is_empty && prop.ptype == type) {
         count++;
       }
@@ -126,20 +134,23 @@ public class Contacts.EditorPersona : Gtk.Box {
     return count;
   }
 
-  private void destroy_empty_rows (Gtk.ListBoxRow current_row, string type) {
-    foreach (var row in this.content.get_children ()) {
-      if (current_row != row) {
-        var prop = (row as EditorPropertyRow);
-        if (prop != null && !prop.is_removed && prop.is_empty && prop.ptype == type) {
-          prop.remove ();
-        }
+  private void destroy_empty_rows (Gtk.Widget current_row, string type) {
+    for (unowned Gtk.Widget? child = this.content.get_first_child ();
+         child != null;
+         child = child.get_next_sibling ()) {
+      if (current_row == child)
+        continue;
+
+      unowned var prop = (child as EditorPropertyRow);
+      if (prop != null && !prop.is_removed && prop.is_empty && prop.ptype == type) {
+        prop.remove ();
       }
     }
   }
 
   private void create_label () {
     string title = "";
-    FakePersona fake_persona = this.persona as FakePersona;
+    unowned var fake_persona = this.persona as FakePersona;
     if (fake_persona != null && fake_persona.real_persona != null) {
       title = fake_persona.real_persona.store.display_name;
     } else {
@@ -147,7 +158,7 @@ public class Contacts.EditorPersona : Gtk.Box {
     }
 
     Gtk.Label addressbook = new Gtk.Label (title);
-    addressbook.get_style_context ().add_class ("heading");
-    this.header.pack_start (addressbook, false, false, 0);
+    addressbook.add_css_class ("heading");
+    this.header.append (addressbook);
   }
 }

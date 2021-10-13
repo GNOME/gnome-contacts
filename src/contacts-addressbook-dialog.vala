@@ -31,36 +31,34 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
     add_buttons (_("Change"), Gtk.ResponseType.OK,
                  _("Cancel"), Gtk.ResponseType.CANCEL);
 
-    var content_area = get_content_area () as Gtk.Box;
-    content_area.border_width = 0;
-
     var ok_button = get_widget_for_response (Gtk.ResponseType.OK);
     ok_button.sensitive = false;
     ok_button.get_style_context ().add_class ("suggested-action");
 
-    var scrolled_window = new Gtk.ScrolledWindow (null, null);
-    scrolled_window.expand = true;
+    var scrolled_window = new Gtk.ScrolledWindow ();
+    scrolled_window.hexpand = true;
+    scrolled_window.vexpand = true;
     scrolled_window.height_request = 300;
     scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
     scrolled_window.propagate_natural_height = true;
-    content_area.add (scrolled_window);
+    ((Gtk.Box) this.get_content_area ()).append (scrolled_window);
 
-    var clamp = new Hdy.Clamp ();
+    var clamp = new Adw.Clamp ();
     clamp.margin_top = 32;
     clamp.margin_bottom = 32;
     clamp.margin_start = 12;
     clamp.margin_end = 12;
     clamp.maximum_size = 400;
-    scrolled_window.add (clamp);
+    scrolled_window.set_child (clamp);
 
     var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
     box.valign = Gtk.Align.START;
-    clamp.add (box);
+    clamp.set_child (box);
 
     var explanation_label = new Gtk.Label (_("New contacts will be added to the selected address book.\nYou are able to view and edit contacts from other address books."));
     explanation_label.xalign = 0;
     explanation_label.wrap = true;
-    box.add (explanation_label);
+    box.append (explanation_label);
 
     this.accounts_list = new AccountsList (contacts_store);
     this.accounts_list.update_contents (true);
@@ -72,12 +70,10 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
     });
 
     contacts_store.backend_store.backend_available.connect (() => {
-        this.accounts_list.update_contents (true);
+      this.accounts_list.update_contents (true);
     });
 
-    box.add (this.accounts_list);
-
-    show_all ();
+    box.append (this.accounts_list);
   }
 
   public override void response (int response) {
@@ -88,7 +84,7 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
     if (e_store != null) {
       eds_source_registry.set_default_address_book (e_store.source);
       var settings = new GLib.Settings ("org.freedesktop.folks");
-      settings.set_string ("primary-store", "eds:%s".printf(e_store.id));
+      settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
     }
   }
 }
