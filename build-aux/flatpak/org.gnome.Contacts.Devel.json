@@ -154,35 +154,16 @@
             ]
         },
         {
-            "name": "gnome-desktop",
-            "buildsystem": "meson",
-            "config-opts": [
-                "-Ddesktop_docs=false",
-                "-Ddebug_tools=false",
-                "-Dgtk_doc=false",
-                "-Dudev=disabled"
+            "name" : "libportal",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Ddocs=false",
+                "-Dbackends=gtk4"
             ],
-            "sources": [
+            "sources" : [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/gnome-desktop.git"
-                }
-            ]
-        },
-        {
-            "name": "libhandy",
-            "buildsystem": "meson",
-            "builddir": true,
-            "config-opts": [
-                "-Dtests=false",
-                "-Dexamples=false",
-                "-Dglade_catalog=disabled"
-
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/libhandy.git"
+                    "type" : "git",
+                    "url" : "https://github.com/flatpak/libportal.git"
                 }
             ]
         },
