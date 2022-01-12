@@ -356,6 +356,11 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (addr_details == null)
       return;
 
+    // Check outside of the loop if we have a "maps:" URI handler
+    var appinfo = AppInfo.get_default_for_uri_scheme ("maps");
+    var map_uris_supported = (appinfo != null);
+    debug ("Opening 'maps:' URIs supported: %s", map_uris_supported.to_string ());
+
     foreach (var addr in addr_details.postal_addresses) {
       if (addr.value.is_empty ())
         continue;
@@ -363,6 +368,21 @@ public class Contacts.ContactSheet : Gtk.Grid {
       var row = new ContactSheetRow (property,
                                      string.joinv ("\n", Utils.format_address (addr.value)),
                                      TypeSet.general.format_type (addr));
+
+      if (map_uris_supported) {
+        var button = row.add_button ("map-symbolic");
+        button.tooltip_text = _("Show on the map");
+        button.clicked.connect (() => {
+          unowned var window = button.get_root () as MainWindow;
+          if (window == null)
+            return;
+
+          var uri = Utils.create_maps_uri (addr.value);
+          // FIXME: use show_uri_full so we can show errors
+          Gtk.show_uri (window, uri, Gdk.CURRENT_TIME);
+        });
+      }
+
       this.attach_row (row);
     }
   }

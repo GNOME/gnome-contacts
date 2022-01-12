@@ -25,43 +25,6 @@ namespace Contacts {
   public void add_separator (Gtk.ListBoxRow row, Gtk.ListBoxRow? before_row) {
     row.set_header (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
   }
-
-  [DBus (name = "org.freedesktop.Application")]
-  interface FreedesktopApplication : Object {
-    [DBus (name = "ActivateAction")]
-    public abstract void ActivateAction (string action,
-                                         Variant[] parameter,
-                                         HashTable<string, Variant> data) throws Error;
-  }
-
-  public void activate_action (string app_id,
-                               string action,
-                               Variant? parameter,
-                               uint32 timestamp) {
-    FreedesktopApplication? con = null;
-
-    try {
-      string object_path = "/" + app_id.replace(".", "/");
-      Gdk.Display display = Gdk.Display.get_default ();
-      DesktopAppInfo info = new DesktopAppInfo (app_id + ".desktop");
-      Gdk.AppLaunchContext context = display.get_app_launch_context ();
-
-      con = Bus.get_proxy_sync (BusType.SESSION, app_id, object_path);
-      context.set_timestamp (timestamp);
-
-      Variant[] param_array = {};
-      if (parameter != null)
-        param_array += parameter;
-
-      var startup_id = context.get_startup_notify_id (info,
-                                                      new GLib.List<File>());
-      var data = new HashTable<string, Variant>(str_hash, str_equal);
-      data.insert ("desktop-startup-id", new Variant.string (startup_id));
-      con.ActivateAction (action, param_array, data);
-    } catch (Error e) {
-      debug ("Failed to activate action '%s': %s", action, e.message);
-    }
-  }
 }
 
 namespace Contacts.Utils {
@@ -320,6 +283,19 @@ namespace Contacts.Utils {
       lines += addr.address_format;
 
     return lines;
+  }
+
+  /**
+   * Takes an individual's postal address and creates a "maps:q=..." URI for
+   * it, which can be launched to use the local system's maps handler
+   * (e.g. GNOME Maps).
+   *
+   * See also https://www.iana.org/assignments/uri-schemes/prov/maps for the
+   * "specification"
+   */
+  public string create_maps_uri (PostalAddress address) {
+    var address_parts = string.joinv (" ", Utils.format_address (address));
+    return "maps:q=%s".printf (GLib.Uri.escape_string (address_parts));
   }
 
 #if HAVE_TELEPATHY
