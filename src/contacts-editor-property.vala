@@ -95,9 +95,11 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
   public BirthdayEditor (Gtk.Window window, DateTime birthday) {
     Object (transient_for: window, use_header_bar: 1);
 
-    this.day_spin.set_value ((double) birthday.get_day_of_month ());
-    this.month_combo.set_active (birthday.get_month () - 1);
-    this.year_spin.set_value ((double) birthday.get_year ());
+    // Don't forget to change to local timezone first
+    var bday_local = birthday.to_local ();
+    this.day_spin.set_value ((double) bday_local.get_day_of_month ());
+    this.month_combo.set_active (bday_local.get_month () - 1);
+    this.year_spin.set_value ((double) bday_local.get_year ());
 
     update_date ();
     month_combo.changed.connect (() => {
@@ -108,6 +110,9 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
     });
   }
 
+  /**
+   * Returns the selected birthday (in UTC timezone)
+   */
   public GLib.DateTime get_birthday () {
     return new GLib.DateTime.local (year_spin.get_value_as_int (),
                                     month_combo.get_active () + 1,
@@ -607,7 +612,7 @@ public class Contacts.EditorProperty : Object, ListModel {
         dialog.changed.connect (() => {
           if (dialog.is_set) {
             details.birthday = dialog.get_birthday ();
-            button.set_label (details.birthday.format ("%x"));
+            button.set_label (details.birthday.to_local ().format ("%x"));
             box.is_empty = false;
           }
         });
