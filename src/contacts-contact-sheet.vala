@@ -350,7 +350,18 @@ public class Contacts.ContactSheet : Gtk.Grid {
       return;
 
     var birthday_str = birthday_details.birthday.to_local ().format ("%x");
-    var row = new ContactSheetRow (property, birthday_str);
+
+    // Compare month and date so we can put a reminder
+    string? subtitle = null;
+    int bd_m, bd_d, now_m, now_d;
+    birthday_details.birthday.to_local ().get_ymd (null, out bd_m, out bd_d);
+    new DateTime.now_local ().get_ymd (null, out now_m, out now_d);
+
+    if (bd_m == now_m && bd_d == now_d) {
+      subtitle = _("Their birthday is today! 🎉");
+    }
+
+    var row = new ContactSheetRow (property, birthday_str, subtitle);
     this.attach_row (row);
   }
 
