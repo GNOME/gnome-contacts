@@ -8,16 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-12 18:56+0000\n"
-"PO-Revision-Date: 2022-01-12 22:10+0200\n"
+"POT-Creation-Date: 2022-01-12 22:54+0000\n"
+"PO-Revision-Date: 2022-01-13 12:31+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Generator: Lokalize 20.12.0\n"
 "X-Project-Style: gnome\n"
 
@@ -127,6 +126,10 @@ msgstr "Виберіть контакт"
 msgid "Change Addressbook"
 msgstr "Змінити адресну книгу"
 
+#: data/ui/contacts-link-suggestion-grid.ui:51
+msgid "Link Contacts"
+msgstr "Головні контакти"
+
 #: data/ui/contacts-linked-personas-dialog.ui:9
 msgid "Linked Accounts"
 msgstr "Сполучені облікові записи"
@@ -134,10 +137,6 @@ msgstr "Сполучені облікові записи"
 #: data/ui/contacts-linked-personas-dialog.ui:42
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "Можете сполучити контакти, вибравши їх з переліку контактів"
-
-#: data/ui/contacts-link-suggestion-grid.ui:51
-msgid "Link Contacts"
-msgstr "Головні контакти"
 
 #: data/ui/contacts-list-pane.ui:9
 msgid "Type to search"
@@ -380,6 +379,21 @@ msgstr "Відвідати сайт"
 msgid "Show on the map"
 msgstr "Показати на карті"
 
+#: src/contacts-delete-operation.vala:34
+#, c-format
+#| msgid "Delete Contact"
+msgid "Deleting %d contact"
+msgid_plural "Deleting %d contacts"
+msgstr[0] "Вилучаємо %d контакт"
+msgstr[1] "Вилучаємо %d контакти"
+msgstr[2] "Вилучаємо %d контактів"
+msgstr[3] "Вилучаємо контакт"
+
+#: src/contacts-editor-persona.vala:82
+msgid "Show More"
+msgstr ""
+"Докладніше"
+
 #. Create grid and labels
 #: src/contacts-editor-property.vala:63
 msgid "Day"
@@ -401,59 +415,59 @@ msgstr "Змінити день народження"
 msgid "Set"
 msgstr "Встановити"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Street"
 msgstr "Вулиця"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Extension"
 msgstr "Район"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "City"
 msgstr "Місто"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "State/Province"
 msgstr "Штат/провінція"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Zip/Postal Code"
 msgstr "Поштовий індекс"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "PO box"
 msgstr "Поштова скринька"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Country"
 msgstr "Країна"
 
-#: src/contacts-editor-property.vala:283 src/contacts-editor-property.vala:621
+#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
 msgid "Delete field"
 msgstr "Вилучити поле"
 
-#: src/contacts-editor-property.vala:326
+#: src/contacts-editor-property.vala:331
 msgid "Label"
 msgstr "Мітка"
 
-#: src/contacts-editor-property.vala:470
+#: src/contacts-editor-property.vala:475
 msgid "Add email"
 msgstr "Додати електронну пошту"
 
-#: src/contacts-editor-property.vala:497
+#: src/contacts-editor-property.vala:502
 msgid "Add phone number"
 msgstr "Додати номер телефону"
 
-#: src/contacts-editor-property.vala:525
+#: src/contacts-editor-property.vala:530
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:541 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Прізвисько"
 
-#: src/contacts-editor-property.vala:594 src/contacts-editor-property.vala:630
+#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
 msgid "Set Birthday"
 msgstr "Встановити день народження"
 
@@ -562,9 +576,15 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-linked-personas-dialog.vala:70
-msgid "Unlink"
-msgstr "Розлучити"
+#: src/contacts-link-operation.vala:40
+#, c-format
+#| msgid "Link Contacts"
+msgid "Linked %d contact"
+msgid_plural "Linked %d contacts"
+msgstr[0] "Пов'язано %d контакт"
+msgstr[1] "Пов'язано %d контакти"
+msgstr[2] "Пов'язано %d контактів"
+msgstr[3] "Пов'язано контакт"
 
 #: src/contacts-link-suggestion-grid.vala:49
 #, c-format
@@ -575,6 +595,10 @@ msgstr "Це є та сама особа, що й %s з %s?"
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Це та сама особа, що й %s?"
+
+#: src/contacts-linked-personas-dialog.vala:70
+msgid "Unlink"
+msgstr "Розлучити"
 
 #: src/contacts-main-window.vala:156 src/contacts-main-window.vala:236
 #, c-format
@@ -684,6 +708,11 @@ msgstr "Телекс"
 #: src/contacts-typeset.vala:245
 msgid "TTY"
 msgstr "TTY"
+
+#: src/contacts-unlink-operation.vala:37
+#| msgid "Link Contacts"
+msgid "Unlinking contacts"
+msgstr "Від'єднуємо записи контактів"
 
 #: src/contacts-utils.vala:551
 msgid "Alias"
