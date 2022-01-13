@@ -91,16 +91,27 @@ public class Contacts.ContactSheet : Gtk.Grid {
     return store_name;
   }
 
-  // Helper function that attaches a row to our grid
-  private void attach_row (Gtk.ListBoxRow row) {
+  // Helper function that attaches a set of property rows to our grid
+  private void attach_rows (GLib.List<Gtk.ListBoxRow>? rows) {
+    if (rows == null)
+      return;
+
     var list_box = new Gtk.ListBox ();
     list_box.selection_mode = Gtk.SelectionMode.NONE;
     list_box.add_css_class ("boxed-list");
     list_box.add_css_class ("contacts-sheet-property");
-    list_box.append (row);
+
+    foreach (unowned var row in rows)
+      list_box.append (row);
 
     this.attach (list_box, 0, this.last_row, 3, 1);
     this.last_row++;
+  }
+
+  private void attach_row (Gtk.ListBoxRow row) {
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
+    rows.prepend (row);
+    this.attach_rows (rows);
   }
 
   private void update () {
@@ -204,6 +215,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
       return;
 
     var emails = Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var email in emails) {
       if (email.value == "")
         continue;
@@ -218,8 +230,10 @@ public class Contacts.ContactSheet : Gtk.Grid {
         Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
       });
 
-      this.attach_row (row);
+      rows.append (row);
     }
+
+    this.attach_rows (rows);
   }
 
   private void add_phone_nrs (Persona persona, string property) {
@@ -228,6 +242,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
       return;
 
     var phones = Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var phone in phones) {
       if (phone.value == "")
         continue;
@@ -246,8 +261,10 @@ public class Contacts.ContactSheet : Gtk.Grid {
       }
 #endif
 
-      this.attach_row (row);
+      rows.append (row);
     }
+
+    this.attach_rows (rows);
   }
 
   private void add_im_addresses (Persona persona, string property) {
