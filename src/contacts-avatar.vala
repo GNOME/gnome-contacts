@@ -76,6 +76,14 @@ public class Contacts.Avatar : Adw.Bin {
   }
 
   /**
+   * Forces a reload of the avatar (e.g. after a property change).
+   */
+  public async void reload () {
+    this.load_avatar_started = false;
+    yield this.load_avatar ();
+  }
+
+  /**
    * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
    */
   public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {

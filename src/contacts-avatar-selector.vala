@@ -83,13 +83,38 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
 
   private Xdp.Portal? portal = null;
 
+  private Gdk.Pixbuf? _selected_avatar = null;
+  public Gdk.Pixbuf? selected_avatar {
+    owned get { return scale_pixbuf_for_avatar_use (this._selected_avatar); }
+    private set { this._selected_avatar = value; }
+  }
+
   public AvatarSelector (Individual? individual, Gtk.Window? window = null) {
     Object (transient_for: window, use_header_bar: 1);
     this.individual = individual;
 
+    this.thumbnail_grid.selected_children_changed.connect (on_thumbnails_selected);
+    this.thumbnail_grid.child_activated.connect (on_thumbnail_activated);
     update_thumbnail_grid ();
 
     this.setup_camera_portal.begin ();
+  }
+
+  private void on_thumbnails_selected (Gtk.FlowBox thumbnail_grid) {
+    var selected = thumbnail_grid.get_selected_children ();
+    if (selected != null) {
+      unowned var thumbnail = (Thumbnail) selected.data;
+      this.selected_avatar = thumbnail.source_pixbuf;
+    } else {
+      this.selected_avatar = null;
+    }
+  }
+
+  private void on_thumbnail_activated (Gtk.FlowBox thumbnail_grid,
+                                       Gtk.FlowBoxChild child) {
+    unowned var thumbnail = (Thumbnail) child;
+    this.selected_avatar = thumbnail.source_pixbuf;
+    this.response (Gtk.ResponseType.ACCEPT);
   }
 
   private async void setup_camera_portal () {
@@ -103,7 +128,10 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
     }
   }
 
-  private Gdk.Pixbuf scale_pixbuf_for_avatar_use (Gdk.Pixbuf pixbuf) {
+  private Gdk.Pixbuf? scale_pixbuf_for_avatar_use (Gdk.Pixbuf? pixbuf) {
+    if (pixbuf == null)
+      return null;
+
     int w = pixbuf.get_width ();
     int h = pixbuf.get_height ();
 
@@ -121,42 +149,37 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
     return pixbuf.scale_simple (w, h, Gdk.InterpType.HYPER);
   }
 
-  private void selected_pixbuf (Gdk.Pixbuf pixbuf) {
-    try {
-      uint8[] buffer;
-      pixbuf.save_to_buffer (out buffer, "png", null);
-      var icon = new BytesIcon (new Bytes (buffer));
-      // Set the new avatar
-      this.individual.change_avatar.begin (icon as LoadableIcon, (obj, res) => {
-        try {
-          this.individual.change_avatar.end (res);
-        } catch (Error e) {
-          warning ("Failed to set avatar: %s", e.message);
-          Utils.show_error_dialog (_("Failed to set avatar."),
-                                   get_root () as Gtk.Window);
-        }
-      });
-    } catch (GLib.Error e) {
-      warning ("Failed to set avatar: %s", e.message);
-      Utils.show_error_dialog (_("Failed to set avatar."),
-                               get_root () as Gtk.Window);
-    }
+  /**
+   * Saves the selected avatar as the one that should be used.
+   *
+   * You should probably only do this after the "response" signal
+   * (with ResponseType.ACCEPT)
+   */
+  public async void save_selection () throws GLib.Error {
+    debug ("Saving selected avatar");
+    uint8[] buffer;
+    this.selected_avatar.save_to_buffer (out buffer, "png", null);
+    var icon = new BytesIcon (new Bytes (buffer));
+    // Set the new avatar
+    yield this.individual.change_avatar (icon as LoadableIcon);
   }
 
   private void update_thumbnail_grid () {
     if (this.individual != null) {
       foreach (var p in individual.personas) {
-        var widget = new Thumbnail.for_persona (p);
-        if (widget.source_pixbuf != null)
-          this.thumbnail_grid.insert (widget, -1);
+        var thumbnail = new Thumbnail.for_persona (p);
+        if (thumbnail.source_pixbuf != null) {
+          this.thumbnail_grid.insert (thumbnail, -1);
+        }
       }
     }
 
     var stock_files = Utils.get_stock_avatars ();
     foreach (var file_name in stock_files) {
-      var widget = new Thumbnail.for_filename (file_name);
-      if (widget.source_pixbuf != null)
-        this.thumbnail_grid.insert (widget, -1);
+      var thumbnail = new Thumbnail.for_filename (file_name);
+      if (thumbnail.source_pixbuf != null) {
+        this.thumbnail_grid.insert (thumbnail, -1);
+      }
     }
   }
 
@@ -166,19 +189,6 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
     // var dialog = new CropDialog.for_portal (this.portal,
     //                                         this.get_root () as Gtk.Window);
     // dialog.show ();
-  }
-
-  public override void response (int response) {
-    if (response == Gtk.ResponseType.OK) {
-      var selected_children = thumbnail_grid.get_selected_children ();
-      if (selected_children != null) {
-        unowned var thumbnail = (selected_children.data as Thumbnail);
-        if (thumbnail != null)
-          selected_pixbuf (scale_pixbuf_for_avatar_use (thumbnail.source_pixbuf));
-      }
-    }
-
-    this.close ();
   }
 
   [GtkCallback]
@@ -213,14 +223,15 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
                                                   get_root () as Gtk.Window);
           dialog.response.connect ((response) => {
               if (response == Gtk.ResponseType.ACCEPT) {
-                var cropped = dialog.create_pixbuf ();
-                selected_pixbuf (scale_pixbuf_for_avatar_use (cropped));
+                this.selected_avatar = dialog.create_pixbuf ();
+                this.response (Gtk.ResponseType.ACCEPT);
               }
               dialog.destroy ();
           });
           dialog.show ();
         } else {
-          selected_pixbuf (scale_pixbuf_for_avatar_use (pixbuf));
+          this.selected_avatar = pixbuf;
+          this.response (Gtk.ResponseType.ACCEPT);
         }
       } catch (GLib.Error e) {
         warning ("Failed to set avatar: %s", e.message);

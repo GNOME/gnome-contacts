@@ -25,8 +25,8 @@ using Folks;
 public class Contacts.ContactEditor : Gtk.Box {
 
   private Individual individual;
-  private Gtk.Entry name_entry;
-  private Avatar avatar;
+  private unowned Gtk.Entry name_entry;
+  private unowned Avatar avatar;
 
   construct {
     this.orientation = Gtk.Orientation.VERTICAL;
@@ -50,7 +50,8 @@ public class Contacts.ContactEditor : Gtk.Box {
 
   // Creates the contact's current avatar in a big button on top of the Editor
   private Gtk.Widget create_avatar_button () {
-    this.avatar = new Avatar (PROFILE_SIZE, this.individual);
+    var avatar = new Avatar (PROFILE_SIZE, this.individual);
+    this.avatar = avatar;
 
     var button = new Gtk.Button ();
     button.tooltip_text = _("Change avatar");
@@ -63,7 +64,19 @@ public class Contacts.ContactEditor : Gtk.Box {
   // Show the avatar popover when the avatar is clicked
   private void on_avatar_button_clicked (Gtk.Button avatar_button) {
     var avatar_selector = new AvatarSelector (this.individual, get_root () as Gtk.Window);
-    avatar_selector.response.connect (() => {
+    avatar_selector.response.connect ((response) => {
+      if (response == Gtk.ResponseType.ACCEPT) {
+        avatar_selector.save_selection.begin ((obj, res) => {
+          try {
+            avatar_selector.save_selection.end (res);
+            this.avatar.set_pixbuf (avatar_selector.selected_avatar);
+          } catch (Error e) {
+            warning ("Failed to set avatar: %s", e.message);
+            Utils.show_error_dialog (_("Failed to set avatar."),
+                                     get_root () as Gtk.Window);
+          }
+        });
+      }
       avatar_selector.destroy ();
     });
     avatar_selector.show ();
@@ -72,7 +85,8 @@ public class Contacts.ContactEditor : Gtk.Box {
   // Creates the big name entry on the top
   private Gtk.Widget create_name_entry () {
     NameDetails name = this.individual as NameDetails;
-    this.name_entry = new Gtk.Entry ();
+    var entry = new Gtk.Entry ();
+    this.name_entry = entry;
     this.name_entry.hexpand = true;
     this.name_entry.valign = Gtk.Align.CENTER;
     this.name_entry.input_purpose = Gtk.InputPurpose.NAME;
