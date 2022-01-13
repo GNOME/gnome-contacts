@@ -381,7 +381,7 @@ public class Contacts.ContactList : Adw.Bin {
 
     private void on_contact_changed (Object obj, ParamSpec pspec) {
       if (pspec.get_name () == "avatar") {
-        this.avatar.reload ();
+        this.avatar.reload.begin ();
       }
       // Always update the label, since it can depend on a lot of properties
       this.label.set_text (this.individual.display_name);
