@@ -93,7 +93,7 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
   }
 
   public BirthdayEditor (Gtk.Window window, DateTime birthday) {
-    Object (transient_for: window, use_header_bar: 1);
+    Object (transient_for: window, use_header_bar: 1, modal: true);
 
     // Don't forget to change to local timezone first
     var bday_local = birthday.to_local ();
