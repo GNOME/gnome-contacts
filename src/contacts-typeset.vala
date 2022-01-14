@@ -154,7 +154,7 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
 
     var types = detail.get_parameter_values ("type");
     if (types == null || types.is_empty) {
-      warning ("No types given in the AbstractFieldDetails");
+      debug ("No types given in the AbstractFieldDetails");
       return this.other_dummy;
     }
 
