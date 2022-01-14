@@ -5,12 +5,12 @@
       <attribute name="label" translatable="yes">List Contacts By:</attribute>
       <item>
         <attribute name="label" translatable="yes">First Name</attribute>
-        <attribute name="action">window.sort-on</attribute>
+        <attribute name="action">win.sort-on</attribute>
         <attribute name="target">firstname</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Surname</attribute>
-        <attribute name="action">window.sort-on</attribute>
+        <attribute name="action">win.sort-on</attribute>
         <attribute name="target">surname</attribute>
       </item>
     </section>
@@ -52,7 +52,7 @@
         <child>
           <object class="GtkShortcut">
             <property name="trigger">&lt;Control&gt;n</property>
-            <property name="action">action(window.new-contact)</property>
+            <property name="action">action(win.new-contact)</property>
           </object>
         </child>
       </object>
@@ -81,7 +81,7 @@
                           <object class="GtkButton" id="add_button">
                             <property name="tooltip-text" translatable="yes">Create new contact</property>
                             <property name="icon-name">list-add-symbolic</property>
-                            <property name="action-name">window.new-contact</property>
+                            <property name="action-name">win.new-contact</property>
                           </object>
                         </child>
 
@@ -112,6 +112,7 @@
                     <child>
                       <object class="GtkStack" id="list_pane_stack">
                         <property name="hexpand">False</property>
+                        <!-- The loading spinner page -->
                         <child>
                           <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -131,6 +132,49 @@
                                 <property name="valign">start</property>
                                 <property name="halign">center</property>
                                 <property name="label" translatable="yes">Loading</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <!-- The list pane with the actual contacts -->
+                        <child>
+                          <object class="GtkBox" id="list_pane">
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkSearchEntry" id="filter_entry">
+                                <property name="placeholder-text" translatable="yes">Type to search</property>
+                                <signal name="search-changed" handler="filter_entry_changed"/>
+                                <style>
+                                  <class name="contacts-filter-entry"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwBin" id="contacts_list_container">
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkActionBar" id="actions_bar">
+                                <property name="revealed">False</property>
+                                <child>
+                                  <object class="GtkButton" id="link_button">
+                                    <property name="focus_on_click">False</property>
+                                    <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
+                                    <property name="action-name">win.link-marked-contacts</property>
+                                  </object>
+                                </child>
+                                <child type="end">
+                                  <object class="GtkButton" id="delete_button">
+                                    <property name="focus_on_click">False</property>
+                                    <property name="label" translatable="yes">Remove</property>
+                                    <property name="action-name">win.delete-marked-contacts</property>
+                                    <style>
+                                      <class name="destructive-action"/>
+                                    </style>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -185,6 +229,8 @@
                             <property name="label" translatable="yes">_Cancel</property>
                             <property name="use_underline">True</property>
                             <signal name="notify::visible" handler="on_cancel_visible" object="ContactsMainWindow" after="yes" swapped="no"/>
+                            <property name="action-name">win.stop-editing-contact</property>
+                            <property name="action-target">true</property>
                           </object>
                         </child>
                         <child type="end">
@@ -202,14 +248,14 @@
                             <child>
                               <object class="GtkButton" id="edit_contact_button">
                                 <property name="icon-name">document-edit-symbolic</property>
-                                <property name="action-name">window.edit-contact</property>
+                                <property name="action-name">win.edit-contact</property>
                                 <property name="tooltip-text" translatable="yes">Edit Contact</property>
                               </object>
                             </child>
                             <child>
                               <object class="GtkButton" id="delete_contact_button">
                                 <property name="icon-name">user-trash-symbolic</property>
-                                <property name="action-name">window.delete-contact</property>
+                                <property name="action-name">win.delete-contact</property>
                                 <property name="tooltip-text" translatable="yes">Delete Contact</property>
                               </object>
                             </child>
@@ -221,6 +267,8 @@
                             <property name="use_underline">True</property>
                             <property name="label" translatable="yes">Done</property>
                             <property name="valign">center</property>
+                            <property name="action-name">win.stop-editing-contact</property>
+                            <property name="action-target">false</property>
                             <style>
                               <class name="suggested-action"/>
                             </style>

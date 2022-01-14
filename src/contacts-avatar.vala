@@ -23,15 +23,28 @@ using Folks;
  */
 public class Contacts.Avatar : Adw.Bin {
 
-  private unowned Individual? individual = null;
+  private unowned Individual? _individual = null;
+  public Individual? individual {
+    get { return this._individual; }
+    set {
+      if (this._individual == value)
+        return;
+
+      this._individual = value;
+      update_individual ();
+    }
+  }
 
   private int avatar_size;
-  private bool load_avatar_started = false;
 
   public Avatar (int size, Individual? individual = null) {
-    this.individual = individual;
+    this.child = new Adw.Avatar (size, "", false);
     this.avatar_size = size;
 
+    this.individual = individual;
+  }
+
+  private void update_individual () {
     string name = "";
     bool show_initials = false;
     if (this.individual != null) {
@@ -46,21 +59,17 @@ public class Contacts.Avatar : Adw.Bin {
       }
     }
 
-    this.child = new Adw.Avatar (size, name, show_initials);
+    ((Adw.Avatar) this.child).show_initials = show_initials;
+    ((Adw.Avatar) this.child).text = name;
 
-    // FIXME: ideally we lazy-load this only when we become visible for the
-    // first time
     this.load_avatar.begin ();
   }
 
-  public async void load_avatar() {
-    if (this.load_avatar_started)
+  public async void load_avatar () {
+    if (this.individual == null || this.individual.avatar == null) {
+      set_pixbuf (null);
       return;
-
-    if (individual == null || individual.avatar == null)
-      return;
-
-    this.load_avatar_started = true;
+    }
 
     try {
       var stream = yield this.individual.avatar.load_async (this.avatar_size,
@@ -76,21 +85,11 @@ public class Contacts.Avatar : Adw.Bin {
   }
 
   /**
-   * Forces a reload of the avatar (e.g. after a property change).
-   */
-  public async void reload () {
-    this.load_avatar_started = false;
-    yield this.load_avatar ();
-  }
-
-  /**
    * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
    */
   public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
-    if (a_pixbuf != null)
-      ((Adw.Avatar) this.child).set_custom_image (Gdk.Texture.for_pixbuf (a_pixbuf));
-    else
-      ((Adw.Avatar) this.child).set_icon_name ("avatar-default-symbolic");
+    var img = (a_pixbuf != null)? Gdk.Texture.for_pixbuf (a_pixbuf) : null;
+    ((Adw.Avatar) this.child).set_custom_image (img);
   }
 
   /* Find a nice name to generate the label and color for the fallback avatar

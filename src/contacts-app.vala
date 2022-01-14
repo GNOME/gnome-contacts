@@ -18,6 +18,7 @@
 using Folks;
 
 public class Contacts.App : Adw.Application {
+
   private Settings settings;
 
   private Store contacts_store;
@@ -41,15 +42,25 @@ public class Contacts.App : Adw.Application {
     {}
   };
 
+  construct {
+    this.settings = new Settings (this);
+
+    string[] filtered_fields = Query.MATCH_FIELDS_NAMES;
+    foreach (unowned var field in Query.MATCH_FIELDS_ADDRESSES)
+      filtered_fields += field;
+    var query = new SimpleQuery ("", filtered_fields);
+
+    this.contacts_store = new Store (this.settings, query);
+
+    add_main_option_entries (options);
+  }
+
   public App () {
     Object (
       application_id: Config.APP_ID,
       resource_base_path: "/org/gnome/Contacts",
       flags: ApplicationFlags.HANDLES_COMMAND_LINE
     );
-
-    this.settings = new Settings (this);
-    add_main_option_entries (options);
   }
 
   public override int command_line (ApplicationCommandLine command_line) {
@@ -60,7 +71,7 @@ public class Contacts.App : Adw.Application {
     if ("individual" in options) {
       var individual = options.lookup_value ("individual", VariantType.STRING);
       if (individual != null)
-        show_individual.begin (individual.get_string ());
+        show_individual_for_id.begin (individual.get_string ());
     } else if ("email" in options) {
       var email = options.lookup_value ("email", VariantType.STRING);
       if (email != null)
@@ -83,29 +94,10 @@ public class Contacts.App : Adw.Application {
     return -1;
   }
 
-  public void show_contact (Individual? individual) {
-    this.window.set_shown_contact (individual);
-  }
-
-  public async void show_individual (string id) {
-    if (contacts_store.is_quiescent) {
-      show_individual_ready.begin (id);
-    } else {
-      contacts_store.quiescent.connect (() => {
-        show_individual_ready.begin (id);
-      });
-    }
-  }
-
-  private async void show_individual_ready (string id) {
-    Individual? contact = null;
-    try {
-      contact = yield contacts_store.aggregator.look_up_individual (id);
-    } catch (Error e) {
-      debug ("Couldn't look up individual");
-    }
-    if (contact != null) {
-      show_contact (contact);
+  public async void show_individual_for_id (string id) {
+    uint pos = yield this.contacts_store.find_individual_for_id (id);
+    if (pos != Gtk.INVALID_LIST_POSITION) {
+      this.contacts_store.selection.selected = pos;
     } else {
       var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
@@ -179,9 +171,9 @@ public class Contacts.App : Adw.Application {
 
   public async void show_by_email (string email_address) {
     var query = new SimpleQuery (email_address, { "email-addresses" });
-    Individual individual = yield contacts_store.find_contact (query);
-    if (individual != null) {
-      show_contact (individual);
+    uint pos = yield this.contacts_store.find_individual_for_query (query);
+    if (pos != Gtk.INVALID_LIST_POSITION) {
+      this.contacts_store.selection.selected = pos;
     } else {
       var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
@@ -193,10 +185,10 @@ public class Contacts.App : Adw.Application {
   }
 
   public void show_search (string query) {
-    if (contacts_store.is_quiescent) {
+    if (this.contacts_store.aggregator.is_quiescent) {
       this.window.show_search (query);
     } else {
-      contacts_store.quiescent.connect_after (() => {
+      this.contacts_store.quiescent.connect_after (() => {
         this.window.show_search (query);
       });
     }
@@ -239,7 +231,6 @@ public class Contacts.App : Adw.Application {
     if (!ensure_eds_accounts (true))
       quit ();
 
-    this.contacts_store = new Store ();
     base.startup ();
 
     load_styling ();
@@ -290,12 +281,12 @@ public class Contacts.App : Adw.Application {
     setup_window.show ();
   }
 
-  private void on_show_contact(SimpleAction action, Variant? param) {
-    activate();
+  private void on_show_contact (SimpleAction action, Variant? param) {
+    activate ();
 
-    var individual = param as string;
-    if (individual != null)
-      show_individual.begin (individual);
+    var individual_id = param as string;
+    if (individual_id != null)
+      show_individual_for_id.begin (individual_id);
   }
 
 }

@@ -28,11 +28,9 @@ const int PROFILE_SIZE = 128;
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
 public class Contacts.ContactPane : Adw.Bin {
 
-  private MainWindow main_window;
+  private unowned Store store;
 
-  private Store store;
-
-  public Individual? individual { get; set; default = null; }
+  private Individual? individual = null;
 
   [GtkChild]
   private unowned Gtk.Stack stack;
@@ -48,16 +46,9 @@ public class Contacts.ContactPane : Adw.Bin {
   public bool on_edit_mode = false;
   private LinkSuggestionGrid? suggestion_grid = null;
 
-  /* Signals */
   public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
-  /**
-   * Passes the changed display name to all listeners after edit mode has been completed.
-   */
-  public signal void display_name_changed (string new_display_name);
-
 
   public ContactPane (MainWindow main_window, Store contacts_store) {
-    this.main_window = main_window;
     this.store = contacts_store;
   }
 
@@ -239,25 +230,27 @@ public class Contacts.ContactPane : Adw.Bin {
       persona = yield primary_store.add_persona_from_details (details);
     } catch (Error e) {
       show_message_dialog (_("Unable to create new contacts: %s").printf (e.message));
-      this.main_window.set_shown_contact (null);
+      this.store.selection.unselect_all ();
       return;
     }
 
-    // Now show the real persona to the user
-    var individual = persona.individual;
-
-    if (individual != null) {
-      //FIXME: This causes a flicker, especially visible when an avatar is set
-      this.main_window.set_shown_contact (individual);
-    } else {
-      show_message_dialog (_("Unable to find newly created contact"));
-      this.main_window.set_shown_contact (null);
+    // Now show the real persona to the user (if we can find it)
+    for (uint i = 0; i < this.store.filter_model.get_n_items (); i++) {
+      if (persona.individual == this.store.filter_model.get_item (i)) {
+        // FIXME: This causes a flicker, especially visible when an avatar is set
+        this.store.selection.selected = i;
+        return;
+      }
     }
+
+    // If we got here, we couldn't find the individual
+    show_message_dialog (_("Unable to find newly created contact"));
+    this.store.selection.unselect_all ();
   }
 
   private void show_message_dialog (string message) {
     var dialog =
-      new Gtk.MessageDialog (this.main_window,
+      new Gtk.MessageDialog (this.get_root () as Gtk.Window,
                              Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
                              Gtk.MessageType.ERROR,
                              Gtk.ButtonsType.OK,

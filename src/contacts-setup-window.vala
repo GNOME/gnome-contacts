@@ -63,7 +63,7 @@ public class Contacts.SetupWindow : Adw.ApplicationWindow {
   }
 
   private void fill_accounts_list (Store store) {
-    if (store.is_prepared) {
+    if (store.aggregator.is_prepared) {
       this.setup_accounts_list.update_contents (false);
       return;
     }
