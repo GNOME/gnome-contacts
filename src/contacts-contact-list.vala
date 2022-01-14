@@ -337,13 +337,14 @@ public class Contacts.ContactList : Adw.Bin {
   private class ContactDataRow : Gtk.ListBoxRow {
     private const int LIST_AVATAR_SIZE = 48;
 
-    public unowned Individual individual;
+    public Individual individual { get; construct; }
+
     private unowned Gtk.Label label;
     private unowned Avatar avatar;
     public unowned Gtk.CheckButton selector_button;
 
     public ContactDataRow (Individual i) {
-      this.individual = i;
+      Object (individual: i);
       this.individual.notify.connect (on_contact_changed);
 
       add_css_class ("contact-data-row");
