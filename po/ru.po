@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2021-08-20 11:41+0000\n"
-"PO-Revision-Date: 2021-08-31 09:24+0300\n"
-"Last-Translator: Alexey Rubtsov <rushills@gmail.com>\n"
+"POT-Creation-Date: 2022-01-12 22:54+0000\n"
+"PO-Revision-Date: 2022-01-14 16:34+0300\n"
+"Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,9 +22,8 @@ msgstr ""
 "X-Generator: Poedit 3.0\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:144
-#: data/ui/contacts-main-window.ui:163 src/contacts-main-window.vala:203
-#: src/contacts-main-window.vala:231
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:154
+#: src/contacts-main-window.vala:183 src/main.vala:26
 msgid "Contacts"
 msgstr "Контакты"
 
@@ -53,7 +52,7 @@ msgstr ""
 "Приложение «Контакты» также  выполнит интеграцию с сетевой адресной книгой и "
 "автоматически свяжет контакты из различных сетевых источников."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:545
+#: data/org.gnome.Contacts.appdata.xml.in.in:613
 msgid "The GNOME Project"
 msgstr "Проект GNOME"
 
@@ -62,209 +61,182 @@ msgstr "Проект GNOME"
 msgid "friends;address book;"
 msgstr "друзья;адресная книга;"
 
-#: data/gtk/help-overlay.ui:9
+#: data/gtk/help-overlay.ui:7
 msgctxt "shortcut window"
 msgid "Overview"
 msgstr "Обзор"
 
-#: data/gtk/help-overlay.ui:14
+#: data/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
 msgid "Help"
 msgstr "Справка"
 
-#: data/gtk/help-overlay.ui:21
+#: data/gtk/help-overlay.ui:17
 msgctxt "shortcut window"
 msgid "Open menu"
 msgstr "Открыть меню"
 
-#: data/gtk/help-overlay.ui:28
+#: data/gtk/help-overlay.ui:23
 msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "Создать новый контакт"
 
-#: data/gtk/help-overlay.ui:35
+#: data/gtk/help-overlay.ui:29
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Поиск"
 
-#: data/gtk/help-overlay.ui:42
+#: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "Список комбинаций клавиш"
 
-#: data/gtk/help-overlay.ui:49
+#: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Завершить"
 
-#: data/ui/contacts-avatar-selector.ui:19
-#: data/ui/contacts-crop-cheese-dialog.ui:27
-#: data/ui/contacts-main-window.ui:241 src/contacts-addressbook-dialog.vala:32
-#: src/contacts-editor-property.vala:83
+#: data/ui/contacts-avatar-selector.ui:7
+msgid "Select a new avatar"
+msgstr "Выбрать новый аватар"
+
+#: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "Отменить"
 
-#: data/ui/contacts-avatar-selector.ui:28
-#: data/ui/contacts-crop-cheese-dialog.ui:64
-#: data/ui/contacts-main-window.ui:364 src/contacts-main-window.vala:239
+#: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
+#: data/ui/contacts-main-window.ui:222 src/contacts-main-window.vala:192
 msgid "Done"
 msgstr "Готово"
 
-#: data/ui/contacts-avatar-selector.ui:102
+#: data/ui/contacts-avatar-selector.ui:69
 msgid "Take a Picture…"
 msgstr "Сделать фотоснимок…"
 
-#: data/ui/contacts-avatar-selector.ui:111
+#: data/ui/contacts-avatar-selector.ui:76
 msgid "Select a File…"
 msgstr "Выберите файл…"
 
-#: data/ui/contacts-contact-pane.ui:18
+#: data/ui/contacts-contact-pane.ui:14
 msgid "Select a Contact"
 msgstr "Выбрать контакт"
 
-#: data/ui/contacts-crop-cheese-dialog.ui:49
-msgid "Take Another…"
-msgstr "Сделать ещё…"
-
-#: data/ui/contacts-editor-menu.ui:13
+#: data/ui/contacts-editor-menu.ui:11
 msgid "Change Addressbook"
 msgstr "Изменить адресную книгу"
 
-#: data/ui/contacts-linked-personas-dialog.ui:12
-msgid "Linked Accounts"
-msgstr "Связанные учётные записи"
-
-#: data/ui/contacts-linked-personas-dialog.ui:45
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "Вы можете связывать контакты, выбирая их из списка"
-
-#: data/ui/contacts-link-suggestion-grid.ui:56
+#: data/ui/contacts-link-suggestion-grid.ui:51
 msgid "Link Contacts"
 msgstr "Связать контакты"
 
-#: data/ui/contacts-list-pane.ui:22
+#: data/ui/contacts-linked-personas-dialog.ui:9
+msgid "Linked Accounts"
+msgstr "Связанные учётные записи"
+
+#: data/ui/contacts-linked-personas-dialog.ui:42
+msgid "You can link contacts by selecting them from the contacts list"
+msgstr "Вы можете связывать контакты, выбирая их из списка"
+
+#: data/ui/contacts-list-pane.ui:9
 msgid "Type to search"
 msgstr "Введите поисковый запрос"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-list-pane.ui:54
+#: data/ui/contacts-list-pane.ui:28
 msgid "Link"
 msgstr "Связать"
 
-#: data/ui/contacts-list-pane.ui:68
+#: data/ui/contacts-list-pane.ui:36
 msgid "Remove"
 msgstr "Удалить"
 
-#: data/ui/contacts-main-window.ui:15
+#: data/ui/contacts-main-window.ui:5
 msgid "List Contacts By:"
 msgstr "Список контактов по:"
 
-#: data/ui/contacts-main-window.ui:28
+#: data/ui/contacts-main-window.ui:7
 msgid "First Name"
 msgstr "Имени"
 
-#: data/ui/contacts-main-window.ui:35
+#: data/ui/contacts-main-window.ui:12
 msgid "Surname"
 msgstr "Фамилии"
 
-#: data/ui/contacts-main-window.ui:49
+#: data/ui/contacts-main-window.ui:19
 msgid "Change Address Book…"
 msgstr "Изменить адресную книгу…"
 
-#: data/ui/contacts-main-window.ui:57
+#: data/ui/contacts-main-window.ui:23
 msgid "Online Accounts <sup>↗</sup>"
 msgstr "Сетевые учётные записи <sup>↗</sup>"
 
-#: data/ui/contacts-main-window.ui:73
+#: data/ui/contacts-main-window.ui:30
 msgid "Keyboard Shortcuts"
 msgstr "Комбинации клавиш"
 
-#: data/ui/contacts-main-window.ui:81
+#: data/ui/contacts-main-window.ui:34
 msgid "Help"
 msgstr "Справка"
 
-#: data/ui/contacts-main-window.ui:89
+#: data/ui/contacts-main-window.ui:38
 msgid "About Contacts"
 msgstr "О приложении"
 
-#: data/ui/contacts-main-window.ui:107
-msgid "Share"
-msgstr "Поделиться"
-
-#: data/ui/contacts-main-window.ui:114
-msgid "Edit"
-msgstr "Изменить"
-
-#: data/ui/contacts-main-window.ui:121
-#: src/contacts-linked-personas-dialog.vala:73
-msgid "Unlink"
-msgstr "Отвязать"
-
-#: data/ui/contacts-main-window.ui:133
-msgid "Delete"
-msgstr "Удалить"
-
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:82
 msgid "Create new contact"
 msgstr "Создать новый контакт"
 
-#: data/ui/contacts-main-window.ui:175
-msgid "Add contact"
-msgstr "Добавить контакт"
-
-#: data/ui/contacts-main-window.ui:198
-msgid "Select Items"
-msgstr "Выбрать элементы"
-
-#: data/ui/contacts-main-window.ui:222
+#: data/ui/contacts-main-window.ui:92
 msgid "Menu"
 msgstr "Меню"
 
-#: data/ui/contacts-main-window.ui:242
-msgid "Cancel selection"
+#: data/ui/contacts-main-window.ui:99
+msgid "Select Items"
+msgstr "Выбрать элементы"
+
+#: data/ui/contacts-main-window.ui:107
+msgid "Cancel Selection"
 msgstr "Отменить выделение"
 
-#: data/ui/contacts-main-window.ui:286
-msgid "Back"
-msgstr "Назад"
+#: data/ui/contacts-main-window.ui:133
+msgid "Loading"
+msgstr "Загрузка"
 
-#: data/ui/contacts-main-window.ui:305 src/contacts-avatar-selector.vala:218
+#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:189
 msgid "_Cancel"
 msgstr "_Отменить"
 
-#: data/ui/contacts-main-window.ui:345
-msgid "Main Menu"
-msgstr "Главное меню"
+#: data/ui/contacts-main-window.ui:206
+msgid "Edit Contact"
+msgstr "Изменить контакт"
 
-#: data/ui/contacts-main-window.ui:423
-msgid "Loading"
-msgstr "Загрузка"
+#: data/ui/contacts-main-window.ui:213
+msgid "Delete Contact"
+msgstr "Удалить контакт"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
 msgstr "Настройка контактов"
 
-#: data/ui/contacts-setup-window.ui:24
+#: data/ui/contacts-setup-window.ui:20
 msgid "_Quit"
 msgstr "_Завершить"
 
 #: data/ui/contacts-setup-window.ui:29
-msgid "Cancel setup and quit"
-msgstr "Отменить настройку и выйти"
-
-#: data/ui/contacts-setup-window.ui:43
 msgid "_Done"
 msgstr "_Готово"
 
-#: data/ui/contacts-setup-window.ui:47
-msgid "Setup complete"
-msgstr "Завершить настройку"
+#: data/ui/contacts-setup-window.ui:30
+msgid "Complete setup"
+msgstr "Завершение настройки"
 
-#: data/ui/contacts-setup-window.ui:86
+#: data/ui/contacts-setup-window.ui:41
 msgid "Welcome"
 msgstr "Добро пожаловать"
 
-#: data/ui/contacts-setup-window.ui:98
+#: data/ui/contacts-setup-window.ui:42
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -274,8 +246,8 @@ msgstr ""
 "Если вы сохраняете свои контакты в сетевой учётной записи, вы можете "
 "добавить их, используя настройки сетевых учётных записей."
 
-#: src/contacts-accounts-list.vala:125 src/contacts-addressbook-list.vala:105
-#: src/contacts-esd-setup.vala:149
+#: src/contacts-accounts-list.vala:134 src/contacts-addressbook-list.vala:119
+#: src/contacts-esd-setup.vala:152
 msgid "Local Address Book"
 msgstr "Локальная адресная книга"
 
@@ -287,7 +259,7 @@ msgstr "Изменить адресную книгу"
 msgid "Change"
 msgstr "Изменить"
 
-#: src/contacts-addressbook-dialog.vala:60
+#: src/contacts-addressbook-dialog.vala:58
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -295,19 +267,19 @@ msgstr ""
 "Новые контакты будут добавлены в выбранную адресную книгу.\n"
 "Вы можете просмотреть и изменить контакты из других адресных книг."
 
-#: src/contacts-app.vala:38
+#: src/contacts-app.vala:37
 msgid "Show contact with this email address"
 msgstr "Показать контакт с этим адресом электронной почты"
 
-#: src/contacts-app.vala:39
+#: src/contacts-app.vala:38
 msgid "Show contact with this individual id"
 msgstr "Показать контакт с этим идентификатором"
 
-#: src/contacts-app.vala:40
+#: src/contacts-app.vala:39
 msgid "Show contacts with the given filter"
 msgstr "Показать контакты с заданным фильтром"
 
-#: src/contacts-app.vala:41
+#: src/contacts-app.vala:40
 msgid "Show the current version of Contacts"
 msgstr "Показать текущую версию приложения Контакты"
 
@@ -316,30 +288,27 @@ msgstr "Показать текущую версию приложения Кон
 msgid "No contact with id %s found"
 msgstr "Контакт с идентификатором %s не найден"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:193
+#: src/contacts-app.vala:113 src/contacts-app.vala:189
 msgid "Contact not found"
 msgstr "Контакт не найден"
 
-#: src/contacts-app.vala:172
+#: src/contacts-app.vala:169
 msgid "translator-credits"
 msgstr ""
 "Станислав Соловей <whats_up@tut.by>, 2013-2019.\n"
 "Юрий Мясоедов <ymyasoedov@yandex.ru>, 2014.\n"
-"Alexey Rubtsov <rushills@gmail.com>, 2021"
+"Alexey Rubtsov <rushills@gmail.com>, 2021\n"
+"Aleksandr Melman <alexmelman88@gmail.com>, 2022"
 
-#: src/contacts-app.vala:173
-msgid "GNOME Contacts"
-msgstr "Контакты GNOME"
-
-#: src/contacts-app.vala:174
+#: src/contacts-app.vala:170
 msgid "About GNOME Contacts"
 msgstr "О Контактах GNOME"
 
-#: src/contacts-app.vala:175
+#: src/contacts-app.vala:171
 msgid "Contact Management Application"
 msgstr "Приложение для управления контактами"
 
-#: src/contacts-app.vala:176
+#: src/contacts-app.vala:172
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -347,73 +316,86 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Разработчики Контактов"
 
-#: src/contacts-app.vala:192
+#: src/contacts-app.vala:188
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Контакт с адресом электронной почты %s не найден"
 
-#: src/contacts-avatar-selector.vala:158 src/contacts-avatar-selector.vala:164
-#: src/contacts-avatar-selector.vala:255
+#: src/contacts-avatar-selector.vala:101
+msgid "No Camera Detected"
+msgstr "Камера не найдена"
+
+#: src/contacts-avatar-selector.vala:135 src/contacts-avatar-selector.vala:141
+#: src/contacts-avatar-selector.vala:227
 msgid "Failed to set avatar."
 msgstr "Не удалось установить аватар."
 
-#: src/contacts-avatar-selector.vala:215
+#: src/contacts-avatar-selector.vala:186
 msgid "Browse for more pictures"
 msgstr "Найти дополнительные изображения"
 
-#: src/contacts-avatar-selector.vala:218
+#: src/contacts-avatar-selector.vala:189
 msgid "_Open"
 msgstr "О_ткрыть"
 
-#: src/contacts-contact-editor.vala:50
+#: src/contacts-contact-editor.vala:56
 msgid "Change avatar"
 msgstr "Изменить аватар"
 
-#: src/contacts-contact-editor.vala:71
+#: src/contacts-contact-editor.vala:79
 msgid "Add name"
 msgstr "Добавить имя"
 
-#: src/contacts-contact-list.vala:174
+#: src/contacts-contact-list.vala:159
 msgid "Favorites"
 msgstr "Избранные"
 
-#: src/contacts-contact-list.vala:176 src/contacts-contact-list.vala:182
+#: src/contacts-contact-list.vala:161 src/contacts-contact-list.vala:167
 msgid "All Contacts"
 msgstr "Все контакты"
 
-#: src/contacts-contact-pane.vala:236
+#: src/contacts-contact-pane.vala:231
 msgid "No primary addressbook configured"
 msgstr "Основная адресная книга не настроена"
 
-#: src/contacts-contact-pane.vala:246
+#: src/contacts-contact-pane.vala:241
 #, c-format
 msgid "Unable to create new contacts: %s"
 msgstr "Не удалось создать новые контакты: %s"
 
-#: src/contacts-contact-pane.vala:258
+#: src/contacts-contact-pane.vala:253
 msgid "Unable to find newly created contact"
 msgstr "Не удалось найти только что созданный контакт"
 
-#: src/contacts-contact-sheet.vala:288 src/contacts-editor-property.vala:491
-msgid "Website"
-msgstr "Веб-страница"
+#: src/contacts-contact-sheet.vala:216
+#, c-format
+msgid "Send an email to %s"
+msgstr "Отправить электронное письмо на %s"
 
-#: src/contacts-contact-sheet.vala:305 src/contacts-editor-property.vala:501
-msgid "Nickname"
-msgstr "Псевдоним"
+#: src/contacts-contact-sheet.vala:242
+msgid "Start a call"
+msgstr "Позвонить"
 
-#: src/contacts-contact-sheet.vala:311 src/contacts-editor-property.vala:569
-msgid "Birthday"
-msgstr "День рождения"
+#: src/contacts-contact-sheet.vala:296
+msgid "Visit website"
+msgstr "Посетить веб-сайт"
 
-#: src/contacts-contact-sheet.vala:318 src/contacts-editor-property.vala:529
-msgid "Note"
-msgstr "Примечание"
+#: src/contacts-contact-sheet.vala:374
+msgid "Show on the map"
+msgstr "Показать на карте"
 
-#: src/contacts-crop-cheese-dialog.vala:88
-msgid "Unable to take photo."
-msgstr "Невозможно сфотографировать."
+#: src/contacts-delete-operation.vala:34
+msgid "Deleting %d contact"
+msgid_plural "Deleting %d contacts"
+msgstr[0] "Удаление %d контакта"
+msgstr[1] "Удаление %d контактов"
+msgstr[2] "Удаление %d контактов"
 
+#: src/contacts-editor-persona.vala:82
+msgid "Show More"
+msgstr "Показать больше"
+
+#. Create grid and labels
 #: src/contacts-editor-property.vala:63
 msgid "Day"
 msgstr "День"
@@ -426,81 +408,77 @@ msgstr "Месяц"
 msgid "Year"
 msgstr "Год"
 
-#: src/contacts-editor-property.vala:81
+#: src/contacts-editor-property.vala:76
 msgid "Change Birthday"
 msgstr "Изменить день рождения"
 
-#: src/contacts-editor-property.vala:82
+#: src/contacts-editor-property.vala:77
 msgid "Set"
 msgstr "Установить"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "Street"
 msgstr "Улица"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "Extension"
 msgstr "Расширение"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "City"
 msgstr "Город"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "State/Province"
 msgstr "Штат/Область"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "Zip/Postal Code"
 msgstr "Почтовый индекс"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "PO box"
 msgstr "Почтовый ящик"
 
-#: src/contacts-editor-property.vala:134
+#: src/contacts-editor-property.vala:146
 msgid "Country"
 msgstr "Страна"
 
-#: src/contacts-editor-property.vala:336 src/contacts-editor-property.vala:592
+#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
 msgid "Delete field"
 msgstr "Удалить поле"
 
-#: src/contacts-editor-property.vala:452
-msgid "Email address"
-msgstr "Адрес электронной почты"
+#: src/contacts-editor-property.vala:331
+msgid "Label"
+msgstr "Метка"
 
-#: src/contacts-editor-property.vala:453
+#: src/contacts-editor-property.vala:475
 msgid "Add email"
 msgstr "Добавить эл. почту"
 
-#: src/contacts-editor-property.vala:471
-msgid "Phone number"
-msgstr "Номер телефона"
+#: src/contacts-editor-property.vala:502
+msgid "Add phone number"
+msgstr "Добавить номер телефона"
 
-#: src/contacts-editor-property.vala:472
-msgid "Add number"
-msgstr "Добавить номер"
-
-#: src/contacts-editor-property.vala:492
+#: src/contacts-editor-property.vala:530
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:562 src/contacts-editor-property.vala:601
+#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+msgid "Nickname"
+msgstr "Псевдоним"
+
+#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
 msgid "Set Birthday"
 msgstr "Установить День рождения"
 
-#: src/contacts-editor-property.vala:619
-msgid "Address"
-msgstr "Адрес"
-
 # msgstr "Местный контакт"
-#: src/contacts-esd-setup.vala:152 src/contacts-esd-setup.vala:167
-#: src/contacts-utils.vala:475
+#: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
+#: src/contacts-utils.vala:447
 msgid "Google"
 msgstr "Google"
 
-#: src/contacts-esd-setup.vala:164
+#: src/contacts-esd-setup.vala:167
 msgid "Local Contact"
 msgstr "Локальный контакт"
 
@@ -600,17 +578,28 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-link-suggestion-grid.vala:52
+#: src/contacts-link-operation.vala:40
+msgid "Linked %d contact"
+msgid_plural "Linked %d contacts"
+msgstr[0] "Связан %d контакт"
+msgstr[1] "Связаны %d контакта"
+msgstr[2] "Связаны %d контактов"
+
+#: src/contacts-link-suggestion-grid.vala:49
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "Это тот же человек, что и %s из %s?"
 
-#: src/contacts-link-suggestion-grid.vala:55
+#: src/contacts-link-suggestion-grid.vala:52
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Это тот же человек, что и %s?"
 
-#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:303
+#: src/contacts-linked-personas-dialog.vala:70
+msgid "Unlink"
+msgstr "Разъединить"
+
+#: src/contacts-main-window.vala:156 src/contacts-main-window.vala:236
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -618,143 +607,184 @@ msgstr[0] "Выбран %d"
 msgstr[1] "Выбрано %d"
 msgstr[2] "Выбрано %d"
 
-#: src/contacts-main-window.vala:239
+#: src/contacts-main-window.vala:192
 msgid "_Add"
 msgstr "_Добавить"
 
-#: src/contacts-main-window.vala:284
+#: src/contacts-main-window.vala:216
 #, c-format
 msgid "Editing %s"
 msgstr "Изменение %s"
 
-#: src/contacts-main-window.vala:318 src/contacts-main-window.vala:517
-#: src/contacts-main-window.vala:541 src/contacts-main-window.vala:587
+#: src/contacts-main-window.vala:258 src/contacts-main-window.vala:445
+#: src/contacts-main-window.vala:456 src/contacts-main-window.vala:482
 msgid "_Undo"
 msgstr "От_менить"
 
-#: src/contacts-main-window.vala:319
-msgid "Contacts unlinked"
-msgstr "Контакты не связаны"
-
-#: src/contacts-main-window.vala:379
+#: src/contacts-main-window.vala:331
 msgid "Unmark as favorite"
 msgstr "Убрать из избранных"
 
-#: src/contacts-main-window.vala:380
+#: src/contacts-main-window.vala:332
 msgid "Mark as favorite"
 msgstr "Добавить в избранные"
 
-#: src/contacts-main-window.vala:396
+#: src/contacts-main-window.vala:344
 msgid "New Contact"
 msgstr "Создать контакт"
 
-#: src/contacts-main-window.vala:513
-#, c-format
-msgid "%d contacts linked"
-msgid_plural "%d contacts linked"
-msgstr[0] "Связано контактов: %d"
-msgstr[1] "Связано контактов: %d"
-msgstr[2] "Связано контактов: %d"
-
-#: src/contacts-main-window.vala:536
-#, c-format
-msgid "Deleted contact %s"
-msgstr "Контакт %s удалён"
-
-#: src/contacts-main-window.vala:538
-#, c-format
-msgid "%d contact deleted"
-msgid_plural "%d contacts deleted"
-msgstr[0] "%d контакт удалён"
-msgstr[1] "%d контакта удалено"
-msgstr[2] "%d контактов удалено"
-
-#: src/contacts-main-window.vala:583
-#, c-format
-msgid "%s linked to %s"
-msgstr "%s привязан к %s"
-
-#: src/contacts-main-window.vala:585
-#, c-format
-msgid "%s linked to the contact"
-msgstr "%s привязан к контакту"
-
-#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:263
+#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:239
 msgid "Other"
 msgstr "Другой"
 
 # msgstr "Свой..."
 #. List most specific first, always in upper case
-#: src/contacts-typeset.vala:212 src/contacts-typeset.vala:232
-#: src/contacts-typeset.vala:258 src/contacts-typeset.vala:260
+#: src/contacts-typeset.vala:187 src/contacts-typeset.vala:208
+#: src/contacts-typeset.vala:234 src/contacts-typeset.vala:236
 msgid "Home"
 msgstr "Дом"
 
-#: src/contacts-typeset.vala:213 src/contacts-typeset.vala:233
-#: src/contacts-typeset.vala:252 src/contacts-typeset.vala:254
+#: src/contacts-typeset.vala:188 src/contacts-typeset.vala:209
+#: src/contacts-typeset.vala:228 src/contacts-typeset.vala:230
 msgid "Work"
 msgstr "Работа"
 
 #. List most specific first, always in upper case
-#: src/contacts-typeset.vala:231
+#: src/contacts-typeset.vala:207
 msgid "Personal"
 msgstr "Личные"
 
 #. List most specific first, always in upper case
-#: src/contacts-typeset.vala:251
+#: src/contacts-typeset.vala:227
 msgid "Assistant"
 msgstr "Помощник"
 
-#: src/contacts-typeset.vala:253
+#: src/contacts-typeset.vala:229
 msgid "Work Fax"
 msgstr "Рабочий факс"
 
-#: src/contacts-typeset.vala:255
+#: src/contacts-typeset.vala:231
 msgid "Callback"
 msgstr "Обратная связь"
 
-#: src/contacts-typeset.vala:256
+#: src/contacts-typeset.vala:232
 msgid "Car"
 msgstr "Машина"
 
-#: src/contacts-typeset.vala:257
+#: src/contacts-typeset.vala:233
 msgid "Company"
 msgstr "Компания"
 
-#: src/contacts-typeset.vala:259
+#: src/contacts-typeset.vala:235
 msgid "Home Fax"
 msgstr "Домашний факс"
 
 # msgstr "Основной факс"
-#: src/contacts-typeset.vala:261
+#: src/contacts-typeset.vala:237
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/contacts-typeset.vala:262
+#: src/contacts-typeset.vala:238
 msgid "Mobile"
 msgstr "Мобильный"
 
-#: src/contacts-typeset.vala:264
+#: src/contacts-typeset.vala:240
 msgid "Fax"
 msgstr "Факс"
 
-#: src/contacts-typeset.vala:265
+#: src/contacts-typeset.vala:241
 msgid "Pager"
 msgstr "Пейджер"
 
-#: src/contacts-typeset.vala:266
+#: src/contacts-typeset.vala:242
 msgid "Radio"
 msgstr "Радио"
 
-#: src/contacts-typeset.vala:267
+#: src/contacts-typeset.vala:243
 msgid "Telex"
 msgstr "Telex"
 
 # msgstr "Телекс"
 #. To translators: TTY is Teletypewriter
-#: src/contacts-typeset.vala:269
+#: src/contacts-typeset.vala:245
 msgid "TTY"
 msgstr "TTY"
+
+#: src/contacts-unlink-operation.vala:37
+msgid "Unlinking contacts"
+msgstr "Разъединение контактов"
+
+#: src/contacts-utils.vala:551
+msgid "Alias"
+msgstr "Псевдоним"
+
+#: src/contacts-utils.vala:552
+msgid "Avatar"
+msgstr "Аватар"
+
+#: src/contacts-utils.vala:553
+msgid "Birthday"
+msgstr "День рождения"
+
+#: src/contacts-utils.vala:554
+msgid "Calendar event"
+msgstr "Событие в календаре"
+
+#: src/contacts-utils.vala:555
+msgid "Email address"
+msgstr "Адрес электронной почты"
+
+#: src/contacts-utils.vala:556
+msgid "Full name"
+msgstr "Полное имя"
+
+#: src/contacts-utils.vala:557
+msgid "Gender"
+msgstr "Пол"
+
+#: src/contacts-utils.vala:558
+msgid "Group"
+msgstr "Группа"
+
+#: src/contacts-utils.vala:559
+msgid "Instant messaging"
+msgstr "Обмен мгновенными сообщениями"
+
+#: src/contacts-utils.vala:560
+msgid "Favourite"
+msgstr "Избранный"
+
+#: src/contacts-utils.vala:561
+msgid "Local ID"
+msgstr "Локальный ID"
+
+#: src/contacts-utils.vala:563
+msgid "Note"
+msgstr "Примечание"
+
+#: src/contacts-utils.vala:564
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: src/contacts-utils.vala:565
+msgid "Address"
+msgstr "Адрес"
+
+#: src/contacts-utils.vala:566
+msgid "Role"
+msgstr "Роль"
+
+#: src/contacts-utils.vala:567
+msgid "Structured name"
+msgstr "Фамилия"
+
+#: src/contacts-utils.vala:568
+msgid "Website"
+msgstr "Веб-страница"
+
+#: src/contacts-utils.vala:569
+msgid "Web service"
+msgstr "Веб-сервис"
 
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
@@ -811,146 +841,4 @@ msgstr "Хранит информацию, развёрнуто ли сейча�
 
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
-msgstr "Развёрнуто ли окно?"
-
-#~ msgid "org.gnome.Contacts"
-#~ msgstr "org.gnome.Contacts"
-
-#~ msgid "Home email"
-#~ msgstr "Домашняя эл. почта"
-
-#~ msgid "Work email"
-#~ msgstr "Рабочая эл. почта"
-
-#~ msgid "Mobile phone"
-#~ msgstr "Мобильный телефон"
-
-#~ msgid "Home phone"
-#~ msgstr "Домашний телефон"
-
-#~ msgid "Work phone"
-#~ msgstr "Рабочий телефон"
-
-#~ msgid "Work address"
-#~ msgstr "Рабочий адрес"
-
-#~ msgid "Notes"
-#~ msgstr "Примечания"
-
-#~ msgid "New Detail"
-#~ msgstr "Новые данные"
-
-#~ msgid "Remove Contact"
-#~ msgstr "Удалить контакт"
-
-#~ msgid "Quit"
-#~ msgstr "Завершить"
-
-#~ msgid "Edit details"
-#~ msgstr "Редактировать подробности"
-
-#~ msgid "You need to enter some data"
-#~ msgstr "Введите какие-нибудь данные"
-
-#~ msgid "Unexpected internal error: created contact was not found"
-#~ msgstr "Неожиданная внутренняя ошибка: созданный контакт не найден"
-
-#~ msgid "Google Circles"
-#~ msgstr "Круги Google"
-
-#~ msgid "Add"
-#~ msgstr "Добавить"
-
-#~ msgid "_Help"
-#~ msgstr "_Справка"
-
-#~ msgid "_About"
-#~ msgstr "_О приложении"
-
-#~ msgid ""
-#~ "New contacts will be added to the selected address book. You are able to "
-#~ "view and edit contacts from other address books."
-#~ msgstr ""
-#~ "Новые контакты будут добавлены в выбранную адресную книгу. Можно "
-#~ "просматривать и изменять контакты из других адресных книг."
-
-#~ msgid "Selection mode"
-#~ msgstr "Режим выделения"
-
-#~ msgid "Select Address Book"
-#~ msgstr "Выбор адресной книги"
-
-#~ msgid "Install GNOME Maps to open location."
-#~ msgstr "Установите Карты GNOME чтобы открыть местоположение."
-
-#~ msgid "— contact management"
-#~ msgstr "— управление контактами"
-
-#~ msgid "Does %s from %s belong here?"
-#~ msgstr "%s из %s относится к этому?"
-
-#~ msgid "Do these details belong to %s?"
-#~ msgstr "Эта информация относится к %s?"
-
-#~ msgid "Yes"
-#~ msgstr "Да"
-
-#~ msgid "No"
-#~ msgstr "Нет"
-
-#~ msgid "%s"
-#~ msgstr "%s"
-
-#~ msgid "No results matched search"
-#~ msgstr "Нет результатов соответствующих поиску"
-
-#~ msgid "Suggestions"
-#~ msgstr "Предложения"
-
-#~ msgid "Other Contacts"
-#~ msgstr "Другие контакты"
-
-#~ msgid "Contact deleted: “%s”"
-#~ msgstr "Контакт удалён: «%s»"
-
-#~ msgid "x-office-address-book"
-#~ msgstr "x-office-address-book"
-
-#~ msgid "January"
-#~ msgstr "Январь"
-
-#~ msgid "February"
-#~ msgstr "Февраль"
-
-#~ msgid "April"
-#~ msgstr "Апрель"
-
-#~ msgid "June"
-#~ msgstr "Июнь"
-
-#~ msgid "July"
-#~ msgstr "Июль"
-
-#~ msgid "August"
-#~ msgstr "Август"
-
-#~ msgid "September"
-#~ msgstr "Сентябрь"
-
-#~ msgid "October"
-#~ msgstr "Октябрь"
-
-#~ msgid "November"
-#~ msgstr "Ноябрь"
-
-#~ msgid "December"
-#~ msgstr "Декабрь"
-
-#~ msgid "View subset"
-#~ msgstr "Просмотр подгруппы"
-
-#~ msgid "_Change Address Book..."
-#~ msgstr "_Изменить адресную книгу…"
-
-#~ msgid "Personal email"
-#~ msgstr "Личная эл. почта"
+msgstr "Является ли окно полноэкранным"
