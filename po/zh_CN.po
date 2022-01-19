@@ -15,16 +15,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 40\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-12 23:43+0000\n"
-"PO-Revision-Date: 2022-01-14 16:51+0800\n"
+"POT-Creation-Date: 2022-01-19 12:28+0000\n"
+"PO-Revision-Date: 2022-01-19 10:30-0500\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 41.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.4.3\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:154
@@ -113,11 +113,11 @@ msgstr "取消"
 msgid "Done"
 msgstr "完成"
 
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:70
 msgid "Take a Picture…"
 msgstr "拍张照片…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:77
 msgid "Select a File…"
 msgstr "选择文件…"
 
@@ -206,7 +206,7 @@ msgstr "取消选择"
 msgid "Loading"
 msgstr "加载中"
 
-#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:189
+#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:199
 msgid "_Cancel"
 msgstr "取消(_C)"
 
@@ -325,28 +325,27 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "未找到电子邮件地址为 %s 的联系人"
 
-#: src/contacts-avatar-selector.vala:101
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "未检测到摄像头"
 
-#: src/contacts-avatar-selector.vala:135 src/contacts-avatar-selector.vala:141
-#: src/contacts-avatar-selector.vala:227
-msgid "Failed to set avatar."
-msgstr "设定头像失败。"
-
-#: src/contacts-avatar-selector.vala:186
+#: src/contacts-avatar-selector.vala:196
 msgid "Browse for more pictures"
 msgstr "浏览更多图片"
 
-#: src/contacts-avatar-selector.vala:189
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/contacts-contact-editor.vala:56
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+msgid "Failed to set avatar."
+msgstr "设定头像失败。"
+
+#: src/contacts-contact-editor.vala:57
 msgid "Change avatar"
 msgstr "更换头像"
 
-#: src/contacts-contact-editor.vala:79
+#: src/contacts-contact-editor.vala:93
 msgid "Add name"
 msgstr "添加姓名"
 
@@ -371,26 +370,29 @@ msgstr "无法新建联系人：%s"
 msgid "Unable to find newly created contact"
 msgstr "无法找到新建的联系人"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:228
 #, c-format
 msgid "Send an email to %s"
 msgstr "给 %s 发送邮件"
 
-#: src/contacts-contact-sheet.vala:242
+#: src/contacts-contact-sheet.vala:257
 msgid "Start a call"
 msgstr "开始呼叫"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:313
 msgid "Visit website"
 msgstr "访问网站"
 
-#: src/contacts-contact-sheet.vala:374
+#: src/contacts-contact-sheet.vala:361
+msgid "Their birthday is today! 🎉"
+msgstr "今天是他的生日！🎉"
+
+#: src/contacts-contact-sheet.vala:402
 msgid "Show on the map"
 msgstr "在地图上显示"
 
 #: src/contacts-delete-operation.vala:34
 #, c-format
-#| msgid "Delete Contact"
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "正在删除 %d 个联系人"
@@ -583,7 +585,6 @@ msgstr "Zephyr"
 
 #: src/contacts-link-operation.vala:40
 #, c-format
-#| msgid "Link Contacts"
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "已链接 %d 个联系人"
