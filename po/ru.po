@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-12 22:54+0000\n"
-"PO-Revision-Date: 2022-01-14 16:34+0300\n"
+"POT-Creation-Date: 2022-01-19 12:28+0000\n"
+"PO-Revision-Date: 2022-01-19 16:42+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -52,7 +52,7 @@ msgstr ""
 "Приложение «Контакты» также  выполнит интеграцию с сетевой адресной книгой и "
 "автоматически свяжет контакты из различных сетевых источников."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:613
+#: data/org.gnome.Contacts.appdata.xml.in.in:635
 msgid "The GNOME Project"
 msgstr "Проект GNOME"
 
@@ -111,11 +111,11 @@ msgstr "Отменить"
 msgid "Done"
 msgstr "Готово"
 
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:70
 msgid "Take a Picture…"
 msgstr "Сделать фотоснимок…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:77
 msgid "Select a File…"
 msgstr "Выберите файл…"
 
@@ -204,7 +204,7 @@ msgstr "Отменить выделение"
 msgid "Loading"
 msgstr "Загрузка"
 
-#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:189
+#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:199
 msgid "_Cancel"
 msgstr "_Отменить"
 
@@ -321,28 +321,27 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "Контакт с адресом электронной почты %s не найден"
 
-#: src/contacts-avatar-selector.vala:101
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "Камера не найдена"
 
-#: src/contacts-avatar-selector.vala:135 src/contacts-avatar-selector.vala:141
-#: src/contacts-avatar-selector.vala:227
-msgid "Failed to set avatar."
-msgstr "Не удалось установить аватар."
-
-#: src/contacts-avatar-selector.vala:186
+#: src/contacts-avatar-selector.vala:196
 msgid "Browse for more pictures"
 msgstr "Найти дополнительные изображения"
 
-#: src/contacts-avatar-selector.vala:189
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "О_ткрыть"
 
-#: src/contacts-contact-editor.vala:56
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+msgid "Failed to set avatar."
+msgstr "Не удалось установить аватар."
+
+#: src/contacts-contact-editor.vala:57
 msgid "Change avatar"
 msgstr "Изменить аватар"
 
-#: src/contacts-contact-editor.vala:79
+#: src/contacts-contact-editor.vala:93
 msgid "Add name"
 msgstr "Добавить имя"
 
@@ -367,24 +366,29 @@ msgstr "Не удалось создать новые контакты: %s"
 msgid "Unable to find newly created contact"
 msgstr "Не удалось найти только что созданный контакт"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:228
 #, c-format
 msgid "Send an email to %s"
 msgstr "Отправить электронное письмо на %s"
 
-#: src/contacts-contact-sheet.vala:242
+#: src/contacts-contact-sheet.vala:257
 msgid "Start a call"
 msgstr "Позвонить"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:313
 msgid "Visit website"
 msgstr "Посетить веб-сайт"
 
-#: src/contacts-contact-sheet.vala:374
+#: src/contacts-contact-sheet.vala:361
+msgid "Their birthday is today! 🎉"
+msgstr "У них сегодня день рождения! 🎉"
+
+#: src/contacts-contact-sheet.vala:402
 msgid "Show on the map"
 msgstr "Показать на карте"
 
 #: src/contacts-delete-operation.vala:34
+#, c-format
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "Удаление %d контакта"
@@ -579,6 +583,7 @@ msgid "Zephyr"
 msgstr "Zephyr"
 
 #: src/contacts-link-operation.vala:40
+#, c-format
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "Связан %d контакт"
