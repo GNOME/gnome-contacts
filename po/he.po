@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-12 22:54+0000\n"
-"PO-Revision-Date: 2022-01-15 18:56+0200\n"
+"POT-Creation-Date: 2022-01-19 12:28+0000\n"
+"PO-Revision-Date: 2022-01-20 21:24+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -50,7 +50,7 @@ msgstr ""
 "אנשי קשר גם משולב עם פנקסי כתובות מקוונים ומקשר אנשי קשר באופן אוטומטי "
 "ממקורות מקוונים שונים."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:613
+#: data/org.gnome.Contacts.appdata.xml.in.in:635
 msgid "The GNOME Project"
 msgstr "מיזם GNOME"
 
@@ -95,7 +95,6 @@ msgid "Quit"
 msgstr "יציאה"
 
 #: data/ui/contacts-avatar-selector.ui:7
-#| msgid "Select a Contact"
 msgid "Select a new avatar"
 msgstr "בחירת תמונה אישית חדשה"
 
@@ -110,11 +109,11 @@ msgstr "ביטול"
 msgid "Done"
 msgstr "בוצע"
 
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:70
 msgid "Take a Picture…"
 msgstr "צילום תמונה…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:77
 msgid "Select a File…"
 msgstr "בחירת קובץ…"
 
@@ -196,7 +195,6 @@ msgid "Select Items"
 msgstr "בחירת פריטים"
 
 #: data/ui/contacts-main-window.ui:107
-#| msgid "Cancel selection"
 msgid "Cancel Selection"
 msgstr "ביטול הבחירה"
 
@@ -204,17 +202,15 @@ msgstr "ביטול הבחירה"
 msgid "Loading"
 msgstr "בטעינה"
 
-#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:189
+#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:199
 msgid "_Cancel"
 msgstr "_ביטול"
 
 #: data/ui/contacts-main-window.ui:206
-#| msgid "Link Contacts"
 msgid "Edit Contact"
 msgstr "עריכת איש קשר"
 
 #: data/ui/contacts-main-window.ui:213
-#| msgid "Deleted contact %s"
 msgid "Delete Contact"
 msgstr "מחיקת אישר קשר"
 
@@ -321,28 +317,27 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "לא נמצאו אנשי קשר עם כתובת הדוא״ל %s"
 
-#: src/contacts-avatar-selector.vala:101
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "לא אותרה מצלמה"
 
-#: src/contacts-avatar-selector.vala:135 src/contacts-avatar-selector.vala:141
-#: src/contacts-avatar-selector.vala:227
-msgid "Failed to set avatar."
-msgstr "ארע כשל בהגדרת תמונה אישית."
-
-#: src/contacts-avatar-selector.vala:186
+#: src/contacts-avatar-selector.vala:196
 msgid "Browse for more pictures"
 msgstr "עיון למציאות תמונות נוספות"
 
-#: src/contacts-avatar-selector.vala:189
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "_פתיחה"
 
-#: src/contacts-contact-editor.vala:56
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+msgid "Failed to set avatar."
+msgstr "ארע כשל בהגדרת תמונה אישית."
+
+#: src/contacts-contact-editor.vala:57
 msgid "Change avatar"
 msgstr "שינוי תמונה אישית"
 
-#: src/contacts-contact-editor.vala:79
+#: src/contacts-contact-editor.vala:93
 msgid "Add name"
 msgstr "הוספת שם"
 
@@ -367,28 +362,29 @@ msgstr "לא ניתן ליצור איש קשר חדש: %s"
 msgid "Unable to find newly created contact"
 msgstr "לא ניתן למצוא את איש הקשר שזה עתה נוצר"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:228
 #, c-format
 msgid "Send an email to %s"
 msgstr "שליחת דוא״ל אל %s"
 
-#: src/contacts-contact-sheet.vala:242
-#| msgid "Select what to call"
+#: src/contacts-contact-sheet.vala:257
 msgid "Start a call"
 msgstr "התחלת שיחה"
 
-#: src/contacts-contact-sheet.vala:296
-#| msgid "Website"
+#: src/contacts-contact-sheet.vala:313
 msgid "Visit website"
 msgstr "לבקר באתר האינטרנט"
 
-#: src/contacts-contact-sheet.vala:374
+#: src/contacts-contact-sheet.vala:361
+msgid "Their birthday is today! 🎉"
+msgstr "יום ההולדת שלהם הוא היום! 🎉"
+
+#: src/contacts-contact-sheet.vala:402
 msgid "Show on the map"
 msgstr "הצגה על המפה"
 
 #: src/contacts-delete-operation.vala:34
 #, c-format
-#| msgid "Deleted contact %s"
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "איש קשר אחד נמחק"
@@ -396,7 +392,6 @@ msgstr[1] "נמחקו %d אנשי קשר"
 msgstr[2] "שני אנשי קשר נמחקו"
 
 #: src/contacts-editor-persona.vala:82
-#| msgid "More"
 msgid "Show More"
 msgstr "להציג עוד"
 
@@ -462,7 +457,6 @@ msgid "Add email"
 msgstr "הוספת דואר אלקטרוני"
 
 #: src/contacts-editor-property.vala:502
-#| msgid "Phone number"
 msgid "Add phone number"
 msgstr "הוספת מספר טלפון"
 
@@ -585,7 +579,6 @@ msgstr "Zephyr"
 
 #: src/contacts-link-operation.vala:40
 #, c-format
-#| msgid "Link Contacts"
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "איש קשר אחד קושר"
@@ -715,7 +708,6 @@ msgid "TTY"
 msgstr "TTY"
 
 #: src/contacts-unlink-operation.vala:37
-#| msgid "Link Contacts"
 msgid "Unlinking contacts"
 msgstr "אנשי קשר לא מקושרים"
 
@@ -740,7 +732,6 @@ msgid "Email address"
 msgstr "כתובת דוא״ל"
 
 #: src/contacts-utils.vala:556
-#| msgid "Surname"
 msgid "Full name"
 msgstr "שם מלא"
 
@@ -753,12 +744,10 @@ msgid "Group"
 msgstr "קבוצה"
 
 #: src/contacts-utils.vala:559
-#| msgid "AOL Instant Messenger"
 msgid "Instant messaging"
 msgstr "הודעה מיידית"
 
 #: src/contacts-utils.vala:560
-#| msgid "Favorites"
 msgid "Favourite"
 msgstr "מועדף"
 
@@ -783,7 +772,6 @@ msgid "Role"
 msgstr "תפקיד"
 
 #: src/contacts-utils.vala:567
-#| msgid "Surname"
 msgid "Structured name"
 msgstr ""
 
