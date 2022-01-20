@@ -273,6 +273,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (im_details == null)
       return;
 
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var protocol in im_details.im_addresses.get_keys ()) {
       foreach (var id in im_details.im_addresses[protocol]) {
         if (!(persona is Tpf.Persona))
@@ -292,9 +293,11 @@ public class Contacts.ContactSheet : Gtk.Grid {
             }
           }
         });
-        this.attach_row (row);
+        rows.append (row);
       }
     }
+
+    this.attach_rows (rows);
 #endif
   }
 
@@ -303,6 +306,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (url_details == null)
       return;
 
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var url in url_details.urls) {
       if (url.value == "")
         continue;
@@ -322,8 +326,10 @@ public class Contacts.ContactSheet : Gtk.Grid {
                       Gdk.CURRENT_TIME);
       });
 
-      this.attach_row (row);
+      rows.append (row);
     }
+
+    this.attach_rows (rows);
   }
 
   // When the url doesn't contain a scheme we fallback to http
@@ -370,13 +376,16 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (note_details == null)
       return;
 
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var note in note_details.notes) {
       if (note.value == "")
         continue;
 
       var row = new ContactSheetRow (property, note.value);
-      this.attach_row (row);
+      rows.append (row);
     }
+
+    this.attach_rows (rows);
   }
 
   private void add_postal_addresses (Persona persona, string property) {
@@ -389,6 +398,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     var map_uris_supported = (appinfo != null);
     debug ("Opening 'maps:' URIs supported: %s", map_uris_supported.to_string ());
 
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var addr in addr_details.postal_addresses) {
       if (addr.value.is_empty ())
         continue;
@@ -411,7 +421,9 @@ public class Contacts.ContactSheet : Gtk.Grid {
         });
       }
 
-      this.attach_row (row);
+      rows.append (row);
     }
+
+    this.attach_rows (rows);
   }
 }
