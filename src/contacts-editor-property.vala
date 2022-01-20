@@ -187,6 +187,46 @@ public class Contacts.AddressEditor : Gtk.Box {
   }
 }
 
+public class Contacts.RoleEditor : Gtk.Box {
+
+  private Gtk.Entry role_entry;
+  private Gtk.Entry organisation_entry;
+
+  public signal void changed ();
+
+  construct {
+    this.add_css_class ("contacts-editor-role");
+    this.hexpand = true;
+    this.orientation = Gtk.Orientation.VERTICAL;
+
+    this.role_entry = new Gtk.Entry ();
+    this.role_entry.hexpand = true;
+    this.role_entry.placeholder_text = _("Role");
+    this.role_entry.add_css_class ("flat");
+    this.role_entry.changed.connect ((_) => { changed(); });
+    append (this.role_entry);
+
+    this.organisation_entry = new Gtk.Entry ();
+    this.organisation_entry.hexpand = true;
+    this.organisation_entry.placeholder_text = _("Organisation");
+    this.organisation_entry.add_css_class ("flat");
+    this.organisation_entry.changed.connect ((_) => { changed(); });
+    append (this.organisation_entry);
+  }
+
+  public RoleEditor (RoleFieldDetails details) {
+    details.value.bind_property ("title", this.role_entry, "text",
+                                 BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
+    details.value.bind_property ("organisation-name", this.organisation_entry, "text",
+                                 BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
+  }
+
+  public bool is_empty () {
+    return this.role_entry.get_text () != "" &&
+           this.organisation_entry.get_text () != "";
+  }
+}
+
 /**
  * Basic widget to show a single property of a contact (for example an email
  * address, a birthday, ...). It can show itself using a GtkRevealer animation.
@@ -458,6 +498,18 @@ public class Contacts.EditorProperty : Object, ListModel {
             this.rows.add (create_for_address (address_details.postal_addresses));
         }
         break;
+      case "roles":
+        unowned var role_details = p as RoleDetails;
+        if (role_details != null) {
+          if (!only_new) {
+            foreach (var role in role_details.roles) {
+              this.rows.add (create_for_role (role_details.roles, role));
+            }
+          }
+          if (this.writeable)
+            this.rows.add (create_for_role (role_details.roles));
+        }
+        break;
     }
   }
 
@@ -664,6 +716,30 @@ public class Contacts.EditorProperty : Object, ListModel {
       ((FakeHashSet) details_set).changed ();
       debug ("Address changed");
       box.is_empty = value_address.is_empty ();
+    });
+
+    box.sensitive = this.writeable;
+    return box;
+  }
+
+  private EditorPropertyRow create_for_role (Gee.Set<RoleFieldDetails> details_set,
+                                             RoleFieldDetails? details = null) {
+    if (details == null) {
+      var new_details = new RoleFieldDetails (new Role ());
+      details_set.add (new_details);
+      details = new_details;
+    }
+    var box = new EditorPropertyRow ("roles");
+
+    var role_editor = new RoleEditor (details);
+    box.set_main_widget (role_editor);
+    box.is_empty = role_editor.is_empty ();
+
+    role_editor.changed.connect (() => {
+      // Workaround: we shouldn't do a manual signal
+      ((FakeHashSet) details_set).changed ();
+      debug ("Role changed");
+      box.is_empty = role_editor.is_empty ();
     });
 
     box.sensitive = this.writeable;

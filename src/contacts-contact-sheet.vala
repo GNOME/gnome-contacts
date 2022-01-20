@@ -58,6 +58,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     "email-addresses",
     "phone-numbers",
     "im-addresses",
+    "roles",
     "urls",
     "nickname",
     "birthday",
@@ -203,10 +204,44 @@ public class Contacts.ContactSheet : Gtk.Grid {
       case "postal-addresses":
         add_postal_addresses (persona, property);
         break;
+      case "roles":
+        add_roles (persona, property);
+        break;
       default:
         debug ("Unsupported property: %s", property);
         break;
     }
+  }
+
+  private void add_roles (Persona persona, string property) {
+    unowned var details = persona as RoleDetails;
+    if (details == null)
+      return;
+
+    var roles = Utils.sort_fields<RoleFieldDetails>(details.roles);
+    var rows = new GLib.List<Gtk.ListBoxRow> ();
+    foreach (var role in roles) {
+      if (role.value.is_empty ())
+        continue;
+
+      var role_str = "";
+      // TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
+      if (role.value.title != "") {
+        if (role.value.organisation_name != "")
+          role_str = _("%s at %s").printf (role.value.title, role.value.organisation_name);
+        else
+          role_str = role.value.title;
+      } else {
+          role_str = role.value.organisation_name;
+      }
+
+      var row = new ContactSheetRow (property, role_str);
+
+      //XXX if no role: set "Organisation" tool tip
+      rows.append (row);
+    }
+
+    this.attach_rows (rows);
   }
 
   private void add_emails (Persona persona, string property) {

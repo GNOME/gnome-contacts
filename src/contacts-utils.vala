@@ -563,7 +563,7 @@ namespace Contacts.Utils {
     { "notes", N_("Note"), "note-symbolic" },
     { "phone-numbers", N_("Phone number"), "phone-symbolic" },
     { "postal-addresses", N_("Address"), "mark-location-symbolic" },
-    { "roles", N_("Role"), null },
+    { "roles", N_("Role"), "building-symbolic" },
     { "structured-name", N_("Structured name"), "avatar-default-symbolic" },
     { "urls", N_("Website"), "website-symbolic" },
     { "web-service-addresses", N_("Web service"), null },

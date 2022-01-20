@@ -31,6 +31,7 @@ public class Contacts.EditorPersona : Gtk.Box {
   };
   private const string[] OTHER_PROPERTIES = {
     "im-addresses",
+    "roles",
     "urls",
     "nickname",
     "birthday",

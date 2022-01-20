@@ -77,6 +77,7 @@ public class Contacts.FakePersona : Persona,
                                     NameDetails,
                                     NoteDetails,
                                     PhoneDetails,
+                                    RoleDetails,
                                     UrlDetails,
                                     PostalAddressDetails {
 
@@ -217,6 +218,24 @@ public class Contacts.FakePersona : Persona,
     }
     set {
       this.properties.set ("notes", value);
+    }
+  }
+
+  public Gee.Set<RoleFieldDetails> roles {
+    get {
+      unowned Value? value = this.properties.get ("roles");
+      if (value == null) {
+        var new_value = Value (typeof (Gee.Set));
+        var set = new FakeHashSet<RoleFieldDetails> ();
+        new_value.set_object (set);
+        set.changed.connect (() => { notify_property ("roles"); });
+        this.properties.set ("roles", new_value);
+        value = new_value;
+      }
+      return (Gee.Set<RoleFieldDetails>) value;
+    }
+    set {
+      this.properties.set ("roles", value);
     }
   }
 
@@ -363,7 +382,9 @@ public class Contacts.FakePersona : Persona,
         }
         break;
       case "roles":
-        //roles ((RoleDetails) persona).roles;
+        foreach (var role in ((RoleDetails) persona).roles) {
+          this.roles.add (new RoleFieldDetails (role.value, role.parameters));
+        }
         break;
       case "urls":
         foreach (var e in ((UrlDetails) persona).urls) {
@@ -481,7 +502,13 @@ public class Contacts.FakePersona : Persona,
         yield ((PostalAddressDetails) persona).change_postal_addresses (copy);
         break;
       case "roles":
-        yield ((RoleDetails) persona).change_roles ((Gee.Set<RoleFieldDetails>) new_value);
+        var original = (Gee.Set<RoleFieldDetails>) new_value;
+        var copy = new Gee.HashSet<RoleFieldDetails> ();
+        foreach (var e in original) {
+          if (e.value != null && !e.value.is_empty ())
+            copy.add (new RoleFieldDetails (e.value, e.parameters));
+        }
+        yield ((RoleDetails) persona).change_roles (copy);
         break;
       case "urls":
         var original = (Gee.Set<UrlFieldDetails>) new_value;
