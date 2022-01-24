@@ -4,24 +4,24 @@
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en http://www.trasno.net
 #
-# Fran Diéguez <frandieguez@gnome.org>, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012-2021.
+# Fran Diéguez <frandieguez@gnome.org>, 2011-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-12 18:56+0000\n"
-"PO-Revision-Date: 2022-01-12 22:37+0100\n"
-"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <Proxecto Trasno <proxecto@trasno.gal>>\n"
+"POT-Creation-Date: 2022-01-19 12:28+0000\n"
+"PO-Revision-Date: 2022-01-21 09:13+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
+"Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 41.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: gl\n"
 "X-DL-Module: gnome-contacts\n"
@@ -60,7 +60,7 @@ msgstr ""
 "Contactos tamén se integra con cadernos de enderezos en liña e liga "
 "automaticamente contactos de diferentes orixes en liña."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:613
+#: data/org.gnome.Contacts.appdata.xml.in.in:635
 msgid "The GNOME Project"
 msgstr "O Proxecto GNOME"
 
@@ -119,11 +119,11 @@ msgstr "Cancelar"
 msgid "Done"
 msgstr "Feito"
 
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:70
 msgid "Take a Picture…"
 msgstr "Sacar unha foto…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:77
 msgid "Select a File…"
 msgstr "Seleccionar un ficheiro…"
 
@@ -135,6 +135,10 @@ msgstr "Seleccionar un contacto"
 msgid "Change Addressbook"
 msgstr "Cambiar caderno de enderezos"
 
+#: data/ui/contacts-link-suggestion-grid.ui:51
+msgid "Link Contacts"
+msgstr "Ligar contactos"
+
 #: data/ui/contacts-linked-personas-dialog.ui:9
 msgid "Linked Accounts"
 msgstr "Contas ligadas"
@@ -142,10 +146,6 @@ msgstr "Contas ligadas"
 #: data/ui/contacts-linked-personas-dialog.ui:42
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "Pode ligar contactos seleccionándoos desde a lista de contactos"
-
-#: data/ui/contacts-link-suggestion-grid.ui:51
-msgid "Link Contacts"
-msgstr "Ligar contactos"
 
 #: data/ui/contacts-list-pane.ui:9
 msgid "Type to search"
@@ -212,7 +212,7 @@ msgstr "Cancelar selección"
 msgid "Loading"
 msgstr "Cargando"
 
-#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:189
+#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:199
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -328,28 +328,27 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "Non foi posíbel atopar o contacto co correo electrónico %s"
 
-#: src/contacts-avatar-selector.vala:101
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "Non se detectou unha cámara"
 
-#: src/contacts-avatar-selector.vala:135 src/contacts-avatar-selector.vala:141
-#: src/contacts-avatar-selector.vala:227
-msgid "Failed to set avatar."
-msgstr "Produciuse un fallo ao estabelecer un avatar."
-
-#: src/contacts-avatar-selector.vala:186
+#: src/contacts-avatar-selector.vala:196
 msgid "Browse for more pictures"
 msgstr "Buscar mais imaxes"
 
-#: src/contacts-avatar-selector.vala:189
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "_Abrir"
 
-#: src/contacts-contact-editor.vala:56
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+msgid "Failed to set avatar."
+msgstr "Produciuse un fallo ao estabelecer un avatar."
+
+#: src/contacts-contact-editor.vala:57
 msgid "Change avatar"
 msgstr "Cambiar avatar"
 
-#: src/contacts-contact-editor.vala:79
+#: src/contacts-contact-editor.vala:93
 msgid "Add name"
 msgstr "Engadir nome"
 
@@ -374,22 +373,39 @@ msgstr "Non foi posíbel crear os contactos novos: %s"
 msgid "Unable to find newly created contact"
 msgstr "Non foi posíbel atopar o contacto novo creado"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:228
 #, c-format
 msgid "Send an email to %s"
 msgstr "Enviar un correo electrónico a %s"
 
-#: src/contacts-contact-sheet.vala:242
+#: src/contacts-contact-sheet.vala:257
 msgid "Start a call"
 msgstr "Comezar unha chamada"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:313
 msgid "Visit website"
 msgstr "Visitar o sitio web"
 
-#: src/contacts-contact-sheet.vala:374
+#: src/contacts-contact-sheet.vala:361
+msgid "Their birthday is today! 🎉"
+msgstr "O teu cumpreanos é hoxe! 🎉"
+
+#: src/contacts-contact-sheet.vala:402
 msgid "Show on the map"
 msgstr "Mostrar no mapa"
+
+#: src/contacts-delete-operation.vala:34
+#, c-format
+#| msgid "Delete Contact"
+msgid "Deleting %d contact"
+msgid_plural "Deleting %d contacts"
+msgstr[0] "Eliminar %d contacto"
+msgstr[1] "Eliminar %d contactos"
+
+#: src/contacts-editor-persona.vala:82
+#| msgid "More"
+msgid "Show More"
+msgstr "Mostrar máis"
 
 #. Create grid and labels
 #: src/contacts-editor-property.vala:63
@@ -412,59 +428,59 @@ msgstr "Cambiar o aniversario"
 msgid "Set"
 msgstr "Estabelecer"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Street"
 msgstr "Rúa"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Extension"
 msgstr "Extensión"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "City"
 msgstr "Cidade"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "State/Province"
 msgstr "Estado/provincia"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Zip/Postal Code"
 msgstr "Zip/Código postal"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "PO box"
 msgstr "Apartado de correos"
 
-#: src/contacts-editor-property.vala:141
+#: src/contacts-editor-property.vala:146
 msgid "Country"
 msgstr "País"
 
-#: src/contacts-editor-property.vala:283 src/contacts-editor-property.vala:621
+#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
 msgid "Delete field"
 msgstr "Eliminar campo"
 
-#: src/contacts-editor-property.vala:326
+#: src/contacts-editor-property.vala:331
 msgid "Label"
 msgstr "Etiqueta"
 
-#: src/contacts-editor-property.vala:470
+#: src/contacts-editor-property.vala:475
 msgid "Add email"
 msgstr "Engadir correo-e"
 
-#: src/contacts-editor-property.vala:497
+#: src/contacts-editor-property.vala:502
 msgid "Add phone number"
 msgstr "Engadir un número de teléfono"
 
-#: src/contacts-editor-property.vala:525
+#: src/contacts-editor-property.vala:530
 msgid "https://example.com"
 msgstr "https://exemplo.gal"
 
-#: src/contacts-editor-property.vala:541 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Alcume"
 
-#: src/contacts-editor-property.vala:594 src/contacts-editor-property.vala:630
+#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
 msgid "Set Birthday"
 msgstr "Estabelecer o aniversario"
 
@@ -573,9 +589,13 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-linked-personas-dialog.vala:70
-msgid "Unlink"
-msgstr "Desligar"
+#: src/contacts-link-operation.vala:40
+#, c-format
+#| msgid "Link Contacts"
+msgid "Linked %d contact"
+msgid_plural "Linked %d contacts"
+msgstr[0] "%d contacto ligado"
+msgstr[1] "%d contactos ligados"
 
 #: src/contacts-link-suggestion-grid.vala:49
 #, c-format
@@ -586,6 +606,10 @@ msgstr "É esta a mesma persoa que %s desde %s?"
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "É a mesma persoa que %s?"
+
+#: src/contacts-linked-personas-dialog.vala:70
+msgid "Unlink"
+msgstr "Desligar"
 
 #: src/contacts-main-window.vala:156 src/contacts-main-window.vala:236
 #, c-format
@@ -693,6 +717,11 @@ msgstr "Télex"
 #: src/contacts-typeset.vala:245
 msgid "TTY"
 msgstr "TTY"
+
+#: src/contacts-unlink-operation.vala:37
+#| msgid "Link Contacts"
+msgid "Unlinking contacts"
+msgstr "Desligar contactos"
 
 #: src/contacts-utils.vala:551
 msgid "Alias"
@@ -1199,9 +1228,6 @@ msgstr "Está a xanela maximizada"
 
 #~ msgid "Manager"
 #~ msgstr "Director"
-
-#~ msgid "More"
-#~ msgstr "Máis"
 
 #~ msgctxt "link-button"
 #~ msgid "Link"
