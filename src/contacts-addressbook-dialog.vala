@@ -23,6 +23,7 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
 
   public AddressbookDialog (Store contacts_store, Gtk.Window? window) {
     Object(
+      modal: true,
       transient_for: window,
       title: _("Change Address Book"),
       use_header_bar: 1
