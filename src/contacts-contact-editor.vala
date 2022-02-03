@@ -97,7 +97,7 @@ public class Contacts.ContactEditor : Gtk.Box {
 
     this.name_entry.changed.connect (() => {
       foreach (var p in this.individual.personas) {
-        var name_p = p as NameDetails;
+        unowned var name_p = p as NameDetails;
         if (name_p != null) {
           name_p.full_name = this.name_entry.get_text ();
         }

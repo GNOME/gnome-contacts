@@ -170,15 +170,15 @@ public class Contacts.AddressEditor : Gtk.Box {
       append (this.entries[i]);
 
       var prop_name = AddressEditor.postal_element_props[i];
-      entries[i].changed.connect (() => {
-        details.value.set (prop_name, this.entries[i].text);
+      this.entries[i].changed.connect ((editable) => {
+        details.value.set (prop_name, editable.text);
         changed ();
       });
     }
   }
 
   public bool is_empty () {
-    foreach (var entry in entries) {
+    foreach (var entry in this.entries) {
       if (entry.get_text () != "") {
         return false;
       }
@@ -268,6 +268,7 @@ public class Contacts.EditorPropertyRow : Adw.Bin {
       unowned var icon_name = Utils.get_icon_name_for_property (this.ptype);
       if (icon_name != null) {
         var icon = new Gtk.Image.from_icon_name (icon_name);
+        icon.valign = Gtk.Align.START;
         icon.add_css_class ("contacts-property-icon");
         icon.tooltip_text = Utils.get_display_name_for_property (this.ptype);
         box.prepend (icon);
@@ -276,6 +277,7 @@ public class Contacts.EditorPropertyRow : Adw.Bin {
 
     // Set the actual widget
     // (mimic Adw.ActionRow's "activatable-widget")
+    widget.add_css_class ("contacts-editor-main-widget");
     box.append (widget);
     this.listbox.row_activated.connect ((activated_row) => {
       if (row == activated_row)
@@ -305,7 +307,7 @@ public class Contacts.EditorPropertyRow : Adw.Bin {
     entry.text = text;
     entry.placeholder_text = placeholder;
     entry.add_css_class ("flat");
-    entry.add_css_class ("contacts-editor-main-entry");
+
     // Set the icon as part of the GtkEntry, to avoid it being outside of the
     // margin
     unowned var icon_name = Utils.get_icon_name_for_property (this.ptype);

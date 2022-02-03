@@ -71,31 +71,29 @@ flowboxchild.circular {
 }
 
   .contacts-editor-property .contacts-property-icon,
-  .contacts-editor-property .contacts-editor-main-entry image {
-    margin: 12px;
+  .contacts-editor-property entry.contacts-editor-main-widget image {
+    margin: 12px 12px;
   }
 
-  .contacts-editor-property .contacts-editor-main-entry {
-    padding: 6px 6px 6px 0; /* left padding is for the icon */
+  .contacts-editor-property entry.contacts-editor-main-widget {
+    padding: 4px 6px 4px 0; /* left padding is for the icon */
+  }
+
+  .contacts-editor-property button.contacts-editor-main-widget {
+    padding: 10px 0;
   }
 
 /* Class for editing postal address */
-.contacts-editor-address entry {
-  border-radius: 0;
-  border-width: 1px 1px 0 1px;
-  padding: 6px 6px;
+.contacts-editor-address {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
-  .contacts-editor-address entry:first-child {
-    border-radius: 4px 4px 0 0;
+  .contacts-editor-address entry {
+    padding: 6px 3px;
   }
 
-  .contacts-editor-address entry:last-child {
-    border-radius: 0 0 4px 4px;
-    border-width: 1px;
-  }
-
-/* Widget to edit a birthday */
+/* Widget to edit a birthday (_not_ the row itself) */
 .contacts-editor-birthday {
   margin: 12px;
 }
