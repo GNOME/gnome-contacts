@@ -551,12 +551,12 @@ namespace Contacts.Utils {
     { "alias", N_("Alias"), null },
     { "avatar", N_("Avatar"), "emblem-photos-symbolic" },
     { "birthday", N_("Birthday"), "birthday-symbolic" },
-    { "calendar-event-id", N_("Calendar event"), "x-office-calendar-symbolic" },
+    { "calendar-event-id", N_("Calendar event"), "calendar-symbolic" },
     { "email-addresses", N_("Email address"), "mail-unread-symbolic" },
     { "full-name", N_("Full name"), null },
     { "gender", N_("Gender"), null },
     { "groups", N_("Group"), null },
-    { "im-addresses", N_("Instant messaging"), "user-available-symbolic" },
+    { "im-addresses", N_("Instant messaging"), "chat-symbolic" },
     { "is-favourite", N_("Favourite"), "emblem-favorite-symbolic" },
     { "local-ids", N_("Local ID"), null },
     { "nickname", N_("Nickname"), "avatar-default-symbolic" },
@@ -565,7 +565,7 @@ namespace Contacts.Utils {
     { "postal-addresses", N_("Address"), "mark-location-symbolic" },
     { "roles", N_("Role"), null },
     { "structured-name", N_("Structured name"), "avatar-default-symbolic" },
-    { "urls", N_("Website"), "web-browser-symbolic" },
+    { "urls", N_("Website"), "website-symbolic" },
     { "web-service-addresses", N_("Web service"), null },
   };
 
