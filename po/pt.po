@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-19 12:28+0000\n"
-"PO-Revision-Date: 2022-01-19 15:53+0000\n"
+"POT-Creation-Date: 2022-02-08 12:50+0000\n"
+"PO-Revision-Date: 2022-02-08 13:05+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -104,7 +104,7 @@ msgid "Select a new avatar"
 msgstr "Selecionar um novo avatar"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
 #: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "Cancelar"
@@ -254,15 +254,15 @@ msgstr ""
 msgid "Local Address Book"
 msgstr "Livro de endereços local"
 
-#: src/contacts-addressbook-dialog.vala:27
+#: src/contacts-addressbook-dialog.vala:28
 msgid "Change Address Book"
 msgstr "Alterar o livro de endereços"
 
-#: src/contacts-addressbook-dialog.vala:31
+#: src/contacts-addressbook-dialog.vala:32
 msgid "Change"
 msgstr "Alterar"
 
-#: src/contacts-addressbook-dialog.vala:58
+#: src/contacts-addressbook-dialog.vala:59
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -369,24 +369,29 @@ msgstr "Impossível criar novos contactos: %s"
 msgid "Unable to find newly created contact"
 msgstr "Impossível encontrar contacto criado recentemente"
 
-#: src/contacts-contact-sheet.vala:228
+#: src/contacts-contact-sheet.vala:231
+#, c-format
+msgid "%s at %s"
+msgstr "%s em %s"
+
+#: src/contacts-contact-sheet.vala:263
 #, c-format
 msgid "Send an email to %s"
 msgstr "Enviar um e-mail para %s"
 
-#: src/contacts-contact-sheet.vala:257
+#: src/contacts-contact-sheet.vala:292
 msgid "Start a call"
 msgstr "Iniciar uma chamada"
 
-#: src/contacts-contact-sheet.vala:313
+#: src/contacts-contact-sheet.vala:352
 msgid "Visit website"
 msgstr "Visitar website"
 
-#: src/contacts-contact-sheet.vala:361
+#: src/contacts-contact-sheet.vala:402
 msgid "Their birthday is today! 🎉"
 msgstr "O seu aniversário é hoje! 🎉"
 
-#: src/contacts-contact-sheet.vala:402
+#: src/contacts-contact-sheet.vala:447
 msgid "Show on the map"
 msgstr "Mostrar no mapa"
 
@@ -397,7 +402,7 @@ msgid_plural "Deleting %d contacts"
 msgstr[0] "A eliminar %d contacto"
 msgstr[1] "A eliminar %d contactos"
 
-#: src/contacts-editor-persona.vala:82
+#: src/contacts-editor-persona.vala:83
 msgid "Show More"
 msgstr "Mostrar mais"
 
@@ -450,31 +455,39 @@ msgstr "Código postal"
 msgid "Country"
 msgstr "País"
 
-#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
+#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:566
+msgid "Role"
+msgstr "Cargo"
+
+#: src/contacts-editor-property.vala:211
+msgid "Organisation"
+msgstr "Organização"
+
+#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
 msgid "Delete field"
 msgstr "Eliminar campo"
 
-#: src/contacts-editor-property.vala:331
+#: src/contacts-editor-property.vala:373
 msgid "Label"
 msgstr "Rótulo"
 
-#: src/contacts-editor-property.vala:475
+#: src/contacts-editor-property.vala:529
 msgid "Add email"
 msgstr "Adicionar correio eletrónico"
 
-#: src/contacts-editor-property.vala:502
+#: src/contacts-editor-property.vala:556
 msgid "Add phone number"
 msgstr "Adicionar número de telefone"
 
-#: src/contacts-editor-property.vala:530
+#: src/contacts-editor-property.vala:584
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Alcunha"
 
-#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
+#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
 msgid "Set Birthday"
 msgstr "Definir data de nascimento"
 
@@ -770,10 +783,6 @@ msgstr "Número de telefone"
 #: src/contacts-utils.vala:565
 msgid "Address"
 msgstr "Endereço"
-
-#: src/contacts-utils.vala:566
-msgid "Role"
-msgstr "Cargo"
 
 #: src/contacts-utils.vala:567
 msgid "Structured name"
