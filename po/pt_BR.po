@@ -7,7 +7,7 @@
 # Fábio Nogueira <fnogueira@gnome.org>, 2012.
 # Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2013.
 # Felipe Braga <fbobraga@gmail.com>, 2015.
-# Enrico Nicoletto <liverig@gmail.com>, 2011, 2013, 2014, 2018.
+# Enrico Nicoletto <liverig@gmail.com>, 2011, 2013, 2014, 2018, 2022.
 # Bruno Lopes da Silva <brunolopesbldsb@gmail.com>, 2018.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2013-2021.
 # Leônidas Araújo <leorusvellt@hotmail.com>, 2022.
@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-20 22:41+0000\n"
-"PO-Revision-Date: 2022-01-12 09:07-0500\n"
+"POT-Creation-Date: 2022-02-08 13:09+0000\n"
+"PO-Revision-Date: 2022-02-10 17:13-0300\n"
 "Last-Translator: Leônidas Araújo <leorusvellt@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: pt_BR\n"
 "X-DL-Module: gnome-contacts\n"
@@ -114,7 +114,7 @@ msgid "Select a new avatar"
 msgstr "Selecionar um novo avatar"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
 #: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "Cancelar"
@@ -266,15 +266,15 @@ msgstr ""
 msgid "Local Address Book"
 msgstr "Catálogo de endereços local"
 
-#: src/contacts-addressbook-dialog.vala:27
+#: src/contacts-addressbook-dialog.vala:28
 msgid "Change Address Book"
 msgstr "Mudar catálogo de endereços"
 
-#: src/contacts-addressbook-dialog.vala:31
+#: src/contacts-addressbook-dialog.vala:32
 msgid "Change"
 msgstr "Alterar"
 
-#: src/contacts-addressbook-dialog.vala:58
+#: src/contacts-addressbook-dialog.vala:59
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -382,24 +382,29 @@ msgstr "Não foi possível criar novos contatos: %s"
 msgid "Unable to find newly created contact"
 msgstr "Não foi possível localizar o contato recém-criado"
 
-#: src/contacts-contact-sheet.vala:228
+#: src/contacts-contact-sheet.vala:231
+#, c-format
+msgid "%s at %s"
+msgstr "%s em %s"
+
+#: src/contacts-contact-sheet.vala:263
 #, c-format
 msgid "Send an email to %s"
 msgstr "Enviar um e-mail para %s"
 
-#: src/contacts-contact-sheet.vala:257
+#: src/contacts-contact-sheet.vala:292
 msgid "Start a call"
 msgstr "Iniciar uma chamada"
 
-#: src/contacts-contact-sheet.vala:317
+#: src/contacts-contact-sheet.vala:352
 msgid "Visit website"
 msgstr "Visitar o site"
 
-#: src/contacts-contact-sheet.vala:367
+#: src/contacts-contact-sheet.vala:402
 msgid "Their birthday is today! 🎉"
 msgstr "Seu aniversário é hoje! 🎉"
 
-#: src/contacts-contact-sheet.vala:412
+#: src/contacts-contact-sheet.vala:447
 msgid "Show on the map"
 msgstr "Mostra no mapa"
 
@@ -410,7 +415,7 @@ msgid_plural "Deleting %d contacts"
 msgstr[0] "Excluindo %d contato"
 msgstr[1] "Excluindo %d contatos"
 
-#: src/contacts-editor-persona.vala:82
+#: src/contacts-editor-persona.vala:83
 msgid "Show More"
 msgstr "Mostrar mais"
 
@@ -463,31 +468,39 @@ msgstr "Caixa postal"
 msgid "Country"
 msgstr "País"
 
-#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
+#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:566
+msgid "Role"
+msgstr "Função"
+
+#: src/contacts-editor-property.vala:211
+msgid "Organisation"
+msgstr "Organização"
+
+#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
 msgid "Delete field"
 msgstr "Excluir campo"
 
-#: src/contacts-editor-property.vala:331
+#: src/contacts-editor-property.vala:373
 msgid "Label"
 msgstr "Etiqueta"
 
-#: src/contacts-editor-property.vala:475
+#: src/contacts-editor-property.vala:529
 msgid "Add email"
 msgstr "Adicionar e-mail"
 
-#: src/contacts-editor-property.vala:502
+#: src/contacts-editor-property.vala:556
 msgid "Add phone number"
 msgstr "Adicionar número de telefone"
 
-#: src/contacts-editor-property.vala:530
+#: src/contacts-editor-property.vala:584
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Apelido"
 
-#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
+#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
 msgid "Set Birthday"
 msgstr "Definir data de aniversário"
 
@@ -784,10 +797,6 @@ msgstr "Número de telefone"
 msgid "Address"
 msgstr "Endereço"
 
-#: src/contacts-utils.vala:566
-msgid "Role"
-msgstr "Função"
-
 #: src/contacts-utils.vala:567
 msgid "Structured name"
 msgstr "Nome estruturado"
@@ -858,332 +867,3 @@ msgstr "Armazena se a janela está atualmente maximizada."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "A janela está em tela cheia?"
-
-#~ msgid "Take Another…"
-#~ msgstr "Tirar outra…"
-
-#~ msgid "Share"
-#~ msgstr "Compartilhar"
-
-#~ msgid "Edit"
-#~ msgstr "Editar"
-
-#~ msgid "Delete"
-#~ msgstr "Excluir"
-
-#~ msgid "Add contact"
-#~ msgstr "Adicionar contato"
-
-#~ msgid "Back"
-#~ msgstr "Voltar"
-
-#~ msgid "Main Menu"
-#~ msgstr "Menu principal"
-
-#~ msgid "Cancel setup and quit"
-#~ msgstr "Cancelar configuração e sair"
-
-#~ msgid "Setup complete"
-#~ msgstr "Configuração completa"
-
-#~ msgid "GNOME Contacts"
-#~ msgstr "Contatos do GNOME"
-
-#~ msgid "Unable to take photo."
-#~ msgstr "Não foi possível tirar a foto."
-
-#~ msgid "Add number"
-#~ msgstr "Adicionar número"
-
-#~ msgid "Contacts unlinked"
-#~ msgstr "Contatos desvinculados"
-
-#~ msgid "%d contacts linked"
-#~ msgid_plural "%d contacts linked"
-#~ msgstr[0] "%d contato vinculado"
-#~ msgstr[1] "%d contatos vinculados"
-
-#~ msgid "%d contact deleted"
-#~ msgid_plural "%d contacts deleted"
-#~ msgstr[0] "%d contato excluído"
-#~ msgstr[1] "%d contatos excluídos"
-
-#~ msgid "%s linked to %s"
-#~ msgstr "%s com vínculo para %s"
-
-#~ msgid "%s linked to the contact"
-#~ msgstr "%s vinculado ao contato"
-
-#~ msgid "Google Circles"
-#~ msgstr "Círculo do Google"
-
-#~ msgid "Add"
-#~ msgstr "Adicionar"
-
-#~ msgid "Home email"
-#~ msgstr "E-mail particular"
-
-#~ msgid "Work email"
-#~ msgstr "E-mail comercial"
-
-#~ msgid "Mobile phone"
-#~ msgstr "Telefone celular"
-
-#~ msgid "Home phone"
-#~ msgstr "Telefone residencial"
-
-#~ msgid "Work phone"
-#~ msgstr "Telefone comercial"
-
-#~ msgid "Work address"
-#~ msgstr "Endereço comercial"
-
-#~ msgid "Notes"
-#~ msgstr "Notas"
-
-#~ msgid "New Detail"
-#~ msgstr "Novo detalhe"
-
-#~ msgid "Remove Contact"
-#~ msgstr "Remover contato"
-
-#~ msgid "Edit details"
-#~ msgstr "Editar detalhes"
-
-#~ msgid "You need to enter some data"
-#~ msgstr "Você precisa digitar algum dado"
-
-#~ msgid "Unexpected internal error: created contact was not found"
-#~ msgstr "Erro interno inesperado: contato criado não foi encontrado"
-
-#~ msgid "org.gnome.Contacts"
-#~ msgstr "org.gnome.Contacts"
-
-#~ msgid "Quit"
-#~ msgstr "Sair"
-
-#~ msgid "_Help"
-#~ msgstr "_Ajuda"
-
-#~ msgid "_About"
-#~ msgstr "_Sobre"
-
-#~ msgid "Online Accounts Settings"
-#~ msgstr "Configurações de contas on-line"
-
-#~ msgid "Select"
-#~ msgstr "Selecionar"
-
-#~ msgid ""
-#~ "New contacts will be added to the selected address book. You are able to "
-#~ "view and edit contacts from other address books."
-#~ msgstr ""
-#~ "Novos contatos serão adicionados ao catálogo de endereço selecionado. "
-#~ "Você será capaz de ver e editar contatos de outros catálogos de endereços."
-
-#~ msgid "Selection mode"
-#~ msgstr "Modo de seleção"
-
-#~ msgid "Select Address Book"
-#~ msgstr "Selecionar catálogo de endereços"
-
-#~ msgid "Install GNOME Maps to open location."
-#~ msgstr "Instale o GNOME Mapas para abrir um local."
-
-#~ msgid "— contact management"
-#~ msgstr "— gerenciamento de contato"
-
-#~ msgid "Does %s from %s belong here?"
-#~ msgstr "%s de %s é daqui?"
-
-#~ msgid "Do these details belong to %s?"
-#~ msgstr "Estes detalhes pertencem a %s?"
-
-#~ msgid "Yes"
-#~ msgstr "Sim"
-
-#~ msgid "No"
-#~ msgstr "Não"
-
-#~ msgid "%s"
-#~ msgstr "%s"
-
-#~ msgid "No results matched search"
-#~ msgstr "Nenhum resultado correspondeu à pesquisa"
-
-#~ msgid "Suggestions"
-#~ msgstr "Sugestões"
-
-#~ msgid "Other Contacts"
-#~ msgstr "Outros contatos"
-
-#~ msgid "Contact deleted: “%s”"
-#~ msgstr "Contato apagado: “%s”"
-
-#~ msgid "View subset"
-#~ msgstr "Ver subconjunto"
-
-#~ msgid "View contacts subset"
-#~ msgstr "Ver subconjunto de contatos"
-
-#~| msgid "friends;address book;"
-#~ msgid "x-office-address-book"
-#~ msgstr "x-office-address-book"
-
-#~ msgid "January"
-#~ msgstr "Janeiro"
-
-#~ msgid "February"
-#~ msgstr "Fevereiro"
-
-#~ msgid "April"
-#~ msgstr "Abril"
-
-#~ msgid "June"
-#~ msgstr "Junho"
-
-#~ msgid "July"
-#~ msgstr "Julho"
-
-#~ msgid "August"
-#~ msgstr "Agosto"
-
-#~ msgid "September"
-#~ msgstr "Setembro"
-
-#~ msgid "October"
-#~ msgstr "Outubro"
-
-#~ msgid "November"
-#~ msgstr "Novembro"
-
-#~ msgid "December"
-#~ msgstr "Dezembro"
-
-#~ msgid "_Change Address Book..."
-#~ msgstr "Alterar _catálogo de endereços..."
-
-#~ msgid "Personal email"
-#~ msgstr "E-mail pessoal"
-
-#~ msgid "Google Other Contact"
-#~ msgstr "Outro contato do Google"
-
-#~ msgid ""
-#~ "Add or \n"
-#~ "select a picture"
-#~ msgstr ""
-#~ "Adicionar ou \n"
-#~ "selecionar uma figura"
-
-#~ msgid "Contact Name"
-#~ msgstr "Nome do contato"
-
-#~ msgid "Email"
-#~ msgstr "E-mail"
-
-#~ msgid "Phone"
-#~ msgstr "Telefone"
-
-#~ msgid "You must specify a contact name"
-#~ msgstr "Você deve especificar um nome do contato"
-
-#~ msgid "Please select your primary contacts account"
-#~ msgstr "Por favor, selecione sua conta primária de contatos"
-
-#~ msgid "Twitter"
-#~ msgstr "Twitter"
-
-#~ msgid "Google Profile"
-#~ msgstr "Perfil do Google"
-
-#~ msgid "Primary Contacts Account"
-#~ msgstr "Conta primária de contatos"
-
-#~ msgid "Close"
-#~ msgstr "Fechar"
-
-#~ msgid "%s - Linked Accounts"
-#~ msgstr "%s - contas vinculadas"
-
-#~ msgid "View"
-#~ msgstr "Ver"
-
-#~ msgid "Add an Online Account"
-#~ msgstr "Adicionar uma conta on-line"
-
-#~ msgid "Keep contacts on this computer only"
-#~ msgstr "Manter contatos apenas neste computador"
-
-#~ msgid "New"
-#~ msgstr "Novo"
-
-#~ msgid ""
-#~ "Welcome to Contacts! Please select where you want to keep your address "
-#~ "book:"
-#~ msgstr ""
-#~ "Bem vindo ao Contatos! Por favor, selecione onde você quer manter seu "
-#~ "catálogo de endereço:"
-
-#~ msgid "Setup an online account or use a local address book"
-#~ msgstr "Configure uma conta online para usar um catálogo de endereços local"
-
-#~ msgid "Use Local Address Book"
-#~ msgstr "Usar um catálogo de endereços local"
-
-#~ msgctxt "Addresses on the Web"
-#~ msgid "Links"
-#~ msgstr "Vínculos"
-
-#~ msgctxt "Web address"
-#~ msgid "Link"
-#~ msgstr "Vínculo"
-
-#~ msgid "Chat"
-#~ msgstr "Chat"
-
-#~ msgid "Addresses"
-#~ msgstr "Endereços"
-
-#~ msgid "Add to My Contacts"
-#~ msgstr "Adicionar aos meus contatos"
-
-#~ msgid "Select detail to add to %s"
-#~ msgstr "Selecionar o detalhe adicionado a %s"
-
-#~ msgid "Add/Remove Linked Contacts..."
-#~ msgstr "Adicionar/remover contatos vinculados..."
-
-#~ msgctxt "contacts link action"
-#~ msgid "Link"
-#~ msgstr "Link"
-
-#~ msgid "Custom..."
-#~ msgstr "Personalizado..."
-
-#~ msgid "Unknown status"
-#~ msgstr "Status desconhecido"
-
-#~ msgid "Offline"
-#~ msgstr "Desconectado"
-
-#~ msgid "Error"
-#~ msgstr "Erro"
-
-#~ msgid "Available"
-#~ msgstr "Disponível"
-
-#~ msgid "Away"
-#~ msgstr "Ausente"
-
-#~ msgid "Extended away"
-#~ msgstr "Indisponível"
-
-#~ msgid "Busy"
-#~ msgstr "Ocupado"
-
-#~ msgid "Hidden"
-#~ msgstr "Invisível"
-
-#~ msgid "<span weight='bold'>Link contacts to %s</span>"
-#~ msgstr "<span weight='bold'>Vincular contatos para %s</span>"
