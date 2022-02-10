@@ -15,16 +15,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 40\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-19 12:28+0000\n"
-"PO-Revision-Date: 2022-01-19 10:30-0500\n"
+"POT-Creation-Date: 2022-02-08 12:50+0000\n"
+"PO-Revision-Date: 2022-02-09 18:16+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 41.0\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:154
@@ -103,7 +103,7 @@ msgid "Select a new avatar"
 msgstr "选择新头像"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
 #: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "取消"
@@ -252,15 +252,15 @@ msgstr ""
 msgid "Local Address Book"
 msgstr "本地地址簿"
 
-#: src/contacts-addressbook-dialog.vala:27
+#: src/contacts-addressbook-dialog.vala:28
 msgid "Change Address Book"
 msgstr "修改地址簿"
 
-#: src/contacts-addressbook-dialog.vala:31
+#: src/contacts-addressbook-dialog.vala:32
 msgid "Change"
 msgstr "修改"
 
-#: src/contacts-addressbook-dialog.vala:58
+#: src/contacts-addressbook-dialog.vala:59
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -370,24 +370,29 @@ msgstr "无法新建联系人：%s"
 msgid "Unable to find newly created contact"
 msgstr "无法找到新建的联系人"
 
-#: src/contacts-contact-sheet.vala:228
+#: src/contacts-contact-sheet.vala:231
+#, c-format
+msgid "%s at %s"
+msgstr "%s 于 %s"
+
+#: src/contacts-contact-sheet.vala:263
 #, c-format
 msgid "Send an email to %s"
 msgstr "给 %s 发送邮件"
 
-#: src/contacts-contact-sheet.vala:257
+#: src/contacts-contact-sheet.vala:292
 msgid "Start a call"
 msgstr "开始呼叫"
 
-#: src/contacts-contact-sheet.vala:313
+#: src/contacts-contact-sheet.vala:352
 msgid "Visit website"
 msgstr "访问网站"
 
-#: src/contacts-contact-sheet.vala:361
+#: src/contacts-contact-sheet.vala:402
 msgid "Their birthday is today! 🎉"
 msgstr "今天是他的生日！🎉"
 
-#: src/contacts-contact-sheet.vala:402
+#: src/contacts-contact-sheet.vala:447
 msgid "Show on the map"
 msgstr "在地图上显示"
 
@@ -397,7 +402,7 @@ msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "正在删除 %d 个联系人"
 
-#: src/contacts-editor-persona.vala:82
+#: src/contacts-editor-persona.vala:83
 msgid "Show More"
 msgstr "显示更多"
 
@@ -450,31 +455,39 @@ msgstr "邮政信箱"
 msgid "Country"
 msgstr "国家"
 
-#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
+#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:566
+msgid "Role"
+msgstr "角色"
+
+#: src/contacts-editor-property.vala:211
+msgid "Organisation"
+msgstr "组织"
+
+#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
 msgid "Delete field"
 msgstr "删除字段"
 
-#: src/contacts-editor-property.vala:331
+#: src/contacts-editor-property.vala:373
 msgid "Label"
 msgstr "标签"
 
-#: src/contacts-editor-property.vala:475
+#: src/contacts-editor-property.vala:529
 msgid "Add email"
 msgstr "添加电子邮箱"
 
-#: src/contacts-editor-property.vala:502
+#: src/contacts-editor-property.vala:556
 msgid "Add phone number"
 msgstr "添加电话号码"
 
-#: src/contacts-editor-property.vala:530
+#: src/contacts-editor-property.vala:584
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "昵称"
 
-#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
+#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
 msgid "Set Birthday"
 msgstr "设置生日"
 
@@ -768,10 +781,6 @@ msgstr "电话号码"
 #: src/contacts-utils.vala:565
 msgid "Address"
 msgstr "地址"
-
-#: src/contacts-utils.vala:566
-msgid "Role"
-msgstr "角色"
 
 #: src/contacts-utils.vala:567
 msgid "Structured name"
