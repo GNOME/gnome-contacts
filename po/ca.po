@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-19 17:38+0000\n"
-"PO-Revision-Date: 2022-01-20 11:27+0100\n"
-"Last-Translator: Joan Mas Lloret <joan.mas.lloret@gmail.com>\n"
+"POT-Creation-Date: 2022-02-08 12:50+0000\n"
+"PO-Revision-Date: 2022-02-12 18:16+0100\n"
+"Last-Translator: maite guix <maite.guix@me.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:154
@@ -102,7 +102,7 @@ msgid "Select a new avatar"
 msgstr "Seleccioneu un avatar nou"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
 #: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -252,15 +252,15 @@ msgstr ""
 msgid "Local Address Book"
 msgstr "Llibreta d'adreces local"
 
-#: src/contacts-addressbook-dialog.vala:27
+#: src/contacts-addressbook-dialog.vala:28
 msgid "Change Address Book"
 msgstr "Canvia la llibreta d'adreces"
 
-#: src/contacts-addressbook-dialog.vala:31
+#: src/contacts-addressbook-dialog.vala:32
 msgid "Change"
 msgstr "Canvia"
 
-#: src/contacts-addressbook-dialog.vala:58
+#: src/contacts-addressbook-dialog.vala:59
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -367,34 +367,40 @@ msgstr "No es poden crear contactes nous: %s"
 msgid "Unable to find newly created contact"
 msgstr "No s'ha pogut trobar el contacte que s'acaba de crear"
 
-#: src/contacts-contact-sheet.vala:228
+#: src/contacts-contact-sheet.vala:231
+#, c-format
+msgid "%s at %s"
+msgstr "%s a %s"
+
+#: src/contacts-contact-sheet.vala:263
 #, c-format
 msgid "Send an email to %s"
 msgstr "Envia un correu electrònic a %s"
 
-#: src/contacts-contact-sheet.vala:257
+#: src/contacts-contact-sheet.vala:292
 msgid "Start a call"
 msgstr "Comença una trucada"
 
-#: src/contacts-contact-sheet.vala:313
+#: src/contacts-contact-sheet.vala:352
 msgid "Visit website"
 msgstr "Visita el web"
 
-#: src/contacts-contact-sheet.vala:361
+#: src/contacts-contact-sheet.vala:402
 msgid "Their birthday is today! 🎉"
 msgstr "Avui és el seu aniversari! 🎉"
 
-#: src/contacts-contact-sheet.vala:402
+#: src/contacts-contact-sheet.vala:447
 msgid "Show on the map"
 msgstr "Mostra-ho al mapa"
 
 #: src/contacts-delete-operation.vala:34
+#, c-format
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "S'està suprimint %d contacte"
 msgstr[1] "S'estan suprimint %d contactes"
 
-#: src/contacts-editor-persona.vala:82
+#: src/contacts-editor-persona.vala:83
 msgid "Show More"
 msgstr "Mostra'n més"
 
@@ -447,31 +453,39 @@ msgstr "Apartat de correus"
 msgid "Country"
 msgstr "País"
 
-#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
+#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:566
+msgid "Role"
+msgstr "Càrrec"
+
+#: src/contacts-editor-property.vala:211
+msgid "Organisation"
+msgstr "Organització"
+
+#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
 msgid "Delete field"
 msgstr "Suprimeix el camp"
 
-#: src/contacts-editor-property.vala:331
+#: src/contacts-editor-property.vala:373
 msgid "Label"
 msgstr "Etiqueta"
 
-#: src/contacts-editor-property.vala:475
+#: src/contacts-editor-property.vala:529
 msgid "Add email"
 msgstr "Afegeix un correu electrònic"
 
-#: src/contacts-editor-property.vala:502
+#: src/contacts-editor-property.vala:556
 msgid "Add phone number"
 msgstr "Afegeix un número de telèfon"
 
-#: src/contacts-editor-property.vala:530
+#: src/contacts-editor-property.vala:584
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Àlies"
 
-#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
+#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
 msgid "Set Birthday"
 msgstr "Estableix aniversari"
 
@@ -581,6 +595,7 @@ msgid "Zephyr"
 msgstr "Zephyr"
 
 #: src/contacts-link-operation.vala:40
+#, c-format
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "S'ha enllaçat %d contacte"
@@ -767,17 +782,13 @@ msgstr "Número de telèfon"
 msgid "Address"
 msgstr "Adreça"
 
-#: src/contacts-utils.vala:566
-msgid "Role"
-msgstr "Càrrec"
-
 #: src/contacts-utils.vala:567
 msgid "Structured name"
 msgstr "Nom estructurat"
 
 #: src/contacts-utils.vala:568
 msgid "Website"
-msgstr "Pàgina web"
+msgstr "Pàgina web"
 
 #: src/contacts-utils.vala:569
 msgid "Web service"
@@ -839,7 +850,7 @@ msgstr "Emmagatzema si x la finestra està actualment maximitzada."
 
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
-msgstr "Està la finestra maximitzada?"
+msgstr "És la finestra maximitzada"
 
 #~ msgid "Take Another…"
 #~ msgstr "Fes una altra…"
