@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-19 12:28+0000\n"
-"PO-Revision-Date: 2022-01-19 16:42+0300\n"
+"POT-Creation-Date: 2022-02-08 12:50+0000\n"
+"PO-Revision-Date: 2022-02-08 19:59+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -101,7 +101,7 @@ msgid "Select a new avatar"
 msgstr "Выбрать новый аватар"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
 #: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "Отменить"
@@ -251,15 +251,15 @@ msgstr ""
 msgid "Local Address Book"
 msgstr "Локальная адресная книга"
 
-#: src/contacts-addressbook-dialog.vala:27
+#: src/contacts-addressbook-dialog.vala:28
 msgid "Change Address Book"
 msgstr "Изменить адресную книгу"
 
-#: src/contacts-addressbook-dialog.vala:31
+#: src/contacts-addressbook-dialog.vala:32
 msgid "Change"
 msgstr "Изменить"
 
-#: src/contacts-addressbook-dialog.vala:58
+#: src/contacts-addressbook-dialog.vala:59
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -366,24 +366,29 @@ msgstr "Не удалось создать новые контакты: %s"
 msgid "Unable to find newly created contact"
 msgstr "Не удалось найти только что созданный контакт"
 
-#: src/contacts-contact-sheet.vala:228
+#: src/contacts-contact-sheet.vala:231
+#, c-format
+msgid "%s at %s"
+msgstr "%s в %s"
+
+#: src/contacts-contact-sheet.vala:263
 #, c-format
 msgid "Send an email to %s"
 msgstr "Отправить электронное письмо на %s"
 
-#: src/contacts-contact-sheet.vala:257
+#: src/contacts-contact-sheet.vala:292
 msgid "Start a call"
 msgstr "Позвонить"
 
-#: src/contacts-contact-sheet.vala:313
+#: src/contacts-contact-sheet.vala:352
 msgid "Visit website"
 msgstr "Посетить веб-сайт"
 
-#: src/contacts-contact-sheet.vala:361
+#: src/contacts-contact-sheet.vala:402
 msgid "Their birthday is today! 🎉"
 msgstr "У них сегодня день рождения! 🎉"
 
-#: src/contacts-contact-sheet.vala:402
+#: src/contacts-contact-sheet.vala:447
 msgid "Show on the map"
 msgstr "Показать на карте"
 
@@ -395,7 +400,7 @@ msgstr[0] "Удаление %d контакта"
 msgstr[1] "Удаление %d контактов"
 msgstr[2] "Удаление %d контактов"
 
-#: src/contacts-editor-persona.vala:82
+#: src/contacts-editor-persona.vala:83
 msgid "Show More"
 msgstr "Показать больше"
 
@@ -448,31 +453,39 @@ msgstr "Почтовый ящик"
 msgid "Country"
 msgstr "Страна"
 
-#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
+#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:566
+msgid "Role"
+msgstr "Роль"
+
+#: src/contacts-editor-property.vala:211
+msgid "Organisation"
+msgstr "Организация"
+
+#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
 msgid "Delete field"
 msgstr "Удалить поле"
 
-#: src/contacts-editor-property.vala:331
+#: src/contacts-editor-property.vala:373
 msgid "Label"
 msgstr "Метка"
 
-#: src/contacts-editor-property.vala:475
+#: src/contacts-editor-property.vala:529
 msgid "Add email"
 msgstr "Добавить эл. почту"
 
-#: src/contacts-editor-property.vala:502
+#: src/contacts-editor-property.vala:556
 msgid "Add phone number"
 msgstr "Добавить номер телефона"
 
-#: src/contacts-editor-property.vala:530
+#: src/contacts-editor-property.vala:584
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Псевдоним"
 
-#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
+#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
 msgid "Set Birthday"
 msgstr "Установить День рождения"
 
@@ -774,10 +787,6 @@ msgstr "Номер телефона"
 #: src/contacts-utils.vala:565
 msgid "Address"
 msgstr "Адрес"
-
-#: src/contacts-utils.vala:566
-msgid "Role"
-msgstr "Роль"
 
 #: src/contacts-utils.vala:567
 msgid "Structured name"
