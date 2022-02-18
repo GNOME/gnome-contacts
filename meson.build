@@ -83,9 +83,6 @@ conf.set_quoted('PROFILE', get_option('profile'))
 conf.set('GOA_API_IS_SUBJECT_TO_CHANGE', true)
 configure_file(output: 'config.h', configuration: conf)
 
-# Post-install scripts
-meson.add_install_script('build-aux/meson_post_install.py')
-
 # Subfolders
 subdir('data')
 subdir('po')
@@ -94,3 +91,9 @@ if get_option('docs')
   subdir('docs')
 endif
 subdir('tests')
+
+gnome.post_install(
+  gtk_update_icon_cache: true,
+  glib_compile_schemas: true,
+  update_desktop_database: true,
+)
