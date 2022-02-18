@@ -1,5 +1,5 @@
 docs_vapidirs = [
-  '--vapidir=@0@'.format(meson.source_root() / 'vapi'),
+  '--vapidir=@0@'.format(meson.project_source_root() / 'vapi'),
 ]
 
 custom_target('docs',

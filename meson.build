@@ -1,7 +1,7 @@
 project('gnome-contacts', [ 'vala', 'c' ],
   version: '42.alpha',
-  meson_version: '>= 0.50',
   license: 'GPL-2.0-or-later',
+  meson_version: '>= 0.59',
 )
 
 gnome = import('gnome')
@@ -9,7 +9,7 @@ i18n = import('i18n')
 
 # Add our custom VAPI dir
 add_project_arguments(
-  ['--vapidir', meson.source_root() / 'vapi'],
+  ['--vapidir', meson.project_source_root() / 'vapi'],
   language: 'vala'
 )
 
@@ -25,7 +25,7 @@ valac = meson.get_compiler('vala')
 config_h_dir = include_directories('.')
 contacts_prefix = get_option('prefix')
 locale_dir = contacts_prefix / get_option('localedir')
-po_dir = meson.source_root() / 'po'
+po_dir = meson.project_source_root() / 'po'
 
 # Dependencies
 min_eds_version = '3.30'
