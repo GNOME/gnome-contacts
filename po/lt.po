@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-01-12 22:54+0000\n"
-"PO-Revision-Date: 2022-01-16 21:27+0200\n"
+"POT-Creation-Date: 2022-02-08 12:50+0000\n"
+"PO-Revision-Date: 2022-02-20 14:55+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -49,7 +49,7 @@ msgstr ""
 "Kontaktai taip pat gali integruotis su internetinėmis adresų knygomis bei "
 "automatiškai susieti kontaktus iš skirtingų internetinių šaltinių."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:613
+#: data/org.gnome.Contacts.appdata.xml.in.in:635
 msgid "The GNOME Project"
 msgstr "GNOME projektas"
 
@@ -94,12 +94,11 @@ msgid "Quit"
 msgstr "Išeiti"
 
 #: data/ui/contacts-avatar-selector.ui:7
-#| msgid "Select a Contact"
 msgid "Select a new avatar"
 msgstr "Pasirinkite naują atvaidą"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:32
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
 #: src/contacts-editor-property.vala:78
 msgid "Cancel"
 msgstr "Atsisakyti"
@@ -109,11 +108,11 @@ msgstr "Atsisakyti"
 msgid "Done"
 msgstr "Atlikta"
 
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:70
 msgid "Take a Picture…"
 msgstr "Nufotografuoti…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:77
 msgid "Select a File…"
 msgstr "Pasirinkite failą…"
 
@@ -195,7 +194,6 @@ msgid "Select Items"
 msgstr "Pasirinkite elementus"
 
 #: data/ui/contacts-main-window.ui:107
-#| msgid "Cancel selection"
 msgid "Cancel Selection"
 msgstr "Atsisakyti pasirinkimo"
 
@@ -203,17 +201,15 @@ msgstr "Atsisakyti pasirinkimo"
 msgid "Loading"
 msgstr "Įkeliama"
 
-#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:189
+#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:199
 msgid "_Cancel"
 msgstr "At_sisakyti"
 
 #: data/ui/contacts-main-window.ui:206
-#| msgid "Link Contacts"
 msgid "Edit Contact"
 msgstr "Redaguoti kontaktą"
 
 #: data/ui/contacts-main-window.ui:213
-#| msgid "Deleted contact %s"
 msgid "Delete Contact"
 msgstr "Ištrinti kontaktą"
 
@@ -252,15 +248,15 @@ msgstr ""
 msgid "Local Address Book"
 msgstr "Vietinė adresų knyga"
 
-#: src/contacts-addressbook-dialog.vala:27
+#: src/contacts-addressbook-dialog.vala:28
 msgid "Change Address Book"
 msgstr "Keisti adresų knygą"
 
-#: src/contacts-addressbook-dialog.vala:31
+#: src/contacts-addressbook-dialog.vala:32
 msgid "Change"
 msgstr "Keisti"
 
-#: src/contacts-addressbook-dialog.vala:58
+#: src/contacts-addressbook-dialog.vala:59
 msgid ""
 "New contacts will be added to the selected address book.\n"
 "You are able to view and edit contacts from other address books."
@@ -320,28 +316,27 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "Kontaktas su el. pašto adresu %s nerastas"
 
-#: src/contacts-avatar-selector.vala:101
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "Nerasta kamera"
 
-#: src/contacts-avatar-selector.vala:135 src/contacts-avatar-selector.vala:141
-#: src/contacts-avatar-selector.vala:227
-msgid "Failed to set avatar."
-msgstr "Nepavyko nustatyti atvaizdo"
-
-#: src/contacts-avatar-selector.vala:186
+#: src/contacts-avatar-selector.vala:196
 msgid "Browse for more pictures"
 msgstr "Naršyti daugiau paveikslėlių"
 
-#: src/contacts-avatar-selector.vala:189
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "_Atverti"
 
-#: src/contacts-contact-editor.vala:56
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+msgid "Failed to set avatar."
+msgstr "Nepavyko nustatyti atvaizdo"
+
+#: src/contacts-contact-editor.vala:57
 msgid "Change avatar"
 msgstr "Keisti atvaizdą"
 
-#: src/contacts-contact-editor.vala:79
+#: src/contacts-contact-editor.vala:93
 msgid "Add name"
 msgstr "Pridėti vardą"
 
@@ -366,34 +361,41 @@ msgstr "Nepavyksta sukurti naujų kontaktų: %s"
 msgid "Unable to find newly created contact"
 msgstr "Nepavyksta rasti naujai sukurto kontakto"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:231
+#, c-format
+msgid "%s at %s"
+msgstr "%s %s"
+
+#: src/contacts-contact-sheet.vala:263
 #, c-format
 msgid "Send an email to %s"
 msgstr "Siųsti el. laišką %s"
 
-#: src/contacts-contact-sheet.vala:242
+#: src/contacts-contact-sheet.vala:292
 msgid "Start a call"
 msgstr "Pradėti pokalbį"
 
-#: src/contacts-contact-sheet.vala:296
-#| msgid "Website"
+#: src/contacts-contact-sheet.vala:352
 msgid "Visit website"
 msgstr "Aplankyti tinklalapį"
 
-#: src/contacts-contact-sheet.vala:374
+#: src/contacts-contact-sheet.vala:402
+msgid "Their birthday is today! 🎉"
+msgstr "Greitai jų gimtadienis! 🎉"
+
+#: src/contacts-contact-sheet.vala:447
 msgid "Show on the map"
 msgstr "Rodyti žemėlapyje"
 
 #: src/contacts-delete-operation.vala:34
 #, c-format
-#| msgid "Deleted contact %s"
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "Trinamas %d kontaktas"
 msgstr[1] "Trinami %d kontaktai"
 msgstr[2] "Trinama %d kontaktų"
 
-#: src/contacts-editor-persona.vala:82
+#: src/contacts-editor-persona.vala:83
 msgid "Show More"
 msgstr "Rodyti daugiau"
 
@@ -446,32 +448,39 @@ msgstr "Pašto dėžutė"
 msgid "Country"
 msgstr "Šalis"
 
-#: src/contacts-editor-property.vala:288 src/contacts-editor-property.vala:626
+#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:566
+msgid "Role"
+msgstr "Rolė"
+
+#: src/contacts-editor-property.vala:211
+msgid "Organisation"
+msgstr "Organizacija"
+
+#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
 msgid "Delete field"
 msgstr "Ištrinti lauką"
 
-#: src/contacts-editor-property.vala:331
+#: src/contacts-editor-property.vala:373
 msgid "Label"
 msgstr "Užrašas"
 
-#: src/contacts-editor-property.vala:475
+#: src/contacts-editor-property.vala:529
 msgid "Add email"
 msgstr "Pridėti el. paštą"
 
-#: src/contacts-editor-property.vala:502
-#| msgid "Phone number"
+#: src/contacts-editor-property.vala:556
 msgid "Add phone number"
 msgstr "Pridėti telefono numerį"
 
-#: src/contacts-editor-property.vala:530
+#: src/contacts-editor-property.vala:584
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:546 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
 msgid "Nickname"
 msgstr "Slapyvardis"
 
-#: src/contacts-editor-property.vala:599 src/contacts-editor-property.vala:635
+#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
 msgid "Set Birthday"
 msgstr "Nustatyti gimtadienį"
 
@@ -582,7 +591,6 @@ msgstr "Zephyr"
 
 #: src/contacts-link-operation.vala:40
 #, c-format
-#| msgid "Link Contacts"
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "Susietas %d kontaktas"
@@ -712,7 +720,6 @@ msgid "TTY"
 msgstr "TTY"
 
 #: src/contacts-unlink-operation.vala:37
-#| msgid "Link Contacts"
 msgid "Unlinking contacts"
 msgstr "Atsiejami kontaktai"
 
@@ -737,7 +744,6 @@ msgid "Email address"
 msgstr "El. pašto adresas"
 
 #: src/contacts-utils.vala:556
-#| msgid "Surname"
 msgid "Full name"
 msgstr "Pilnas vardas"
 
@@ -750,12 +756,10 @@ msgid "Group"
 msgstr "Grupė"
 
 #: src/contacts-utils.vala:559
-#| msgid "AOL Instant Messenger"
 msgid "Instant messaging"
 msgstr "Tiesioginiai pranešimai"
 
 #: src/contacts-utils.vala:560
-#| msgid "Favorites"
 msgid "Favourite"
 msgstr "Mėgstamas"
 
@@ -775,12 +779,7 @@ msgstr "Telefono numeris"
 msgid "Address"
 msgstr "Adresas"
 
-#: src/contacts-utils.vala:566
-msgid "Role"
-msgstr "Rolė"
-
 #: src/contacts-utils.vala:567
-#| msgid "Surname"
 msgid "Structured name"
 msgstr "Struktūruotas pavadinimas"
 
