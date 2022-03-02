@@ -127,8 +127,8 @@ public class Contacts.App : Adw.Application {
       var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
                                               DBusProxyFlags.NONE,
                                               null,
-                                              "org.gnome.ControlCenter",
-                                              "/org/gnome/ControlCenter",
+                                              "org.gnome.Settings",
+                                              "/org/gnome/Settings",
                                               "org.gtk.Actions");
 
       var builder = new VariantBuilder (new VariantType ("av"));
