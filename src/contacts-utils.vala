@@ -563,7 +563,10 @@ namespace Contacts.Utils {
     { "notes", N_("Note"), "note-symbolic" },
     { "phone-numbers", N_("Phone number"), "phone-symbolic" },
     { "postal-addresses", N_("Address"), "mark-location-symbolic" },
+    // TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
     { "roles", N_("Role"), "building-symbolic" },
+    // TRANSLATORS: This is a field which contains a name decomposed in several
+    // parts, rather than a single freeform string for the full name
     { "structured-name", N_("Structured name"), "avatar-default-symbolic" },
     { "urls", N_("Website"), "website-symbolic" },
     { "web-service-addresses", N_("Web service"), null },
