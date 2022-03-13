@@ -231,9 +231,9 @@ public class Contacts.ContactSheet : Gtk.Grid {
         continue;
 
       var role_str = "";
-      // TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
       if (role.value.title != "") {
         if (role.value.organisation_name != "")
+          // TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
           role_str = _("%s at %s").printf (role.value.title, role.value.organisation_name);
         else
           role_str = role.value.title;
