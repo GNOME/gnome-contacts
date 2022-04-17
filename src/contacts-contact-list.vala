@@ -146,16 +146,13 @@ public class Contacts.ContactList : Adw.Bin {
     }
   }
 
-  public void scroll_to_contact (Gtk.ListBoxRow? row = null) {
-    unowned ContactDataRow? selected_row = null;
+  public void scroll_to_selected () {
+    unowned var row = this.listbox.get_selected_row ();
     if (row == null)
-      selected_row = (ContactDataRow?) this.listbox.get_selected_row ();
-    else
-      selected_row = (ContactDataRow) row;
+      return;
 
     GLib.Timeout.add (100, () => {
-      if (selected_row != null)
-        selected_row.grab_focus ();
+      row.grab_focus ();
       return GLib.Source.REMOVE;
     });
   }

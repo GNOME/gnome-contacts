@@ -339,7 +339,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       this.state = UiState.SHOWING;
     }
     this.contact_pane.stop_editing (cancel);
-    this.contacts_list.scroll_to_contact ();
+    this.contacts_list.scroll_to_selected ();
 
     this.right_header.title_widget = new Adw.WindowTitle ("", "");
   }
