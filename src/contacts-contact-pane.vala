@@ -176,6 +176,16 @@ public class Contacts.ContactPane : Adw.Bin {
     /* Show fake contact to the user */
     /* TODO: block changes to fake contact */
     show_contact_sheet ();
+    // Wait that the store gets quiescent if it isn't already
+    if (!this.store.aggregator.is_quiescent) {
+      ulong signal_id;
+      SourceFunc callback = apply_changes.callback;
+      signal_id = this.store.quiescent.connect (() => {
+        callback ();
+      });
+      yield;
+      disconnect (signal_id);
+    }
     var fake_individual = individual as FakeIndividual;
     if (fake_individual != null && fake_individual.real_individual == null) {
       // Create a new persona in the primary store based on the fake persona
