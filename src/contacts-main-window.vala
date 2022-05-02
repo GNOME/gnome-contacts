@@ -285,7 +285,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     var toast = new Adw.Toast (this.last_operation.description);
     toast.set_button_label (_("_Undo"));
-    toast.action_name = "window.undo-operation";
+    toast.action_name = "win.undo-operation";
 
     this.toast_overlay.add_toast (toast);
   }
@@ -479,7 +479,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     var toast = new Adw.Toast (this.last_operation.description);
     toast.set_button_label (_("_Undo"));
-    toast.action_name = "window.undo-operation";
+    toast.action_name = "win.undo-operation";
     this.toast_overlay.add_toast (toast);
   }
 
@@ -501,7 +501,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.last_operation = new DeleteOperation (individuals);
     var toast = new Adw.Toast (this.last_operation.description);
     toast.set_button_label (_("_Undo"));
-    toast.action_name = "window.undo-delete";
+    toast.action_name = "win.undo-delete";
 
     this.delete_cancelled = false;
     toast.dismissed.connect (() => {
@@ -526,7 +526,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.last_operation = operation;
     var toast = new Adw.Toast (this.last_operation.description);
     toast.set_button_label (_("_Undo"));
-    toast.action_name = "window.undo-operation";
+    toast.action_name = "win.undo-operation";
     this.toast_overlay.add_toast (toast);
   }
 
