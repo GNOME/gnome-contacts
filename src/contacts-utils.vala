@@ -107,18 +107,6 @@ namespace Contacts.Utils {
     return files;
   }
 
-  public PersonaStore[] get_eds_address_books (Store contacts_store) {
-    PersonaStore[] stores = {};
-    foreach (var backend in contacts_store.backend_store.enabled_backends.values) {
-      foreach (var persona_store in backend.persona_stores.values) {
-        if (persona_store.type_id == "eds") {
-          stores += persona_store;
-        }
-      }
-    }
-    return stores;
-  }
-
   public PersonaStore[] get_eds_address_books_from_backend (BackendStore backend_store) {
     PersonaStore[] stores = {};
     foreach (var backend in backend_store.enabled_backends.values) {
@@ -386,6 +374,10 @@ namespace Contacts.Utils {
 
   public string format_persona_store_name (PersonaStore store) {
     if (store.type_id == "eds") {
+      // Special-case the local address book
+      if (store.id == "system-address-book")
+        return _("Local Address Book");
+
       string? eds_name = lookup_esource_name_by_uid (store.id);
       if (eds_name != null)
         return eds_name;

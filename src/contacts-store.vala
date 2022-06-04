@@ -40,6 +40,11 @@ public class Contacts.Store : GLib.Object {
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get { return this.aggregator.backend_store; } }
 
+  private GLib.ListStore _address_books = new GLib.ListStore (typeof (PersonaStore));
+  public GLib.ListModel address_books {
+    get { return this._address_books; }
+  }
+
   // Base list model
   private GLib.ListStore _base_model = new ListStore (typeof (Individual));
   public GLib.ListModel base_model { get { return this._base_model; } }
@@ -132,8 +137,20 @@ public class Contacts.Store : GLib.Object {
     this.dont_suggest_link = new Gee.HashMultiMap<string, string> ();
     read_dont_suggest_db ();
 
+    // Setup the backends
     var backend_store = BackendStore.dup ();
+    // FIXME: we should just turn the "backends" property in folks into a
+    // GListModel directly
+    foreach (var backend in backend_store.enabled_backends.values) {
+      foreach (var persona_store in backend.persona_stores.values)
+        this._address_books.append (persona_store);
+    }
+    backend_store.backend_available.connect ((backend) => {
+      foreach (var persona_store in backend.persona_stores.values)
+        this._address_books.append (persona_store);
+    });
 
+    // Setup the individual aggregator
     this.aggregator = IndividualAggregator.dup_with_backend_store (backend_store);
     aggregator.notify["is-quiescent"].connect ((obj, pspec) => {
       // We seem to get this before individuals_changed, so hack around it

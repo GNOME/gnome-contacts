@@ -17,6 +17,11 @@
 
 using Folks;
 
+/**
+ * The SetupWindow is the window that is shown to the user when they run
+ * Contacts for the first time. It asks the user to setup a primary address
+ * book.
+ */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-setup-window.ui")]
 public class Contacts.SetupWindow : Adw.ApplicationWindow {
 
@@ -26,7 +31,7 @@ public class Contacts.SetupWindow : Adw.ApplicationWindow {
   [GtkChild]
   private unowned Gtk.Button setup_done_button;
 
-  private AccountsList setup_accounts_list;
+  private AccountsList accounts_list;
 
   /**
    * Fired after the user has successfully performed the setup proess.
@@ -35,41 +40,20 @@ public class Contacts.SetupWindow : Adw.ApplicationWindow {
 
   public SetupWindow (App app, Store store) {
     Object (application: app, icon_name: Config.APP_ID);
-    this.setup_accounts_list = new AccountsList (store);
-    this.setup_accounts_list.hexpand = true;
-    this.clamp.set_child (this.setup_accounts_list);
 
-    // Listen for changes
-    store.backend_store.backend_available.connect  ( () => {
-        this.setup_accounts_list.update_contents (false);
-      });
+    this.accounts_list = new AccountsList (store);
+    this.clamp.set_child (this.accounts_list);
 
-    ulong id2 = 0;
-    id2 = this.setup_accounts_list.account_selected.connect (() => {
-        this.setup_done_button.sensitive = true;
-        this.setup_accounts_list.disconnect (id2);
-      });
-
-    fill_accounts_list (store);
+    this.accounts_list.notify["selected-store"].connect ((obj, pspec) => {
+      this.setup_done_button.sensitive = (this.accounts_list.selected_store != null);
+    });
 
     this.setup_done_button.clicked.connect (() => {
-        unowned var selected_store = this.setup_accounts_list.selected_store as Edsf.PersonaStore;
-        setup_done (selected_store);
-      });
+      setup_done ((Edsf.PersonaStore) this.accounts_list.selected_store);
+    });
 
     // Make visible when we're using a nightly build
     if (Config.PROFILE == "development")
         get_style_context ().add_class ("devel");
-  }
-
-  private void fill_accounts_list (Store store) {
-    if (store.aggregator.is_prepared) {
-      this.setup_accounts_list.update_contents (false);
-      return;
-    }
-
-    store.prepared.connect ( () => {
-        this.setup_accounts_list.update_contents (false);
-      });
   }
 }

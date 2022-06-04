@@ -62,16 +62,8 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
     box.append (explanation_label);
 
     this.accounts_list = new AccountsList (contacts_store);
-    this.accounts_list.update_contents (true);
-
-    ulong active_button_once = 0;
-    active_button_once = this.accounts_list.account_selected.connect (() => {
-      ok_button.sensitive = true;
-      this.accounts_list.disconnect (active_button_once);
-    });
-
-    contacts_store.backend_store.backend_available.connect (() => {
-      this.accounts_list.update_contents (true);
+    this.accounts_list.notify["selected-store"].connect ((obj, pspec) => {
+      ok_button.sensitive = (this.accounts_list.selected_store != null);
     });
 
     box.append (this.accounts_list);
@@ -81,7 +73,7 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
     if (response != Gtk.ResponseType.OK)
       return;
 
-    var e_store = this.accounts_list.selected_store as Edsf.PersonaStore;
+    unowned var e_store = (Edsf.PersonaStore) this.accounts_list.selected_store;
     if (e_store != null) {
       eds_source_registry.set_default_address_book (e_store.source);
       var settings = new GLib.Settings ("org.freedesktop.folks");
