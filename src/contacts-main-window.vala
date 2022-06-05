@@ -293,6 +293,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       return;
 
     this.contacts_list.set_contacts_visible (selection, false);
+    this.contact_pane.show_contact (null);
     delete_contacts (selection);
   }
 
@@ -459,6 +460,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.store.selection.unselect_all ();
     this.marked_contacts.unselect_all ();
     this.contacts_list.set_contacts_visible (selection, false);
+    this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
 
     // Build the list of contacts
@@ -489,6 +491,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.store.selection.unselect_all ();
     this.marked_contacts.unselect_all ();
     this.contacts_list.set_contacts_visible (selection, false);
+    this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
 
     var individuals = bitset_to_individuals (this.store.filter_model,
@@ -500,7 +503,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     var cancellable = new Cancellable ();
     cancellable.cancelled.connect ((c) => {
       this.contacts_list.set_contacts_visible (selection, true);
-      this.state = UiState.SHOWING;
     });
 
     var toast = add_toast_for_operation (op, "win.cancel-operation", _("_Cancel"));
