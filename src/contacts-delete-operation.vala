@@ -17,17 +17,19 @@
 
 using Folks;
 
-public class Contacts.DeleteOperation : Object, Operation {
+/**
+ * A DeleteOperation permanently deletes contacts. Note that this is an
+ * irreversible operation, so to prevent accidents, it allows you to set a
+ * timeout period during which you can cancel the operation still.
+ */
+public class Contacts.DeleteOperation : Operation {
 
   private Gee.List<Individual> individuals;
 
-  // We don't support reversing a removal. What we do instead, is put a timeout
-  // before actually executing this operation so the user has time to change
-  // their mind.
-  public bool reversable { get { return false; } }
+  public override bool reversable { get { return false; } }
 
   private string _description;
-  public string description { owned get { return this._description; } }
+  public override string description { owned get { return this._description; } }
 
   public DeleteOperation (Gee.List<Individual> individuals) {
     this.individuals = individuals;
@@ -37,10 +39,12 @@ public class Contacts.DeleteOperation : Object, Operation {
   }
 
   /**
-   * Link individuals
+   * Delete individuals
    */
-  public async void execute () throws GLib.Error {
+  public override async void execute () throws GLib.Error {
     foreach (var indiv in this.individuals) {
+      debug ("Removing individual '%s'", indiv.display_name);
+
       foreach (var persona in indiv.personas) {
         // TODO: make sure it is actually removed
         yield persona.store.remove_persona (persona);
@@ -48,8 +52,7 @@ public class Contacts.DeleteOperation : Object, Operation {
     }
   }
 
-  // See comments near the reversable property
-  protected async void _undo () throws GLib.Error {
-    throw new GLib.IOError.NOT_SUPPORTED ("Undoing not supported");
+  protected override async void _undo () throws GLib.Error {
+    // No need to do anything, since reversable is true
   }
 }

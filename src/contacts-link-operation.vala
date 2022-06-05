@@ -17,7 +17,7 @@
 
 using Folks;
 
-public class Contacts.LinkOperation : Object, Operation {
+public class Contacts.LinkOperation : Operation {
 
   private weak Store store;
 
@@ -25,13 +25,11 @@ public class Contacts.LinkOperation : Object, Operation {
   private Gee.HashSet<Gee.HashSet<Persona>> personas_to_link
       = new Gee.HashSet<Gee.HashSet<Persona>> ();
 
-  private bool finished { get; set; default = false; }
-
   private bool _reversable = false;
-  public bool reversable { get { return this._reversable; } }
+  public override bool reversable { get { return this._reversable; } }
 
   private string _description;
-  public string description { owned get { return this._description; } }
+  public override string description { owned get { return this._description; } }
 
   public LinkOperation (Store store, Gee.LinkedList<Individual> individuals) {
     this.store = store;
@@ -45,7 +43,7 @@ public class Contacts.LinkOperation : Object, Operation {
   /**
    * Link individuals
    */
-  public async void execute () throws GLib.Error {
+  public override async void execute () throws GLib.Error {
     var personas_to_link = new Gee.HashSet<Persona> ();
     foreach (var i in individuals) {
       var saved_personas = new Gee.HashSet<Persona> ();
@@ -64,7 +62,7 @@ public class Contacts.LinkOperation : Object, Operation {
   /**
    * Undoing means unlinking
    */
-  public async void _undo () throws GLib.Error {
+  public override async void _undo () throws GLib.Error {
     var individual = this.personas_to_link.first_match(() => {return true;})
       .first_match(() => {return true;}).individual;
 

@@ -13,6 +13,7 @@ libcontacts_sources = files(
   'contacts-individual-sorter.vala',
   'contacts-link-operation.vala',
   'contacts-operation.vala',
+  'contacts-operation-list.vala',
   'contacts-query-filter.vala',
   'contacts-store.vala',
   'contacts-typeset.vala',

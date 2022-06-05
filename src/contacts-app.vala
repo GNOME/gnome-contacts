@@ -25,6 +25,13 @@ public class Contacts.App : Adw.Application {
 
   private unowned MainWindow window;
 
+  // The operations that have been (or are being) executed
+  public Contacts.OperationList operations {
+    get;
+    private set;
+    default = new OperationList ();
+  }
+
   private const GLib.ActionEntry[] action_entries = {
     { "quit",             quit                },
     { "help",             show_help           },
@@ -195,7 +202,7 @@ public class Contacts.App : Adw.Application {
   }
 
   private void create_window () {
-    var win = new MainWindow (this.settings, this, this.contacts_store);
+    var win = new MainWindow (this.settings, this.operations, this, this.contacts_store);
     win.show ();
     this.window = win;
 

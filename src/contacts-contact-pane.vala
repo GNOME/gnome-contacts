@@ -46,7 +46,7 @@ public class Contacts.ContactPane : Adw.Bin {
   public bool on_edit_mode = false;
   private LinkSuggestionGrid? suggestion_grid = null;
 
-  public signal void contacts_linked (string? main_contact, string linked_contact, LinkOperation operation);
+  public signal void contacts_linked (LinkOperation operation);
 
   public ContactPane (MainWindow main_window, Store contacts_store) {
     this.store = contacts_store;
@@ -61,13 +61,11 @@ public class Contacts.ContactPane : Adw.Bin {
     parent_overlay.add_overlay (this.suggestion_grid);
 
     this.suggestion_grid.suggestion_accepted.connect (() => {
-      var linked_contact = this.individual.display_name;
       var to_link = new Gee.LinkedList<Individual> ();
       to_link.add (this.individual);
       to_link.add (i);
       var operation = new LinkOperation (this.store, to_link);
-      operation.execute.begin ();
-      this.contacts_linked (null, linked_contact, operation);
+      this.contacts_linked (operation);
       remove_suggestion_grid ();
     });
 

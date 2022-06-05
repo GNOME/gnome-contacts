@@ -17,7 +17,7 @@
 
 using Folks;
 
-public class Contacts.UnlinkOperation : Object, Operation {
+public class Contacts.UnlinkOperation : Operation {
 
   private weak Store store;
 
@@ -26,10 +26,10 @@ public class Contacts.UnlinkOperation : Object, Operation {
   private Gee.HashSet<Persona> personas = new Gee.HashSet<Persona> ();
 
   private bool _reversable = false;
-  public bool reversable { get { return this._reversable; } }
+  public override bool reversable { get { return this._reversable; } }
 
   private string _description;
-  public string description { owned get { return this._description; } }
+  public override string description { owned get { return this._description; } }
 
   public UnlinkOperation (Store store, Individual main) {
     this.store = store;
@@ -38,7 +38,7 @@ public class Contacts.UnlinkOperation : Object, Operation {
   }
 
   /* Remove a personas from individual */
-  public async void execute () throws GLib.Error {
+  public override async void execute () throws GLib.Error {
     foreach (var persona in this.individual.personas)
       this.personas.add (persona);
 
@@ -48,7 +48,7 @@ public class Contacts.UnlinkOperation : Object, Operation {
   }
 
   /* Undo the unlinking */
-  public async void _undo () throws GLib.Error {
+  public override async void _undo () throws GLib.Error {
     yield this.store.aggregator.link_personas (personas);
     this._reversable = false;
     notify_property ("reversable");

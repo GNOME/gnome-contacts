@@ -31,8 +31,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     { "unlink-contact", unlink_contact },
     { "delete-contact", delete_contact },
     { "sort-on", null, "s", "'surname'", sort_on_changed },
-    { "undo-operation", undo_operation_action },
-    { "undo-delete", undo_delete_action },
+    { "undo-operation", undo_operation_action, "s" },
+    { "cancel-operation", cancel_operation_action, "s" },
   };
 
   [GtkChild]
@@ -83,8 +83,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   [GtkChild]
   private unowned Gtk.ActionBar actions_bar;
 
-  private bool delete_cancelled;
-
   public UiState state { get; set; default = UiState.NORMAL; }
 
   // Window state
@@ -95,11 +93,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   public Store store { get; construct set; }
 
+  public Contacts.OperationList operations { get; construct set; }
+
   // A separate SelectionModel for all marked contacts
   private Gtk.MultiSelection marked_contacts;
-
-  // If an unduable operation was recently performed, this will be set
-  public Operation? last_operation = null;
 
   construct {
     add_action_entries (ACTION_ENTRIES, this);
@@ -123,9 +120,13 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         this.add_css_class ("devel");
   }
 
-  public MainWindow (Settings settings, App app, Store contacts_store) {
+  public MainWindow (Settings settings,
+                     OperationList operations,
+                     App app,
+                     Store contacts_store) {
     Object (
       application: app,
+      operations: operations,
       settings: settings,
       store: contacts_store
     );
@@ -274,24 +275,20 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.store.selection.unselect_all ();
     this.state = UiState.NORMAL;
 
-    this.last_operation = new UnlinkOperation (this.store, selected);
-    this.last_operation.execute.begin ((obj, res) => {
+    var operation = new UnlinkOperation (this.store, selected);
+    this.operations.execute.begin (operation, null, (obj, res) => {
       try {
-        this.last_operation.execute.end (res);
+        this.operations.execute.end (res);
       } catch (GLib.Error e) {
         warning ("Error unlinking individuals: %s", e.message);
       }
     });
 
-    var toast = new Adw.Toast (this.last_operation.description);
-    toast.set_button_label (_("_Undo"));
-    toast.action_name = "win.undo-operation";
-
-    this.toast_overlay.add_toast (toast);
+    add_toast_for_operation (operation, "win.undo-operation", _("_Undo"));
   }
 
   private void delete_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
-    var selection = this.store.selection.get_selection ();
+    var selection = this.store.selection.get_selection ().copy ();
     if (selection.is_empty ())
       return;
 
@@ -306,24 +303,25 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void undo_operation_action (SimpleAction action, GLib.Variant? parameter) {
-    if (this.last_operation == null) {
-      warning ("Undo action was called without anything that can be undone?");
-      return;
-    }
-
-    debug ("Undoing operation '%s'", this.last_operation.description);
-    this.last_operation.undo.begin ((obj, res) => {
+    unowned var uuid = parameter.get_string ();
+    this.operations.undo_operation.begin (uuid, (obj, res) => {
       try {
-        this.last_operation.undo.end (res);
+        this.operations.undo_operation.end (res);
       } catch (GLib.Error e) {
-        warning ("Couldn't undo operation '%s': %s", this.last_operation.description, e.message);
+        warning ("Couldn't undo operation '%s': %s", uuid, e.message);
       }
-      debug ("Finished undoing operation '%s'", this.last_operation.description);
     });
   }
 
-  private void undo_delete_action (SimpleAction action, GLib.Variant? parameter) {
-    this.delete_cancelled = true;
+  private void cancel_operation_action (SimpleAction action, GLib.Variant? parameter) {
+    unowned var uuid = parameter.get_string ();
+    this.operations.cancel_operation.begin (uuid, (obj, res) => {
+      try {
+        this.operations.cancel_operation.end (res);
+      } catch (GLib.Error e) {
+        warning ("Couldn't cancel operation '%s': %s", uuid, e.message);
+      }
+    });
   }
 
   private void stop_editing_contact (SimpleAction action, GLib.Variant? parameter) {
@@ -468,19 +466,16 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
                                       selection);
 
     // Perform the operation
-    this.last_operation = new LinkOperation (this.store, list);
-    this.last_operation.execute.begin ((obj, res) => {
+    var operation = new LinkOperation (this.store, list);
+    this.operations.execute.begin (operation, null, (obj, res) => {
       try {
-        this.last_operation.execute.end (res);
+        this.operations.execute.end (res);
       } catch (GLib.Error e) {
         warning ("Error linking individuals: %s", e.message);
       }
     });
 
-    var toast = new Adw.Toast (this.last_operation.description);
-    toast.set_button_label (_("_Undo"));
-    toast.action_name = "win.undo-operation";
-    this.toast_overlay.add_toast (toast);
+    add_toast_for_operation (operation, "win.undo-operation", _("_Undo"));
   }
 
   private void delete_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
@@ -498,36 +493,49 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     var individuals = bitset_to_individuals (this.store.filter_model,
                                              selection);
-    this.last_operation = new DeleteOperation (individuals);
-    var toast = new Adw.Toast (this.last_operation.description);
-    toast.set_button_label (_("_Undo"));
-    toast.action_name = "win.undo-delete";
 
-    this.delete_cancelled = false;
-    toast.dismissed.connect (() => {
-        if (this.delete_cancelled) {
-          this.contacts_list.set_contacts_visible (selection, true);
-          this.state = UiState.SHOWING;
-        } else {
-          this.last_operation.execute.begin ((obj, res) => {
-              try {
-                this.last_operation.execute.end (res);
-              } catch (Error e) {
-                debug ("Coudln't remove persona: %s", e.message);
-              }
-          });
-        }
+    // NOTE: we'll do this with a timeout, since the operation is not reversable
+    var op = new DeleteOperation (individuals);
+
+    var cancellable = new Cancellable ();
+    cancellable.cancelled.connect ((c) => {
+      this.contacts_list.set_contacts_visible (selection, true);
+      this.state = UiState.SHOWING;
     });
 
-    this.toast_overlay.add_toast (toast);
+    var toast = add_toast_for_operation (op, "win.cancel-operation", _("_Cancel"));
+    this.operations.execute_with_timeout.begin (op, toast.timeout, cancellable, (obj, res) => {
+      try {
+        this.operations.execute_with_timeout.end (res);
+      } catch (GLib.Error e) {
+        warning ("Error removing individuals: %s", e.message);
+      }
+    });
   }
 
-  private void contact_pane_contacts_linked_cb (string? main_contact, string linked_contact, LinkOperation operation) {
-    this.last_operation = operation;
-    var toast = new Adw.Toast (this.last_operation.description);
-    toast.set_button_label (_("_Undo"));
-    toast.action_name = "win.undo-operation";
+  private void contact_pane_contacts_linked_cb (LinkOperation operation) {
+    add_toast_for_operation (operation, "win.undo-operation", _("_Undo"));
+
+    this.operations.execute.begin (operation, null, (obj, res) => {
+      try {
+        this.operations.execute.end (res);
+      } catch (GLib.Error e) {
+        warning ("Error linking individuals: %s", e.message);
+      }
+    });
+  }
+
+  private Adw.Toast add_toast_for_operation (Operation operation,
+                                             string? action_name = null,
+                                             string? action_label = null) {
+    var toast = new Adw.Toast (operation.description);
+    if (action_name != null) {
+      toast.set_button_label (action_label);
+      toast.action_name = action_name;
+      toast.action_target = operation.uuid;
+    }
     this.toast_overlay.add_toast (toast);
+    return toast;
   }
 
   // Little helper

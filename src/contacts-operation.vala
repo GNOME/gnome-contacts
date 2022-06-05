@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Niels De Graef <nielsdegraef@redhat.com>
+ * Copyright (C) 2021 Niels De Graef <nielsdegraef@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,14 @@
  *
  * Since some operations might not be able undoable later onwards, there is a
  * property `reversable` that you should check first before calling undo().
+ *
+ * Note that you probably shouldn't be calling the execute() method directly,
+ * but use the API provided by {@link OperationQueue} instead.
  */
-public interface Contacts.Operation : Object {
+public abstract class Contacts.Operation : Object {
+
+  /** The UUID of the operation */
+  public string uuid { get; private set; default = Uuid.string_random (); }
 
   /**
    * Whether undo() can be called on this object
