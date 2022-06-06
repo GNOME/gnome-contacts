@@ -33,7 +33,7 @@ public class Contacts.App : Adw.Application {
   }
 
   private const GLib.ActionEntry[] action_entries = {
-    { "quit",             quit                },
+    { "quit",             quit_action         },
     { "help",             show_help           },
     { "about",            show_about          },
     { "change-book",      change_address_book },
@@ -203,8 +203,12 @@ public class Contacts.App : Adw.Application {
 
   private void create_window () {
     var win = new MainWindow (this.settings, this.operations, this, this.contacts_store);
-    win.show ();
+    win.close_request.connect_after ((win) => {
+      activate_action ("quit", null);
+      return false;
+    });
     this.window = win;
+    win.present ();
 
     show_contact_list ();
   }
@@ -296,4 +300,33 @@ public class Contacts.App : Adw.Application {
       show_individual_for_id.begin (individual_id);
   }
 
+  private void quit_action (SimpleAction action, Variant? param) {
+    if (!this.operations.has_pending_operations ()) {
+      debug ("No more operations pending. Quitting immediately");
+      base.quit ();
+    }
+
+    debug ("Some operations still pending, delaying shutdown");
+
+    // We still have operations pending but the user requested to quit, so
+    // give it still a limited amount of time to still get them done
+    if (this.window != null)
+      this.window.hide ();
+
+    Timeout.add_seconds (5, () => {
+      warning ("Some operations have not finished yet!");
+      base.quit ();
+      return Source.REMOVE;
+    });
+
+    this.operations.flush.begin ((obj, res) => {
+      try {
+        this.operations.flush.end (res);
+        debug ("Succesfully flushed operations before quitting");
+      } catch (Error e) {
+        warning ("Error flushing operations: %s", e.message);
+      }
+      base.quit ();
+    });
+  }
 }
