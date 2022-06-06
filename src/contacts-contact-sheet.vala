@@ -170,7 +170,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     header.append (image_frame);
 
     var name_label = new Gtk.Label ("");
-    name_label.set_markup (this.individual.display_name);
+    name_label.label = this.individual.display_name;
     name_label.hexpand = true;
     name_label.xalign = 0f;
     name_label.wrap = true;
