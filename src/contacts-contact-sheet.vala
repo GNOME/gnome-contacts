@@ -103,15 +103,13 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (rows == null)
       return;
 
-    var list_box = new Gtk.ListBox ();
-    list_box.selection_mode = Gtk.SelectionMode.NONE;
-    list_box.add_css_class ("boxed-list");
-    list_box.add_css_class ("contacts-sheet-property");
+    var group = new Adw.PreferencesGroup ();
+    group.add_css_class ("contacts-sheet-property");
 
     foreach (unowned var row in rows)
-      list_box.append (row);
+      group.add (row);
 
-    this.attach (list_box, 0, this.last_row, 3, 1);
+    this.attach (group, 0, this.last_row, 3, 1);
     this.last_row++;
   }
 
