@@ -106,11 +106,11 @@ public class Contacts.App : Adw.Application {
     if (pos != Gtk.INVALID_LIST_POSITION) {
       this.contacts_store.selection.selected = pos;
     } else {
-      var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                          Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
-                                          _("No contact with id %s found"), id);
-      dialog.set_title (_("Contact not found"));
-      dialog.response.connect ((_) => { dialog.close (); });
+      var dialog = new Adw.MessageDialog (this.window,
+                                          _("Contact not found"),
+                                          _("No contact with id %s found").printf (id));
+      dialog.add_response ("close", _("_Close"));
+      dialog.default_response = "close";
       dialog.show ();
     }
   }
@@ -182,11 +182,11 @@ public class Contacts.App : Adw.Application {
     if (pos != Gtk.INVALID_LIST_POSITION) {
       this.contacts_store.selection.selected = pos;
     } else {
-      var dialog = new Gtk.MessageDialog (this.window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                          Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE,
-                                          _("No contact with email address %s found"), email_address);
-      dialog.set_title (_("Contact not found"));
-      dialog.response.connect ((_) => dialog.close ());
+      var dialog = new Adw.MessageDialog (this.window,
+                                          _("Contact not found"),
+                                          _("No contact with email address %s found").printf (email_address));
+      dialog.add_response ("close", _("_Close"));
+      dialog.default_response = "close";
       dialog.show ();
     }
   }

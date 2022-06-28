@@ -132,12 +132,9 @@ namespace Contacts.Utils {
 
 
   public void show_error_dialog (string error, Gtk.Window toplevel) {
-    var dialog = new Gtk.MessageDialog (toplevel,
-                                        Gtk.DialogFlags.MODAL,
-                                        Gtk.MessageType.ERROR,
-                                        Gtk.ButtonsType.OK,
-                                        "%s", error);
-    dialog.response.connect(() => { dialog.destroy(); });
+    var dialog = new Adw.MessageDialog (toplevel, null, error);
+    dialog.add_response ("close", _("_Close"));
+    dialog.default_response = "close";
     dialog.show();
   }
 

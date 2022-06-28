@@ -50,7 +50,7 @@ gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_versi
 # gnome_desktop = dependency('gnome-desktop-3.0')
 goa = dependency('goa-1.0')
 gtk4_dep = dependency('gtk4', version: '>= 4.6')
-libadwaita_dep = dependency('libadwaita-1')
+libadwaita_dep = dependency('libadwaita-1', version: '>= 1.2.alpha')
 # E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)

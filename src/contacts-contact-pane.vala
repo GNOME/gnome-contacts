@@ -257,13 +257,9 @@ public class Contacts.ContactPane : Adw.Bin {
   }
 
   private void show_message_dialog (string message) {
-    var dialog =
-      new Gtk.MessageDialog (this.get_root () as Gtk.Window,
-                             Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
-                             Gtk.MessageType.ERROR,
-                             Gtk.ButtonsType.OK,
-                             "%s", message);
-    dialog.response.connect ((_) => dialog.close ());
+    var dialog = new Adw.MessageDialog (this.get_root () as Gtk.Window, null, message);
+    dialog.add_response ("close", _("_Close"));
+    dialog.default_response = "close";
     dialog.show ();
   }
 
