@@ -55,10 +55,13 @@
             "modules": [
                 {
                     "name": "librest",
+                    "buildsystem": "meson",
+                    "config-opts": [
+                      "-Dgtk_doc=false"
+                    ],
                     "sources": [
                         {
                             "type": "git",
-                            "branch": "librest-0-7",
                             "url": "https://gitlab.gnome.org/GNOME/librest.git"
                         }
                     ]
