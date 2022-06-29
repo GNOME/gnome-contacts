@@ -280,25 +280,39 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (phone_details == null)
       return;
 
+    bool ephonenr_support = E.PhoneNumber.is_supported ();
+    debug ("Support for E.PhoneNumber: %s", ephonenr_support.to_string ());
+
     var phones = Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
     var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var phone in phones) {
       if (phone.value == "")
         continue;
 
+      string phonenr = phone.value;
+      E.PhoneNumber? ephone = null;
+      if (ephonenr_support) {
+        try {
+          ephone = E.PhoneNumber.from_string (phone.value, null);
+        } catch (Error e) {
+          debug ("Can't parse phone number: %s", e.message);
+        }
+      }
+
       var row = new ContactSheetRow (property,
-                                     phone.value,
+                                     phonenr,
                                      TypeSet.phone.format_type (phone));
 
-#if HAVE_TELEPATHY
-      if (this.store.caller_account != null) {
+      if (ephone != null) {
         var button = row.add_button ("call-start-symbolic");
-        button.tooltip_text = _("Start a call");
-        button.clicked.connect (() => {
-          Utils.start_call (phone.value, this.store.caller_account);
+        var tel_uri = ephone.to_string (E.PhoneNumberFormat.RFC3966);
+        button.tooltip_text = _("Call %s").printf (tel_uri[4:]);
+        button.clicked.connect ((b) => {
+          unowned var window = button.get_root () as Gtk.Window;
+          // FIXME: use show_uri_full so we can show errors
+          Gtk.show_uri (window, tel_uri, Gdk.CURRENT_TIME);
         });
       }
-#endif
 
       rows.append (row);
     }
