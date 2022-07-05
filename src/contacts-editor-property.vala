@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Adw;
 using Folks;
 
 public class Contacts.BirthdayEditor : Gtk.Dialog {
@@ -339,30 +340,37 @@ public class Contacts.EditorPropertyRow : Adw.Bin {
   }
 
   /**
-   * Wrapper around set_main_widget() with some extra styling for GtkEntries,
-   * as well as making sure the "is-empty" property is updated.
+   * An alternative to set_main_widget() that creates and adds an AdwEntryRow
+   * to the list, and makes sure the "is-empty" property is updated.
    */
-  public Gtk.Entry set_main_entry (string text, string? placeholder = null) {
-    var entry = new Gtk.Entry ();
-    entry.text = text;
-    entry.placeholder_text = placeholder;
-    entry.add_css_class ("flat");
+  public Adw.EntryRow set_main_entry_row(string text, string? placeholder = null) {
+    var row = new Adw.EntryRow();
+    row.title = placeholder;
+    row.text = text;
 
-    // Set the icon as part of the GtkEntry, to avoid it being outside of the
-    // margin
     unowned var icon_name = Utils.get_icon_name_for_property (this.ptype);
     if (icon_name != null) {
-      entry.primary_icon_name = icon_name;
-      entry.primary_icon_tooltip_text = Utils.get_display_name_for_property (this.ptype);
+      row.add_prefix(new Gtk.Image.from_icon_name (icon_name));
     }
-    this.set_main_widget (entry, false);
+
+    if (this.removable) {
+      var delete_button = new Gtk.Button.from_icon_name ("user-trash-symbolic");
+      delete_button.tooltip_text = _("Delete field");
+      this.bind_property ("is-empty", delete_button, "sensitive", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+      delete_button.clicked.connect ((b) => { this.remove (); });
+
+      row.add_suffix (delete_button);
+    }
 
     this.is_empty = (text == "");
-    entry.changed.connect (() => {
-      this.is_empty = (entry.text == "");
+    row.changed.connect (() => {
+      this.is_empty = (row.text == "");
     });
 
-    return entry;
+    this.listbox.append (row);
+
+    return row;
   }
 
   // Adds an extra row for a type combo, to choose between e.g. "Home" or "Work"
@@ -526,7 +534,7 @@ public class Contacts.EditorProperty : Object, ListModel {
     var box = new EditorPropertyRow ("email-addresses");
     box.sensitive = this.writeable;
 
-    var entry = box.set_main_entry (details.value, _("Add email"));
+    var entry = box.set_main_entry_row (details.value, _("Add email"));
     entry.set_input_purpose (Gtk.InputPurpose.EMAIL);
     entry.changed.connect (() => {
       details.value = entry.get_text ();
@@ -553,7 +561,7 @@ public class Contacts.EditorProperty : Object, ListModel {
     var box = new EditorPropertyRow ("phone-numbers");
     box.sensitive = this.writeable;
 
-    var entry = box.set_main_entry (details.value, _("Add phone number"));
+    var entry = box.set_main_entry_row (details.value, _("Add phone number"));
     entry.set_input_purpose (Gtk.InputPurpose.PHONE);
     entry.changed.connect (() => {
       details.value = entry.text;
@@ -581,7 +589,7 @@ public class Contacts.EditorProperty : Object, ListModel {
     var box = new EditorPropertyRow ("urls");
     box.sensitive = this.writeable;
 
-    var entry = box.set_main_entry (details.value, _("https://example.com"));
+    var entry = box.set_main_entry_row (details.value, _("https://example.com"));
     entry.set_input_purpose (Gtk.InputPurpose.URL);
     entry.changed.connect (() => {
       details.value = entry.get_text ();
@@ -597,7 +605,7 @@ public class Contacts.EditorProperty : Object, ListModel {
     var box = new EditorPropertyRow ("nickname");
     box.sensitive = this.writeable;
 
-    var entry = box.set_main_entry (details.nickname, _("Nickname"));
+    var entry = box.set_main_entry_row (details.nickname, _("Nickname"));
     entry.set_input_purpose (Gtk.InputPurpose.NAME);
     entry.changed.connect (() => {
       details.nickname = entry.text;
