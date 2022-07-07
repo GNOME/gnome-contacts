@@ -153,27 +153,31 @@ public class Contacts.App : Adw.Application {
   }
 
   public void show_about () {
-    string[] authors = {
+    string[] developers = {
       "Alexander Larsson <alexl@redhat.com>",
       "Erick Pérez Castellanos <erick.red@gmail.com>",
       "Niels De Graef <nielsdegraef@gmail.com>",
       "Julian Sparber <jsparber@gnome.org>"
     };
-    string[] artists = {
+    string[] designers = {
       "Allan Day <allanpday@gmail.com>"
     };
-    Gtk.show_about_dialog (this.window,
-                           "artists", artists,
-                           "authors", authors,
-                           "translator-credits", _("translator-credits"),
-                           "title", _("About GNOME Contacts"),
-                           "comments", _("Contact Management Application"),
-                           "copyright", _("© 2011 Red Hat, Inc.\n© 2011-2020 The Contacts Developers"),
-                           "license-type", Gtk.License.GPL_2_0,
-                           "logo-icon-name", Config.APP_ID,
-                           "version", Config.PACKAGE_VERSION,
-                           "website", "https://wiki.gnome.org/Apps/Contacts",
-                           "wrap-license", true);
+
+    var about = new Adw.AboutWindow () {
+        transient_for = this.window,
+        application_name = Environment.get_application_name (),
+        application_icon = Config.APP_ID,
+        developer_name = _("The GNOME Project"),
+        version = Config.PACKAGE_VERSION,
+        website = "https://wiki.gnome.org/Apps/Contacts",
+        issue_url = "https://gitlab.gnome.org/GNOME/gnome-contacts/-/issues/new",
+        developers = developers,
+        designers = designers,
+        copyright = _("© 2011 Red Hat, Inc.\n© 2011-2020 The Contacts Developers"),
+        license_type = Gtk.License.GPL_2_0
+      };
+
+      about.present ();
   }
 
   public async void show_by_email (string email_address) {
