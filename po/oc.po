@@ -6,334 +6,1062 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: console main\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/console/issues\n"
-"POT-Creation-Date: 2022-02-16 17:44+0000\n"
-"PO-Revision-Date: 2022-03-16 15:13+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
+"POT-Creation-Date: 2022-07-16 11:08+0000\n"
+"PO-Revision-Date: 2022-07-17 17:29+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Occitan <totenoc@gmail.com>\n"
 "Language: oc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Poedit 3.1.1\n"
 
-#: data/org.gnome.Console.desktop.in.in:3
-#: data/org.gnome.Console.metainfo.xml.in.in:8 src/kgx-application.h:46
-msgid "Console"
-msgstr "Consòla"
+#: data/org.gnome.Contacts.appdata.xml.in.in:6
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:185
+#: src/contacts-main-window.vala:208 src/main.vala:26
+msgid "Contacts"
+msgstr "Contactes"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:7
+#: data/org.gnome.Contacts.desktop.in.in:4
+msgid "A contacts manager for GNOME"
+msgstr "Un gestionari de contactes per GNOME"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:9
+msgid ""
+"Contacts keeps and organize your contacts information. You can create, edit, "
+"delete and link together pieces of information about your contacts. Contacts "
+"aggregates the details from all your sources providing a centralized place "
+"for managing your contacts."
+msgstr ""
+"Contacts consèrva e organiza las informacions ligadas a vòstres contactes. "
+"Podètz crear, editar, suprimir e religar d'informacions a prepaus de vòstres "
+"contactes. Contacts regropa los detalhs que provenon de totas vòstras fonts, "
+"e vos provesís atal un endreit centralizat per gerir vòstres contactes."
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:15
+msgid ""
+"Contacts will also integrate with online address books and automatically "
+"link contacts from different online sources."
+msgstr ""
+"Contacts permet tanben l'integracion de quasernets d'adreças en linha e "
+"religa automaticament los contactes de diferentas fonts en linha."
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:694 src/contacts-app.vala:170
+msgid "The GNOME Project"
+msgstr "Lo projècte GNOME"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.Console.desktop.in.in:8
-msgid "command;prompt;cmd;commandline;run;shell;terminal;kgx;kings cross;"
+#: data/org.gnome.Contacts.desktop.in.in:6
+msgid "friends;address book;"
+msgstr "amics;quasernet d'adreças;libret;"
+
+#: data/gtk/help-overlay.ui:7
+msgctxt "shortcut window"
+msgid "Overview"
+msgstr "Apercebut"
+
+#: data/gtk/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "Help"
+msgstr "Ajuda"
+
+#: data/gtk/help-overlay.ui:17
+msgctxt "shortcut window"
+msgid "Open menu"
+msgstr "Dobrir lo menú"
+
+#: data/gtk/help-overlay.ui:23
+msgctxt "shortcut window"
+msgid "Create a new contact"
+msgstr "Crear un contacte novèl"
+
+#: data/gtk/help-overlay.ui:29
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Recercar"
+
+#: data/gtk/help-overlay.ui:35
+msgctxt "shortcut window"
+msgid "Shortcut list"
+msgstr "Lista d'acorchis"
+
+#: data/gtk/help-overlay.ui:41
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Quitar"
+
+#: data/ui/contacts-avatar-selector.ui:7
+msgid "Select a new avatar"
+msgstr "Seleccionar un avatar novèl"
+
+#: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
+#: src/contacts-editor-property.vala:79
+msgid "Cancel"
+msgstr "Anullar"
+
+#: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
+#: data/ui/contacts-main-window.ui:268 src/contacts-main-window.vala:217
+msgid "Done"
+msgstr "Acabat"
+
+#: data/ui/contacts-avatar-selector.ui:69
+msgid "Take a Picture…"
+msgstr "Prendre un imatge…"
+
+#: data/ui/contacts-avatar-selector.ui:76
+msgid "Select a File…"
+msgstr "Seleccionar un fichièr…"
+
+#: data/ui/contacts-contact-pane.ui:14
+msgid "Select a Contact"
+msgstr "Seleccionar un contacte"
+
+#: data/ui/contacts-editor-menu.ui:11
+msgid "Change Addressbook"
+msgstr "Cambiar lo quasernet d'adreças"
+
+#: data/ui/contacts-link-suggestion-grid.ui:51
+msgid "Link Contacts"
+msgstr "Ligar los contactes"
+
+#: data/ui/contacts-linked-personas-dialog.ui:9
+msgid "Linked Accounts"
+msgstr "Comptes ligats"
+
+#: data/ui/contacts-linked-personas-dialog.ui:42
+msgid "You can link contacts by selecting them from the contacts list"
 msgstr ""
-"comanda;prompt;convit;cmd;linha;executar;shell;run;terminal;kgx;kings cross;"
-"linha de comanda;consòla;"
+"Podètz ligar manualament de contactes en los seleccionant dins la lista de "
+"contactes"
 
-#: data/org.gnome.Console.desktop.in.in:21
-msgid "New Window"
-msgstr "Fenèstra novèla"
+#: data/ui/contacts-main-window.ui:5
+msgid "List Contacts By:"
+msgstr "Ordenar los contactes per :"
 
-#: data/org.gnome.Console.desktop.in.in:27 src/kgx-window.ui:168
-msgid "New Tab"
-msgstr "Onglet novèl"
+#: data/ui/contacts-main-window.ui:7
+msgid "First Name"
+msgstr "Pichon nom"
 
-#: data/org.gnome.Console.metainfo.xml.in.in:9 src/kgx-application.c:568
-msgid "Terminal Emulator"
-msgstr "Emulator de Terminal"
+#: data/ui/contacts-main-window.ui:12
+msgid "Surname"
+msgstr "Nom d’ostal"
 
-#: data/org.gnome.Console.metainfo.xml.in.in:11
-msgid "A simple user-friendly terminal emulator for the GNOME desktop."
-msgstr "Un emulator de terminal simple e de bon utilizaire pel burèu GNOME."
+#: data/ui/contacts-main-window.ui:19
+msgid "Change Address Book…"
+msgstr "Cambiar lo quasernet d'adreças…"
 
-#: data/org.gnome.Console.metainfo.xml.in.in:30
-msgid "Terminal window"
-msgstr "Fenèstra de terminal"
+#: data/ui/contacts-main-window.ui:23
+msgid "Online Accounts <sup>↗</sup>"
+msgstr "Comptes en linha <sup>↗</sup>"
 
-#: data/org.gnome.Console.metainfo.xml.in.in:104
-msgid "Zander Brown"
-msgstr "Zander Brown"
+#: data/ui/contacts-main-window.ui:30
+msgid "Keyboard Shortcuts"
+msgstr "Acorchis de clavièr"
 
-#: src/help-overlay.ui:13
-msgctxt "shortcut window"
-msgid "Application"
-msgstr "Aplicacion"
+#: data/ui/contacts-main-window.ui:34
+msgid "Help"
+msgstr "Ajuda"
 
-#: src/help-overlay.ui:19
-msgctxt "shortcut window"
-msgid "New Window"
-msgstr "Novèla fenèstra"
+#: data/ui/contacts-main-window.ui:38
+msgid "About Contacts"
+msgstr "A prepaus de Contactes"
 
-#: src/help-overlay.ui:26
-msgctxt "shortcut window"
-msgid "Terminal"
-msgstr "Terminal"
+#: data/ui/contacts-main-window.ui:82
+msgid "Create new contact"
+msgstr "Crear un contacte novèl"
 
-#: src/help-overlay.ui:32
-msgctxt "shortcut window"
-msgid "Find"
-msgstr "Trobar"
-
-#: src/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Copy"
-msgstr "Copiar"
-
-#: src/help-overlay.ui:46
-msgctxt "shortcut window"
-msgid "Paste"
-msgstr "Pegar"
-
-#: src/help-overlay.ui:53
-msgctxt "shortcut window"
-msgid "Tabs"
-msgstr "Onglets"
-
-#: src/help-overlay.ui:59
-msgctxt "shortcut window"
-msgid "New Tab"
-msgstr "Novèl onglet"
-
-#: src/help-overlay.ui:66
-msgctxt "shortcut window"
-msgid "Close Tab"
-msgstr "Tampar onglet"
-
-#: src/help-overlay.ui:73
-msgctxt "shortcut window"
-msgid "Next Tab"
-msgstr "Onglet seguent"
-
-#: src/help-overlay.ui:80
-msgctxt "shortcut window"
-msgid "Previous Tab"
-msgstr "Onglet precedent"
-
-#: src/help-overlay.ui:87
-msgctxt "shortcut window"
-msgid "Switch to Tab"
-msgstr "Bascular d'onglet"
-
-#. Translators: The leading # is intentional, the initial %s is the
-#. version of KGX itself, the latter format is the VTE version
-#: src/kgx-application.c:540
-#, c-format
-msgid "# KGX %s using VTE %u.%u.%u %s\n"
-msgstr "# KGX %s en utilizant VTE %u.%u.%u %s\n"
-
-#. Translators: %s is the year range
-#: src/kgx-application.c:552 src/kgx-window.c:525
-#, c-format
-msgid "© %s Zander Brown"
-msgstr "© %s Zander Brown"
-
-#: src/kgx-application.c:566 src/kgx-window.ui:115
-msgid "King’s Cross"
-msgstr "King’s Cross"
-
-#: src/kgx-application.c:570
-msgid "GPL 3.0 or later"
-msgstr "GPL 3.0 o superiora"
-
-#: src/kgx-application.c:701
-msgid "Execute the argument to this option inside the terminal"
-msgstr "Executa lo paramètre d'aquesta opcion dins lo terminal"
-
-#: src/kgx-application.c:710
-msgid "Set the working directory"
-msgstr "Definís lo repertòri de trabalh"
-
-#. Translators: Placeholder of for a given directory
-#: src/kgx-application.c:712
-msgid "DIRNAME"
-msgstr "REPTRABALH"
-
-#: src/kgx-application.c:720
-msgid "Wait until the child exits (TODO)"
-msgstr "Esperar fins que l'enfant quite (TODO)"
-
-#: src/kgx-application.c:729
-msgid "Set the initial window title"
-msgstr "Definir lo títol de la fenèstra iniciala"
-
-#: src/kgx-application.c:738
-msgid "ADVANCED: Set the shell to launch"
-msgstr "AVANÇAT : definir lo shell d’aviar"
-
-#: src/kgx-application.c:747
-msgid "ADVANCED: Set the scrollback length"
-msgstr "AVANÇAT : definir la longor del desplaçament enrèire"
-
-#: src/kgx-application.h:44
-msgid "Console (Development)"
-msgstr "Consòla (Desvolopament)"
-
-#: src/kgx-close-dialog.c:50
-msgid "Close Window?"
-msgstr "Tampar la fenèstra ?"
-
-#: src/kgx-close-dialog.c:51
-msgid ""
-"Some commands are still running, closing this window will kill them and may "
-"lead to unexpected outcomes"
-msgstr ""
-"D’unas comanda son encara en execucion, tampar aquesta fenèstra las tuarà e "
-"pòt menar a de sortidas inesperadas."
-
-#: src/kgx-close-dialog.c:56
-msgid "Close Tab?"
-msgstr "Tampar l'onglet ?"
-
-#: src/kgx-close-dialog.c:57
-msgid ""
-"Some commands are still running, closing this tab will kill them and may "
-"lead to unexpected outcomes"
-msgstr ""
-"D’unas comanda son encara en execucion, tampar aqueste onglet las tuarà e "
-"pòt menar a de sortidas inesperadas."
-
-#: src/kgx-close-dialog.ui:24 src/kgx-terminal.c:780
-msgid "_Cancel"
-msgstr "_Anullar"
-
-#: src/kgx-close-dialog.ui:32
-msgid "C_lose"
-msgstr "T_ampar"
-
-#: src/kgx-pages.ui:47
-msgid "_Detach Tab"
-msgstr "_Destacar l’onglet"
-
-#: src/kgx-pages.ui:53
-msgid "_Close"
-msgstr "_Tampar"
-
-#. translators: <b> </b> marks the text as bold, ensure they are
-#. matched please!
-#: src/kgx-simple-tab.c:168
-#, c-format
-msgid "<b>Read Only</b> — Command exited with code %i"
-msgstr "<b>Lectura sòla</b> — La comanda a terminat amb lo còdi %i"
-
-#. translators: <b> </b> marks the text as bold, ensure they are
-#. matched please!
-#: src/kgx-simple-tab.c:177
-msgid "<b>Read Only</b> — Command exited"
-msgstr "<b>Lectura sola</b> — La comanda a terminat"
-
-#. translators: <b> </b> marks the text as bold, ensure they are
-#. matched please!
-#: src/kgx-simple-tab.c:210
-#, c-format
-msgid "<b>Failed to start</b> — %s"
-msgstr "<b>Lançament pas reüssit</b> — %s"
-
-#: src/kgx-tab.c:1160
-msgid "Command completed"
-msgstr "Comanda acabada"
-
-#: src/kgx-tab-button.ui:5
-msgid "View Open Tabs"
-msgstr "Afichar los onglets dobèrts"
-
-#: src/kgx-terminal.c:772
-msgid "You are pasting a command that runs as an administrator"
-msgstr "Sètz a pegar una comanda que s'executa coma administrator"
-
-#. TRANSLATORS: %s is the command being pasted
-#: src/kgx-terminal.c:775
-#, c-format
-msgid ""
-"Make sure you know what the command does:\n"
-"%s"
-msgstr ""
-"Asseguratz-vos de saber çò que la comanda fa :\n"
-"%s"
-
-#: src/kgx-terminal.c:783 src/menus.ui:24
-msgid "_Paste"
-msgstr "_Pegar"
-
-#: src/kgx-theme-switcher.ui:18
-msgid "Use System Colors"
-msgstr "Utilizar la poliça del sistèma"
-
-#: src/kgx-theme-switcher.ui:47
-msgid "Use Light Colors"
-msgstr "Utilizar las colors claras"
-
-#: src/kgx-theme-switcher.ui:76
-msgid "Use Dark Colors"
-msgstr "Utilizar las colors escuras"
-
-#. Translators: Credit yourself here
-#: src/kgx-window.c:531
-msgid "translator-credits"
-msgstr "Quentin PAGÈS"
-
-#: src/kgx-window.ui:26
-msgid "Shrink Text"
-msgstr "Reduire lo tèxt"
-
-#: src/kgx-window.ui:39
-msgid "Reset Size"
-msgstr "Reïnicializar la talha"
-
-#: src/kgx-window.ui:52
-msgid "Enlarge Text"
-msgstr "Agrandir lo tèxt"
-
-#: src/kgx-window.ui:74
-msgid "_New Window"
-msgstr "Fenèstra _novèla"
-
-#: src/kgx-window.ui:86
-msgid "_Keyboard Shortcuts"
-msgstr "Acorchis de _clavièr"
-
-#: src/kgx-window.ui:93
-msgid "_About Console"
-msgstr "_A prepaus de Consòla"
-
-#: src/kgx-window.ui:94
-msgid "About this Program"
-msgstr "A prepaus d'aqueste programa"
-
-#: src/kgx-window.ui:123
-msgid "Find in Terminal"
-msgstr "Trobar dins un terminal"
-
-#: src/kgx-window.ui:141
+#: data/ui/contacts-main-window.ui:92
 msgid "Menu"
 msgstr "Menú"
 
-#: src/menus.ui:7
-msgid "_Open Link"
-msgstr "_Dobrir lo ligam"
+#: data/ui/contacts-main-window.ui:99
+msgid "Select Items"
+msgstr "Seleccionar los elements"
 
-#: src/menus.ui:12
-msgid "Copy _Link"
-msgstr "Copiar l’adreça del _ligam"
+#: data/ui/contacts-main-window.ui:107
+msgid "Cancel Selection"
+msgstr "Anullar la seleccion"
 
-#: src/menus.ui:19
-msgid "_Copy"
-msgstr "_Copiar"
+#: data/ui/contacts-main-window.ui:134
+msgid "Loading"
+msgstr "Cargament"
 
-#: src/menus.ui:29
-msgid "_Select All"
-msgstr "_Tot seleccionar"
+#: data/ui/contacts-main-window.ui:145
+msgid "Type to search"
+msgstr "Picatz per recercar"
 
-#: src/menus.ui:36
-msgid "Show in _Files"
-msgstr "Afichar dins _Fichièrs"
+#. Link refers to the verb, from linking contacts together
+#: data/ui/contacts-main-window.ui:164
+msgid "Link"
+msgstr "Ligam"
 
-#: nautilus/kgx-nautilus-menu-item.c:120
-msgid "Open in Co_nsole (Devel)"
-msgstr "Dobrir dins Co_nsòla (Devel)"
+#: data/ui/contacts-main-window.ui:171
+msgid "Remove"
+msgstr "Suprimir"
 
-#: nautilus/kgx-nautilus-menu-item.c:122
-msgid "Open in Co_nsole"
-msgstr "Dobrir dins Co_nsòla"
+#: data/ui/contacts-main-window.ui:215
+msgid "Back"
+msgstr "Tornar"
 
-#: nautilus/kgx-nautilus-menu-item.c:124
-msgid "Start a terminal session for this location"
-msgstr "Aviar un terminal d’aqueste emplaçament"
+#: data/ui/contacts-main-window.ui:229 src/contacts-avatar-selector.vala:199
+#: src/contacts-main-window.vala:508
+msgid "_Cancel"
+msgstr "_Anullar"
+
+#: data/ui/contacts-main-window.ui:252
+msgid "Edit Contact"
+msgstr "Modificar lo contacte"
+
+#: data/ui/contacts-main-window.ui:259
+msgid "Delete Contact"
+msgstr "Suprimir lo contacte"
+
+#: data/ui/contacts-setup-window.ui:15
+msgid "Contacts Setup"
+msgstr "Configuracion de Contactes"
+
+#: data/ui/contacts-setup-window.ui:20
+msgid "_Quit"
+msgstr "_Quitar"
+
+#: data/ui/contacts-setup-window.ui:22
+msgid "Cancel Setup And Quit"
+msgstr "Anullar la configuracion iniciala e quitar"
+
+#: data/ui/contacts-setup-window.ui:29
+msgid "_Done"
+msgstr "_Acabar"
+
+#. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
+#: data/ui/contacts-setup-window.ui:31
+msgid "Complete setup"
+msgstr "Terminar la configuracion"
+
+#: data/ui/contacts-setup-window.ui:42
+msgid "Welcome"
+msgstr "La benvenguda"
+
+#: data/ui/contacts-setup-window.ui:43
+msgid ""
+"Please select your main address book: this is where new contacts will be "
+"added. If you keep your contacts in an online account, you can add them "
+"using the online accounts settings."
+msgstr ""
+
+#: src/contacts-addressbook-dialog.vala:28
+msgid "Change Address Book"
+msgstr "Cambiar lo quasernet d'adreças"
+
+#: src/contacts-addressbook-dialog.vala:32
+msgid "Change"
+msgstr "Cambiar"
+
+#: src/contacts-addressbook-dialog.vala:59
+msgid ""
+"New contacts will be added to the selected address book.\n"
+"You are able to view and edit contacts from other address books."
+msgstr ""
+"Los contactes novèls seràn aponduts al quasernet d'adreça seleccionat.\n"
+"Avètz la possibilitat de percórrer e modificar los contactes de vòstre "
+"quasernet d'adreça."
+
+#: src/contacts-app.vala:45
+msgid "Show contact with this email address"
+msgstr "Afichar lo contacte que possedís aquesta adreça electronica"
+
+#: src/contacts-app.vala:46
+msgid "Show contact with this individual id"
+msgstr "Afichar lo contacte que possedís aqueste identificant individual"
+
+#: src/contacts-app.vala:47
+msgid "Show contacts with the given filter"
+msgstr "Afichar los contactes amb lo filtre donat"
+
+#: src/contacts-app.vala:48
+msgid "Show the current version of Contacts"
+msgstr "Afichar la version actuala de Contactes"
+
+#: src/contacts-app.vala:110 src/contacts-app.vala:190
+msgid "Contact not found"
+msgstr "Contacte introbable"
+
+#: src/contacts-app.vala:111
+#, c-format
+msgid "No contact with id %s found"
+msgstr "Cap de contacte amb l'identificant %s pas trobat"
+
+#: src/contacts-app.vala:112 src/contacts-app.vala:192
+#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:136
+msgid "_Close"
+msgstr "_Tampar"
+
+#: src/contacts-app.vala:176
+msgid ""
+"© 2011 Red Hat, Inc.\n"
+"© 2011-2020 The Contacts Developers"
+msgstr ""
+"© 2011 Red Hat, Inc.\n"
+"© 2011-2020 Los desvolopaires de Contactes"
+
+#: src/contacts-app.vala:191
+#, c-format
+msgid "No contact with email address %s found"
+msgstr "Cap de contacte amb l'adreça electronica %s pas trobat"
+
+#: src/contacts-avatar-selector.vala:126
+msgid "No Camera Detected"
+msgstr "Cap d’aparelh de fòto pas detectat"
+
+#: src/contacts-avatar-selector.vala:196
+msgid "Browse for more pictures"
+msgstr "Percórrer per mai d'imatges"
+
+#: src/contacts-avatar-selector.vala:199
+msgid "_Open"
+msgstr "_Dobrir"
+
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+msgid "Failed to set avatar."
+msgstr "Fracàs de l’apondon de l’avatar."
+
+#: src/contacts-contact-editor.vala:57
+msgid "Change avatar"
+msgstr "Cambiar d'avatar"
+
+#: src/contacts-contact-editor.vala:93
+msgid "Add name"
+msgstr "Apondre un nom"
+
+#: src/contacts-contact-list.vala:106
+msgid "Favorites"
+msgstr "Favorits"
+
+#: src/contacts-contact-list.vala:108 src/contacts-contact-list.vala:114
+msgid "All Contacts"
+msgstr "Totes los contactes"
+
+#: src/contacts-contact-pane.vala:230
+msgid "No primary addressbook configured"
+msgstr "Cap de quasernet d'adreças principal de configurat"
+
+#: src/contacts-contact-pane.vala:240
+#, c-format
+msgid "Unable to create new contacts: %s"
+msgstr "Impossible de crear los novèls contacts : %s"
+
+#. If we got here, we couldn't find the individual
+#: src/contacts-contact-pane.vala:255
+msgid "Unable to find newly created contact"
+msgstr "Impossible de trobar los contacts aponduts recentament"
+
+#. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
+#: src/contacts-contact-sheet.vala:235
+#, c-format
+msgid "%s at %s"
+msgstr "%s en çò de %s"
+
+#: src/contacts-contact-sheet.vala:267
+#, c-format
+msgid "Send an email to %s"
+msgstr "Enviar un corrièl a %s"
+
+#: src/contacts-contact-sheet.vala:296
+msgid "Start a call"
+msgstr "Apelar"
+
+#: src/contacts-contact-sheet.vala:356
+msgid "Visit website"
+msgstr "Visitar lo site Web"
+
+#: src/contacts-contact-sheet.vala:406
+msgid "Their birthday is today! 🎉"
+msgstr "Son anniversari es uèi !"
+
+#: src/contacts-contact-sheet.vala:451
+msgid "Show on the map"
+msgstr "Veire sus la carta"
+
+#: src/contacts-delete-operation.vala:36
+#, c-format
+msgid "Deleting %d contact"
+msgid_plural "Deleting %d contacts"
+msgstr[0] "Supression de %d contacte"
+msgstr[1] "Supression de %d contactes"
+
+#: src/contacts-editor-persona.vala:83
+msgid "Show More"
+msgstr "Ne veire mai"
+
+#. Create grid and labels
+#: src/contacts-editor-property.vala:64
+msgid "Day"
+msgstr "Jorn"
+
+#: src/contacts-editor-property.vala:68
+msgid "Month"
+msgstr "Mes"
+
+#: src/contacts-editor-property.vala:72
+msgid "Year"
+msgstr "Annada"
+
+#: src/contacts-editor-property.vala:77
+msgid "Change Birthday"
+msgstr "Cambiar l’anniversari"
+
+#: src/contacts-editor-property.vala:78
+msgid "Set"
+msgstr "Definir"
+
+#: src/contacts-editor-property.vala:147
+msgid "Street"
+msgstr "Carrièra"
+
+#: src/contacts-editor-property.vala:147
+msgid "Extension"
+msgstr "Extension"
+
+#: src/contacts-editor-property.vala:147
+msgid "City"
+msgstr "Vila"
+
+#: src/contacts-editor-property.vala:147
+msgid "State/Province"
+msgstr "Estat/província"
+
+#: src/contacts-editor-property.vala:147
+msgid "Zip/Postal Code"
+msgstr "Còdi postal"
+
+#: src/contacts-editor-property.vala:147
+msgid "PO box"
+msgstr "Bóstia postala"
+
+#: src/contacts-editor-property.vala:147
+msgid "Country"
+msgstr "País"
+
+#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
+#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:556
+msgid "Role"
+msgstr "Ròtle"
+
+#: src/contacts-editor-property.vala:212
+msgid "Organisation"
+msgstr "Organizacion"
+
+#: src/contacts-editor-property.vala:331 src/contacts-editor-property.vala:358
+#: src/contacts-editor-property.vala:688
+msgid "Delete field"
+msgstr "Suprimir lo camp"
+
+#: src/contacts-editor-property.vala:381
+msgid "Label"
+msgstr "Apelacion"
+
+#: src/contacts-editor-property.vala:537
+msgid "Add email"
+msgstr "Apondre un mail"
+
+#: src/contacts-editor-property.vala:564
+msgid "Add phone number"
+msgstr "Apondre un numèro de telefòn"
+
+#: src/contacts-editor-property.vala:592
+msgid "https://example.com"
+msgstr "https://exemple.com"
+
+#: src/contacts-editor-property.vala:608 src/contacts-utils.vala:551
+msgid "Nickname"
+msgstr "Escais"
+
+#: src/contacts-editor-property.vala:661 src/contacts-editor-property.vala:697
+msgid "Set Birthday"
+msgstr "Definir l’anniversari"
+
+#. Special-case the local address book
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:376
+msgid "Local Address Book"
+msgstr "Quasernet d'adreças local"
+
+#: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
+#: src/contacts-utils.vala:436
+msgid "Google"
+msgstr "Google"
+
+#: src/contacts-esd-setup.vala:167
+msgid "Local Contact"
+msgstr "Contacte local"
+
+#: src/contacts-im-service.vala:30
+msgid "AOL Instant Messenger"
+msgstr "AOL Instant Messenger"
+
+#: src/contacts-im-service.vala:31
+msgid "Facebook"
+msgstr "Facebook"
+
+#: src/contacts-im-service.vala:32
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: src/contacts-im-service.vala:33
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: src/contacts-im-service.vala:34
+msgid "Novell Groupwise"
+msgstr "Novell GroupWise"
+
+#: src/contacts-im-service.vala:35
+msgid "ICQ"
+msgstr "ICQ"
+
+#: src/contacts-im-service.vala:36
+msgid "IRC"
+msgstr "IRC"
+
+#: src/contacts-im-service.vala:37
+msgid "Jabber"
+msgstr "Jabber"
+
+#: src/contacts-im-service.vala:38
+msgid "Livejournal"
+msgstr "Livejournal"
+
+#: src/contacts-im-service.vala:39
+msgid "Local network"
+msgstr "Ret locala"
+
+#: src/contacts-im-service.vala:40
+msgid "Windows Live Messenger"
+msgstr "Windows Live Messenger"
+
+#: src/contacts-im-service.vala:41
+msgid "MySpace"
+msgstr "MySpace"
+
+#: src/contacts-im-service.vala:42
+msgid "MXit"
+msgstr "MXit"
+
+#: src/contacts-im-service.vala:43
+msgid "Napster"
+msgstr "Napster"
+
+#: src/contacts-im-service.vala:44
+msgid "Ovi Chat"
+msgstr "Ovi Chat"
+
+#: src/contacts-im-service.vala:45
+msgid "Tencent QQ"
+msgstr "Tencent QQ"
+
+#: src/contacts-im-service.vala:46
+msgid "IBM Lotus Sametime"
+msgstr "IBM Lotus Sametime"
+
+#: src/contacts-im-service.vala:47
+msgid "SILC"
+msgstr "SILC"
+
+#: src/contacts-im-service.vala:48
+msgid "sip"
+msgstr "sip"
+
+#: src/contacts-im-service.vala:49
+msgid "Skype"
+msgstr "Skype"
+
+#: src/contacts-im-service.vala:50
+msgid "Telephony"
+msgstr "Telephony"
+
+#: src/contacts-im-service.vala:51
+msgid "Trepia"
+msgstr "Trepia"
+
+#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
+msgid "Yahoo! Messenger"
+msgstr "Yahoo! Messenger"
+
+#: src/contacts-im-service.vala:54
+msgid "Zephyr"
+msgstr "Zephyr"
+
+#: src/contacts-link-operation.vala:38
+#, c-format
+msgid "Linked %d contact"
+msgid_plural "Linked %d contacts"
+msgstr[0] "%d contacte ligat"
+msgstr[1] "%d contactes ligats"
+
+#: src/contacts-link-suggestion-grid.vala:49
+#, c-format
+msgid "Is this the same person as %s from %s?"
+msgstr "Es aquesta persona la meteissa que %s de %s ?"
+
+#: src/contacts-link-suggestion-grid.vala:52
+#, c-format
+msgid "Is this the same person as %s?"
+msgstr "Es la meteissa persona que %s ?"
+
+#: src/contacts-linked-personas-dialog.vala:70
+msgid "Unlink"
+msgstr "Desligar"
+
+#: src/contacts-main-window.vala:187
+#, c-format
+msgid "%llu Selected"
+msgid_plural "%llu Selected"
+msgstr[0] "%llu seleccionat"
+msgstr[1] "%llu seleccionats"
+
+#: src/contacts-main-window.vala:217
+msgid "_Add"
+msgstr "_Apondre"
+
+#: src/contacts-main-window.vala:247
+#, c-format
+msgid "Editing %s"
+msgstr "Modificacion de %s"
+
+#: src/contacts-main-window.vala:267
+#, c-format
+msgid "%d Selected"
+msgid_plural "%d Selected"
+msgstr[0] "%d seleccionat"
+msgstr[1] "%d seleccionats"
+
+#: src/contacts-main-window.vala:287 src/contacts-main-window.vala:480
+#: src/contacts-main-window.vala:519
+msgid "_Undo"
+msgstr "_Anullar"
+
+#: src/contacts-main-window.vala:354
+msgid "New Contact"
+msgstr "Contact novèl"
+
+#: src/contacts-main-window.vala:444
+msgid "Unmark as favorite"
+msgstr "Tirar dels favorits"
+
+#: src/contacts-main-window.vala:446
+msgid "Mark as favorite"
+msgstr "Marcar coma favorit"
+
+#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:239
+msgid "Other"
+msgstr "Autre"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:187 src/contacts-typeset.vala:208
+#: src/contacts-typeset.vala:234 src/contacts-typeset.vala:236
+msgid "Home"
+msgstr "Domicili"
+
+#: src/contacts-typeset.vala:188 src/contacts-typeset.vala:209
+#: src/contacts-typeset.vala:228 src/contacts-typeset.vala:230
+msgid "Work"
+msgstr "Burèu"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:207
+msgid "Personal"
+msgstr "Personal"
+
+#. List most specific first, always in upper case
+#: src/contacts-typeset.vala:227
+msgid "Assistant"
+msgstr "Assistent"
+
+#: src/contacts-typeset.vala:229
+msgid "Work Fax"
+msgstr "Fax professional"
+
+#: src/contacts-typeset.vala:231
+msgid "Callback"
+msgstr ""
+
+#: src/contacts-typeset.vala:232
+msgid "Car"
+msgstr "Veitura"
+
+#: src/contacts-typeset.vala:233
+msgid "Company"
+msgstr "Societat"
+
+#: src/contacts-typeset.vala:235
+msgid "Home Fax"
+msgstr "Fax personal"
+
+#: src/contacts-typeset.vala:237
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/contacts-typeset.vala:238
+msgid "Mobile"
+msgstr "Mobil"
+
+#: src/contacts-typeset.vala:240
+msgid "Fax"
+msgstr "Fax"
+
+#: src/contacts-typeset.vala:241
+msgid "Pager"
+msgstr "Bipador"
+
+#: src/contacts-typeset.vala:242
+msgid "Radio"
+msgstr "Ràdio"
+
+#: src/contacts-typeset.vala:243
+msgid "Telex"
+msgstr "Telex"
+
+#. To translators: TTY is Teletypewriter
+#: src/contacts-typeset.vala:245
+msgid "TTY"
+msgstr "TTY"
+
+#: src/contacts-unlink-operation.vala:37
+msgid "Unlinking contacts"
+msgstr ""
+
+#: src/contacts-utils.vala:540
+msgid "Alias"
+msgstr ""
+
+#: src/contacts-utils.vala:541
+msgid "Avatar"
+msgstr "Avatar"
+
+#: src/contacts-utils.vala:542
+msgid "Birthday"
+msgstr "Anniversari"
+
+#: src/contacts-utils.vala:543
+msgid "Calendar event"
+msgstr "Eveniment calendièr"
+
+#: src/contacts-utils.vala:544
+msgid "Email address"
+msgstr "Adreça de corrièl"
+
+#: src/contacts-utils.vala:545
+msgid "Full name"
+msgstr "Nom complet"
+
+#: src/contacts-utils.vala:546
+msgid "Gender"
+msgstr "Genre"
+
+#: src/contacts-utils.vala:547
+msgid "Group"
+msgstr "Grop"
+
+#: src/contacts-utils.vala:548
+msgid "Instant messaging"
+msgstr "Messatjariá instantanèa"
+
+#: src/contacts-utils.vala:549
+msgid "Favourite"
+msgstr "Favorit"
+
+#: src/contacts-utils.vala:550
+msgid "Local ID"
+msgstr "ID local"
+
+#: src/contacts-utils.vala:552
+msgid "Note"
+msgstr "Nòta"
+
+#: src/contacts-utils.vala:553
+msgid "Phone number"
+msgstr "Numèro de telefòn"
+
+#: src/contacts-utils.vala:554
+msgid "Address"
+msgstr "Adreça"
+
+#. TRANSLATORS: This is a field which contains a name decomposed in several
+#. parts, rather than a single freeform string for the full name
+#: src/contacts-utils.vala:559
+msgid "Structured name"
+msgstr "Nom estructurat"
+
+#: src/contacts-utils.vala:560
+msgid "Website"
+msgstr "Site Web"
+
+#: src/contacts-utils.vala:561
+msgid "Web service"
+msgstr "Servici web"
+
+#: src/org.gnome.Contacts.gschema.xml:6
+msgid "First-time setup done."
+msgstr "Configuracion iniciala acabada."
+
+#: src/org.gnome.Contacts.gschema.xml:7
+msgid "Set to true after the user has run the first-time setup wizard."
+msgstr ""
+"Definit a « true » quand l'utilizaire a aviat l'assistent de configuracion "
+"iniciala."
+
+#: src/org.gnome.Contacts.gschema.xml:11
+msgid "Sort contacts on surname."
+msgstr "Ordenar los contactes per escais-nom."
+
+#: src/org.gnome.Contacts.gschema.xml:12
+msgid ""
+"If this is set to true, the list of contacts will be sorted on their "
+"surnames. Otherwise, it will be sorted on the first names of the contacts."
+msgstr ""
+
+#: src/org.gnome.Contacts.gschema.xml:19
+msgid "The default height of the contacts window."
+msgstr "La nautor per defaut de la fenèstra de contactes."
+
+#: src/org.gnome.Contacts.gschema.xml:20
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the height of the window."
+msgstr ""
+
+#: src/org.gnome.Contacts.gschema.xml:26
+msgid "The default width of the contacts window."
+msgstr "La largor per defaut de la fenèstra de contactes."
+
+#: src/org.gnome.Contacts.gschema.xml:27
+msgid ""
+"If the window size has not been changed by the user yet this will be used as "
+"the initial value for the width of the window."
+msgstr ""
+
+#: src/org.gnome.Contacts.gschema.xml:32
+msgid "Is the window maximized?"
+msgstr "Es la fenèstra maximizada ?"
+
+#: src/org.gnome.Contacts.gschema.xml:33 src/org.gnome.Contacts.gschema.xml:38
+msgid "Stores if the window is currently maximized."
+msgstr "Enregistra se la fenèstra es maximizada."
+
+#: src/org.gnome.Contacts.gschema.xml:37
+msgid "Is the window fullscreen"
+msgstr "Es la fenèstra en plen ecran"
+
+#~ msgid "Console"
+#~ msgstr "Consòla"
+
+#~ msgid "command;prompt;cmd;commandline;run;shell;terminal;kgx;kings cross;"
+#~ msgstr ""
+#~ "comanda;prompt;convit;cmd;linha;executar;shell;run;terminal;kgx;kings "
+#~ "cross;linha de comanda;consòla;"
+
+#~ msgid "New Window"
+#~ msgstr "Fenèstra novèla"
+
+#~ msgid "New Tab"
+#~ msgstr "Onglet novèl"
+
+#~ msgid "Terminal Emulator"
+#~ msgstr "Emulator de Terminal"
+
+#~ msgid "A simple user-friendly terminal emulator for the GNOME desktop."
+#~ msgstr "Un emulator de terminal simple e de bon utilizaire pel burèu GNOME."
+
+#~ msgid "Terminal window"
+#~ msgstr "Fenèstra de terminal"
+
+#~ msgid "Zander Brown"
+#~ msgstr "Zander Brown"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Application"
+#~ msgstr "Aplicacion"
+
+#~ msgctxt "shortcut window"
+#~ msgid "New Window"
+#~ msgstr "Novèla fenèstra"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Terminal"
+#~ msgstr "Terminal"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Find"
+#~ msgstr "Trobar"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Copy"
+#~ msgstr "Copiar"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Paste"
+#~ msgstr "Pegar"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Tabs"
+#~ msgstr "Onglets"
+
+#~ msgctxt "shortcut window"
+#~ msgid "New Tab"
+#~ msgstr "Novèl onglet"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Close Tab"
+#~ msgstr "Tampar onglet"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Next Tab"
+#~ msgstr "Onglet seguent"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Previous Tab"
+#~ msgstr "Onglet precedent"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Switch to Tab"
+#~ msgstr "Bascular d'onglet"
+
+#~ msgid "# KGX %s using VTE %u.%u.%u %s\n"
+#~ msgstr "# KGX %s en utilizant VTE %u.%u.%u %s\n"
+
+#~ msgid "© %s Zander Brown"
+#~ msgstr "© %s Zander Brown"
+
+#~ msgid "King’s Cross"
+#~ msgstr "King’s Cross"
+
+#~ msgid "GPL 3.0 or later"
+#~ msgstr "GPL 3.0 o superiora"
+
+#~ msgid "Execute the argument to this option inside the terminal"
+#~ msgstr "Executa lo paramètre d'aquesta opcion dins lo terminal"
+
+#~ msgid "Set the working directory"
+#~ msgstr "Definís lo repertòri de trabalh"
+
+#~ msgid "DIRNAME"
+#~ msgstr "REPTRABALH"
+
+#~ msgid "Wait until the child exits (TODO)"
+#~ msgstr "Esperar fins que l'enfant quite (TODO)"
+
+#~ msgid "Set the initial window title"
+#~ msgstr "Definir lo títol de la fenèstra iniciala"
+
+#~ msgid "ADVANCED: Set the shell to launch"
+#~ msgstr "AVANÇAT : definir lo shell d’aviar"
+
+#~ msgid "ADVANCED: Set the scrollback length"
+#~ msgstr "AVANÇAT : definir la longor del desplaçament enrèire"
+
+#~ msgid "Console (Development)"
+#~ msgstr "Consòla (Desvolopament)"
+
+#~ msgid "Close Window?"
+#~ msgstr "Tampar la fenèstra ?"
+
+#~ msgid ""
+#~ "Some commands are still running, closing this window will kill them and "
+#~ "may lead to unexpected outcomes"
+#~ msgstr ""
+#~ "D’unas comanda son encara en execucion, tampar aquesta fenèstra las tuarà "
+#~ "e pòt menar a de sortidas inesperadas."
+
+#~ msgid "Close Tab?"
+#~ msgstr "Tampar l'onglet ?"
+
+#~ msgid ""
+#~ "Some commands are still running, closing this tab will kill them and may "
+#~ "lead to unexpected outcomes"
+#~ msgstr ""
+#~ "D’unas comanda son encara en execucion, tampar aqueste onglet las tuarà e "
+#~ "pòt menar a de sortidas inesperadas."
+
+#~ msgid "C_lose"
+#~ msgstr "T_ampar"
+
+#~ msgid "_Detach Tab"
+#~ msgstr "_Destacar l’onglet"
+
+#~ msgid "<b>Read Only</b> — Command exited with code %i"
+#~ msgstr "<b>Lectura sòla</b> — La comanda a terminat amb lo còdi %i"
+
+#~ msgid "<b>Read Only</b> — Command exited"
+#~ msgstr "<b>Lectura sola</b> — La comanda a terminat"
+
+#~ msgid "<b>Failed to start</b> — %s"
+#~ msgstr "<b>Lançament pas reüssit</b> — %s"
+
+#~ msgid "Command completed"
+#~ msgstr "Comanda acabada"
+
+#~ msgid "View Open Tabs"
+#~ msgstr "Afichar los onglets dobèrts"
+
+#~ msgid "You are pasting a command that runs as an administrator"
+#~ msgstr "Sètz a pegar una comanda que s'executa coma administrator"
+
+#~ msgid ""
+#~ "Make sure you know what the command does:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Asseguratz-vos de saber çò que la comanda fa :\n"
+#~ "%s"
+
+#~ msgid "_Paste"
+#~ msgstr "_Pegar"
+
+#~ msgid "Use System Colors"
+#~ msgstr "Utilizar la poliça del sistèma"
+
+#~ msgid "Use Light Colors"
+#~ msgstr "Utilizar las colors claras"
+
+#~ msgid "Use Dark Colors"
+#~ msgstr "Utilizar las colors escuras"
+
+#~ msgid "translator-credits"
+#~ msgstr "Quentin PAGÈS"
+
+#~ msgid "Shrink Text"
+#~ msgstr "Reduire lo tèxt"
+
+#~ msgid "Reset Size"
+#~ msgstr "Reïnicializar la talha"
+
+#~ msgid "Enlarge Text"
+#~ msgstr "Agrandir lo tèxt"
+
+#~ msgid "_New Window"
+#~ msgstr "Fenèstra _novèla"
+
+#~ msgid "About this Program"
+#~ msgstr "A prepaus d'aqueste programa"
+
+#~ msgid "Find in Terminal"
+#~ msgstr "Trobar dins un terminal"
+
+#~ msgid "Copy _Link"
+#~ msgstr "Copiar l’adreça del _ligam"
+
+#~ msgid "_Copy"
+#~ msgstr "_Copiar"
+
+#~ msgid "Show in _Files"
+#~ msgstr "Afichar dins _Fichièrs"
+
+#~ msgid "Open in Co_nsole (Devel)"
+#~ msgstr "Dobrir dins Co_nsòla (Devel)"
+
+#~ msgid "Open in Co_nsole"
+#~ msgstr "Dobrir dins Co_nsòla"
+
+#~ msgid "Start a terminal session for this location"
+#~ msgstr "Aviar un terminal d’aqueste emplaçament"
