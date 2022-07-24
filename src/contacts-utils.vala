@@ -29,6 +29,12 @@ namespace Contacts {
 
 namespace Contacts.Utils {
 
+  public void set_primary_store (Edsf.PersonaStore e_store) {
+    eds_source_registry.set_default_address_book (e_store.source);
+    var settings = new GLib.Settings ("org.freedesktop.folks");
+    settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
+  }
+
   public void compose_mail (string email) {
     var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
     Gtk.show_uri (null, mailto_uri, 0);

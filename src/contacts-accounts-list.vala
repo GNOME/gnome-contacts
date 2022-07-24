@@ -25,13 +25,11 @@ using Folks;
  *
  * Internally, each "address book" is a {@link Folks.PersonaStore}.
  */
-[GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-accounts-list.ui")]
-public class Contacts.AccountsList : Adw.Bin {
-
-  [GtkChild]
-  private unowned Gtk.ListBox listbox;
+public class Contacts.AccountsList : Adw.PreferencesGroup {
 
   private Gtk.SingleSelection selection;
+
+  private GenericArray<AddressbookRow> rows = new GenericArray<AddressbookRow> ();
 
   /** The selected PersonaStore (or null if none) */
   public PersonaStore? selected_store {
@@ -47,30 +45,18 @@ public class Contacts.AccountsList : Adw.Bin {
     var model = new Gtk.FilterListModel (contacts_store.address_books,
                                          (owned) filter);
 
+    model.items_changed.connect (on_model_items_changed);
+    on_model_items_changed (model, 0, 0, model.get_n_items ());
+
     // Setup the selection model
     this.selection = new Gtk.SingleSelection (model);
 
     // Update the row when the selection model changes
     this.selection.selection_changed.connect ((sel, pos, n_items) => {
       for (uint i = pos; i < pos + n_items; i++) {
-        var row = (AddressbookRow?) this.listbox.get_row_at_index ((int) i);
-        if (row != null)
-          row.selected = this.selection.is_selected (i);
+        this.rows[i].selected = this.selection.is_selected (i);
       }
       notify_property ("selected-store");
-    });
-
-    // Now bind the listbox to it
-    this.listbox.bind_model (model, (item) => {
-      unowned var persona_store = (PersonaStore) item;
-      var row = new AddressbookRow (persona_store);
-
-      // Update the selection model when the row is activated
-      row.activated.connect ((row) => {
-        this.selection.set_selected ((uint) row.get_index ());
-      });
-
-      return row;
     });
 
     // Initially, the primary store (if set) is selected
@@ -79,6 +65,25 @@ public class Contacts.AccountsList : Adw.Bin {
       if (persona_store == contacts_store.aggregator.primary_store)
         this.selection.set_selected (i);
     }
+  }
+
+  private void on_model_items_changed (ListModel model, uint pos, uint removed, uint added) {
+      for (uint i = pos; i < pos + removed; i++) {
+        remove (this.rows[i]);
+        this.rows.remove_index (i);
+      }
+
+      for (uint i = pos; i < pos + added; i++) {
+        var persona_store = (PersonaStore) model.get_item(i);
+        var row = new AddressbookRow (persona_store);
+        add (row);
+        this.rows.add (row);
+
+        // Update the selection model when the row is activated
+        row.activated.connect ((row) => {
+          this.selection.set_selected ((uint) row.get_index ());
+        });
+      }
   }
 
   private class AddressbookRow : Adw.ActionRow {

@@ -36,8 +36,7 @@ public class Contacts.App : Adw.Application {
     { "quit",             quit_action         },
     { "help",             show_help           },
     { "about",            show_about          },
-    { "change-book",      change_address_book },
-    { "online-accounts",  online_accounts     },
+    { "show-preferences", show_preferences },
     { "show-contact",     on_show_contact, "s"}
   };
 
@@ -121,30 +120,9 @@ public class Contacts.App : Adw.Application {
     dialog.show ();
   }
 
-  public void online_accounts () {
-    try {
-      var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
-                                              DBusProxyFlags.NONE,
-                                              null,
-                                              "org.gnome.Settings",
-                                              "/org/gnome/Settings",
-                                              "org.gtk.Actions");
-
-      var builder = new VariantBuilder (new VariantType ("av"));
-      builder.add ("v", new Variant.string (""));
-      var param = new Variant.tuple ({
-        new Variant.string ("launch-panel"),
-        new Variant.array (new VariantType ("v"), {
-          new Variant ("v", new Variant ("(sav)", "online-accounts", builder))
-        }),
-        new Variant.array (new VariantType ("{sv}"), {})
-      });
-
-      proxy.call_sync ("Activate", param, DBusCallFlags.NONE, -1);
-    } catch (Error e) {
-      // TODO: Show error dialog
-      warning ("Couldn't open online-accounts: %s", e.message);
-    }
+  public void show_preferences () {
+    var prefs_window = new PreferencesWindow (this.contacts_store, this.window);
+    prefs_window.show ();
   }
 
   public void show_help () {
@@ -278,19 +256,15 @@ public class Contacts.App : Adw.Application {
   private void run_setup () {
     debug ("Running initial setup");
 
-    // Disable change-book action (don't want the user to do that during setup)
-    unowned var change_book_action = lookup_action ("change-book") as SimpleAction;
-    change_book_action.set_enabled (false);
-
     // Create and show the setup window
     var setup_window = new SetupWindow (this, this.contacts_store);
     setup_window.setup_done.connect ((selected_store) => {
       setup_window.destroy ();
 
-      eds_source_registry.set_default_address_book (selected_store.source);
+      unowned var edsf_store = (Edsf.PersonaStore) selected_store;
+      Utils.set_primary_store (edsf_store);
       this.settings.did_initial_setup = true;
 
-      change_book_action.set_enabled (true);   // re-enable change-book action
       create_window ();
     });
     setup_window.show ();

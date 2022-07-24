@@ -87,6 +87,7 @@ contacts_vala_sources = files(
   'contacts-link-suggestion-grid.vala',
   'contacts-linked-personas-dialog.vala',
   'contacts-main-window.vala',
+  'contacts-preferences-window.vala',
   'contacts-settings.vala',
   'contacts-setup-window.vala',
   'contacts-type-combo.vala',

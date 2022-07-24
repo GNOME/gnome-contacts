@@ -74,10 +74,7 @@ public class Contacts.AddressbookDialog : Gtk.Dialog {
       return;
 
     unowned var e_store = (Edsf.PersonaStore) this.accounts_list.selected_store;
-    if (e_store != null) {
-      eds_source_registry.set_default_address_book (e_store.source);
-      var settings = new GLib.Settings ("org.freedesktop.folks");
-      settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
-    }
+    if (e_store != null)
+      Utils.set_primary_store (e_store);
   }
 }
