@@ -433,6 +433,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         activate_action ("stop-editing-contact", new Variant.boolean (false));
 
       this.contact_pane.show_contact (selected);
+      show_contact_pane ();
 
       // clearing right_header
       this.right_header.title_widget = new Adw.WindowTitle ("", "");
@@ -462,6 +463,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contacts_list.set_contacts_visible (selection, false);
     this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
+    show_list_pane ();
 
     // Build the list of contacts
     var list = bitset_to_individuals (this.marked_contacts,
@@ -493,6 +495,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contacts_list.set_contacts_visible (selection, false);
     this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
+    show_list_pane ();
 
     var individuals = bitset_to_individuals (this.store.filter_model,
                                              selection);
