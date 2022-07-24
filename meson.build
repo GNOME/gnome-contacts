@@ -61,11 +61,6 @@ libportal_dep = dependency('libportal-gtk4', version: '>= 0.6')
 # cheese_dep = dependency('cheese', required: get_option('cheese'))
 # cheese_gtk_dep = dependency('cheese-gtk', version: '>= 3.3.91', required: get_option('cheese'))
 
-if get_option('telepathy')
-  folks_telepathy = dependency('folks-telepathy', version: '>=' + min_folks_version)
-  telepathy_glib = dependency('telepathy-glib', version: '>= 0.22.0')
-endif
-
 valadoc = find_program('valadoc', required: get_option('docs'))
 
 

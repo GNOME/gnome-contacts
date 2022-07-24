@@ -50,11 +50,6 @@ contacts_deps = [
   math,
 ]
 
-if get_option('telepathy')
-  contacts_deps += [ folks_telepathy, telepathy_glib ]
-  contacts_vala_args += [ '-D', 'HAVE_TELEPATHY' ]
-endif
-
 libcontacts = static_library('contacts',
   libcontacts_sources,
   include_directories: config_h_dir,

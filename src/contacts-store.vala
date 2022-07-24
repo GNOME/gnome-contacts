@@ -62,10 +62,6 @@ public class Contacts.Store : GLib.Object {
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
-#if HAVE_TELEPATHY
-  public TelepathyGLib.Account? caller_account { get; private set; default = null; }
-#endif
-
   private void read_dont_suggest_db () {
     dont_suggest_link.clear ();
 
@@ -169,10 +165,6 @@ public class Contacts.Store : GLib.Object {
 
     this.aggregator.individuals_changed_detailed.connect (on_individuals_changed_detailed);
     aggregator.prepare.begin ();
-
-#if HAVE_TELEPATHY
-    check_call_capabilities.begin ();
-#endif
   }
 
   public Store (GLib.Settings settings, Folks.Query query) {
@@ -298,40 +290,4 @@ public class Contacts.Store : GLib.Object {
 
     return Gtk.INVALID_LIST_POSITION;
   }
-
-#if HAVE_TELEPATHY
-  // TODO: listen for changes in Account#URISchemes
-  private async void check_call_capabilities () {
-    var account_manager = TelepathyGLib.AccountManager.dup ();
-
-    try {
-      yield account_manager.prepare_async (null);
-
-      account_manager.account_enabled.connect (check_account_caps);
-      account_manager.account_disabled.connect (check_account_caps);
-
-      foreach (var account in account_manager.dup_valid_accounts ())
-        yield check_account_caps (account);
-    } catch (GLib.Error e) {
-      warning ("Unable to check accounts caps %s", e.message);
-    }
-  }
-
-  private async void check_account_caps (TelepathyGLib.Account account) {
-    GLib.Quark addressing = TelepathyGLib.Account.get_feature_quark_addressing ();
-    if (!account.is_prepared (addressing)) {
-      GLib.Quark[] features = { addressing };
-      try {
-        yield account.prepare_async (features);
-      } catch (GLib.Error e) {
-        warning ("Unable to prepare account %s", e.message);
-      }
-    }
-
-    if (account.is_prepared (addressing)) {
-      if (account.is_enabled () && account.associated_with_uri_scheme ("tel"))
-        this.caller_account = account;
-    }
-  }
-#endif
 }

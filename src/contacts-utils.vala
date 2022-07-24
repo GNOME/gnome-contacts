@@ -40,41 +40,6 @@ namespace Contacts.Utils {
     Gtk.show_uri (null, mailto_uri, 0);
   }
 
-#if HAVE_TELEPATHY
-  public void start_chat (Individual individual, string protocol, string id) {
-    var im_persona = Utils.find_im_persona (individual, protocol, id);
-    var account = (im_persona.store as Tpf.PersonaStore).account;
-    var request_dict = new HashTable<string, Value?>(str_hash, str_equal);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
-                         TelepathyGLib.IFACE_CHANNEL_TYPE_TEXT);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
-                         (int) TelepathyGLib.HandleType.CONTACT);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID,
-                         id);
-
-    // TODO: Should really use the event time like:
-    // tp_user_action_time_from_x11(gtk_get_current_event_time())
-    var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
-    request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Chat", null);
-  }
-
-  public void start_call (string contact_id, TelepathyGLib.Account account) {
-    var request_dict = new HashTable<string,GLib.Value?>(str_hash, str_equal);
-
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_CHANNEL_TYPE,
-                         TelepathyGLib.IFACE_CHANNEL_TYPE_CALL);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_HANDLE_TYPE,
-                         (int) TelepathyGLib.HandleType.CONTACT);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TARGET_ID,
-                         contact_id);
-    request_dict.insert (TelepathyGLib.PROP_CHANNEL_TYPE_CALL_INITIAL_AUDIO,
-                         true);
-
-    var request = new TelepathyGLib.AccountChannelRequest(account, request_dict, int64.MAX);
-    request.ensure_channel_async.begin ("org.freedesktop.Telepathy.Client.Empathy.Call", null);
-  }
-#endif
-
   public T? get_first<T> (Gee.Collection<T> collection) {
     var i = collection.iterator();
     if (i.next())
@@ -289,19 +254,6 @@ namespace Contacts.Utils {
     return "maps:q=%s".printf (GLib.Uri.escape_string (address_parts));
   }
 
-#if HAVE_TELEPATHY
-  public Tpf.Persona? find_im_persona (Individual individual, string protocol, string im_address) {
-    var iid = protocol + ":" + im_address;
-    foreach (var p in individual.personas) {
-      unowned var tp = p as Tpf.Persona;
-      if (tp != null && tp.iid == iid) {
-        return tp;
-      }
-    }
-    return null;
-  }
-#endif
-
   /* We claim something is "removable" if at least one persona is removable,
   that will typically unlink the rest. */
   public bool can_remove_personas (Individual individual) {
@@ -385,12 +337,6 @@ namespace Contacts.Utils {
       if (eds_name != null)
         return eds_name;
     }
-#if HAVE_TELEPATHY
-    if (store.type_id == "telepathy") {
-      var account = (store as Tpf.PersonaStore).account;
-      return Contacts.ImService.get_display_name (account.service);
-    }
-#endif
 
     return store.display_name;
   }
@@ -445,12 +391,6 @@ namespace Contacts.Utils {
       if (eds_name != null)
         return eds_name;
     }
-#if HAVE_TELEPATHY
-    if (store.type_id == "telepathy") {
-      unowned var account = (store as Tpf.PersonaStore).account;
-      return Contacts.ImService.get_display_name (account.service);
-    }
-#endif
 
     return store.display_name;
   }
@@ -580,16 +520,4 @@ namespace Contacts.Utils {
         return info.icon_name;
     return null;
   }
-
-#if HAVE_TELEPATHY
-  public void fetch_contact_info (Individual individual) {
-    /* TODO: Ideally Folks should have API for this (#675131) */
-    foreach (var p in individual.personas) {
-      unowned var tp = p as Tpf.Persona;
-      if (tp != null) {
-        tp.contact.request_contact_info_async.begin (null);
-      }
-    }
-  }
-#endif
 }

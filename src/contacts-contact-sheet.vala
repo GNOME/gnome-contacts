@@ -307,7 +307,10 @@ public class Contacts.ContactSheet : Gtk.Grid {
   }
 
   private void add_im_addresses (Persona persona, string property) {
-#if HAVE_TELEPATHY
+    // NOTE: We _could_ enable this again, but only for specific services.
+    // Right now, this just enables a million "Windows Live Messenger" and
+    // "Jabber", ... fields, which are all resting in their respective coffins.
+#if 0
     unowned var im_details = persona as ImDetails;
     if (im_details == null)
       return;
@@ -315,23 +318,9 @@ public class Contacts.ContactSheet : Gtk.Grid {
     var rows = new GLib.List<Gtk.ListBoxRow> ();
     foreach (var protocol in im_details.im_addresses.get_keys ()) {
       foreach (var id in im_details.im_addresses[protocol]) {
-        if (!(persona is Tpf.Persona))
-          continue;
-
         var row = new ContactSheetRow (property,
                                        id.value,
                                        ImService.get_display_name (protocol));
-        var button = row.add_button ("user-available-symbolic");
-        button.clicked.connect (() => {
-          var im_persona = Utils.find_im_persona (individual, protocol, id.value);
-          if (im_persona != null) {
-            var type = im_persona.presence_type;
-            if (type != PresenceType.UNSET && type != PresenceType.ERROR &&
-                type != PresenceType.OFFLINE && type != PresenceType.UNKNOWN) {
-              Utils.start_chat (this.individual, protocol, id.value);
-            }
-          }
-        });
         rows.append (row);
       }
     }
