@@ -230,7 +230,7 @@ public class Contacts.App : Adw.Application {
       return;
 
     var dialog = new Adw.MessageDialog (this.window,
-                                        _("Pimary address book not found"),
+                                        _("Primary address book not found"),
                                         null);
     dialog.body = _("Contacts can't find the configured primary address book. You might experience issues creating or editing contacts");
     dialog.add_response ("preferences", _("Go To _Preferences"));
