@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-06 10:53+0000\n"
-"PO-Revision-Date: 2022-08-07 00:16+0100\n"
+"POT-Creation-Date: 2022-08-07 17:13+0000\n"
+"PO-Revision-Date: 2022-08-07 21:24+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -105,7 +105,7 @@ msgstr "Selecionar um novo avatar"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
 #: data/ui/contacts-main-window.ui:105 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-app.vala:317 src/contacts-editor-property.vala:79
+#: src/contacts-app.vala:342 src/contacts-editor-property.vala:79
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -224,9 +224,9 @@ msgstr "Remover"
 msgid "Back"
 msgstr "Recuar"
 
-#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:383
-#: src/contacts-avatar-selector.vala:199 src/contacts-main-window.vala:515
-#: src/contacts-main-window.vala:564
+#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:239
+#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:199
+#: src/contacts-main-window.vala:515 src/contacts-main-window.vala:564
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -336,44 +336,60 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "Nenhum contacto encontrado com o endereço eletrónico %s"
 
-#: src/contacts-app.vala:316
+#: src/contacts-app.vala:233
+msgid "Primary address book not found"
+msgstr "Livro de endereços principal não encontrado"
+
+#: src/contacts-app.vala:235
+msgid ""
+"Contacts can't find the configured primary address book. You might "
+"experience issues creating or editing contacts"
+msgstr ""
+"Os contactos não conseguem encontrar o livro de endereços principal "
+"configurado. Poderá ter problemas com a criação ou edição de contactos"
+
+#: src/contacts-app.vala:236
+msgid "Go To _Preferences"
+msgstr "Ir para _Preferências"
+
+#: src/contacts-app.vala:341
 msgid "Import"
 msgstr "Importar"
 
-#: src/contacts-app.vala:356
+#: src/contacts-app.vala:381
 msgid "Error reading file"
 msgstr "Erro ao ler ficheiro"
 
-#: src/contacts-app.vala:357
+#: src/contacts-app.vala:382
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Ocorreu um erro ao ler o ficheiro '%s'"
 
-#: src/contacts-app.vala:358 src/contacts-app.vala:368
+#: src/contacts-app.vala:383 src/contacts-app.vala:393
 msgid "_OK"
 msgstr "_Aceitar"
 
-#: src/contacts-app.vala:366
+#: src/contacts-app.vala:391
 msgid "No contacts founds"
 msgstr "Nenhum contato encontrado"
 
-#: src/contacts-app.vala:367
+#: src/contacts-app.vala:392
 msgid "The imported file does not seem to contain any contacts"
 msgstr "O ficheiro importado não parece conter quaisquer contactos"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:375
+#: src/contacts-app.vala:400
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Ao continuar, importará o contacto %u"
 msgstr[1] "Ao continuar, importará os contactos %u"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:403
 msgid "Continue Import?"
 msgstr "Continuar a importar?"
 
-#: src/contacts-app.vala:379
+#: src/contacts-app.vala:404
 msgid "C_ontinue"
 msgstr "C_ontinuar"
 
