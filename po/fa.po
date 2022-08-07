@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-06 10:53+0000\n"
-"PO-Revision-Date: 2022-08-07 03:26+0430\n"
+"POT-Creation-Date: 2022-08-07 10:12+0000\n"
+"PO-Revision-Date: 2022-08-07 17:01+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
@@ -49,7 +49,7 @@ msgid ""
 "Contacts will also integrate with online address books and automatically link "
 "contacts from different online sources."
 msgstr ""
-"آشنایان هم‌چنین با دفترچه‌های نشانی برخط یک‌پارچه شده و به صورت خودکار آشنایانی از "
+"آشنایان هم‌چنین با دفترچه تلفن‌های برخط یک‌پارچه شده و به صورت خودکار آشنایانی از "
 "منابع برخط مختلف را به هم پیوند می‌دهد."
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:716 src/contacts-app.vala:149
@@ -102,7 +102,7 @@ msgstr "گزینش چهرکی جدید"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
 #: data/ui/contacts-main-window.ui:105 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-app.vala:317 src/contacts-editor-property.vala:79
+#: src/contacts-app.vala:342 src/contacts-editor-property.vala:79
 msgid "Cancel"
 msgstr "لغو"
 
@@ -221,9 +221,9 @@ msgstr "برداشتن"
 msgid "Back"
 msgstr "بازگشت"
 
-#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:383
-#: src/contacts-avatar-selector.vala:199 src/contacts-main-window.vala:515
-#: src/contacts-main-window.vala:564
+#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:239
+#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:199
+#: src/contacts-main-window.vala:515 src/contacts-main-window.vala:564
 msgid "_Cancel"
 msgstr "_لغو"
 
@@ -237,7 +237,7 @@ msgstr "حذف آشنا"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
-msgstr "دفترچه‌های تلفن"
+msgstr "دفترچه تلفن‌ها"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
@@ -333,44 +333,60 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "هیج آشنایی با نشانی رایانامهٔ %s پیدا نشد"
 
-#: src/contacts-app.vala:316
+#: src/contacts-app.vala:233
+msgid "Pimary address book not found"
+msgstr "دفترچه تلفن اصلی پیدا نشد"
+
+#: src/contacts-app.vala:235
+msgid ""
+"Contacts can't find the configured primary address book. You might experience "
+"issues creating or editing contacts"
+msgstr ""
+"آشنایان نتوانست دفترچه تلفن اصلی پیکربندی شده را بیابد. ممکن است در ایجاد یا "
+"ویرایش آشانایان مشکلاتی را تجربه کنید"
+
+#: src/contacts-app.vala:236
+msgid "Go To _Preferences"
+msgstr "رفتن به _ترجیحات"
+
+#: src/contacts-app.vala:341
 msgid "Import"
 msgstr "درون‌ریزی"
 
-#: src/contacts-app.vala:356
+#: src/contacts-app.vala:381
 msgid "Error reading file"
 msgstr "خطا در خواندن پرونده"
 
-#: src/contacts-app.vala:357
+#: src/contacts-app.vala:382
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "هنگام خواندن پروندهٔ «%s» خطایی رخ داد"
 
-#: src/contacts-app.vala:358 src/contacts-app.vala:368
+#: src/contacts-app.vala:383 src/contacts-app.vala:393
 msgid "_OK"
 msgstr "_تأیید"
 
-#: src/contacts-app.vala:366
+#: src/contacts-app.vala:391
 msgid "No contacts founds"
 msgstr "هیچ آشنایی پیدا نشد"
 
-#: src/contacts-app.vala:367
+#: src/contacts-app.vala:392
 msgid "The imported file does not seem to contain any contacts"
 msgstr "به نظر نمی‌رسد پروندهٔ درون ریخته شامل هیچ آشنایی باشد"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:375
+#: src/contacts-app.vala:400
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "با ادامه، ۱ آشنا را درون‌ریزی می‌کنید"
 msgstr[1] "با ادامه، %Iu آشنا را درون‌ریزی می‌کنید"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:403
 msgid "Continue Import?"
 msgstr "ادامهٔ درون‌ریزی؟"
 
-#: src/contacts-app.vala:379
+#: src/contacts-app.vala:404
 msgid "C_ontinue"
 msgstr "_ادامه"
 
@@ -734,8 +750,8 @@ msgid ""
 "New contacts will be added to the selected address book. You are able to view "
 "and edit contacts from other address books."
 msgstr ""
-"آشناهای جدید به دفترچه‌نشانی انتخاب شده اضافه خواهند شد. شما می‌توانید آشناها را "
-"در دفترچه‌های نشانی دیگر ببینید یا ویرایش کنید."
+"آشنایان جدید به دفترچه تلفن گزیده اضافه خواهند شد. می‌توانید آشنایانی را از "
+"دفترچه تلفن‌های دیگر دیده و ویرایش کنید."
 
 #: src/contacts-preferences-window.vala:40
 msgid "_Online Accounts"
