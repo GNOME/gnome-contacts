@@ -205,20 +205,45 @@ public class Contacts.App : Adw.Application {
     uint timeout_id = 0;
 
     // Happy flow callback
-    ulong quiescence_id = contacts_store.quiescent.connect (() => {
+    ulong quiescence_id = this.contacts_store.quiescent.connect (() => {
       Source.remove (timeout_id);
       debug ("Got quiescent in time. Showing contact list");
-      window.show_contact_list ();
+      this.window.show_contact_list ();
+      check_primary_address_book ();
     });
 
     // Timeout callback
     timeout_id = Timeout.add_seconds (LOADING_TIMEOUT, () => {
-      contacts_store.disconnect (quiescence_id);
+      this.contacts_store.disconnect (quiescence_id);
 
       debug ("Didn't achieve quiescence in time! Showing contact list anyway");
-      window.show_contact_list ();
-      return false;
+      this.window.show_contact_list ();
+      check_primary_address_book ();
+      return Source.REMOVE;
     });
+  }
+
+  /* At the time of quiescence, check if the primary store is not null. If it
+   * is, we should warn the user to maybe check their address books */
+  private void check_primary_address_book () {
+    if (this.contacts_store.aggregator.primary_store != null)
+      return;
+
+    var dialog = new Adw.MessageDialog (this.window,
+                                        _("Pimary address book not found"),
+                                        null);
+    dialog.body = _("Contacts can't find the configured primary address book. You might experience issues creating or editing contacts");
+    dialog.add_response ("preferences", _("Go To _Preferences"));
+    dialog.set_default_response ("preferences");
+    dialog.set_response_appearance ("preferences", Adw.ResponseAppearance.SUGGESTED);
+    dialog.add_response ("cancel", _("_Cancel"));
+    dialog.set_close_response ("cancel");
+    dialog.response.connect ((response) => {
+      if (response == "preferences")
+        show_preferences ();
+      dialog.destroy ();
+    });
+    dialog.present ();
   }
 
   public override void startup () {
