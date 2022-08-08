@@ -49,7 +49,9 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
     on_model_items_changed (model, 0, 0, model.get_n_items ());
 
     // Setup the selection model
-    this.selection = new Gtk.SingleSelection (model);
+    this.selection = new Gtk.SingleSelection (null);
+    this.selection.autoselect = false;
+    this.selection.model = model;
 
     // Update the row when the selection model changes
     this.selection.selection_changed.connect ((sel, pos, n_items) => {
