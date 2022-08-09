@@ -20,9 +20,7 @@ using Folks;
 public class Contacts.ContactSheetRow : Adw.ActionRow {
 
   construct {
-    // FIXME, once we can depend on libadwaita 1.1, do this directly
-    if (this.get_class ().find_property ("title-selectable") != null)
-      this.set_property ("title-selectable", true);
+    this.title_selectable = true;
   }
 
   public ContactSheetRow (string property_name, string title, string? subtitle = null) {
