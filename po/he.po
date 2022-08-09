@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-07-24 13:30+0000\n"
-"PO-Revision-Date: 2022-07-24 21:26+0300\n"
+"POT-Creation-Date: 2022-08-07 17:13+0000\n"
+"PO-Revision-Date: 2022-08-09 20:44+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
@@ -24,8 +24,8 @@ msgstr ""
 "X-Generator: Gtranslator 40.0\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:185
-#: src/contacts-main-window.vala:208 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
+#: src/contacts-main-window.vala:212 src/main.vala:26
 msgid "Contacts"
 msgstr "אנשי קשר"
 
@@ -53,7 +53,7 @@ msgstr ""
 "אנשי קשר גם משולב עם פנקסי כתובות מקוונים ומקשר אנשי קשר באופן אוטומטי "
 "ממקורות מקוונים שונים."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:694 src/contacts-app.vala:148
+#: data/org.gnome.Contacts.appdata.xml.in.in:716 src/contacts-app.vala:149
 msgid "The GNOME Project"
 msgstr "מיזם GNOME"
 
@@ -102,13 +102,13 @@ msgid "Select a new avatar"
 msgstr "בחירת תמונה אישית"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:99 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-editor-property.vala:79
+#: data/ui/contacts-main-window.ui:105 src/contacts-addressbook-dialog.vala:33
+#: src/contacts-app.vala:342 src/contacts-editor-property.vala:79
 msgid "Cancel"
 msgstr "ביטול"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:261 src/contacts-main-window.vala:217
+#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "בוצע"
 
@@ -153,73 +153,92 @@ msgid "Surname"
 msgstr "שם משפחה"
 
 #: data/ui/contacts-main-window.ui:19
+#| msgid "_Import"
+msgid "Import…"
+msgstr "יבוא…"
+
+#: data/ui/contacts-main-window.ui:25
 msgid "Preferences"
 msgstr "העדפות"
 
-#: data/ui/contacts-main-window.ui:23
+#: data/ui/contacts-main-window.ui:29
 msgid "Keyboard Shortcuts"
 msgstr "צירופי מקשים"
 
-#: data/ui/contacts-main-window.ui:27
+#: data/ui/contacts-main-window.ui:33
 msgid "Help"
 msgstr "עזרה"
 
-#: data/ui/contacts-main-window.ui:31
+#: data/ui/contacts-main-window.ui:37
 msgid "About Contacts"
 msgstr "על אודות אנשי קשר"
 
-#: data/ui/contacts-main-window.ui:75
+#: data/ui/contacts-main-window.ui:81
 msgid "Create new contact"
 msgstr "יצירת איש קשר חדש"
 
-#: data/ui/contacts-main-window.ui:85
+#: data/ui/contacts-main-window.ui:91
 msgid "Menu"
 msgstr "תפריט"
 
-#: data/ui/contacts-main-window.ui:92
+#: data/ui/contacts-main-window.ui:98
 msgid "Select Items"
 msgstr "בחירת פריטים"
 
-#: data/ui/contacts-main-window.ui:100
+#: data/ui/contacts-main-window.ui:106
 msgid "Cancel Selection"
 msgstr "ביטול הבחירה"
 
-#: data/ui/contacts-main-window.ui:127
+#: data/ui/contacts-main-window.ui:133
 msgid "Loading"
 msgstr "בטעינה"
 
-#: data/ui/contacts-main-window.ui:138
+#: data/ui/contacts-main-window.ui:144
 msgid "Type to search"
 msgstr "יש להקליד כדי לחפש"
 
+#. Export refers to the verb
+#: data/ui/contacts-main-window.ui:162
+msgid "Export"
+msgstr "יצוא"
+
+#: data/ui/contacts-main-window.ui:163
+#| msgid "Select a Contact"
+msgid "Export Selected Contacts"
+msgstr "יצוא אנשי קשר נבחרים"
+
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:157
+#: data/ui/contacts-main-window.ui:170
 msgid "Link"
 msgstr "קישור"
 
-#: data/ui/contacts-main-window.ui:164
+#: data/ui/contacts-main-window.ui:171
+msgid "Link Selected Contacts Together"
+msgstr "קישור אנשי קשר נבחרים יחד"
+
+#: data/ui/contacts-main-window.ui:178
 msgid "Remove"
 msgstr "הסרה"
 
-#: data/ui/contacts-main-window.ui:208
+#: data/ui/contacts-main-window.ui:222
 msgid "Back"
 msgstr "חזרה"
 
-#: data/ui/contacts-main-window.ui:222 src/contacts-avatar-selector.vala:199
-#: src/contacts-main-window.vala:508
+#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:239
+#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:199
+#: src/contacts-main-window.vala:515 src/contacts-main-window.vala:564
 msgid "_Cancel"
 msgstr "_ביטול"
 
-#: data/ui/contacts-main-window.ui:245
+#: data/ui/contacts-main-window.ui:259
 msgid "Edit Contact"
 msgstr "עריכת איש קשר"
 
-#: data/ui/contacts-main-window.ui:252
+#: data/ui/contacts-main-window.ui:266
 msgid "Delete Contact"
 msgstr "מחיקת איש קשר"
 
 #: data/ui/contacts-preferences-window.ui:6
-#| msgid "Local Address Book"
 msgid "Address Books"
 msgstr "ספר כתובות"
 
@@ -274,37 +293,37 @@ msgstr ""
 "אנשי קשר חדשים יתווספו לספר הכתובות הנבחר.\n"
 "ניתן להציג ולערוך אנשי קשר מספרי כתובות אחרים."
 
-#: src/contacts-app.vala:44
+#: src/contacts-app.vala:45
 msgid "Show contact with this email address"
 msgstr "הצגת איש הקשר עם כתובת דוא״ל זו"
 
-#: src/contacts-app.vala:45
+#: src/contacts-app.vala:46
 msgid "Show contact with this individual id"
 msgstr "הצגת איש קשר עם מזהה ייחודי זה"
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:47
 msgid "Show contacts with the given filter"
 msgstr "הצגת אנשי קשר עם מסנן נתון"
 
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:48
 msgid "Show the current version of Contacts"
 msgstr "הצגת הגרסה הנוכחית של אנשי קשר"
 
-#: src/contacts-app.vala:109 src/contacts-app.vala:168
+#: src/contacts-app.vala:110 src/contacts-app.vala:169
 msgid "Contact not found"
 msgstr "איש הקשר לא נמצא"
 
-#: src/contacts-app.vala:110
+#: src/contacts-app.vala:111
 #, c-format
 msgid "No contact with id %s found"
 msgstr "לא נמצא איש קשר בעל המזהה %s"
 
-#: src/contacts-app.vala:111 src/contacts-app.vala:170
-#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:142
+#: src/contacts-app.vala:112 src/contacts-app.vala:171
+#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:107
 msgid "_Close"
 msgstr "ס_גירה"
 
-#: src/contacts-app.vala:154
+#: src/contacts-app.vala:155
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -312,10 +331,75 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 מפתחי אנשי הקשר"
 
-#: src/contacts-app.vala:169
+#: src/contacts-app.vala:170
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "לא נמצאו אנשי קשר עם כתובת הדוא״ל %s"
+
+#: src/contacts-app.vala:233
+#| msgid "No primary addressbook configured"
+msgid "Primary address book not found"
+msgstr "לא נמצא ספר כתובות עיקרי"
+
+#: src/contacts-app.vala:235
+msgid ""
+"Contacts can't find the configured primary address book. You might "
+"experience issues creating or editing contacts"
+msgstr ""
+"אנשי קשר לא מצא את ספר הכתובות העיקרי המוגדר. יתכן ותתרחשנה בעיות ביצירה או "
+"עריכה של אנשי קשר"
+
+#: src/contacts-app.vala:236
+#| msgid "Preferences"
+msgid "Go To _Preferences"
+msgstr "מעבר לה_עדפות"
+
+#: src/contacts-app.vala:341
+#| msgid "_Import"
+msgid "Import"
+msgstr "יבוא"
+
+#: src/contacts-app.vala:381
+#| msgid "Error creating account"
+msgid "Error reading file"
+msgstr "שגיאה בעת קריאת קובץ"
+
+#: src/contacts-app.vala:382
+#, c-format
+msgid "An error occurred reading the file '%s'"
+msgstr "שגיאה בקריאת הקובץ ׳%s׳."
+
+#: src/contacts-app.vala:383 src/contacts-app.vala:393
+msgid "_OK"
+msgstr "_אישור"
+
+#: src/contacts-app.vala:391
+#| msgid "No contact with id %s found"
+msgid "No contacts founds"
+msgstr "לא נמצאו אנשי קשר"
+
+#: src/contacts-app.vala:392
+msgid "The imported file does not seem to contain any contacts"
+msgstr "נראה כי הקובץ המיובא לא מכיל אף איש קשר"
+
+#. Second step: ask the user for confirmation
+#: src/contacts-app.vala:400
+#, c-format
+msgid "By continuing, you will import %u contact"
+msgid_plural "By continuing, you will import %u contacts"
+msgstr[0] "עם המשך התהליך, איש קשר אחד יובא"
+msgstr[1] "עם המשך התהליך, שני אנשי קשר יובאו"
+msgstr[2] "עם המשך התהליך, %u אנשי קשר יובאו"
+msgstr[3] "עם המשך התהליך, %u אנשי קשר יובאו"
+
+#: src/contacts-app.vala:403
+#| msgid "C_ontinue"
+msgid "Continue Import?"
+msgstr "להמשיך את היבוא?"
+
+#: src/contacts-app.vala:404
+msgid "C_ontinue"
+msgstr "המ_שך"
 
 #: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
@@ -378,15 +462,15 @@ msgstr "שליחת דוא\"ל אל %s"
 msgid "Start a call"
 msgstr "התחלת שיחה"
 
-#: src/contacts-contact-sheet.vala:356
+#: src/contacts-contact-sheet.vala:345
 msgid "Visit website"
 msgstr "לבקר באתר האינטרנט"
 
-#: src/contacts-contact-sheet.vala:406
+#: src/contacts-contact-sheet.vala:395
 msgid "Their birthday is today! 🎉"
 msgstr "יום ההולדת שלהם הוא היום! 🎉"
 
-#: src/contacts-contact-sheet.vala:451
+#: src/contacts-contact-sheet.vala:440
 msgid "Show on the map"
 msgstr "הצגה על המפה"
 
@@ -453,7 +537,7 @@ msgid "Country"
 msgstr "מדינה"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:562
+#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:502
 msgid "Role"
 msgstr "תפקיד"
 
@@ -482,7 +566,7 @@ msgstr "הוספת מספר טלפון"
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:608 src/contacts-utils.vala:557
+#: src/contacts-editor-property.vala:608 src/contacts-utils.vala:497
 msgid "Nickname"
 msgstr "כינוי"
 
@@ -491,12 +575,12 @@ msgid "Set Birthday"
 msgstr "הגדרת יום הולדת"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:382
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:334
 msgid "Local Address Book"
 msgstr "ספר כתובות מקומי"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:442
+#: src/contacts-utils.vala:388
 msgid "Google"
 msgstr "Google"
 
@@ -623,7 +707,7 @@ msgstr "זה אותו אדם כמו %s?"
 msgid "Unlink"
 msgstr "הפרדה"
 
-#: src/contacts-main-window.vala:187
+#: src/contacts-main-window.vala:191
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
@@ -632,16 +716,16 @@ msgstr[1] "שניים נבחרו"
 msgstr[2] "‏‎%llu נבחרו"
 msgstr[3] "‏‎%llu נבחרו"
 
-#: src/contacts-main-window.vala:217
+#: src/contacts-main-window.vala:221
 msgid "_Add"
 msgstr "הו_ספה"
 
-#: src/contacts-main-window.vala:247
+#: src/contacts-main-window.vala:251
 #, c-format
 msgid "Editing %s"
 msgstr "עריכת %s"
 
-#: src/contacts-main-window.vala:267
+#: src/contacts-main-window.vala:271
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -650,32 +734,39 @@ msgstr[1] "שניים נבחרו"
 msgstr[2] "‏‎%d נבחרו"
 msgstr[3] "‏‎%d נבחרו"
 
-#: src/contacts-main-window.vala:287 src/contacts-main-window.vala:480
-#: src/contacts-main-window.vala:519
+#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:486
+#: src/contacts-main-window.vala:526
 msgid "_Undo"
 msgstr "_ביטול"
 
-#: src/contacts-main-window.vala:354
+#: src/contacts-main-window.vala:358
 msgid "New Contact"
 msgstr "איש קשר חדש"
 
-#: src/contacts-main-window.vala:444
+#: src/contacts-main-window.vala:449
 msgid "Unmark as favorite"
 msgstr "לבטל סימון כמועדף"
 
-#: src/contacts-main-window.vala:446
+#: src/contacts-main-window.vala:451
 msgid "Mark as favorite"
 msgstr "סימון כמועדף"
 
+#. Open up a file chooser
+#: src/contacts-main-window.vala:560
+#| msgid "Import from file…"
+msgid "Export to file"
+msgstr "ייצוא לקובץ"
+
+#: src/contacts-main-window.vala:563
+#| msgid "Export"
+msgid "_Export"
+msgstr "_ייצוא"
+
 #: src/contacts-preferences-window.vala:30
-#| msgid "Local Address Book"
 msgid "Primary Address Book"
 msgstr "ספר כתובות עיקרי"
 
 #: src/contacts-preferences-window.vala:31
-#| msgid ""
-#| "New contacts will be added to the selected address book.\n"
-#| "You are able to view and edit contacts from other address books."
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -684,7 +775,6 @@ msgstr ""
 "כתובות אחרים."
 
 #: src/contacts-preferences-window.vala:40
-#| msgid "Linked Accounts"
 msgid "_Online Accounts"
 msgstr "חשבונות _מקוונים"
 
@@ -770,73 +860,73 @@ msgstr "TTY"
 msgid "Unlinking contacts"
 msgstr "אנשי קשר לא מקושרים"
 
-#: src/contacts-utils.vala:546
+#: src/contacts-utils.vala:486
 msgid "Alias"
 msgstr "כינוי"
 
-#: src/contacts-utils.vala:547
+#: src/contacts-utils.vala:487
 msgid "Avatar"
 msgstr "תמונה אישית"
 
-#: src/contacts-utils.vala:548
+#: src/contacts-utils.vala:488
 msgid "Birthday"
 msgstr "יום הולדת"
 
-#: src/contacts-utils.vala:549
+#: src/contacts-utils.vala:489
 msgid "Calendar event"
 msgstr "אירוע בלוח השנה"
 
-#: src/contacts-utils.vala:550
+#: src/contacts-utils.vala:490
 msgid "Email address"
 msgstr "כתובת דוא״ל"
 
-#: src/contacts-utils.vala:551
+#: src/contacts-utils.vala:491
 msgid "Full name"
 msgstr "שם מלא"
 
-#: src/contacts-utils.vala:552
+#: src/contacts-utils.vala:492
 msgid "Gender"
 msgstr "מגדר"
 
-#: src/contacts-utils.vala:553
+#: src/contacts-utils.vala:493
 msgid "Group"
 msgstr "קבוצה"
 
-#: src/contacts-utils.vala:554
+#: src/contacts-utils.vala:494
 msgid "Instant messaging"
 msgstr "הודעה מידית"
 
-#: src/contacts-utils.vala:555
+#: src/contacts-utils.vala:495
 msgid "Favourite"
 msgstr "מועדפים"
 
-#: src/contacts-utils.vala:556
+#: src/contacts-utils.vala:496
 msgid "Local ID"
 msgstr "מזהה מקומי"
 
-#: src/contacts-utils.vala:558
+#: src/contacts-utils.vala:498
 msgid "Note"
 msgstr "הערה"
 
-#: src/contacts-utils.vala:559
+#: src/contacts-utils.vala:499
 msgid "Phone number"
 msgstr "מספר טלפון"
 
-#: src/contacts-utils.vala:560
+#: src/contacts-utils.vala:500
 msgid "Address"
 msgstr "כתובת"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:565
+#: src/contacts-utils.vala:505
 msgid "Structured name"
 msgstr "שם מובנה"
 
-#: src/contacts-utils.vala:566
+#: src/contacts-utils.vala:506
 msgid "Website"
 msgstr "אתר אינטרנט"
 
-#: src/contacts-utils.vala:567
+#: src/contacts-utils.vala:507
 msgid "Web service"
 msgstr "שרת האינטרנט"
 
@@ -1292,9 +1382,6 @@ msgstr "Is the window fullscreen"
 
 #~ msgid "Select ICC Profile File"
 #~ msgstr "בחירת פרופיל ICC"
-
-#~ msgid "_Import"
-#~ msgstr "יי_בוא"
 
 #~ msgid "Supported ICC profiles"
 #~ msgstr "פרופילי ICC נתמכים"
@@ -3118,9 +3205,6 @@ msgstr "Is the window fullscreen"
 #~ msgid "New Profile"
 #~ msgstr "פרופיל חדש"
 
-#~ msgid "Import from file…"
-#~ msgstr "יבוא מקובץ…"
-
 #~ msgid "Add VPN"
 #~ msgstr "הוספת VPN"
 
@@ -4684,9 +4768,6 @@ msgstr "Is the window fullscreen"
 
 #~ msgid "Select Location"
 #~ msgstr "בחירת מיקום"
-
-#~ msgid "_OK"
-#~ msgstr "_אישור"
 
 #~ msgid "Search Locations"
 #~ msgstr "מקומות לחיפוש"
@@ -7671,9 +7752,6 @@ msgstr "Is the window fullscreen"
 #~ msgid "Mail"
 #~ msgstr "דוא״ל"
 
-#~ msgid "Error creating account"
-#~ msgstr "שגיאה בעת יצירת החשבון"
-
 #~ msgid "Are you sure you want to remove the account?"
 #~ msgstr "האם אכן ברצונך להסיר את החשבון?"
 
@@ -8661,9 +8739,6 @@ msgstr "Is the window fullscreen"
 #~ msgid "Passwords do not match"
 #~ msgstr "הססמאות אינן תואמות"
 
-#~ msgid "Export"
-#~ msgstr "יצוא"
-
 #~ msgid "Left Shift"
 #~ msgstr "Shift שמאלי"
 
@@ -8859,9 +8934,6 @@ msgstr "Is the window fullscreen"
 
 #~ msgid "Tip: Enterprise domain or realm name"
 #~ msgstr "עצה: מתחם (domain) ארגוני או שם התחום (realm)"
-
-#~ msgid "C_ontinue"
-#~ msgstr "המ_שך"
 
 #~ msgid "Previous Week"
 #~ msgstr "השבוע הקודם"
