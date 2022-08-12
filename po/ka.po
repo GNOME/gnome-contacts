@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-10 16:24+0000\n"
-"PO-Revision-Date: 2022-08-12 05:54+0200\n"
+"POT-Creation-Date: 2022-08-12 16:40+0000\n"
+"PO-Revision-Date: 2022-08-12 19:57+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: \n"
 "Language: ka\n"
@@ -43,7 +43,27 @@ msgid ""
 "link contacts from different online sources."
 msgstr ""
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:735 src/contacts-app.vala:149
+#: data/org.gnome.Contacts.appdata.xml.in.in:22
+msgid "Contacts with no contacts."
+msgstr "კონტაქტები კონტაქტების გარეშე."
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:26
+msgid "Contacts filled with contacts"
+msgstr "კონტაქტებით სავსე კონტაქტები"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:30
+msgid "Contacts in selection mode"
+msgstr "კონტაქტები შერჩევის რეჟიმში"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:34
+msgid "Contacts setup view"
+msgstr "კონტაქტების მორგების ხედი"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:38
+msgid "Contacts edit view"
+msgstr "კონტაქტების ხედის ჩასწორება"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:750 src/contacts-app.vala:149
 msgid "The GNOME Project"
 msgstr "პროექტი \"GNOME\""
 
@@ -98,7 +118,7 @@ msgid "Cancel"
 msgstr "გაუქმება"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:274 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "დასრულდა"
 
@@ -218,11 +238,11 @@ msgstr "უკან"
 msgid "_Cancel"
 msgstr "_გაუქმება"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:258
 msgid "Edit Contact"
 msgstr "კოტაქტის ჩასწორება"
 
-#: data/ui/contacts-main-window.ui:266
+#: data/ui/contacts-main-window.ui:265
 msgid "Delete Contact"
 msgstr "%1 კონტაქტის წაშლა"
 
@@ -396,11 +416,11 @@ msgstr "აირჩიეთ ავატარი"
 msgid "Add name"
 msgstr "სახელის დამატება"
 
-#: src/contacts-contact-list.vala:106
+#: src/contacts-contact-list.vala:115
 msgid "Favorites"
 msgstr "სანიშნები"
 
-#: src/contacts-contact-list.vala:108 src/contacts-contact-list.vala:114
+#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
 msgid "All Contacts"
 msgstr "ყველა კონტაქტი"
 
@@ -419,29 +439,29 @@ msgid "Unable to find newly created contact"
 msgstr ""
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:233
+#: src/contacts-contact-sheet.vala:234
 #, c-format
 msgid "%s at %s"
 msgstr "%s %s-ში"
 
-#: src/contacts-contact-sheet.vala:265
+#: src/contacts-contact-sheet.vala:266
 #, c-format
 msgid "Send an email to %s"
 msgstr "ელფოსტის გაგზავნა %s-თან"
 
-#: src/contacts-contact-sheet.vala:294
+#: src/contacts-contact-sheet.vala:295
 msgid "Start a call"
 msgstr "ზარის დაწყება"
 
-#: src/contacts-contact-sheet.vala:343
+#: src/contacts-contact-sheet.vala:344
 msgid "Visit website"
 msgstr "ვებგვერდის ნახვა"
 
-#: src/contacts-contact-sheet.vala:393
+#: src/contacts-contact-sheet.vala:394
 msgid "Their birthday is today! 🎉"
-msgstr ""
+msgstr "მათი დაბადების დღე დღესაა! 🎉"
 
-#: src/contacts-contact-sheet.vala:438
+#: src/contacts-contact-sheet.vala:439
 msgid "Show on the map"
 msgstr "რუკაზე ჩვენება"
 
@@ -559,7 +579,7 @@ msgstr "ლოკალური კნტაქტი"
 
 #: src/contacts-im-service.vala:30
 msgid "AOL Instant Messenger"
-msgstr ""
+msgstr "AOL მყისიერი მესენჯერი"
 
 #: src/contacts-im-service.vala:31
 msgid "Facebook"
@@ -706,11 +726,11 @@ msgstr "_დაბრუნება"
 msgid "New Contact"
 msgstr "ახალი"
 
-#: src/contacts-main-window.vala:449
+#: src/contacts-main-window.vala:451
 msgid "Unmark as favorite"
 msgstr "რჩეულობის მოხსნა"
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:453
 msgid "Mark as favorite"
 msgstr "რჩეულად მონიშვნა"
 
@@ -879,7 +899,7 @@ msgstr "მისამართი"
 #. parts, rather than a single freeform string for the full name
 #: src/contacts-utils.vala:505
 msgid "Structured name"
-msgstr ""
+msgstr "სტრუქტურირებული სახელი"
 
 #: src/contacts-utils.vala:506
 msgid "Website"
