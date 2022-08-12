@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-07-25 21:54+0000\n"
-"PO-Revision-Date: 2022-07-26 08:17+0200\n"
+"POT-Creation-Date: 2022-08-10 16:24+0000\n"
+"PO-Revision-Date: 2022-08-12 05:54+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: \n"
 "Language: ka\n"
@@ -19,8 +19,8 @@ msgstr ""
 "X-Generator: Poedit 3.1.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:185
-#: src/contacts-main-window.vala:208 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
+#: src/contacts-main-window.vala:212 src/main.vala:26
 msgid "Contacts"
 msgstr "კონტაქტები"
 
@@ -43,7 +43,7 @@ msgid ""
 "link contacts from different online sources."
 msgstr ""
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:694 src/contacts-app.vala:148
+#: data/org.gnome.Contacts.appdata.xml.in.in:735 src/contacts-app.vala:149
 msgid "The GNOME Project"
 msgstr "პროექტი \"GNOME\""
 
@@ -92,13 +92,13 @@ msgid "Select a new avatar"
 msgstr "აირჩიეთ ახალი ავატარი"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:99 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-editor-property.vala:79
+#: data/ui/contacts-main-window.ui:105 src/contacts-addressbook-dialog.vala:33
+#: src/contacts-app.vala:342 src/contacts-editor-property.vala:79
 msgid "Cancel"
 msgstr "გაუქმება"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:261 src/contacts-main-window.vala:217
+#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "დასრულდა"
 
@@ -143,68 +143,86 @@ msgid "Surname"
 msgstr "გვარი"
 
 #: data/ui/contacts-main-window.ui:19
+msgid "Import…"
+msgstr "შემოტანა…"
+
+#: data/ui/contacts-main-window.ui:25
 msgid "Preferences"
 msgstr "მორგება"
 
-#: data/ui/contacts-main-window.ui:23
+#: data/ui/contacts-main-window.ui:29
 msgid "Keyboard Shortcuts"
 msgstr "კლავიატურის მალსახმობები"
 
-#: data/ui/contacts-main-window.ui:27
+#: data/ui/contacts-main-window.ui:33
 msgid "Help"
 msgstr "დახმარება"
 
-#: data/ui/contacts-main-window.ui:31
+#: data/ui/contacts-main-window.ui:37
 msgid "About Contacts"
 msgstr "Contacts-ის შესახებ"
 
-#: data/ui/contacts-main-window.ui:75
+#: data/ui/contacts-main-window.ui:81
 msgid "Create new contact"
 msgstr "ახალი კონტაქტის შექმნა"
 
-#: data/ui/contacts-main-window.ui:85
+#: data/ui/contacts-main-window.ui:91
 msgid "Menu"
 msgstr "მენიუ"
 
-#: data/ui/contacts-main-window.ui:92
+#: data/ui/contacts-main-window.ui:98
 msgid "Select Items"
 msgstr "ელემენტების არჩევა"
 
-#: data/ui/contacts-main-window.ui:100
+#: data/ui/contacts-main-window.ui:106
 msgid "Cancel Selection"
 msgstr "მონიშვნის გაუქმება"
 
-#: data/ui/contacts-main-window.ui:127
+#: data/ui/contacts-main-window.ui:133
 msgid "Loading"
 msgstr "იტვირთება"
 
-#: data/ui/contacts-main-window.ui:138
+#: data/ui/contacts-main-window.ui:144
 msgid "Type to search"
 msgstr "მოსაძებნად აკრიფეთ"
 
+#. Export refers to the verb
+#: data/ui/contacts-main-window.ui:162
+msgid "Export"
+msgstr "გატანა"
+
+#: data/ui/contacts-main-window.ui:163
+msgid "Export Selected Contacts"
+msgstr "მონიშნული კონტაქტების გატანა"
+
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:157
+#: data/ui/contacts-main-window.ui:170
 msgid "Link"
 msgstr "ბმული"
 
-#: data/ui/contacts-main-window.ui:164
+#: data/ui/contacts-main-window.ui:171
+msgid "Link Selected Contacts Together"
+msgstr ""
+
+#: data/ui/contacts-main-window.ui:178
 msgid "Remove"
 msgstr "მოცილება"
 
-#: data/ui/contacts-main-window.ui:208
+#: data/ui/contacts-main-window.ui:222
 msgid "Back"
 msgstr "უკან"
 
-#: data/ui/contacts-main-window.ui:222 src/contacts-avatar-selector.vala:199
-#: src/contacts-main-window.vala:511
+#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:239
+#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:199
+#: src/contacts-main-window.vala:515 src/contacts-main-window.vala:564
 msgid "_Cancel"
 msgstr "_გაუქმება"
 
-#: data/ui/contacts-main-window.ui:245
+#: data/ui/contacts-main-window.ui:259
 msgid "Edit Contact"
 msgstr "კოტაქტის ჩასწორება"
 
-#: data/ui/contacts-main-window.ui:252
+#: data/ui/contacts-main-window.ui:266
 msgid "Delete Contact"
 msgstr "%1 კონტაქტის წაშლა"
 
@@ -258,46 +276,101 @@ msgid ""
 "You are able to view and edit contacts from other address books."
 msgstr ""
 
-#: src/contacts-app.vala:44
+#: src/contacts-app.vala:45
 msgid "Show contact with this email address"
 msgstr ""
 
-#: src/contacts-app.vala:45
+#: src/contacts-app.vala:46
 msgid "Show contact with this individual id"
 msgstr ""
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:47
 msgid "Show contacts with the given filter"
 msgstr ""
 
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:48
 msgid "Show the current version of Contacts"
 msgstr ""
 
-#: src/contacts-app.vala:109 src/contacts-app.vala:168
+#: src/contacts-app.vala:110 src/contacts-app.vala:169
 msgid "Contact not found"
 msgstr "კონტაქტები ვერ ვპოვე"
 
-#: src/contacts-app.vala:110
+#: src/contacts-app.vala:111
 #, c-format
 msgid "No contact with id %s found"
 msgstr ""
 
-#: src/contacts-app.vala:111 src/contacts-app.vala:170
+#: src/contacts-app.vala:112 src/contacts-app.vala:171
 #: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:107
 msgid "_Close"
 msgstr "დახურვა"
 
-#: src/contacts-app.vala:154
+#: src/contacts-app.vala:155
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
 msgstr ""
 
-#: src/contacts-app.vala:169
+#: src/contacts-app.vala:170
 #, c-format
 msgid "No contact with email address %s found"
 msgstr ""
+
+#: src/contacts-app.vala:233
+msgid "Primary address book not found"
+msgstr "მისამართების ძირითადი წიგნაკი ვერ ვიპოვე"
+
+#: src/contacts-app.vala:235
+msgid ""
+"Contacts can't find the configured primary address book. You might "
+"experience issues creating or editing contacts"
+msgstr ""
+
+#: src/contacts-app.vala:236
+msgid "Go To _Preferences"
+msgstr "_მორგება"
+
+#: src/contacts-app.vala:341
+msgid "Import"
+msgstr "შემოტანა"
+
+#: src/contacts-app.vala:381
+msgid "Error reading file"
+msgstr "ფაილის წაკითხვის შეცდომა"
+
+#: src/contacts-app.vala:382
+#, c-format
+msgid "An error occurred reading the file '%s'"
+msgstr ""
+
+#: src/contacts-app.vala:383 src/contacts-app.vala:393
+msgid "_OK"
+msgstr "_დიახ"
+
+#: src/contacts-app.vala:391
+msgid "No contacts founds"
+msgstr "კონტაქტები ვერ ვპოვე"
+
+#: src/contacts-app.vala:392
+msgid "The imported file does not seem to contain any contacts"
+msgstr ""
+
+#. Second step: ask the user for confirmation
+#: src/contacts-app.vala:400
+#, c-format
+msgid "By continuing, you will import %u contact"
+msgid_plural "By continuing, you will import %u contacts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/contacts-app.vala:403
+msgid "Continue Import?"
+msgstr "გავაგრძელო შემოტანა?"
+
+#: src/contacts-app.vala:404
+msgid "C_ontinue"
+msgstr "_გაგრძელება"
 
 #: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
@@ -346,29 +419,29 @@ msgid "Unable to find newly created contact"
 msgstr ""
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:235
+#: src/contacts-contact-sheet.vala:233
 #, c-format
 msgid "%s at %s"
 msgstr "%s %s-ში"
 
-#: src/contacts-contact-sheet.vala:267
+#: src/contacts-contact-sheet.vala:265
 #, c-format
 msgid "Send an email to %s"
 msgstr "ელფოსტის გაგზავნა %s-თან"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:294
 msgid "Start a call"
 msgstr "ზარის დაწყება"
 
-#: src/contacts-contact-sheet.vala:345
+#: src/contacts-contact-sheet.vala:343
 msgid "Visit website"
 msgstr "ვებგვერდის ნახვა"
 
-#: src/contacts-contact-sheet.vala:395
+#: src/contacts-contact-sheet.vala:393
 msgid "Their birthday is today! 🎉"
 msgstr ""
 
-#: src/contacts-contact-sheet.vala:440
+#: src/contacts-contact-sheet.vala:438
 msgid "Show on the map"
 msgstr "რუკაზე ჩვენება"
 
@@ -601,45 +674,54 @@ msgstr ""
 msgid "Unlink"
 msgstr "მოხსნა"
 
-#: src/contacts-main-window.vala:187
+#: src/contacts-main-window.vala:191
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu მონიშნულია"
 msgstr[1] "%llu მონიშნულია"
 
-#: src/contacts-main-window.vala:217
+#: src/contacts-main-window.vala:221
 msgid "_Add"
 msgstr "_დამატება"
 
-#: src/contacts-main-window.vala:247
+#: src/contacts-main-window.vala:251
 #, c-format
 msgid "Editing %s"
 msgstr "%s-ის ჩასწორება"
 
-#: src/contacts-main-window.vala:267
+#: src/contacts-main-window.vala:271
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d მონიშნულია"
 msgstr[1] "%d მონიშნულია"
 
-#: src/contacts-main-window.vala:287 src/contacts-main-window.vala:482
-#: src/contacts-main-window.vala:522
+#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:486
+#: src/contacts-main-window.vala:526
 msgid "_Undo"
 msgstr "_დაბრუნება"
 
-#: src/contacts-main-window.vala:354
+#: src/contacts-main-window.vala:358
 msgid "New Contact"
 msgstr "ახალი"
 
-#: src/contacts-main-window.vala:445
+#: src/contacts-main-window.vala:449
 msgid "Unmark as favorite"
 msgstr "რჩეულობის მოხსნა"
 
-#: src/contacts-main-window.vala:447
+#: src/contacts-main-window.vala:451
 msgid "Mark as favorite"
 msgstr "რჩეულად მონიშვნა"
+
+#. Open up a file chooser
+#: src/contacts-main-window.vala:560
+msgid "Export to file"
+msgstr "ფაილში გატანა"
+
+#: src/contacts-main-window.vala:563
+msgid "_Export"
+msgstr "_გატანა"
 
 #: src/contacts-preferences-window.vala:30
 msgid "Primary Address Book"
