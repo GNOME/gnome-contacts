@@ -276,7 +276,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     unowned Individual? selected = this.store.get_selected_contact ();
     return_if_fail (selected != null);
 
-    this.store.selection.unselect_all ();
+    this.store.selection.unselect_item (this.store.selection.get_selected ());
     this.state = UiState.NORMAL;
 
     var operation = new UnlinkOperation (this.store, selected);
@@ -351,7 +351,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     if (this.state == UiState.UPDATING || this.state == UiState.CREATING)
       return;
 
-    this.store.selection.unselect_all ();
+    this.store.selection.unselect_item (this.store.selection.get_selected ());
 
     this.state = UiState.CREATING;
 
@@ -375,7 +375,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private void on_child_transition_running () {
     if (!this.content_box.child_transition_running &&
          this.content_box.visible_child == this.list_pane_page)
-      this.store.selection.unselect_all ();
+      this.store.selection.unselect_item (this.store.selection.get_selected ());
   }
 
   private void update_header () {
@@ -428,7 +428,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     // Update related actions
     unowned var unlink_action = lookup_action ("unlink-contact");
-    ((SimpleAction) unlink_action).set_enabled (selected.personas.size > 1);
+    ((SimpleAction) unlink_action).set_enabled (selected != null && selected.personas.size > 1);
 
     // We really want to treat selection mode specially
     if (this.state != UiState.SELECTING) {
@@ -437,7 +437,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         activate_action ("stop-editing-contact", new Variant.boolean (false));
 
       this.contact_pane.show_contact (selected);
-      show_contact_pane ();
+      if (selected != null)
+        show_contact_pane ();
 
       // clearing right_header
       this.right_header.title_widget = new Adw.WindowTitle ("", "");
@@ -451,8 +452,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
           this.favorite_button.tooltip_text = _("Mark as favorite");
       }
       this.state = UiState.SHOWING;
-      if (selected == null)
-        show_contact_pane ();
     }
   }
 
@@ -462,7 +461,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     // Go back to normal state as much as possible, and hide the contacts that
     // will be linked together
-    this.store.selection.unselect_all ();
+    this.store.selection.unselect_item (this.store.selection.get_selected ());
     this.marked_contacts.unselect_all ();
     this.contacts_list.set_contacts_visible (selection, false);
     this.contact_pane.show_contact (null);
@@ -494,7 +493,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private void delete_contacts (Gtk.Bitset selection) {
     // Go back to normal state as much as possible, and hide the contacts that
     // will be deleted
-    this.store.selection.unselect_all ();
+    this.store.selection.unselect_item (this.store.selection.get_selected ());
     this.marked_contacts.unselect_all ();
     this.contacts_list.set_contacts_visible (selection, false);
     this.contact_pane.show_contact (null);
@@ -552,7 +551,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     var selection = this.marked_contacts.get_selection ().copy ();
 
     // Go back to normal state as much as possible
-    this.store.selection.unselect_all ();
+    this.store.selection.unselect_item (this.store.selection.get_selected ());
     this.marked_contacts.unselect_all ();
     this.state = UiState.NORMAL;
 

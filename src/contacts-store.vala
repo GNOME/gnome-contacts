@@ -176,6 +176,7 @@ public class Contacts.Store : GLib.Object {
     this.filter_model = new Gtk.FilterListModel (this.sort_model, this.filter);
 
     this.selection = new Gtk.SingleSelection (this.filter_model);
+    this.selection.can_unselect = true;
     this.selection.autoselect = false;
   }
 

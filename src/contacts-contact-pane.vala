@@ -238,7 +238,7 @@ public class Contacts.ContactPane : Adw.Bin {
       persona = yield primary_store.add_persona_from_details (details);
     } catch (Error e) {
       show_message_dialog (_("Unable to create new contacts: %s").printf (e.message));
-      this.store.selection.unselect_all ();
+      this.store.selection.unselect_item (this.store.selection.get_selected ());
       return;
     }
 
@@ -253,7 +253,7 @@ public class Contacts.ContactPane : Adw.Bin {
 
     // If we got here, we couldn't find the individual
     show_message_dialog (_("Unable to find newly created contact"));
-    this.store.selection.unselect_all ();
+    this.store.selection.unselect_item (this.store.selection.get_selected ());
   }
 
   private void show_message_dialog (string message) {

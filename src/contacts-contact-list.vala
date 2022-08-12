@@ -45,7 +45,7 @@ public class Contacts.ContactList : Adw.Bin {
     var list_box = new Gtk.ListBox ();
     this.listbox = list_box;
     this.listbox.bind_model (this.store.filter_model, create_row_for_item);
-    this.listbox.selection_mode = Gtk.SelectionMode.BROWSE;
+    this.listbox.selection_mode = Gtk.SelectionMode.SINGLE;
     this.listbox.set_header_func (update_header);
     this.listbox.add_css_class ("navigation-sidebar");
 
@@ -72,6 +72,15 @@ public class Contacts.ContactList : Adw.Bin {
     viewport.scroll_to_focus = true;
     viewport.set_child (this.listbox);
     sw.set_child (viewport);
+
+    this.store.selection.selection_changed.connect (() => {
+      uint selected = this.store.selection.get_selected ();
+
+      if (selected == Gtk.INVALID_LIST_POSITION)
+        this.listbox.unselect_all ();
+      else
+        this.listbox.select_row (this.listbox.get_row_at_index ((int) selected));
+    });
   }
 
   public ContactList (Store store, Gtk.MultiSelection marked_contacts) {
@@ -139,7 +148,7 @@ public class Contacts.ContactList : Adw.Bin {
   private void on_row_selected (Gtk.ListBox listbox, Gtk.ListBoxRow? row) {
     if (this.state != UiState.SELECTING) {
       if (row == null) {
-        this.store.selection.unselect_all ();
+        this.store.selection.unselect_item (this.store.selection.get_selected ());
       } else {
         this.store.selection.select_item (row.get_index (), true);
       }
