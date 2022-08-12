@@ -63,7 +63,7 @@
           <object class="AdwLeaflet" id="content_box">
             <property name="can-navigate-back">True</property>
             <signal name="notify::folded" handler="on_folded"/>
-            <signal name="notify::child-transition-running" handler="on_child_transition_running"/>
+            <signal name="notify::visible-child" handler="on_visible_child"/>
 
             <child>
               <object class="AdwLeafletPage">
