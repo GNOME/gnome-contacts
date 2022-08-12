@@ -170,6 +170,7 @@ public class Contacts.ContactSheet : Gtk.Grid {
     name_label.hexpand = true;
     name_label.xalign = 0f;
     name_label.wrap = true;
+    name_label.wrap_mode = WORD_CHAR;
     name_label.lines = 4;
     name_label.width_chars = 10;
     name_label.selectable = true;
