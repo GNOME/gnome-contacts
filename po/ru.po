@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-06 10:53+0000\n"
-"PO-Revision-Date: 2022-08-06 14:39+0300\n"
+"POT-Creation-Date: 2022-08-12 16:40+0000\n"
+"PO-Revision-Date: 2022-08-12 21:18+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -52,7 +52,27 @@ msgstr ""
 "Приложение «Контакты» также  выполнит интеграцию с сетевой адресной книгой и "
 "автоматически свяжет контакты из различных сетевых источников."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:716 src/contacts-app.vala:149
+#: data/org.gnome.Contacts.appdata.xml.in.in:22
+msgid "Contacts with no contacts."
+msgstr "Контакты без данных."
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:26
+msgid "Contacts filled with contacts"
+msgstr "Контакты, заполненные данными"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:30
+msgid "Contacts in selection mode"
+msgstr "Контакты в режиме выбора"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:34
+msgid "Contacts setup view"
+msgstr "Вид настройки контактов"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:38
+msgid "Contacts edit view"
+msgstr "Вид редактирования контактов"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:750 src/contacts-app.vala:149
 msgid "The GNOME Project"
 msgstr "The GNOME Project"
 
@@ -102,12 +122,12 @@ msgstr "Выбрать новый аватар"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
 #: data/ui/contacts-main-window.ui:105 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-app.vala:317 src/contacts-editor-property.vala:79
+#: src/contacts-app.vala:342 src/contacts-editor-property.vala:79
 msgid "Cancel"
 msgstr "Отменить"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:274 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "Готово"
 
@@ -221,17 +241,17 @@ msgstr "Удалить"
 msgid "Back"
 msgstr "Назад"
 
-#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:383
-#: src/contacts-avatar-selector.vala:199 src/contacts-main-window.vala:515
-#: src/contacts-main-window.vala:564
+#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:239
+#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:199
+#: src/contacts-main-window.vala:515 src/contacts-main-window.vala:564
 msgid "_Cancel"
 msgstr "_Отменить"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:258
 msgid "Edit Contact"
 msgstr "Изменить контакт"
 
-#: data/ui/contacts-main-window.ui:266
+#: data/ui/contacts-main-window.ui:265
 msgid "Delete Contact"
 msgstr "Удалить контакт"
 
@@ -333,33 +353,49 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "Контакт с адресом электронной почты %s не найден"
 
-#: src/contacts-app.vala:316
+#: src/contacts-app.vala:233
+msgid "Primary address book not found"
+msgstr "Основная адресная книга не найдена"
+
+#: src/contacts-app.vala:235
+msgid ""
+"Contacts can't find the configured primary address book. You might "
+"experience issues creating or editing contacts"
+msgstr ""
+"Контакты не могут найти настроенную основную адресную книгу. Могут "
+"возникнуть проблемы с созданием или редактированием контактов"
+
+#: src/contacts-app.vala:236
+msgid "Go To _Preferences"
+msgstr "Перейти к _параметрам"
+
+#: src/contacts-app.vala:341
 msgid "Import"
 msgstr "Импортировать"
 
-#: src/contacts-app.vala:356
+#: src/contacts-app.vala:381
 msgid "Error reading file"
 msgstr "Ошибка чтения файла"
 
-#: src/contacts-app.vala:357
+#: src/contacts-app.vala:382
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Произошла ошибка при чтении файла '%s'"
 
-#: src/contacts-app.vala:358 src/contacts-app.vala:368
+#: src/contacts-app.vala:383 src/contacts-app.vala:393
 msgid "_OK"
 msgstr "_ОК"
 
-#: src/contacts-app.vala:366
+#: src/contacts-app.vala:391
 msgid "No contacts founds"
 msgstr "Контакты не найдены"
 
-#: src/contacts-app.vala:367
+#: src/contacts-app.vala:392
 msgid "The imported file does not seem to contain any contacts"
 msgstr "Похоже, что импортированный файл не содержит никаких контактов"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:375
+#: src/contacts-app.vala:400
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -367,11 +403,11 @@ msgstr[0] "Продолжая, вы импортируете %u контакт"
 msgstr[1] "Продолжая, вы импортируете %u контакта"
 msgstr[2] "Продолжая, вы импортируете %u контактов"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:403
 msgid "Continue Import?"
 msgstr "Продолжить импорт?"
 
-#: src/contacts-app.vala:379
+#: src/contacts-app.vala:404
 msgid "C_ontinue"
 msgstr "П_родолжить"
 
@@ -399,11 +435,11 @@ msgstr "Изменить аватар"
 msgid "Add name"
 msgstr "Добавить имя"
 
-#: src/contacts-contact-list.vala:106
+#: src/contacts-contact-list.vala:115
 msgid "Favorites"
 msgstr "Избранные"
 
-#: src/contacts-contact-list.vala:108 src/contacts-contact-list.vala:114
+#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
 msgid "All Contacts"
 msgstr "Все контакты"
 
@@ -422,29 +458,29 @@ msgid "Unable to find newly created contact"
 msgstr "Не удалось найти только что созданный контакт"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:235
+#: src/contacts-contact-sheet.vala:234
 #, c-format
 msgid "%s at %s"
 msgstr "%s в %s"
 
-#: src/contacts-contact-sheet.vala:267
+#: src/contacts-contact-sheet.vala:266
 #, c-format
 msgid "Send an email to %s"
 msgstr "Отправить электронное письмо на %s"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:295
 msgid "Start a call"
 msgstr "Позвонить"
 
-#: src/contacts-contact-sheet.vala:345
+#: src/contacts-contact-sheet.vala:344
 msgid "Visit website"
 msgstr "Посетить веб-сайт"
 
-#: src/contacts-contact-sheet.vala:395
+#: src/contacts-contact-sheet.vala:394
 msgid "Their birthday is today! 🎉"
 msgstr "У них сегодня день рождения! 🎉"
 
-#: src/contacts-contact-sheet.vala:440
+#: src/contacts-contact-sheet.vala:439
 msgid "Show on the map"
 msgstr "Показать на карте"
 
@@ -714,11 +750,11 @@ msgstr "От_менить"
 msgid "New Contact"
 msgstr "Создать контакт"
 
-#: src/contacts-main-window.vala:449
+#: src/contacts-main-window.vala:451
 msgid "Unmark as favorite"
 msgstr "Убрать из избранных"
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:453
 msgid "Mark as favorite"
 msgstr "Добавить в избранные"
 
