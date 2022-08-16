@@ -223,9 +223,11 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (details == null)
       return;
 
-    var roles = Utils.sort_fields<RoleFieldDetails>(details.roles);
+    var roles = Utils.fields_to_sorted (details.roles);
     var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var role in roles) {
+    for (uint i = 0; i < roles.get_n_items (); i++) {
+      var role = (RoleFieldDetails) roles.get_item (i);
+
       if (role.value.is_empty ())
         continue;
 
@@ -254,9 +256,11 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (details == null)
       return;
 
-    var emails = Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
+    var emails = Utils.fields_to_sorted (details.email_addresses);
     var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var email in emails) {
+    for (uint i = 0; i < emails.get_n_items (); i++) {
+      var email = (EmailFieldDetails) emails.get_item (i);
+
       if (email.value == "")
         continue;
 
@@ -281,9 +285,11 @@ public class Contacts.ContactSheet : Gtk.Grid {
     if (phone_details == null)
       return;
 
-    var phones = Utils.sort_fields<PhoneFieldDetails>(phone_details.phone_numbers);
+    var phones = Utils.fields_to_sorted (phone_details.phone_numbers);
     var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var phone in phones) {
+    for (uint i = 0; i < phones.get_n_items (); i++) {
+      var phone = (PhoneFieldDetails) phones.get_item (i);
+
       if (phone.value == "")
         continue;
 
@@ -336,7 +342,10 @@ public class Contacts.ContactSheet : Gtk.Grid {
       return;
 
     var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var url in url_details.urls) {
+    var urls = Utils.fields_to_sorted (url_details.urls);
+    for (uint i = 0; i < urls.get_n_items (); i++) {
+      var url = (UrlFieldDetails) urls.get_item (i);
+
       if (url.value == "")
         continue;
 

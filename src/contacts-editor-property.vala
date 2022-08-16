@@ -440,9 +440,10 @@ public class Contacts.EditorProperty : Object, ListModel {
       case "email-addresses":
         unowned var details = p as EmailDetails;
         if (details != null) {
-          var emails = Utils.sort_fields<EmailFieldDetails>(details.email_addresses);
+          var emails = Utils.fields_to_sorted (details.email_addresses);
           if (!only_new)
-            foreach (var email in emails) {
+            for (uint i = 0; i < emails.get_n_items (); i++) {
+              var email = (EmailFieldDetails) emails.get_item (i);
               this.rows.add (create_for_email (details.email_addresses, email));
             }
           if (this.writeable)
@@ -452,9 +453,10 @@ public class Contacts.EditorProperty : Object, ListModel {
       case "phone-numbers":
         unowned var details = p as PhoneDetails;
         if (details != null) {
-          var phones = Utils.sort_fields<PhoneFieldDetails>(details.phone_numbers);
+          var phones = Utils.fields_to_sorted (details.phone_numbers);
           if (!only_new)
-            foreach (var phone in phones) {
+            for (uint i = 0; i < phones.get_n_items (); i++) {
+              var phone = (PhoneFieldDetails) phones.get_item (i);
               this.rows.add (create_for_phone (details.phone_numbers, phone));
             }
           if (this.writeable)
@@ -464,9 +466,10 @@ public class Contacts.EditorProperty : Object, ListModel {
       case "urls":
         unowned var details = p as UrlDetails;
         if (details != null) {
-          var urls = Utils.sort_fields<UrlFieldDetails>(details.urls);
+          var urls = Utils.fields_to_sorted (details.urls);
           if (!only_new)
-            foreach (var url in urls) {
+            for (uint i = 0; i < urls.get_n_items (); i++) {
+              var url = (UrlFieldDetails) urls.get_item (i);
               this.rows.add (create_for_url (details.urls, url));
             }
           this.rows.add (create_for_url (details.urls));
@@ -510,7 +513,9 @@ public class Contacts.EditorProperty : Object, ListModel {
         unowned var role_details = p as RoleDetails;
         if (role_details != null) {
           if (!only_new) {
-            foreach (var role in role_details.roles) {
+            var roles = Utils.fields_to_sorted (role_details.roles);
+            for (uint i = 0; i < roles.get_n_items (); i++) {
+              var role = (RoleFieldDetails) roles.get_item (i);
               this.rows.add (create_for_role (role_details.roles, role));
             }
           }

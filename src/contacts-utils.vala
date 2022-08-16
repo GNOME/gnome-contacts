@@ -134,57 +134,11 @@ namespace Contacts.Utils {
     return !has_main_persona (self) || !has_mainable_persona (other);
   }
 
-  private bool has_pref (AbstractFieldDetails details) {
-    var evolution_pref = details.get_parameter_values ("x-evolution-ui-slot");
-    if (evolution_pref != null && Utils.get_first (evolution_pref) == "1")
-      return true;
-
-    foreach (var param in details.parameters["type"]) {
-      if (param.ascii_casecmp ("PREF") == 0)
-        return true;
-    }
-    return false;
-  }
-
-  private TypeSet select_typeset_from_fielddetails (AbstractFieldDetails a) {
-    if (a is EmailFieldDetails)
-      return TypeSet.email;
-    if (a is PhoneFieldDetails)
-      return TypeSet.phone;
-    return TypeSet.general;
-  }
-
-  public int compare_fields (void* _a, void* _b) {
-    var a = (AbstractFieldDetails) _a;
-    var b = (AbstractFieldDetails) _b;
-
-    // Fields with a PREF hint always go first (see VCard PREF attribute)
-    var a_has_pref = has_pref (a);
-    if (a_has_pref != has_pref (b))
-      return (a_has_pref)? -1 : 1;
-
-    // sort by field type first (e.g. "Home", "Work")
-    var type_set = select_typeset_from_fielddetails (a);
-    var result = type_set.format_type (a).ascii_casecmp (type_set.format_type (b));
-    if (result != 0)
-      return result;
-
-    // Try to compare by value if types are equal
-    var aa = a as AbstractFieldDetails<string>;
-    var bb = b as AbstractFieldDetails<string>;
-    if (aa != null && bb != null)
-      return strcmp (aa.value, bb.value);
-
-    // No heuristics to fall back to.
-    warning ("Unsupported AbstractFieldDetails value type");
-    return 0;
-  }
-
-  public Gee.List<T> sort_fields<T> (Gee.Collection<T> fields) {
-    var res = new Gee.ArrayList<T>();
-    res.add_all (fields);
-    res.sort (Contacts.Utils.compare_fields);
-    return res;
+  public ListModel fields_to_sorted (Gee.Collection<AbstractFieldDetails> fields) {
+    var res = new ListStore (typeof (AbstractFieldDetails));
+    foreach (var afd in fields)
+      res.append (afd);
+    return new Gtk.SortListModel ((owned) res, new AbstractFieldDetailsSorter ());
   }
 
   public string[] format_address (PostalAddress addr) {
