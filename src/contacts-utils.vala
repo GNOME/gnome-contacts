@@ -264,39 +264,11 @@ namespace Contacts.Utils {
     return false;
   }
 
-  public ListModel get_personas_for_display (Individual individual) {
-    var persona_list = new ListStore(typeof(Persona));
+  public ListModel personas_as_list_model (Individual individual) {
+    var personas = new ListStore (typeof(Persona));
     foreach (var persona in individual.personas)
-      if (persona.store.type_id != "key-file")
-        persona_list.append (persona);
-
-    persona_list.sort ((a, b) => {
-      unowned var store_a = ((Persona) a).store;
-      unowned var store_b = ((Persona) b).store;
-
-      // In the same store, sort Google 'other' contacts last
-      if (store_a == store_b) {
-        if (!persona_is_google ((Persona) a))
-          return 0;
-
-        var a_is_other = persona_is_google_other ((Persona) a);
-        if (a_is_other != persona_is_google_other ((Persona) b))
-          return a_is_other? 1 : -1;
-      }
-
-      // Sort primary stores before others
-      if (store_a.is_primary_store != store_b.is_primary_store)
-        return (store_a.is_primary_store)? -1 : 1;
-
-      // E-D-S stores get prioritized
-      if ((store_a.type_id == "eds") != (store_b.type_id == "eds"))
-        return (store_a.type_id == "eds")? -1 : 1;
-
-      // Normal case: use alphabetical sorting
-      return strcmp (store_a.id, store_b.id);
-    });
-
-    return persona_list;
+      personas.append (persona);
+    return personas;
   }
 
   public Persona? find_primary_persona (Individual individual) {
@@ -365,7 +337,7 @@ namespace Contacts.Utils {
     return all_unlinkable;
   }
 
-  private bool persona_is_google (Persona persona) {
+  public bool persona_is_google (Persona persona) {
     return persona.store.type_id == "eds" && esource_uid_is_google (persona.store.id);
   }
 

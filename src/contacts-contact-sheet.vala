@@ -133,19 +133,21 @@ public class Contacts.ContactSheet : Gtk.Grid {
 
     this.last_row++;
 
-    var personas = Utils.get_personas_for_display (this.individual);
-    /* Cause personas are sorted properly I can do this */
-    for (int i = 0; i < personas.get_n_items (); i++) {
-      var p = (Persona) personas.get_item (i);
+    var personas = Utils.personas_as_list_model (individual);
+    var personas_filtered = new Gtk.FilterListModel (personas, new PersonaFilter ());
+    var personas_sorted = new Gtk.SortListModel (personas_filtered, new PersonaSorter ());
+
+    for (int i = 0; i < personas_sorted.get_n_items (); i++) {
+      var persona = (Persona) personas_sorted.get_item (i);
       int persona_store_pos = this.last_row;
 
       if (i > 0) {
-        this.attach (create_persona_store_label (p), 0, this.last_row, 3);
+        this.attach (create_persona_store_label (persona), 0, this.last_row, 3);
         this.last_row++;
       }
 
       foreach (unowned var prop in SORTED_PROPERTIES)
-        add_row_for_property (p, prop);
+        add_row_for_property (persona, prop);
 
       // Nothing to show in the persona: don't mention it
       bool is_empty_persona = (this.last_row == persona_store_pos + 1);

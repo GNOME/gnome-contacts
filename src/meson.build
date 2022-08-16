@@ -17,6 +17,8 @@ libcontacts_sources = files(
   'contacts-link-operation.vala',
   'contacts-operation.vala',
   'contacts-operation-list.vala',
+  'contacts-persona-filter.vala',
+  'contacts-persona-sorter.vala',
   'contacts-query-filter.vala',
   'contacts-store.vala',
   'contacts-typeset.vala',

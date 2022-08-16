@@ -39,46 +39,51 @@ public class Contacts.LinkedPersonasDialog : Gtk.Dialog {
     this.linked_accounts_view.set_header_func (add_separator);
 
     // loading personas for display
-    var personas = Contacts.Utils.get_personas_for_display (individual);
-    for (int i = 1; i < personas.get_n_items (); i++) {
-      var p = (Persona) personas.get_item (i);
-      var row_grid = new Gtk.Grid ();
+    var personas = Utils.personas_as_list_model (individual);
+    var personas_filtered = new Gtk.FilterListModel (personas, new PersonaFilter ());
+    var personas_sorted = new Gtk.SortListModel (personas_filtered, new PersonaSorter ());
+    this.linked_accounts_view.bind_model (personas_sorted, create_row_for_persona);
+  }
 
-      var image_frame = new Avatar (AVATAR_SIZE, individual);
-      image_frame.set_hexpand (false);
-      image_frame.margin_top = 6;
-      image_frame.margin_bottom = 6;
-      image_frame.margin_start = 6;
-      image_frame.margin_end = 12;
-      row_grid.attach (image_frame, 0, 0, 1, 2);
+  private Gtk.Widget create_row_for_persona (GLib.Object item) {
+    unowned var persona = (Persona) item;
 
-      var display_name = new Gtk.Label ("");
-      display_name.set_halign (Gtk.Align.START);
-      display_name.set_valign (Gtk.Align.END);
-      display_name.set_hexpand (true);
-      display_name.set_markup (Markup.printf_escaped ("<span font='bold'>%s</span>", p.display_id));
+    var row_grid = new Gtk.Grid ();
 
-      row_grid.attach (display_name, 1, 0, 1, 1);
+    var image_frame = new Avatar (AVATAR_SIZE, individual);
+    image_frame.set_hexpand (false);
+    image_frame.margin_top = 6;
+    image_frame.margin_bottom = 6;
+    image_frame.margin_start = 6;
+    image_frame.margin_end = 12;
+    row_grid.attach (image_frame, 0, 0, 1, 2);
 
-      var store_name = new Gtk.Label (Contacts.Utils.format_persona_store_name_for_contact (p));
-      store_name.set_halign (Gtk.Align.START);
-      store_name.set_valign (Gtk.Align.START);
-      store_name.set_hexpand (true);
-      store_name.get_style_context ().add_class ("dim-label");
-      row_grid.attach (store_name, 1, 1, 1, 1);
+    var display_name = new Gtk.Label ("");
+    display_name.set_halign (Gtk.Align.START);
+    display_name.set_valign (Gtk.Align.END);
+    display_name.set_hexpand (true);
+    display_name.set_markup (Markup.printf_escaped ("<span font='bold'>%s</span>", persona.display_id));
 
-      var button = new Gtk.Button.with_label (_("Unlink"));
-      button.margin_end = 6;
-      button.set_valign (Gtk.Align.CENTER);
-      // button.get_child ().margin = 1; XXX
-      row_grid.attach (button, 2, 0, 1, 2);
+    row_grid.attach (display_name, 1, 0, 1, 1);
 
-      /* signal */
-      button.clicked.connect (() => {
-        // TODO: handly unlinking
-        });
+    var store_name = new Gtk.Label (Contacts.Utils.format_persona_store_name_for_contact (persona));
+    store_name.set_halign (Gtk.Align.START);
+    store_name.set_valign (Gtk.Align.START);
+    store_name.set_hexpand (true);
+    store_name.get_style_context ().add_class ("dim-label");
+    row_grid.attach (store_name, 1, 1, 1, 1);
 
-      this.linked_accounts_view.append (row_grid);
-    }
+    var button = new Gtk.Button.with_label (_("Unlink"));
+    button.margin_end = 6;
+    button.set_valign (Gtk.Align.CENTER);
+    // button.get_child ().margin = 1; XXX
+    row_grid.attach (button, 2, 0, 1, 2);
+
+    /* signal */
+    button.clicked.connect (() => {
+      // TODO: handly unlinking
+      });
+
+    return row_grid;
   }
 }
