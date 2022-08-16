@@ -443,7 +443,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
       // clearing right_header
       this.right_header.title_widget = new Adw.WindowTitle ("", "");
-      if (selected == null) {
+      if (selected != null) {
         this.ignore_favorite_button_toggled = true;
         this.favorite_button.active = selected.is_favourite;
         this.ignore_favorite_button_toggled = false;

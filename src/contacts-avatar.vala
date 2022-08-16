@@ -35,23 +35,43 @@ public class Contacts.Avatar : Adw.Bin {
     }
   }
 
-  private int avatar_size;
+  private unowned Contact? _contact = null;
+  public Contact? contact {
+    get { return this._contact; }
+    set {
+      if (this._contact == value)
+        return;
+
+      this._contact = value;
+      update_contact ();
+    }
+  }
+
+  public int avatar_size { get; set; default = 48; }
+
+  construct {
+    this.child = new Adw.Avatar (this.avatar_size, "", false);
+    bind_property ("avatar-size", this.child, "size", BindingFlags.DEFAULT);
+  }
 
   public Avatar (int size, Individual? individual = null) {
-    this.child = new Adw.Avatar (size, "", false);
-    this.avatar_size = size;
+    Object (avatar_size: size, individual: individual);
+  }
 
-    this.individual = individual;
+  public Avatar.for_contact (int size, Contact contact) {
+    Object (avatar_size: size, contact: contact);
   }
 
   private void update_individual () {
+    if (this.contact != null)
+      return;
+
     string name = "";
     bool show_initials = false;
     if (this.individual != null) {
       name = find_display_name ();
-      /* If we don't have a usable name use the display_name
-       * to generate the color but don't show any label
-       */
+      // If we don't have a usable name use the display_name
+      // to generate the color but don't show any label
       if (name == "") {
         name = this.individual.display_name;
       } else {
@@ -62,18 +82,45 @@ public class Contacts.Avatar : Adw.Bin {
     ((Adw.Avatar) this.child).show_initials = show_initials;
     ((Adw.Avatar) this.child).text = name;
 
-    this.load_avatar.begin ();
+    var icon = (this.individual != null)? this.individual.avatar : null;
+    this.load_avatar.begin (icon);
   }
 
-  public async void load_avatar () {
-    if (this.individual == null || this.individual.avatar == null) {
-      set_pixbuf (null);
+  private void update_contact () {
+    if (this.individual != null)
       return;
+
+    string name = "";
+    bool show_initials = false;
+    if (this.contact != null) {
+      name = this.contact.fetch_name ();
+      // If we don't have a usable name use the display_name
+      // to generate the color but don't show any label
+      if (name == null)
+        name = this.contact.fetch_display_name ();
+      else
+        show_initials = true;
     }
 
+    ((Adw.Avatar) this.child).show_initials = show_initials;
+    ((Adw.Avatar) this.child).text = name;
+
+    var chunk = this.contact.get_most_relevant_chunk ("avatar", true);
+    if (chunk == null)
+      chunk = this.contact.create_chunk ("avatar", null);
+    unowned var avatar_chunk = (AvatarChunk) chunk;
+    avatar_chunk.notify["avatar"].connect ((obj, pspec) => {
+      this.load_avatar.begin (avatar_chunk.avatar);
+    });
+    this.load_avatar.begin (avatar_chunk.avatar);
+  }
+
+  private async void load_avatar (LoadableIcon? icon) {
+    if (icon == null)
+      return;
+
     try {
-      var stream = yield this.individual.avatar.load_async (this.avatar_size,
-                                                            null);
+      var stream = yield icon.load_async (this.avatar_size, null);
       var pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream,
                                                                     this.avatar_size,
                                                                     this.avatar_size,

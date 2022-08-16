@@ -1,4 +1,4 @@
-subdir ('io')
+subdir('io')
 
 # GSettings
 compiled = gnome.compile_schemas()
@@ -8,10 +8,30 @@ install_data('org.gnome.Contacts.gschema.xml',
 
 # Common library
 libcontacts_sources = files(
+  'core/contacts-addresses-chunk.vala',
+  'core/contacts-alias-chunk.vala',
+  'core/contacts-avatar-chunk.vala',
+  'core/contacts-bin-chunk.vala',
+  'core/contacts-birthday-chunk.vala',
+  'core/contacts-chunk.vala',
+  'core/contacts-contact.vala',
+  'core/contacts-email-addresses-chunk.vala',
+  'core/contacts-full-name-chunk.vala',
+  'core/contacts-im-addresses-chunk.vala',
+  'core/contacts-nickname-chunk.vala',
+  'core/contacts-notes-chunk.vala',
+  'core/contacts-phones-chunk.vala',
+  'core/contacts-roles-chunk.vala',
+  'core/contacts-structured-name-chunk.vala',
+  'core/contacts-urls-chunk.vala',
+
   'contacts-abstract-field-details-sorter.vala',
+  'contacts-chunk-filter.vala',
+  'contacts-chunk-empty-filter.vala',
+  'contacts-chunk-property-filter.vala',
+  'contacts-chunk-sorter.vala',
   'contacts-delete-operation.vala',
   'contacts-esd-setup.vala',
-  'contacts-fake-persona-store.vala',
   'contacts-im-service.vala',
   'contacts-import-operation.vala',
   'contacts-individual-sorter.vala',
@@ -88,8 +108,6 @@ contacts_vala_sources = files(
   'contacts-contact-pane.vala',
   'contacts-contact-sheet.vala',
   'contacts-crop-dialog.vala',
-  'contacts-editor-persona.vala',
-  'contacts-editor-property.vala',
   'contacts-link-suggestion-grid.vala',
   'contacts-linked-personas-dialog.vala',
   'contacts-main-window.vala',

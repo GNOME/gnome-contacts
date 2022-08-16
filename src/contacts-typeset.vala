@@ -143,8 +143,17 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
    */
   public TypeDescriptor lookup_by_field_details (AbstractFieldDetails detail,
                                                  out uint position = null) {
-    if (detail.parameters.contains (TypeDescriptor.X_GOOGLE_LABEL)) {
-      var label = Utils.get_first<string> (detail.parameters[TypeDescriptor.X_GOOGLE_LABEL]);
+    return lookup_by_parameters (detail.parameters, out position);
+  }
+
+  /**
+   * Looks up the TypeDescriptor for the given parameters. If the descriptor
+   * is not found, it will be created and returned, so this never returns null.
+   */
+  public TypeDescriptor lookup_by_parameters (Gee.MultiMap<string, string> parameters,
+                                              out uint position = null) {
+    if (parameters.contains (TypeDescriptor.X_GOOGLE_LABEL)) {
+      var label = Utils.get_first<string> (parameters[TypeDescriptor.X_GOOGLE_LABEL]);
       var descriptor = lookup_by_custom_label (label, out position);
       // Still didn't find it => create it
       if (descriptor == null)
@@ -152,7 +161,7 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
       return descriptor;
     }
 
-    var types = detail.get_parameter_values ("type");
+    var types = parameters["type"];
     if (types == null || types.is_empty) {
       debug ("No types given in the AbstractFieldDetails");
       return this.other_dummy;

@@ -17,6 +17,385 @@
 
 using Folks;
 
+/**
+ * The contact sheet displays the actual information of a contact.
+ *
+ * (Note: to edit a contact, use the {@link ContactEditor} instead.
+ */
+public class Contacts.ContactSheet : Gtk.Widget {
+
+  construct {
+    var box_layout = new Gtk.BoxLayout (Gtk.Orientation.VERTICAL);
+    set_layout_manager (box_layout);
+
+    this.add_css_class ("contacts-sheet");
+  }
+
+  public ContactSheet (Contact contact) {
+    // Apply some filtering/sorting to the base model
+    var filter = new ChunkFilter ();
+    filter.persona_filter = new PersonaFilter ();
+    var filtered = new Gtk.FilterListModel (contact, filter);
+    var contact_model = new Gtk.SortListModel (filtered, new ChunkSorter ());
+
+    var header = create_header (contact);
+    header.set_parent (this);
+
+    contact_model.items_changed.connect (on_model_items_changed);
+    on_model_items_changed (contact_model, 0, 0, contact_model.get_n_items ());
+  }
+
+  public override void dispose () {
+    unowned Gtk.Widget? child = null;
+    while ((child = get_first_child ()) != null)
+      child.unparent ();
+
+    base.dispose ();
+  }
+
+  private void on_model_items_changed (GLib.ListModel model,
+                                       uint position,
+                                       uint removed,
+                                       uint added) {
+    // Get the widget where we'll have to append the item at "position". Note
+    // that we need to take care of the header and the persona store titles
+    unowned var child = get_first_child ();
+    return_if_fail (child != null); // Header is always available
+
+    uint current_position = 0;
+    while (current_position < position) {
+      child = child.get_next_sibling ();
+      // If this fails, we somehow have less widgets than items in our model
+      return_if_fail (child != null);
+
+      // Ignore persona store labels
+      if (child is Gtk.Label)
+        continue;
+
+      current_position++;
+    }
+
+    // First, remove the ones that were removed from the model too
+    while (removed != 0) {
+      unowned var to_remove = child.get_next_sibling ();
+      return_if_fail (to_remove != null); // if this happens we're out of sync
+      to_remove.unparent ();
+      removed--;
+    }
+    // It could be that we now ended up with a empty persona store label
+    if (child is Gtk.Label) {
+      child = child.get_prev_sibling ();
+      child.get_next_sibling ().unparent ();
+    }
+
+    // Now, add the new ones
+    for (uint i = position; i < position + added; i++) {
+      var chunk = (Chunk) model.get_item (i);
+
+      // Check if we need to add a persona store label
+      if (i > 0 && chunk.persona != null && !(child is Gtk.Label)) {
+        var prev = (Chunk?) model.get_item (i - 1);
+        if (prev.persona != chunk.persona) {
+          var label = create_persona_store_label (chunk.persona);
+          label.insert_after (this, child);
+          child = label;
+        }
+      }
+
+      var new_child = create_widget_for_chunk (chunk);
+      if (new_child != null) {
+        new_child.insert_after (this, child);
+        child = new_child;
+      }
+    }
+  }
+
+  private Gtk.Widget? create_widget_for_chunk (Chunk chunk) {
+    switch (chunk.property_name) {
+      case "avatar":
+      case "full-name":
+        return null; // Added separately in the header
+
+      // Please keep these sorted
+      case "birthday":
+        return create_widget_for_birthday (chunk);
+      case "email-addresses":
+        return create_widget_for_emails (chunk);
+      case "im-addresses":
+        return create_widget_for_im_addresses (chunk);
+      case "nickname":
+        return create_widget_for_nickname (chunk);
+      case "notes":
+        return create_widget_for_notes (chunk);
+      case "phone-numbers":
+        return create_widget_for_phone_nrs (chunk);
+      case "postal-addresses":
+        return create_widget_for_postal_addresses (chunk);
+      case "roles":
+        return create_widget_for_roles (chunk);
+      case "urls":
+        return create_widget_for_urls (chunk);
+      default:
+        debug ("Unsupported property: %s", chunk.property_name);
+        return null;
+    }
+  }
+
+  private Gtk.Label create_persona_store_label (Persona p) {
+    var store_name = new Gtk.Label (Utils.format_persona_store_name_for_contact (p));
+    var attrList = new Pango.AttrList ();
+    attrList.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
+    store_name.set_attributes (attrList);
+    store_name.halign = Gtk.Align.START;
+    store_name.ellipsize = Pango.EllipsizeMode.MIDDLE;
+
+    return store_name;
+  }
+
+  private Gtk.Widget create_header (Contact contact) {
+    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
+    header.add_css_class ("contacts-sheet-header");
+
+    var image_frame = new Avatar.for_contact (PROFILE_SIZE, contact);
+    image_frame.vexpand = false;
+    image_frame.valign = Gtk.Align.START;
+    header.append (image_frame);
+
+    var name_label = new Gtk.Label ("");
+    name_label.label = contact.display_name;
+    name_label.hexpand = true;
+    name_label.xalign = 0f;
+    name_label.wrap = true;
+    name_label.wrap_mode = WORD_CHAR;
+    name_label.lines = 4;
+    name_label.width_chars = 10;
+    name_label.selectable = true;
+    name_label.can_focus = false;
+    name_label.add_css_class ("title-1");
+    header.append (name_label);
+
+    return header;
+  }
+
+  private Gtk.Widget create_widget_for_roles (Chunk chunk) {
+    unowned var roles_chunk = chunk as RolesChunk;
+    return_if_fail (roles_chunk != null);
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < roles_chunk.get_n_items (); i++) {
+      var role = (OrgRole) roles_chunk.get_item (i);
+      if (role.is_empty)
+        continue;
+
+      //XXX if no role: set "Organisation" tool tip
+      var row = new ContactSheetRow (chunk.property_name, role.to_string ());
+
+      group.add (row);
+    }
+
+    return group;
+  }
+
+  private Gtk.Widget create_widget_for_emails (Chunk chunk) {
+    unowned var emails_chunk = chunk as EmailAddressesChunk;
+    return_if_fail (emails_chunk != null);
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < emails_chunk.get_n_items (); i++) {
+      var email = (EmailAddress) emails_chunk.get_item (i);
+      if (email.is_empty)
+        continue;
+
+      var row = new ContactSheetRow (chunk.property_name,
+                                     email.raw_address,
+                                     email.get_email_address_type ().display_name);
+
+      var button = row.add_button ("mail-send-symbolic");
+      button.tooltip_text = _("Send an email to %s".printf (email.raw_address));
+      button.clicked.connect (() => {
+        unowned var window = get_root () as Gtk.Window;
+        Gtk.show_uri (window, email.get_mailto_uri (), 0);
+      });
+
+      group.add (row);
+    }
+
+    return group;
+  }
+
+  private Gtk.Widget create_widget_for_phone_nrs (Chunk chunk) {
+    unowned var phones_chunk = chunk as PhonesChunk;
+    return_if_fail (phones_chunk != null);
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < phones_chunk.get_n_items (); i++) {
+      var phone = (Phone) phones_chunk.get_item (i);
+      if (phone.is_empty)
+        continue;
+
+      var row = new ContactSheetRow (chunk.property_name,
+                                     phone.raw_number,
+                                     phone.get_phone_type ().display_name);
+      group.add (row);
+    }
+
+    return group;
+  }
+
+  private Gtk.Widget? create_widget_for_im_addresses (Chunk chunk) {
+    // NOTE: We _could_ enable this again, but only for specific services.
+    // Right now, this just enables a million "Windows Live Messenger" and
+    // "Jabber", ... fields, which are all resting in their respective coffins.
+#if 0
+    unowned var im_addrs_chunk = chunk as ImAddressesChunk;
+    return_if_fail (im_addrs_chunk != null);
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < im_addrs_chunk.get_n_items (); i++) {
+      var im_addr = (ImAddress) im_addrs_chunk.get_item (i);
+      if (im_addr.is_empty)
+        continue;
+
+        var row = new ContactSheetRow (chunk.property_name,
+                                       im_addr.address,
+                                       ImService.get_display_name (im_addr.protocol));
+        group.add (row);
+      }
+    }
+
+    return group;
+#endif
+    return null;
+  }
+
+  private Gtk.Widget create_widget_for_urls (Chunk chunk) {
+    unowned var urls_chunk = chunk as UrlsChunk;
+    return_if_fail (urls_chunk != null);
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < urls_chunk.get_n_items (); i++) {
+      var url = (Contacts.Url) urls_chunk.get_item (i);
+      if (url.is_empty)
+        continue;
+
+      var row = new ContactSheetRow (chunk.property_name, url.raw_url);
+
+      var button = row.add_button ("external-link-symbolic");
+      button.tooltip_text = _("Visit website");
+      button.clicked.connect (() => {
+        unowned var window = button.get_root () as Gtk.Window;
+        // FIXME: use show_uri_full so we can show errors
+        Gtk.show_uri (window,
+                      url.get_absolute_url (),
+                      Gdk.CURRENT_TIME);
+      });
+
+      group.add (row);
+    }
+
+    return group;
+  }
+
+  private Gtk.Widget create_widget_for_nickname (Chunk chunk) {
+    unowned var nickname_chunk = chunk as NicknameChunk;
+    return_if_fail (nickname_chunk != null || nickname_chunk.nickname != null);
+
+    var row = new ContactSheetRow (chunk.property_name, nickname_chunk.nickname);
+    return new ContactSheetGroup.single_row (row);
+  }
+
+  private Gtk.Widget create_widget_for_birthday (Chunk chunk) {
+    unowned var birthday_chunk = chunk as BirthdayChunk;
+    return_if_fail (birthday_chunk != null || birthday_chunk.birthday != null);
+
+    var birthday_str = birthday_chunk.birthday.to_local ().format ("%x");
+
+    // Compare month and date so we can put a reminder
+    string? subtitle = null;
+    int bd_m, bd_d, now_m, now_d;
+    birthday_chunk.birthday.to_local ().get_ymd (null, out bd_m, out bd_d);
+    new DateTime.now_local ().get_ymd (null, out now_m, out now_d);
+
+    if (bd_m == now_m && bd_d == now_d) {
+      subtitle = _("Their birthday is today! 🎉");
+    }
+
+    var row = new ContactSheetRow (chunk.property_name, birthday_str, subtitle);
+    return new ContactSheetGroup.single_row (row);
+  }
+
+  private Gtk.Widget create_widget_for_notes (Chunk chunk) {
+    unowned var notes_chunk = chunk as NotesChunk;
+    return_if_fail (notes_chunk != null);
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < notes_chunk.get_n_items (); i++) {
+      var note = (Note) notes_chunk.get_item (i);
+      if (note.is_empty)
+        continue;
+
+      var row = new ContactSheetRow (chunk.property_name, note.text);
+      group.add (row);
+    }
+
+    return group;
+  }
+
+  private Gtk.Widget create_widget_for_postal_addresses (Chunk chunk) {
+    unowned var addresses_chunk = chunk as AddressesChunk;
+    return_if_fail (addresses_chunk != null);
+
+    // Check outside of the loop if we have a "maps:" URI handler
+    var appinfo = AppInfo.get_default_for_uri_scheme ("maps");
+    var map_uris_supported = (appinfo != null);
+    debug ("Opening 'maps:' URIs supported: %s", map_uris_supported.to_string ());
+
+    var group = new ContactSheetGroup ();
+
+    for (uint i = 0; i < addresses_chunk.get_n_items (); i++) {
+      var address = (Address) addresses_chunk.get_item (i);
+      if (address.is_empty)
+        continue;
+
+      var row = new ContactSheetRow (chunk.property_name,
+                                     address.to_string ("\n"),
+                                     address.get_address_type ().display_name);
+
+      if (map_uris_supported) {
+        var button = row.add_button ("map-symbolic");
+        button.tooltip_text = _("Show on the map");
+        button.clicked.connect (() => {
+          unowned var window = button.get_root () as Gtk.Window;
+          var uri = address.to_maps_uri ();
+          // FIXME: use show_uri_full so we can show errors
+          Gtk.show_uri (window, uri, Gdk.CURRENT_TIME);
+        });
+      }
+
+      group.add (row);
+    }
+
+    return group;
+  }
+}
+
+public class Contacts.ContactSheetGroup : Adw.PreferencesGroup {
+
+  construct {
+    add_css_class ("contacts-sheet-property");
+  }
+
+  public ContactSheetGroup.single_row (ContactSheetRow row) {
+    add (row);
+  }
+}
+
 public class Contacts.ContactSheetRow : Adw.ActionRow {
 
   construct {
@@ -44,424 +423,5 @@ public class Contacts.ContactSheetRow : Adw.ActionRow {
     button.add_css_class ("flat");
     this.add_suffix (button);
     return button;
-  }
-}
-
-/**
- * The contact sheet displays the actual information of a contact.
- *
- * (Note: to edit a contact, use the {@link ContactEditor} instead.
- */
-public class Contacts.ContactSheet : Gtk.Grid {
-
-  private int last_row = 0;
-  private unowned Individual individual;
-  private unowned Store store;
-
-  private const string[] SORTED_PROPERTIES = {
-    "email-addresses",
-    "phone-numbers",
-    "im-addresses",
-    "roles",
-    "urls",
-    "nickname",
-    "birthday",
-    "postal-addresses",
-    "notes"
-  };
-
-  construct {
-    this.add_css_class ("contacts-sheet");
-  }
-
-  public ContactSheet (Individual individual, Store store) {
-    this.individual = individual;
-    this.store = store;
-
-    this.individual.notify.connect (update);
-    this.individual.personas_changed.connect (update);
-    store.quiescent.connect (update);
-
-    update ();
-  }
-
-  private Gtk.Label create_persona_store_label (Persona p) {
-    var store_name = new Gtk.Label (Utils.format_persona_store_name_for_contact (p));
-    var attrList = new Pango.AttrList ();
-    attrList.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
-    store_name.set_attributes (attrList);
-    store_name.halign = Gtk.Align.START;
-    store_name.ellipsize = Pango.EllipsizeMode.MIDDLE;
-
-    return store_name;
-  }
-
-  // Helper function that attaches a set of property rows to our grid
-  private void attach_rows (GLib.List<Gtk.ListBoxRow>? rows) {
-    if (rows == null)
-      return;
-
-    var group = new Adw.PreferencesGroup ();
-    group.add_css_class ("contacts-sheet-property");
-
-    foreach (unowned var row in rows)
-      group.add (row);
-
-    this.attach (group, 0, this.last_row, 3, 1);
-    this.last_row++;
-  }
-
-  private void attach_row (Gtk.ListBoxRow row) {
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    rows.prepend (row);
-    this.attach_rows (rows);
-  }
-
-  private void update () {
-    this.last_row = 0;
-
-    // Remove all fields
-    unowned var child = get_first_child ();
-    while (child != null) {
-      unowned var next = child.get_next_sibling ();
-      remove (child);
-      child = next;
-    }
-
-    var header = create_header ();
-    this.attach (header, 0, 0, 1, 1);
-
-    this.last_row++;
-
-    var personas = Utils.personas_as_list_model (individual);
-    var personas_filtered = new Gtk.FilterListModel (personas, new PersonaFilter ());
-    var personas_sorted = new Gtk.SortListModel (personas_filtered, new PersonaSorter ());
-
-    for (int i = 0; i < personas_sorted.get_n_items (); i++) {
-      var persona = (Persona) personas_sorted.get_item (i);
-      int persona_store_pos = this.last_row;
-
-      if (i > 0) {
-        this.attach (create_persona_store_label (persona), 0, this.last_row, 3);
-        this.last_row++;
-      }
-
-      foreach (unowned var prop in SORTED_PROPERTIES)
-        add_row_for_property (persona, prop);
-
-      // Nothing to show in the persona: don't mention it
-      bool is_empty_persona = (this.last_row == persona_store_pos + 1);
-      if (i > 0 && is_empty_persona) {
-        this.remove_row (persona_store_pos);
-        this.last_row--;
-      }
-    }
-  }
-
-  private Gtk.Widget create_header () {
-    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
-    header.add_css_class ("contacts-sheet-header");
-
-    var image_frame = new Avatar (PROFILE_SIZE, this.individual);
-    image_frame.vexpand = false;
-    image_frame.valign = Gtk.Align.START;
-    header.append (image_frame);
-
-    var name_label = new Gtk.Label ("");
-    name_label.label = this.individual.display_name;
-    name_label.hexpand = true;
-    name_label.xalign = 0f;
-    name_label.wrap = true;
-    name_label.wrap_mode = WORD_CHAR;
-    name_label.lines = 4;
-    name_label.width_chars = 10;
-    name_label.selectable = true;
-    name_label.can_focus = false;
-    name_label.add_css_class ("title-1");
-    header.append (name_label);
-
-    return header;
-  }
-
-  private void add_row_for_property (Persona persona, string property) {
-    switch (property) {
-      case "email-addresses":
-        add_emails (persona, property);
-        break;
-      case "phone-numbers":
-        add_phone_nrs (persona, property);
-        break;
-      case "im-addresses":
-        add_im_addresses (persona, property);
-        break;
-      case "urls":
-        add_urls (persona, property);
-        break;
-      case "nickname":
-        add_nickname (persona, property);
-        break;
-      case "birthday":
-        add_birthday (persona, property);
-        break;
-      case "notes":
-        add_notes (persona, property);
-        break;
-      case "postal-addresses":
-        add_postal_addresses (persona, property);
-        break;
-      case "roles":
-        add_roles (persona, property);
-        break;
-      default:
-        debug ("Unsupported property: %s", property);
-        break;
-    }
-  }
-
-  private void add_roles (Persona persona, string property) {
-    unowned var details = persona as RoleDetails;
-    if (details == null)
-      return;
-
-    var roles = Utils.fields_to_sorted (details.roles);
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    for (uint i = 0; i < roles.get_n_items (); i++) {
-      var role = (RoleFieldDetails) roles.get_item (i);
-
-      if (role.value.is_empty ())
-        continue;
-
-      var role_str = "";
-      if (role.value.title != "") {
-        if (role.value.organisation_name != "")
-          // TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-          role_str = _("%s at %s").printf (role.value.title, role.value.organisation_name);
-        else
-          role_str = role.value.title;
-      } else {
-          role_str = role.value.organisation_name;
-      }
-
-      var row = new ContactSheetRow (property, role_str);
-
-      //XXX if no role: set "Organisation" tool tip
-      rows.append (row);
-    }
-
-    this.attach_rows (rows);
-  }
-
-  private void add_emails (Persona persona, string property) {
-    unowned var details = persona as EmailDetails;
-    if (details == null)
-      return;
-
-    var emails = Utils.fields_to_sorted (details.email_addresses);
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    for (uint i = 0; i < emails.get_n_items (); i++) {
-      var email = (EmailFieldDetails) emails.get_item (i);
-
-      if (email.value == "")
-        continue;
-
-      var row = new ContactSheetRow (property,
-                                     email.value,
-                                     TypeSet.email.format_type (email));
-
-      var button = row.add_button ("mail-send-symbolic");
-      button.tooltip_text = _("Send an email to %s".printf (email.value));
-      button.clicked.connect (() => {
-        Utils.compose_mail ("%s <%s>".printf(this.individual.display_name, email.value));
-      });
-
-      rows.append (row);
-    }
-
-    this.attach_rows (rows);
-  }
-
-  private void add_phone_nrs (Persona persona, string property) {
-    unowned var phone_details = persona as PhoneDetails;
-    if (phone_details == null)
-      return;
-
-    var phones = Utils.fields_to_sorted (phone_details.phone_numbers);
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    for (uint i = 0; i < phones.get_n_items (); i++) {
-      var phone = (PhoneFieldDetails) phones.get_item (i);
-
-      if (phone.value == "")
-        continue;
-
-      var row = new ContactSheetRow (property,
-                                     phone.value,
-                                     TypeSet.phone.format_type (phone));
-
-#if HAVE_TELEPATHY
-      if (this.store.caller_account != null) {
-        var button = row.add_button ("call-start-symbolic");
-        button.tooltip_text = _("Start a call");
-        button.clicked.connect (() => {
-          Utils.start_call (phone.value, this.store.caller_account);
-        });
-      }
-#endif
-
-      rows.append (row);
-    }
-
-    this.attach_rows (rows);
-  }
-
-  private void add_im_addresses (Persona persona, string property) {
-    // NOTE: We _could_ enable this again, but only for specific services.
-    // Right now, this just enables a million "Windows Live Messenger" and
-    // "Jabber", ... fields, which are all resting in their respective coffins.
-#if 0
-    unowned var im_details = persona as ImDetails;
-    if (im_details == null)
-      return;
-
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var protocol in im_details.im_addresses.get_keys ()) {
-      foreach (var id in im_details.im_addresses[protocol]) {
-        var row = new ContactSheetRow (property,
-                                       id.value,
-                                       ImService.get_display_name (protocol));
-        rows.append (row);
-      }
-    }
-
-    this.attach_rows (rows);
-#endif
-  }
-
-  private void add_urls (Persona persona, string property) {
-    unowned var url_details = persona as UrlDetails;
-    if (url_details == null)
-      return;
-
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    var urls = Utils.fields_to_sorted (url_details.urls);
-    for (uint i = 0; i < urls.get_n_items (); i++) {
-      var url = (UrlFieldDetails) urls.get_item (i);
-
-      if (url.value == "")
-        continue;
-
-      var row = new ContactSheetRow (property, url.value);
-
-      var button = row.add_button ("external-link-symbolic");
-      button.tooltip_text = _("Visit website");
-      button.clicked.connect (() => {
-        unowned var window = button.get_root () as MainWindow;
-        if (window == null)
-          return;
-
-        // FIXME: use show_uri_full so we can show errors
-        Gtk.show_uri (window,
-                      fallback_to_https (url.value),
-                      Gdk.CURRENT_TIME);
-      });
-
-      rows.append (row);
-    }
-
-    this.attach_rows (rows);
-  }
-
-  // When the url doesn't contain a scheme we fallback to http
-  // We are sure that the url is a webaddress but GTK falls back to opening a file
-  private string fallback_to_https (string url) {
-    string scheme = Uri.parse_scheme (url);
-    if (scheme == null)
-      return "https://" + url;
-    return url;
-  }
-
-  private void add_nickname (Persona persona, string property) {
-    unowned var name_details = persona as NameDetails;
-    if (name_details == null || name_details.nickname == "")
-      return;
-
-    var row = new ContactSheetRow (property, name_details.nickname);
-    this.attach_row (row);
-  }
-
-  private void add_birthday (Persona persona, string property) {
-    unowned var birthday_details = persona as BirthdayDetails;
-    if (birthday_details == null || birthday_details.birthday == null)
-      return;
-
-    var birthday_str = birthday_details.birthday.to_local ().format ("%x");
-
-    // Compare month and date so we can put a reminder
-    string? subtitle = null;
-    int bd_m, bd_d, now_m, now_d;
-    birthday_details.birthday.to_local ().get_ymd (null, out bd_m, out bd_d);
-    new DateTime.now_local ().get_ymd (null, out now_m, out now_d);
-
-    if (bd_m == now_m && bd_d == now_d) {
-      subtitle = _("Their birthday is today! 🎉");
-    }
-
-    var row = new ContactSheetRow (property, birthday_str, subtitle);
-    this.attach_row (row);
-  }
-
-  private void add_notes (Persona persona, string property) {
-    unowned var note_details = persona as NoteDetails;
-    if (note_details == null)
-      return;
-
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var note in note_details.notes) {
-      if (note.value == "")
-        continue;
-
-      var row = new ContactSheetRow (property, note.value);
-      rows.append (row);
-    }
-
-    this.attach_rows (rows);
-  }
-
-  private void add_postal_addresses (Persona persona, string property) {
-    unowned var addr_details = persona as PostalAddressDetails;
-    if (addr_details == null)
-      return;
-
-    // Check outside of the loop if we have a "maps:" URI handler
-    var appinfo = AppInfo.get_default_for_uri_scheme ("maps");
-    var map_uris_supported = (appinfo != null);
-    debug ("Opening 'maps:' URIs supported: %s", map_uris_supported.to_string ());
-
-    var rows = new GLib.List<Gtk.ListBoxRow> ();
-    foreach (var addr in addr_details.postal_addresses) {
-      if (addr.value.is_empty ())
-        continue;
-
-      var row = new ContactSheetRow (property,
-                                     string.joinv ("\n", Utils.format_address (addr.value)),
-                                     TypeSet.general.format_type (addr));
-
-      if (map_uris_supported) {
-        var button = row.add_button ("map-symbolic");
-        button.tooltip_text = _("Show on the map");
-        button.clicked.connect (() => {
-          unowned var window = button.get_root () as MainWindow;
-          if (window == null)
-            return;
-
-          var uri = Utils.create_maps_uri (addr.value);
-          // FIXME: use show_uri_full so we can show errors
-          Gtk.show_uri (window, uri, Gdk.CURRENT_TIME);
-        });
-      }
-
-      rows.append (row);
-    }
-
-    this.attach_rows (rows);
   }
 }

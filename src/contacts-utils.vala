@@ -18,10 +18,6 @@
 using Folks;
 
 namespace Contacts {
-  public bool is_set (string? str) {
-    return str != null && str != "";
-  }
-
   public void add_separator (Gtk.ListBoxRow row, Gtk.ListBoxRow? before_row) {
     row.set_header (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
   }
@@ -33,11 +29,6 @@ namespace Contacts.Utils {
     eds_source_registry.set_default_address_book (e_store.source);
     var settings = new GLib.Settings ("org.freedesktop.folks");
     settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
-  }
-
-  public void compose_mail (string email) {
-    var mailto_uri = "mailto:" + Uri.escape_string (email, "@" , false);
-    Gtk.show_uri (null, mailto_uri, 0);
   }
 
   public T? get_first<T> (Gee.Collection<T> collection) {
@@ -141,49 +132,6 @@ namespace Contacts.Utils {
     return new Gtk.SortListModel ((owned) res, new AbstractFieldDetailsSorter ());
   }
 
-  public string[] format_address (PostalAddress addr) {
-    string[] lines = {};
-
-    if (is_set (addr.street))
-      lines += addr.street;
-
-    if (is_set (addr.extension))
-      lines += addr.extension;
-
-    if (is_set (addr.locality))
-      lines += addr.locality;
-
-    if (is_set (addr.region))
-      lines += addr.region;
-
-    if (is_set (addr.postal_code))
-      lines += addr.postal_code;
-
-    if (is_set (addr.po_box))
-      lines += addr.po_box;
-
-    if (is_set (addr.country))
-      lines += addr.country;
-
-    if (is_set (addr.address_format))
-      lines += addr.address_format;
-
-    return lines;
-  }
-
-  /**
-   * Takes an individual's postal address and creates a "maps:q=..." URI for
-   * it, which can be launched to use the local system's maps handler
-   * (e.g. GNOME Maps).
-   *
-   * See also https://www.iana.org/assignments/uri-schemes/prov/maps for the
-   * "specification"
-   */
-  public string create_maps_uri (PostalAddress address) {
-    var address_parts = string.joinv (" ", Utils.format_address (address));
-    return "maps:q=%s".printf (GLib.Uri.escape_string (address_parts));
-  }
-
   /* We claim something is "removable" if at least one persona is removable,
   that will typically unlink the rest. */
   public bool can_remove_personas (Individual individual) {
@@ -199,22 +147,6 @@ namespace Contacts.Utils {
     foreach (var persona in individual.personas)
       personas.append (persona);
     return personas;
-  }
-
-  public Persona? find_primary_persona (Individual individual) {
-    foreach (var p in individual.personas)
-      if (p.store.is_primary_store)
-        return p;
-
-    return null;
-  }
-
-  public Persona? find_persona_from_uid (Individual individual, string uid) {
-    foreach (var p in individual.personas) {
-      if (p.uid == uid)
-        return p;
-    }
-    return null;
   }
 
   public string format_persona_stores (Individual individual) {
@@ -295,85 +227,6 @@ namespace Contacts.Utils {
     }
 
     return store.display_name;
-  }
-
-  /* Tries to set the property on all persons that have it writeable */
-  public async void set_individual_property (Individual individual, string property_name, Value value)
-    throws GLib.Error, PropertyError {
-      // Need to make a copy here as it could change during the yields
-      var personas_copy = individual.personas.to_array ();
-      foreach (var p in personas_copy) {
-        if (property_name in p.writeable_properties) {
-          yield set_persona_property (p, property_name, value);
-        }
-      }
-      //TODO: Add fallback if we can't write to any persona (Do we want to support that?)
-    }
-
-  public async void set_persona_property (Persona persona,
-                                          string property_name, Value new_value) throws PropertyError, IndividualAggregatorError {
-    switch (property_name) {
-      case "alias":
-        yield ((AliasDetails) persona).change_alias ((string) new_value);
-        break;
-      case "avatar":
-        yield ((AvatarDetails) persona).change_avatar ((LoadableIcon?) new_value);
-        break;
-      case "birthday":
-        yield ((BirthdayDetails) persona).change_birthday ((DateTime?) new_value);
-        break;
-      case "calendar-event-id":
-        yield ((BirthdayDetails) persona).change_calendar_event_id ((string?) new_value);
-        break;
-      case "email-addresses":
-        yield ((EmailDetails) persona).change_email_addresses ((Gee.Set<EmailFieldDetails>) new_value);
-        break;
-      case "is-favourite":
-        yield ((FavouriteDetails) persona).change_is_favourite ((bool) new_value);
-        break;
-      case "gender":
-        yield ((GenderDetails) persona).change_gender ((Gender) new_value);
-        break;
-      case "groups":
-        yield ((GroupDetails) persona).change_groups ((Gee.Set<string>) new_value);
-        break;
-      case "im-addresses":
-        yield ((ImDetails) persona).change_im_addresses ((Gee.MultiMap<string, ImFieldDetails>) new_value);
-        break;
-      case "local-ids":
-        yield ((LocalIdDetails) persona).change_local_ids ((Gee.Set<string>) new_value);
-        break;
-      case "structured-name":
-        yield ((NameDetails) persona).change_structured_name ((StructuredName?) new_value);
-        break;
-      case "full-name":
-        yield ((NameDetails) persona).change_full_name ((string) new_value);
-        break;
-      case "nickname":
-        yield ((NameDetails) persona).change_nickname ((string) new_value);
-        break;
-      case "notes":
-        yield ((NoteDetails) persona).change_notes ((Gee.Set<NoteFieldDetails>) new_value);
-        break;
-      case "phone-numbers":
-        yield ((PhoneDetails) persona).change_phone_numbers ((Gee.Set<PhoneFieldDetails>) new_value);
-        break;
-      case "postal-addresses":
-        yield ((PostalAddressDetails) persona).change_postal_addresses ((Gee.Set<PostalAddressFieldDetails>) new_value);
-        break;
-      case "roles":
-        yield ((RoleDetails) persona).change_roles ((Gee.Set<RoleFieldDetails>) new_value);
-        break;
-      case "urls":
-        yield ((UrlDetails) persona).change_urls ((Gee.Set<UrlFieldDetails>) new_value);
-        break;
-      case "web-service-addresses":
-        yield ((WebServiceDetails) persona).change_web_service_addresses ((Gee.MultiMap<string, WebServiceFieldDetails>) new_value);
-        break;
-      default:
-        critical ("Unknown property '%s' in Contact.set_persona_property().", property_name);
-        break;
-    }
   }
 
   // A helper struct to keep track on general properties on how each Persona

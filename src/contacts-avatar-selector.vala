@@ -36,16 +36,15 @@ private class Contacts.Thumbnail : Gtk.FlowBoxChild {
     this.set_child (avatar);
   }
 
-  public Thumbnail.for_persona (Persona persona) {
-    Gdk.Pixbuf? pixbuf = null;
-    unowned var details = persona as AvatarDetails;
-    if (details != null && details.avatar != null) {
-      try {
-        var stream = details.avatar.load (MAIN_SIZE, null);
-        pixbuf = new Gdk.Pixbuf.from_stream (stream);
-      } catch (Error e) {
-        debug ("Couldn't create frame for persona '%s': %s", persona.display_id, e.message);
-      }
+  public Thumbnail.for_chunk (AvatarChunk chunk)
+      requires (chunk.avatar != null) {
+
+   Gdk.Pixbuf? pixbuf = null;
+    try {
+      var stream = chunk.avatar.load (MAIN_SIZE, null);
+      pixbuf = new Gdk.Pixbuf.from_stream (stream);
+    } catch (Error e) {
+      debug ("Couldn't create thumbnail for chunk: %s", e.message);
     }
     this (pixbuf);
   }
@@ -73,7 +72,7 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
 
   const string AVATAR_BUTTON_CSS_NAME = "avatar-button";
 
-  private unowned Individual individual;
+  public unowned Contact contact { get; construct set; }
 
   [GtkChild]
   private unowned Gtk.FlowBox thumbnail_grid;
@@ -89,9 +88,8 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
     private set { this._selected_avatar = value; }
   }
 
-  public AvatarSelector (Individual? individual, Gtk.Window? window = null) {
-    Object (transient_for: window, use_header_bar: 1);
-    this.individual = individual;
+  public AvatarSelector (Contact contact, Gtk.Window? window = null) {
+    Object (contact: contact, transient_for: window, use_header_bar: 1);
 
     this.thumbnail_grid.selected_children_changed.connect (on_thumbnails_selected);
     this.thumbnail_grid.child_activated.connect (on_thumbnail_activated);
@@ -149,28 +147,27 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
     return pixbuf.scale_simple (w, h, Gdk.InterpType.HYPER);
   }
 
-  /**
-   * Saves the selected avatar as the one that should be used.
-   *
-   * You should probably only do this after the "response" signal
-   * (with ResponseType.ACCEPT)
-   */
-  public async void save_selection () throws GLib.Error {
-    debug ("Saving selected avatar");
+  /** Sets the selected avatar on the contact (it does _not_ save it) */
+  public void set_avatar_on_contact () throws GLib.Error {
     uint8[] buffer;
     this.selected_avatar.save_to_buffer (out buffer, "png", null);
     var icon = new BytesIcon (new Bytes (buffer));
-    // Set the new avatar
-    yield this.individual.change_avatar (icon as LoadableIcon);
+
+    // Save into the most relevant avatar
+    var avatar_chunk = this.contact.get_most_relevant_chunk ("avatar", true);
+    if (avatar_chunk == null)
+      avatar_chunk = this.contact.create_chunk ("avatar", null);
+    ((AvatarChunk) avatar_chunk).avatar = icon;
   }
 
   private void update_thumbnail_grid () {
-    if (this.individual != null) {
-      foreach (var p in individual.personas) {
-        var thumbnail = new Thumbnail.for_persona (p);
-        if (thumbnail.source_pixbuf != null) {
-          this.thumbnail_grid.insert (thumbnail, -1);
-        }
+    var filter = new ChunkFilter.for_property ("avatar");
+    var chunks = new Gtk.FilterListModel (this.contact, (owned) filter);
+    for (uint i = 0; i < chunks.get_n_items (); i++) {
+      var chunk = (AvatarChunk) chunks.get_item (i);
+      var thumbnail = new Thumbnail.for_chunk (chunk);
+      if (thumbnail.source_pixbuf != null) {
+        this.thumbnail_grid.insert (thumbnail, -1);
       }
     }
 

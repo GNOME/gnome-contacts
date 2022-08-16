@@ -88,14 +88,16 @@ public class Contacts.TypeDescriptor : Object {
   }
 
   public void save_to_field_details (AbstractFieldDetails details) {
-    debug ("Saving type %s", to_string ());
+    debug ("Saving type %s to AbsractFieldDetails", to_string ());
+    details.parameters = adapt_parameters (details.parameters);
+  }
 
-    var old_parameters = details.parameters;
-    var new_parameters = new Gee.HashMultiMap<string, string> ();
+  public Gee.MultiMap<string, string> adapt_parameters (Gee.MultiMap<string, string> parameters) {
+    var result = new Gee.HashMultiMap<string, string> ();
 
     // Check whether PREF VCard "flag" is set
     bool has_pref = false;
-    foreach (var val in old_parameters["type"]) {
+    foreach (var val in parameters["type"]) {
       if (val.ascii_casecmp ("PREF") == 0) {
         has_pref = true;
         break;
@@ -103,10 +105,10 @@ public class Contacts.TypeDescriptor : Object {
     }
 
     // Copy over all parameters, execept the ones we're going to create ourselves
-    foreach (var param in old_parameters.get_keys ()) {
+    foreach (var param in parameters.get_keys ()) {
       if (param != "type" && param != X_GOOGLE_LABEL)
-        foreach (var val in old_parameters[param])
-          new_parameters[param] = val;
+        foreach (var val in parameters[param])
+          result[param] = val;
     }
 
     // Set the type based on our Source
@@ -114,22 +116,21 @@ public class Contacts.TypeDescriptor : Object {
       case Source.VCARD:
         foreach (var type in this.vcard_types)
           if (type != null)
-            new_parameters["type"] = type;
+            result["type"] = type;
         break;
       case Source.OTHER:
-        new_parameters["type"] = "OTHER";
+        result["type"] = "OTHER";
         break;
       case Source.CUSTOM:
-        new_parameters["type"] = "OTHER";
-        new_parameters[X_GOOGLE_LABEL] = this.name;
+        result["type"] = "OTHER";
+        result[X_GOOGLE_LABEL] = this.name;
         break;
     }
 
     if (has_pref)
-      new_parameters["type"] = "PREF";
+      result["type"] = "PREF";
 
-    // We didn't crash 'n burn, so lets
-    details.parameters = new_parameters;
+    return result;
   }
 
   /**

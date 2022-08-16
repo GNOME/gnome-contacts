@@ -61,4 +61,14 @@ public class Contacts.TypeComboRow : Adw.ComboRow  {
     this.type_set.lookup_by_vcard_type (type, out position);
     this.selected = position;
   }
+
+  /**
+   * Sets the value to the type that best matches the given vcard type
+   * (for example "HOME" or "WORK").
+   */
+  public void set_selected_from_parameters (Gee.MultiMap<string, string> parameters) {
+    uint position = 0;
+    this.type_set.lookup_by_parameters (parameters, out position);
+    this.selected = position;
+  }
 }
