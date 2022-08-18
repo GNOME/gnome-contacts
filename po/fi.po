@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-07 17:13+0000\n"
-"PO-Revision-Date: 2022-08-10 19:23+0300\n"
+"POT-Creation-Date: 2022-08-12 16:25+0000\n"
+"PO-Revision-Date: 2022-08-18 20:20+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -55,7 +55,27 @@ msgstr ""
 "Yhteystietosovellus tuo yhteen verkossa olevat eri osoitekirjat ja linkittää "
 "automaattisesti yhteystiedot eri verkkolähteistä."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:716 src/contacts-app.vala:149
+#: data/org.gnome.Contacts.appdata.xml.in.in:22
+msgid "Contacts with no contacts."
+msgstr "Yhteystiedot ilman yhteystietoja."
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:26
+msgid "Contacts filled with contacts"
+msgstr "Yhteystiedot ja lukuisia yhteistietoja"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:30
+msgid "Contacts in selection mode"
+msgstr "Yhteystiedot valintanäkymässä"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:34
+msgid "Contacts setup view"
+msgstr "Yhteystietojen asetusnäkymä"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:38
+msgid "Contacts edit view"
+msgstr "Yhteystietojen muokkausnäkymä"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:750 src/contacts-app.vala:149
 msgid "The GNOME Project"
 msgstr "Gnome-projekti"
 
@@ -440,29 +460,29 @@ msgid "Unable to find newly created contact"
 msgstr "Juuri luotua yhteystietoa ei löydy"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:235
+#: src/contacts-contact-sheet.vala:233
 #, c-format
 msgid "%s at %s"
 msgstr "%s kohteessa %s"
 
-#: src/contacts-contact-sheet.vala:267
+#: src/contacts-contact-sheet.vala:265
 #, c-format
 msgid "Send an email to %s"
 msgstr "Lähetä sähköpostia %s"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:294
 msgid "Start a call"
 msgstr "Aloita puhelu"
 
-#: src/contacts-contact-sheet.vala:345
+#: src/contacts-contact-sheet.vala:343
 msgid "Visit website"
 msgstr "Käy verkkosivustolla"
 
-#: src/contacts-contact-sheet.vala:395
+#: src/contacts-contact-sheet.vala:393
 msgid "Their birthday is today! 🎉"
 msgstr "Hänellä on syntymäpäivä tänään! 🎉"
 
-#: src/contacts-contact-sheet.vala:440
+#: src/contacts-contact-sheet.vala:438
 msgid "Show on the map"
 msgstr "Näytä kartalla"
 
@@ -697,8 +717,6 @@ msgstr "Pura liitos"
 
 #: src/contacts-main-window.vala:191
 #, c-format
-#| msgid "%d Selected"
-#| msgid_plural "%d Selected"
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu valittu"
@@ -1019,9 +1037,6 @@ msgstr "Onko ikkuna koko näytön tilassa"
 #~ msgid "Add number"
 #~ msgstr "Lisää puhelinnumero"
 
-#~ msgid "Contacts unlinked"
-#~ msgstr "Yhteystiedot linkitetty"
-
 #~ msgid "%d contacts linked"
 #~ msgid_plural "%d contacts linked"
 #~ msgstr[0] "%d yhteystietoa linkitetty"
@@ -1034,9 +1049,6 @@ msgstr "Onko ikkuna koko näytön tilassa"
 
 #~ msgid "%s linked to %s"
 #~ msgstr "%s linkitetty → %s"
-
-#~ msgid "%s linked to the contact"
-#~ msgstr "%s linkitetty yhteystietoon"
 
 #~ msgid "Google Circles"
 #~ msgstr "Googlen piirit"
