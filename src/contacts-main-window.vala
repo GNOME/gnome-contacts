@@ -375,6 +375,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   [GtkCallback]
   private void on_visible_child () {
     if (this.content_box.folded &&
+        !this.content_box.child_transition_running &&
         this.content_box.visible_child == this.list_pane_page)
       this.store.selection.unselect_item (this.store.selection.get_selected ());
   }
