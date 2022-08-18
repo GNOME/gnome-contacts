@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-07 17:13+0000\n"
-"PO-Revision-Date: 2022-08-09 20:44+0300\n"
+"POT-Creation-Date: 2022-08-12 16:25+0000\n"
+"PO-Revision-Date: 2022-08-18 13:55+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
@@ -53,7 +53,32 @@ msgstr ""
 "אנשי קשר גם משולב עם פנקסי כתובות מקוונים ומקשר אנשי קשר באופן אוטומטי "
 "ממקורות מקוונים שונים."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:716 src/contacts-app.vala:149
+#: data/org.gnome.Contacts.appdata.xml.in.in:22
+#| msgctxt "shortcut window"
+#| msgid "Create a new contact"
+msgid "Contacts with no contacts."
+msgstr "אנשי קשר ללא אנשי קשר."
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:26
+msgid "Contacts filled with contacts"
+msgstr "שדה אנשי קשר עם אנשי קשר"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:30
+#| msgid "Contact not found"
+msgid "Contacts in selection mode"
+msgstr "אנשי קשר במצב בחירה"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:34
+#| msgid "Contacts Setup"
+msgid "Contacts setup view"
+msgstr "אנשי קשר בתצוגה הפעלה"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:38
+#| msgid "Contacts Setup"
+msgid "Contacts edit view"
+msgstr "אנשי קשר בתצוגה עריכה"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:750 src/contacts-app.vala:149
 msgid "The GNOME Project"
 msgstr "מיזם GNOME"
 
@@ -153,7 +178,6 @@ msgid "Surname"
 msgstr "שם משפחה"
 
 #: data/ui/contacts-main-window.ui:19
-#| msgid "_Import"
 msgid "Import…"
 msgstr "יבוא…"
 
@@ -203,7 +227,6 @@ msgid "Export"
 msgstr "יצוא"
 
 #: data/ui/contacts-main-window.ui:163
-#| msgid "Select a Contact"
 msgid "Export Selected Contacts"
 msgstr "יצוא אנשי קשר נבחרים"
 
@@ -337,7 +360,6 @@ msgid "No contact with email address %s found"
 msgstr "לא נמצאו אנשי קשר עם כתובת הדוא״ל %s"
 
 #: src/contacts-app.vala:233
-#| msgid "No primary addressbook configured"
 msgid "Primary address book not found"
 msgstr "לא נמצא ספר כתובות עיקרי"
 
@@ -350,17 +372,14 @@ msgstr ""
 "עריכה של אנשי קשר"
 
 #: src/contacts-app.vala:236
-#| msgid "Preferences"
 msgid "Go To _Preferences"
 msgstr "מעבר לה_עדפות"
 
 #: src/contacts-app.vala:341
-#| msgid "_Import"
 msgid "Import"
 msgstr "יבוא"
 
 #: src/contacts-app.vala:381
-#| msgid "Error creating account"
 msgid "Error reading file"
 msgstr "שגיאה בעת קריאת קובץ"
 
@@ -374,7 +393,6 @@ msgid "_OK"
 msgstr "_אישור"
 
 #: src/contacts-app.vala:391
-#| msgid "No contact with id %s found"
 msgid "No contacts founds"
 msgstr "לא נמצאו אנשי קשר"
 
@@ -393,7 +411,6 @@ msgstr[2] "עם המשך התהליך, %u אנשי קשר יובאו"
 msgstr[3] "עם המשך התהליך, %u אנשי קשר יובאו"
 
 #: src/contacts-app.vala:403
-#| msgid "C_ontinue"
 msgid "Continue Import?"
 msgstr "להמשיך את היבוא?"
 
@@ -448,29 +465,29 @@ msgid "Unable to find newly created contact"
 msgstr "לא ניתן למצוא את איש הקשר שזה עתה נוצר"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:235
+#: src/contacts-contact-sheet.vala:233
 #, c-format
 msgid "%s at %s"
 msgstr "‏%s כ־%s"
 
-#: src/contacts-contact-sheet.vala:267
+#: src/contacts-contact-sheet.vala:265
 #, c-format
 msgid "Send an email to %s"
 msgstr "שליחת דוא\"ל אל %s"
 
-#: src/contacts-contact-sheet.vala:296
+#: src/contacts-contact-sheet.vala:294
 msgid "Start a call"
 msgstr "התחלת שיחה"
 
-#: src/contacts-contact-sheet.vala:345
+#: src/contacts-contact-sheet.vala:343
 msgid "Visit website"
 msgstr "לבקר באתר האינטרנט"
 
-#: src/contacts-contact-sheet.vala:395
+#: src/contacts-contact-sheet.vala:393
 msgid "Their birthday is today! 🎉"
 msgstr "יום ההולדת שלהם הוא היום! 🎉"
 
-#: src/contacts-contact-sheet.vala:440
+#: src/contacts-contact-sheet.vala:438
 msgid "Show on the map"
 msgstr "הצגה על המפה"
 
@@ -753,12 +770,10 @@ msgstr "סימון כמועדף"
 
 #. Open up a file chooser
 #: src/contacts-main-window.vala:560
-#| msgid "Import from file…"
 msgid "Export to file"
 msgstr "ייצוא לקובץ"
 
 #: src/contacts-main-window.vala:563
-#| msgid "Export"
 msgid "_Export"
 msgstr "_ייצוא"
 
