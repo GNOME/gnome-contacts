@@ -388,7 +388,7 @@ public class Contacts.App : Adw.Application {
 
     if (parse_result.length == 0) {
       var dialog = new Adw.MessageDialog (this.window,
-                                          _("No contacts founds"),
+                                          _("No contacts found"),
                                           _("The imported file does not seem to contain any contacts"));
       dialog.add_response ("ok", _("_OK"));
       dialog.set_default_response ("ok");
