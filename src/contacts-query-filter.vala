@@ -99,6 +99,10 @@ public class Contacts.QueryFilter : Gtk.Filter {
   }
 
   public override Gtk.FilterMatch get_strictness () {
+    if (this.query is SimpleQuery &&
+        ((SimpleQuery) query).query_string == "")
+      return Gtk.FilterMatch.ALL;
+
     return Gtk.FilterMatch.SOME;
   }
 }
