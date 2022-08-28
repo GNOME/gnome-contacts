@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 40\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-12 16:25+0000\n"
-"PO-Revision-Date: 2022-08-14 14:13+0800\n"
+"POT-Creation-Date: 2022-08-26 09:13+0000\n"
+"PO-Revision-Date: 2022-08-28 21:17+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -129,7 +129,7 @@ msgid "Cancel"
 msgstr "取消"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:274 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "完成"
 
@@ -149,10 +149,6 @@ msgstr "选择联系人"
 msgid "Change Addressbook"
 msgstr "修改地址簿"
 
-#: data/ui/contacts-link-suggestion-grid.ui:51
-msgid "Link Contacts"
-msgstr "链接联系人"
-
 #: data/ui/contacts-linked-personas-dialog.ui:9
 msgid "Linked Accounts"
 msgstr "已绑定帐号"
@@ -160,6 +156,10 @@ msgstr "已绑定帐号"
 #: data/ui/contacts-linked-personas-dialog.ui:42
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "您可以通过从联系人列表中选出来链接联系人"
+
+#: data/ui/contacts-link-suggestion-grid.ui:51
+msgid "Link Contacts"
+msgstr "链接联系人"
 
 #: data/ui/contacts-main-window.ui:5
 msgid "List Contacts By:"
@@ -249,11 +249,11 @@ msgstr "返回"
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:258
 msgid "Edit Contact"
 msgstr "编辑联系人"
 
-#: data/ui/contacts-main-window.ui:266
+#: data/ui/contacts-main-window.ui:265
 msgid "Delete Contact"
 msgstr "删除联系人"
 
@@ -337,7 +337,7 @@ msgid "No contact with id %s found"
 msgstr "未找到 ID 为 %s 的联系人"
 
 #: src/contacts-app.vala:112 src/contacts-app.vala:171
-#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:107
+#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:83
 msgid "_Close"
 msgstr "关闭(_C)"
 
@@ -386,7 +386,7 @@ msgid "_OK"
 msgstr "确定(_O)"
 
 #: src/contacts-app.vala:391
-msgid "No contacts founds"
+msgid "No contacts found"
 msgstr "未发现联系人"
 
 #: src/contacts-app.vala:392
@@ -432,11 +432,11 @@ msgstr "更换头像"
 msgid "Add name"
 msgstr "添加姓名"
 
-#: src/contacts-contact-list.vala:106
+#: src/contacts-contact-list.vala:115
 msgid "Favorites"
 msgstr "收藏"
 
-#: src/contacts-contact-list.vala:108 src/contacts-contact-list.vala:114
+#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
 msgid "All Contacts"
 msgstr "全部联系人"
 
@@ -455,29 +455,29 @@ msgid "Unable to find newly created contact"
 msgstr "无法找到新建的联系人"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:233
+#: src/contacts-contact-sheet.vala:238
 #, c-format
 msgid "%s at %s"
 msgstr "%s 于 %s"
 
-#: src/contacts-contact-sheet.vala:265
+#: src/contacts-contact-sheet.vala:272
 #, c-format
 msgid "Send an email to %s"
 msgstr "给 %s 发送邮件"
 
-#: src/contacts-contact-sheet.vala:294
+#: src/contacts-contact-sheet.vala:303
 msgid "Start a call"
 msgstr "开始呼叫"
 
-#: src/contacts-contact-sheet.vala:343
+#: src/contacts-contact-sheet.vala:355
 msgid "Visit website"
 msgstr "访问网站"
 
-#: src/contacts-contact-sheet.vala:393
+#: src/contacts-contact-sheet.vala:405
 msgid "Their birthday is today! 🎉"
 msgstr "今天是他的生日！🎉"
 
-#: src/contacts-contact-sheet.vala:438
+#: src/contacts-contact-sheet.vala:450
 msgid "Show on the map"
 msgstr "在地图上显示"
 
@@ -541,7 +541,7 @@ msgid "Country"
 msgstr "国家"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:502
+#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:404
 msgid "Role"
 msgstr "角色"
 
@@ -550,7 +550,7 @@ msgid "Organisation"
 msgstr "组织"
 
 #: src/contacts-editor-property.vala:331 src/contacts-editor-property.vala:358
-#: src/contacts-editor-property.vala:688
+#: src/contacts-editor-property.vala:693
 msgid "Delete field"
 msgstr "删除字段"
 
@@ -558,33 +558,33 @@ msgstr "删除字段"
 msgid "Label"
 msgstr "标签"
 
-#: src/contacts-editor-property.vala:537
+#: src/contacts-editor-property.vala:542
 msgid "Add email"
 msgstr "添加电子邮箱"
 
-#: src/contacts-editor-property.vala:564
+#: src/contacts-editor-property.vala:569
 msgid "Add phone number"
 msgstr "添加电话号码"
 
-#: src/contacts-editor-property.vala:592
+#: src/contacts-editor-property.vala:597
 msgid "https://example.com"
 msgstr "https://example.com"
 
-#: src/contacts-editor-property.vala:608 src/contacts-utils.vala:497
+#: src/contacts-editor-property.vala:613 src/contacts-utils.vala:399
 msgid "Nickname"
 msgstr "昵称"
 
-#: src/contacts-editor-property.vala:661 src/contacts-editor-property.vala:697
+#: src/contacts-editor-property.vala:666 src/contacts-editor-property.vala:702
 msgid "Set Birthday"
 msgstr "设置生日"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:334
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:236
 msgid "Local Address Book"
 msgstr "本地地址簿"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:388
+#: src/contacts-utils.vala:290
 msgid "Google"
 msgstr "谷歌"
 
@@ -688,6 +688,10 @@ msgstr "雅虎信使"
 msgid "Zephyr"
 msgstr "Zephyr"
 
+#: src/contacts-linked-personas-dialog.vala:76
+msgid "Unlink"
+msgstr "取消链接"
+
 #: src/contacts-link-operation.vala:38
 #, c-format
 msgid "Linked %d contact"
@@ -703,10 +707,6 @@ msgstr "此人跟来自 %2$s 的 %1$s 是不是同个人？"
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "此人跟 %s 是不是同个人？"
-
-#: src/contacts-linked-personas-dialog.vala:70
-msgid "Unlink"
-msgstr "取消链接"
 
 #: src/contacts-main-window.vala:191
 #, c-format
@@ -738,11 +738,11 @@ msgstr "撤消(_U)"
 msgid "New Contact"
 msgstr "新建联系人"
 
-#: src/contacts-main-window.vala:449
+#: src/contacts-main-window.vala:451
 msgid "Unmark as favorite"
 msgstr "取消收藏标记"
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:453
 msgid "Mark as favorite"
 msgstr "标记以收藏"
 
@@ -852,75 +852,80 @@ msgstr "电传打字机"
 msgid "Unlinking contacts"
 msgstr "取消链接联系人"
 
-#: src/contacts-utils.vala:486
+#: src/contacts-utils.vala:388
 msgid "Alias"
 msgstr "别名"
 
-#: src/contacts-utils.vala:487
+#: src/contacts-utils.vala:389
 msgid "Avatar"
 msgstr "头像"
 
-#: src/contacts-utils.vala:488
+#: src/contacts-utils.vala:390
 msgid "Birthday"
 msgstr "生日"
 
-#: src/contacts-utils.vala:489
+#: src/contacts-utils.vala:391
 msgid "Calendar event"
 msgstr "日历事件"
 
-#: src/contacts-utils.vala:490
+#: src/contacts-utils.vala:392
 msgid "Email address"
 msgstr "邮箱地址"
 
-#: src/contacts-utils.vala:491
+#: src/contacts-utils.vala:393
 msgid "Full name"
 msgstr "全名"
 
-#: src/contacts-utils.vala:492
+#: src/contacts-utils.vala:394
 msgid "Gender"
 msgstr "性别"
 
-#: src/contacts-utils.vala:493
+#: src/contacts-utils.vala:395
 msgid "Group"
 msgstr "分组"
 
-#: src/contacts-utils.vala:494
+#: src/contacts-utils.vala:396
 msgid "Instant messaging"
 msgstr "即时消息"
 
-#: src/contacts-utils.vala:495
+#: src/contacts-utils.vala:397
 msgid "Favourite"
 msgstr "收藏"
 
-#: src/contacts-utils.vala:496
+#: src/contacts-utils.vala:398
 msgid "Local ID"
 msgstr "本地 ID"
 
-#: src/contacts-utils.vala:498
+#: src/contacts-utils.vala:400
 msgid "Note"
 msgstr "注释"
 
-#: src/contacts-utils.vala:499
+#: src/contacts-utils.vala:401
 msgid "Phone number"
 msgstr "电话号码"
 
-#: src/contacts-utils.vala:500
+#: src/contacts-utils.vala:402
 msgid "Address"
 msgstr "地址"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:505
+#: src/contacts-utils.vala:407
 msgid "Structured name"
 msgstr "结构化名称"
 
-#: src/contacts-utils.vala:506
+#: src/contacts-utils.vala:408
 msgid "Website"
 msgstr "网站"
 
-#: src/contacts-utils.vala:507
+#: src/contacts-utils.vala:409
 msgid "Web service"
 msgstr "网络服务"
+
+#: src/io/contacts-io-parse-operation.vala:40
+#, c-format
+msgid "Importing contacts from '%s'"
+msgstr "正在从“%s”导入联系人"
 
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
