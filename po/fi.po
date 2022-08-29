@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-12 16:25+0000\n"
-"PO-Revision-Date: 2022-08-18 20:20+0300\n"
+"POT-Creation-Date: 2022-08-26 09:13+0000\n"
+"PO-Revision-Date: 2022-08-29 16:57+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -130,7 +130,7 @@ msgid "Cancel"
 msgstr "Peru"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:274 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "Valmis"
 
@@ -150,10 +150,6 @@ msgstr "Valitse yhteystieto"
 msgid "Change Addressbook"
 msgstr "Vaihda osoitekirjaa"
 
-#: data/ui/contacts-link-suggestion-grid.ui:51
-msgid "Link Contacts"
-msgstr "Linkitä yhteystiedot"
-
 #: data/ui/contacts-linked-personas-dialog.ui:9
 msgid "Linked Accounts"
 msgstr "Linkitetyt tilit"
@@ -161,6 +157,10 @@ msgstr "Linkitetyt tilit"
 #: data/ui/contacts-linked-personas-dialog.ui:42
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "Voit linkittää yhteystietoja valitsemalla ne yhteystietoluettelosta"
+
+#: data/ui/contacts-link-suggestion-grid.ui:51
+msgid "Link Contacts"
+msgstr "Linkitä yhteystiedot"
 
 #: data/ui/contacts-main-window.ui:5
 msgid "List Contacts By:"
@@ -250,11 +250,11 @@ msgstr "Takaisin"
 msgid "_Cancel"
 msgstr "_Peru"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:258
 msgid "Edit Contact"
 msgstr "Muokkaa yhteystietoa"
 
-#: data/ui/contacts-main-window.ui:266
+#: data/ui/contacts-main-window.ui:265
 msgid "Delete Contact"
 msgstr "Poista yhteystieto"
 
@@ -339,7 +339,7 @@ msgid "No contact with id %s found"
 msgstr "Yhteystietoa tunnisteella %s ei löydy"
 
 #: src/contacts-app.vala:112 src/contacts-app.vala:171
-#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:107
+#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:83
 msgid "_Close"
 msgstr "_Sulje"
 
@@ -390,7 +390,7 @@ msgid "_OK"
 msgstr "_OK"
 
 #: src/contacts-app.vala:391
-msgid "No contacts founds"
+msgid "No contacts found"
 msgstr "Yhteystietoja ei löytynyt"
 
 #: src/contacts-app.vala:392
@@ -437,11 +437,11 @@ msgstr "Vaihda avatar-kuva"
 msgid "Add name"
 msgstr "Lisää nimi"
 
-#: src/contacts-contact-list.vala:106
+#: src/contacts-contact-list.vala:115
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: src/contacts-contact-list.vala:108 src/contacts-contact-list.vala:114
+#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
 msgid "All Contacts"
 msgstr "Kaikki yhteystiedot"
 
@@ -460,29 +460,29 @@ msgid "Unable to find newly created contact"
 msgstr "Juuri luotua yhteystietoa ei löydy"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:233
+#: src/contacts-contact-sheet.vala:238
 #, c-format
 msgid "%s at %s"
 msgstr "%s kohteessa %s"
 
-#: src/contacts-contact-sheet.vala:265
+#: src/contacts-contact-sheet.vala:272
 #, c-format
 msgid "Send an email to %s"
 msgstr "Lähetä sähköpostia %s"
 
-#: src/contacts-contact-sheet.vala:294
+#: src/contacts-contact-sheet.vala:303
 msgid "Start a call"
 msgstr "Aloita puhelu"
 
-#: src/contacts-contact-sheet.vala:343
+#: src/contacts-contact-sheet.vala:355
 msgid "Visit website"
 msgstr "Käy verkkosivustolla"
 
-#: src/contacts-contact-sheet.vala:393
+#: src/contacts-contact-sheet.vala:405
 msgid "Their birthday is today! 🎉"
 msgstr "Hänellä on syntymäpäivä tänään! 🎉"
 
-#: src/contacts-contact-sheet.vala:438
+#: src/contacts-contact-sheet.vala:450
 msgid "Show on the map"
 msgstr "Näytä kartalla"
 
@@ -547,7 +547,7 @@ msgid "Country"
 msgstr "Maa"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:502
+#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:404
 msgid "Role"
 msgstr "Rooli"
 
@@ -556,7 +556,7 @@ msgid "Organisation"
 msgstr "Organisaatio"
 
 #: src/contacts-editor-property.vala:331 src/contacts-editor-property.vala:358
-#: src/contacts-editor-property.vala:688
+#: src/contacts-editor-property.vala:693
 msgid "Delete field"
 msgstr "Poista kenttä"
 
@@ -564,33 +564,33 @@ msgstr "Poista kenttä"
 msgid "Label"
 msgstr "Nimike"
 
-#: src/contacts-editor-property.vala:537
+#: src/contacts-editor-property.vala:542
 msgid "Add email"
 msgstr "Lisää sähköpostiosoite"
 
-#: src/contacts-editor-property.vala:564
+#: src/contacts-editor-property.vala:569
 msgid "Add phone number"
 msgstr "Lisää puhelinnumero"
 
-#: src/contacts-editor-property.vala:592
+#: src/contacts-editor-property.vala:597
 msgid "https://example.com"
 msgstr "https://esimerkki.osoite"
 
-#: src/contacts-editor-property.vala:608 src/contacts-utils.vala:497
+#: src/contacts-editor-property.vala:613 src/contacts-utils.vala:399
 msgid "Nickname"
 msgstr "Lempinimi"
 
-#: src/contacts-editor-property.vala:661 src/contacts-editor-property.vala:697
+#: src/contacts-editor-property.vala:666 src/contacts-editor-property.vala:702
 msgid "Set Birthday"
 msgstr "Aseta syntymäpäivä"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:334
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:236
 msgid "Local Address Book"
 msgstr "Paikallinen osoitekirja"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:388
+#: src/contacts-utils.vala:290
 msgid "Google"
 msgstr "Google"
 
@@ -694,6 +694,10 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
+#: src/contacts-linked-personas-dialog.vala:76
+msgid "Unlink"
+msgstr "Pura liitos"
+
 #: src/contacts-link-operation.vala:38
 #, c-format
 msgid "Linked %d contact"
@@ -710,10 +714,6 @@ msgstr "Onko tämä sama henkilö kuin %s kohteesta %s?"
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Onko tämä sama henkilö kuin %s?"
-
-#: src/contacts-linked-personas-dialog.vala:70
-msgid "Unlink"
-msgstr "Pura liitos"
 
 #: src/contacts-main-window.vala:191
 #, c-format
@@ -747,11 +747,11 @@ msgstr "_Kumoa"
 msgid "New Contact"
 msgstr "Uusi yhteystieto"
 
-#: src/contacts-main-window.vala:449
+#: src/contacts-main-window.vala:451
 msgid "Unmark as favorite"
 msgstr "Poista suosikkimerkintä"
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:453
 msgid "Mark as favorite"
 msgstr "Merkitse suosiksi"
 
@@ -862,75 +862,81 @@ msgstr "Kaukokirjoitin"
 msgid "Unlinking contacts"
 msgstr "Irrotetaan yhteystietojen linkitys"
 
-#: src/contacts-utils.vala:486
+#: src/contacts-utils.vala:388
 msgid "Alias"
 msgstr "Alias"
 
-#: src/contacts-utils.vala:487
+#: src/contacts-utils.vala:389
 msgid "Avatar"
 msgstr "Avatar-kuva"
 
-#: src/contacts-utils.vala:488
+#: src/contacts-utils.vala:390
 msgid "Birthday"
 msgstr "Syntymäpäivä"
 
-#: src/contacts-utils.vala:489
+#: src/contacts-utils.vala:391
 msgid "Calendar event"
 msgstr "Kalenteritapahtuma"
 
-#: src/contacts-utils.vala:490
+#: src/contacts-utils.vala:392
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: src/contacts-utils.vala:491
+#: src/contacts-utils.vala:393
 msgid "Full name"
 msgstr "Koko nimi"
 
-#: src/contacts-utils.vala:492
+#: src/contacts-utils.vala:394
 msgid "Gender"
 msgstr "Sukupuoli"
 
-#: src/contacts-utils.vala:493
+#: src/contacts-utils.vala:395
 msgid "Group"
 msgstr "Ryhmä"
 
-#: src/contacts-utils.vala:494
+#: src/contacts-utils.vala:396
 msgid "Instant messaging"
 msgstr "Pikaviestintä"
 
-#: src/contacts-utils.vala:495
+#: src/contacts-utils.vala:397
 msgid "Favourite"
 msgstr "Suosikki"
 
-#: src/contacts-utils.vala:496
+#: src/contacts-utils.vala:398
 msgid "Local ID"
 msgstr "Paikallinen tunniste"
 
-#: src/contacts-utils.vala:498
+#: src/contacts-utils.vala:400
 msgid "Note"
 msgstr "Huomautus"
 
-#: src/contacts-utils.vala:499
+#: src/contacts-utils.vala:401
 msgid "Phone number"
 msgstr "Puhelinnumero"
 
-#: src/contacts-utils.vala:500
+#: src/contacts-utils.vala:402
 msgid "Address"
 msgstr "Osoite"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:505
+#: src/contacts-utils.vala:407
 msgid "Structured name"
 msgstr "Strukturoitu nimi"
 
-#: src/contacts-utils.vala:506
+#: src/contacts-utils.vala:408
 msgid "Website"
 msgstr "Verkkosivusto"
 
-#: src/contacts-utils.vala:507
+#: src/contacts-utils.vala:409
 msgid "Web service"
 msgstr "Verkkopalvelu"
+
+#: src/io/contacts-io-parse-operation.vala:40
+#, c-format
+#| msgid "No contacts founds"
+msgid "Importing contacts from '%s'"
+msgstr "Tuodaan yhteystiedot kohteesta '%s'"
 
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
