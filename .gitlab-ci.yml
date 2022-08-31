@@ -1,5 +1,12 @@
 include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
+variables:
+  APP_ID: "org.gnome.Contacts.Devel"
+  BUNDLE: 'gnome-contacts.flatpak'
+  FLATPAK_MODULE: "gnome-contacts"
+  MANIFEST_PATH: 'build-aux/flatpak/org.gnome.Contacts.Devel.json'
+  RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+
 stages:
   - review
   - test
@@ -21,15 +28,15 @@ style-check:
 
 flatpak:
   image: quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master
-  variables:
-    MANIFEST_PATH: 'build-aux/flatpak/org.gnome.Contacts.Devel.json'
-    FLATPAK_MODULE: "gnome-contacts"
-    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-    APP_ID: "org.gnome.Contacts.Devel"
-    BUNDLE: 'gnome-contacts.flatpak'
-  extends: .flatpak
+  extends: '.flatpak@x86_64'
+
+flatpak@aarch64:
+  extends: '.flatpak@aarch64'
 
 nightly:
   extends: '.publish_nightly'
-  dependencies:
-    - 'flatpak'
+  needs: [ 'flatpak' ]
+
+nightly aarch64:
+  extends: '.publish_nightly'
+  needs: ['flatpak@aarch64']
