@@ -13,18 +13,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-contacts 40\n"
+"Project-Id-Version: gnome-contacts 43\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-08-26 09:13+0000\n"
-"PO-Revision-Date: 2022-08-28 21:17+0800\n"
-"Last-Translator: lumingzh <lumingzh@qq.com>\n"
+"POT-Creation-Date: 2022-09-03 12:37+0000\n"
+"PO-Revision-Date: 2022-09-03 17:30-0400\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
@@ -123,13 +123,13 @@ msgid "Select a new avatar"
 msgstr "选择新头像"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:105 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-app.vala:342 src/contacts-editor-property.vala:79
+#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
+#: src/contacts-app.vala:342 src/contacts-contact-editor.vala:715
 msgid "Cancel"
 msgstr "取消"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:274 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "完成"
 
@@ -193,67 +193,67 @@ msgstr "帮助"
 msgid "About Contacts"
 msgstr "关于联系人"
 
-#: data/ui/contacts-main-window.ui:81
+#: data/ui/contacts-main-window.ui:82
 msgid "Create new contact"
 msgstr "新建联系人"
 
-#: data/ui/contacts-main-window.ui:91
+#: data/ui/contacts-main-window.ui:92
 msgid "Menu"
 msgstr "菜单"
 
-#: data/ui/contacts-main-window.ui:98
+#: data/ui/contacts-main-window.ui:99
 msgid "Select Items"
 msgstr "选择项目"
 
-#: data/ui/contacts-main-window.ui:106
+#: data/ui/contacts-main-window.ui:107
 msgid "Cancel Selection"
 msgstr "取消选择"
 
-#: data/ui/contacts-main-window.ui:133
+#: data/ui/contacts-main-window.ui:134
 msgid "Loading"
 msgstr "加载中"
 
-#: data/ui/contacts-main-window.ui:144
+#: data/ui/contacts-main-window.ui:145
 msgid "Type to search"
 msgstr "搜索"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:162
+#: data/ui/contacts-main-window.ui:163
 msgid "Export"
 msgstr "导出"
 
-#: data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:164
 msgid "Export Selected Contacts"
 msgstr "导出选中的联系人"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:170
+#: data/ui/contacts-main-window.ui:171
 msgid "Link"
 msgstr "链接"
 
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:172
 msgid "Link Selected Contacts Together"
 msgstr "将选中的联系人链接到一起"
 
-#: data/ui/contacts-main-window.ui:178
+#: data/ui/contacts-main-window.ui:179
 msgid "Remove"
 msgstr "移除"
 
-#: data/ui/contacts-main-window.ui:222
+#: data/ui/contacts-main-window.ui:223
 msgid "Back"
 msgstr "返回"
 
-#: data/ui/contacts-main-window.ui:236 src/contacts-app.vala:239
-#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:199
-#: src/contacts-main-window.vala:515 src/contacts-main-window.vala:564
+#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:239
+#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:196
+#: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: data/ui/contacts-main-window.ui:258
+#: data/ui/contacts-main-window.ui:259
 msgid "Edit Contact"
 msgstr "编辑联系人"
 
-#: data/ui/contacts-main-window.ui:265
+#: data/ui/contacts-main-window.ui:266
 msgid "Delete Contact"
 msgstr "删除联系人"
 
@@ -337,7 +337,7 @@ msgid "No contact with id %s found"
 msgstr "未找到 ID 为 %s 的联系人"
 
 #: src/contacts-app.vala:112 src/contacts-app.vala:171
-#: src/contacts-contact-pane.vala:261 src/contacts-utils.vala:83
+#: src/contacts-utils.vala:74
 msgid "_Close"
 msgstr "关闭(_C)"
 
@@ -368,9 +368,18 @@ msgstr "联系人无法找到配置的主地址簿。您可能遇到了创建或
 msgid "Go To _Preferences"
 msgstr "跳转到首选项(_P)"
 
+#: src/contacts-app.vala:338
+msgid "Select contact file"
+msgstr "选择联系人文件"
+
 #: src/contacts-app.vala:341
 msgid "Import"
 msgstr "导入"
+
+#. TODO: somehow get this from the list of importers we have
+#: src/contacts-app.vala:348
+msgid "vCard files"
+msgstr "vCard 文件"
 
 #: src/contacts-app.vala:381
 msgid "Error reading file"
@@ -408,29 +417,119 @@ msgstr "继续导入吗？"
 msgid "C_ontinue"
 msgstr "继续(_O)"
 
-#: src/contacts-avatar-selector.vala:126
+#: src/contacts-avatar-selector.vala:124
 msgid "No Camera Detected"
 msgstr "未检测到摄像头"
 
-#: src/contacts-avatar-selector.vala:196
+#: src/contacts-avatar-selector.vala:193
 msgid "Browse for more pictures"
 msgstr "浏览更多图片"
 
-#: src/contacts-avatar-selector.vala:199
+#: src/contacts-avatar-selector.vala:196
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+#: src/contacts-avatar-selector.vala:235 src/contacts-contact-editor.vala:113
 msgid "Failed to set avatar."
 msgstr "设定头像失败。"
 
-#: src/contacts-contact-editor.vala:57
+#: src/contacts-contact-editor.vala:97
 msgid "Change avatar"
 msgstr "更换头像"
 
-#: src/contacts-contact-editor.vala:93
+#: src/contacts-contact-editor.vala:129
 msgid "Add name"
 msgstr "添加姓名"
+
+#: src/contacts-contact-editor.vala:250
+msgid "Show More"
+msgstr "显示更多"
+
+#: src/contacts-contact-editor.vala:339
+msgid "Add email"
+msgstr "添加电子邮箱"
+
+#: src/contacts-contact-editor.vala:365
+msgid "Add phone number"
+msgstr "添加电话号码"
+
+#: src/contacts-contact-editor.vala:391 src/contacts-utils.vala:261
+msgid "Website"
+msgstr "网站"
+
+#: src/contacts-contact-editor.vala:403 src/contacts-utils.vala:252
+msgid "Nickname"
+msgstr "昵称"
+
+#: src/contacts-contact-editor.vala:454 src/contacts-utils.vala:243
+msgid "Birthday"
+msgstr "生日"
+
+#: src/contacts-contact-editor.vala:458
+msgid "Set Birthday"
+msgstr "设置生日"
+
+#: src/contacts-contact-editor.vala:528
+msgid "Organisation"
+msgstr "组织"
+
+#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
+#: src/contacts-contact-editor.vala:534 src/contacts-utils.vala:257
+msgid "Role"
+msgstr "角色"
+
+#: src/contacts-contact-editor.vala:644
+msgid "Label"
+msgstr "标签"
+
+#. Create grid and labels
+#: src/contacts-contact-editor.vala:700
+msgid "Day"
+msgstr "日"
+
+#: src/contacts-contact-editor.vala:704
+msgid "Month"
+msgstr "月"
+
+#: src/contacts-contact-editor.vala:708
+msgid "Year"
+msgstr "年"
+
+#: src/contacts-contact-editor.vala:713
+msgid "Change Birthday"
+msgstr "修改生日"
+
+#: src/contacts-contact-editor.vala:714
+msgid "Set"
+msgstr "设置"
+
+#: src/contacts-contact-editor.vala:783
+msgid "Street"
+msgstr "街道"
+
+#: src/contacts-contact-editor.vala:783
+msgid "Extension"
+msgstr "分机"
+
+#: src/contacts-contact-editor.vala:783
+msgid "City"
+msgstr "城市"
+
+#: src/contacts-contact-editor.vala:783
+msgid "State/Province"
+msgstr "省/州"
+
+#: src/contacts-contact-editor.vala:783
+msgid "Zip/Postal Code"
+msgstr "邮编"
+
+#: src/contacts-contact-editor.vala:783
+msgid "PO box"
+msgstr "邮政信箱"
+
+#: src/contacts-contact-editor.vala:783
+msgid "Country"
+msgstr "国家"
 
 #: src/contacts-contact-list.vala:115
 msgid "Favorites"
@@ -440,44 +539,20 @@ msgstr "收藏"
 msgid "All Contacts"
 msgstr "全部联系人"
 
-#: src/contacts-contact-pane.vala:230
-msgid "No primary addressbook configured"
-msgstr "未配置主地址簿"
-
-#: src/contacts-contact-pane.vala:240
-#, c-format
-msgid "Unable to create new contacts: %s"
-msgstr "无法新建联系人：%s"
-
-#. If we got here, we couldn't find the individual
-#: src/contacts-contact-pane.vala:255
-msgid "Unable to find newly created contact"
-msgstr "无法找到新建的联系人"
-
-#. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:238
-#, c-format
-msgid "%s at %s"
-msgstr "%s 于 %s"
-
-#: src/contacts-contact-sheet.vala:272
+#: src/contacts-contact-sheet.vala:216
 #, c-format
 msgid "Send an email to %s"
 msgstr "给 %s 发送邮件"
 
-#: src/contacts-contact-sheet.vala:303
-msgid "Start a call"
-msgstr "开始呼叫"
-
-#: src/contacts-contact-sheet.vala:355
+#: src/contacts-contact-sheet.vala:289
 msgid "Visit website"
 msgstr "访问网站"
 
-#: src/contacts-contact-sheet.vala:405
+#: src/contacts-contact-sheet.vala:325
 msgid "Their birthday is today! 🎉"
 msgstr "今天是他的生日！🎉"
 
-#: src/contacts-contact-sheet.vala:450
+#: src/contacts-contact-sheet.vala:372
 msgid "Show on the map"
 msgstr "在地图上显示"
 
@@ -487,104 +562,13 @@ msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "正在删除 %d 个联系人"
 
-#: src/contacts-editor-persona.vala:83
-msgid "Show More"
-msgstr "显示更多"
-
-#. Create grid and labels
-#: src/contacts-editor-property.vala:64
-msgid "Day"
-msgstr "日"
-
-#: src/contacts-editor-property.vala:68
-msgid "Month"
-msgstr "月"
-
-#: src/contacts-editor-property.vala:72
-msgid "Year"
-msgstr "年"
-
-#: src/contacts-editor-property.vala:77
-msgid "Change Birthday"
-msgstr "修改生日"
-
-#: src/contacts-editor-property.vala:78
-msgid "Set"
-msgstr "设置"
-
-#: src/contacts-editor-property.vala:147
-msgid "Street"
-msgstr "街道"
-
-#: src/contacts-editor-property.vala:147
-msgid "Extension"
-msgstr "分机"
-
-#: src/contacts-editor-property.vala:147
-msgid "City"
-msgstr "城市"
-
-#: src/contacts-editor-property.vala:147
-msgid "State/Province"
-msgstr "省/州"
-
-#: src/contacts-editor-property.vala:147
-msgid "Zip/Postal Code"
-msgstr "邮编"
-
-#: src/contacts-editor-property.vala:147
-msgid "PO box"
-msgstr "邮政信箱"
-
-#: src/contacts-editor-property.vala:147
-msgid "Country"
-msgstr "国家"
-
-#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-editor-property.vala:205 src/contacts-utils.vala:404
-msgid "Role"
-msgstr "角色"
-
-#: src/contacts-editor-property.vala:212
-msgid "Organisation"
-msgstr "组织"
-
-#: src/contacts-editor-property.vala:331 src/contacts-editor-property.vala:358
-#: src/contacts-editor-property.vala:693
-msgid "Delete field"
-msgstr "删除字段"
-
-#: src/contacts-editor-property.vala:381
-msgid "Label"
-msgstr "标签"
-
-#: src/contacts-editor-property.vala:542
-msgid "Add email"
-msgstr "添加电子邮箱"
-
-#: src/contacts-editor-property.vala:569
-msgid "Add phone number"
-msgstr "添加电话号码"
-
-#: src/contacts-editor-property.vala:597
-msgid "https://example.com"
-msgstr "https://example.com"
-
-#: src/contacts-editor-property.vala:613 src/contacts-utils.vala:399
-msgid "Nickname"
-msgstr "昵称"
-
-#: src/contacts-editor-property.vala:666 src/contacts-editor-property.vala:702
-msgid "Set Birthday"
-msgstr "设置生日"
-
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:236
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:168
 msgid "Local Address Book"
 msgstr "本地地址簿"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:290
+#: src/contacts-utils.vala:222
 msgid "Google"
 msgstr "谷歌"
 
@@ -729,8 +713,8 @@ msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "已选中 %d 个联系人"
 
-#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:486
-#: src/contacts-main-window.vala:526
+#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:487
+#: src/contacts-main-window.vala:527
 msgid "_Undo"
 msgstr "撤消(_U)"
 
@@ -738,22 +722,26 @@ msgstr "撤消(_U)"
 msgid "New Contact"
 msgstr "新建联系人"
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:452
 msgid "Unmark as favorite"
 msgstr "取消收藏标记"
 
-#: src/contacts-main-window.vala:453
+#: src/contacts-main-window.vala:454
 msgid "Mark as favorite"
 msgstr "标记以收藏"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:560
+#: src/contacts-main-window.vala:561
 msgid "Export to file"
 msgstr "导出到文件"
 
-#: src/contacts-main-window.vala:563
+#: src/contacts-main-window.vala:564
 msgid "_Export"
 msgstr "导出(_E)"
+
+#: src/contacts-main-window.vala:566
+msgid "contacts.vcf"
+msgstr "contacts.vcf"
 
 #: src/contacts-preferences-window.vala:30
 msgid "Primary Address Book"
@@ -774,77 +762,77 @@ msgstr "在线帐号(_O)"
 msgid "Opens the Online Accounts panel in GNOME Settings"
 msgstr "打开 GNOME 设置的在线帐号面板"
 
-#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:239
+#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:248
 msgid "Other"
 msgstr "其他"
 
 #. List most specific first, always in upper case
-#: src/contacts-typeset.vala:187 src/contacts-typeset.vala:208
-#: src/contacts-typeset.vala:234 src/contacts-typeset.vala:236
+#: src/contacts-typeset.vala:196 src/contacts-typeset.vala:217
+#: src/contacts-typeset.vala:243 src/contacts-typeset.vala:245
 msgid "Home"
 msgstr "家庭"
 
-#: src/contacts-typeset.vala:188 src/contacts-typeset.vala:209
-#: src/contacts-typeset.vala:228 src/contacts-typeset.vala:230
+#: src/contacts-typeset.vala:197 src/contacts-typeset.vala:218
+#: src/contacts-typeset.vala:237 src/contacts-typeset.vala:239
 msgid "Work"
 msgstr "工作"
 
 #. List most specific first, always in upper case
-#: src/contacts-typeset.vala:207
+#: src/contacts-typeset.vala:216
 msgid "Personal"
 msgstr "个人"
 
 #. List most specific first, always in upper case
-#: src/contacts-typeset.vala:227
+#: src/contacts-typeset.vala:236
 msgid "Assistant"
 msgstr "助理"
 
-#: src/contacts-typeset.vala:229
+#: src/contacts-typeset.vala:238
 msgid "Work Fax"
 msgstr "工作传真"
 
-#: src/contacts-typeset.vala:231
+#: src/contacts-typeset.vala:240
 msgid "Callback"
 msgstr "回呼"
 
-#: src/contacts-typeset.vala:232
+#: src/contacts-typeset.vala:241
 msgid "Car"
 msgstr "汽车"
 
-#: src/contacts-typeset.vala:233
+#: src/contacts-typeset.vala:242
 msgid "Company"
 msgstr "公司"
 
-#: src/contacts-typeset.vala:235
+#: src/contacts-typeset.vala:244
 msgid "Home Fax"
 msgstr "家庭传真"
 
-#: src/contacts-typeset.vala:237
+#: src/contacts-typeset.vala:246
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/contacts-typeset.vala:238
+#: src/contacts-typeset.vala:247
 msgid "Mobile"
 msgstr "手机"
 
-#: src/contacts-typeset.vala:240
+#: src/contacts-typeset.vala:249
 msgid "Fax"
 msgstr "传真"
 
-#: src/contacts-typeset.vala:241
+#: src/contacts-typeset.vala:250
 msgid "Pager"
 msgstr "寻呼机"
 
-#: src/contacts-typeset.vala:242
+#: src/contacts-typeset.vala:251
 msgid "Radio"
 msgstr "无线电"
 
-#: src/contacts-typeset.vala:243
+#: src/contacts-typeset.vala:252
 msgid "Telex"
 msgstr "电传"
 
 #. To translators: TTY is Teletypewriter
-#: src/contacts-typeset.vala:245
+#: src/contacts-typeset.vala:254
 msgid "TTY"
 msgstr "电传打字机"
 
@@ -852,75 +840,77 @@ msgstr "电传打字机"
 msgid "Unlinking contacts"
 msgstr "取消链接联系人"
 
-#: src/contacts-utils.vala:388
+#: src/contacts-utils.vala:241
 msgid "Alias"
 msgstr "别名"
 
-#: src/contacts-utils.vala:389
+#: src/contacts-utils.vala:242
 msgid "Avatar"
 msgstr "头像"
 
-#: src/contacts-utils.vala:390
-msgid "Birthday"
-msgstr "生日"
-
-#: src/contacts-utils.vala:391
+#: src/contacts-utils.vala:244
 msgid "Calendar event"
 msgstr "日历事件"
 
-#: src/contacts-utils.vala:392
+#: src/contacts-utils.vala:245
 msgid "Email address"
 msgstr "邮箱地址"
 
-#: src/contacts-utils.vala:393
+#: src/contacts-utils.vala:246
 msgid "Full name"
 msgstr "全名"
 
-#: src/contacts-utils.vala:394
+#: src/contacts-utils.vala:247
 msgid "Gender"
 msgstr "性别"
 
-#: src/contacts-utils.vala:395
+#: src/contacts-utils.vala:248
 msgid "Group"
 msgstr "分组"
 
-#: src/contacts-utils.vala:396
+#: src/contacts-utils.vala:249
 msgid "Instant messaging"
 msgstr "即时消息"
 
-#: src/contacts-utils.vala:397
+#: src/contacts-utils.vala:250
 msgid "Favourite"
 msgstr "收藏"
 
-#: src/contacts-utils.vala:398
+#: src/contacts-utils.vala:251
 msgid "Local ID"
 msgstr "本地 ID"
 
-#: src/contacts-utils.vala:400
+#: src/contacts-utils.vala:253
 msgid "Note"
 msgstr "注释"
 
-#: src/contacts-utils.vala:401
+#: src/contacts-utils.vala:254
 msgid "Phone number"
 msgstr "电话号码"
 
-#: src/contacts-utils.vala:402
+#: src/contacts-utils.vala:255
 msgid "Address"
 msgstr "地址"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:407
+#: src/contacts-utils.vala:260
 msgid "Structured name"
 msgstr "结构化名称"
 
-#: src/contacts-utils.vala:408
-msgid "Website"
-msgstr "网站"
-
-#: src/contacts-utils.vala:409
+#: src/contacts-utils.vala:262
 msgid "Web service"
 msgstr "网络服务"
+
+#: src/core/contacts-contact.vala:40
+msgid "Unnamed Person"
+msgstr "未命名人士"
+
+#. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
+#: src/core/contacts-roles-chunk.vala:86
+#, c-format
+msgid "%s at %s"
+msgstr "%s 于 %s"
 
 #: src/io/contacts-io-parse-operation.vala:40
 #, c-format
@@ -978,6 +968,25 @@ msgstr "存储窗口当前是否最大化的状态。"
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "窗口是否全屏"
+
+#~ msgid "No primary addressbook configured"
+#~ msgstr "未配置主地址簿"
+
+#, c-format
+#~ msgid "Unable to create new contacts: %s"
+#~ msgstr "无法新建联系人：%s"
+
+#~ msgid "Unable to find newly created contact"
+#~ msgstr "无法找到新建的联系人"
+
+#~ msgid "Start a call"
+#~ msgstr "开始呼叫"
+
+#~ msgid "Delete field"
+#~ msgstr "删除字段"
+
+#~ msgid "https://example.com"
+#~ msgstr "https://example.com"
 
 #~ msgid "Change Address Book…"
 #~ msgstr "修改地址簿…"
