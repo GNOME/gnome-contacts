@@ -335,7 +335,7 @@ public class Contacts.App : Adw.Application {
   }
 
   private void on_import (SimpleAction action, Variant? param) {
-    var chooser = new Gtk.FileChooserNative ("Select contact file",
+    var chooser = new Gtk.FileChooserNative (_("Select contact file"),
                                              this.window,
                                              Gtk.FileChooserAction.OPEN,
                                              _("Import"),
@@ -345,7 +345,7 @@ public class Contacts.App : Adw.Application {
 
     // TODO: somehow get this from the list of importers we have
     var filter = new Gtk.FileFilter ();
-    filter.set_filter_name ("VCard files");
+    filter.set_filter_name (_("vCard files"));
     filter.add_pattern ("*.vcf");
     filter.add_pattern ("*.vcard");
     chooser.add_filter (filter);

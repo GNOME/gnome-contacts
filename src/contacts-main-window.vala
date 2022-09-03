@@ -562,7 +562,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
                                              Gtk.FileChooserAction.SAVE,
                                              _("_Export"),
                                              _("_Cancel"));
-    chooser.set_current_name ("contacts.vcf");
+    chooser.set_current_name (_("contacts.vcf"));
     chooser.modal = true;
     chooser.response.connect ((response) => {
       if (response != Gtk.ResponseType.ACCEPT) {
