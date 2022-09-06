@@ -33,7 +33,7 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
   /** The underlying individual, if any */
   public unowned Individual? individual { get; construct set; default = null; }
 
-  public unowned Store contacts_store { get; construct set; }
+  public unowned Store? contacts_store { get; construct set; }
 
   /** Similar to fetch_display_name(), but never returns null */
   public string display_name {
@@ -53,12 +53,12 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
   }
 
   /** Creates a Contact that acts as a wrapper around an Individual */
-  public Contact.for_individual (Individual individual, Store contacts_store) {
+  public Contact.for_individual (Individual individual, Store? contacts_store) {
     Object (individual: individual, contacts_store: contacts_store);
   }
 
   /** Creates a new empty contact */
-  public Contact.for_new (Store contacts_store) {
+  public Contact.for_new (Store? contacts_store) {
     Object (individual: null, contacts_store: contacts_store);
   }
 
@@ -225,13 +225,21 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
 
     // From these chunks, select the one from the primary store. If there's
     // none, just select the first one
-    unowned var primary_store = this.contacts_store.aggregator.primary_store;
-    for (uint i = 0; i < chunks.get_n_items (); i++) {
-      var chunk = (Chunk) chunks.get_item (i);
-      if (chunk.persona != null && chunk.persona.store == primary_store)
-        return chunk;
+    unowned var primary_store = get_primary_store ();
+    if (primary_store != null) {
+      for (uint i = 0; i < chunks.get_n_items (); i++) {
+        var chunk = (Chunk) chunks.get_item (i);
+        if (chunk.persona != null && chunk.persona.store == primary_store)
+          return chunk;
+      }
     }
     return (Chunk?) chunks.get_item (0);
+  }
+
+  private unowned PersonaStore? get_primary_store () {
+    if (this.contacts_store == null)
+      return null;
+    return this.contacts_store.aggregator.primary_store;
   }
 
   public Object? get_item (uint i) {
@@ -293,7 +301,7 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
     }
     if (new_details.size () != 0) {
       debug ("Creating new persona with %u properties", new_details.size ());
-      unowned var primary_store = this.contacts_store.aggregator.primary_store;
+      unowned var primary_store = get_primary_store ();
       return_if_fail (primary_store != null);
       var persona = yield primary_store.add_persona_from_details (new_details);
       debug ("Successfully created new persona %p", persona);
