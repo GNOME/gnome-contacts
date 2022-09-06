@@ -7,6 +7,7 @@ test_names = [
   'test-notes-chunk',
   'test-phones-chunk',
   'test-roles-chunk',
+  'test-structured-name-chunk',
   'test-urls-chunk',
 ]
 

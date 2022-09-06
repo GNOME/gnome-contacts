@@ -61,4 +61,22 @@ public abstract class Contacts.Chunk : GLib.Object {
    */
   public abstract async void save_to_persona () throws GLib.Error
       requires (this.persona != null);
+
+  /**
+   * Serializes this chunk into a {@link GLib.Variant} accordding to an
+   * internal format (which can be deserialized later using apply_gvariant())
+   *
+   * If the field is empty or non-existent, it should return null.
+   */
+  public abstract Variant? to_gvariant ();
+
+  /**
+   * Takes the given variant describing this chunk (in other words, the result
+   * of to_gvariant() and copies the values accordingly.
+   *
+   * If the variant represents the *original* value for this chunk (as there's
+   * no appropriate construct property), then you can set mark_dirty to false.
+   */
+  public abstract void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true);
 }

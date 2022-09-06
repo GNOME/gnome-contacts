@@ -172,4 +172,41 @@ public class Contacts.Address : BinChunkChild {
     copy_parameters (address);
     return address;
   }
+
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(sssssssv)",
+                        this.address.po_box,
+                        this.address.extension,
+                        this.address.street,
+                        this.address.locality,
+                        this.address.region,
+                        this.address.postal_code,
+                        this.address.country,
+                        parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(sssssssv)"))) {
+
+    string po_box, extension, street, locality, region, postal_code, country;
+    Variant params_variant;
+    variant.get ("(sssssssv)",
+                 out po_box,
+                 out extension,
+                 out street,
+                 out locality,
+                 out region,
+                 out postal_code,
+                 out country,
+                 out params_variant);
+
+    this.address.po_box = po_box;
+    this.address.extension = extension;
+    this.address.street = street;
+    this.address.locality = locality;
+    this.address.region = region;
+    this.address.postal_code = postal_code;
+    this.address.country = country;
+    apply_gvariant_parameters (params_variant);
+  }
 }

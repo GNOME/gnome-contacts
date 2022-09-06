@@ -6,6 +6,7 @@ test_deps = [
   gee,
   folks,
   libebook,
+  libcontactscore_dep,
 ]
 
 foreach vcard_name : io_vcard_files

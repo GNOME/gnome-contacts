@@ -44,9 +44,6 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
       on_individual_personas_changed (this.individual,
                                       this.individual.personas,
                                       Gee.Set.empty<Persona> ());
-    } else {
-      // At the very least let's add an empty full-name chunk
-      create_chunk ("full-name", null);
     }
   }
 
@@ -55,9 +52,31 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
     Object (individual: individual);
   }
 
+  /** Creates a Contact by deserializing the given GVariant */
+  public Contact.for_gvariant (Variant variant)
+      requires (variant.get_type ().equal (VariantType.VARDICT)) {
+    Object (individual: null);
+
+    var iter = variant.iterator ();
+    string prop;
+    Variant val;
+    while (iter.next ("{sv}", out prop, out val)) {
+      var pos = create_chunk_internal (prop, null);
+      if (pos == -1)
+        continue;
+
+      unowned var chunk = this.chunks[pos];
+      chunk.apply_gvariant (val, false);
+    }
+    items_changed (0, 0, this.chunks.length);
+  }
+
   /** Creates a new empty contact */
   public Contact.empty () {
     Object (individual: null);
+
+    // At the very least let's add an empty full-name chunk
+    create_chunk ("full-name", null);
   }
 
   private void on_individual_personas_changed (Individual individual,
@@ -325,5 +344,29 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
     }
 
     return individual;
+  }
+
+  /**
+   * Serializes the given contact into a {@link GLib.Variant} (which can then
+   * be transmitted over a socket). Note that this serialization format is only
+   * intended for internal purposes and can change over time.
+   *
+   * For several reasons (for example easier deserialization and size decrease)
+   * it will not serialize empty fields but omit them instead.
+   */
+  public Variant to_gvariant () {
+    var dict = new GLib.VariantDict ();
+
+    for (uint i = 0; i < this.chunks.length; i++) {
+      unowned var chunk = this.chunks[i];
+
+      var variant = chunk.to_gvariant ();
+      if (variant == null)
+        continue;
+
+      dict.insert_value (chunk.property_name, variant);
+    }
+
+    return dict.end ();
   }
 }

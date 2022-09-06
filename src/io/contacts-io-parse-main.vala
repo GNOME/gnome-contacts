@@ -38,7 +38,7 @@ int main (string[] args) {
       error ("Unknown import type '%s'", import_type);
   }
 
-  HashTable<string, Value?>[] details_list;
+  Contacts.Contact[]? details_list;
   try {
     var file = File.new_for_path (path);
     var file_stream = file.read (null);

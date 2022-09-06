@@ -100,4 +100,27 @@ public class Contacts.BirthdayChunk : Chunk {
   private bool is_leap_day (int month, int day) {
     return month == 2 && day == 29;
   }
+
+  public override Variant? to_gvariant () {
+    if (this.birthday == null)
+      return null;
+
+    int year, month, day;
+    this.birthday.get_ymd (out year, out month, out day);
+    return new GLib.Variant ("(iii)", year, month, day);
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true)
+      requires (variant.get_type ().equal (new VariantType ("(iii)"))) {
+
+    int year, month, day;
+    variant.get ("(iii)", out year, out month, out day);
+
+    var bd = new DateTime.utc (year, month, day, 0, 0, 0.0);
+    if (!mark_dirty) {
+      this.original_birthday = bd;
+    }
+    this.birthday = bd;
+  }
 }

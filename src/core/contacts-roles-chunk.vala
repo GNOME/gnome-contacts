@@ -98,6 +98,25 @@ public class Contacts.OrgRole : BinChunkChild {
     return org_role;
   }
 
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(ssv)",
+                        this.role.organisation_name,
+                        this.role.title,
+                        parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(ssv)"))) {
+
+    string org, title;
+    Variant params_variant;
+    variant.get ("(ssv)", out org, out title, out params_variant);
+
+    this.role.organisation_name = org;
+    this.role.title = title;
+    apply_gvariant_parameters (params_variant);
+  }
+
   public string to_string () {
     if (this.role.title != "") {
       if (this.role.organisation_name != "") {

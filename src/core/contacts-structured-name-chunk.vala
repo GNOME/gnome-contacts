@@ -74,4 +74,38 @@ public class Contacts.StructuredNameChunk : Chunk {
       requires (this.persona is NameDetails) {
     yield ((NameDetails) this.persona).change_structured_name (this.structured_name);
   }
+
+  public override Variant? to_gvariant () {
+    if (this.is_empty)
+      return null;
+    return new Variant ("(sssss)",
+                        this.structured_name.family_name,
+                        this.structured_name.given_name,
+                        this.structured_name.additional_names,
+                        this.structured_name.prefixes,
+                        this.structured_name.suffixes);
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true)
+      requires (variant.get_type ().equal (new VariantType ("(sssss)"))) {
+
+    string family_name, given_name, additional_names, prefixes, suffixes;
+    variant.get ("(sssss)",
+                 out family_name,
+                 out given_name,
+                 out additional_names,
+                 out prefixes,
+                 out suffixes);
+
+    var structured_name = new StructuredName (family_name,
+                                              given_name,
+                                              additional_names,
+                                              prefixes,
+                                              suffixes);
+    if (!mark_dirty) {
+      this.original_structured_name = structured_name;
+    }
+    this.structured_name = structured_name;
+  }
 }

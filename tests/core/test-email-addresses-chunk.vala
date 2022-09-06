@@ -17,8 +17,9 @@
 
 void main (string[] args) {
   Test.init (ref args);
-  Test.add_func ("/core/addresses-chunk/property-name-chunk", test_property_name);
-  Test.add_func ("/core/addresses-chunk/get-is-empty", test_is_empty);
+  Test.add_func ("/core/email-addresses-chunk/property-name-chunk", test_property_name);
+  Test.add_func ("/core/email-addresses-chunk/get-is-empty", test_is_empty);
+  Test.add_func ("/core/email-addresses-chunk/serialize-basic", test_serialize_basic);
   Test.run ();
 }
 
@@ -50,4 +51,26 @@ private void test_is_empty () {
   address.raw_address = "";
   assert_true (address.is_empty);
   assert_true (chunk.is_empty);
+}
+
+private void test_serialize_basic () {
+  var contact = new Contacts.Contact.empty ();
+  var chunk = (Contacts.EmailAddressesChunk) contact.create_chunk ("email-addresses", null);
+
+  // If the emailaddresss are empty, serialization should give a null result
+  var serialized = chunk.to_gvariant ();
+  assert_null (serialized);
+
+  // If a email address is added, we should have a variant. We don't need to
+  // inspect the variant, we just need to know it properly deserializes
+  var email_addr = (Contacts.EmailAddress) chunk.get_item (0);
+  email_addr.raw_address = "nielsdegraef@gmail.com";
+  serialized = chunk.to_gvariant ();
+  assert_nonnull (serialized);
+
+  var contact2 = new Contacts.Contact.empty ();
+  var chunk2 = (Contacts.EmailAddressesChunk) contact2.create_chunk ("email-addresses", null);
+  chunk2.apply_gvariant (serialized);
+  assert_nonnull (chunk.get_item (0));
+  assert_true (((Contacts.EmailAddress) chunk.get_item (0)).raw_address == "nielsdegraef@gmail.com");
 }

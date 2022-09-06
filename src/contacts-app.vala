@@ -357,7 +357,7 @@ public class Contacts.App : Adw.Application {
   private async void import_file (GLib.File file) {
     // First step: parse the data
     var parse_op = new Io.ParseOperation (file);
-    HashTable<string, Value?>[]? parse_result = null;
+    Contact[]? parse_result = null;
     try {
       yield parse_op.execute ();
       debug ("Successfully parsed a contact");

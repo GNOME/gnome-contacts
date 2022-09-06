@@ -104,4 +104,19 @@ public class Contacts.Url : BinChunkChild {
     copy_parameters (url);
     return url;
   }
+
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(sv)", this.raw_url, parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(sv)"))) {
+
+    string url;
+    Variant params_variant;
+    variant.get ("(sv)", out url, out params_variant);
+
+    this.raw_url = url;
+    apply_gvariant_parameters (params_variant);
+  }
 }

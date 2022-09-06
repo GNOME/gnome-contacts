@@ -25,7 +25,7 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
   public VCardParser () {
   }
 
-  public override HashTable<string, Value?>[] parse (InputStream input) throws GLib.Error {
+  public override Contact[] parse (InputStream input) throws GLib.Error {
     // Read the whole input into a string.
     // We can probably do better, but that takes a bit of extra work
     var memory_stream = new MemoryOutputStream.resizable ();
@@ -34,7 +34,7 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
     memory_stream.close ();
     var input_str = (string) memory_stream.get_data ();
 
-    var result = new GenericArray<HashTable<string, Value?>> ();
+    var result = new GenericArray<Contact> ();
 
     // Parse the input stream into a set of vcards
     int begin_index = input_str.index_of ("BEGIN:VCARD");
@@ -51,44 +51,44 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
       unowned var vcard_attrs = vcard.get_attributes ();
       debug ("Got %u attributes in this vcard", vcard_attrs.length ());
 
-      var details = new HashTable<string, Value?> (GLib.str_hash, GLib.str_equal);
+      var contact = new Contact.empty ();
       foreach (unowned E.VCardAttribute attr in vcard_attrs) {
         switch (attr.get_name ()) {
           // Identification Properties
           case E.EVC_FN:
-            handle_fn (details, attr);
+            handle_fn (contact, attr);
             break;
           case E.EVC_N:
-            handle_n (details, attr);
+            handle_n (contact, attr);
             break;
           case E.EVC_NICKNAME:
-            handle_nickname (details, attr);
+            handle_nickname (contact, attr);
             break;
 /* FIXME
           case E.EVC_PHOTO:
-            handle_photo (details, attr);
+            handle_photo (contact, attr);
             break;
 */
           case E.EVC_BDAY:
-            handle_bday (details, attr);
+            handle_bday (contact, attr);
             break;
           // Delivery Addressing Properties
           case E.EVC_ADR:
-            handle_adr (details, attr);
+            handle_adr (contact, attr);
             break;
           // Communications Properties
           case E.EVC_TEL:
-            handle_tel (details, attr);
+            handle_tel (contact, attr);
             break;
           case E.EVC_EMAIL:
-            handle_email (details, attr);
+            handle_email (contact, attr);
             break;
           // Explanatory Properties
           case E.EVC_NOTE:
-            handle_note (details, attr);
+            handle_note (contact, attr);
             break;
           case E.EVC_URL:
-            handle_url (details, attr);
+            handle_url (contact, attr);
             break;
 
           default:
@@ -97,7 +97,7 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
         }
       }
 
-      result.add (details);
+      result.add (contact);
 
       begin_index = input_str.index_of ("BEGIN:VCARD", end_index);
     }
@@ -106,193 +106,146 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
   }
 
   // Handles the "FN" (Full Name) attribute
-  private void handle_fn (HashTable<string, Value?> details,
-                          E.VCardAttribute attr) {
+  private void handle_fn (Contact contact, E.VCardAttribute attr) {
     var full_name = attr.get_value ();
     debug ("Got FN '%s'", full_name);
 
-    Value? fn_v = Value (typeof (string));
-    fn_v.set_string (full_name);
-    details.insert (Folks.PersonaStore.detail_key (PersonaDetail.FULL_NAME),
-                    (owned) fn_v);
+    // Note that the full-name chunk is a bit special since it's usually
+    // added as a chunk, even for empty contacts
+    var chunk = contact.get_most_relevant_chunk ("full-name", true) ??
+                contact.create_chunk ("full-name", null);
+    unowned var fn_chunk = (FullNameChunk) chunk;
+    fn_chunk.full_name = full_name;
   }
 
   // Handles the "N" (structured Name) attribute
-  private void handle_n (HashTable<string, Value?> details,
-                         E.VCardAttribute attr) {
+  private void handle_n (Contact contact, E.VCardAttribute attr) {
     unowned var values = attr.get_values ();
 
     // From the VCard spec:
     // The structured property value corresponds, in sequence, to the Family
     // Names (also known as surnames), Given Names, Additional Names, Honorific
     // Prefixes, and Honorific Suffixes.
-    unowned var family_name = values.nth_data (0) ?? "";
-    unowned var given_name = values.nth_data (1) ?? "";
-    unowned var additional_names = values.nth_data (2) ?? "";
-    unowned var prefixes = values.nth_data (3) ?? "";
-    unowned var suffixes = values.nth_data (4) ?? "";
-
-    var structured_name = new StructuredName (family_name, given_name,
-                                              additional_names,
-                                              prefixes, suffixes);
-    Value? n_v = Value (typeof (StructuredName));
-    n_v.take_object ((owned) structured_name);
-    details.insert (Folks.PersonaStore.detail_key (PersonaDetail.STRUCTURED_NAME),
-                    (owned) n_v);
+    var sn_chunk = (StructuredNameChunk) contact.create_chunk ("structured-name", null);
+    sn_chunk.structured_name.family_name = values.nth_data (0) ?? "";
+    sn_chunk.structured_name.given_name = values.nth_data (1) ?? "";
+    sn_chunk.structured_name.additional_names = values.nth_data (2) ?? "";
+    sn_chunk.structured_name.prefixes = values.nth_data (3) ?? "";
+    sn_chunk.structured_name.suffixes = values.nth_data (4) ?? "";
   }
 
-  private void handle_nickname (HashTable<string, Value?> details,
-                                E.VCardAttribute attr) {
+  private void handle_nickname (Contact contact, E.VCardAttribute attr) {
     var nickname = attr.get_value ();
     debug ("Got nickname '%s'", nickname);
 
-    Value? nick_v = Value (typeof (string));
-    nick_v.set_string (nickname);
-    details.insert (Folks.PersonaStore.detail_key (PersonaDetail.NICKNAME),
-                    (owned) nick_v);
+    var nick_chunk = (NicknameChunk) contact.create_chunk ("nickname", null);
+    nick_chunk.nickname = nickname;
   }
 
   // Handles the "BDAY" (birthday) attribute
-  private void handle_bday (HashTable<string, Value?> details,
-                            E.VCardAttribute attr) {
-    // Get the attribute valuec
+  private void handle_bday (Contact contact, E.VCardAttribute attr) {
     var bday = attr.get_value ();
-
-    // Parse it using the logic in E.ContactDate
     var e_date = E.ContactDate.from_string (bday);
-
-    // Turn it into a GLib.DateTime
     var datetime = new DateTime.utc ((int) e_date.year,
                                      (int) e_date.month,
                                      (int) e_date.day,
                                      0, 0, 0.0);
 
-    // Insert it into the hashtable as a GLib.Value
-    Value? bday_val = Value (typeof (DateTime));
-    bday_val.take_boxed ((owned) datetime);
-    details.insert (Folks.PersonaStore.detail_key (PersonaDetail.BIRTHDAY),
-                    (owned) bday_val);
+    var bd_chunk = (BirthdayChunk) contact.create_chunk ("birthday", null);
+    bd_chunk.birthday = datetime;
   }
 
-  private void handle_email (HashTable<string, Value?> details,
-                             E.VCardAttribute attr) {
+  private void handle_email (Contact contact, E.VCardAttribute attr) {
     var email = attr.get_value ();
     if (email == null || email == "")
       return;
 
-    var email_fd = new EmailFieldDetails (email);
-    add_params (email_fd, attr);
-    insert_field_details<EmailFieldDetails> (details, PersonaDetail.EMAIL_ADDRESSES,
-                                             email_fd,
-                                             AbstractFieldDetails<string>.hash_static,
-                                             AbstractFieldDetails<string>.equal_static);
+    var child = add_chunk_child_for_property (contact, "email-addresses");
+    ((EmailAddress) child).raw_address = email;
+    add_params (child, attr);
   }
 
-  private void handle_tel (HashTable<string, Value?> details,
-                           E.VCardAttribute attr) {
+  private void handle_tel (Contact contact, E.VCardAttribute attr) {
     var phone_nr = attr.get_value ();
     if (phone_nr == null || phone_nr == "")
       return;
 
-    var phone_fd = new PhoneFieldDetails (phone_nr);
-    add_params (phone_fd, attr);
-    insert_field_details<PhoneFieldDetails> (details, PersonaDetail.PHONE_NUMBERS,
-                                             phone_fd,
-                                             AbstractFieldDetails<string>.hash_static,
-                                             AbstractFieldDetails<string>.equal_static);
+    var child = add_chunk_child_for_property (contact, "phone-numbers");
+    ((Phone) child).raw_number = phone_nr;
+    add_params (child, attr);
   }
 
   // Handles the ADR (postal address) attributes
-  private void handle_adr (HashTable<string, Value?> details,
-                           E.VCardAttribute attr) {
+  private void handle_adr (Contact contact, E.VCardAttribute attr) {
     unowned var values = attr.get_values ();
+
+    var child = add_chunk_child_for_property (contact, "postal-addresses");
+    unowned var address = ((Address) child).address;
 
     // From the VCard spec:
     // ADR-value = ADR-component-pobox ";" ADR-component-ext ";"
     //             ADR-component-street ";" ADR-component-locality ";"
     //             ADR-component-region ";" ADR-component-code ";"
     //             ADR-component-country
-    unowned var po_box = values.nth_data (0) ?? "";
-    unowned var extension = values.nth_data (1) ?? "";
-    unowned var street = values.nth_data (2) ?? "";
-    unowned var locality = values.nth_data (3) ?? "";
-    unowned var region = values.nth_data (4) ?? "";
-    unowned var postal_code = values.nth_data (5) ?? "";
-    unowned var country = values.nth_data (6) ?? "";
+    address.po_box = values.nth_data (0) ?? "";
+    address.extension = values.nth_data (1) ?? "";
+    address.street = values.nth_data (2) ?? "";
+    address.locality = values.nth_data (3) ?? "";
+    address.region = values.nth_data (4) ?? "";
+    address.postal_code = values.nth_data (5) ?? "";
+    address.country = values.nth_data (6) ?? "";
 
-    var addr = new PostalAddress (po_box, extension, street, locality, region,
-                                  postal_code, country, "", null);
-    var addr_fd = new PostalAddressFieldDetails ((owned) addr);
-    add_params (addr_fd, attr);
-
-    insert_field_details<PostalAddressFieldDetails> (details,
-                                                     PersonaDetail.POSTAL_ADDRESSES,
-                                                     addr_fd,
-                                                     AbstractFieldDetails<PostalAddress>.hash_static,
-                                                     AbstractFieldDetails<PostalAddress>.equal_static);
+    add_params (child, attr);
   }
 
-  private void handle_url (HashTable<string, Value?> details,
-                           E.VCardAttribute attr) {
+  private void handle_url (Contact contact, E.VCardAttribute attr) {
     var url = attr.get_value ();
     if (url == null || url == "")
       return;
 
-    var url_fd = new UrlFieldDetails (url);
-    add_params (url_fd, attr);
-    insert_field_details<UrlFieldDetails> (details, PersonaDetail.URLS,
-                                           url_fd,
-                                           AbstractFieldDetails<string>.hash_static,
-                                           AbstractFieldDetails<string>.equal_static);
+    var child = add_chunk_child_for_property (contact, "urls");
+    ((Contacts.Url) child).raw_url = url;
+    add_params (child, attr);
   }
 
-  private void handle_note (HashTable<string, Value?> details,
-                            E.VCardAttribute attr) {
+  private void handle_note (Contact contact, E.VCardAttribute attr) {
     var note = attr.get_value ();
     if (note == null || note == "")
       return;
 
-    var note_fd = new NoteFieldDetails (note);
-    add_params (note_fd, attr);
-    insert_field_details<NoteFieldDetails> (details, PersonaDetail.NOTES,
-                                            note_fd,
-                                            AbstractFieldDetails<string>.hash_static,
-                                            AbstractFieldDetails<string>.equal_static);
-
+    var child = add_chunk_child_for_property (contact, "notes");
+    ((Contacts.Note) child).text = note;
+    add_params (child, attr);
   }
 
   // Helper method for inserting aggregated properties
-  private bool insert_field_details<T> (HashTable<string, Value?> details,
-                                        PersonaDetail key,
-                                        T field_details,
-                                        owned Gee.HashDataFunc<T>? hash_func,
-                                        owned Gee.EqualDataFunc<T>? equal_func) {
+  private BinChunkChild add_chunk_child_for_property (Contact contact,
+                                                      string property_name) {
+    var chunk = (BinChunk) contact.get_most_relevant_chunk (property_name, true);
+    if (chunk == null)
+      chunk = (BinChunk) contact.create_chunk (property_name, null);
 
-    // Get the existing set, or create a new one and add it
-    unowned var old_val = details.lookup (Folks.PersonaStore.detail_key (key));
-    if (old_val != null) {
-      unowned var values = old_val as Gee.HashSet<T>;
-      return values.add (field_details);
+    // BinChunk guarantees there will always be an empty child, so return the
+    // first one we can find
+    for (uint i = 0; i < chunk.get_n_items (); i++) {
+      var child = (BinChunkChild) chunk.get_item (i);
+      if (child.is_empty)
+        return child;
     }
 
-    var values = new Gee.HashSet<T> ((owned) hash_func, (owned) equal_func);
-    Value? new_val = Value (typeof (Gee.Set));
-    new_val.set_object (values);
-    details.insert (Folks.PersonaStore.detail_key (key), (owned) new_val);
-
-    return values.add (field_details);
+    return_val_if_reached (null);
   }
 
-  // Helper method to get VCard parameters into an AbstractFieldDetails object.
+  // Helper method to get VCard parameters into a BinChunkChild
   // Will take care of setting the correct "type"
-  private void add_params (AbstractFieldDetails details, E.VCardAttribute attr) {
+  private void add_params (BinChunkChild chunk_child, E.VCardAttribute attr) {
     foreach (unowned E.VCardAttributeParam param in attr.get_params ()) {
       string param_name = param.get_name ().down ();
       foreach (unowned string param_value in param.get_values ()) {
-        if (param_name == AbstractFieldDetails.PARAM_TYPE)
-          details.add_parameter (param_name, param_value.down ());
+        if (param_name == "type")
+          chunk_child.add_parameter (param_name, param_value.down ());
         else
-          details.add_parameter (param_name, param_value);
+          chunk_child.add_parameter (param_name, param_value);
       }
     }
   }

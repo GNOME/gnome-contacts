@@ -168,6 +168,40 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
     emptiness_check ();
   }
 
+  // Variant (de)serialization
+
+  public override Variant? to_gvariant () {
+    if (this.is_empty)
+      return null;
+
+    var builder = new GLib.VariantBuilder (GLib.VariantType.ARRAY);
+    for (uint i = 0; i < this.elements.length; i++) {
+      var child_variant = this.elements[i].to_gvariant ();
+      if (child_variant != null)
+        builder.add_value (child_variant);
+    }
+
+    return builder.end ();
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true)
+      requires (variant.get_type ().is_array ()) {
+
+    var iter = variant.iterator ();
+    var child_variant = iter.next_value ();
+    while (child_variant != null) {
+      var child = create_empty_child ();
+      child.apply_gvariant (child_variant);
+      add_child (child);
+
+      child_variant = iter.next_value ();
+    }
+    if (!mark_dirty) {
+      finish_initialization ();
+    }
+  }
+
   // ListModel implementation
 
   public uint n_items { get { return this.elements.length; } }
@@ -194,7 +228,20 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
  */
 public abstract class Contacts.BinChunkChild : GLib.Object {
 
-  public Gee.MultiMap<string, string> parameters { get; set; }
+  public Gee.MultiMap<string, string> parameters {
+      get { return this._parameters; }
+      set {
+        if (value == this._parameters)
+          return;
+
+        this._parameters.clear ();
+        var iter = value.map_iterator ();
+        while (iter.next ())
+          this._parameters[iter.get_key ()] = iter.get_value ();
+      }
+  }
+  private Gee.HashMultiMap<string, string> _parameters
+      = new Gee.HashMultiMap<string, string> ();
 
   /**
    * Whether this BinChunkChild is empty. You can use the notify signal to
@@ -225,6 +272,48 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
     var iter = this.parameters.map_iterator ();
     while (iter.next ())
       copy.parameters[iter.get_key ()] = iter.get_value ();
+  }
+
+  /** See Contacts.Chunk.to_gvariant() */
+  public Variant? to_gvariant () {
+    if (this.is_empty)
+      return null;
+    return to_gvariant_internal ();
+  }
+
+  protected abstract Variant? to_gvariant_internal ();
+
+  // Helper to serialize the parameters field
+  protected Variant parameters_to_gvariant () {
+    if (this.parameters.size == 0) {
+      return new GLib.Variant ("a(ss)", null); // Empty array
+    }
+
+    var builder = new GLib.VariantBuilder (GLib.VariantType.ARRAY);
+    var iter = this.parameters.map_iterator ();
+    while (iter.next ()) {
+      string param_name = iter.get_key ();
+      string param_value = iter.get_value ();
+
+      builder.add ("(ss)", param_name, param_value);
+    }
+
+    return builder.end ();
+  }
+
+  public abstract void apply_gvariant (Variant variant);
+
+  protected void apply_gvariant_parameters (Variant parameters)
+      requires (parameters.get_type ().equal (new VariantType ("a(ss)"))) {
+
+    var iter = parameters.iterator ();
+    string param_name, param_value;
+    while (iter.next ("(ss)", out param_name, out param_value)) {
+      if (param_name == AbstractFieldDetails.PARAM_TYPE)
+        add_parameter (param_name, param_value.down ());
+      else
+        add_parameter (param_name, param_value);
+    }
   }
 
   // A helper to change a string field with the proper propery notifies
@@ -316,5 +405,9 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
     }
 
     return 0;
+  }
+
+  public void add_parameter (string param_name, string param_value) {
+    this._parameters[param_name] = param_value;
   }
 }

@@ -65,4 +65,19 @@ public class Contacts.AliasChunk : Chunk {
 
     yield ((AliasDetails) this.persona).change_alias (this.alias);
   }
+
+  public override Variant? to_gvariant () {
+    return new Variant.string (this.alias);
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true)
+      requires (variant.get_type ().equal (VariantType.STRING)) {
+
+    unowned string alias = variant.get_string ();
+    if (!mark_dirty) {
+      this.original_alias = alias;
+    }
+    this.alias = alias;
+  }
 }

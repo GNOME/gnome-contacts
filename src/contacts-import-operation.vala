@@ -24,7 +24,7 @@ using Folks;
  */
 public class Contacts.ImportOperation : Operation {
 
-  private HashTable<string, Value?>[] to_import;
+  private Contact[] to_import;
 
   private unowned Store store;
 
@@ -33,7 +33,7 @@ public class Contacts.ImportOperation : Operation {
   private string _description;
   public override string description { owned get { return this._description; } }
 
-  public ImportOperation (Store store, HashTable<string, Value?>[] to_import) {
+  public ImportOperation (Store store, Contact[] to_import) {
     this.to_import = to_import;
     this.store = store;
 
@@ -48,10 +48,12 @@ public class Contacts.ImportOperation : Operation {
            this.to_import.length, primary_store.display_name);
 
     uint new_count = 0;
-    foreach (unowned var hashtable in this.to_import) {
-      var persona = yield primary_store.add_persona_from_details (hashtable);
-      if (persona != null) {
-        debug ("Created new persona");
+    foreach (unowned var contact in this.to_import) {
+      unowned var individual =
+          yield contact.apply_changes (this.store.aggregator.primary_store);
+      if (individual != null) {
+        debug ("Created new individual (%s)",
+               (individual != null)? individual.id : "null");
         new_count++;
       } else {
         debug ("Added persona; no new created");

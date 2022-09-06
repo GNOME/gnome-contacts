@@ -20,6 +20,7 @@ void main (string[] args) {
   Test.add_func ("/core/urls-chunk/property-name-chunk", test_property_name);
   Test.add_func ("/core/urls-chunk/get-absolute-url", test_get_absolute_url);
   Test.add_func ("/core/urls-chunk/get-is-empty", test_is_empty);
+  Test.add_func ("/core/urls-chunk/serialize-basic", test_serialize_basic);
   Test.run ();
 }
 
@@ -73,4 +74,26 @@ private void test_is_empty () {
   url.raw_url = "";
   assert_true (url.is_empty);
   assert_true (chunk.is_empty);
+}
+
+private void test_serialize_basic () {
+  var contact = new Contacts.Contact.empty ();
+  var chunk = (Contacts.UrlsChunk) contact.create_chunk ("urls", null);
+
+  // If the urls are empty, serialization should give a null result
+  var serialized = chunk.to_gvariant ();
+  assert_null (serialized);
+
+  // If a url is added, we should have a variant. We don't need to inspect
+  // the variant, we just need to know it properly deserializes
+  var url = (Contacts.Url) chunk.get_item (0);
+  url.raw_url = "https://gnome.org";
+  serialized = chunk.to_gvariant ();
+  assert_nonnull (serialized);
+
+  var contact2 = new Contacts.Contact.empty ();
+  var chunk2 = (Contacts.UrlsChunk) contact2.create_chunk ("urls", null);
+  chunk2.apply_gvariant (serialized);
+  assert_nonnull (chunk.get_item (0));
+  assert_true (((Contacts.Url) chunk.get_item (0)).raw_url == "https://gnome.org");
 }

@@ -33,8 +33,7 @@ public class Contacts.Io.ParseOperation : Operation {
   public override string description { owned get { return this._description; } }
 
   /** The parsed output  */
-  private GenericArray<HashTable<string, Value?>> parsed
-    = new GenericArray<HashTable<string, Value?>> ();
+  private GenericArray<Contact> parsed = new GenericArray<Contact> ();
 
   public ParseOperation (File file) {
     this._description = _("Importing contacts from '%s'").printf (file.get_uri ());
@@ -80,15 +79,15 @@ public class Contacts.Io.ParseOperation : Operation {
     unowned var serialized_str = (string) stdout_stream.get_data ();
     var variant = Variant.parse (new VariantType ("aa{sv}"), serialized_str);
 
-    // Now parse each into a hashtables
-    var new_details_list = Contacts.Io.deserialize_gvariant (variant);
-    foreach (unowned var new_details in new_details_list) {
-      if (new_details.size () == 0) {
+    // Now parse each into a Contact
+    var parsed_contacts = Contacts.Io.deserialize_gvariant (variant);
+    foreach (unowned var parsed_contact in parsed_contacts) {
+      if (parsed_contact.get_n_items () == 0) {
         warning ("Imported contact has zero fields, ignoring");
         return;
       }
 
-      this.parsed.add (new_details);
+      this.parsed.add (parsed_contact);
     }
   }
 
@@ -96,11 +95,11 @@ public class Contacts.Io.ParseOperation : Operation {
     return_if_reached ();
   }
 
-  public unowned HashTable<string, Value?>[] get_parsed_result () {
+  public unowned Contact[] get_parsed_result () {
     return this.parsed.data;
   }
 
-  public HashTable<string, Value?>[] steal_parsed_result () {
+  public Contact[] steal_parsed_result () {
     return this.parsed.steal ();
   }
 }

@@ -61,6 +61,11 @@ public class Contacts.FullNameChunk : Chunk {
     this.original_full_name = this.full_name;
   }
 
+  public FullNameChunk.from_gvariant (GLib.Variant variant) {
+    unowned var fn = variant.get_string ();
+    Object (persona: null, full_name: fn);
+  }
+
   public override Value? to_value () {
     return this.full_name;
   }
@@ -68,5 +73,22 @@ public class Contacts.FullNameChunk : Chunk {
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is NameDetails) {
     yield ((NameDetails) this.persona).change_full_name (this.full_name);
+  }
+
+  public override Variant? to_gvariant () {
+    if (this.full_name == "")
+      return null;
+    return new Variant.string (this.full_name);
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true)
+      requires (variant.get_type ().equal (VariantType.STRING)) {
+
+    unowned string full_name = variant.get_string ();
+    if (!mark_dirty) {
+      this.original_full_name = full_name;
+    }
+    this.full_name = full_name;
   }
 }

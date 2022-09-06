@@ -68,4 +68,21 @@ public class Contacts.NicknameChunk : Chunk {
 
     yield ((NameDetails) this.persona).change_nickname (this.nickname);
   }
+
+  public override Variant? to_gvariant () {
+    if (this.nickname == "")
+      return null;
+    return new Variant.string (this.nickname);
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true)
+      requires (variant.get_type ().equal (VariantType.STRING)) {
+
+    unowned string nickname = variant.get_string ();
+    if (!mark_dirty) {
+      this.original_nickname = nickname;
+    }
+    this.nickname = nickname;
+  }
 }

@@ -94,4 +94,19 @@ public class Contacts.Note : BinChunkChild {
     copy_parameters (note);
     return note;
   }
+
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(sv)", this.text, parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(sv)"))) {
+
+    string note;
+    Variant params_variant;
+    variant.get ("(sv)", out note, out params_variant);
+
+    this.text = note;
+    apply_gvariant_parameters (params_variant);
+  }
 }

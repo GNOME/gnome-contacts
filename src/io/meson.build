@@ -17,6 +17,7 @@ contacts_c_args = [
 ]
 
 contacts_io_deps = [
+  libcontactscore_dep,
   folks,
   folks_eds,
   gee,

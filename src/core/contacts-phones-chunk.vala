@@ -110,4 +110,19 @@ public class Contacts.Phone : BinChunkChild {
     copy_parameters (phone);
     return phone;
   }
+
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(sv)", this.raw_number, parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(sv)"))) {
+
+    string phone_nr;
+    Variant params_variant;
+    variant.get ("(sv)", out phone_nr, out params_variant);
+
+    this.raw_number = phone_nr;
+    apply_gvariant_parameters (params_variant);
+  }
 }

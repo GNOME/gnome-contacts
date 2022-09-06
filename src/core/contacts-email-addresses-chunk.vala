@@ -102,6 +102,21 @@ public class Contacts.EmailAddress : BinChunkChild {
     return email_address;
   }
 
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(sv)", this.raw_address, parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(sv)"))) {
+
+    string email_addr;
+    Variant params_variant;
+    variant.get ("(sv)", out email_addr, out params_variant);
+
+    this.raw_address = email_addr;
+    apply_gvariant_parameters (params_variant);
+  }
+
   public string get_mailto_uri () {
     return "mailto:" + Uri.escape_string (this.raw_address, "@" , false);
   }

@@ -58,4 +58,14 @@ public class Contacts.AvatarChunk : Chunk {
       requires (this.persona is AvatarDetails) {
     yield ((AvatarDetails) this.persona).change_avatar (this.avatar);
   }
+
+  public override Variant? to_gvariant () {
+    // FIXME: implement
+    return null;
+  }
+
+  public override void apply_gvariant (Variant variant,
+                                       bool mark_dirty = true) {
+    // FIXME: implement
+  }
 }

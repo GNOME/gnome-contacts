@@ -1,2 +1,1 @@
-subdir('internal')
 subdir('vcard')

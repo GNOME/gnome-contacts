@@ -119,4 +119,23 @@ public class Contacts.ImAddress : BinChunkChild {
     copy_parameters (ima);
     return ima;
   }
+
+  protected override Variant? to_gvariant_internal () {
+    return new Variant ("(ssv)",
+                        this.protocol,
+                        this.address,
+                        parameters_to_gvariant ());
+  }
+
+  public override void apply_gvariant (Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("(ssv)"))) {
+
+    string protocol, address;
+    Variant params_variant;
+    variant.get ("(ssv)", out protocol, out address, out params_variant);
+
+    this.protocol = protocol;
+    this.address = address;
+    apply_gvariant_parameters (params_variant);
+  }
 }
