@@ -1,3 +1,4 @@
+subdir('core')
 subdir('io')
 
 # GSettings
@@ -8,26 +9,6 @@ install_data('org.gnome.Contacts.gschema.xml',
 
 # Common library
 libcontacts_sources = files(
-  'core/contacts-addresses-chunk.vala',
-  'core/contacts-alias-chunk.vala',
-  'core/contacts-avatar-chunk.vala',
-  'core/contacts-bin-chunk.vala',
-  'core/contacts-birthday-chunk.vala',
-  'core/contacts-chunk.vala',
-  'core/contacts-contact.vala',
-  'core/contacts-email-addresses-chunk.vala',
-  'core/contacts-full-name-chunk.vala',
-  'core/contacts-im-addresses-chunk.vala',
-  'core/contacts-nickname-chunk.vala',
-  'core/contacts-notes-chunk.vala',
-  'core/contacts-phones-chunk.vala',
-  'core/contacts-roles-chunk.vala',
-  'core/contacts-structured-name-chunk.vala',
-  'core/contacts-type-descriptor.vala',
-  'core/contacts-type-set.vala',
-  'core/contacts-urls-chunk.vala',
-  'core/contacts-vcard-type-mapping.vala',
-
   'contacts-chunk-filter.vala',
   'contacts-chunk-empty-filter.vala',
   'contacts-chunk-property-filter.vala',
@@ -65,6 +46,7 @@ contacts_c_args = [
 ]
 
 contacts_deps = [
+  libcontactscore_dep,
   folks,
   folks_eds,
   gee,

@@ -135,8 +135,9 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
    */
   public TypeDescriptor lookup_by_parameters (Gee.MultiMap<string, string> parameters,
                                               out uint position = null) {
-    if (parameters.contains (TypeDescriptor.X_GOOGLE_LABEL)) {
-      var label = Utils.get_first<string> (parameters[TypeDescriptor.X_GOOGLE_LABEL]);
+    var google_label = parameters[TypeDescriptor.X_GOOGLE_LABEL];
+    if (!google_label.is_empty) {
+      var label = google_label.to_array ()[0];
       var descriptor = lookup_by_custom_label (label, out position);
       // Still didn't find it => create it
       if (descriptor == null)

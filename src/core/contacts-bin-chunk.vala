@@ -204,7 +204,7 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
    */
   public bool has_pref_marker () {
     var evolution_pref = this.parameters["x-evolution-ui-slot"];
-    if (evolution_pref != null && Utils.get_first (evolution_pref) == "1")
+    if (evolution_pref != null && ("1" in evolution_pref))
       return true;
 
     foreach (var param in this.parameters["type"]) {
