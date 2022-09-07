@@ -282,7 +282,7 @@ public class Contacts.App : Adw.Application {
       setup_window.destroy ();
 
       unowned var edsf_store = (Edsf.PersonaStore) selected_store;
-      Utils.set_primary_store (edsf_store);
+      this.contacts_store.set_primary_address_book (edsf_store);
       this.settings.did_initial_setup = true;
 
       create_window ();

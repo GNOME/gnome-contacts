@@ -33,7 +33,7 @@ public class Contacts.PreferencesWindow : Adw.PreferencesWindow {
 
     acc_list.notify["selected-store"].connect ((obj, pspec) => {
       var edsf_store = (Edsf.PersonaStore) acc_list.selected_store;
-      Utils.set_primary_store (edsf_store);
+      contacts_store.set_primary_address_book (edsf_store);
     });
 
     var goa_button_content = new Adw.ButtonContent ();

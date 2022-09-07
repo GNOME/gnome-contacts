@@ -291,4 +291,15 @@ public class Contacts.Store : GLib.Object {
 
     return Gtk.INVALID_LIST_POSITION;
   }
+
+  /**
+   * Sets the primary address book. This will be used as the primary candidate
+   * to store new contacts, and will prioritize personas coming from this store
+   * when showing them.
+   */
+  public void set_primary_address_book (Edsf.PersonaStore e_store) {
+    eds_source_registry.set_default_address_book (e_store.source);
+    var settings = new GLib.Settings ("org.freedesktop.folks");
+    settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
+  }
 }

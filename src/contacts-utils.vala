@@ -19,12 +19,6 @@ using Folks;
 
 namespace Contacts.Utils {
 
-  public void set_primary_store (Edsf.PersonaStore e_store) {
-    eds_source_registry.set_default_address_book (e_store.source);
-    var settings = new GLib.Settings ("org.freedesktop.folks");
-    settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
-  }
-
   public T? get_first<T> (Gee.Collection<T> collection) {
     var i = collection.iterator();
     if (i.next())
