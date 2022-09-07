@@ -45,7 +45,9 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
 
   /**
    * Should be called by subclasses when they add a child.
-   * It will make sure to attach the emptines check is appropriately applied.
+   *
+   * It will make sure to add the child in the appropriate position and that
+   * the emptines check is appropriately applied.
    */
   protected void add_child (BinChunkChild child) {
     if (child.is_empty && has_empty_child ())
@@ -55,8 +57,16 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
       debug ("Child 'is-empty' changed, doing emptiness check");
       emptiness_check ();
     });
-    this.elements.add (child);
-    items_changed (this.elements.length - 1, 0, 1);
+
+    // Add in a sorted manner
+    int i = 0;
+    while (i < this.elements.length) {
+      if (child.compare (this.elements[i]) < 0)
+        break;
+      i++;
+    }
+    this.elements.insert (i, child);
+    items_changed (i, 0, 1);
   }
 
   /**
@@ -167,5 +177,40 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
     notify_property (prop_name);
     if (notify_empty)
       notify_property ("is-empty");
+  }
+
+  /**
+   * Compares 2 children in an intuitive manner, so that preferred children go
+   * first and empty children are last
+   */
+  public int compare (BinChunkChild other) {
+    // Fields with a PREF hint always go first (see vCard PREF attribute)
+    var has_pref = has_pref_marker ();
+    if (has_pref != other.has_pref_marker ())
+      return has_pref? -1 : 1;
+
+    // Empty fields go last
+    var empty = this.is_empty;
+    if (empty != other.is_empty)
+      return empty? 1 : -1;
+
+    // FIXME: maybe also compare the types? (e.g. put HOME before WORK)
+    return 0;
+  }
+
+  /**
+   * Returns whether this child is marked as the "preferred" child, similar to
+   * the vCard PREF attribute
+   */
+  public bool has_pref_marker () {
+    var evolution_pref = this.parameters["x-evolution-ui-slot"];
+    if (evolution_pref != null && Utils.get_first (evolution_pref) == "1")
+      return true;
+
+    foreach (var param in this.parameters["type"]) {
+      if (param.ascii_casecmp ("PREF") == 0)
+        return true;
+    }
+    return false;
   }
 }

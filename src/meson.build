@@ -28,7 +28,6 @@ libcontacts_sources = files(
   'core/contacts-urls-chunk.vala',
   'core/contacts-vcard-type-mapping.vala',
 
-  'contacts-abstract-field-details-sorter.vala',
   'contacts-chunk-filter.vala',
   'contacts-chunk-empty-filter.vala',
   'contacts-chunk-property-filter.vala',
