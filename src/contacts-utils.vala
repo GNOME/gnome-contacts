@@ -85,18 +85,6 @@ namespace Contacts.Utils {
     return false;
   }
 
-  public bool suggest_link_to (Store store, Individual self, Individual other) {
-    if (non_linkable (self) || non_linkable (other))
-      return false;
-
-    if (!store.may_suggest_link (self, other))
-      return false;
-
-    /* Only connect main contacts with non-mainable contacts.
-       non-main contacts can link to any other */
-    return !has_main_persona (self) || !has_mainable_persona (other);
-  }
-
   /* We claim something is "removable" if at least one persona is removable,
   that will typically unlink the rest. */
   public bool can_remove_personas (Individual individual) {
@@ -138,30 +126,6 @@ namespace Contacts.Utils {
     }
 
     return store.display_name;
-  }
-
-  /* These are "regular" address book contacts, i.e. they contain a
-     persona that would be "main" if that persona was the primary store */
-  private bool has_mainable_persona (Individual individual) {
-    foreach (var p in individual.personas) {
-      if (p.store.type_id == "eds" &&
-          !persona_is_google_other (p))
-        return true;
-    }
-    return false;
-  }
-
-  /* We never want to suggest linking to google contacts that
-     are not My Contacts nor Profiles */
-  private bool non_linkable (Individual individual) {
-    bool all_unlinkable = true;
-
-    foreach (var p in individual.personas) {
-      if (!persona_is_google_other (p))
-        all_unlinkable = false;
-    }
-
-    return all_unlinkable;
   }
 
   public bool persona_is_google (Persona persona) {

@@ -302,4 +302,40 @@ public class Contacts.Store : GLib.Object {
     var settings = new GLib.Settings ("org.freedesktop.folks");
     settings.set_string ("primary-store", "eds:%s".printf (e_store.id));
   }
+
+  public bool suggest_link_to (Individual self, Individual other) {
+    if (non_linkable (self) || non_linkable (other))
+      return false;
+
+    if (!may_suggest_link (self, other))
+      return false;
+
+    /* Only connect main contacts with non-mainable contacts.
+       non-main contacts can link to any other */
+    return !Utils.has_main_persona (self) || !has_mainable_persona (other);
+  }
+
+  // These are "regular" address book contacts, i.e. they contain a
+  // persona that would be "main" if that persona was the primary store
+  private bool has_mainable_persona (Individual individual) {
+    foreach (var p in individual.personas) {
+      if (p.store.type_id == "eds" &&
+          !Utils.persona_is_google_other (p))
+        return true;
+    }
+    return false;
+  }
+
+  // We never want to suggest linking to google contacts that
+  // are part of "Other Contacts"
+  private bool non_linkable (Individual individual) {
+    bool all_unlinkable = true;
+
+    foreach (var p in individual.personas) {
+      if (!Utils.persona_is_google_other (p))
+        all_unlinkable = false;
+    }
+
+    return all_unlinkable;
+  }
 }

@@ -104,7 +104,7 @@ public class Contacts.ContactPane : Adw.Bin {
     if (contact.individual != null) {
       var matches = this.store.aggregator.get_potential_matches (contact.individual, MatchResult.HIGH);
       foreach (var i in matches.keys) {
-        if (i != null && Utils.suggest_link_to (this.store, contact.individual, i)) {
+        if (i != null && this.store.suggest_link_to (contact.individual, i)) {
           add_suggestion (contact.individual, i);
           break;
         }
