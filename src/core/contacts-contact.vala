@@ -109,18 +109,18 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
 
   public unowned Chunk? create_chunk (string property_name, Persona? persona) {
     var pos = create_chunk_internal (property_name, persona);
-    if (pos == Gtk.INVALID_LIST_POSITION)
+    if (pos == -1)
       return null;
     items_changed (pos, 0, 1);
     return this.chunks[pos];
   }
 
   // Helper to create a chunk and return its position, without items_changed()
-  private uint create_chunk_internal (string property_name, Persona? persona) {
+  private int create_chunk_internal (string property_name, Persona? persona) {
     var chunk_gtype = chunk_gtype_for_property (property_name);
     if (chunk_gtype == GLib.Type.NONE) {
       debug ("unsupported property '%s', ignoring", property_name);
-      return Gtk.INVALID_LIST_POSITION;
+      return -1;
     }
 
     var chunk = (Chunk) Object.new (chunk_gtype,
