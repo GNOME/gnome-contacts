@@ -170,19 +170,19 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
    * represent some form of name. If none is found, it returns null.
    */
   public string? fetch_name () {
-    var alias_chunk = get_most_relevant_chunk ("alias");
+    unowned var alias_chunk = get_most_relevant_chunk ("alias");
     if (alias_chunk != null)
       return ((AliasChunk) alias_chunk).alias;
 
-    var fn_chunk = get_most_relevant_chunk ("full-name");
+    unowned var fn_chunk = get_most_relevant_chunk ("full-name");
     if (fn_chunk != null)
       return ((FullNameChunk) fn_chunk).full_name;
 
-    var sn_chunk = get_most_relevant_chunk ("structured-name");
+    unowned var sn_chunk = get_most_relevant_chunk ("structured-name");
     if (sn_chunk != null)
       return ((StructuredNameChunk) sn_chunk).structured_name.to_string ();
 
-    var nick_chunk = get_most_relevant_chunk ("nickname");
+    unowned var nick_chunk = get_most_relevant_chunk ("nickname");
     if (nick_chunk != null)
       return ((NicknameChunk) nick_chunk).nickname;
 
@@ -218,22 +218,31 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
    * A helper function to return the {@link Chunk} that best represents the
    * property of the contact (or null if none).
    */
-  public Chunk? get_most_relevant_chunk (string property_name, bool allow_empty = false) {
-    var filter = new ChunkFilter.for_property (property_name);
-    filter.allow_empty = allow_empty;
-    var chunks = new Gtk.FilterListModel (this, (owned) filter);
-
-    // From these chunks, select the one from the primary store. If there's
-    // none, just select the first one
+  public unowned Chunk? get_most_relevant_chunk (string property_name,
+                                                 bool allow_empty = false) {
     unowned var primary_store = get_primary_store ();
-    if (primary_store != null) {
-      for (uint i = 0; i < chunks.get_n_items (); i++) {
-        var chunk = (Chunk) chunks.get_item (i);
-        if (chunk.persona != null && chunk.persona.store == primary_store)
-          return chunk;
-      }
+
+    unowned Chunk? result = null;
+    for (uint i = 0; i < this.chunks.length; i++) {
+      unowned var chunk = this.chunks[i];
+
+      // Filter out unwanted chunks
+      if (chunk.property_name != property_name)
+        continue;
+      if (!allow_empty && chunk.is_empty)
+        continue;
+
+      // If we find a chunk from the primary persona, return immediately
+      if (primary_store != null &&
+          chunk.persona != null && chunk.persona.store == primary_store)
+        return chunk;
+
+      // Return the first occurrence later if we don't find a primary chunk
+      if (result == null)
+        result = chunk;
     }
-    return (Chunk?) chunks.get_item (0);
+
+    return result;
   }
 
   private unowned PersonaStore? get_primary_store () {
