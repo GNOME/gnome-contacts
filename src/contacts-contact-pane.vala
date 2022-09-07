@@ -84,8 +84,9 @@ public class Contacts.ContactPane : Adw.Bin {
       return;
     }
 
-    if (this.contact == null || this.contact.individual != individual)
-      this.contact = new Contact.for_individual (individual, this.store);
+    if (this.contact == null || this.contact.individual != individual) {
+      this.contact = new Contact.for_individual (individual);
+    }
     show_contact_sheet (this.contact);
   }
 
@@ -175,7 +176,7 @@ public class Contacts.ContactPane : Adw.Bin {
     }
 
     try {
-      yield contact.apply_changes ();
+      yield contact.apply_changes (this.store.aggregator.primary_store);
     } catch (Error err) {
       warning ("Couldn't save changes: %s", err.message);
       // XXX do something better here
@@ -195,7 +196,7 @@ public class Contacts.ContactPane : Adw.Bin {
   }
 
   public void new_contact () {
-    this.contact = new Contact.for_new (this.store);
+    this.contact = new Contact.empty ();
     if (this.on_edit_mode)
       return;
 

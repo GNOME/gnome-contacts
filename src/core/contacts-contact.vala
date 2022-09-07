@@ -33,8 +33,6 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
   /** The underlying individual, if any */
   public unowned Individual? individual { get; construct set; default = null; }
 
-  public unowned Store? contacts_store { get; construct set; }
-
   /** Similar to fetch_display_name(), but never returns null */
   public string display_name {
     owned get { return fetch_display_name () ?? _("Unnamed Person"); }
@@ -53,13 +51,13 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
   }
 
   /** Creates a Contact that acts as a wrapper around an Individual */
-  public Contact.for_individual (Individual individual, Store? contacts_store) {
-    Object (individual: individual, contacts_store: contacts_store);
+  public Contact.for_individual (Individual individual) {
+    Object (individual: individual);
   }
 
   /** Creates a new empty contact */
-  public Contact.for_new (Store? contacts_store) {
-    Object (individual: null, contacts_store: contacts_store);
+  public Contact.empty () {
+    Object (individual: null);
   }
 
   private void on_individual_personas_changed (Individual individual,
@@ -220,8 +218,6 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
    */
   public unowned Chunk? get_most_relevant_chunk (string property_name,
                                                  bool allow_empty = false) {
-    unowned var primary_store = get_primary_store ();
-
     unowned Chunk? result = null;
     for (uint i = 0; i < this.chunks.length; i++) {
       unowned var chunk = this.chunks[i];
@@ -233,8 +229,7 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
         continue;
 
       // If we find a chunk from the primary persona, return immediately
-      if (primary_store != null &&
-          chunk.persona != null && chunk.persona.store == primary_store)
+      if (chunk.persona != null && chunk.persona.store.is_primary_store)
         return chunk;
 
       // Return the first occurrence later if we don't find a primary chunk
@@ -243,12 +238,6 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
     }
 
     return result;
-  }
-
-  private unowned PersonaStore? get_primary_store () {
-    if (this.contacts_store == null)
-      return null;
-    return this.contacts_store.aggregator.primary_store;
   }
 
   public Object? get_item (uint i) {
@@ -268,8 +257,9 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
   /**
    * Applies any pending changes to all chunks. This can mean either a new
    * persona is made, or it is saved in the chunk's referenced persona.
+   * When a new persona is made, it will be added to @store.
    */
-  public async void apply_changes () throws GLib.Error {
+  public async void apply_changes (PersonaStore store) throws GLib.Error {
     // For those that were a persona: save the properties using the API
     for (uint i = 0; i < this.chunks.length; i++) {
       unowned var chunk = this.chunks[i];
@@ -310,9 +300,7 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
     }
     if (new_details.size () != 0) {
       debug ("Creating new persona with %u properties", new_details.size ());
-      unowned var primary_store = get_primary_store ();
-      return_if_fail (primary_store != null);
-      var persona = yield primary_store.add_persona_from_details (new_details);
+      var persona = yield store.add_persona_from_details (new_details);
       debug ("Successfully created new persona %p", persona);
       // FIXME: should we set the persona for these chunks?
     }
