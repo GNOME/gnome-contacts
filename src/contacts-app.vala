@@ -115,12 +115,6 @@ public class Contacts.App : Adw.Application {
     }
   }
 
-  public void change_address_book () {
-    var dialog = new AddressbookDialog (this.contacts_store, this.window);
-    dialog.response.connect ((_) => dialog.close ());
-    dialog.show ();
-  }
-
   public void show_preferences () {
     var prefs_window = new PreferencesWindow (this.contacts_store, this.window);
     prefs_window.show ();
