@@ -110,8 +110,12 @@ public class Contacts.ContactEditor : Gtk.Widget {
           avatar_selector.set_avatar_on_contact ();
         } catch (Error e) {
           warning ("Failed to set avatar: %s", e.message);
-          Utils.show_error_dialog (_("Failed to set avatar."),
-                                   get_root () as Gtk.Window);
+          var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
+                                              null,
+                                              _("Failed to set avatar."));
+          dialog.add_response ("close", _("_Close"));
+          dialog.default_response = "close";
+          dialog.show();
         }
       }
       avatar_selector.destroy ();

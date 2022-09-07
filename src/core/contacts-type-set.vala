@@ -44,14 +44,6 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
   }
 
   /**
-   * Returns the display name for the type of the given AbstractFieldDetails.
-   */
-  public unowned string format_type (AbstractFieldDetails detail) {
-    var d = lookup_by_field_details (detail);
-    return d.display_name;
-  }
-
-  /**
    * Adds the TypeDescriptor to the {@link TypeSet}'s store.
    * @param descriptor The TypeDescription to be added
    */
@@ -135,15 +127,6 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
 
     position = 0;
     return null;
-  }
-
-  /**
-   * Looks up the TypeDescriptor for the given field details. If the descriptor
-   * is not found, it will be created and returned, so this never returns null.
-   */
-  public TypeDescriptor lookup_by_field_details (AbstractFieldDetails detail,
-                                                 out uint position = null) {
-    return lookup_by_parameters (detail.parameters, out position);
   }
 
   /**

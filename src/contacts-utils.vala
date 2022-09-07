@@ -17,12 +17,6 @@
 
 using Folks;
 
-namespace Contacts {
-  public void add_separator (Gtk.ListBoxRow row, Gtk.ListBoxRow? before_row) {
-    row.set_header (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-  }
-}
-
 namespace Contacts.Utils {
 
   public void set_primary_store (Edsf.PersonaStore e_store) {
@@ -36,15 +30,6 @@ namespace Contacts.Utils {
     if (i.next())
       return i.get();
     return null;
-  }
-
-  public void grab_entry_focus_no_select (Gtk.SearchEntry entry) {
-    int start, end;
-    if (!entry.get_selection_bounds (out start, out end)) {
-      start = end = entry.get_position ();
-    }
-    entry.grab_focus ();
-    entry.select_region (start, end);
   }
 
   public string[] get_stock_avatars () {
@@ -67,13 +52,6 @@ namespace Contacts.Utils {
       }
     };
     return files;
-  }
-
-  public void show_error_dialog (string error, Gtk.Window toplevel) {
-    var dialog = new Adw.MessageDialog (toplevel, null, error);
-    dialog.add_response ("close", _("_Close"));
-    dialog.default_response = "close";
-    dialog.show();
   }
 
   public bool persona_is_main (Persona persona) {
@@ -123,13 +101,6 @@ namespace Contacts.Utils {
     /* Only connect main contacts with non-mainable contacts.
        non-main contacts can link to any other */
     return !has_main_persona (self) || !has_mainable_persona (other);
-  }
-
-  public ListModel fields_to_sorted (Gee.Collection<AbstractFieldDetails> fields) {
-    var res = new ListStore (typeof (AbstractFieldDetails));
-    foreach (var afd in fields)
-      res.append (afd);
-    return new Gtk.SortListModel ((owned) res, new AbstractFieldDetailsSorter ());
   }
 
   /* We claim something is "removable" if at least one persona is removable,

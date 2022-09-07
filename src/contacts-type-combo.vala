@@ -44,15 +44,6 @@ public class Contacts.TypeComboRow : Adw.ComboRow  {
   }
 
   /**
-   * Sets the value to the type of the given {@link Folks.AbstractFieldDetails}.
-   */
-  public void set_selected_from_field_details (AbstractFieldDetails details) {
-    uint position = 0;
-    this.type_set.lookup_by_field_details (details, out position);
-    this.selected = position;
-  }
-
-  /**
    * Sets the value to the type that best matches the given vcard type
    * (for example "HOME" or "WORK").
    */

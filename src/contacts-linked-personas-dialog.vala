@@ -86,4 +86,8 @@ public class Contacts.LinkedPersonasDialog : Gtk.Dialog {
 
     return row_grid;
   }
+
+  private void add_separator (Gtk.ListBoxRow row, Gtk.ListBoxRow? before_row) {
+    row.set_header (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+  }
 }

@@ -232,8 +232,12 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
         }
       } catch (GLib.Error e) {
         warning ("Failed to set avatar: %s", e.message);
-        Utils.show_error_dialog (_("Failed to set avatar."),
-                                 this.get_root () as Gtk.Window);
+        var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
+                                            null,
+                                            _("Failed to set avatar."));
+        dialog.add_response ("close", _("_Close"));
+        dialog.default_response = "close";
+        dialog.show();
       } finally {
         chooser.destroy ();
       }
