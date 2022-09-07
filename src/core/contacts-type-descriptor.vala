@@ -45,7 +45,6 @@ public class Contacts.TypeDescriptor : Object {
   private Source source;
   public string? name = null;
   public string[]? vcard_types = null;
-  public Gtk.TreeIter iter;
 
   /**
    * Returns the translated name for this property.

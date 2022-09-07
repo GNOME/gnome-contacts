@@ -23,7 +23,10 @@ libcontacts_sources = files(
   'core/contacts-phones-chunk.vala',
   'core/contacts-roles-chunk.vala',
   'core/contacts-structured-name-chunk.vala',
+  'core/contacts-type-descriptor.vala',
+  'core/contacts-type-set.vala',
   'core/contacts-urls-chunk.vala',
+  'core/contacts-vcard-type-mapping.vala',
 
   'contacts-abstract-field-details-sorter.vala',
   'contacts-chunk-filter.vala',
@@ -42,11 +45,8 @@ libcontacts_sources = files(
   'contacts-persona-sorter.vala',
   'contacts-query-filter.vala',
   'contacts-store.vala',
-  'contacts-typeset.vala',
-  'contacts-type-descriptor.vala',
   'contacts-unlink-operation.vala',
   'contacts-utils.vala',
-  'contacts-vcard-type-mapping.vala',
 
   'io/contacts-io-export-operation.vala',
   'io/contacts-io-vcard-export-operation.vala',
