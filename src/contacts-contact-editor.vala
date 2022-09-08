@@ -333,7 +333,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_email_widget (BinChunkChild chunk_child) {
+  private ContactEditorProperty create_email_widget (BinChunkChild chunk_child) {
     var row = new Adw.EntryRow ();
 
     var icon = new Gtk.Image.from_icon_name (chunk_child.icon_name);
@@ -359,7 +359,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_phone_widget (BinChunkChild chunk_child) {
+  private ContactEditorProperty create_phone_widget (BinChunkChild chunk_child) {
     var row = new Adw.EntryRow ();
 
     var icon = new Gtk.Image.from_icon_name (chunk_child.icon_name);
@@ -385,7 +385,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_url_widget (BinChunkChild chunk_child) {
+  private ContactEditorProperty create_url_widget (BinChunkChild chunk_child) {
     var row = new Adw.EntryRow ();
 
     var icon = new Gtk.Image.from_icon_name (chunk_child.icon_name);
@@ -418,7 +418,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_note_widget (BinChunkChild chunk_child) {
+  private ContactEditorProperty create_note_widget (BinChunkChild chunk_child) {
     //XXX create a subclass NoteEditor instead
     var row = new Adw.PreferencesRow ();
 
@@ -488,7 +488,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_address_widget (BinChunkChild chunk_child) {
+  private ContactEditorProperty create_address_widget (BinChunkChild chunk_child) {
     unowned var address_chunk = (Address) chunk_child;
     //XXX create a subclass AddressEditor instead
     var row = new Adw.PreferencesRow ();
@@ -521,7 +521,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_role_widget (BinChunkChild chunk_child) {
+  private ContactEditorProperty create_role_widget (BinChunkChild chunk_child) {
     unowned var role_chunk = (OrgRole) chunk_child;
 
     // 2 rows: one for the role, one for the org
@@ -551,7 +551,7 @@ public class Contacts.ContactEditorGroup : Gtk.Widget {
 
   public unowned Persona? persona { get; construct set; }
 
-  public delegate Gtk.Widget CreateWidgetFunc (BinChunkChild chunk_child);
+  public delegate ContactEditorProperty CreateWidgetFunc (BinChunkChild chunk_child);
 
   private unowned CreateWidgetFunc create_widget_func;
 
@@ -605,8 +605,13 @@ public class Contacts.ContactEditorGroup : Gtk.Widget {
     for (uint i = position; i < position + added; i++) {
       var chunk_child = (BinChunkChild) model.get_item (i);
       var new_child = this.create_widget_func (chunk_child);
-      if (new_child != null)
+      if (new_child != null) {
+        // Before inserting the child, make sure reveal is false
+        // We turn it on _after_ adding it, so the animation is visible
+        new_child.reveal = false;
         new_child.insert_before (this, child);
+        new_child.reveal = true;
+      }
     }
   }
 }
@@ -618,6 +623,8 @@ public class Contacts.ContactEditorGroup : Gtk.Widget {
 public class Contacts.ContactEditorProperty : Gtk.Widget {
 
   private unowned Adw.PreferencesGroup group;
+
+  public bool reveal { get; set; default = true; }
 
   static construct {
     set_layout_manager_type (typeof (Gtk.BinLayout));
@@ -631,8 +638,7 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
     prefs_group.add_css_class ("contacts-editor-property");
     this.group = prefs_group;
     revealer.set_child (prefs_group);
-    // By default, reveal the child
-    revealer.reveal_child = true;
+    bind_property ("reveal", revealer, "reveal-child", BindingFlags.SYNC_CREATE);
 
     group.add (widget);
   }
