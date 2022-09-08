@@ -66,23 +66,21 @@ namespace Contacts.Utils {
   }
 
   public bool is_ignorable (Individual individual) {
-    var i = individual.personas.iterator();
-
-    // Look for single-persona individuals
-    if (i.next() && !i.has_next ()) {
-      var persona_store = i.get().store;
-
+    foreach (var persona in individual.personas) {
       // Filter out pure key-file persona individuals as these are not very interesting
-      if (persona_store.type_id == "key-file")
-        return true;
+      if (persona.store.type_id == "key-file")
+        continue;
 
       // Filter out uncertain things like link-local xmpp
-      if (persona_store.type_id == "telepathy" &&
-          persona_store.trust_level == PersonaStoreTrust.NONE)
-        return true;
+      if (persona.store.type_id == "telepathy" &&
+          persona.store.trust_level == PersonaStoreTrust.NONE)
+        continue;
+
+      // If we have any other kind of persona, don't ignore
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   /* We claim something is "removable" if at least one persona is removable,
