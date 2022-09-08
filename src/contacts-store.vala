@@ -207,9 +207,11 @@ public class Contacts.Store : GLib.Object {
     }
 
     // Add new individuals
-    foreach (unowned var indiv in to_add) {
+    for (uint i = 0; i < to_add.length; i++) {
+      unowned var indiv = to_add[i];
       if (indiv.personas.size == 0 || Utils.is_ignorable (indiv)) {
-        to_add.remove_fast (indiv);
+        to_add.remove_index_fast (i);
+        i--;
       } else {
         // We want to make sure that changes in the Individual triggers changes
         // in the list model if it affects sorting and/or filtering. Atm, the
