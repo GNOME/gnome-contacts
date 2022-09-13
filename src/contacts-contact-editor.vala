@@ -168,6 +168,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
   public const string[] IMPORTANT_PROPERTIES = {
     "email-addresses",
     "phone-numbers",
+    null
   };
 
   public const string[] SUPPORTED_PROPERTIES = {
@@ -181,6 +182,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     "postal-addresses",
     "roles",
     "urls",
+    null
   };
 
   construct {
