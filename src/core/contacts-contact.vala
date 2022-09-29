@@ -258,13 +258,20 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
    * Applies any pending changes to all chunks. This can mean either a new
    * persona is made, or it is saved in the chunk's referenced persona.
    * When a new persona is made, it will be added to @store.
+   *
+   * Returns the Individual that was created from applying the changes
    */
-  public async void apply_changes (PersonaStore store) throws GLib.Error {
+  public async unowned Individual? apply_changes (PersonaStore store) throws GLib.Error {
+    unowned Individual? individual = null;
+
     // For those that were a persona: save the properties using the API
     for (uint i = 0; i < this.chunks.length; i++) {
       unowned var chunk = this.chunks[i];
       if (chunk.persona == null)
         continue;
+
+      if (individual == null)
+        individual = chunk.persona.individual;
 
       if (!(chunk.property_name in chunk.persona.writeable_properties)) {
         warning ("Can't save to unwriteable property '%s' to persona %s",
@@ -303,6 +310,11 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
       var persona = yield store.add_persona_from_details (new_details);
       debug ("Successfully created new persona %p", persona);
       // FIXME: should we set the persona for these chunks?
+
+      if (individual == null && persona != null)
+        individual = persona.individual;
     }
+
+    return individual;
   }
 }

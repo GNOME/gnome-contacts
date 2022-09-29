@@ -176,12 +176,24 @@ public class Contacts.ContactPane : Adw.Bin {
     }
 
     try {
-      yield contact.apply_changes (this.store.aggregator.primary_store);
+      // The new individual. Even when editing an exisiting contact, it might
+      // be a different Individual than before, so make sure to adjust our
+      // selected contact afterwards
+      unowned var individual =
+          yield contact.apply_changes (this.store.aggregator.primary_store);
+      debug ("Applied changes resulted in individual (%s)",
+             (individual != null)? individual.id : "null");
+
+      if (individual != null) {
+        var pos = yield this.store.find_individual_for_id (individual.id);
+        if (pos != Gtk.INVALID_LIST_POSITION)
+          this.store.selection.selected = pos;
+      }
     } catch (Error err) {
       warning ("Couldn't save changes: %s", err.message);
+      show_contact (null);
       // XXX do something better here
     }
-    show_contact_sheet (contact);
   }
 
   public void edit_contact () {
