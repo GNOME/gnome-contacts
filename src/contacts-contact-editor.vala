@@ -242,6 +242,9 @@ public class Contacts.PersonaEditor : Gtk.Widget {
       writeable_props = persona.writeable_properties;
 
     foreach (unowned var prop in writeable_props) {
+      if (prop == null) // Oh Vala
+          continue;
+
       if (contact.get_most_relevant_chunk (prop, true) == null) {
         contact.create_chunk (prop, persona);
       }
