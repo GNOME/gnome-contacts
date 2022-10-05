@@ -12,12 +12,13 @@
 # Hannie Dumoleyn <hannie@ubuntu-nl.org>, 2014, 2018.
 # Justin van Steijn <jvs@fsfe.org>, 2016, 2018.
 # Nathan Follens <nfollens@gnome.org>, 2017-2022.
+# Philip Goto <philip.goto@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-03-22 18:30+0000\n"
-"PO-Revision-Date: 2022-03-25 14:46+0100\n"
+"POT-Creation-Date: 2022-09-29 09:39+0000\n"
+"PO-Revision-Date: 2022-10-05 20:50+0200\n"
 "Last-Translator: Nathan Follens <nfollens@gnome.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
@@ -25,12 +26,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-DamnedLies-Scope: partial\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:154
-#: src/contacts-main-window.vala:183 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
+#: src/contacts-main-window.vala:212 src/main.vala:26
 msgid "Contacts"
 msgstr "Contacten"
 
@@ -60,7 +61,27 @@ msgstr ""
 "Contacten integreert ook met online adresboeken en koppelt automatisch "
 "contacten uit verschillende online bronnen."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:694
+#: data/org.gnome.Contacts.appdata.xml.in.in:22
+msgid "Contacts with no contacts"
+msgstr "Contacten zonder contacten"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:26
+msgid "Contacts filled with contacts"
+msgstr "Contacten gevuld met contacten"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:30
+msgid "Contacts in selection mode"
+msgstr "Contacten in selectiemodus"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:34
+msgid "Contacts setup view"
+msgstr "Contacten in installatiemodus"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:38
+msgid "Contacts edit view"
+msgstr "Contacten in bewerkingsmodus"
+
+#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "Het Gnome-project"
 
@@ -111,21 +132,21 @@ msgid "Select a new avatar"
 msgstr "Kies een nieuwe avatar"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-editor-property.vala:78
+#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:336
+#: src/contacts-contact-editor.vala:730
 msgid "Cancel"
 msgstr "Annuleren"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:222 src/contacts-main-window.vala:192
+#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
 msgid "Done"
 msgstr "Klaar"
 
-#: data/ui/contacts-avatar-selector.ui:70
+#: data/ui/contacts-avatar-selector.ui:69
 msgid "Take a Picture…"
 msgstr "Een foto maken…"
 
-#: data/ui/contacts-avatar-selector.ui:77
+#: data/ui/contacts-avatar-selector.ui:76
 msgid "Select a File…"
 msgstr "Een bestand kiezen…"
 
@@ -137,10 +158,6 @@ msgstr "Selecteer een contact"
 msgid "Change Addressbook"
 msgstr "Adresboek veranderen"
 
-#: data/ui/contacts-link-suggestion-grid.ui:51
-msgid "Link Contacts"
-msgstr "Contacten koppelen"
-
 #: data/ui/contacts-linked-personas-dialog.ui:9
 msgid "Linked Accounts"
 msgstr "Gekoppelde accounts"
@@ -149,19 +166,9 @@ msgstr "Gekoppelde accounts"
 msgid "You can link contacts by selecting them from the contacts list"
 msgstr "Contacten kunnen handmatig gekoppeld worden vanuit het overzicht"
 
-#: data/ui/contacts-list-pane.ui:9
-msgid "Type to search"
-msgstr "Typ om te zoeken"
-
-# Dit is een werkwoord
-#. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-list-pane.ui:28
-msgid "Link"
-msgstr "Koppelen"
-
-#: data/ui/contacts-list-pane.ui:36
-msgid "Remove"
-msgstr "Verwijderen"
+#: data/ui/contacts-link-suggestion-grid.ui:51
+msgid "Link Contacts"
+msgstr "Contacten koppelen"
 
 #: data/ui/contacts-main-window.ui:5
 msgid "List Contacts By:"
@@ -176,22 +183,22 @@ msgid "Surname"
 msgstr "Achternaam"
 
 #: data/ui/contacts-main-window.ui:19
-msgid "Change Address Book…"
-msgstr "Adresboek wijzigen…"
+msgid "Import…"
+msgstr "Importeren…"
 
-#: data/ui/contacts-main-window.ui:23
-msgid "Online Accounts <sup>↗</sup>"
-msgstr "Online accounts <sup>↗</sup>"
+#: data/ui/contacts-main-window.ui:25
+msgid "Preferences"
+msgstr "Voorkeuren"
 
-#: data/ui/contacts-main-window.ui:30
+#: data/ui/contacts-main-window.ui:29
 msgid "Keyboard Shortcuts"
 msgstr "Sneltoetsen"
 
-#: data/ui/contacts-main-window.ui:34
+#: data/ui/contacts-main-window.ui:33
 msgid "Help"
 msgstr "Hulp"
 
-#: data/ui/contacts-main-window.ui:38
+#: data/ui/contacts-main-window.ui:37
 msgid "About Contacts"
 msgstr "Over Contacten"
 
@@ -211,21 +218,58 @@ msgstr "Items selecteren"
 msgid "Cancel Selection"
 msgstr "Selectie annuleren"
 
-#: data/ui/contacts-main-window.ui:133
+#: data/ui/contacts-main-window.ui:134
 msgid "Loading"
 msgstr "Laden"
 
-#: data/ui/contacts-main-window.ui:185 src/contacts-avatar-selector.vala:199
+#: data/ui/contacts-main-window.ui:145
+msgid "Type to search"
+msgstr "Typ om te zoeken"
+
+#. Export refers to the verb
+#: data/ui/contacts-main-window.ui:163
+msgid "Export"
+msgstr "Exporteren"
+
+#: data/ui/contacts-main-window.ui:164
+msgid "Export Selected Contacts"
+msgstr "Geselecteerde contacten exporteren"
+
+# Dit is een werkwoord
+#. Link refers to the verb, from linking contacts together
+#: data/ui/contacts-main-window.ui:171
+msgid "Link"
+msgstr "Koppelen"
+
+#: data/ui/contacts-main-window.ui:172
+msgid "Link Selected Contacts Together"
+msgstr "Geselecteerde contacten aan elkaar koppelen"
+
+#: data/ui/contacts-main-window.ui:179
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: data/ui/contacts-main-window.ui:223
+msgid "Back"
+msgstr "Terug"
+
+#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
+#: src/contacts-app.vala:402 src/contacts-avatar-selector.vala:196
+#: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
 msgid "_Cancel"
 msgstr "_Annuleren"
 
-#: data/ui/contacts-main-window.ui:206
+#: data/ui/contacts-main-window.ui:259
 msgid "Edit Contact"
 msgstr "Contact bewerken"
 
-#: data/ui/contacts-main-window.ui:213
+#: data/ui/contacts-main-window.ui:266
 msgid "Delete Contact"
 msgstr "Contact verwijderen"
+
+#: data/ui/contacts-preferences-window.ui:6
+msgid "Address Books"
+msgstr "Adresboeken"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
@@ -234,6 +278,10 @@ msgstr "Contacten configureren"
 #: data/ui/contacts-setup-window.ui:20
 msgid "_Quit"
 msgstr "Afsl_uiten"
+
+#: data/ui/contacts-setup-window.ui:22
+msgid "Cancel Setup And Quit"
+msgstr "Installatie annuleren en afsluiten"
 
 #: data/ui/contacts-setup-window.ui:29
 msgid "_Done"
@@ -258,74 +306,40 @@ msgstr ""
 "Als u uw contacten in een online-account opslaat, kunt u deze toevoegen met "
 "de instellingen voor online-accounts."
 
-#: src/contacts-accounts-list.vala:134 src/contacts-addressbook-list.vala:119
-#: src/contacts-esd-setup.vala:152
-msgid "Local Address Book"
-msgstr "Lokaal adresboek"
-
-#: src/contacts-addressbook-dialog.vala:28
-msgid "Change Address Book"
-msgstr "Adresboek veranderen"
-
-#: src/contacts-addressbook-dialog.vala:32
-msgid "Change"
-msgstr "Wijzigen"
-
-#: src/contacts-addressbook-dialog.vala:59
-msgid ""
-"New contacts will be added to the selected address book.\n"
-"You are able to view and edit contacts from other address books."
-msgstr ""
-"Nieuwe contacten zullen worden toegevoegd aan het geselecteerde adresboek.\n"
-"U kunt contacten van andere adresboeken bekijken en bewerken."
-
 # opdrachtregeloptie
-#: src/contacts-app.vala:37
+#: src/contacts-app.vala:45
 msgid "Show contact with this email address"
 msgstr "Contact met dit e-mailadres tonen"
 
 # opdrachtregeloptie
-#: src/contacts-app.vala:38
+#: src/contacts-app.vala:46
 msgid "Show contact with this individual id"
 msgstr "Contact met dit specifieke id tonen"
 
 # opdrachtregeloptie
-#: src/contacts-app.vala:39
+#: src/contacts-app.vala:47
 msgid "Show contacts with the given filter"
 msgstr "Contact met de gegeven filter tonen"
 
-#: src/contacts-app.vala:40
+#: src/contacts-app.vala:48
 msgid "Show the current version of Contacts"
 msgstr "De huidige versie van Contacten tonen"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:110 src/contacts-app.vala:163
+msgid "Contact not found"
+msgstr "Contact niet gevonden"
+
+#: src/contacts-app.vala:111
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Geen contact met id ‘%s’ gevonden"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:189
-msgid "Contact not found"
-msgstr "Contact niet gevonden"
+#: src/contacts-app.vala:112 src/contacts-app.vala:165
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
+msgid "_Close"
+msgstr "_Sluiten"
 
-#: src/contacts-app.vala:169
-msgid "translator-credits"
-msgstr ""
-"Wouter Bolsterlee\n"
-"Erwin Poeze\n"
-"Justin van Steijn <jvs@fsfe.org>\n"
-"Nathan Follens <nfollens@gnome.org>\n"
-"\n"
-"Meer info over Gnome-NL http://nl.gnome.org"
-
-#: src/contacts-app.vala:170
-msgid "About GNOME Contacts"
-msgstr "Over Gnome Contacten"
-
-#: src/contacts-app.vala:171
-msgid "Contact Management Application"
-msgstr "Toepassing voor het beheer van contactgegevens"
-
-#: src/contacts-app.vala:172
+#: src/contacts-app.vala:149
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -333,182 +347,230 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 De Contacten-ontwikkelaars"
 
-#: src/contacts-app.vala:188
+#: src/contacts-app.vala:164
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Geen contact met e-mailadres ‘%s’ gevonden"
 
-#: src/contacts-avatar-selector.vala:126
+#: src/contacts-app.vala:227
+msgid "Primary address book not found"
+msgstr "Voorkeursadresboek niet gevonden"
+
+#: src/contacts-app.vala:229
+msgid ""
+"Contacts can't find the configured primary address book. You might "
+"experience issues creating or editing contacts"
+msgstr ""
+"Contacten kan het gekozen voorkeursadresboek niet vinden. U kunt problemen "
+"ondervinden bij het aanmaken of bewerken van contacten"
+
+#: src/contacts-app.vala:230
+msgid "Go To _Preferences"
+msgstr "Naar _voorkeuren gaan"
+
+#: src/contacts-app.vala:332
+msgid "Select contact file"
+msgstr "Selecteer contactbestand"
+
+#: src/contacts-app.vala:335
+msgid "Import"
+msgstr "Importeren"
+
+#. TODO: somehow get this from the list of importers we have
+#: src/contacts-app.vala:342
+msgid "vCard files"
+msgstr "vCard-bestanden"
+
+#: src/contacts-app.vala:375
+msgid "Error reading file"
+msgstr "Fout bij lezen van bestand"
+
+#: src/contacts-app.vala:376
+#, c-format
+msgid "An error occurred reading the file '%s'"
+msgstr "Lezen van bestand ‘%s’ mislukt"
+
+#: src/contacts-app.vala:377 src/contacts-app.vala:387
+msgid "_OK"
+msgstr "_Oké"
+
+#: src/contacts-app.vala:385
+msgid "No contacts found"
+msgstr "Geen contacten gevonden"
+
+#: src/contacts-app.vala:386
+msgid "The imported file does not seem to contain any contacts"
+msgstr "Het geïmporteerde bestand lijkt geen contacten te bevatten"
+
+#. Second step: ask the user for confirmation
+#: src/contacts-app.vala:394
+#, c-format
+msgid "By continuing, you will import %u contact"
+msgid_plural "By continuing, you will import %u contacts"
+msgstr[0] "Door verder te gaan zal %u contact geïmporteerd worden"
+msgstr[1] "Door verder te gaan zullen %u contacten geïmporteerd worden"
+
+#: src/contacts-app.vala:397
+msgid "Continue Import?"
+msgstr "Doorgaan met importeren?"
+
+#: src/contacts-app.vala:398
+msgid "C_ontinue"
+msgstr "_Doorgaan"
+
+#: src/contacts-avatar-selector.vala:124
 msgid "No Camera Detected"
 msgstr "Geen camera gedetecteerd"
 
-#: src/contacts-avatar-selector.vala:196
+#: src/contacts-avatar-selector.vala:193
 msgid "Browse for more pictures"
 msgstr "Bladeren naar meer afbeeldingen"
 
-#: src/contacts-avatar-selector.vala:199
+#: src/contacts-avatar-selector.vala:196
 msgid "_Open"
 msgstr "_Openen"
 
-#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:75
+#: src/contacts-avatar-selector.vala:237 src/contacts-contact-editor.vala:115
 msgid "Failed to set avatar."
 msgstr "Instellen van avatar is mislukt."
 
-#: src/contacts-contact-editor.vala:57
+#: src/contacts-contact-editor.vala:97
 msgid "Change avatar"
 msgstr "Gebruikersafbeelding wijzigen"
 
-#: src/contacts-contact-editor.vala:93
+#: src/contacts-contact-editor.vala:133
 msgid "Add name"
 msgstr "Naam toevoegen"
 
-#: src/contacts-contact-list.vala:159
+#: src/contacts-contact-editor.vala:259
+msgid "Show More"
+msgstr "Meer tonen"
+
+#: src/contacts-contact-editor.vala:348
+msgid "Add email"
+msgstr "E-mail toevoegen"
+
+#: src/contacts-contact-editor.vala:374
+msgid "Add phone number"
+msgstr "Telefoonnummer toevoegen"
+
+#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
+msgid "Website"
+msgstr "Website"
+
+#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
+msgid "Nickname"
+msgstr "Bijnaam"
+
+#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
+msgid "Birthday"
+msgstr "Verjaardag"
+
+#: src/contacts-contact-editor.vala:467
+msgid "Set Birthday"
+msgstr "Verjaardag instellen"
+
+#: src/contacts-contact-editor.vala:537
+msgid "Organisation"
+msgstr "Organisatie"
+
+#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
+#: src/contacts-contact-editor.vala:543 src/contacts-utils.vala:184
+msgid "Role"
+msgstr "Rol"
+
+#: src/contacts-contact-editor.vala:659
+msgid "Label"
+msgstr "Label"
+
+#. Create grid and labels
+#: src/contacts-contact-editor.vala:715
+msgid "Day"
+msgstr "Dag"
+
+#: src/contacts-contact-editor.vala:719
+msgid "Month"
+msgstr "Maand"
+
+#: src/contacts-contact-editor.vala:723
+msgid "Year"
+msgstr "Jaar"
+
+#: src/contacts-contact-editor.vala:728
+msgid "Change Birthday"
+msgstr "Verjaardag wijzigen"
+
+#: src/contacts-contact-editor.vala:729
+msgid "Set"
+msgstr "Instellen"
+
+#: src/contacts-contact-editor.vala:798
+msgid "Street"
+msgstr "Straat"
+
+#: src/contacts-contact-editor.vala:798
+msgid "Extension"
+msgstr "Toevoeging"
+
+#: src/contacts-contact-editor.vala:798
+msgid "City"
+msgstr "Plaats"
+
+#: src/contacts-contact-editor.vala:798
+msgid "State/Province"
+msgstr "Provincie/staat"
+
+#: src/contacts-contact-editor.vala:798
+msgid "Zip/Postal Code"
+msgstr "Postcode"
+
+#: src/contacts-contact-editor.vala:798
+msgid "PO box"
+msgstr "Postbus"
+
+#: src/contacts-contact-editor.vala:798
+msgid "Country"
+msgstr "Land"
+
+#: src/contacts-contact-list.vala:115
 msgid "Favorites"
 msgstr "Favorieten"
 
-#: src/contacts-contact-list.vala:161 src/contacts-contact-list.vala:167
+#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
 msgid "All Contacts"
 msgstr "Alle contacten"
 
-#: src/contacts-contact-pane.vala:231
-msgid "No primary addressbook configured"
-msgstr "Geen voorkeursadresboek ingesteld"
-
-#: src/contacts-contact-pane.vala:241
-#, c-format
-msgid "Unable to create new contacts: %s"
-msgstr "Aanmaken nieuwe contacten is mislukt: %s"
-
-#: src/contacts-contact-pane.vala:253
-msgid "Unable to find newly created contact"
-msgstr "Nieuw aangemaakt contact is niet gevonden"
-
-#. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/contacts-contact-sheet.vala:237
-#, c-format
-msgid "%s at %s"
-msgstr "%s bij %s"
-
-#: src/contacts-contact-sheet.vala:269
+#: src/contacts-contact-sheet.vala:216
 #, c-format
 msgid "Send an email to %s"
 msgstr "E-mail sturen naar %s"
 
-#: src/contacts-contact-sheet.vala:298
-msgid "Start a call"
-msgstr "Bellen"
-
-#: src/contacts-contact-sheet.vala:358
+#: src/contacts-contact-sheet.vala:289
 msgid "Visit website"
 msgstr "Website bezoeken"
 
-#: src/contacts-contact-sheet.vala:408
+#: src/contacts-contact-sheet.vala:325
 msgid "Their birthday is today! 🎉"
 msgstr "Vandaag jarig! 🎉"
 
-#: src/contacts-contact-sheet.vala:453
+#: src/contacts-contact-sheet.vala:372
 msgid "Show on the map"
 msgstr "Tonen op de kaart"
 
-#: src/contacts-delete-operation.vala:34
+#: src/contacts-delete-operation.vala:36
 #, c-format
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "%d contact wordt verwijderd"
 msgstr[1] "%d contacten worden verwijderd"
 
-#: src/contacts-editor-persona.vala:83
-msgid "Show More"
-msgstr "Meer tonen"
-
-#. Create grid and labels
-#: src/contacts-editor-property.vala:63
-msgid "Day"
-msgstr "Dag"
-
-#: src/contacts-editor-property.vala:67
-msgid "Month"
-msgstr "Maand"
-
-#: src/contacts-editor-property.vala:71
-msgid "Year"
-msgstr "Jaar"
-
-#: src/contacts-editor-property.vala:76
-msgid "Change Birthday"
-msgstr "Verjaardag wijzigen"
-
-#: src/contacts-editor-property.vala:77
-msgid "Set"
-msgstr "Instellen"
-
-#: src/contacts-editor-property.vala:146
-msgid "Street"
-msgstr "Straat"
-
-#: src/contacts-editor-property.vala:146
-msgid "Extension"
-msgstr "Toevoeging"
-
-#: src/contacts-editor-property.vala:146
-msgid "City"
-msgstr "Plaats"
-
-#: src/contacts-editor-property.vala:146
-msgid "State/Province"
-msgstr "Provincie/staat"
-
-#: src/contacts-editor-property.vala:146
-msgid "Zip/Postal Code"
-msgstr "Postcode"
-
-#: src/contacts-editor-property.vala:146
-msgid "PO box"
-msgstr "Postbus"
-
-#: src/contacts-editor-property.vala:146
-msgid "Country"
-msgstr "Land"
-
-#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-editor-property.vala:204 src/contacts-utils.vala:567
-msgid "Role"
-msgstr "Rol"
-
-#: src/contacts-editor-property.vala:211
-msgid "Organisation"
-msgstr "Organisatie"
-
-#: src/contacts-editor-property.vala:330 src/contacts-editor-property.vala:680
-msgid "Delete field"
-msgstr "Veld verwijderen"
-
-#: src/contacts-editor-property.vala:373
-msgid "Label"
-msgstr "Label"
-
-#: src/contacts-editor-property.vala:529
-msgid "Add email"
-msgstr "E-mail toevoegen"
-
-#: src/contacts-editor-property.vala:556
-msgid "Add phone number"
-msgstr "Telefoonnummer toevoegen"
-
-#: src/contacts-editor-property.vala:584
-msgid "https://example.com"
-msgstr "https://voorbeeld.net"
-
-#: src/contacts-editor-property.vala:600 src/contacts-utils.vala:562
-msgid "Nickname"
-msgstr "Bijnaam"
-
-#: src/contacts-editor-property.vala:653 src/contacts-editor-property.vala:689
-msgid "Set Birthday"
-msgstr "Verjaardag instellen"
+#. Special-case the local address book
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:119
+msgid "Local Address Book"
+msgstr "Lokaal adresboek"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:447
+#: src/contacts-utils.vala:149
 msgid "Google"
 msgstr "Google"
 
@@ -612,7 +674,11 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-link-operation.vala:40
+#: src/contacts-linked-personas-dialog.vala:76
+msgid "Unlink"
+msgstr "Ontkoppelen"
+
+#: src/contacts-link-operation.vala:38
 #, c-format
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
@@ -629,191 +695,234 @@ msgstr "Is dit dezelfde persoon als %s uit %s?"
 msgid "Is this the same person as %s?"
 msgstr "Is dit dezelfde persoon als %s?"
 
-#: src/contacts-linked-personas-dialog.vala:70
-msgid "Unlink"
-msgstr "Ontkoppelen"
+#: src/contacts-main-window.vala:191
+#, c-format
+msgid "%llu Selected"
+msgid_plural "%llu Selected"
+msgstr[0] "%llu geselecteerd"
+msgstr[1] "%llu geselecteerd"
 
-#: src/contacts-main-window.vala:156 src/contacts-main-window.vala:236
+#: src/contacts-main-window.vala:221
+msgid "_Add"
+msgstr "_Toevoegen"
+
+#: src/contacts-main-window.vala:251
+#, c-format
+msgid "Editing %s"
+msgstr "Bewerken %s"
+
+#: src/contacts-main-window.vala:271
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d geselecteerd"
 msgstr[1] "%d geselecteerd"
 
-#: src/contacts-main-window.vala:192
-msgid "_Add"
-msgstr "_Toevoegen"
-
-#: src/contacts-main-window.vala:216
-#, c-format
-msgid "Editing %s"
-msgstr "Bewerken %s"
-
-#: src/contacts-main-window.vala:258 src/contacts-main-window.vala:445
-#: src/contacts-main-window.vala:456 src/contacts-main-window.vala:482
+#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:487
+#: src/contacts-main-window.vala:527
 msgid "_Undo"
 msgstr "_Ongedaan maken"
 
-#: src/contacts-main-window.vala:331
-msgid "Unmark as favorite"
-msgstr "Verwijderen uit favorieten"
-
-#: src/contacts-main-window.vala:332
-msgid "Mark as favorite"
-msgstr "Toevoegen aan favorieten"
-
-#: src/contacts-main-window.vala:344
+#: src/contacts-main-window.vala:358
 msgid "New Contact"
 msgstr "Nieuw contact"
 
-#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:239
-msgid "Other"
-msgstr "Anders"
+#: src/contacts-main-window.vala:452
+msgid "Unmark as favorite"
+msgstr "Verwijderen uit favorieten"
 
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:187 src/contacts-typeset.vala:208
-#: src/contacts-typeset.vala:234 src/contacts-typeset.vala:236
-msgid "Home"
-msgstr "Thuis"
+#: src/contacts-main-window.vala:454
+msgid "Mark as favorite"
+msgstr "Toevoegen aan favorieten"
 
-#: src/contacts-typeset.vala:188 src/contacts-typeset.vala:209
-#: src/contacts-typeset.vala:228 src/contacts-typeset.vala:230
-msgid "Work"
-msgstr "Werk"
+#. Open up a file chooser
+#: src/contacts-main-window.vala:561
+msgid "Export to file"
+msgstr "Naar bestand exporteren"
 
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:207
-msgid "Personal"
-msgstr "Persoonlijk"
+#: src/contacts-main-window.vala:564
+msgid "_Export"
+msgstr "_Exporteren"
 
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:227
-msgid "Assistant"
-msgstr "Assistent"
+#: src/contacts-main-window.vala:566
+msgid "contacts.vcf"
+msgstr "contacten.vcf"
 
-#: src/contacts-typeset.vala:229
-msgid "Work Fax"
-msgstr "Fax (werk)"
+#: src/contacts-preferences-window.vala:30
+msgid "Primary Address Book"
+msgstr "Voorkeursadresboek"
 
-#: src/contacts-typeset.vala:231
-msgid "Callback"
-msgstr "Terugbellen"
+#: src/contacts-preferences-window.vala:31
+msgid ""
+"New contacts will be added to the selected address book. You are able to "
+"view and edit contacts from other address books."
+msgstr ""
+"Nieuwe contacten zullen worden toegevoegd aan het geselecteerde adresboek. U "
+"kunt contacten van andere adresboeken bekijken en bewerken."
 
-#: src/contacts-typeset.vala:232
-msgid "Car"
-msgstr "Auto"
+#: src/contacts-preferences-window.vala:40
+msgid "_Online Accounts"
+msgstr "_Online-accounts"
 
-#: src/contacts-typeset.vala:233
-msgid "Company"
-msgstr "Bedrijf"
-
-#: src/contacts-typeset.vala:235
-msgid "Home Fax"
-msgstr "Fax (thuis)"
-
-#: src/contacts-typeset.vala:237
-msgid "ISDN"
-msgstr "ISDN"
-
-#: src/contacts-typeset.vala:238
-msgid "Mobile"
-msgstr "Mobiel"
-
-#: src/contacts-typeset.vala:240
-msgid "Fax"
-msgstr "Fax"
-
-#: src/contacts-typeset.vala:241
-msgid "Pager"
-msgstr "Pager"
-
-#: src/contacts-typeset.vala:242
-msgid "Radio"
-msgstr "Radio"
-
-#: src/contacts-typeset.vala:243
-msgid "Telex"
-msgstr "Telex"
-
-#. To translators: TTY is Teletypewriter
-#: src/contacts-typeset.vala:245
-msgid "TTY"
-msgstr "TTY"
+#: src/contacts-preferences-window.vala:45
+msgid "Opens the Online Accounts panel in GNOME Settings"
+msgstr "Opent het gedeelte voor online-accounts in de instellingen van Gnome"
 
 #: src/contacts-unlink-operation.vala:37
 msgid "Unlinking contacts"
 msgstr "Contacten worden ontkoppeld"
 
-#: src/contacts-utils.vala:551
+#: src/contacts-utils.vala:168
 msgid "Alias"
 msgstr "Alias"
 
-#: src/contacts-utils.vala:552
+#: src/contacts-utils.vala:169
 msgid "Avatar"
 msgstr "Avatar"
 
-#: src/contacts-utils.vala:553
-msgid "Birthday"
-msgstr "Verjaardag"
-
-#: src/contacts-utils.vala:554
+#: src/contacts-utils.vala:171
 msgid "Calendar event"
 msgstr "Aganda-afspraak"
 
-#: src/contacts-utils.vala:555
+#: src/contacts-utils.vala:172
 msgid "Email address"
 msgstr "E-mailadres"
 
-#: src/contacts-utils.vala:556
+#: src/contacts-utils.vala:173
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: src/contacts-utils.vala:557
+#: src/contacts-utils.vala:174
 msgid "Gender"
 msgstr "Geslacht"
 
-#: src/contacts-utils.vala:558
+#: src/contacts-utils.vala:175
 msgid "Group"
 msgstr "Groep"
 
-#: src/contacts-utils.vala:559
-#| msgid "AOL Instant Messenger"
+#: src/contacts-utils.vala:176
 msgid "Instant messaging"
 msgstr "Instant messaging"
 
-#: src/contacts-utils.vala:560
+#: src/contacts-utils.vala:177
 msgid "Favourite"
 msgstr "Favoriet"
 
-#: src/contacts-utils.vala:561
+#: src/contacts-utils.vala:178
 msgid "Local ID"
 msgstr "Lokale ID"
 
-#: src/contacts-utils.vala:563
+#: src/contacts-utils.vala:180
 msgid "Note"
 msgstr "Opmerking"
 
-#: src/contacts-utils.vala:564
+#: src/contacts-utils.vala:181
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: src/contacts-utils.vala:565
+#: src/contacts-utils.vala:182
 msgid "Address"
 msgstr "Adres"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:570
+#: src/contacts-utils.vala:187
 msgid "Structured name"
 msgstr "Gestructureerde naam"
 
-#: src/contacts-utils.vala:571
-msgid "Website"
-msgstr "Website"
-
-#: src/contacts-utils.vala:572
+#: src/contacts-utils.vala:189
 msgid "Web service"
 msgstr "Webdienst"
+
+#: src/core/contacts-contact.vala:38
+msgid "Unnamed Person"
+msgstr "Naamloos contact"
+
+#. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
+#: src/core/contacts-roles-chunk.vala:86
+#, c-format
+msgid "%s at %s"
+msgstr "%s bij %s"
+
+#: src/core/contacts-type-descriptor.vala:82
+#: src/core/contacts-type-set.vala:232
+msgid "Other"
+msgstr "Anders"
+
+#. List most specific first, always in upper case
+#: src/core/contacts-type-set.vala:180 src/core/contacts-type-set.vala:201
+#: src/core/contacts-type-set.vala:227 src/core/contacts-type-set.vala:229
+msgid "Home"
+msgstr "Thuis"
+
+#: src/core/contacts-type-set.vala:181 src/core/contacts-type-set.vala:202
+#: src/core/contacts-type-set.vala:221 src/core/contacts-type-set.vala:223
+msgid "Work"
+msgstr "Werk"
+
+#. List most specific first, always in upper case
+#: src/core/contacts-type-set.vala:200
+msgid "Personal"
+msgstr "Persoonlijk"
+
+#. List most specific first, always in upper case
+#: src/core/contacts-type-set.vala:220
+msgid "Assistant"
+msgstr "Assistent"
+
+#: src/core/contacts-type-set.vala:222
+msgid "Work Fax"
+msgstr "Fax (werk)"
+
+#: src/core/contacts-type-set.vala:224
+msgid "Callback"
+msgstr "Terugbellen"
+
+#: src/core/contacts-type-set.vala:225
+msgid "Car"
+msgstr "Auto"
+
+#: src/core/contacts-type-set.vala:226
+msgid "Company"
+msgstr "Bedrijf"
+
+#: src/core/contacts-type-set.vala:228
+msgid "Home Fax"
+msgstr "Fax (thuis)"
+
+#: src/core/contacts-type-set.vala:230
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/core/contacts-type-set.vala:231
+msgid "Mobile"
+msgstr "Mobiel"
+
+#: src/core/contacts-type-set.vala:233
+msgid "Fax"
+msgstr "Fax"
+
+#: src/core/contacts-type-set.vala:234
+msgid "Pager"
+msgstr "Pager"
+
+#: src/core/contacts-type-set.vala:235
+msgid "Radio"
+msgstr "Radio"
+
+#: src/core/contacts-type-set.vala:236
+msgid "Telex"
+msgstr "Telex"
+
+#. To translators: TTY is Teletypewriter
+#: src/core/contacts-type-set.vala:238
+msgid "TTY"
+msgstr "TTY"
+
+#: src/io/contacts-io-parse-operation.vala:40
+#, c-format
+msgid "Importing contacts from '%s'"
+msgstr "Contacten importeren uit ‘%s’"
 
 #: src/org.gnome.Contacts.gschema.xml:6
 msgid "First-time setup done."
@@ -873,6 +982,57 @@ msgstr "Slaat op of het venster momenteel is gemaximaliseerd."
 msgid "Is the window fullscreen"
 msgstr "Is het venster gemaximaliseerd"
 
+#~ msgid "Change Address Book"
+#~ msgstr "Adresboek veranderen"
+
+#~ msgid "Change"
+#~ msgstr "Wijzigen"
+
+#~ msgid ""
+#~ "New contacts will be added to the selected address book.\n"
+#~ "You are able to view and edit contacts from other address books."
+#~ msgstr ""
+#~ "Nieuwe contacten zullen worden toegevoegd aan het geselecteerde "
+#~ "adresboek.\n"
+#~ "U kunt contacten van andere adresboeken bekijken en bewerken."
+
+#~ msgid "Change Address Book…"
+#~ msgstr "Adresboek wijzigen…"
+
+#~ msgid "Online Accounts <sup>↗</sup>"
+#~ msgstr "Online accounts <sup>↗</sup>"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Wouter Bolsterlee\n"
+#~ "Erwin Poeze\n"
+#~ "Justin van Steijn <jvs@fsfe.org>\n"
+#~ "Nathan Follens <nfollens@gnome.org>\n"
+#~ "\n"
+#~ "Meer info over Gnome-NL http://nl.gnome.org"
+
+#~ msgid "About GNOME Contacts"
+#~ msgstr "Over Gnome Contacten"
+
+#~ msgid "Contact Management Application"
+#~ msgstr "Toepassing voor het beheer van contactgegevens"
+
+#, c-format
+#~ msgid "Unable to create new contacts: %s"
+#~ msgstr "Aanmaken nieuwe contacten is mislukt: %s"
+
+#~ msgid "Unable to find newly created contact"
+#~ msgstr "Nieuw aangemaakt contact is niet gevonden"
+
+#~ msgid "Start a call"
+#~ msgstr "Bellen"
+
+#~ msgid "Delete field"
+#~ msgstr "Veld verwijderen"
+
+#~ msgid "https://example.com"
+#~ msgstr "https://voorbeeld.net"
+
 #~ msgid "Take Another…"
 #~ msgstr "Nog een…"
 
@@ -888,14 +1048,8 @@ msgstr "Is het venster gemaximaliseerd"
 #~ msgid "Add contact"
 #~ msgstr "Contact toevoegen"
 
-#~ msgid "Back"
-#~ msgstr "Terug"
-
 #~ msgid "Main Menu"
 #~ msgstr "Hoofdmenu"
-
-#~ msgid "Cancel setup and quit"
-#~ msgstr "Installatie annuleren en afsluiten"
 
 #~ msgid "Setup complete"
 #~ msgstr "Installatie voltooid"
@@ -909,9 +1063,6 @@ msgstr "Is het venster gemaximaliseerd"
 #~ msgid "Add number"
 #~ msgstr "Nummer toevoegen"
 
-#~ msgid "Contacts unlinked"
-#~ msgstr "Contacten ontkoppeld"
-
 #~ msgid "%d contacts linked"
 #~ msgid_plural "%d contacts linked"
 #~ msgstr[0] "%d contacten gekoppeld"
@@ -924,9 +1075,6 @@ msgstr "Is het venster gemaximaliseerd"
 
 #~ msgid "%s linked to %s"
 #~ msgstr "%s gekoppeld aan %s"
-
-#~ msgid "%s linked to the contact"
-#~ msgstr "%s gekoppeld aan contact"
 
 #~ msgid "Google Circles"
 #~ msgstr "Google Kringen"
@@ -982,9 +1130,6 @@ msgstr "Is het venster gemaximaliseerd"
 #~ msgid "_About"
 #~ msgstr "_Info"
 
-#~ msgid "Online Accounts Settings"
-#~ msgstr "Instellingen online-accounts"
-
 #~ msgid "Selection mode"
 #~ msgstr "Selectiemodus"
 
@@ -999,13 +1144,6 @@ msgstr "Is het venster gemaximaliseerd"
 
 #~ msgid "Contact deleted: “%s”"
 #~ msgstr "Contact verwijderd: ‘%s’"
-
-#~ msgid ""
-#~ "New contacts will be added to the selected address book. You are able to "
-#~ "view and edit contacts from other address books."
-#~ msgstr ""
-#~ "Nieuwe contacten zullen worden toegevoegd aan het geselecteerde "
-#~ "adresboek. U kunt contacten van andere adresboeken bekijken en bewerken."
 
 #~ msgid "Select Address Book"
 #~ msgstr "Adresboek selecteren"
@@ -1079,9 +1217,6 @@ msgstr "Is het venster gemaximaliseerd"
 
 #~ msgid "Primary Contacts Account"
 #~ msgstr "Account hoofdcontacten"
-
-#~ msgid "Close"
-#~ msgstr "Sluiten"
 
 #~ msgid "Twitter"
 #~ msgstr "Twitter"
