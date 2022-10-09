@@ -37,7 +37,7 @@ public class Contacts.RolesChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -72,11 +72,30 @@ public class Contacts.OrgRole : BinChunkChild {
     this.parameters = role_field.parameters;
   }
 
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is OrgRole) {
+    unowned var other_orgrole = (OrgRole) other;
+    var orgs_cmp = strcmp (this.role.organisation_name,
+                           other_orgrole.role.organisation_name);
+    if (orgs_cmp != 0)
+      return orgs_cmp;
+    return strcmp (this.role.title, other_orgrole.role.title);
+  }
+
   public override AbstractFieldDetails? create_afd () {
     if (this.is_empty)
       return null;
 
     return new RoleFieldDetails (this.role, this.parameters);
+  }
+
+  public override BinChunkChild copy () {
+    var org_role = new OrgRole ();
+    org_role.role.organisation_name = this.role.organisation_name;
+    org_role.role.role = this.role.role;
+    org_role.role.title = this.role.title;
+    copy_parameters (org_role);
+    return org_role;
   }
 
   public string to_string () {

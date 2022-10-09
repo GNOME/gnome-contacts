@@ -36,7 +36,7 @@ public class Contacts.PhonesChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -80,6 +80,15 @@ public class Contacts.Phone : BinChunkChild {
     this.parameters = phone_field.parameters;
   }
 
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is Phone) {
+    unowned var other_phone = (Phone) other;
+    var nr_cmp = strcmp (this.raw_number, other_phone.raw_number);
+    if (nr_cmp != 0)
+      return nr_cmp;
+    return dummy_compare_parameters (other);
+  }
+
   /**
    * Returns the TypeDescriptor that describes the type of phone number
    * (for example mobile, work, fax, ...)
@@ -93,5 +102,12 @@ public class Contacts.Phone : BinChunkChild {
       return null;
 
     return new PhoneFieldDetails (this.raw_number, this.parameters);
+  }
+
+  public override BinChunkChild copy () {
+    var phone = new Phone ();
+    phone.raw_number = this.raw_number;
+    copy_parameters (phone);
+    return phone;
   }
 }

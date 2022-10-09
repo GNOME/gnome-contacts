@@ -29,6 +29,9 @@ using Folks;
  */
 public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
 
+  private BinChunkChild[] original_elements;
+  private bool original_elements_set = false;
+
   private GenericArray<BinChunkChild> elements = new GenericArray<BinChunkChild> ();
 
   public override bool is_empty {
@@ -40,6 +43,30 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
           return false;
       }
       return true;
+    }
+  }
+
+  public override bool dirty {
+    get {
+      // If we're hitting this, a subclass forgot to set the field
+      return_if_fail (this.original_elements_set);
+
+      var non_empty_count = nr_nonempty_children ();
+      if (this.original_elements.length != non_empty_count)
+          return true;
+
+      // Since we guarantee ordering by BinChunkChild::compare,
+      // we can just check for equality by paired indices (ignoring the empty
+      // ones though)
+      for (uint i = 0, j = 0; i < this.elements.length; i++, j++) {
+        if (this.elements[i].is_empty) {
+          j--;
+          continue;
+        }
+        if (this.elements[i].compare (this.original_elements[j]) != 0)
+          return true;
+      }
+      return false;
     }
   }
 
@@ -94,6 +121,15 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
     return false;
   }
 
+  private uint nr_nonempty_children () {
+    uint result = 0;
+    for (uint i = 0; i < this.elements.length; i++) {
+      if (!this.elements[i].is_empty)
+        result++;
+    }
+    return result;
+  }
+
   public override Value? to_value () {
     var afds = new Gee.HashSet<AbstractFieldDetails> ();
     for (uint i = 0; i < this.elements.length; i++) {
@@ -115,6 +151,21 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
     }
 
     return afds;
+  }
+
+  /**
+   * A helper finish the initialization of a BinChunk. It makes sure to set the
+   * "original_elements" field (which is used to calculate the "dirty"
+   * property) as well as doing an initial emptiness check
+   */
+  protected void finish_initialization () {
+    // Make a deep copy to ensure changes don't propagate to original_elements
+    this.original_elements = this.elements.copy ((child) => {
+        return child.copy ();
+    }).steal ();
+    this.original_elements_set = true;
+
+    emptiness_check ();
   }
 
   // ListModel implementation
@@ -163,6 +214,19 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
    */
   public abstract AbstractFieldDetails? create_afd ();
 
+  /**
+   * Creates a deep copy of this child
+   */
+  public abstract BinChunkChild copy ();
+
+  // Helper to copy this object's parameters field into that of @copy
+  protected void copy_parameters (BinChunkChild copy) {
+    copy.parameters.clear ();
+    var iter = this.parameters.map_iterator ();
+    while (iter.next ())
+      copy.parameters[iter.get_key ()] = iter.get_value ();
+  }
+
   // A helper to change a string field with the proper propery notifies
   protected void change_string_prop (string prop_name,
                                      ref string old_value,
@@ -180,8 +244,8 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
   }
 
   /**
-   * Compares 2 children in an intuitive manner, so that preferred children go
-   * first and empty children are last
+   * Compares 2 children in such a way that unequal children are sorted in an
+   * intuitive manner
    */
   public int compare (BinChunkChild other) {
     // Fields with a PREF hint always go first (see vCard PREF attribute)
@@ -195,7 +259,7 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
       return empty? 1 : -1;
 
     // FIXME: maybe also compare the types? (e.g. put HOME before WORK)
-    return 0;
+    return compare_internal (other);
   }
 
   /**
@@ -212,5 +276,45 @@ public abstract class Contacts.BinChunkChild : GLib.Object {
         return true;
     }
     return false;
+  }
+
+  /**
+   * Should be implemented by subclasses to compare with logic specific to that
+   * property. Note that we ideally try to go for a stable sort
+   */
+  protected abstract int compare_internal (BinChunkChild other);
+
+  // Helper to do a very dumb ordering with this function
+  protected int dummy_compare_parameters (BinChunkChild other) {
+    // TYPE is a special vcard param, so use that
+    var this_types = this.parameters["type"].to_array ();
+    var other_types = other.parameters["type"].to_array ();
+
+    // If one type is more specific than the other, use that
+    if (this_types.length != other_types.length)
+      return other_types.length - this_types.length;
+
+    for (uint i = 0; i < this_types.length; i++) {
+      var type_cmp = strcmp (this_types[i], other_types[i]);
+      if (type_cmp != 0)
+        return type_cmp;
+    }
+
+    // If the number of parameters is larger, assume it's more specific
+    // so put it up front
+    if (this.parameters.size != other.parameters.size)
+      return other.parameters.size - this.parameters.size;
+
+    // Go over all parameters and check for any difference in size
+    var keys = this.parameters.get_keys ();
+    foreach (string key in keys) {
+      var this_params = this.parameters[key];
+      var other_params = other.parameters[key];
+
+      if (this_params.size != other_params.size)
+        return other_params.size - this_params.size;
+    }
+
+    return 0;
   }
 }

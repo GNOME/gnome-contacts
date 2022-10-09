@@ -36,7 +36,7 @@ public class Contacts.AddressesChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -83,6 +83,26 @@ public class Contacts.Address : BinChunkChild {
   public Address.from_field_details (PostalAddressFieldDetails address_field) {
     this.address = address_field.value;
     this.parameters = address_field.parameters;
+  }
+
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is Address) {
+    var this_types = this.parameters["type"];
+    var other_types = other.parameters["type"];
+
+    // Put home address first.
+    // FIXME: we should be minding case sensitivity here
+    if (("HOME" in this_types) != ("HOME" in other_types))
+      return ("HOME" in this_types)? -1 : 1;
+
+    // If no specific preference by type, compare by string
+    unowned var other_address = (Address) other;
+    var nr_cmp = strcmp (to_string (""), other_address.to_string (""));
+    if (nr_cmp != 0)
+      return nr_cmp;
+
+    // Fall back to an even dumber comparison
+    return dummy_compare_parameters (other);
   }
 
   /**
@@ -134,5 +154,19 @@ public class Contacts.Address : BinChunkChild {
       return null;
 
     return new PostalAddressFieldDetails (this.address, this.parameters);
+  }
+
+  public override BinChunkChild copy () {
+    var address = new Address ();
+    address.address.address_format = this.address.address_format;
+    address.address.country = this.address.country;
+    address.address.extension = this.address.extension;
+    address.address.locality = this.address.locality;
+    address.address.po_box = this.address.po_box;
+    address.address.postal_code = this.address.postal_code;
+    address.address.region = this.address.region;
+    address.address.street = this.address.street;
+    copy_parameters (address);
+    return address;
   }
 }

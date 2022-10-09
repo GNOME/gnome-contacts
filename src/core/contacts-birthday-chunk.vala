@@ -23,19 +23,25 @@ using Folks;
  */
 public class Contacts.BirthdayChunk : Chunk {
 
+  private DateTime? original_birthday = null;
+
   public DateTime? birthday {
     get { return this._birthday; }
     set {
-      if (this._birthday == null && value == null)
+      if (this.birthday == null && value == null)
         return;
 
-      if (this._birthday != null && value != null
-          && this._birthday.equal (value.to_utc ()))
+      if (this.birthday != null && value != null && this.birthday.equal (value))
         return;
 
+      bool was_empty = this.is_empty;
+      bool was_dirty = this.dirty;
       this._birthday = (value != null)? value.to_utc () : null;
       notify_property ("birthday");
-      notify_property ("is-empty");
+      if (was_empty != this.is_empty)
+        notify_property ("is-empty");
+      if (was_dirty != this.dirty)
+        notify_property ("dirty");
     }
   }
   private DateTime? _birthday = null;
@@ -44,11 +50,21 @@ public class Contacts.BirthdayChunk : Chunk {
 
   public override bool is_empty { get { return this.birthday == null; } }
 
+  public override bool dirty {
+    get {
+      if (this.birthday != null && this.original_birthday != null)
+        return !this.birthday.equal (this.original_birthday);
+      return this.birthday != this.original_birthday;
+    }
+  }
+
   construct {
     if (persona != null) {
       return_if_fail (persona is BirthdayDetails);
-      persona.bind_property ("birthday", this, "birthday", BindingFlags.SYNC_CREATE);
+      persona.bind_property ("birthday", this, "birthday");
+      this._birthday = ((BirthdayDetails) persona).birthday;
     }
+    this.original_birthday = this.birthday;
   }
 
   public override Value? to_value () {

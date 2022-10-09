@@ -19,6 +19,8 @@ using Folks;
 
 public class Contacts.AvatarChunk : Chunk {
 
+  private LoadableIcon? original_avatar = null;
+
   public LoadableIcon? avatar {
     get { return this._avatar; }
     set {
@@ -35,11 +37,17 @@ public class Contacts.AvatarChunk : Chunk {
 
   public override bool is_empty { get { return this._avatar == null; } }
 
+  public override bool dirty {
+    get { return this.avatar != this.original_avatar; }
+  }
+
   construct {
     if (persona != null) {
       return_if_fail (persona is AvatarDetails);
-      persona.bind_property ("avatar", this, "avatar", BindingFlags.SYNC_CREATE);
+      persona.bind_property ("avatar", this, "avatar");
+      this._avatar = ((AvatarDetails) persona).avatar;
     }
+    this.original_avatar = this.avatar;
   }
 
   public override Value? to_value () {

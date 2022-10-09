@@ -19,6 +19,8 @@ using Folks;
 
 public class Contacts.AliasChunk : Chunk {
 
+  private string original_alias = "";
+
   public string alias {
     get { return this._alias; }
     set {
@@ -26,10 +28,13 @@ public class Contacts.AliasChunk : Chunk {
         return;
 
       bool was_empty = this.is_empty;
+      bool was_dirty = this.dirty;
       this._alias = value;
       notify_property ("alias");
       if (this.is_empty != was_empty)
         notify_property ("is-empty");
+      if (was_dirty != this.dirty)
+        notify_property ("dirty");
     }
   }
   private string _alias = "";
@@ -38,11 +43,17 @@ public class Contacts.AliasChunk : Chunk {
 
   public override bool is_empty { get { return this._alias.strip () == ""; } }
 
+  public override bool dirty {
+    get { return this.alias.strip () == this.original_alias.strip (); }
+  }
+
   construct {
     if (persona != null) {
       return_if_fail (persona is AliasDetails);
-      persona.bind_property ("alias", this, "alias", BindingFlags.SYNC_CREATE);
+      persona.bind_property ("alias", this, "alias");
+      this._alias = ((AliasDetails) persona).alias;
     }
+    this.original_alias = this.alias;
   }
 
   public override Value? to_value () {
