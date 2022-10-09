@@ -25,6 +25,8 @@ using Folks;
  */
 public class Contacts.StructuredNameChunk : Chunk {
 
+  private StructuredName original_structured_name;
+
   public StructuredName structured_name {
     get { return this._structured_name; }
     set {
@@ -51,11 +53,17 @@ public class Contacts.StructuredNameChunk : Chunk {
     }
   }
 
+  public override bool dirty {
+    get { return !this.original_structured_name.equal (this._structured_name); }
+  }
+
   construct {
     if (persona != null) {
       return_if_fail (persona is NameDetails);
-      persona.bind_property ("structured-name", this, "structured-name", BindingFlags.SYNC_CREATE);
+      persona.bind_property ("structured-name", this, "structured-name");
+      this._structured_name = ((NameDetails) persona).structured_name;
     }
+    this.original_structured_name = this.structured_name;
   }
 
   public override Value? to_value () {

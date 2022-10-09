@@ -42,10 +42,11 @@ public abstract class Contacts.Chunk : GLib.Object {
   public abstract bool is_empty { get; }
 
   /**
-   * A separate field to keep track of whether something has changed.
-   * If it did, we know we'll have to (possibly) save the changes.
+   * A separate field to keep track of whether this has changed from its
+   * original value. If it did, we know we'll have to (possibly) save the
+   * changes.
    */
-  public bool changed { get; protected set; default = false; }
+  public abstract bool dirty { get; }
 
   /**
    * Converts this chunk into a GLib.Value, as expected by API like

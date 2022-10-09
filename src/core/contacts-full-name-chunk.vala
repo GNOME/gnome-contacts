@@ -24,6 +24,8 @@ using Folks;
  */
 public class Contacts.FullNameChunk : Chunk {
 
+  private string original_full_name = "";
+
   public string full_name {
     get { return this._full_name; }
     set {
@@ -31,10 +33,13 @@ public class Contacts.FullNameChunk : Chunk {
         return;
 
       bool was_empty = this.is_empty;
+      bool was_dirty = this.dirty;
       this._full_name = value;
       notify_property ("full-name");
       if (this.is_empty != was_empty)
         notify_property ("is-empty");
+      if (was_dirty != this.dirty)
+        notify_property ("dirty");
     }
   }
   private string _full_name = "";
@@ -43,11 +48,17 @@ public class Contacts.FullNameChunk : Chunk {
 
   public override bool is_empty { get { return this._full_name.strip () == ""; } }
 
+  public override bool dirty {
+    get { return this.full_name.strip () != this.original_full_name.strip (); }
+  }
+
   construct {
     if (persona != null) {
       return_if_fail (persona is NameDetails);
-      persona.bind_property ("full-name", this, "full-name", BindingFlags.SYNC_CREATE);
+      persona.bind_property ("full-name", this, "full-name");
+      this._full_name = ((NameDetails) persona).full_name;
     }
+    this.original_full_name = this.full_name;
   }
 
   public override Value? to_value () {

@@ -36,7 +36,7 @@ public class Contacts.NotesChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -76,10 +76,22 @@ public class Contacts.Note : BinChunkChild {
     this.parameters = note_field.parameters;
   }
 
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is Note) {
+    return strcmp (this.text, ((Note) other).text);
+  }
+
   public override AbstractFieldDetails? create_afd () {
     if (this.is_empty)
       return null;
 
     return new NoteFieldDetails (this.text, this.parameters);
+  }
+
+  public override BinChunkChild copy () {
+    var note = new Note ();
+    note.text = this.text;
+    copy_parameters (note);
+    return note;
   }
 }

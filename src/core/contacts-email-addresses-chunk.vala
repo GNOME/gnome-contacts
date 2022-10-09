@@ -32,7 +32,7 @@ public class Contacts.EmailAddressesChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -72,6 +72,15 @@ public class Contacts.EmailAddress : BinChunkChild {
     this.parameters = email_field.parameters;
   }
 
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is EmailAddress) {
+    unowned var other_email_addr = (EmailAddress) other;
+    var addr_cmp = strcmp (this.raw_address, other_email_addr.raw_address);
+    if (addr_cmp != 0)
+      return addr_cmp;
+    return dummy_compare_parameters (other);
+  }
+
   /**
    * Returns the TypeDescriptor that describes the type of the email address
    * (for example personal, work, ...)
@@ -85,6 +94,12 @@ public class Contacts.EmailAddress : BinChunkChild {
       return null;
 
     return new EmailFieldDetails (this.raw_address, this.parameters);
+  }
+  public override BinChunkChild copy () {
+    var email_address = new EmailAddress ();
+    email_address.raw_address = this.raw_address;
+    copy_parameters (email_address);
+    return email_address;
   }
 
   public string get_mailto_uri () {

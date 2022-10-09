@@ -36,7 +36,7 @@ public class Contacts.UrlsChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -76,6 +76,11 @@ public class Contacts.Url : BinChunkChild {
     this.parameters = url_field.parameters;
   }
 
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is Url) {
+    return strcmp (this.raw_url, ((Url) other).raw_url);
+  }
+
   /**
    * Tries to return an absolute URL (with a scheme).
    * Since we know contact URL values are for web addresses, we try to fall
@@ -91,5 +96,12 @@ public class Contacts.Url : BinChunkChild {
       return null;
 
     return new UrlFieldDetails (this.raw_url, this.parameters);
+  }
+
+  public override BinChunkChild copy () {
+    var url = new Url ();
+    url.raw_url = this.raw_url;
+    copy_parameters (url);
+    return url;
   }
 }

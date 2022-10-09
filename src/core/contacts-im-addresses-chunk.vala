@@ -39,7 +39,7 @@ public class Contacts.ImAddressesChunk : BinChunk {
       }
     }
 
-    emptiness_check ();
+    finish_initialization ();
   }
 
   protected override BinChunkChild create_empty_child () {
@@ -90,10 +90,33 @@ public class Contacts.ImAddress : BinChunkChild {
     this.parameters = im_field.parameters;
   }
 
+  protected override int compare_internal (BinChunkChild other)
+      requires (other is ImAddress) {
+    unowned var other_im_addr = (ImAddress) other;
+
+    var protocol_cmp = strcmp (this.protocol, other_im_addr.protocol);
+    if (protocol_cmp != 0)
+      return protocol_cmp;
+
+    var addr_cmp = strcmp (this.address, other_im_addr.address);
+    if (addr_cmp != 0)
+      return addr_cmp;
+
+    return dummy_compare_parameters (other);
+  }
+
   public override AbstractFieldDetails? create_afd () {
     if (this.is_empty)
       return null;
 
     return new ImFieldDetails (this.address, this.parameters);
+  }
+
+  public override BinChunkChild copy () {
+    var ima = new ImAddress ();
+    ima.protocol = this.protocol;
+    ima.address = this.address;
+    copy_parameters (ima);
+    return ima;
   }
 }

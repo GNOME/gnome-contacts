@@ -273,6 +273,12 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
       if (individual == null)
         individual = chunk.persona.individual;
 
+      if (!chunk.dirty) {
+        debug ("Not saving unchanged property '%s' to persona %s",
+               chunk.property_name, chunk.persona.uid);
+        continue;
+      }
+
       if (!(chunk.property_name in chunk.persona.writeable_properties)) {
         warning ("Can't save to unwriteable property '%s' to persona %s",
                  chunk.property_name, chunk.persona.uid);
