@@ -264,9 +264,12 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
   public async unowned Individual? apply_changes (PersonaStore store) throws GLib.Error {
     unowned Individual? individual = null;
 
+    // Create a (shallow) copy of the chunks
+    var chunks = this.chunks.copy ((chunk) => { return chunk; });
+
     // For those that were a persona: save the properties using the API
-    for (uint i = 0; i < this.chunks.length; i++) {
-      unowned var chunk = this.chunks[i];
+    for (uint i = 0; i < chunks.length; i++) {
+      unowned var chunk = chunks[i];
       if (chunk.persona == null)
         continue;
 
@@ -297,8 +300,8 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
 
     // Find those without a persona, and save them into the primary store
     var new_details = new HashTable<string, Value?> (str_hash, str_equal);
-    for (uint i = 0; i < this.chunks.length; i++) {
-      unowned var chunk = this.chunks[i];
+    for (uint i = 0; i < chunks.length; i++) {
+      unowned var chunk = chunks[i];
       if (chunk.persona != null)
         continue;
 
