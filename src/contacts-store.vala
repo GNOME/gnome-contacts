@@ -188,7 +188,7 @@ public class Contacts.Store : GLib.Object {
       if (individual != null)
         to_remove.add (individual);
       foreach (var new_i in changes[individual]) {
-        if (new_i != null)
+        if (new_i != null && !to_add.find (new_i, null))
           to_add.add (new_i);
       }
     }
