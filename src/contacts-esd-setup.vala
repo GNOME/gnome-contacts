@@ -173,6 +173,7 @@ public unowned string? lookup_esource_name_by_uid_for_contact (string uid) {
 }
 
 public Gtk.Image? get_icon_for_goa_account (string goa_id) {
+#if HAVE_GOA
   Goa.Client client;
   try {
     client = new Goa.Client.sync (null);
@@ -192,5 +193,8 @@ public Gtk.Image? get_icon_for_goa_account (string goa_id) {
   }
 
   return new Gtk.Image.from_gicon (provider_icon);
+#else
+  return null;
+#endif
 }
 }

@@ -52,7 +52,6 @@ contacts_deps = [
   gee,
   gio_unix,
   glib,
-  goa,
   gtk4_dep,
   libadwaita_dep,
   libebook,
@@ -61,6 +60,10 @@ contacts_deps = [
   libportal_dep,
   math,
 ]
+
+if get_option('goa')
+  contacts_deps += [ goa_dep ]
+endif
 
 libcontacts = static_library('contacts',
   libcontacts_sources,

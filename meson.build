@@ -48,7 +48,6 @@ gio_unix = dependency('gio-unix-2.0', version: '>=' + min_glib_version)
 glib = dependency('glib-2.0', version: '>=' + min_glib_version)
 gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_version)
 # gnome_desktop = dependency('gnome-desktop-3.0')
-goa = dependency('goa-1.0')
 gtk4_dep = dependency('gtk4', version: '>= 4.6')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.2.alpha')
 # E-D-S
@@ -60,6 +59,11 @@ libportal_dep = dependency('libportal-gtk4', version: '>= 0.6')
 # Cheese
 # cheese_dep = dependency('cheese', required: get_option('cheese'))
 # cheese_gtk_dep = dependency('cheese-gtk', version: '>= 3.3.91', required: get_option('cheese'))
+# gnome-online-accounts
+if get_option('goa')
+  goa_dep = dependency('goa-1.0')
+  add_project_arguments('-D', 'HAVE_GOA', language: 'vala')
+endif
 
 valadoc = find_program('valadoc', required: get_option('docs'))
 

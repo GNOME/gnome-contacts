@@ -107,10 +107,11 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
         var goa_source_ext = parent_source.get_extension (E.SOURCE_EXTENSION_GOA) as E.SourceGoa;
         source_account_id = goa_source_ext.account_id;
       }
-      Gtk.Image provider_image;
+
+      Gtk.Image? provider_image = null;
       if (this.persona_store.id != "system-address-book" && source_account_id != "")
         provider_image = Contacts.get_icon_for_goa_account (source_account_id);
-      else
+      if (provider_image == null)
         provider_image = new Gtk.Image.from_icon_name (Config.APP_ID);
       provider_image.icon_size = Gtk.IconSize.LARGE;
       add_prefix (provider_image);
