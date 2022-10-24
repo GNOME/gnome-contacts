@@ -1,4 +1,12 @@
 test_names = [
+  'test-addresses-chunk',
+  'test-birthday-chunk',
+  'test-email-addresses-chunk',
+  'test-full-name-chunk',
+  'test-nickname-chunk',
+  'test-notes-chunk',
+  'test-phones-chunk',
+  'test-roles-chunk',
   'test-urls-chunk',
 ]
 

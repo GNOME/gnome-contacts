@@ -17,8 +17,9 @@
 
 void main (string[] args) {
   Test.init (ref args);
-  Test.add_func ("/core/urls-chunk/property_name_chunk", test_property_name);
-  Test.add_func ("/core/urls-chunk/get_absolute_url", test_get_absolute_url);
+  Test.add_func ("/core/urls-chunk/property-name-chunk", test_property_name);
+  Test.add_func ("/core/urls-chunk/get-absolute-url", test_get_absolute_url);
+  Test.add_func ("/core/urls-chunk/get-is-empty", test_is_empty);
   Test.run ();
 }
 
@@ -52,4 +53,24 @@ private void test_get_absolute_url () {
   url.raw_url = "gnome.org";
   assert_true (url.raw_url == "gnome.org");
   assert_true (url.get_absolute_url () == "https://gnome.org");
+}
+
+private void test_is_empty () {
+  var contact = new Contacts.Contact.empty ();
+  var chunk = (Contacts.UrlsChunk) contact.create_chunk ("urls", null);
+  assert_nonnull (chunk);
+  var url = (Contacts.Url) chunk.get_item (0);
+
+  // Even though there is an element, it's empty, so the urls chunk should
+  // count as empty too
+  assert_true (url.is_empty);
+  assert_true (chunk.is_empty);
+
+  url.raw_url = "https://gnome.org";
+  assert_false (url.is_empty);
+  assert_false (chunk.is_empty);
+
+  url.raw_url = "";
+  assert_true (url.is_empty);
+  assert_true (chunk.is_empty);
 }
