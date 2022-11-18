@@ -59,6 +59,7 @@ libportal_dep = dependency('libportal-gtk4', version: '>= 0.6')
 # Cheese
 # cheese_dep = dependency('cheese', required: get_option('cheese'))
 # cheese_gtk_dep = dependency('cheese-gtk', version: '>= 3.3.91', required: get_option('cheese'))
+libqrencode_dep = dependency('libqrencode', version: '>=4.1.1')
 # gnome-online-accounts
 if get_option('goa')
   goa_dep = dependency('goa-1.0')

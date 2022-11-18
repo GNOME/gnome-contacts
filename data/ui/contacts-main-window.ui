@@ -40,6 +40,25 @@
     </section>
   </menu>
 
+  <menu id="contact_hamburger_menu_popover">
+    <section>
+      <item>
+        <attribute name="action">win.toggle-favorite</attribute>
+        <attribute name="custom">favorite-toggle</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Share as QR Code</attribute>
+        <attribute name="action">win.show-contact-qr-code</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Delete Contact</attribute>
+        <attribute name="action">win.delete-contact</attribute>
+      </item>
+    </section>
+  </menu>
+
   <template class="ContactsMainWindow" parent="AdwApplicationWindow">
     <property name="default_width">800</property>
     <property name="default_height">600</property>
@@ -247,23 +266,18 @@
                             <property name="orientation">horizontal</property>
                             <property name="spacing">6</property>
                             <child>
-                              <object class="GtkToggleButton" id="favorite_button">
-                                <property name="icon-name">starred-symbolic</property>
-                                <signal name="toggled" handler="on_favorite_button_toggled"/>
-                              </object>
-                            </child>
-                            <child>
                               <object class="GtkButton" id="edit_contact_button">
                                 <property name="icon-name">document-edit-symbolic</property>
                                 <property name="action-name">win.edit-contact</property>
                                 <property name="tooltip-text" translatable="yes">Edit Contact</property>
                               </object>
                             </child>
-                            <child>
-                              <object class="GtkButton" id="delete_contact_button">
-                                <property name="icon-name">user-trash-symbolic</property>
-                                <property name="action-name">win.delete-contact</property>
-                                <property name="tooltip-text" translatable="yes">Delete Contact</property>
+                            <child type="end">
+                              <object class="GtkMenuButton" id="contact_hamburger_menu_button">
+                                <property name="menu-model">contact_hamburger_menu_popover</property>
+                                <property name="primary">True</property>
+                                <property name="tooltip_text" translatable="yes">More Contact Actions</property>
+                                <property name="icon-name">open-menu-symbolic</property>
                               </object>
                             </child>
                           </object>

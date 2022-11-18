@@ -9,3 +9,4 @@ namespace Cc {
         public Gdk.Pixbuf create_pixbuf ();
     }
 }
+

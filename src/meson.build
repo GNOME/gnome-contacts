@@ -59,6 +59,7 @@ contacts_deps = [
   # libedataserverui,
   libportal_dep,
   math,
+  libqrencode_dep,
 ]
 
 if get_option('goa')
@@ -94,6 +95,7 @@ contacts_vala_sources = files(
   'contacts-link-suggestion-grid.vala',
   'contacts-linked-personas-dialog.vala',
   'contacts-main-window.vala',
+  'contacts-qr-code-dialog.vala',
   'contacts-preferences-window.vala',
   'contacts-settings.vala',
   'contacts-setup-window.vala',
