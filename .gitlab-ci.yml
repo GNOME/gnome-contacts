@@ -25,6 +25,10 @@ style-check:
     paths:
       - "style-check-junit-report.xml"
 
+i18n:
+  stage: review
+  script:
+    - ./.gitlab/ci/check-potfiles.sh
 
 flatpak:
   image: quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master
