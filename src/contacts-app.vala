@@ -254,6 +254,7 @@ public class Contacts.App : Adw.Application {
     this.add_action_entries (action_entries, this);
 
     this.set_accels_for_action ("app.help", {"F1"});
+    this.set_accels_for_action ("app.show-preferences", {"<Control>comma"});
     this.set_accels_for_action ("app.quit", {"<Control>q"});
   }
 
