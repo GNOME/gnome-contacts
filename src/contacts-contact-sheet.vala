@@ -213,7 +213,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
                                      email.get_email_address_type ().display_name);
 
       var button = row.add_button ("mail-send-symbolic");
-      button.tooltip_text = _("Send an email to %s".printf (email.raw_address));
+      button.tooltip_text = _("Send an email to %s").printf (email.raw_address);
       button.clicked.connect (() => {
         unowned var window = get_root () as Gtk.Window;
         Gtk.show_uri (window, email.get_mailto_uri (), 0);
