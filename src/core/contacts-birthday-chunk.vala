@@ -75,4 +75,29 @@ public class Contacts.BirthdayChunk : Chunk {
       requires (this.persona is BirthdayDetails) {
     yield ((BirthdayDetails) this.persona).change_birthday (this.birthday);
   }
+
+  public bool is_today (DateTime now)
+      requires (this.birthday != null) {
+    int bd_m, bd_d, now_y, now_m, now_d;
+    _birthday.to_local().get_ymd (null, out bd_m, out bd_d);
+    now.get_ymd (out now_y, out now_m, out now_d);
+
+    return (bd_m == now_m && bd_d == now_d)
+      || (is_leap_day (bd_m, bd_d) && is_birthday_of_leap_day_in_non_leap_year (now_y, now_m, now_d));
+  }
+
+  // February 28th is treated as birthday on non-leap years.
+  // This is consistent with the behaviour of evolution-data-server's Birthdays calendar:
+  // https://gitlab.gnome.org/GNOME/evolution-data-server/-/issues/88
+  private bool is_birthday_of_leap_day_in_non_leap_year (int now_y, int now_m, int now_d) {
+    return now_m == 2 && now_d == 28 && !is_leap_year (now_y);
+  }
+
+  private bool is_leap_year (int year) {
+    return ((DateYear) year).is_leap_year ();
+  }
+
+  private bool is_leap_day (int month, int day) {
+    return month == 2 && day == 29;
+  }
 }

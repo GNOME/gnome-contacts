@@ -317,11 +317,8 @@ public class Contacts.ContactSheet : Gtk.Widget {
 
     // Compare month and date so we can put a reminder
     string? subtitle = null;
-    int bd_m, bd_d, now_m, now_d;
-    birthday_chunk.birthday.to_local ().get_ymd (null, out bd_m, out bd_d);
-    new DateTime.now_local ().get_ymd (null, out now_m, out now_d);
 
-    if (bd_m == now_m && bd_d == now_d) {
+    if (birthday_chunk.is_today (new DateTime.now_local ())) {
       subtitle = _("Their birthday is today! 🎉");
     }
 

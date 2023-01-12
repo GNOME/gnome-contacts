@@ -19,6 +19,7 @@ void main (string[] args) {
   Test.init (ref args);
   Test.add_func ("/core/birthday-chunk/property_name_chunk", test_property_name);
   Test.add_func ("/core/birthday-chunk/is-empty", test_is_empty);
+  Test.add_func ("/core/birthday-chunk/leap-day-birthday", test_leap_day_birthday);
   Test.run ();
 }
 
@@ -43,4 +44,20 @@ private void test_is_empty () {
 
   chunk.birthday = null;
   assert_true (chunk.is_empty);
+}
+
+void test_leap_day_birthday () {
+  var contact = new Contacts.Contact.empty ();
+  var chunk = (Contacts.BirthdayChunk) contact.create_chunk ("birthday", null);
+  assert_nonnull (chunk);
+  chunk.birthday = new DateTime.local (2020, 2, 29, 0, 0, 0);
+
+  var leap_day = new DateTime.local (2024, 2, 29, 0, 0, 0);
+  assert_true (chunk.is_today (leap_day));
+
+  var feb_28_leap_year = new DateTime.local (2024, 2, 28, 0, 0, 0);
+  assert_false (chunk.is_today (feb_28_leap_year));
+
+  var feb_28_non_leap_year = new DateTime.local (2023, 2, 28, 0, 0, 0);
+  assert_true (chunk.is_today (feb_28_non_leap_year));
 }
