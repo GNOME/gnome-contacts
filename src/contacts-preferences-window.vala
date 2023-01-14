@@ -27,8 +27,8 @@ public class Contacts.PreferencesWindow : Adw.PreferencesWindow {
     Object (transient_for: transient_for, search_enabled: false);
 
     var acc_list = new AccountsList (contacts_store);
-    acc_list.title = _("Primary Address Book");
-    acc_list.description = _("New contacts will be added to the selected address book. You are able to view and edit contacts from other address books.");
+    acc_list.title = _("Address Books");
+    acc_list.description = _("New contacts will be stored in the selected primary address book");
     this.address_books_page.add (acc_list);
 
     acc_list.notify["selected-store"].connect ((obj, pspec) => {
@@ -36,18 +36,34 @@ public class Contacts.PreferencesWindow : Adw.PreferencesWindow {
       contacts_store.set_primary_address_book (edsf_store);
     });
 
-    var goa_button_content = new Adw.ButtonContent ();
-    goa_button_content.label = _("_Online Accounts");
-    goa_button_content.use_underline = true;
-    goa_button_content.icon_name = "external-link-symbolic";
-    var goa_button = new Gtk.Button ();
-    goa_button.set_child (goa_button_content);
+    var add_accounts_group = new Adw.PreferencesGroup ();
+    add_accounts_group.title = _("Add address book");
+
+    var goa_row = new Adw.ActionRow ();
+    goa_row.title = _("GNOME Online Accounts");
+    var goa_button = new Gtk.Button.from_icon_name ("external-link-symbolic");
     goa_button.tooltip_text = _("Opens the Online Accounts panel in GNOME Settings");
-    goa_button.margin_top = 36;
-    goa_button.halign = Gtk.Align.CENTER;
-    goa_button.add_css_class ("pill");
+    goa_button.add_css_class ("flat");
     goa_button.clicked.connect (on_goa_button_clicked);
-    acc_list.add (goa_button);
+    goa_row.add_suffix (goa_button);
+    goa_row.activatable_widget = goa_button;
+    add_accounts_group.add (goa_row);
+
+    var carddav_row = new Adw.ActionRow ();
+    carddav_row.title = _("CardDAV account");
+    var carddav_button = new Gtk.Button.from_icon_name ("go-next-symbolic");
+    carddav_button.clicked.connect (on_carddav_button_clicked);
+    carddav_button.add_css_class ("flat");
+    carddav_row.add_suffix (carddav_button);
+    carddav_row.activatable_widget = carddav_button;
+    add_accounts_group.add (carddav_row);
+
+    this.address_books_page.add (add_accounts_group);
+  }
+
+  private void on_carddav_button_clicked (Gtk.Button add_account_button) {
+    var dialog = new AddAddressBookDialog (this);
+    dialog.present ();
   }
 
   private void on_goa_button_clicked (Gtk.Button goa_button) {

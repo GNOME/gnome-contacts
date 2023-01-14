@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContactsAddAddressBookDialog" parent="GtkDialog">
+    <property name="modal">True</property>
+    <property name="title" translatable="yes">Add CardDAV account</property>
+
+    <child type="action">
+      <object class="GtkButton" id="cancel_button">
+        <property name="label" translatable="yes">_Cancel</property>
+        <property name="use-underline">True</property>
+        <property name="action-name">window.close</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkButton" id="add_button">
+        <property name="label" translatable="yes">_Add</property>
+        <property name="use-underline">True</property>
+        <property name="action-name">address-book.save</property>
+        <style>
+          <class name="suggested-action"/>
+        </style>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="cancel">cancel_button</action-widget>
+      <action-widget response="accept" default="true">add_button</action-widget>
+    </action-widgets>
+
+    <child internal-child="content_area">
+      <object class="GtkBox">
+        <child>
+          <object class="AdwClamp">
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">18</property>
+                <property name="margin-top">18</property>
+                <property name="margin-bottom">18</property>
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <property name="title" translatable="yes">Address book name</property>
+                    <property name="description" translatable="yes">Provide a name for the address book</property>
+                    <child>
+                      <object class="AdwEntryRow" id="address_book_name_row">
+                        <property name="title" translatable="yes">Name</property>
+                        <signal name="notify::text" handler="on_address_book_name_row_notify_text"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <property name="title" translatable="yes">Server details</property>
+                    <child>
+                      <object class="AdwEntryRow" id="server_row">
+                        <property name="title" translatable="yes">URL</property>
+                        <property name="text">https://</property>
+                        <property name="input-purpose">url</property>
+                        <signal name="notify::text" handler="on_server_row_notify_text"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwEntryRow" id="username_row">
+                        <property name="title" translatable="yes">Username</property>
+                        <signal name="notify::text" handler="on_username_row_notify_text"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPasswordEntryRow" id="password_row">
+                        <property name="title" translatable="yes">Password</property>
+                        <signal name="notify::text" handler="on_password_row_notify_text"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="connect_button">
+                    <property name="sensitive">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">_Connect</property>
+                    <property name="use-underline">True</property>
+                    <property name="action-name">address-book.connect</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStack" id="bottom_stack">
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">normal</property>
+                        <property name="child">
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Please fill in all fields to connect to the server</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">error</property>
+                        <property name="child">
+                          <object class="GtkLabel" id="error_label">
+                            <style>
+                              <class name="error"/>
+                            </style>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkStackPage" id="loading_page">
+                        <property name="name">loading</property>
+                        <property name="child">
+                          <object class="GtkBox" id="loading_box">
+                            <property name="halign">center</property>
+                            <property name="spacing">12</property>
+                            <child>
+                              <object class="GtkSpinner">
+                                <property name="spinning" bind-source="loading_box" bind-property="visible" bind-flags="sync-create"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">Contacting the server</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">address_books</property>
+                        <property name="child">
+                          <object class="AdwPreferencesGroup" id="address_books_group">
+                            <property name="title" translatable="yes">Address books</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
