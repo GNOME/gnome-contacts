@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Ekaterine Papava <papava.e@gtu.ge>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-09-06 11:00+0000\n"
-"PO-Revision-Date: 2022-09-06 18:50+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"POT-Creation-Date: 2023-01-17 00:16+0000\n"
+"PO-Revision-Date: 2023-01-20 16:35+0100\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: \n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
@@ -44,8 +44,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:22
-msgid "Contacts with no contacts."
-msgstr "კონტაქტები კონტაქტების გარეშე."
+msgid "Contacts with no contacts"
+msgstr "კონტაქტები კონტაქტების გარეშე"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:26
 msgid "Contacts filled with contacts"
@@ -63,7 +63,7 @@ msgstr "კონტაქტების მორგების ხედი"
 msgid "Contacts edit view"
 msgstr "კონტაქტების ხედის ჩასწორება"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:774 src/contacts-app.vala:149
+#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "პროექტი \"GNOME\""
 
@@ -89,20 +89,25 @@ msgstr "მენიუს გახსნა"
 
 #: data/gtk/help-overlay.ui:23
 msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "პარამეტრების ფანჯრის ჩვენება"
+
+#: data/gtk/help-overlay.ui:29
+msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "ახალი კონტაქტის შექმნა"
 
-#: data/gtk/help-overlay.ui:29
+#: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "ძებნა"
 
-#: data/gtk/help-overlay.ui:35
+#: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "მალსახმობების სია"
 
-#: data/gtk/help-overlay.ui:41
+#: data/gtk/help-overlay.ui:47
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "გამოსვლა"
@@ -112,8 +117,8 @@ msgid "Select a new avatar"
 msgstr "აირჩიეთ ახალი ავატარი"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-addressbook-dialog.vala:33
-#: src/contacts-app.vala:342 src/contacts-contact-editor.vala:715
+#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:337
+#: src/contacts-contact-editor.vala:730
 msgid "Cancel"
 msgstr "გაუქმება"
 
@@ -232,8 +237,8 @@ msgstr "მოცილება"
 msgid "Back"
 msgstr "უკან"
 
-#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:239
-#: src/contacts-app.vala:408 src/contacts-avatar-selector.vala:196
+#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
+#: src/contacts-app.vala:403 src/contacts-avatar-selector.vala:196
 #: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
 msgid "_Cancel"
 msgstr "_გაუქმება"
@@ -282,20 +287,6 @@ msgid ""
 "using the online accounts settings."
 msgstr ""
 
-#: src/contacts-addressbook-dialog.vala:28
-msgid "Change Address Book"
-msgstr "მისამართების წიგნის შეცვლა"
-
-#: src/contacts-addressbook-dialog.vala:32
-msgid "Change"
-msgstr "შეცვლა"
-
-#: src/contacts-addressbook-dialog.vala:59
-msgid ""
-"New contacts will be added to the selected address book.\n"
-"You are able to view and edit contacts from other address books."
-msgstr ""
-
 #: src/contacts-app.vala:45
 msgid "Show contact with this email address"
 msgstr ""
@@ -312,7 +303,7 @@ msgstr ""
 msgid "Show the current version of Contacts"
 msgstr ""
 
-#: src/contacts-app.vala:110 src/contacts-app.vala:169
+#: src/contacts-app.vala:110 src/contacts-app.vala:163
 msgid "Contact not found"
 msgstr "კონტაქტები ვერ ვპოვე"
 
@@ -321,83 +312,83 @@ msgstr "კონტაქტები ვერ ვპოვე"
 msgid "No contact with id %s found"
 msgstr ""
 
-#: src/contacts-app.vala:112 src/contacts-app.vala:171
-#: src/contacts-utils.vala:74
+#: src/contacts-app.vala:112 src/contacts-app.vala:165
+#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
 msgid "_Close"
 msgstr "დახურვა"
 
-#: src/contacts-app.vala:155
+#: src/contacts-app.vala:149
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
 msgstr ""
 
-#: src/contacts-app.vala:170
+#: src/contacts-app.vala:164
 #, c-format
 msgid "No contact with email address %s found"
 msgstr ""
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:227
 msgid "Primary address book not found"
 msgstr "მისამართების ძირითადი წიგნაკი ვერ ვიპოვე"
 
-#: src/contacts-app.vala:235
+#: src/contacts-app.vala:229
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
 msgstr ""
 
-#: src/contacts-app.vala:236
+#: src/contacts-app.vala:230
 msgid "Go To _Preferences"
 msgstr "_მორგება"
 
-#: src/contacts-app.vala:338
+#: src/contacts-app.vala:333
 msgid "Select contact file"
 msgstr "აირჩიეთ კონტაქტის ფაილი"
 
-#: src/contacts-app.vala:341
+#: src/contacts-app.vala:336
 msgid "Import"
 msgstr "შემოტანა"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:348
+#: src/contacts-app.vala:343
 msgid "vCard files"
 msgstr "vCard ფაილები"
 
-#: src/contacts-app.vala:381
+#: src/contacts-app.vala:376
 msgid "Error reading file"
 msgstr "ფაილის წაკითხვის შეცდომა"
 
-#: src/contacts-app.vala:382
+#: src/contacts-app.vala:377
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr ""
 
-#: src/contacts-app.vala:383 src/contacts-app.vala:393
+#: src/contacts-app.vala:378 src/contacts-app.vala:388
 msgid "_OK"
 msgstr "_დიახ"
 
-#: src/contacts-app.vala:391
+#: src/contacts-app.vala:386
 msgid "No contacts found"
 msgstr "კონტაქტები ვერ ვპოვე"
 
-#: src/contacts-app.vala:392
+#: src/contacts-app.vala:387
 msgid "The imported file does not seem to contain any contacts"
 msgstr ""
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:400
+#: src/contacts-app.vala:395
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/contacts-app.vala:403
+#: src/contacts-app.vala:398
 msgid "Continue Import?"
 msgstr "გავაგრძელო შემოტანა?"
 
-#: src/contacts-app.vala:404
+#: src/contacts-app.vala:399
 msgid "C_ontinue"
 msgstr "_გაგრძელება"
 
@@ -413,7 +404,7 @@ msgstr "მეტი სურათი"
 msgid "_Open"
 msgstr "_გახსნა"
 
-#: src/contacts-avatar-selector.vala:235 src/contacts-contact-editor.vala:113
+#: src/contacts-avatar-selector.vala:237 src/contacts-contact-editor.vala:115
 msgid "Failed to set avatar."
 msgstr "ავატარის დაყენების შეცდომა."
 
@@ -421,97 +412,97 @@ msgstr "ავატარის დაყენების შეცდომ�
 msgid "Change avatar"
 msgstr "აირჩიეთ ავატარი"
 
-#: src/contacts-contact-editor.vala:129
+#: src/contacts-contact-editor.vala:133
 msgid "Add name"
 msgstr "სახელის დამატება"
 
-#: src/contacts-contact-editor.vala:250
+#: src/contacts-contact-editor.vala:259
 msgid "Show More"
 msgstr "მეტის ჩვენება"
 
-#: src/contacts-contact-editor.vala:339
+#: src/contacts-contact-editor.vala:348
 msgid "Add email"
 msgstr "ელ-ფოსტის დამატება"
 
-#: src/contacts-contact-editor.vala:365
+#: src/contacts-contact-editor.vala:374
 msgid "Add phone number"
 msgstr "ტელეფონის ნომრის დამატება"
 
-#: src/contacts-contact-editor.vala:391 src/contacts-utils.vala:261
+#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "ვებგვერდი"
 
-#: src/contacts-contact-editor.vala:403 src/contacts-utils.vala:252
+#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "მეტსახელი"
 
-#: src/contacts-contact-editor.vala:454 src/contacts-utils.vala:243
+#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "დაბადების დღე"
 
-#: src/contacts-contact-editor.vala:458
+#: src/contacts-contact-editor.vala:467
 msgid "Set Birthday"
 msgstr "დაბადების დღის დაყენება"
 
-#: src/contacts-contact-editor.vala:528
+#: src/contacts-contact-editor.vala:537
 msgid "Organisation"
 msgstr "ორგანიზაცია"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:534 src/contacts-utils.vala:257
+#: src/contacts-contact-editor.vala:543 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "როლი"
 
-#: src/contacts-contact-editor.vala:644
+#: src/contacts-contact-editor.vala:659
 msgid "Label"
 msgstr "ჭდე"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:700
+#: src/contacts-contact-editor.vala:715
 msgid "Day"
 msgstr "დღე"
 
-#: src/contacts-contact-editor.vala:704
+#: src/contacts-contact-editor.vala:719
 msgid "Month"
 msgstr "თვე"
 
-#: src/contacts-contact-editor.vala:708
+#: src/contacts-contact-editor.vala:723
 msgid "Year"
 msgstr "წელი"
 
-#: src/contacts-contact-editor.vala:713
+#: src/contacts-contact-editor.vala:728
 msgid "Change Birthday"
 msgstr "დაბადების დღის შეცვლა"
 
-#: src/contacts-contact-editor.vala:714
+#: src/contacts-contact-editor.vala:729
 msgid "Set"
 msgstr "დაყენება"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "Street"
 msgstr "ქუჩა"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "Extension"
 msgstr "გაფართოება"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "City"
 msgstr "ქალაქი"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "State/Province"
 msgstr "რეგიონი/მხარე"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "Zip/Postal Code"
 msgstr "საფოსტო ინდექსი"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "PO box"
 msgstr "საფოსტო ყუთი"
 
-#: src/contacts-contact-editor.vala:783
+#: src/contacts-contact-editor.vala:798
 msgid "Country"
 msgstr "ქვეყანა"
 
@@ -532,11 +523,11 @@ msgstr "ელფოსტის გაგზავნა %s-თან"
 msgid "Visit website"
 msgstr "ვებგვერდის ნახვა"
 
-#: src/contacts-contact-sheet.vala:325
+#: src/contacts-contact-sheet.vala:322
 msgid "Their birthday is today! 🎉"
 msgstr "მათი დაბადების დღე დღესაა! 🎉"
 
-#: src/contacts-contact-sheet.vala:372
+#: src/contacts-contact-sheet.vala:369
 msgid "Show on the map"
 msgstr "რუკაზე ჩვენება"
 
@@ -548,12 +539,12 @@ msgstr[0] "%d კონტაქტის წაშლა"
 msgstr[1] "%d კონტაქტის წაშლა"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:168
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:119
 msgid "Local Address Book"
 msgstr "ლოკალური მისამართების წიგნი"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:222
+#: src/contacts-utils.vala:149
 msgid "Google"
 msgstr "Google"
 
@@ -728,7 +719,6 @@ msgid "_Export"
 msgstr "_გატანა"
 
 #: src/contacts-main-window.vala:566
-#| msgid "Contacts"
 msgid "contacts.vcf"
 msgstr "contacts.vcf"
 
@@ -750,155 +740,156 @@ msgstr "_ონლაინ ანგარიშები"
 msgid "Opens the Online Accounts panel in GNOME Settings"
 msgstr ""
 
-#: src/contacts-type-descriptor.vala:83 src/contacts-typeset.vala:248
-msgid "Other"
-msgstr "სხვები"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:196 src/contacts-typeset.vala:217
-#: src/contacts-typeset.vala:243 src/contacts-typeset.vala:245
-msgid "Home"
-msgstr "საწყისი"
-
-#: src/contacts-typeset.vala:197 src/contacts-typeset.vala:218
-#: src/contacts-typeset.vala:237 src/contacts-typeset.vala:239
-msgid "Work"
-msgstr "სამუშაო"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:216
-msgid "Personal"
-msgstr "პერსონალური"
-
-#. List most specific first, always in upper case
-#: src/contacts-typeset.vala:236
-msgid "Assistant"
-msgstr "დამხმარე"
-
-#: src/contacts-typeset.vala:238
-msgid "Work Fax"
-msgstr "სამსახურის ფაქსი"
-
-#: src/contacts-typeset.vala:240
-msgid "Callback"
-msgstr "უკუგამოძახება"
-
-#: src/contacts-typeset.vala:241
-msgid "Car"
-msgstr "მანქანა"
-
-#: src/contacts-typeset.vala:242
-msgid "Company"
-msgstr "კომპანია"
-
-#: src/contacts-typeset.vala:244
-msgid "Home Fax"
-msgstr "სახლის ფაქსი"
-
-#: src/contacts-typeset.vala:246
-msgid "ISDN"
-msgstr "ISDN"
-
-#: src/contacts-typeset.vala:247
-msgid "Mobile"
-msgstr "მობილური"
-
-#: src/contacts-typeset.vala:249
-msgid "Fax"
-msgstr "ფაქსი"
-
-#: src/contacts-typeset.vala:250
-msgid "Pager"
-msgstr "პეიჯერი"
-
-#: src/contacts-typeset.vala:251
-msgid "Radio"
-msgstr "რადიო"
-
-#: src/contacts-typeset.vala:252
-msgid "Telex"
-msgstr "Telex"
-
-#. To translators: TTY is Teletypewriter
-#: src/contacts-typeset.vala:254
-msgid "TTY"
-msgstr "TTY"
-
 #: src/contacts-unlink-operation.vala:37
 msgid "Unlinking contacts"
 msgstr "კონტაქტების ბმის მოხსნა"
 
-#: src/contacts-utils.vala:241
+#: src/contacts-utils.vala:168
 msgid "Alias"
 msgstr "სინონიმი"
 
-#: src/contacts-utils.vala:242
+#: src/contacts-utils.vala:169
 msgid "Avatar"
 msgstr "ავატარი"
 
-#: src/contacts-utils.vala:244
+#: src/contacts-utils.vala:171
 msgid "Calendar event"
 msgstr "კალენდრის მოვლენა"
 
-#: src/contacts-utils.vala:245
+#: src/contacts-utils.vala:172
 msgid "Email address"
 msgstr "ელფოსტის მისამართი"
 
-#: src/contacts-utils.vala:246
+#: src/contacts-utils.vala:173
 msgid "Full name"
 msgstr "სრული სახელი"
 
-#: src/contacts-utils.vala:247
+#: src/contacts-utils.vala:174
 msgid "Gender"
 msgstr "სქესი"
 
-#: src/contacts-utils.vala:248
+#: src/contacts-utils.vala:175
 msgid "Group"
 msgstr "ჯგუფი"
 
-#: src/contacts-utils.vala:249
+#: src/contacts-utils.vala:176
 msgid "Instant messaging"
 msgstr "მოკლე-შეტყობინება"
 
-#: src/contacts-utils.vala:250
+#: src/contacts-utils.vala:177
 msgid "Favourite"
 msgstr "რჩეული"
 
-#: src/contacts-utils.vala:251
+#: src/contacts-utils.vala:178
 msgid "Local ID"
 msgstr "ლოკალური ID"
 
-#: src/contacts-utils.vala:253
+#: src/contacts-utils.vala:180
 msgid "Note"
 msgstr "შენიშვნა"
 
-#: src/contacts-utils.vala:254
+#: src/contacts-utils.vala:181
 msgid "Phone number"
 msgstr "ტელეფონის ნომერი"
 
-#: src/contacts-utils.vala:255
+#: src/contacts-utils.vala:182
 msgid "Address"
 msgstr "მისამართი"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:260
+#: src/contacts-utils.vala:187
 msgid "Structured name"
 msgstr "სტრუქტურირებული სახელი"
 
-#: src/contacts-utils.vala:262
+#: src/contacts-utils.vala:189
 msgid "Web service"
 msgstr "ვებ სერვისი"
 
-#: src/core/contacts-contact.vala:40
+#: src/core/contacts-contact.vala:38
 msgid "Unnamed Person"
-msgstr ""
+msgstr "უსახელო ადამიანი"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:86
+#: src/core/contacts-roles-chunk.vala:105
 #, c-format
 msgid "%s at %s"
 msgstr "%s %s-ში"
+
+#: src/core/contacts-type-descriptor.vala:82
+#: src/core/contacts-type-set.vala:232
+msgid "Other"
+msgstr "სხვები"
+
+#. List most specific first, always in upper case
+#: src/core/contacts-type-set.vala:180 src/core/contacts-type-set.vala:201
+#: src/core/contacts-type-set.vala:227 src/core/contacts-type-set.vala:229
+msgid "Home"
+msgstr "საწყისი"
+
+#: src/core/contacts-type-set.vala:181 src/core/contacts-type-set.vala:202
+#: src/core/contacts-type-set.vala:221 src/core/contacts-type-set.vala:223
+msgid "Work"
+msgstr "სამუშაო"
+
+#. List most specific first, always in upper case
+#: src/core/contacts-type-set.vala:200
+msgid "Personal"
+msgstr "პერსონალური"
+
+#. List most specific first, always in upper case
+#: src/core/contacts-type-set.vala:220
+msgid "Assistant"
+msgstr "დამხმარე"
+
+#: src/core/contacts-type-set.vala:222
+msgid "Work Fax"
+msgstr "სამსახურის ფაქსი"
+
+#: src/core/contacts-type-set.vala:224
+msgid "Callback"
+msgstr "უკუგამოძახება"
+
+#: src/core/contacts-type-set.vala:225
+msgid "Car"
+msgstr "მანქანა"
+
+#: src/core/contacts-type-set.vala:226
+msgid "Company"
+msgstr "კომპანია"
+
+#: src/core/contacts-type-set.vala:228
+msgid "Home Fax"
+msgstr "სახლის ფაქსი"
+
+#: src/core/contacts-type-set.vala:230
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/core/contacts-type-set.vala:231
+msgid "Mobile"
+msgstr "მობილური"
+
+#: src/core/contacts-type-set.vala:233
+msgid "Fax"
+msgstr "ფაქსი"
+
+#: src/core/contacts-type-set.vala:234
+msgid "Pager"
+msgstr "პეიჯერი"
+
+#: src/core/contacts-type-set.vala:235
+msgid "Radio"
+msgstr "რადიო"
+
+#: src/core/contacts-type-set.vala:236
+msgid "Telex"
+msgstr "Telex"
+
+#. To translators: TTY is Teletypewriter
+#: src/core/contacts-type-set.vala:238
+msgid "TTY"
+msgstr "TTY"
 
 #: src/io/contacts-io-parse-operation.vala:40
 #, c-format
@@ -954,6 +945,12 @@ msgstr ""
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr ""
+
+#~ msgid "Change Address Book"
+#~ msgstr "მისამართების წიგნის შეცვლა"
+
+#~ msgid "Change"
+#~ msgstr "შეცვლა"
 
 #~ msgid "Start a call"
 #~ msgstr "ზარის დაწყება"
