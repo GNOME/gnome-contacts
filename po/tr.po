@@ -1,5 +1,5 @@
 # Turkish translation for gnome-contacts.
-# Copyright (C) 2011-2022 gnome-contacts's COPYRIGHT HOLDER
+# Copyright (C) 2011-2023 gnome-contacts's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-contacts package.
 #
 # Osman Karagöz <osmank3@gmail.com>, 2012.
@@ -8,15 +8,15 @@
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
 # Doğa Deniz Arıcı <bluegreenbrain@gmail.com>, 2018.
 # Çağatay Yiğit Şahin <cyigitsahin@outlook.com>, 2018.
-# Sabri Ünal <libreajans@gmail.com>, 2022.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2022.
+# Sabri Ünal <libreajans@gmail.com>, 2022, 2023.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-09-08 05:48+0000\n"
-"PO-Revision-Date: 2022-09-03 21:02+0300\n"
+"POT-Creation-Date: 2023-01-17 00:16+0000\n"
+"PO-Revision-Date: 2023-01-22 13:53+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -59,7 +59,7 @@ msgstr ""
 "içi kaynaklardaki kişileri kendiliğinden birbirine bağlar."
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:22
-msgid "Contacts with no contacts."
+msgid "Contacts with no contacts"
 msgstr "Kişiler, kişisiz"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:26
@@ -78,7 +78,7 @@ msgstr "Kişiler kurulum görünümü"
 msgid "Contacts edit view"
 msgstr "Kişiler düzenleme görünümü"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:774 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "GNOME Projesi"
 
@@ -104,20 +104,25 @@ msgstr "Menüyü aç"
 
 #: data/gtk/help-overlay.ui:23
 msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Tercihleri göster"
+
+#: data/gtk/help-overlay.ui:29
+msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "Yeni kişi oluştur"
 
-#: data/gtk/help-overlay.ui:29
+#: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Ara"
 
-#: data/gtk/help-overlay.ui:35
+#: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "Kısayol listesi"
 
-#: data/gtk/help-overlay.ui:41
+#: data/gtk/help-overlay.ui:47
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Çık"
@@ -127,8 +132,8 @@ msgid "Select a new avatar"
 msgstr "Yeni avatar seç"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:336
-#: src/contacts-contact-editor.vala:719
+#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:337
+#: src/contacts-contact-editor.vala:730
 msgid "Cancel"
 msgstr "Vazgeç"
 
@@ -249,7 +254,7 @@ msgid "Back"
 msgstr "Geri"
 
 #: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
-#: src/contacts-app.vala:402 src/contacts-avatar-selector.vala:196
+#: src/contacts-app.vala:403 src/contacts-avatar-selector.vala:196
 #: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
 msgid "_Cancel"
 msgstr "_İptal"
@@ -360,53 +365,53 @@ msgstr ""
 msgid "Go To _Preferences"
 msgstr "_Tercihlerʼe Git"
 
-#: src/contacts-app.vala:332
+#: src/contacts-app.vala:333
 msgid "Select contact file"
 msgstr "Kişi dosyası seç"
 
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:336
 msgid "Import"
 msgstr "İçe Aktar"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:343
 msgid "vCard files"
 msgstr "vCard dosyaları"
 
-#: src/contacts-app.vala:375
+#: src/contacts-app.vala:376
 msgid "Error reading file"
 msgstr "Dosya okunamadı"
 
-#: src/contacts-app.vala:376
+#: src/contacts-app.vala:377
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "'%s' dosyası okunurken hata oluştu"
 
-#: src/contacts-app.vala:377 src/contacts-app.vala:387
+#: src/contacts-app.vala:378 src/contacts-app.vala:388
 msgid "_OK"
 msgstr "_Tamam"
 
-#: src/contacts-app.vala:385
+#: src/contacts-app.vala:386
 msgid "No contacts found"
 msgstr "Kişi bulunamadı"
 
 # not seem to vurgusu eklenmedi
-#: src/contacts-app.vala:386
+#: src/contacts-app.vala:387
 msgid "The imported file does not seem to contain any contacts"
 msgstr "İçe aktarılan dosya herhangi bir kişi içermiyor"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:394
+#: src/contacts-app.vala:395
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Sürdürürseniz %u kişi içe aktarılacak"
 
-#: src/contacts-app.vala:397
+#: src/contacts-app.vala:398
 msgid "Continue Import?"
 msgstr "İçe Aktarma Sürdürülsün Mü?"
 
-#: src/contacts-app.vala:398
+#: src/contacts-app.vala:399
 msgid "C_ontinue"
 msgstr "_Sürdür"
 
@@ -434,93 +439,93 @@ msgstr "Avatar değiştir"
 msgid "Add name"
 msgstr "Ad ekle"
 
-#: src/contacts-contact-editor.vala:254
+#: src/contacts-contact-editor.vala:259
 msgid "Show More"
 msgstr "Dahasını Göster"
 
-#: src/contacts-contact-editor.vala:343
+#: src/contacts-contact-editor.vala:348
 msgid "Add email"
 msgstr "E-posta ekle"
 
-#: src/contacts-contact-editor.vala:369
+#: src/contacts-contact-editor.vala:374
 msgid "Add phone number"
 msgstr "Telefon numarası ekle"
 
-#: src/contacts-contact-editor.vala:395 src/contacts-utils.vala:190
+#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "Web Sitesi"
 
-#: src/contacts-contact-editor.vala:407 src/contacts-utils.vala:181
+#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "Takma Ad"
 
-#: src/contacts-contact-editor.vala:458 src/contacts-utils.vala:172
+#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "Doğum Günü"
 
-#: src/contacts-contact-editor.vala:462
+#: src/contacts-contact-editor.vala:467
 msgid "Set Birthday"
 msgstr "Doğum Günü Belirle"
 
-#: src/contacts-contact-editor.vala:532
+#: src/contacts-contact-editor.vala:537
 msgid "Organisation"
 msgstr "Kuruluş"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:538 src/contacts-utils.vala:186
+#: src/contacts-contact-editor.vala:543 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Görev"
 
-#: src/contacts-contact-editor.vala:648
+#: src/contacts-contact-editor.vala:659
 msgid "Label"
 msgstr "Etiket"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:704
+#: src/contacts-contact-editor.vala:715
 msgid "Day"
 msgstr "Gün"
 
-#: src/contacts-contact-editor.vala:708
+#: src/contacts-contact-editor.vala:719
 msgid "Month"
 msgstr "Ay"
 
-#: src/contacts-contact-editor.vala:712
+#: src/contacts-contact-editor.vala:723
 msgid "Year"
 msgstr "Yıl"
 
-#: src/contacts-contact-editor.vala:717
+#: src/contacts-contact-editor.vala:728
 msgid "Change Birthday"
 msgstr "Doğum Gününü Değiştir"
 
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:729
 msgid "Set"
 msgstr "Belirle"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "Street"
 msgstr "Sokak"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "Extension"
 msgstr "Ek"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "City"
 msgstr "Şehir"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "State/Province"
 msgstr "Eyalet/Bölge"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "Zip/Postal Code"
 msgstr "Posta Kodu"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "PO box"
 msgstr "Posta kutusu"
 
-#: src/contacts-contact-editor.vala:787
+#: src/contacts-contact-editor.vala:798
 msgid "Country"
 msgstr "Ülke"
 
@@ -541,11 +546,11 @@ msgstr "E-posta gönder: %s"
 msgid "Visit website"
 msgstr "Web sitesini ziyaret et"
 
-#: src/contacts-contact-sheet.vala:325
+#: src/contacts-contact-sheet.vala:322
 msgid "Their birthday is today! 🎉"
 msgstr "Bugün doğum günü! 🎉"
 
-#: src/contacts-contact-sheet.vala:372
+#: src/contacts-contact-sheet.vala:369
 msgid "Show on the map"
 msgstr "Haritada göster"
 
@@ -556,12 +561,12 @@ msgid_plural "Deleting %d contacts"
 msgstr[0] "%d kişi siliniyor"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:121
+#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:119
 msgid "Local Address Book"
 msgstr "Yerel Adres Defteri"
 
 #: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:151
+#: src/contacts-utils.vala:149
 msgid "Google"
 msgstr "Google"
 
@@ -760,65 +765,65 @@ msgstr "GNOME Ayarlar’da Çevrim İçi Hesaplar’ı açar"
 msgid "Unlinking contacts"
 msgstr "Kişilerin bağı çözülüyor"
 
-#: src/contacts-utils.vala:170
+#: src/contacts-utils.vala:168
 msgid "Alias"
 msgstr "Takma Ad"
 
-#: src/contacts-utils.vala:171
+#: src/contacts-utils.vala:169
 msgid "Avatar"
 msgstr "Avatar"
 
-#: src/contacts-utils.vala:173
+#: src/contacts-utils.vala:171
 msgid "Calendar event"
 msgstr "Takvim etkinliği"
 
-#: src/contacts-utils.vala:174
+#: src/contacts-utils.vala:172
 msgid "Email address"
 msgstr "E-posta adresi"
 
-#: src/contacts-utils.vala:175
+#: src/contacts-utils.vala:173
 msgid "Full name"
 msgstr "Tam ad"
 
-#: src/contacts-utils.vala:176
+#: src/contacts-utils.vala:174
 msgid "Gender"
 msgstr "Cinsiyet"
 
-#: src/contacts-utils.vala:177
+#: src/contacts-utils.vala:175
 msgid "Group"
 msgstr "Küme"
 
-#: src/contacts-utils.vala:178
+#: src/contacts-utils.vala:176
 msgid "Instant messaging"
 msgstr "Anlık iletişim"
 
-#: src/contacts-utils.vala:179
+#: src/contacts-utils.vala:177
 msgid "Favourite"
 msgstr "Gözde"
 
-#: src/contacts-utils.vala:180
+#: src/contacts-utils.vala:178
 msgid "Local ID"
 msgstr "Yerel Kimlik"
 
-#: src/contacts-utils.vala:182
+#: src/contacts-utils.vala:180
 msgid "Note"
 msgstr "Not"
 
-#: src/contacts-utils.vala:183
+#: src/contacts-utils.vala:181
 msgid "Phone number"
 msgstr "Telefon numarası"
 
-#: src/contacts-utils.vala:184
+#: src/contacts-utils.vala:182
 msgid "Address"
 msgstr "Adres"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:189
+#: src/contacts-utils.vala:187
 msgid "Structured name"
 msgstr "Yapılandırılmış ad"
 
-#: src/contacts-utils.vala:191
+#: src/contacts-utils.vala:189
 msgid "Web service"
 msgstr "Web servisi"
 
@@ -827,7 +832,7 @@ msgid "Unnamed Person"
 msgstr "Adsız Kişi"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:86
+#: src/core/contacts-roles-chunk.vala:105
 #, c-format
 msgid "%s at %s"
 msgstr "%s, %s"
