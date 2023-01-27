@@ -3,13 +3,13 @@
 #
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2019.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-09-26 11:59+0000\n"
-"PO-Revision-Date: 2022-12-24 11:09+0200\n"
+"POT-Creation-Date: 2023-01-25 18:36+0000\n"
+"PO-Revision-Date: 2023-01-27 22:50+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -53,7 +53,6 @@ msgstr ""
 "сполучать контакти з різних джерел."
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:22
-#| msgid "Contacts with no contacts."
 msgid "Contacts with no contacts"
 msgstr "«Контакти» без записів контактів"
 
@@ -98,21 +97,27 @@ msgid "Open menu"
 msgstr "Відкрити меню"
 
 #: data/gtk/help-overlay.ui:23
+#| msgid "Preferences"
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Показати налаштування"
+
+#: data/gtk/help-overlay.ui:29
 msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "Створити контакт"
 
-#: data/gtk/help-overlay.ui:29
+#: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Пошук"
 
-#: data/gtk/help-overlay.ui:35
+#: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "Перелік скорочень"
 
-#: data/gtk/help-overlay.ui:41
+#: data/gtk/help-overlay.ui:47
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Ви_йти"
@@ -122,8 +127,8 @@ msgid "Select a new avatar"
 msgstr "Виберіть новий аватар"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:336
-#: src/contacts-contact-editor.vala:727
+#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:337
+#: src/contacts-contact-editor.vala:730
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -243,7 +248,7 @@ msgid "Back"
 msgstr "Назад"
 
 #: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
-#: src/contacts-app.vala:402 src/contacts-avatar-selector.vala:196
+#: src/contacts-app.vala:403 src/contacts-avatar-selector.vala:196
 #: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
 msgid "_Cancel"
 msgstr "_Скасувати"
@@ -354,42 +359,42 @@ msgstr ""
 msgid "Go To _Preferences"
 msgstr "Перейти до п_араметрів"
 
-#: src/contacts-app.vala:332
+#: src/contacts-app.vala:333
 msgid "Select contact file"
 msgstr "Виберіть файл контактів"
 
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:336
 msgid "Import"
 msgstr "Імпортувати"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:343
 msgid "vCard files"
 msgstr "файли vCard"
 
-#: src/contacts-app.vala:375
+#: src/contacts-app.vala:376
 msgid "Error reading file"
 msgstr "Помилка при зчитуванні файла"
 
-#: src/contacts-app.vala:376
+#: src/contacts-app.vala:377
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Під час спроби читання файла «%s» сталася помилка"
 
-#: src/contacts-app.vala:377 src/contacts-app.vala:387
+#: src/contacts-app.vala:378 src/contacts-app.vala:388
 msgid "_OK"
 msgstr "_Гаразд"
 
-#: src/contacts-app.vala:385
+#: src/contacts-app.vala:386
 msgid "No contacts found"
 msgstr "Не знайдено жодного контакту"
 
-#: src/contacts-app.vala:386
+#: src/contacts-app.vala:387
 msgid "The imported file does not seem to contain any contacts"
 msgstr "У імпортованому файлі, здається, не міститься жодного запису контакту"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:394
+#: src/contacts-app.vala:395
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -398,11 +403,11 @@ msgstr[1] "Якщо ви продовжите, буде імпортовано %
 msgstr[2] "Якщо ви продовжите, буде імпортовано %u контактів"
 msgstr[3] "Якщо ви продовжите, буде імпортовано %u контакт"
 
-#: src/contacts-app.vala:397
+#: src/contacts-app.vala:398
 msgid "Continue Import?"
 msgstr "Продовжити імпортування?"
 
-#: src/contacts-app.vala:398
+#: src/contacts-app.vala:399
 msgid "C_ontinue"
 msgstr "Пр_одовжити"
 
@@ -430,93 +435,93 @@ msgstr "Змінити аватар"
 msgid "Add name"
 msgstr "Додати ім'я"
 
-#: src/contacts-contact-editor.vala:256
+#: src/contacts-contact-editor.vala:259
 msgid "Show More"
 msgstr "Докладніше"
 
-#: src/contacts-contact-editor.vala:345
+#: src/contacts-contact-editor.vala:348
 msgid "Add email"
 msgstr "Додати електронну пошту"
 
-#: src/contacts-contact-editor.vala:371
+#: src/contacts-contact-editor.vala:374
 msgid "Add phone number"
 msgstr "Додати номер телефону"
 
-#: src/contacts-contact-editor.vala:397 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "Сайт"
 
-#: src/contacts-contact-editor.vala:409 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "Прізвисько"
 
-#: src/contacts-contact-editor.vala:460 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "День народження"
 
-#: src/contacts-contact-editor.vala:464
+#: src/contacts-contact-editor.vala:467
 msgid "Set Birthday"
 msgstr "Встановити день народження"
 
-#: src/contacts-contact-editor.vala:534
+#: src/contacts-contact-editor.vala:537
 msgid "Organisation"
 msgstr "Установа"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:540 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:543 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Роль"
 
-#: src/contacts-contact-editor.vala:656
+#: src/contacts-contact-editor.vala:659
 msgid "Label"
 msgstr "Мітка"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:712
+#: src/contacts-contact-editor.vala:715
 msgid "Day"
 msgstr "День"
 
-#: src/contacts-contact-editor.vala:716
+#: src/contacts-contact-editor.vala:719
 msgid "Month"
 msgstr "Місяць"
 
-#: src/contacts-contact-editor.vala:720
+#: src/contacts-contact-editor.vala:723
 msgid "Year"
 msgstr "Рік"
 
-#: src/contacts-contact-editor.vala:725
+#: src/contacts-contact-editor.vala:728
 msgid "Change Birthday"
 msgstr "Змінити день народження"
 
-#: src/contacts-contact-editor.vala:726
+#: src/contacts-contact-editor.vala:729
 msgid "Set"
 msgstr "Встановити"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "Street"
 msgstr "Вулиця"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "Extension"
 msgstr "Район"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "City"
 msgstr "Місто"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "State/Province"
 msgstr "Штат/провінція"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "Zip/Postal Code"
 msgstr "Поштовий індекс"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "PO box"
 msgstr "Поштова скринька"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:798
 msgid "Country"
 msgstr "Країна"
 
@@ -537,11 +542,11 @@ msgstr "Надіслати %s повідомлення ел. пошти"
 msgid "Visit website"
 msgstr "Відвідати сайт"
 
-#: src/contacts-contact-sheet.vala:325
+#: src/contacts-contact-sheet.vala:322
 msgid "Their birthday is today! 🎉"
 msgstr "Сьогодні день народження! 🎉"
 
-#: src/contacts-contact-sheet.vala:372
+#: src/contacts-contact-sheet.vala:369
 msgid "Show on the map"
 msgstr "Показати на карті"
 
@@ -835,7 +840,7 @@ msgid "Unnamed Person"
 msgstr "Неназвана особа"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:86
+#: src/core/contacts-roles-chunk.vala:105
 #, c-format
 msgid "%s at %s"
 msgstr "%s на %s"
