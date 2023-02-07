@@ -232,6 +232,8 @@
                     <child>
                       <object class="AdwHeaderBar" id="right_header">
                         <property name="hexpand">True</property>
+                        <property name="show-start-title-buttons" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
+
                         <child>
                           <object class="GtkRevealer" id="back_revealer">
                             <property name="transition-type">slide-right</property>
