@@ -37,8 +37,6 @@ public class Contacts.ContactList : Adw.Bin {
   private unowned Gtk.ListBox listbox;
 
   construct {
-    this.add_css_class ("contacts-contact-list");
-
     // Our selection model for marked contacts (used in selection mode)
     this.marked_contacts.selection_changed.connect (on_marked_contacts_changed);
 

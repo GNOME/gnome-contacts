@@ -41,15 +41,13 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   };
 
   [GtkChild]
-  private unowned Adw.Leaflet content_box;
-  [GtkChild]
-  private unowned Gtk.Revealer back_revealer;
+  private unowned Adw.NavigationSplitView content_box;
   [GtkChild]
   private unowned Gtk.Stack list_pane_stack;
   [GtkChild]
   private unowned Gtk.Overlay contact_pane_container;
   [GtkChild]
-  private unowned Gtk.Box list_pane_page;
+  private unowned Adw.NavigationPage list_pane_page;
   [GtkChild]
   private unowned Gtk.Widget list_pane;
   [GtkChild]
@@ -59,10 +57,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private unowned ContactList contacts_list;
 
   [GtkChild]
-  private unowned Gtk.Box contact_pane_page;
+  private unowned Adw.NavigationPage contact_pane_page;
   private ContactPane contact_pane;
-  [GtkChild]
-  private unowned Adw.HeaderBar left_header;
   [GtkChild]
   private unowned Adw.HeaderBar right_header;
   [GtkChild]
@@ -192,7 +188,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       left_title = ngettext ("%llu Selected", "%llu Selected", (ulong) n_selected)
                                    .printf (n_selected);
     }
-    this.left_header.title_widget = new Adw.WindowTitle (left_title, "");
+    this.list_pane_page.title = left_title;
   }
 
   private void on_ui_state_changed (Object obj, ParamSpec pspec) {
@@ -210,7 +206,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.selection_button.visible = !(this.state == UiState.SELECTING || this.state.editing ());
 
     if (this.state != UiState.SELECTING)
-      this.left_header.title_widget = new Adw.WindowTitle (_("Contacts"), "");
+      this.list_pane_page.title = _("Contacts");
 
     // Editing UI
     this.cancel_button.visible
@@ -226,9 +222,12 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     }
 
     // Allow the back gesture when not browsing
-    this.content_box.can_navigate_back = this.state == UiState.NORMAL ||
-                                         this.state == UiState.SHOWING ||
-                                         this.state == UiState.SELECTING;
+    this.contact_pane_page.can_pop = this.state == UiState.NORMAL ||
+                                     this.state == UiState.SHOWING ||
+                                     this.state == UiState.SELECTING;
+
+    this.content_box.show_content = this.state == UiState.SHOWING ||
+                                    this.state.editing ();
 
     // Disable when editing a contact
     this.filter_entry.sensitive
@@ -238,11 +237,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.actions_bar.reveal_child = (this.state == UiState.SELECTING);
   }
 
-  [GtkCallback]
-  private void on_back_clicked () {
-    show_list_pane ();
-  }
-
   private void edit_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
     unowned var selected = this.store.get_selected_contact ();
     return_if_fail (selected != null);
@@ -250,7 +244,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.state = UiState.UPDATING;
 
     var title = _("Editing %s").printf (selected.display_name);
-    this.right_header.title_widget = new Adw.WindowTitle (title, "");
+    this.contact_pane_page.title = title;
     this.contact_pane.edit_contact ();
   }
 
@@ -289,7 +283,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private void on_selection_button_clicked () {
     this.state = UiState.SELECTING;
     var left_title = ngettext ("%d Selected", "%d Selected", 0) .printf (0);
-    this.left_header.title_widget = new Adw.WindowTitle (left_title, "");
+    this.list_pane_page.title = left_title;
   }
 
   private void unlink_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
@@ -356,13 +350,12 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     if (this.state == UiState.CREATING) {
       this.state = UiState.NORMAL;
     } else {
-      show_contact_pane ();
       this.state = UiState.SHOWING;
     }
     this.contact_pane.stop_editing (false);
     this.contacts_list.scroll_to_selected ();
 
-    this.right_header.title_widget = new Adw.WindowTitle ("", "");
+    this.contact_pane_page.title = "";
   }
 
   private void edit_contact_cancel (SimpleAction action, GLib.Variant? parameter) {
@@ -370,16 +363,14 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       return;
 
     if (this.state == UiState.CREATING) {
-      show_list_pane ();
       this.state = UiState.NORMAL;
     } else {
-      show_contact_pane ();
       this.state = UiState.SHOWING;
     }
     this.contact_pane.stop_editing (true);
     this.contacts_list.scroll_to_selected ();
 
-    this.right_header.title_widget = new Adw.WindowTitle ("", "");
+    this.contact_pane_page.title = "";
   }
 
   private void focus_search (SimpleAction action, GLib.Variant? parameter) {
@@ -394,47 +385,26 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     this.state = UiState.CREATING;
 
-    this.right_header.title_widget = new Adw.WindowTitle (_("New Contact"), "");
+    this.contact_pane_page.title = _("New Contact");
 
     this.contact_pane.new_contact ();
-    show_contact_pane ();
+    this.content_box.show_content = true;
   }
 
   [GtkCallback]
-  private void on_cancel_visible () {
-    update_header ();
+  private void on_collapsed () {
+    // If we're not showing a contact or in selection mode, we want to show the
+    // sidebar on fold
+    var show_content = this.state != UiState.NORMAL &&
+                       this.state != UiState.SELECTING;
+    this.content_box.show_content = show_content;
   }
 
   [GtkCallback]
-  private void on_folded () {
-    update_header ();
-    on_visible_child ();
-  }
-
-  [GtkCallback]
-  private void on_visible_child () {
-    if (this.content_box.folded &&
-        !this.content_box.child_transition_running &&
-        this.content_box.visible_child == this.list_pane_page)
+  private void on_show_content () {
+    if (this.content_box.collapsed &&
+        !this.content_box.show_content)
       this.store.selection.unselect_item (this.store.selection.get_selected ());
-  }
-
-  private void update_header () {
-    this.back_revealer.reveal_child =
-      this.back_revealer.visible =
-        this.content_box.folded &&
-        !this.cancel_button.visible &&
-        this.content_box.visible_child == this.contact_pane_page;
-  }
-
-  private void show_list_pane () {
-    this.content_box.navigate (Adw.NavigationDirection.BACK);
-    update_header ();
-  }
-
-  private void show_contact_pane () {
-    this.content_box.navigate (Adw.NavigationDirection.FORWARD);
-    update_header ();
   }
 
   public void show_search (string query) {
@@ -479,10 +449,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
       this.contact_pane.show_contact (selected);
       if (selected != null)
-        show_contact_pane ();
+        this.content_box.show_content = true;
 
       // clearing right_header
-      this.right_header.title_widget = new Adw.WindowTitle ("", "");
+      this.contact_pane_page.title = "";
       if (selected != null) {
         update_favorite_actions (selected.is_favourite);
       }
@@ -501,7 +471,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contacts_list.set_contacts_visible (selection, false);
     this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
-    show_list_pane ();
 
     // Build the list of contacts
     var list = bitset_to_individuals (this.marked_contacts,
@@ -533,7 +502,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contacts_list.set_contacts_visible (selection, false);
     this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
-    show_list_pane ();
 
     var individuals = bitset_to_individuals (this.store.filter_model,
                                              selection);

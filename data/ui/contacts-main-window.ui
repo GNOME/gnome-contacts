@@ -72,6 +72,8 @@
   <template class="ContactsMainWindow" parent="AdwApplicationWindow">
     <property name="default_width">800</property>
     <property name="default_height">600</property>
+    <property name="width-request">360</property>
+    <property name="height-request">240</property>
     <property name="icon_name">gnome-contacts</property>
 
     <child>
@@ -107,24 +109,19 @@
     <child>
       <object class="AdwToastOverlay" id="toast_overlay">
         <child>
-          <object class="AdwLeaflet" id="content_box">
-            <property name="can-navigate-back">True</property>
-            <signal name="notify::child-transition-running" handler="on_visible_child"/>
-            <signal name="notify::folded" handler="on_folded"/>
-            <signal name="notify::visible-child" handler="on_visible_child"/>
-
-            <child>
-              <object class="AdwLeafletPage">
+          <object class="AdwNavigationSplitView" id="content_box">
+            <signal name="notify::collapsed" handler="on_collapsed"/>
+            <signal name="notify::show-content" handler="on_show_content"/>
+            <property name="sidebar">
+              <object class="AdwNavigationPage" id="list_pane_page">
+                <property name="title" translatable="yes">Contacts</property>
                 <property name="name">list-pane</property>
                 <property name="child">
-                  <object class="GtkBox" id="list_pane_page">
+                  <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="width-request">320</property>
                     <child>
                       <object class="AdwHeaderBar" id="left_header">
-                        <property name="hexpand">False</property>
-                        <property name="show-end-title-buttons" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
-
                         <child type="start">
                           <object class="GtkButton" id="add_button">
                             <property name="tooltip-text" translatable="yes">Add New Contact</property>
@@ -132,12 +129,6 @@
                             <property name="action-name">win.new-contact</property>
                           </object>
                         </child>
-
-                        <property name="title-widget">
-                          <object class="AdwWindowTitle">
-                            <property name="title" translatable="yes">Contacts</property>
-                          </object>
-                        </property>
 
                         <child type="end">
                           <object class="GtkMenuButton" id="primary_menu_button">
@@ -165,7 +156,6 @@
                     </child>
                     <child>
                       <object class="GtkStack" id="list_pane_stack">
-                        <property name="hexpand">False</property>
                         <!-- The loading spinner page -->
                         <child>
                           <object class="GtkBox">
@@ -269,53 +259,21 @@
                   </object>
                 </property>
               </object>
-            </child>
+            </property>
 
-            <child>
-              <object class="AdwLeafletPage">
-                <property name="navigatable">False</property>
-                <property name="child">
-                  <object class="GtkSeparator">
-                  </object>
-                </property>
-              </object>
-            </child>
-
-            <child>
-              <object class="AdwLeafletPage">
+            <property name="content">
+              <object class="AdwNavigationPage" id="contact_pane_page">
                 <property name="name">contact-pane</property>
                 <property name="child">
-                  <object class="GtkBox" id="contact_pane_page">
+                  <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="AdwHeaderBar" id="right_header">
-                        <property name="hexpand">True</property>
-                        <property name="show-start-title-buttons" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
-
-                        <child>
-                          <object class="GtkRevealer" id="back_revealer">
-                            <property name="transition-type">slide-right</property>
-                            <child>
-                              <object class="GtkButton" id="back">
-                                <property name="valign">center</property>
-                                <property name="icon-name">go-previous-symbolic</property>
-                                <property name="tooltip_text" translatable="yes">Back</property>
-                                <signal name="clicked" handler="on_back_clicked"/>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <property name="title-widget">
-                          <object class="AdwWindowTitle">
-                            <property name="title"></property>
-                          </object>
-                        </property>
                         <child>
                           <object class="GtkButton" id="cancel_button">
                             <property name="visible">False</property>
                             <property name="label" translatable="yes">_Cancel</property>
                             <property name="use_underline">True</property>
-                            <signal name="notify::visible" handler="on_cancel_visible" object="ContactsMainWindow" after="yes" swapped="no"/>
                             <property name="action-name">win.edit-contact-cancel</property>
                           </object>
                         </child>
@@ -355,16 +313,20 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkOverlay" id="contact_pane_container">
-                        <property name="hexpand">True</property>
-                      </object>
+                      <object class="GtkOverlay" id="contact_pane_container"/>
                     </child>
                   </object>
                 </property>
               </object>
-            </child>
+            </property>
           </object>
         </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 700sp</condition>
+        <setter object="content_box" property="collapsed">True</setter>
       </object>
     </child>
   </template>
