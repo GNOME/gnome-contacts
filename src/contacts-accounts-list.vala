@@ -124,21 +124,34 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
         }
       }
 
-      // Remove button (if applicable)
-      if (source.removable) {
-          // XXX or should this be a menu instead?
-        var remove_button = new Gtk.Button.from_icon_name ("user-trash-symbolic");
-        remove_button.tooltip_text = _("Remove address book");
-        remove_button.add_css_class ("flat");
-        remove_button.clicked.connect ((b) => { remove_address_book (); });
-        add_suffix (remove_button);
-      }
-
       // Checkmark
       var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic");
       bind_property ("selected", checkmark, "visible", BindingFlags.SYNC_CREATE);
       add_suffix (checkmark);
       set_activatable_widget (checkmark);
+
+      // Action menu
+      var menu_button = new Gtk.MenuButton ();
+      menu_button.icon_name = "view-more-symbolic";
+      menu_button.add_css_class ("flat");
+      add_suffix (menu_button);
+
+      var menu = new GLib.Menu ();
+
+      var main_section = new GLib.Menu ();
+      if (parent_source.has_extension (E.SOURCE_EXTENSION_GOA)) {
+        main_section.append (_("View in Online Accounts"), "app.launch-gnome-online-accounts");
+      }
+      menu.append_section (null, main_section);
+      // Remove button (if applicable)
+      if (source.removable) {
+        var remove_section = new GLib.Menu ();
+        remove_section.append (_("Remove address book"), "remove-address-book");
+        // XXX
+        // remove_button.clicked.connect ((b) => { remove_address_book (); });
+        menu.append_section (null, remove_section);
+      }
+      menu_button.menu_model = menu;
     }
 
     public AddressbookRow (PersonaStore persona_store) {

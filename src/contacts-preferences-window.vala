@@ -31,7 +31,7 @@ public class Contacts.PreferencesWindow : Adw.PreferencesDialog {
     var goa_button = new Gtk.Button.from_icon_name ("external-link-symbolic");
     goa_button.tooltip_text = _("Open the Online Accounts panel in Settings");
     goa_button.add_css_class ("flat");
-    goa_button.clicked.connect (on_goa_button_clicked);
+    goa_button.action_name = "app.launch-gnome-online-accounts";
     goa_row.add_suffix (goa_button);
     goa_row.activatable_widget = goa_button;
     add_accounts_group.add (goa_row);
@@ -51,31 +51,5 @@ public class Contacts.PreferencesWindow : Adw.PreferencesDialog {
   private void on_carddav_button_clicked (Gtk.Button add_account_button) {
     var dialog = new AddAddressBookDialog (this);
     dialog.present ();
-  }
-
-  private void on_goa_button_clicked (Gtk.Button goa_button) {
-    try {
-      var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
-                                              DBusProxyFlags.NONE,
-                                              null,
-                                              "org.gnome.Settings",
-                                              "/org/gnome/Settings",
-                                              "org.gtk.Actions");
-
-      var builder = new VariantBuilder (new VariantType ("av"));
-      builder.add ("v", new Variant.string (""));
-      var param = new Variant.tuple ({
-        new Variant.string ("launch-panel"),
-        new Variant.array (new VariantType ("v"), {
-          new Variant ("v", new Variant ("(sav)", "online-accounts", builder))
-        }),
-        new Variant.array (new VariantType ("{sv}"), {})
-      });
-
-      proxy.call_sync ("Activate", param, DBusCallFlags.NONE, -1);
-    } catch (Error e) {
-      // TODO: Show error dialog
-      warning ("Couldn't open online-accounts: %s", e.message);
-    }
   }
 }

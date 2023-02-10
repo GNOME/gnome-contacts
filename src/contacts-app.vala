@@ -28,7 +28,8 @@ public class Contacts.App : Adw.Application {
     { "show-preferences", show_preferences },
     { "show-contact", on_show_contact, "s" },
     { "import", on_import },
-    { "export-all", on_export_all }
+    { "export-all", on_export_all },
+    { "launch-gnome-online-accounts", on_launch_goa },
   };
 
   private const OptionEntry[] options = {
@@ -376,5 +377,31 @@ public class Contacts.App : Adw.Application {
     for (uint i = 0; i < model.get_n_items (); i++)
       individuals.add ((Individual) model.get_item (i));
     this.window.export_individuals (individuals);
+  }
+
+  private void on_launch_goa (SimpleAction action, Variant? param) {
+    try {
+      var proxy = new DBusProxy.for_bus_sync (BusType.SESSION,
+                                              DBusProxyFlags.NONE,
+                                              null,
+                                              "org.gnome.Settings",
+                                              "/org/gnome/Settings",
+                                              "org.gtk.Actions");
+
+      var builder = new VariantBuilder (new VariantType ("av"));
+      builder.add ("v", new Variant.string (""));
+      var activate_arg = new Variant.tuple ({
+        new Variant.string ("launch-panel"),
+        new Variant.array (new VariantType ("v"), {
+          new Variant ("v", new Variant ("(sav)", "online-accounts", builder))
+        }),
+        new Variant.array (new VariantType ("{sv}"), {})
+      });
+
+      proxy.call_sync ("Activate", activate_arg, DBusCallFlags.NONE, -1);
+    } catch (Error e) {
+      // TODO: Show error dialog
+      warning ("Couldn't open online-accounts: %s", e.message);
+    }
   }
 }
