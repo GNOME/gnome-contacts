@@ -37,7 +37,7 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
     model.items_changed.connect (on_model_items_changed);
     on_model_items_changed (model, 0, 0, model.get_n_items ());
 
-    // Setup the selection model
+    // Setup the selection model for the primary address book
     this.selection = new Gtk.SingleSelection (null);
     this.selection.autoselect = false;
     this.selection.model = model;
@@ -59,22 +59,27 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
   }
 
   private void on_model_items_changed (ListModel model, uint pos, uint removed, uint added) {
-      for (uint i = pos; i < pos + removed; i++) {
-        remove (this.rows[i]);
-        this.rows.remove_index (i);
-      }
+    for (uint i = pos; i < pos + removed; i++) {
+      remove (this.rows[i]);
+      this.rows.remove_index (i);
+      // FIXME: ideally we'd just remove the rows at the given index here, but
+      // AdwPreferencesGroup doesn't provide that API. As a workaround, we
+      // "remove" them by making them invisible
+    }
 
-      for (uint i = pos; i < pos + added; i++) {
-        var persona_store = (PersonaStore) model.get_item(i);
-        var row = new AddressbookRow (persona_store);
-        add (row);
-        this.rows.add (row);
+    for (uint i = pos; i < pos + added; i++) {
+      var persona_store = (PersonaStore) model.get_item(i);
+      var row = new AddressbookRow (persona_store);
+      add (row);
+      this.rows.add (row);
 
-        // Update the selection model when the row is activated
-        row.activated.connect ((row) => {
-          this.selection.set_selected ((uint) row.get_index ());
-        });
-      }
+      // Update the selection model when the row is activated
+      row.activated.connect (on_address_book_row_activated);
+    }
+  }
+
+  private void on_address_book_row_activated (Adw.ActionRow row) {
+    this.selection.set_selected ((uint) row.get_index ());
   }
 
   private class AddressbookRow : Adw.ActionRow {
@@ -107,7 +112,27 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
 
       // Title - subtitle
       this.title = Utils.format_persona_store_name (this.persona_store);
-      this.subtitle = parent_source.display_name;
+      if (parent_source.display_name != null) {
+        this.subtitle = parent_source.display_name;
+      } else if (source.has_extension (E.SOURCE_EXTENSION_WEBDAV_BACKEND)) {
+        var webdav = (E.SourceWebdav)
+            source.get_extension (E.SOURCE_EXTENSION_WEBDAV_BACKEND);
+        if (webdav.email_address != null) {
+          this.subtitle = webdav.email_address;
+        } else {
+          this.subtitle = webdav.uri.get_user ();
+        }
+      }
+
+      // Remove button (if applicable)
+      if (source.removable) {
+          // XXX or should this be a menu instead?
+        var remove_button = new Gtk.Button.from_icon_name ("user-trash-symbolic");
+        remove_button.tooltip_text = _("Remove address book");
+        remove_button.add_css_class ("flat");
+        remove_button.clicked.connect ((b) => { remove_address_book (); });
+        add_suffix (remove_button);
+      }
 
       // Checkmark
       var checkmark = new Gtk.Image.from_icon_name ("object-select-symbolic");
@@ -118,6 +143,40 @@ public class Contacts.AccountsList : Adw.PreferencesGroup {
 
     public AddressbookRow (PersonaStore persona_store) {
       Object (persona_store: persona_store);
+    }
+
+    private void remove_address_book () {
+      var dialog =
+          new Adw.MessageDialog (get_root () as Gtk.Window,
+                                 _("Are you sure you want to remove %s?").printf (this.title),
+                                 _("If you remove this address book, it will no longer be accessible in any application"));
+      dialog.add_response ("remove", _("_Remove"));
+      dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+
+      dialog.add_response ("cancel", _("_Cancel"));
+      dialog.set_default_response ("cancel");
+      dialog.set_close_response ("cancel");
+      dialog.response.connect ((response) => {
+        if (response != "remove")
+          return;
+
+        //XXX
+        var source = ((Edsf.PersonaStore) this.persona_store).source;
+        var parent_source = eds_source_registry.ref_source (source.parent);
+
+        debug ("Removing address book '%s'", this.title);
+        source.remove.begin (null, (obj, res) => {
+          try {
+            source.remove.end (res);
+            this.visible = false;
+            debug ("Removed address book '%s'", this.title);
+          } catch (Error e) {
+            //XXX UI
+            warning ("Couldn't remove address book: %s", e.message);
+          }
+        });
+      });
+      dialog.present ();
     }
   }
 }
