@@ -66,7 +66,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   [GtkChild]
   private unowned Gtk.Button select_cancel_button;
   [GtkChild]
-  private unowned Gtk.MenuButton hamburger_menu_button;
+  private unowned Gtk.MenuButton primary_menu_button;
   [GtkChild]
   private unowned Gtk.Box contact_sheet_buttons;
   [GtkChild]
@@ -197,7 +197,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private void on_ui_state_changed (Object obj, ParamSpec pspec) {
     // UI when we're not editing of selecting stuff
     this.add_button.visible
-        = this.hamburger_menu_button.visible
+        = this.primary_menu_button.visible
         = (this.state == UiState.NORMAL || this.state == UiState.SHOWING);
 
     // UI when showing a contact
