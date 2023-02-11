@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-01-25 18:36+0000\n"
-"PO-Revision-Date: 2023-01-27 22:50+0200\n"
+"POT-Creation-Date: 2023-02-11 15:28+0000\n"
+"PO-Revision-Date: 2023-02-11 19:17+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -22,8 +22,8 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
-#: src/contacts-main-window.vala:212 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:199
+#: src/contacts-main-window.vala:222 src/main.vala:26
 msgid "Contacts"
 msgstr "Контакти"
 
@@ -97,7 +97,6 @@ msgid "Open menu"
 msgstr "Відкрити меню"
 
 #: data/gtk/help-overlay.ui:23
-#| msgid "Preferences"
 msgctxt "shortcut window"
 msgid "Show preferences"
 msgstr "Показати налаштування"
@@ -108,9 +107,10 @@ msgid "Create a new contact"
 msgstr "Створити контакт"
 
 #: data/gtk/help-overlay.ui:35
+#| msgid "Select contact file"
 msgctxt "shortcut window"
-msgid "Search"
-msgstr "Пошук"
+msgid "Search contacts"
+msgstr "Шукати у контактах"
 
 #: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
@@ -127,13 +127,13 @@ msgid "Select a new avatar"
 msgstr "Виберіть новий аватар"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:337
+#: data/ui/contacts-main-window.ui:131 src/contacts-app.vala:337
 #: src/contacts-contact-editor.vala:730
 msgid "Cancel"
 msgstr "Скасувати"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:297 src/contacts-main-window.vala:231
 msgid "Done"
 msgstr "Завершено"
 
@@ -197,73 +197,90 @@ msgstr "_Довідка"
 msgid "About Contacts"
 msgstr "_Про програму"
 
-#: data/ui/contacts-main-window.ui:82
+#: data/ui/contacts-main-window.ui:50
+msgid "Share as QR Code"
+msgstr "Оприлюднити як QR-код"
+
+#: data/ui/contacts-main-window.ui:56
+msgid "Delete Contact"
+msgstr "Вилучити контакт"
+
+#: data/ui/contacts-main-window.ui:107
 msgid "Create new contact"
 msgstr "Створити контакт"
 
-#: data/ui/contacts-main-window.ui:92
-msgid "Menu"
-msgstr "Меню"
+#: data/ui/contacts-main-window.ui:117
+msgid "Main Menu"
+msgstr "Головне меню"
 
-#: data/ui/contacts-main-window.ui:99
+#: data/ui/contacts-main-window.ui:124
 msgid "Select Items"
 msgstr "Виберіть записи"
 
-#: data/ui/contacts-main-window.ui:107
+#: data/ui/contacts-main-window.ui:132
 msgid "Cancel Selection"
 msgstr "Скасувати вибір"
 
-#: data/ui/contacts-main-window.ui:134
+#: data/ui/contacts-main-window.ui:159
 msgid "Loading"
 msgstr "Завантаження"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:170
 msgid "Type to search"
 msgstr "Введіть для пошуку…"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:188
 msgid "Export"
 msgstr "Експортувати"
 
-#: data/ui/contacts-main-window.ui:164
+#: data/ui/contacts-main-window.ui:189
 msgid "Export Selected Contacts"
 msgstr "Експортувати позначені контакти"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:196
 msgid "Link"
 msgstr "Пов'язати"
 
-#: data/ui/contacts-main-window.ui:172
+#: data/ui/contacts-main-window.ui:197
 msgid "Link Selected Contacts Together"
 msgstr "Пов'язати позначені контакти"
 
-#: data/ui/contacts-main-window.ui:179
+#: data/ui/contacts-main-window.ui:204
 msgid "Remove"
 msgstr "Вилучити"
 
-#: data/ui/contacts-main-window.ui:223
+#: data/ui/contacts-main-window.ui:250
 msgid "Back"
 msgstr "Назад"
 
-#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
+#: data/ui/contacts-main-window.ui:264 src/contacts-app.vala:233
 #: src/contacts-app.vala:403 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
+#: src/contacts-main-window.vala:535 src/contacts-main-window.vala:584
 msgid "_Cancel"
 msgstr "_Скасувати"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:280
 msgid "Edit Contact"
 msgstr "Змінити контакт"
 
-#: data/ui/contacts-main-window.ui:266
-msgid "Delete Contact"
-msgstr "Вилучити контакт"
+#: data/ui/contacts-main-window.ui:287
+msgid "More Contact Actions"
+msgstr "Інші дії з контактами"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
 msgstr "Адресні книги"
+
+#: data/ui/contacts-qr-code-dialog.ui:11
+#| msgid "New Contact"
+msgid "Share Contact"
+msgstr "Оприлюднити контакт"
+
+#: data/ui/contacts-qr-code-dialog.ui:41
+msgid "Scan to Save"
+msgstr "Скануйте для збереження"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
@@ -692,7 +709,12 @@ msgstr "Це є та сама особа, що й %s з %s?"
 msgid "Is this the same person as %s?"
 msgstr "Це та сама особа, що й %s?"
 
-#: src/contacts-main-window.vala:191
+#: src/contacts-main-window.vala:144 src/contacts-main-window.vala:473
+#| msgid "Mark as favorite"
+msgid "Mark as Favorite"
+msgstr "Додати до улюблених"
+
+#: src/contacts-main-window.vala:201
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
@@ -701,16 +723,16 @@ msgstr[1] "%llu позначено"
 msgstr[2] "%llu позначено"
 msgstr[3] "%llu позначено"
 
-#: src/contacts-main-window.vala:221
+#: src/contacts-main-window.vala:231
 msgid "_Add"
 msgstr "_Додати"
 
-#: src/contacts-main-window.vala:251
+#: src/contacts-main-window.vala:261
 #, c-format
 msgid "Editing %s"
 msgstr "Редагування %s"
 
-#: src/contacts-main-window.vala:271
+#: src/contacts-main-window.vala:289
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -719,33 +741,30 @@ msgstr[1] "%d вибрано"
 msgstr[2] "%d вибрано"
 msgstr[3] "%d вибрано"
 
-#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:487
-#: src/contacts-main-window.vala:527
+#: src/contacts-main-window.vala:309 src/contacts-main-window.vala:506
+#: src/contacts-main-window.vala:546
 msgid "_Undo"
 msgstr "_Повернути"
 
-#: src/contacts-main-window.vala:358
+#: src/contacts-main-window.vala:380
 msgid "New Contact"
 msgstr "Створити контакт"
 
-#: src/contacts-main-window.vala:452
-msgid "Unmark as favorite"
+#: src/contacts-main-window.vala:471
+#| msgid "Unmark as favorite"
+msgid "Unmark as Favorite"
 msgstr "Вилучити з улюблених"
 
-#: src/contacts-main-window.vala:454
-msgid "Mark as favorite"
-msgstr "Додати до улюблених"
-
 #. Open up a file chooser
-#: src/contacts-main-window.vala:561
+#: src/contacts-main-window.vala:580
 msgid "Export to file"
 msgstr "Експортувати до файла"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:583
 msgid "_Export"
 msgstr "_Експортувати"
 
-#: src/contacts-main-window.vala:566
+#: src/contacts-main-window.vala:585
 msgid "contacts.vcf"
 msgstr "контакти.vcf"
 
@@ -768,6 +787,11 @@ msgstr "Мережеві _облікові записи"
 #: src/contacts-preferences-window.vala:45
 msgid "Opens the Online Accounts panel in GNOME Settings"
 msgstr "Відкриває панель облікових записів інтернету у «Параметрах GNOME»"
+
+#: src/contacts-qr-code-dialog.vala:33
+#, c-format
+msgid "Scan the QR code to save the contact <b>%s</b>."
+msgstr "Скануйте QR-код, щоб зберегти контакт <b>%s</b>."
 
 #: src/contacts-unlink-operation.vala:37
 msgid "Unlinking contacts"
@@ -981,6 +1005,13 @@ msgstr "Запам'ятовує, чи вікно розгорнуто."
 msgid "Is the window fullscreen"
 msgstr "Чи розгорнуто вікно на увесь екран"
 
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Пошук"
+
+#~ msgid "Menu"
+#~ msgstr "Меню"
+
 #~ msgid "Change Address Book"
 #~ msgstr "Змінити адресну книгу"
 
@@ -1042,9 +1073,6 @@ msgstr "Чи розгорнуто вікно на увесь екран"
 
 #~ msgid "Add contact"
 #~ msgstr "Додати контакт"
-
-#~ msgid "Main Menu"
-#~ msgstr "Головне меню"
 
 #~ msgid "Setup complete"
 #~ msgstr "Налаштування завершено"
