@@ -79,8 +79,8 @@ namespace Contacts.Io {
   /**
    * Deserializes the {@link GLib.Variant} back into a {@link GLib.HashTable}.
    */
-  public HashTable<string, Value?>[] deserialize_gvariant (GLib.Variant variant) {
-    return_val_if_fail (variant.get_type ().equal (new VariantType ("aa{sv}")), null);
+  public HashTable<string, Value?>[] deserialize_gvariant (GLib.Variant variant)
+      requires (variant.get_type ().equal (new VariantType ("aa{sv}"))) {
 
     var result = new GenericArray<HashTable<string, Value?>> ();
 

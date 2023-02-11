@@ -49,7 +49,7 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
   public override bool dirty {
     get {
       // If we're hitting this, a subclass forgot to set the field
-      return_if_fail (this.original_elements_set);
+      return_val_if_fail (this.original_elements_set, false);
 
       var non_empty_count = nr_nonempty_children ();
       if (this.original_elements.length != non_empty_count)

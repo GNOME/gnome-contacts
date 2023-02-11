@@ -177,9 +177,9 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return header;
   }
 
-  private Gtk.Widget create_widget_for_roles (Chunk chunk) {
-    unowned var roles_chunk = chunk as RolesChunk;
-    return_if_fail (roles_chunk != null);
+  private Gtk.Widget create_widget_for_roles (Chunk chunk)
+      requires (chunk is RolesChunk) {
+    unowned var roles_chunk = (RolesChunk) chunk;
 
     var group = new ContactSheetGroup ();
 
@@ -197,9 +197,9 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_widget_for_emails (Chunk chunk) {
-    unowned var emails_chunk = chunk as EmailAddressesChunk;
-    return_if_fail (emails_chunk != null);
+  private Gtk.Widget create_widget_for_emails (Chunk chunk)
+      requires (chunk is EmailAddressesChunk) {
+    unowned var emails_chunk = (EmailAddressesChunk) chunk;
 
     var group = new ContactSheetGroup ();
 
@@ -225,9 +225,9 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_widget_for_phone_nrs (Chunk chunk) {
-    unowned var phones_chunk = chunk as PhonesChunk;
-    return_if_fail (phones_chunk != null);
+  private Gtk.Widget create_widget_for_phone_nrs (Chunk chunk)
+      requires (chunk is PhonesChunk) {
+    unowned var phones_chunk = (PhonesChunk) chunk;
 
     var group = new ContactSheetGroup ();
 
@@ -245,13 +245,13 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget? create_widget_for_im_addresses (Chunk chunk) {
+  private Gtk.Widget? create_widget_for_im_addresses (Chunk chunk)
+      requires (chunk is ImAddressesChunk) {
     // NOTE: We _could_ enable this again, but only for specific services.
     // Right now, this just enables a million "Windows Live Messenger" and
     // "Jabber", ... fields, which are all resting in their respective coffins.
 #if 0
-    unowned var im_addrs_chunk = chunk as ImAddressesChunk;
-    return_if_fail (im_addrs_chunk != null);
+    unowned var im_addrs_chunk = (ImAddressesChunk) chunk;
 
     var group = new ContactSheetGroup ();
 
@@ -272,9 +272,9 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return null;
   }
 
-  private Gtk.Widget create_widget_for_urls (Chunk chunk) {
-    unowned var urls_chunk = chunk as UrlsChunk;
-    return_if_fail (urls_chunk != null);
+  private Gtk.Widget create_widget_for_urls (Chunk chunk)
+      requires (chunk is UrlsChunk) {
+    unowned var urls_chunk = (UrlsChunk) chunk;
 
     var group = new ContactSheetGroup ();
 
@@ -301,17 +301,17 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_widget_for_nickname (Chunk chunk) {
-    unowned var nickname_chunk = chunk as NicknameChunk;
-    return_if_fail (nickname_chunk != null || nickname_chunk.nickname != null);
+  private Gtk.Widget create_widget_for_nickname (Chunk chunk)
+      requires (chunk is NicknameChunk) {
+    unowned var nickname_chunk = (NicknameChunk) chunk;
 
     var row = new ContactSheetRow (chunk.property_name, nickname_chunk.nickname);
     return new ContactSheetGroup.single_row (row);
   }
 
-  private Gtk.Widget create_widget_for_birthday (Chunk chunk) {
-    unowned var birthday_chunk = chunk as BirthdayChunk;
-    return_if_fail (birthday_chunk != null || birthday_chunk.birthday != null);
+  private Gtk.Widget create_widget_for_birthday (Chunk chunk)
+      requires (chunk is BirthdayChunk) {
+    unowned var birthday_chunk = (BirthdayChunk) chunk;
 
     var birthday_str = birthday_chunk.birthday.to_local ().format ("%x");
 
@@ -326,9 +326,9 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return new ContactSheetGroup.single_row (row);
   }
 
-  private Gtk.Widget create_widget_for_notes (Chunk chunk) {
-    unowned var notes_chunk = chunk as NotesChunk;
-    return_if_fail (notes_chunk != null);
+  private Gtk.Widget create_widget_for_notes (Chunk chunk)
+      requires (chunk is NotesChunk) {
+    unowned var notes_chunk = (NotesChunk) chunk;
 
     var group = new ContactSheetGroup ();
 
@@ -344,9 +344,9 @@ public class Contacts.ContactSheet : Gtk.Widget {
     return group;
   }
 
-  private Gtk.Widget create_widget_for_postal_addresses (Chunk chunk) {
-    unowned var addresses_chunk = chunk as AddressesChunk;
-    return_if_fail (addresses_chunk != null);
+  private Gtk.Widget create_widget_for_postal_addresses (Chunk chunk)
+      requires (chunk is AddressesChunk) {
+    unowned var addresses_chunk = (AddressesChunk) chunk;
 
     // Check outside of the loop if we have a "maps:" URI handler
     var appinfo = AppInfo.get_default_for_uri_scheme ("maps");

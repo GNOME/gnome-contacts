@@ -90,9 +90,8 @@ public class Contacts.ContactPane : Adw.Bin {
     show_contact_sheet (this.contact);
   }
 
-  private void show_contact_sheet (Contact contact) {
-    return_if_fail (contact != null);
-
+  private void show_contact_sheet (Contact contact)
+      requires (this.contact != null) {
     remove_contact_sheet ();
     var contacts_sheet = new ContactSheet (contact);
     contacts_sheet.hexpand = true;
@@ -123,8 +122,8 @@ public class Contacts.ContactPane : Adw.Bin {
     this.sheet = null;
   }
 
-  private void create_contact_editor () {
-    return_if_fail (this.contact != null);
+  private void create_contact_editor ()
+      requires (this.contact != null) {
 
     remove_contact_editor ();
     var contact_editor = new ContactEditor (this.contact);
@@ -142,8 +141,8 @@ public class Contacts.ContactPane : Adw.Bin {
     this.editor = null;
   }
 
-  public void stop_editing (bool cancel = false) {
-    return_if_fail (this.on_edit_mode);
+  public void stop_editing (bool cancel = false)
+      requires (this.on_edit_mode) {
 
     this.on_edit_mode = false;
     remove_contact_editor ();
@@ -196,8 +195,8 @@ public class Contacts.ContactPane : Adw.Bin {
     }
   }
 
-  public void edit_contact () {
-    return_if_fail (this.contact != null);
+  public void edit_contact ()
+      requires (this.contact != null) {
     if (this.on_edit_mode)
       return;
 
