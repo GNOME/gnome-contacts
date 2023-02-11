@@ -30,7 +30,7 @@ po_dir = meson.project_source_root() / 'po'
 # Dependencies
 min_eds_version = '3.42'
 min_folks_version = '0.14'
-min_glib_version = '2.58' # We also use this value for --target-glib, so scratch the micro version.
+min_glib_version = '2.64' # We also use this value for --target-glib, so scratch the micro version.
 
 # We know that compiling on a lower version doesn't work
 min_vala_version = '0.54.0'
