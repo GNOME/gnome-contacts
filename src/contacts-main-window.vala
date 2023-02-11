@@ -24,7 +24,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private const GLib.ActionEntry[] ACTION_ENTRIES = {
     { "new-contact", new_contact },
     { "edit-contact", edit_contact },
-    { "stop-editing-contact", stop_editing_contact, "b" },
+    { "edit-contact-cancel", edit_contact_cancel },
+    { "edit-contact-save", edit_contact_save },
     { "focus-search", focus_search },
     { "toggle-favorite", toggle_favorite },
     { "link-marked-contacts", link_marked_contacts },
@@ -347,19 +348,34 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     });
   }
 
-  private void stop_editing_contact (SimpleAction action, GLib.Variant? parameter) {
-    bool cancel = parameter.get_boolean ();
+  private void edit_contact_save (SimpleAction action, GLib.Variant? parameter) {
+    if (this.state != UiState.CREATING && this.state != UiState.UPDATING)
+      return;
 
     if (this.state == UiState.CREATING) {
-      if (cancel) {
-        show_list_pane ();
-      }
       this.state = UiState.NORMAL;
     } else {
       show_contact_pane ();
       this.state = UiState.SHOWING;
     }
-    this.contact_pane.stop_editing (cancel);
+    this.contact_pane.stop_editing (false);
+    this.contacts_list.scroll_to_selected ();
+
+    this.right_header.title_widget = new Adw.WindowTitle ("", "");
+  }
+
+  private void edit_contact_cancel (SimpleAction action, GLib.Variant? parameter) {
+    if (this.state != UiState.CREATING && this.state != UiState.UPDATING)
+      return;
+
+    if (this.state == UiState.CREATING) {
+      show_list_pane ();
+      this.state = UiState.NORMAL;
+    } else {
+      show_contact_pane ();
+      this.state = UiState.SHOWING;
+    }
+    this.contact_pane.stop_editing (true);
     this.contacts_list.scroll_to_selected ();
 
     this.right_header.title_widget = new Adw.WindowTitle ("", "");

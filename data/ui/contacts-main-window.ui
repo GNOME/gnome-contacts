@@ -79,6 +79,18 @@
             <property name="action">action(win.focus-search)</property>
           </object>
         </child>
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">Escape</property>
+            <property name="action">action(win.edit-contact-cancel)</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">&lt;Control&gt;Return</property>
+            <property name="action">action(win.edit-contact-save)</property>
+          </object>
+        </child>
       </object>
     </child>
 
@@ -270,8 +282,7 @@
                             <property name="label" translatable="yes">_Cancel</property>
                             <property name="use_underline">True</property>
                             <signal name="notify::visible" handler="on_cancel_visible" object="ContactsMainWindow" after="yes" swapped="no"/>
-                            <property name="action-name">win.stop-editing-contact</property>
-                            <property name="action-target">true</property>
+                            <property name="action-name">win.edit-contact-cancel</property>
                           </object>
                         </child>
                         <child type="end">
@@ -302,8 +313,7 @@
                             <property name="use_underline">True</property>
                             <property name="label" translatable="yes">Done</property>
                             <property name="valign">center</property>
-                            <property name="action-name">win.stop-editing-contact</property>
-                            <property name="action-target">false</property>
+                            <property name="action-name">win.edit-contact-save</property>
                             <style>
                               <class name="suggested-action"/>
                             </style>
