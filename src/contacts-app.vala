@@ -38,7 +38,8 @@ public class Contacts.App : Adw.Application {
     { "about",            show_about          },
     { "show-preferences", show_preferences },
     { "show-contact", on_show_contact, "s" },
-    { "import", on_import }
+    { "import", on_import },
+    { "export-all", on_export_all }
   };
 
   private const OptionEntry[] options = {
@@ -419,5 +420,13 @@ public class Contacts.App : Adw.Application {
       });
     });
     dialog.present ();
+  }
+
+  private void on_export_all (SimpleAction action, Variant? param) {
+    var model = this.contacts_store.filter_model;
+    var individuals = new Gee.ArrayList<Individual> ();
+    for (uint i = 0; i < model.get_n_items (); i++)
+      individuals.add ((Individual) model.get_item (i));
+    this.window.export_individuals (individuals);
   }
 }

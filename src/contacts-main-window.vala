@@ -592,6 +592,13 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.marked_contacts.unselect_all ();
     this.state = UiState.NORMAL;
 
+    var individuals = bitset_to_individuals (this.store.filter_model,
+                                             selection);
+    export_individuals (individuals);
+  }
+
+
+  public void export_individuals (Gee.List<Individual> individuals) {
     // Open up a file chooser
     var chooser = new Gtk.FileChooserNative (_("Export to file"),
                                              this,
@@ -607,9 +614,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       }
 
       // Do the actual export
-      var individuals = bitset_to_individuals (this.store.filter_model,
-                                               selection);
-
       OutputStream filestream = null;
       try {
         filestream = chooser.get_file ().replace (null, false, FileCreateFlags.NONE);
