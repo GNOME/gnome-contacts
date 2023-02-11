@@ -462,28 +462,47 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     row.add_prefix (new Gtk.Image.from_icon_name ("birthday-symbolic"));
     row.title = _("Birthday");
 
-    Gtk.Button button;
-    if (bd_chunk.birthday == null) {
-      button = new Gtk.Button.with_label (_("Set Birthday"));
-    } else {
-      button = new Gtk.Button.with_label (bd_chunk.birthday.to_local ().format ("%x"));
-    }
-    button.valign = Gtk.Align.CENTER;
-    button.clicked.connect (() => {
+    // Show a button to set the date (and show it if set)
+    var bd_button = new Gtk.Button ();
+    bd_button.valign = Gtk.Align.CENTER;
+    update_birthday_button (bd_button, bd_chunk);
+    bd_button.clicked.connect (() => {
       unowned var parent_window = get_root () as Gtk.Window;
       var dialog = new BirthdayEditor (parent_window, bd_chunk.birthday);
       dialog.changed.connect (() => {
-        if (dialog.is_set) {
+        if (dialog.is_set)
           bd_chunk.birthday = dialog.get_birthday ();
-          button.set_label (bd_chunk.birthday.to_local ().format ("%x"));
-        }
       });
       dialog.present ();
     });
-    row.add_suffix (button);
-    row.set_activatable_widget (button);
+    row.add_suffix (bd_button);
+    row.set_activatable_widget (bd_button);
+
+    // Add a remove button
+    var remove_button = new Gtk.Button ();
+    remove_button.icon_name = "user-trash-symbolic";
+    remove_button.tooltip_text = _("Remove birthday");
+    remove_button.valign = Gtk.Align.CENTER;
+    remove_button.add_css_class ("flat");
+    remove_button.sensitive = (bd_chunk.birthday != null);
+    remove_button.clicked.connect ((b) => { bd_chunk.birthday = null; });
+    row.add_suffix (remove_button);
+
+    // Update both buttons on any changes
+    bd_chunk.notify["birthday"].connect ((obj, pspec) => {
+      update_birthday_button (bd_button, bd_chunk);
+      remove_button.sensitive = (bd_chunk.birthday != null);
+    });
 
     return new ContactEditorProperty (row);
+  }
+
+  private void update_birthday_button (Gtk.Button bd_button, BirthdayChunk bd_chunk) {
+    if (bd_chunk.birthday == null) {
+      bd_button.label = _("Set Birthday");
+    } else {
+      bd_button.label = bd_chunk.birthday.to_local ().format ("%x");
+    }
   }
 
   private Gtk.Widget create_widget_for_addresses (Chunk chunk)
