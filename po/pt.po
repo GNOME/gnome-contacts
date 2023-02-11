@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-01-24 21:22+0000\n"
-"PO-Revision-Date: 2023-01-25 14:40+0000\n"
+"POT-Creation-Date: 2023-02-11 15:28+0000\n"
+"PO-Revision-Date: 2023-02-11 22:51+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -25,8 +25,8 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
-#: src/contacts-main-window.vala:212 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:199
+#: src/contacts-main-window.vala:222 src/main.vala:26
 msgid "Contacts"
 msgstr "Contactos"
 
@@ -111,8 +111,8 @@ msgstr "Criar um novo contacto"
 
 #: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
-msgid "Search"
-msgstr "Procurar"
+msgid "Search contacts"
+msgstr "Procurar contactos"
 
 #: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
@@ -129,13 +129,13 @@ msgid "Select a new avatar"
 msgstr "Selecionar um novo avatar"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:337
+#: data/ui/contacts-main-window.ui:131 src/contacts-app.vala:337
 #: src/contacts-contact-editor.vala:730
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:297 src/contacts-main-window.vala:231
 msgid "Done"
 msgstr "Terminado"
 
@@ -199,73 +199,89 @@ msgstr "Ajuda"
 msgid "About Contacts"
 msgstr "Acerca do Contactos"
 
-#: data/ui/contacts-main-window.ui:82
+#: data/ui/contacts-main-window.ui:50
+msgid "Share as QR Code"
+msgstr "Partilhar como código QR"
+
+#: data/ui/contacts-main-window.ui:56
+msgid "Delete Contact"
+msgstr "Eliminar contacto"
+
+#: data/ui/contacts-main-window.ui:107
 msgid "Create new contact"
 msgstr "Criar novo contacto"
 
-#: data/ui/contacts-main-window.ui:92
-msgid "Menu"
-msgstr "Menu"
+#: data/ui/contacts-main-window.ui:117
+msgid "Main Menu"
+msgstr "Menu Principal"
 
-#: data/ui/contacts-main-window.ui:99
+#: data/ui/contacts-main-window.ui:124
 msgid "Select Items"
 msgstr "Selecionar itens"
 
-#: data/ui/contacts-main-window.ui:107
+#: data/ui/contacts-main-window.ui:132
 msgid "Cancel Selection"
 msgstr "Cancelar Seleção"
 
-#: data/ui/contacts-main-window.ui:134
+#: data/ui/contacts-main-window.ui:159
 msgid "Loading"
 msgstr "A carregar"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:170
 msgid "Type to search"
 msgstr "Escreva para procurar"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:188
 msgid "Export"
 msgstr "Exportar"
 
-#: data/ui/contacts-main-window.ui:164
+#: data/ui/contacts-main-window.ui:189
 msgid "Export Selected Contacts"
 msgstr "Exportar contactos selecionados"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:196
 msgid "Link"
 msgstr "Ligação"
 
-#: data/ui/contacts-main-window.ui:172
+#: data/ui/contacts-main-window.ui:197
 msgid "Link Selected Contacts Together"
 msgstr "Ligar contactos selecionados em conjunto"
 
-#: data/ui/contacts-main-window.ui:179
+#: data/ui/contacts-main-window.ui:204
 msgid "Remove"
 msgstr "Remover"
 
-#: data/ui/contacts-main-window.ui:223
+#: data/ui/contacts-main-window.ui:250
 msgid "Back"
 msgstr "Recuar"
 
-#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
+#: data/ui/contacts-main-window.ui:264 src/contacts-app.vala:233
 #: src/contacts-app.vala:403 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
+#: src/contacts-main-window.vala:535 src/contacts-main-window.vala:584
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:280
 msgid "Edit Contact"
 msgstr "Editar contacto"
 
-#: data/ui/contacts-main-window.ui:266
-msgid "Delete Contact"
-msgstr "Eliminar contacto"
+#: data/ui/contacts-main-window.ui:287
+msgid "More Contact Actions"
+msgstr "Mais ações de contacto"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
 msgstr "Livro de endereços"
+
+#: data/ui/contacts-qr-code-dialog.ui:11
+msgid "Share Contact"
+msgstr "Partilhar contacto"
+
+#: data/ui/contacts-qr-code-dialog.ui:41
+msgid "Scan to Save"
+msgstr "Digitalizar para guardar"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
@@ -688,56 +704,56 @@ msgstr "Esta pessoa não é a mesma %s de %s?"
 msgid "Is this the same person as %s?"
 msgstr "Esta pessoa não é a mesma %s?"
 
-#: src/contacts-main-window.vala:191
+#: src/contacts-main-window.vala:144 src/contacts-main-window.vala:473
+msgid "Mark as Favorite"
+msgstr "Marcar como Favorito"
+
+#: src/contacts-main-window.vala:201
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu Selecionado"
 msgstr[1] "%llu Selecionados"
 
-#: src/contacts-main-window.vala:221
+#: src/contacts-main-window.vala:231
 msgid "_Add"
 msgstr "_Adicionar"
 
-#: src/contacts-main-window.vala:251
+#: src/contacts-main-window.vala:261
 #, c-format
 msgid "Editing %s"
 msgstr "A editar %s"
 
-#: src/contacts-main-window.vala:271
+#: src/contacts-main-window.vala:289
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d Selecionado"
 msgstr[1] "%d selecionados"
 
-#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:487
-#: src/contacts-main-window.vala:527
+#: src/contacts-main-window.vala:309 src/contacts-main-window.vala:506
+#: src/contacts-main-window.vala:546
 msgid "_Undo"
 msgstr "_Desfazer"
 
-#: src/contacts-main-window.vala:358
+#: src/contacts-main-window.vala:380
 msgid "New Contact"
 msgstr "Novo contacto"
 
-#: src/contacts-main-window.vala:452
-msgid "Unmark as favorite"
-msgstr "Remover dos favoritos"
-
-#: src/contacts-main-window.vala:454
-msgid "Mark as favorite"
-msgstr "Marcar com favorito"
+#: src/contacts-main-window.vala:471
+msgid "Unmark as Favorite"
+msgstr "Desmarcar como Favorito"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:561
+#: src/contacts-main-window.vala:580
 msgid "Export to file"
-msgstr "Exporta para ficheiro"
+msgstr "Exportar para ficheiro"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:583
 msgid "_Export"
 msgstr "_Exportar"
 
-#: src/contacts-main-window.vala:566
+#: src/contacts-main-window.vala:585
 msgid "contacts.vcf"
 msgstr "contactos.vcf"
 
@@ -760,6 +776,11 @@ msgstr "Contas _Online"
 #: src/contacts-preferences-window.vala:45
 msgid "Opens the Online Accounts panel in GNOME Settings"
 msgstr "Abre o painel Contas Online nas Definições do GNOME"
+
+#: src/contacts-qr-code-dialog.vala:33
+#, c-format
+msgid "Scan the QR code to save the contact <b>%s</b>."
+msgstr "Digitalize o código QR para guardar o contacto <b>%s</b>."
 
 #: src/contacts-unlink-operation.vala:37
 msgid "Unlinking contacts"
@@ -975,6 +996,13 @@ msgstr "Guarda ser a janela está atualmente maximizada."
 msgid "Is the window fullscreen"
 msgstr "A janela está em ecrã inteiro"
 
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Procurar"
+
+#~ msgid "Menu"
+#~ msgstr "Menu"
+
 #~ msgid "Change Address Book"
 #~ msgstr "Alterar o livro de endereços"
 
@@ -1040,9 +1068,6 @@ msgstr "A janela está em ecrã inteiro"
 
 #~ msgid "Add contact"
 #~ msgstr "Adicionar contacto"
-
-#~ msgid "Main Menu"
-#~ msgstr "Menu Principal"
 
 #~ msgid "Setup complete"
 #~ msgstr "Configuração completa"
@@ -1144,9 +1169,6 @@ msgstr "A janela está em ecrã inteiro"
 #~ msgid "Suggestions"
 #~ msgstr "Sugestões"
 
-#~ msgid "Other Contacts"
-#~ msgstr "Outros contactos"
-
 #~ msgid "Contact deleted: \"%s\""
 #~ msgstr "Contacto eliminado: \"%s\""
 
@@ -1194,9 +1216,6 @@ msgstr "A janela está em ecrã inteiro"
 
 #~ msgid "Personal email"
 #~ msgstr "Email pessoal"
-
-#~ msgid "Primary Contacts Account"
-#~ msgstr "Conta Principal de Contacto"
 
 #~ msgid "Twitter"
 #~ msgstr "Twitter"
