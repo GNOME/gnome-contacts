@@ -25,6 +25,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     { "new-contact", new_contact },
     { "edit-contact", edit_contact },
     { "stop-editing-contact", stop_editing_contact, "b" },
+    { "focus-search", focus_search },
     { "toggle-favorite", toggle_favorite },
     { "link-marked-contacts", link_marked_contacts },
     { "delete-marked-contacts", delete_marked_contacts },
@@ -362,6 +363,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contacts_list.scroll_to_selected ();
 
     this.right_header.title_widget = new Adw.WindowTitle ("", "");
+  }
+
+  private void focus_search (SimpleAction action, GLib.Variant? parameter) {
+    this.filter_entry.grab_focus ();
   }
 
   public void new_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
