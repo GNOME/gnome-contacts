@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-01-25 18:36+0000\n"
-"PO-Revision-Date: 2023-01-30 11:33+0700\n"
+"POT-Creation-Date: 2023-02-12 09:41+0000\n"
+"PO-Revision-Date: 2023-02-13 09:37+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -21,8 +21,9 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
-#: src/contacts-main-window.vala:212 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:131
+#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:223
+#: src/main.vala:26
 msgid "Contacts"
 msgstr "Kontak"
 
@@ -71,7 +72,7 @@ msgstr "Tampilan pengaturan kontak"
 msgid "Contacts edit view"
 msgstr "Tampilan sunting kontak"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:144
 msgid "The GNOME Project"
 msgstr "Proyek GNOME"
 
@@ -107,8 +108,8 @@ msgstr "Buat kontak baru"
 
 #: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
-msgid "Search"
-msgstr "Cari"
+msgid "Search contacts"
+msgstr "Cari kontak"
 
 #: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
@@ -120,18 +121,33 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Keluar"
 
+#: data/gtk/help-overlay.ui:54
+msgctxt "shortcut window"
+msgid "Editing or creating a contact"
+msgstr "Menyunting atau membuat kontak"
+
+#: data/gtk/help-overlay.ui:58
+msgctxt "shortcut window"
+msgid "Save current changes to contact"
+msgstr "Simpan perubahan saat ini ke kontak"
+
+#: data/gtk/help-overlay.ui:64
+msgctxt "shortcut window"
+msgid "Cancel current changes for contact"
+msgstr "Batalkan perubahan saat ini untuk kontak"
+
 #: data/ui/contacts-avatar-selector.ui:7
 msgid "Select a new avatar"
 msgstr "Pilih avatar baru"
 
 #: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:337
-#: src/contacts-contact-editor.vala:730
+#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
+#: src/contacts-contact-editor.vala:749
 msgid "Cancel"
 msgstr "Batal"
 
 #: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
+#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
 msgid "Done"
 msgstr "Selesai"
 
@@ -176,92 +192,112 @@ msgid "Surname"
 msgstr "Nama Keluarga"
 
 #: data/ui/contacts-main-window.ui:19
-msgid "Import…"
-msgstr "Impor…"
+msgid "Import From File…"
+msgstr "Impor dari berkas…"
 
-#: data/ui/contacts-main-window.ui:25
+#: data/ui/contacts-main-window.ui:23
+msgid "Export All Contacts…"
+msgstr "Ekspor Semua Kontak..."
+
+#: data/ui/contacts-main-window.ui:29
 msgid "Preferences"
 msgstr "Preferensi"
 
-#: data/ui/contacts-main-window.ui:29
+#: data/ui/contacts-main-window.ui:33
 msgid "Keyboard Shortcuts"
 msgstr "Pintasan Papan Tik"
 
-#: data/ui/contacts-main-window.ui:33
+#: data/ui/contacts-main-window.ui:37
 msgid "Help"
 msgstr "Bantuan"
 
-#: data/ui/contacts-main-window.ui:37
+#: data/ui/contacts-main-window.ui:41
 msgid "About Contacts"
 msgstr "Tentang Kontak"
 
-#: data/ui/contacts-main-window.ui:82
+#: data/ui/contacts-main-window.ui:54
+msgid "Share as QR Code"
+msgstr "Bagikan sebagai Kode QR"
+
+#: data/ui/contacts-main-window.ui:60
+msgid "Delete Contact"
+msgstr "Hapus Kontak"
+
+#: data/ui/contacts-main-window.ui:123
 msgid "Create new contact"
 msgstr "Buat kontak baru"
 
-#: data/ui/contacts-main-window.ui:92
-msgid "Menu"
-msgstr "Menu"
+#: data/ui/contacts-main-window.ui:139
+msgid "Main Menu"
+msgstr "Menu Utama"
 
-#: data/ui/contacts-main-window.ui:99
+#: data/ui/contacts-main-window.ui:146
 msgid "Select Items"
 msgstr "Pilih butir"
 
-#: data/ui/contacts-main-window.ui:107
+#: data/ui/contacts-main-window.ui:154
 msgid "Cancel Selection"
 msgstr "Batalkan pilihan"
 
-#: data/ui/contacts-main-window.ui:134
+#: data/ui/contacts-main-window.ui:181
 msgid "Loading"
 msgstr "Sedang memuat"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:192
 msgid "Type to search"
 msgstr "Ketik untuk mencari"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:210
 msgid "Export"
 msgstr "Ekspor"
 
-#: data/ui/contacts-main-window.ui:164
+#: data/ui/contacts-main-window.ui:211
 msgid "Export Selected Contacts"
 msgstr "Ekspor Kontak yang Dipilih"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:218
 msgid "Link"
 msgstr "Kaitkan"
 
-#: data/ui/contacts-main-window.ui:172
+#: data/ui/contacts-main-window.ui:219
 msgid "Link Selected Contacts Together"
 msgstr "Menautkan Kontak yang Dipilih Bersama-sama"
 
-#: data/ui/contacts-main-window.ui:179
+#: data/ui/contacts-main-window.ui:226
 msgid "Remove"
 msgstr "Buang"
 
-#: data/ui/contacts-main-window.ui:223
+#: data/ui/contacts-main-window.ui:272
 msgid "Back"
 msgstr "Kembali"
 
-#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
-#: src/contacts-app.vala:403 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
+#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
+#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:196
+#: src/contacts-main-window.vala:551 src/contacts-main-window.vala:607
 msgid "_Cancel"
 msgstr "_Batal"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:301
 msgid "Edit Contact"
 msgstr "Sunting Kontak"
 
-#: data/ui/contacts-main-window.ui:266
-msgid "Delete Contact"
-msgstr "Hapus Kontak"
+#: data/ui/contacts-main-window.ui:308
+msgid "More Contact Actions"
+msgstr "Tindakan Kontak Lainnya"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
 msgstr "Buku Alamat"
+
+#: data/ui/contacts-qr-code-dialog.ui:11
+msgid "Share Contact"
+msgstr "Bagikan Kontak"
+
+#: data/ui/contacts-qr-code-dialog.ui:41
+msgid "Scan to Save"
+msgstr "Pindai untuk Menyimpan"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
@@ -298,37 +334,37 @@ msgstr ""
 "ditambahkan. Jika Anda menyimpan kontak di akun daring, Anda dapat "
 "menambahkannya menggunakan setelan akun daring."
 
-#: src/contacts-app.vala:45
+#: src/contacts-app.vala:46
 msgid "Show contact with this email address"
 msgstr "Tampilkan kontak dengan alamat surel ini"
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:47
 msgid "Show contact with this individual id"
 msgstr "Tampilkan kontak dengan id individual ini"
 
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:48
 msgid "Show contacts with the given filter"
 msgstr "Tampilkan kontak dengan filter yang diberikan"
 
-#: src/contacts-app.vala:48
+#: src/contacts-app.vala:49
 msgid "Show the current version of Contacts"
 msgstr "Tampilkan versi Kontak saat ini"
 
-#: src/contacts-app.vala:110 src/contacts-app.vala:163
+#: src/contacts-app.vala:111 src/contacts-app.vala:164
 msgid "Contact not found"
 msgstr "Kontak tak ditemukan"
 
-#: src/contacts-app.vala:111
+#: src/contacts-app.vala:112
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Tak ditemukan kontak dengan id %s"
 
-#: src/contacts-app.vala:112 src/contacts-app.vala:165
+#: src/contacts-app.vala:113 src/contacts-app.vala:166
 #: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
 msgid "_Close"
 msgstr "_Tutup"
 
-#: src/contacts-app.vala:149
+#: src/contacts-app.vala:150
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -336,16 +372,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Pengembang Kontak"
 
-#: src/contacts-app.vala:164
+#: src/contacts-app.vala:165
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Tak ditemukan kontak dengan alamat surel %s"
 
-#: src/contacts-app.vala:227
+#: src/contacts-app.vala:228
 msgid "Primary address book not found"
 msgstr "Buku alamat utama tidak ditemukan"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:230
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -353,56 +389,56 @@ msgstr ""
 "Kontak tidak dapat menemukan buku alamat utama yang dikonfigurasi. Anda "
 "mungkin mengalami masalah saat membuat atau menyunting kontak"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:231
 msgid "Go To _Preferences"
 msgstr "Pergi ke _Preferensi"
 
-#: src/contacts-app.vala:333
+#: src/contacts-app.vala:334
 msgid "Select contact file"
 msgstr "Pilih berkas kontak"
 
-#: src/contacts-app.vala:336
+#: src/contacts-app.vala:337
 msgid "Import"
 msgstr "Impor"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:343
+#: src/contacts-app.vala:344
 msgid "vCard files"
 msgstr "Berkas vCard"
 
-#: src/contacts-app.vala:376
+#: src/contacts-app.vala:377
 msgid "Error reading file"
 msgstr "Galat saat membaca berkas"
 
-#: src/contacts-app.vala:377
+#: src/contacts-app.vala:378
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Terjadi galat saat membaca berkas '%s'"
 
-#: src/contacts-app.vala:378 src/contacts-app.vala:388
+#: src/contacts-app.vala:379 src/contacts-app.vala:389
 msgid "_OK"
 msgstr "_OK"
 
-#: src/contacts-app.vala:386
+#: src/contacts-app.vala:387
 msgid "No contacts found"
 msgstr "Tidak ada kontak yang ditemukan"
 
-#: src/contacts-app.vala:387
+#: src/contacts-app.vala:388
 msgid "The imported file does not seem to contain any contacts"
 msgstr "Berkas yang diimpor tampaknya tidak berisi kontak apa pun"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:395
+#: src/contacts-app.vala:396
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Dengan melanjutkan, Anda akan mengimpor kontak %u"
 
-#: src/contacts-app.vala:398
+#: src/contacts-app.vala:399
 msgid "Continue Import?"
 msgstr "Lanjutkan Impor?"
 
-#: src/contacts-app.vala:399
+#: src/contacts-app.vala:400
 msgid "C_ontinue"
 msgstr "L_anjutkan"
 
@@ -454,69 +490,73 @@ msgstr "Nama panggilan"
 msgid "Birthday"
 msgstr "Tanggal lahir"
 
-#: src/contacts-contact-editor.vala:467
+#: src/contacts-contact-editor.vala:484
+msgid "Remove birthday"
+msgstr "Hapus ulang tahun"
+
+#: src/contacts-contact-editor.vala:502
 msgid "Set Birthday"
 msgstr "Atur Tanggal Lahir"
 
-#: src/contacts-contact-editor.vala:537
+#: src/contacts-contact-editor.vala:556
 msgid "Organisation"
 msgstr "Organisasi"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:543 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:562 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Peran"
 
-#: src/contacts-contact-editor.vala:659
+#: src/contacts-contact-editor.vala:678
 msgid "Label"
 msgstr "Label"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:715
+#: src/contacts-contact-editor.vala:734
 msgid "Day"
 msgstr "Hari"
 
-#: src/contacts-contact-editor.vala:719
+#: src/contacts-contact-editor.vala:738
 msgid "Month"
 msgstr "Bulan"
 
-#: src/contacts-contact-editor.vala:723
+#: src/contacts-contact-editor.vala:742
 msgid "Year"
 msgstr "Tahun"
 
-#: src/contacts-contact-editor.vala:728
+#: src/contacts-contact-editor.vala:747
 msgid "Change Birthday"
 msgstr "Ubah Tanggal Lahir"
 
-#: src/contacts-contact-editor.vala:729
+#: src/contacts-contact-editor.vala:748
 msgid "Set"
 msgstr "Atur"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "Street"
 msgstr "Jalan"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "Extension"
 msgstr "Ekstensi"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "City"
 msgstr "Kota"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "State/Province"
 msgstr "Negara Bagian/Provinsi"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "Zip/Postal Code"
 msgstr "Kode Pos"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "PO box"
 msgstr "Kotak pos"
 
-#: src/contacts-contact-editor.vala:798
+#: src/contacts-contact-editor.vala:817
 msgid "Country"
 msgstr "Negara"
 
@@ -681,54 +721,54 @@ msgstr "Apakah ini orang yang sama dengan %s dari %s?"
 msgid "Is this the same person as %s?"
 msgstr "Apakah ini orang yang sama dengan %s?"
 
-#: src/contacts-main-window.vala:191
+#: src/contacts-main-window.vala:145 src/contacts-main-window.vala:489
+msgid "Mark as Favorite"
+msgstr "Tandai sebagai favorit"
+
+#: src/contacts-main-window.vala:202
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu Dipilih"
 
-#: src/contacts-main-window.vala:221
+#: src/contacts-main-window.vala:232
 msgid "_Add"
 msgstr "T_ambah"
 
-#: src/contacts-main-window.vala:251
+#: src/contacts-main-window.vala:262
 #, c-format
 msgid "Editing %s"
 msgstr "Menyunting %s"
 
-#: src/contacts-main-window.vala:271
+#: src/contacts-main-window.vala:290
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d Dipilih"
 
-#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:487
-#: src/contacts-main-window.vala:527
+#: src/contacts-main-window.vala:310 src/contacts-main-window.vala:522
+#: src/contacts-main-window.vala:562
 msgid "_Undo"
 msgstr "_Tak Jadi"
 
-#: src/contacts-main-window.vala:358
+#: src/contacts-main-window.vala:396
 msgid "New Contact"
 msgstr "Kontak Baru"
 
-#: src/contacts-main-window.vala:452
-msgid "Unmark as favorite"
-msgstr "Cabut tandai sebagai favorit"
-
-#: src/contacts-main-window.vala:454
-msgid "Mark as favorite"
-msgstr "Tandai sebagai favorit"
+#: src/contacts-main-window.vala:487
+msgid "Unmark as Favorite"
+msgstr "Cabut Tanda Sebagai Favorit"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:561
+#: src/contacts-main-window.vala:603
 msgid "Export to file"
 msgstr "Ekspor ke berkas"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:606
 msgid "_Export"
 msgstr "_Ekspor"
 
-#: src/contacts-main-window.vala:566
+#: src/contacts-main-window.vala:608
 msgid "contacts.vcf"
 msgstr "kontak.vcf"
 
@@ -751,6 +791,11 @@ msgstr "Ak_un Daring"
 #: src/contacts-preferences-window.vala:45
 msgid "Opens the Online Accounts panel in GNOME Settings"
 msgstr "Buka panel Akun Daring di Pengaturan GNOME"
+
+#: src/contacts-qr-code-dialog.vala:33
+#, c-format
+msgid "Scan the QR code to save the contact <b>%s</b>."
+msgstr "Pindai kode QR untuk menyimpan kontak <b>%s</b>."
 
 #: src/contacts-unlink-operation.vala:37
 msgid "Unlinking contacts"
@@ -966,6 +1011,13 @@ msgstr "Simpan jika jendela saat ini dimaksimalkan."
 msgid "Is the window fullscreen"
 msgstr "Apakah jendela layar penuh"
 
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Cari"
+
+#~ msgid "Menu"
+#~ msgstr "Menu"
+
 #~ msgid "Change Address Book"
 #~ msgstr "Ubah Buku Alamat"
 
@@ -1029,9 +1081,6 @@ msgstr "Apakah jendela layar penuh"
 
 #~ msgid "Add contact"
 #~ msgstr "Tambah kontak"
-
-#~ msgid "Main Menu"
-#~ msgstr "Menu Utama"
 
 #~ msgid "Setup complete"
 #~ msgstr "Penyiapan selesai"
