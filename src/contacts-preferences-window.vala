@@ -42,7 +42,7 @@ public class Contacts.PreferencesWindow : Adw.PreferencesWindow {
     goa_button_content.icon_name = "external-link-symbolic";
     var goa_button = new Gtk.Button ();
     goa_button.set_child (goa_button_content);
-    goa_button.tooltip_text = _("Opens the Online Accounts panel in GNOME Settings");
+    goa_button.tooltip_text = _("Open the Online Accounts panel in Settings");
     goa_button.margin_top = 36;
     goa_button.halign = Gtk.Align.CENTER;
     goa_button.add_css_class ("pill");
