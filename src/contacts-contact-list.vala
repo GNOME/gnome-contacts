@@ -63,7 +63,6 @@ public class Contacts.ContactList : Adw.Bin {
     // Construct our widget tree (just a scrolledwindow + vp with a listbox)
     var sw = new Gtk.ScrolledWindow ();
     sw.hscrollbar_policy = Gtk.PolicyType.NEVER;
-    sw.add_css_class ("contact-list-scrolled-window");
     this.child = sw;
 
     var viewport = new Gtk.Viewport (sw.hadjustment, sw.vadjustment);
