@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-12 09:41+0000\n"
-"PO-Revision-Date: 2023-02-12 20:38+0200\n"
+"POT-Creation-Date: 2023-02-19 15:24+0000\n"
+"PO-Revision-Date: 2023-02-19 22:22+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -73,7 +73,7 @@ msgstr "Панель налаштовування «Контактів»"
 msgid "Contacts edit view"
 msgstr "Панель редагування «Контактів»"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:144
+#: data/org.gnome.Contacts.appdata.xml.in.in:829 src/contacts-app.vala:144
 msgid "The GNOME Project"
 msgstr "Проєкт GNOME"
 
@@ -128,13 +128,11 @@ msgid "Editing or creating a contact"
 msgstr "Редагування або створення запису контакту"
 
 #: data/gtk/help-overlay.ui:58
-#| msgid "Show the current version of Contacts"
 msgctxt "shortcut window"
 msgid "Save current changes to contact"
 msgstr "Зберегти поточні зміни до запису контакту"
 
 #: data/gtk/help-overlay.ui:64
-#| msgid "Show the current version of Contacts"
 msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Скасувати поточні зміни до запису контакту"
@@ -195,12 +193,10 @@ msgid "Surname"
 msgstr "Введіть прізвище"
 
 #: data/ui/contacts-main-window.ui:19
-#| msgid "Import…"
 msgid "Import From File…"
 msgstr "Імпортувати з файла…"
 
 #: data/ui/contacts-main-window.ui:23
-#| msgid "Export Selected Contacts"
 msgid "Export All Contacts…"
 msgstr "Експортувати усі контакти…"
 
@@ -229,16 +225,18 @@ msgid "Delete Contact"
 msgstr "Вилучити контакт"
 
 #: data/ui/contacts-main-window.ui:123
-msgid "Create new contact"
-msgstr "Створити контакт"
+#| msgid "New Contact"
+msgid "Add New Contact"
+msgstr "Додати новий контакт"
 
 #: data/ui/contacts-main-window.ui:139
 msgid "Main Menu"
 msgstr "Головне меню"
 
 #: data/ui/contacts-main-window.ui:146
-msgid "Select Items"
-msgstr "Виберіть записи"
+#| msgid "Select a Contact"
+msgid "Select Contacts"
+msgstr "Виберіть контакти"
 
 #: data/ui/contacts-main-window.ui:154
 msgid "Cancel Selection"
@@ -249,8 +247,10 @@ msgid "Loading"
 msgstr "Завантаження"
 
 #: data/ui/contacts-main-window.ui:192
-msgid "Type to search"
-msgstr "Введіть для пошуку…"
+#| msgctxt "shortcut window"
+#| msgid "Search contacts"
+msgid "Search contacts"
+msgstr "Шукати у контактах"
 
 #. Export refers to the verb
 #: data/ui/contacts-main-window.ui:210
@@ -499,7 +499,6 @@ msgid "Birthday"
 msgstr "День народження"
 
 #: src/contacts-contact-editor.vala:484
-#| msgid "Set Birthday"
 msgid "Remove birthday"
 msgstr "Вилучити день народження"
 
@@ -810,8 +809,9 @@ msgid "_Online Accounts"
 msgstr "Мережеві _облікові записи"
 
 #: src/contacts-preferences-window.vala:45
-msgid "Opens the Online Accounts panel in GNOME Settings"
-msgstr "Відкриває панель облікових записів інтернету у «Параметрах GNOME»"
+#| msgid "Opens the Online Accounts panel in GNOME Settings"
+msgid "Open the Online Accounts panel in Settings"
+msgstr "Відкрити панель облікових записів інтернету у «Параметрах»"
 
 #: src/contacts-qr-code-dialog.vala:33
 #, c-format
@@ -1029,6 +1029,15 @@ msgstr "Запам'ятовує, чи вікно розгорнуто."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Чи розгорнуто вікно на увесь екран"
+
+#~ msgid "Create new contact"
+#~ msgstr "Створити контакт"
+
+#~ msgid "Select Items"
+#~ msgstr "Виберіть записи"
+
+#~ msgid "Type to search"
+#~ msgstr "Введіть для пошуку…"
 
 #~ msgctxt "shortcut window"
 #~ msgid "Search"
