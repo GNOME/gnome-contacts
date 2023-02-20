@@ -104,23 +104,7 @@ public class Contacts.ContactEditor : Gtk.Widget {
   // Show the avatar popover when the avatar is clicked
   private void on_avatar_button_clicked (Gtk.Button avatar_button) {
     var avatar_selector = new AvatarSelector (this.contact, get_root () as Gtk.Window);
-    avatar_selector.response.connect ((response) => {
-      if (response == Gtk.ResponseType.ACCEPT) {
-        try {
-          avatar_selector.set_avatar_on_contact ();
-        } catch (Error e) {
-          warning ("Failed to set avatar: %s", e.message);
-          var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
-                                              null,
-                                              _("Failed to set avatar."));
-          dialog.add_response ("close", _("_Close"));
-          dialog.default_response = "close";
-          dialog.show();
-        }
-      }
-      avatar_selector.destroy ();
-    });
-    avatar_selector.show ();
+    avatar_selector.present ();
   }
 
   // Creates the big name entry on the top
@@ -690,7 +674,7 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
   }
 }
 
-public class Contacts.BirthdayEditor : Gtk.Dialog {
+public class Contacts.BirthdayEditor : Gtk.Window {
 
   private unowned Gtk.SpinButton day_spin;
   private unowned Gtk.ComboBoxText month_combo;
@@ -700,13 +684,17 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
 
   public signal void changed ();
 
+  static construct {
+    add_binding_action (Gdk.Key.Escape, 0, "window.close", null);
+  }
+
   construct {
     // The grid that will contain the Y/M/D fields
     var grid = new Gtk.Grid ();
     grid.column_spacing = 12;
     grid.row_spacing = 12;
     grid.add_css_class ("contacts-editor-birthday");
-    ((Gtk.Box) this.get_content_area ()).append (grid);
+    this.child = grid;
 
     // Day
     var d_spin = new Gtk.SpinButton.with_range (1.0, 31.0, 1.0);
@@ -744,27 +732,28 @@ public class Contacts.BirthdayEditor : Gtk.Dialog {
     grid.attach (year, 0, 2);
     grid.attach (year_spin, 1, 2);
 
-    this.title = _("Change Birthday");
-    add_buttons (_("Set"), Gtk.ResponseType.OK,
-                 _("Cancel"), Gtk.ResponseType.CANCEL,
-                 null);
-    var ok_button = this.get_widget_for_response (Gtk.ResponseType.OK);
+    // Headerbar
+    var titlebar = new Gtk.HeaderBar ();
+    this.titlebar = titlebar;
+    titlebar.title_widget = new Adw.WindowTitle (_("Change Birthday"), "");
+    titlebar.show_title_buttons = false;
+
+    var cancel_button = new Gtk.Button.with_mnemonic (_("_Cancel"));
+    cancel_button.action_name = "window.close";
+    titlebar.pack_start (cancel_button);
+
+    var ok_button = new Gtk.Button.with_mnemonic (_("_Set"));
     ok_button.add_css_class ("suggested-action");
-    this.response.connect ((id) => {
-      switch (id) {
-        case Gtk.ResponseType.OK:
-          this.is_set = true;
-          changed ();
-          break;
-        case Gtk.ResponseType.CANCEL:
-          break;
-      }
-      this.destroy ();
+    ok_button.clicked.connect ((b) => {
+      this.is_set = true;
+      changed ();
+      destroy ();
     });
+    titlebar.pack_end (ok_button);
   }
 
-  public BirthdayEditor (Gtk.Window window, DateTime? birthday) {
-    Object (transient_for: window, use_header_bar: 1, modal: true);
+  public BirthdayEditor (Gtk.Window? window, DateTime? birthday) {
+    Object (transient_for: window, modal: true);
 
     // Don't forget to change to local timezone first
     var bday_local = (birthday != null)? birthday.to_local () : new DateTime.now_local ();

@@ -68,7 +68,7 @@ private class Contacts.Thumbnail : Gtk.FlowBoxChild {
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-selector.ui")]
-public class Contacts.AvatarSelector : Gtk.Dialog {
+public class Contacts.AvatarSelector : Gtk.Window {
 
   const string AVATAR_BUTTON_CSS_NAME = "avatar-button";
 
@@ -88,8 +88,12 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
     private set { this._selected_avatar = value; }
   }
 
+  static construct {
+    install_action ("set-avatar", null, (Gtk.WidgetActionActivateFunc) on_set_avatar);
+  }
+
   public AvatarSelector (Contact contact, Gtk.Window? window = null) {
-    Object (contact: contact, transient_for: window, use_header_bar: 1);
+    Object (contact: contact, transient_for: window);
 
     this.thumbnail_grid.selected_children_changed.connect (on_thumbnails_selected);
     this.thumbnail_grid.child_activated.connect (on_thumbnail_activated);
@@ -112,7 +116,7 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
                                        Gtk.FlowBoxChild child) {
     unowned var thumbnail = (Thumbnail) child;
     this.selected_avatar = thumbnail.source_pixbuf;
-    this.response (Gtk.ResponseType.ACCEPT);
+    activate_action_variant ("set-avatar", null);
   }
 
   private async void setup_camera_portal () {
@@ -148,16 +152,29 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
   }
 
   /** Sets the selected avatar on the contact (it does _not_ save it) */
-  public void set_avatar_on_contact () throws GLib.Error {
-    uint8[] buffer;
-    this.selected_avatar.save_to_buffer (out buffer, "png", null);
-    var icon = new BytesIcon (new Bytes (buffer));
+  private void on_set_avatar (string action_name, Variant? param) {
+    debug ("Setting avatar");
+    try {
+      uint8[] buffer;
+      this.selected_avatar.save_to_buffer (out buffer, "png", null);
+      var icon = new BytesIcon (new Bytes (buffer));
 
-    // Save into the most relevant avatar
-    var avatar_chunk = this.contact.get_most_relevant_chunk ("avatar", true);
-    if (avatar_chunk == null)
-      avatar_chunk = this.contact.create_chunk ("avatar", null);
-    ((AvatarChunk) avatar_chunk).avatar = icon;
+      // Save into the most relevant avatar
+      var avatar_chunk = this.contact.get_most_relevant_chunk ("avatar", true);
+      if (avatar_chunk == null)
+        avatar_chunk = this.contact.create_chunk ("avatar", null);
+      ((AvatarChunk) avatar_chunk).avatar = icon;
+      destroy ();
+    } catch (Error e) {
+      destroy ();
+
+      warning ("Failed to set avatar: %s", e.message);
+      var dialog = new Adw.MessageDialog (this.transient_for,
+                                          null,
+                                          _("Failed to set avatar"));
+      dialog.add_response ("close", _("_Close"));
+      dialog.show ();
+    }
   }
 
   private void update_thumbnail_grid () {
@@ -218,17 +235,14 @@ public class Contacts.AvatarSelector : Gtk.Dialog {
         if (pixbuf.get_width () > MAIN_SIZE || pixbuf.get_height () > MAIN_SIZE) {
           var dialog = new CropDialog.for_pixbuf (pixbuf,
                                                   get_root () as Gtk.Window);
-          dialog.response.connect ((response) => {
-              if (response == Gtk.ResponseType.ACCEPT) {
-                this.selected_avatar = dialog.create_pixbuf ();
-                this.response (Gtk.ResponseType.ACCEPT);
-              }
-              dialog.destroy ();
+          dialog.cropped.connect ((pixbuf) => {
+              this.selected_avatar = pixbuf;
+              activate_action_variant ("set-avatar", null);
           });
-          dialog.show ();
+          dialog.present ();
         } else {
           this.selected_avatar = pixbuf;
-          this.response (Gtk.ResponseType.ACCEPT);
+          activate_action_variant ("set-avatar", null);
         }
       } catch (GLib.Error e) {
         warning ("Failed to set avatar: %s", e.message);

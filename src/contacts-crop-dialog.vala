@@ -16,28 +16,33 @@
  */
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-crop-dialog.ui")]
-public class Contacts.CropDialog : Gtk.Dialog {
-
-  [GtkChild]
-  private unowned Gtk.Box box;
+public class Contacts.CropDialog : Gtk.Window {
 
   private Cc.CropArea crop_area;
+
+  public signal void cropped (Gdk.Pixbuf pixbuf);
+
+  static construct {
+    install_action ("crop", null, (Gtk.WidgetActionActivateFunc) on_crop);
+  }
 
   construct {
     this.crop_area = new Cc.CropArea ();
     this.crop_area.vexpand = true;
     this.crop_area.hexpand = true;
     this.crop_area.set_min_size (48, 48);
-    this.box.append (this.crop_area);
+    this.child = this.crop_area;
   }
 
-  public CropDialog.for_pixbuf (Gdk.Pixbuf pixbuf, Gtk.Window? parent = null) {
-    Object (use_header_bar: 1, transient_for: parent);
+  public CropDialog.for_pixbuf (Gdk.Pixbuf pixbuf,
+                                Gtk.Window? parent = null) {
+    Object (transient_for: parent);
 
     this.crop_area.set_paintable (Gdk.Texture.for_pixbuf (pixbuf));
   }
 
-  public Gdk.Pixbuf create_pixbuf () {
-    return this.crop_area.create_pixbuf ();
+  private void on_crop (string action_name, Variant? param) {
+    cropped (this.crop_area.create_pixbuf ());
+    destroy ();
   }
 }

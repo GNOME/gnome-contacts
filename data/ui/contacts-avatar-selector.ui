@@ -1,32 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContactsAvatarSelector" parent="GtkDialog">
+  <template class="ContactsAvatarSelector" parent="GtkWindow">
     <property name="modal">True</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
-    <property name="title" translatable="yes">Select a new avatar</property>
+    <binding name="title">
+      <lookup name="title">title_widget</lookup>
+    </binding>
 
-    <child type="action">
-      <object class="GtkButton" id="cancel_button">
-        <property name="label" translatable="yes">Cancel</property>
-        <property name="receives_default">True</property>
+    <child>
+      <object class='GtkShortcutController'>
+        <child>
+          <object class='GtkShortcut'>
+            <property name='trigger'>Escape</property>
+            <property name='action'>action(window.close)</property>
+          </object>
+        </child>
       </object>
     </child>
-    <child type="action">
-      <object class="GtkButton" id="done_button">
-        <property name="label" translatable="yes">Done</property>
-        <style>
-          <class name="suggested-action"/>
-        </style>
+
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="show-title-buttons">False</property>
+
+        <child type="start">
+          <object class="GtkButton">
+            <property name="label" translatable="yes">_Cancel</property>
+            <property name="use-underline">True</property>
+            <property name="receives-default">True</property>
+            <property name="action-name">window.close</property>
+          </object>
+        </child>
+
+        <property name="title-widget">
+          <object class="AdwWindowTitle" id="title_widget">
+            <property name="title" translatable="yes">Select a new avatar</property>
+          </object>
+        </property>
+
+        <child type="end">
+          <object class="GtkButton" id="done_button">
+            <property name="label" translatable="yes">_Done</property>
+            <property name="use-underline">True</property>
+            <property name="action-name">set-avatar</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="cancel">cancel_button</action-widget>
-      <action-widget response="accept" default="true">done_button</action-widget>
-    </action-widgets>
 
-
-    <child internal-child="content_area">
+    <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
