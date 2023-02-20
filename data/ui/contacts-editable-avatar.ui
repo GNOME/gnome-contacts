@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ContactsEditableAvatar" parent="GtkWidget">
+    <child>
+      <object class="GtkOverlay" id="overlay">
+        <child type="overlay">
+          <object class="AdwBin">
+            <property name="halign">end</property>
+            <property name="valign">start</property>
+            <style>
+              <class name="contacts-cutout-button"/>
+            </style>
+            <child>
+              <object class="GtkButton">
+                <property name="action-name">edit-avatar</property>
+                <property name="icon-name">document-edit-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Change Avatar</property>
+                <style>
+                  <class name="circular"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="overlay">
+          <object class="AdwBin">
+            <property name="halign">end</property>
+            <property name="valign">end</property>
+            <style>
+              <class name="contacts-cutout-button"/>
+            </style>
+            <child>
+              <object class="GtkButton">
+                <property name="action-name">delete-avatar</property>
+                <property name="icon-name">user-trash-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Remove Avatar</property>
+                <style>
+                  <class name="circular"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

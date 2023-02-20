@@ -31,7 +31,6 @@ public class Contacts.ContactEditor : Gtk.Widget {
   private GenericArray<Persona?> personas = new GenericArray<Persona?> ();
 
   private unowned Gtk.Entry name_entry;
-  private unowned Avatar avatar;
 
   construct {
     var box_layout = new Gtk.BoxLayout (Gtk.Orientation.VERTICAL);
@@ -44,8 +43,8 @@ public class Contacts.ContactEditor : Gtk.Widget {
   public ContactEditor (Contact contact) {
     Object (contact: contact);
 
-    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-    header.append (create_widget_for_avatar (contact));
+    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+    header.append (new EditableAvatar (contact, PROFILE_SIZE));
     header.append (create_name_entry (contact));
     header.set_parent (this);
 
@@ -86,25 +85,6 @@ public class Contacts.ContactEditor : Gtk.Widget {
     // NOTE: we don't support removing personas here but that should be okay,
     // since people shouldn't be deleting personas in the first place while
     // they're still editing
-  }
-
-  // Creates the contact's current avatar in a big button on top of the Editor
-  private Gtk.Widget create_widget_for_avatar (Contact contact) {
-    var avatar = new Avatar.for_contact (PROFILE_SIZE, contact);
-    this.avatar = avatar;
-
-    var button = new Gtk.Button ();
-    button.tooltip_text = _("Change avatar");
-    button.set_child (this.avatar);
-    button.clicked.connect (on_avatar_button_clicked);
-
-    return button;
-  }
-
-  // Show the avatar popover when the avatar is clicked
-  private void on_avatar_button_clicked (Gtk.Button avatar_button) {
-    var avatar_selector = new AvatarSelector (this.contact, get_root () as Gtk.Window);
-    avatar_selector.present ();
   }
 
   // Creates the big name entry on the top

@@ -70,8 +70,6 @@ private class Contacts.Thumbnail : Gtk.FlowBoxChild {
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-selector.ui")]
 public class Contacts.AvatarSelector : Gtk.Window {
 
-  const string AVATAR_BUTTON_CSS_NAME = "avatar-button";
-
   public unowned Contact contact { get; construct set; }
 
   [GtkChild]
