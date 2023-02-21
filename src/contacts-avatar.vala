@@ -116,8 +116,10 @@ public class Contacts.Avatar : Adw.Bin {
   }
 
   private async void load_avatar (LoadableIcon? icon) {
-    if (icon == null)
+    if (icon == null) {
+      set_pixbuf (null);
       return;
+    }
 
     try {
       var stream = yield icon.load_async (this.avatar_size, null);
