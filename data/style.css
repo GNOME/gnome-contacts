@@ -43,7 +43,12 @@
 
 .contacts-sheet-container,
 .contacts-contact-editor-container {
-  margin: 36px 12px 24px 12px;
+  margin: 24px 12px 24px 12px;
+}
+
+.contacts-sheet-header,
+.contacts-editor-header {
+  margin: 0 0 12px 0;
 }
 
 .contacts-sheet-property,
@@ -57,16 +62,18 @@
 .contacts-sheet {
 }
 
-.contacts-sheet-header {
-  margin: 0 0 12px 0;
-}
-
 .contacts-sheet-property {
 }
 
 
 /* Contact Editor-related CSS classes */
 /* ---------------------------------- */
+
+.contacts-editor-header-name {
+  /* The name in the sheet gets some margin from .title-1,
+   * so do something similar here to prevent the name "jumping" */
+  margin: 6px 0;
+}
 
 /* Common class for all widgets editing a property  */
 .contacts-editor-property {
@@ -99,4 +106,3 @@
 .favorite-button {
   font-weight: normal;
 }
-

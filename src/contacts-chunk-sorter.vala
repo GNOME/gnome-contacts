@@ -25,6 +25,8 @@ public class Contacts.ChunkSorter : Gtk.Sorter {
   private PersonaSorter persona_sorter = new PersonaSorter ();
 
   private const string[] SORTED_PROPERTIES = {
+    "avatar",
+    "full-name",
     "email-addresses",
     "phone-numbers",
     "im-addresses",

@@ -30,26 +30,19 @@ public class Contacts.ContactEditor : Gtk.Widget {
   /** The set of distinct personas (or null) that are part of the contact */
   private GenericArray<Persona?> personas = new GenericArray<Persona?> ();
 
-  private unowned Gtk.Entry name_entry;
-
   construct {
     var box_layout = new Gtk.BoxLayout (Gtk.Orientation.VERTICAL);
     box_layout.spacing = 12;
     set_layout_manager (box_layout);
 
     add_css_class ("contacts-contact-editor");
+
+    contact.items_changed.connect (on_contact_items_changed);
+    on_contact_items_changed (contact, 0, 0, contact.get_n_items ());
   }
 
   public ContactEditor (Contact contact) {
     Object (contact: contact);
-
-    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-    header.append (new EditableAvatar (contact, PROFILE_SIZE));
-    header.append (create_name_entry (contact));
-    header.set_parent (this);
-
-    contact.items_changed.connect (on_contact_items_changed);
-    on_contact_items_changed (contact, 0, 0, contact.get_n_items ());
   }
 
   public override void dispose () {
@@ -87,26 +80,6 @@ public class Contacts.ContactEditor : Gtk.Widget {
     // they're still editing
   }
 
-  // Creates the big name entry on the top
-  private Gtk.Widget create_name_entry (Contact contact) {
-    var entry = new Gtk.Entry ();
-    this.name_entry = entry;
-    this.name_entry.hexpand = true;
-    this.name_entry.valign = Gtk.Align.CENTER;
-    this.name_entry.input_purpose = Gtk.InputPurpose.NAME;
-    this.name_entry.placeholder_text = _("Add name");
-
-    var fn_chunk = (FullNameChunk?) contact.get_most_relevant_chunk ("full-name", true);
-    if (fn_chunk == null) {
-      warning ("Contact doesn't have a 'full-name' chunk");
-      return null;
-    }
-
-    fn_chunk.bind_property ("full-name", this.name_entry, "text",
-                            BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
-    return this.name_entry;
-  }
-
   private Gtk.Label create_persona_store_label (Persona p) {
     var store_name = new Gtk.Label (Utils.format_persona_store_name_for_contact (p));
     var attrList = new Pango.AttrList ();
@@ -130,14 +103,16 @@ public class Contacts.PersonaEditor : Gtk.Widget {
   private ListModel model;
 
   public const string[] IMPORTANT_PROPERTIES = {
+    "avatar",
+    "full-name",
     "email-addresses",
     "phone-numbers",
     null
   };
 
   public const string[] SUPPORTED_PROPERTIES = {
-    // Note that we don't add full-name and avatar here,
-    // since they're handled separately
+    "avatar",
+    "full-name",
     "birthday",
     "email-addresses",
     "nickname",
@@ -267,15 +242,15 @@ public class Contacts.PersonaEditor : Gtk.Widget {
 
   private Gtk.Widget? create_widget_for_chunk (Chunk chunk) {
     switch (chunk.property_name) {
-      case "avatar":
-      case "full-name":
-        return null; // Added separately in the header
-
       // Please keep these sorted
+      case "avatar":
+        return create_widget_for_avatar (chunk);
       case "birthday":
         return create_widget_for_birthday (chunk);
       case "email-addresses":
         return create_widget_for_emails (chunk);
+      case "full-name":
+        return create_widget_for_full_name (chunk);
       case "nickname":
         return create_widget_for_nickname (chunk);
       case "notes":
@@ -292,6 +267,14 @@ public class Contacts.PersonaEditor : Gtk.Widget {
         debug ("Unsupported property: %s", chunk.property_name);
         return null;
     }
+  }
+
+  private Gtk.Widget create_widget_for_avatar (Chunk chunk)
+      requires (chunk is AvatarChunk) {
+    var avatar = new EditableAvatar (contact, PROFILE_SIZE);
+    avatar.halign = Gtk.Align.CENTER;
+    avatar.margin_bottom = 12;
+    return avatar;
   }
 
   private Gtk.Widget create_widget_for_emails (Chunk chunk)
@@ -365,6 +348,16 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     row.set_input_purpose (Gtk.InputPurpose.URL);
     chunk_child.bind_property ("raw-url", row, "text",
                                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+
+    return new ContactEditorProperty (row);
+  }
+
+  private Gtk.Widget create_widget_for_full_name (Chunk chunk)
+      requires (chunk is FullNameChunk) {
+    var row = new Adw.EntryRow ();
+    row.title = _("Full name");
+    row.set_input_purpose (Gtk.InputPurpose.NAME);
+    chunk.bind_property ("full-name", row, "text", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
 
     return new ContactEditorProperty (row);
   }

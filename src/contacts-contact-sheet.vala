@@ -153,18 +153,17 @@ public class Contacts.ContactSheet : Gtk.Widget {
   }
 
   private Gtk.Widget create_header (Contact contact) {
-    var header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
+    var header = new Gtk.Box (Gtk.Orientation.VERTICAL, 18);
     header.add_css_class ("contacts-sheet-header");
 
     var image_frame = new Avatar.for_contact (PROFILE_SIZE, contact);
-    image_frame.vexpand = false;
-    image_frame.valign = Gtk.Align.START;
+    // image_frame.vexpand = false;
+    // image_frame.valign = Gtk.Align.START;
     header.append (image_frame);
 
     var name_label = new Gtk.Label ("");
     name_label.label = contact.display_name;
     name_label.hexpand = true;
-    name_label.xalign = 0f;
     name_label.wrap = true;
     name_label.wrap_mode = WORD_CHAR;
     name_label.lines = 4;
