@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-19 15:24+0000\n"
-"PO-Revision-Date: 2023-02-20 08:20+0700\n"
+"POT-Creation-Date: 2023-02-21 16:27+0000\n"
+"PO-Revision-Date: 2023-02-22 16:41+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -136,26 +136,28 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Batalkan perubahan saat ini untuk kontak"
 
-#: data/ui/contacts-avatar-selector.ui:7
+#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
+#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
+#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:211
+#: src/contacts-contact-editor.vala:721 src/contacts-main-window.vala:551
+#: src/contacts-main-window.vala:607
+msgid "_Cancel"
+msgstr "_Batal"
+
+#: data/ui/contacts-avatar-selector.ui:37
 msgid "Select a new avatar"
 msgstr "Pilih avatar baru"
 
-#: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
-#: src/contacts-contact-editor.vala:749
-msgid "Cancel"
-msgstr "Batal"
+#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
+#: data/ui/contacts-setup-window.ui:29
+msgid "_Done"
+msgstr "_Selesai"
 
-#: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
-msgid "Done"
-msgstr "Selesai"
-
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:94
 msgid "Take a Picture…"
 msgstr "Ambil Gambar…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:101
 msgid "Select a File…"
 msgstr "Pilih Berkas…"
 
@@ -167,13 +169,13 @@ msgstr "Pilih Suatu Kontak"
 msgid "Change Addressbook"
 msgstr "Ubah Buku Alamat"
 
-#: data/ui/contacts-linked-personas-dialog.ui:9
-msgid "Linked Accounts"
-msgstr "Akun Terkait"
+#: data/ui/contacts-editable-avatar.ui:17
+msgid "Change Avatar"
+msgstr "Ubah Avatar"
 
-#: data/ui/contacts-linked-personas-dialog.ui:42
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "Anda dapat mengait kontak dengan memilih mereka dari daftar kontak"
+#: data/ui/contacts-editable-avatar.ui:36
+msgid "Remove Avatar"
+msgstr "Hapus Avatar"
 
 #: data/ui/contacts-link-suggestion-grid.ui:51
 msgid "Link Contacts"
@@ -235,6 +237,10 @@ msgstr "Menu Utama"
 msgid "Select Contacts"
 msgstr "Pilih Kontak"
 
+#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
+msgid "Cancel"
+msgstr "Batal"
+
 #: data/ui/contacts-main-window.ui:154
 msgid "Cancel Selection"
 msgstr "Batalkan pilihan"
@@ -273,12 +279,6 @@ msgstr "Buang"
 msgid "Back"
 msgstr "Kembali"
 
-#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:551 src/contacts-main-window.vala:607
-msgid "_Cancel"
-msgstr "_Batal"
-
 #: data/ui/contacts-main-window.ui:301
 msgid "Edit Contact"
 msgstr "Sunting Kontak"
@@ -286,6 +286,10 @@ msgstr "Sunting Kontak"
 #: data/ui/contacts-main-window.ui:308
 msgid "More Contact Actions"
 msgstr "Tindakan Kontak Lainnya"
+
+#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
+msgid "Done"
+msgstr "Selesai"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
@@ -310,10 +314,6 @@ msgstr "_Keluar"
 #: data/ui/contacts-setup-window.ui:22
 msgid "Cancel Setup And Quit"
 msgstr "Batalkan Penyiapan Dan Keluar"
-
-#: data/ui/contacts-setup-window.ui:29
-msgid "_Done"
-msgstr "_Selesai"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
 #: data/ui/contacts-setup-window.ui:31
@@ -360,7 +360,7 @@ msgid "No contact with id %s found"
 msgstr "Tak ditemukan kontak dengan id %s"
 
 #: src/contacts-app.vala:113 src/contacts-app.vala:166
-#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
+#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
 msgid "_Close"
 msgstr "_Tutup"
 
@@ -442,121 +442,121 @@ msgstr "Lanjutkan Impor?"
 msgid "C_ontinue"
 msgstr "L_anjutkan"
 
-#: src/contacts-avatar-selector.vala:124
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "Tidak Ada Kamera yang Terdeteksi"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:172
+msgid "Failed to set avatar"
+msgstr "Gagal mengatur avatar"
+
+#: src/contacts-avatar-selector.vala:208
 msgid "Browse for more pictures"
 msgstr "Ramban lebih banyak gambar"
 
-#: src/contacts-avatar-selector.vala:196
+#: src/contacts-avatar-selector.vala:211
 msgid "_Open"
 msgstr "_Buka"
 
-#: src/contacts-avatar-selector.vala:237 src/contacts-contact-editor.vala:115
+#: src/contacts-avatar-selector.vala:249
 msgid "Failed to set avatar."
 msgstr "Gagal mengatur avatar."
 
 #: src/contacts-contact-editor.vala:97
-msgid "Change avatar"
-msgstr "Ubah avatar"
-
-#: src/contacts-contact-editor.vala:133
 msgid "Add name"
 msgstr "Tambah nama"
 
-#: src/contacts-contact-editor.vala:259
+#: src/contacts-contact-editor.vala:223
 msgid "Show More"
 msgstr "Lihat Lebih"
 
-#: src/contacts-contact-editor.vala:348
+#: src/contacts-contact-editor.vala:312
 msgid "Add email"
 msgstr "Tambah surel"
 
-#: src/contacts-contact-editor.vala:374
+#: src/contacts-contact-editor.vala:338
 msgid "Add phone number"
 msgstr "Tambah nomor telepon"
 
-#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:364 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "Situs web"
 
-#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:376 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "Nama panggilan"
 
-#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:427 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "Tanggal lahir"
 
-#: src/contacts-contact-editor.vala:484
+#: src/contacts-contact-editor.vala:448
 msgid "Remove birthday"
 msgstr "Hapus ulang tahun"
 
-#: src/contacts-contact-editor.vala:502
+#: src/contacts-contact-editor.vala:466
 msgid "Set Birthday"
 msgstr "Atur Tanggal Lahir"
 
-#: src/contacts-contact-editor.vala:556
+#: src/contacts-contact-editor.vala:520
 msgid "Organisation"
 msgstr "Organisasi"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:562 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:526 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Peran"
 
-#: src/contacts-contact-editor.vala:678
+#: src/contacts-contact-editor.vala:642
 msgid "Label"
 msgstr "Label"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:734
+#: src/contacts-contact-editor.vala:702
 msgid "Day"
 msgstr "Hari"
 
-#: src/contacts-contact-editor.vala:738
+#: src/contacts-contact-editor.vala:706
 msgid "Month"
 msgstr "Bulan"
 
-#: src/contacts-contact-editor.vala:742
+#: src/contacts-contact-editor.vala:710
 msgid "Year"
 msgstr "Tahun"
 
-#: src/contacts-contact-editor.vala:747
+#: src/contacts-contact-editor.vala:718
 msgid "Change Birthday"
 msgstr "Ubah Tanggal Lahir"
 
-#: src/contacts-contact-editor.vala:748
-msgid "Set"
-msgstr "Atur"
+#: src/contacts-contact-editor.vala:725
+msgid "_Set"
+msgstr "A_tur"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Street"
 msgstr "Jalan"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Extension"
 msgstr "Ekstensi"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "City"
 msgstr "Kota"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "State/Province"
 msgstr "Negara Bagian/Provinsi"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Zip/Postal Code"
 msgstr "Kode Pos"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "PO box"
 msgstr "Kotak pos"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Country"
 msgstr "Negara"
 
@@ -700,10 +700,6 @@ msgstr "Yahoo! Messenger"
 #: src/contacts-im-service.vala:54
 msgid "Zephyr"
 msgstr "Zephyr"
-
-#: src/contacts-linked-personas-dialog.vala:76
-msgid "Unlink"
-msgstr "Lepas taut"
 
 #: src/contacts-link-operation.vala:38
 #, c-format
@@ -1011,6 +1007,18 @@ msgstr "Simpan jika jendela saat ini dimaksimalkan."
 msgid "Is the window fullscreen"
 msgstr "Apakah jendela layar penuh"
 
+#~ msgid "Linked Accounts"
+#~ msgstr "Akun Terkait"
+
+#~ msgid "You can link contacts by selecting them from the contacts list"
+#~ msgstr "Anda dapat mengait kontak dengan memilih mereka dari daftar kontak"
+
+#~ msgid "Set"
+#~ msgstr "Atur"
+
+#~ msgid "Unlink"
+#~ msgstr "Lepas taut"
+
 #~ msgid "Create new contact"
 #~ msgstr "Buat kontak baru"
 
@@ -1143,9 +1151,6 @@ msgstr "Apakah jendela layar penuh"
 
 #~ msgid "New Detail"
 #~ msgstr "Rincian Baru"
-
-#~ msgid "Remove Contact"
-#~ msgstr "Buang Kontak"
 
 #~ msgid "Edit details"
 #~ msgstr "Sunting rincian"
