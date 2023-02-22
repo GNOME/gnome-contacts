@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-19 15:24+0000\n"
-"PO-Revision-Date: 2023-02-19 23:13+0200\n"
+"POT-Creation-Date: 2023-02-21 16:27+0000\n"
+"PO-Revision-Date: 2023-02-22 13:03+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
@@ -138,26 +138,28 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "ביטול השינויים האחרונים באיש הקשר"
 
-#: data/ui/contacts-avatar-selector.ui:7
+#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
+#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
+#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:211
+#: src/contacts-contact-editor.vala:721 src/contacts-main-window.vala:551
+#: src/contacts-main-window.vala:607
+msgid "_Cancel"
+msgstr "_ביטול"
+
+#: data/ui/contacts-avatar-selector.ui:37
 msgid "Select a new avatar"
 msgstr "בחירת תמונה אישית"
 
-#: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
-#: src/contacts-contact-editor.vala:749
-msgid "Cancel"
-msgstr "ביטול"
+#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
+#: data/ui/contacts-setup-window.ui:29
+msgid "_Done"
+msgstr "_סיום"
 
-#: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
-msgid "Done"
-msgstr "בוצע"
-
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:94
 msgid "Take a Picture…"
 msgstr "צילום תמונה…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:101
 msgid "Select a File…"
 msgstr "בחירת קובץ…"
 
@@ -169,13 +171,13 @@ msgstr "נא לבחור באיש קשר"
 msgid "Change Addressbook"
 msgstr "שינוי ספר הכתובות"
 
-#: data/ui/contacts-linked-personas-dialog.ui:9
-msgid "Linked Accounts"
-msgstr "חשבונות מקושרים"
+#: data/ui/contacts-editable-avatar.ui:17
+msgid "Change Avatar"
+msgstr "שינוי תמונה אישית"
 
-#: data/ui/contacts-linked-personas-dialog.ui:42
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "ניתן לקשר אנשי קשר על ידי בחירתם מרשימת אנשי הקשר"
+#: data/ui/contacts-editable-avatar.ui:36
+msgid "Remove Avatar"
+msgstr "הסרת תמונה אישית"
 
 #: data/ui/contacts-link-suggestion-grid.ui:51
 msgid "Link Contacts"
@@ -237,6 +239,10 @@ msgstr "תפריט ראשי"
 msgid "Select Contacts"
 msgstr "בחירת אנשי קשר"
 
+#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
+msgid "Cancel"
+msgstr "ביטול"
+
 #: data/ui/contacts-main-window.ui:154
 msgid "Cancel Selection"
 msgstr "ביטול הבחירה"
@@ -245,8 +251,8 @@ msgstr "ביטול הבחירה"
 msgid "Loading"
 msgstr "בטעינה"
 
-#: data/ui/contacts-main-window.ui:192
 # msgctxt "shortcut window"
+#: data/ui/contacts-main-window.ui:192
 msgid "Search contacts"
 msgstr "חיפוש אנשי קשר"
 
@@ -276,12 +282,6 @@ msgstr "הסרה"
 msgid "Back"
 msgstr "חזרה"
 
-#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:551 src/contacts-main-window.vala:607
-msgid "_Cancel"
-msgstr "_ביטול"
-
 #: data/ui/contacts-main-window.ui:301
 msgid "Edit Contact"
 msgstr "עריכת איש קשר"
@@ -289,6 +289,10 @@ msgstr "עריכת איש קשר"
 #: data/ui/contacts-main-window.ui:308
 msgid "More Contact Actions"
 msgstr "פעולות נוספות על אנשי קשר"
+
+#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
+msgid "Done"
+msgstr "בוצע"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
@@ -313,10 +317,6 @@ msgstr "_יציאה"
 #: data/ui/contacts-setup-window.ui:22
 msgid "Cancel Setup And Quit"
 msgstr "ביטול ההגדרה ויציאה"
-
-#: data/ui/contacts-setup-window.ui:29
-msgid "_Done"
-msgstr "_סיום"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
 #: data/ui/contacts-setup-window.ui:31
@@ -363,7 +363,7 @@ msgid "No contact with id %s found"
 msgstr "לא נמצא איש קשר בעל המזהה %s"
 
 #: src/contacts-app.vala:113 src/contacts-app.vala:166
-#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
+#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
 msgid "_Close"
 msgstr "ס_גירה"
 
@@ -448,121 +448,121 @@ msgstr "להמשיך את היבוא?"
 msgid "C_ontinue"
 msgstr "המ_שך"
 
-#: src/contacts-avatar-selector.vala:124
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "לא זוהתה מצלמה"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:172
+msgid "Failed to set avatar"
+msgstr "ארע כשל בהגדרת תמונה אישית"
+
+#: src/contacts-avatar-selector.vala:208
 msgid "Browse for more pictures"
 msgstr "עיון אחר תמונות נוספות"
 
-#: src/contacts-avatar-selector.vala:196
+#: src/contacts-avatar-selector.vala:211
 msgid "_Open"
 msgstr "_פתיחה"
 
-#: src/contacts-avatar-selector.vala:237 src/contacts-contact-editor.vala:115
+#: src/contacts-avatar-selector.vala:249
 msgid "Failed to set avatar."
 msgstr "ארע כשל בהגדרת תמונה אישית."
 
 #: src/contacts-contact-editor.vala:97
-msgid "Change avatar"
-msgstr "שינוי תמונה אישית"
-
-#: src/contacts-contact-editor.vala:133
 msgid "Add name"
 msgstr "הוספת שם"
 
-#: src/contacts-contact-editor.vala:259
+#: src/contacts-contact-editor.vala:223
 msgid "Show More"
 msgstr "להציג עוד"
 
-#: src/contacts-contact-editor.vala:348
+#: src/contacts-contact-editor.vala:312
 msgid "Add email"
 msgstr "הוספת דואר אלקטרוני"
 
-#: src/contacts-contact-editor.vala:374
+#: src/contacts-contact-editor.vala:338
 msgid "Add phone number"
 msgstr "הוספת מספר טלפון"
 
-#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:364 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "אתר אינטרנט"
 
-#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:376 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "כינוי"
 
-#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:427 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "יום הולדת"
 
-#: src/contacts-contact-editor.vala:484
+#: src/contacts-contact-editor.vala:448
 msgid "Remove birthday"
 msgstr "הסרת יום הולדת"
 
-#: src/contacts-contact-editor.vala:502
+#: src/contacts-contact-editor.vala:466
 msgid "Set Birthday"
 msgstr "הגדרת יום הולדת"
 
-#: src/contacts-contact-editor.vala:556
+#: src/contacts-contact-editor.vala:520
 msgid "Organisation"
 msgstr "ארגון"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:562 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:526 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "תפקיד"
 
-#: src/contacts-contact-editor.vala:678
+#: src/contacts-contact-editor.vala:642
 msgid "Label"
 msgstr "תווית"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:734
+#: src/contacts-contact-editor.vala:702
 msgid "Day"
 msgstr "יום"
 
-#: src/contacts-contact-editor.vala:738
+#: src/contacts-contact-editor.vala:706
 msgid "Month"
 msgstr "חודש"
 
-#: src/contacts-contact-editor.vala:742
+#: src/contacts-contact-editor.vala:710
 msgid "Year"
 msgstr "שנה"
 
-#: src/contacts-contact-editor.vala:747
+#: src/contacts-contact-editor.vala:718
 msgid "Change Birthday"
 msgstr "שינוי יום הולדת"
 
-#: src/contacts-contact-editor.vala:748
-msgid "Set"
-msgstr "הגדרה"
+#: src/contacts-contact-editor.vala:725
+msgid "_Set"
+msgstr "ה_גדרה"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Street"
 msgstr "רחוב"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Extension"
 msgstr "שלוחה"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "City"
 msgstr "עיר"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "State/Province"
 msgstr "מדינה/אזור"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Zip/Postal Code"
 msgstr "זיפ/מיקוד"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "PO box"
 msgstr "תיבת דואר"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Country"
 msgstr "מדינה"
 
@@ -709,10 +709,6 @@ msgstr "Yahoo! Messenger"
 #: src/contacts-im-service.vala:54
 msgid "Zephyr"
 msgstr "Zephyr"
-
-#: src/contacts-linked-personas-dialog.vala:76
-msgid "Unlink"
-msgstr "הפרדה"
 
 #: src/contacts-link-operation.vala:38
 #, c-format
@@ -1026,6 +1022,18 @@ msgstr "Stores if the window is currently maximized."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Is the window fullscreen"
+
+#~ msgid "Linked Accounts"
+#~ msgstr "חשבונות מקושרים"
+
+#~ msgid "You can link contacts by selecting them from the contacts list"
+#~ msgstr "ניתן לקשר אנשי קשר על ידי בחירתם מרשימת אנשי הקשר"
+
+#~ msgid "Set"
+#~ msgstr "הגדרה"
+
+#~ msgid "Unlink"
+#~ msgstr "הפרדה"
 
 #~ msgid "Create new contact"
 #~ msgstr "יצירת איש קשר חדש"
@@ -6765,9 +6773,6 @@ msgstr "Is the window fullscreen"
 #~ msgid "Network Mode"
 #~ msgstr "מצב רשת"
 
-#~ msgid "_Set"
-#~ msgstr "ה_גדרה"
-
 #~ msgid "Close"
 #~ msgstr "סגירה"
 
@@ -9681,9 +9686,6 @@ msgstr "Is the window fullscreen"
 
 #~ msgid "Add Layout"
 #~ msgstr "הוספת פריסה"
-
-#~ msgid "Remove Layout"
-#~ msgstr "הסרת פריסה"
 
 #~ msgid "Preview Layout"
 #~ msgstr "תצוגה מקדימה של הפריסה"
