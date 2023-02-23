@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts.main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-12 09:41+0000\n"
-"PO-Revision-Date: 2023-02-14 14:13+0300\n"
+"POT-Creation-Date: 2023-02-21 16:27+0000\n"
+"PO-Revision-Date: 2023-02-23 19:09+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -69,7 +69,7 @@ msgstr "Рэжым наладжвання кантактаў"
 msgid "Contacts edit view"
 msgstr "Рэжым рэдагавання кантактаў"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:144
+#: data/org.gnome.Contacts.appdata.xml.in.in:829 src/contacts-app.vala:144
 msgid "The GNOME Project"
 msgstr "Праект GNOME"
 
@@ -133,26 +133,28 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Скасаваць бягучыя змены ў кантакце"
 
-#: data/ui/contacts-avatar-selector.ui:7
+#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
+#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
+#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:211
+#: src/contacts-contact-editor.vala:721 src/contacts-main-window.vala:551
+#: src/contacts-main-window.vala:607
+msgid "_Cancel"
+msgstr "_Скасаваць"
+
+#: data/ui/contacts-avatar-selector.ui:37
 msgid "Select a new avatar"
 msgstr "Выбраць новы аватар"
 
-#: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
-#: src/contacts-contact-editor.vala:749
-msgid "Cancel"
-msgstr "Скасаваць"
+#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
+#: data/ui/contacts-setup-window.ui:29
+msgid "_Done"
+msgstr "_Гатова"
 
-#: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
-msgid "Done"
-msgstr "Гатова"
-
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:94
 msgid "Take a Picture…"
 msgstr "Зрабіць здымак…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:101
 msgid "Select a File…"
 msgstr "Выбраць файл…"
 
@@ -164,13 +166,13 @@ msgstr "Выберыце кантакт"
 msgid "Change Addressbook"
 msgstr "Змяніць адрасную кнігу"
 
-#: data/ui/contacts-linked-personas-dialog.ui:9
-msgid "Linked Accounts"
-msgstr "Аб'яднаныя акаўнты"
+#: data/ui/contacts-editable-avatar.ui:17
+msgid "Change Avatar"
+msgstr "Змяніць аватар"
 
-#: data/ui/contacts-linked-personas-dialog.ui:42
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "Вы можаце аб'ядноўваць кантакты, выбіраючы іх у спісе"
+#: data/ui/contacts-editable-avatar.ui:36
+msgid "Remove Avatar"
+msgstr "Выдаліць аватар"
 
 #: data/ui/contacts-link-suggestion-grid.ui:51
 msgid "Link Contacts"
@@ -221,16 +223,20 @@ msgid "Delete Contact"
 msgstr "Выдаліць кантакт"
 
 #: data/ui/contacts-main-window.ui:123
-msgid "Create new contact"
-msgstr "Стварыць новы кантакт"
+msgid "Add New Contact"
+msgstr "Дадаць новы кантакт"
 
 #: data/ui/contacts-main-window.ui:139
 msgid "Main Menu"
 msgstr "Галоўнае меню"
 
 #: data/ui/contacts-main-window.ui:146
-msgid "Select Items"
-msgstr "Вылучыць элементы"
+msgid "Select Contacts"
+msgstr "Выберыце кантакты"
+
+#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
+msgid "Cancel"
+msgstr "Скасаваць"
 
 #: data/ui/contacts-main-window.ui:154
 msgid "Cancel Selection"
@@ -241,8 +247,8 @@ msgid "Loading"
 msgstr "Загрузка"
 
 #: data/ui/contacts-main-window.ui:192
-msgid "Type to search"
-msgstr "Увядзіце пошукавы запыт"
+msgid "Search contacts"
+msgstr "Пошук кантактаў"
 
 #. Export refers to the verb
 #: data/ui/contacts-main-window.ui:210
@@ -270,12 +276,6 @@ msgstr "Выдаліць"
 msgid "Back"
 msgstr "Назад"
 
-#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:551 src/contacts-main-window.vala:607
-msgid "_Cancel"
-msgstr "_Скасаваць"
-
 #: data/ui/contacts-main-window.ui:301
 msgid "Edit Contact"
 msgstr "Змяніць кантакт"
@@ -283,6 +283,10 @@ msgstr "Змяніць кантакт"
 #: data/ui/contacts-main-window.ui:308
 msgid "More Contact Actions"
 msgstr "Больш дзеянняў з кантактам"
+
+#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
+msgid "Done"
+msgstr "Гатова"
 
 #: data/ui/contacts-preferences-window.ui:6
 msgid "Address Books"
@@ -307,10 +311,6 @@ msgstr "_Выйсці"
 #: data/ui/contacts-setup-window.ui:22
 msgid "Cancel Setup And Quit"
 msgstr "Скасаваць наладжванне і выйсці"
-
-#: data/ui/contacts-setup-window.ui:29
-msgid "_Done"
-msgstr "_Гатова"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
 #: data/ui/contacts-setup-window.ui:31
@@ -357,7 +357,7 @@ msgid "No contact with id %s found"
 msgstr "Кантакт з ідэнтыфікатарам %s не знойдзены"
 
 #: src/contacts-app.vala:113 src/contacts-app.vala:166
-#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
+#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
 msgid "_Close"
 msgstr "_Закрыць"
 
@@ -441,121 +441,121 @@ msgstr "Працягнуць імпартаванне?"
 msgid "C_ontinue"
 msgstr "_Працягнуць"
 
-#: src/contacts-avatar-selector.vala:124
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "Камера не знойдзена"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:172
+msgid "Failed to set avatar"
+msgstr "Не ўдалося паставіць аватар"
+
+#: src/contacts-avatar-selector.vala:208
 msgid "Browse for more pictures"
 msgstr "Знайсці больш выяў"
 
-#: src/contacts-avatar-selector.vala:196
+#: src/contacts-avatar-selector.vala:211
 msgid "_Open"
 msgstr "_Адкрыць"
 
-#: src/contacts-avatar-selector.vala:237 src/contacts-contact-editor.vala:115
+#: src/contacts-avatar-selector.vala:249
 msgid "Failed to set avatar."
 msgstr "Не ўдалося паставіць аватар."
 
 #: src/contacts-contact-editor.vala:97
-msgid "Change avatar"
-msgstr "Змяніць аватар"
-
-#: src/contacts-contact-editor.vala:133
 msgid "Add name"
 msgstr "Дадаць імя"
 
-#: src/contacts-contact-editor.vala:259
+#: src/contacts-contact-editor.vala:223
 msgid "Show More"
 msgstr "Паказаць больш"
 
-#: src/contacts-contact-editor.vala:348
+#: src/contacts-contact-editor.vala:312
 msgid "Add email"
 msgstr "Дадаць электронную пошту"
 
-#: src/contacts-contact-editor.vala:374
+#: src/contacts-contact-editor.vala:338
 msgid "Add phone number"
 msgstr "Дадаць нумар тэлефона"
 
-#: src/contacts-contact-editor.vala:400 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:364 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "Вэб-сайт"
 
-#: src/contacts-contact-editor.vala:412 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:376 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "Мянушка"
 
-#: src/contacts-contact-editor.vala:463 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:427 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "Дзень нараджэння"
 
-#: src/contacts-contact-editor.vala:484
+#: src/contacts-contact-editor.vala:448
 msgid "Remove birthday"
 msgstr "Выдаліць дзень нараджэння"
 
-#: src/contacts-contact-editor.vala:502
+#: src/contacts-contact-editor.vala:466
 msgid "Set Birthday"
 msgstr "Задаць дзень нараджэння"
 
-#: src/contacts-contact-editor.vala:556
+#: src/contacts-contact-editor.vala:520
 msgid "Organisation"
 msgstr "Арганізацыя"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:562 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:526 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Спецыяльнасць"
 
-#: src/contacts-contact-editor.vala:678
+#: src/contacts-contact-editor.vala:642
 msgid "Label"
 msgstr "Пазнака"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:734
+#: src/contacts-contact-editor.vala:702
 msgid "Day"
 msgstr "Дзень"
 
-#: src/contacts-contact-editor.vala:738
+#: src/contacts-contact-editor.vala:706
 msgid "Month"
 msgstr "Месяц"
 
-#: src/contacts-contact-editor.vala:742
+#: src/contacts-contact-editor.vala:710
 msgid "Year"
 msgstr "Год"
 
-#: src/contacts-contact-editor.vala:747
+#: src/contacts-contact-editor.vala:718
 msgid "Change Birthday"
 msgstr "Змяніць дзень нараджэння"
 
-#: src/contacts-contact-editor.vala:748
-msgid "Set"
-msgstr "Задаць"
+#: src/contacts-contact-editor.vala:725
+msgid "_Set"
+msgstr "_Задаць"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Street"
 msgstr "Вуліца"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Extension"
 msgstr "Пашырэнне"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "City"
 msgstr "Горад"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "State/Province"
 msgstr "Штат/вобласць"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Zip/Postal Code"
 msgstr "Паштовы індэкс"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "PO box"
 msgstr "Абаненцкая скрыня"
 
-#: src/contacts-contact-editor.vala:817
+#: src/contacts-contact-editor.vala:786
 msgid "Country"
 msgstr "Краіна"
 
@@ -702,10 +702,6 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-linked-personas-dialog.vala:76
-msgid "Unlink"
-msgstr "Раз'яднаць"
-
 #: src/contacts-link-operation.vala:38
 #, c-format
 msgid "Linked %d contact"
@@ -796,8 +792,8 @@ msgid "_Online Accounts"
 msgstr "_Сеціўныя акаўнты"
 
 #: src/contacts-preferences-window.vala:45
-msgid "Opens the Online Accounts panel in GNOME Settings"
-msgstr "Адкрывае панэль Сеціўныя акаўнты ў Наладах GNOME"
+msgid "Open the Online Accounts panel in Settings"
+msgstr "Адкрывае панэль «Уліковыя запісы ў сетцы» ў Наладах"
 
 #: src/contacts-qr-code-dialog.vala:33
 #, c-format
@@ -1016,6 +1012,27 @@ msgstr "Захоўвае цяперашні стан акна, разгорну�
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Ці на ўвесь экран акно"
+
+#~ msgid "Linked Accounts"
+#~ msgstr "Аб'яднаныя акаўнты"
+
+#~ msgid "You can link contacts by selecting them from the contacts list"
+#~ msgstr "Вы можаце аб'ядноўваць кантакты, выбіраючы іх у спісе"
+
+#~ msgid "Create new contact"
+#~ msgstr "Стварыць новы кантакт"
+
+#~ msgid "Select Items"
+#~ msgstr "Вылучыць элементы"
+
+#~ msgid "Type to search"
+#~ msgstr "Увядзіце пошукавы запыт"
+
+#~ msgid "Set"
+#~ msgstr "Задаць"
+
+#~ msgid "Unlink"
+#~ msgstr "Раз'яднаць"
 
 #~ msgctxt "shortcut window"
 #~ msgid "Search"
