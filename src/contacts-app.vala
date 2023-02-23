@@ -247,7 +247,6 @@ public class Contacts.App : Adw.Application {
 
     base.startup ();
 
-    load_styling ();
     create_actions ();
   }
 
@@ -257,14 +256,6 @@ public class Contacts.App : Adw.Application {
     this.set_accels_for_action ("app.help", {"F1"});
     this.set_accels_for_action ("app.show-preferences", {"<Control>comma"});
     this.set_accels_for_action ("app.quit", {"<Control>q"});
-  }
-
-  public void load_styling () {
-    var provider = new Gtk.CssProvider ();
-    provider.load_from_resource ("/org/gnome/Contacts/ui/style.css");
-    Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (),
-                                               provider,
-                                               Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
   }
 
   public override void activate () {
