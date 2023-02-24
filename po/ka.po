@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-21 16:27+0000\n"
-"PO-Revision-Date: 2023-02-22 06:49+0100\n"
+"POT-Creation-Date: 2023-02-24 15:03+0000\n"
+"PO-Revision-Date: 2023-02-24 19:20+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -37,6 +37,10 @@ msgid ""
 "aggregates the details from all your sources providing a centralized place "
 "for managing your contacts."
 msgstr ""
+"Contacts ინახავს და ორგანიზებას უწევს თქვენს კონტაქტების ინფორმაციას. თქვენ "
+"შეგიძლიათ შექმნათ, შეცვალოთ, წაშალოთ და დააკავშიროთ ინფორმაცია თქვენი "
+"კონტაქტების შესახებ. Contacts აერთიანებს დეტალებს თქვენი ყველა წყაროდან, "
+"რომელიც უზრუნველყოფს ცენტრალიზებულ ადგილს თქვენი კონტაქტების მართვისთვის."
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:15
 msgid ""
@@ -130,8 +134,8 @@ msgstr "კონტაქტის ცვლილებების გაუ�
 
 #: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
 #: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:211
-#: src/contacts-contact-editor.vala:721 src/contacts-main-window.vala:551
+#: src/contacts-app.vala:395 src/contacts-avatar-selector.vala:211
+#: src/contacts-contact-editor.vala:714 src/contacts-main-window.vala:551
 #: src/contacts-main-window.vala:607
 msgid "_Cancel"
 msgstr "_გაუქმება"
@@ -229,7 +233,7 @@ msgstr "მთავარი მენიუ"
 msgid "Select Contacts"
 msgstr "აირჩიეთ კონტაქტები"
 
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
+#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:329
 msgid "Cancel"
 msgstr "გაუქმება"
 
@@ -287,11 +291,15 @@ msgstr "დასრულდა"
 msgid "Address Books"
 msgstr "მისამართების წიგნები"
 
-#: data/ui/contacts-qr-code-dialog.ui:11
+#: data/ui/contacts-qr-code-dialog.ui:9
 msgid "Share Contact"
 msgstr "კონტაქტის გაზიარება"
 
-#: data/ui/contacts-qr-code-dialog.ui:41
+#: data/ui/contacts-qr-code-dialog.ui:36
+msgid "QR Code"
+msgstr "QR კოდი"
+
+#: data/ui/contacts-qr-code-dialog.ui:46
 msgid "Scan to Save"
 msgstr "დაასკანერეთ შესანახად"
 
@@ -380,53 +388,53 @@ msgstr ""
 msgid "Go To _Preferences"
 msgstr "_მორგება"
 
-#: src/contacts-app.vala:334
+#: src/contacts-app.vala:325
 msgid "Select contact file"
 msgstr "აირჩიეთ კონტაქტის ფაილი"
 
-#: src/contacts-app.vala:337
+#: src/contacts-app.vala:328
 msgid "Import"
 msgstr "შემოტანა"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:344
+#: src/contacts-app.vala:335
 msgid "vCard files"
 msgstr "vCard ფაილები"
 
-#: src/contacts-app.vala:377
+#: src/contacts-app.vala:368
 msgid "Error reading file"
 msgstr "ფაილის წაკითხვის შეცდომა"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:369
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "შეცდომა ფაილის წაკითხვისას: '%s'"
 
-#: src/contacts-app.vala:379 src/contacts-app.vala:389
+#: src/contacts-app.vala:370 src/contacts-app.vala:380
 msgid "_OK"
 msgstr "_დიახ"
 
-#: src/contacts-app.vala:387
+#: src/contacts-app.vala:378
 msgid "No contacts found"
 msgstr "კონტაქტები ვერ ვპოვე"
 
-#: src/contacts-app.vala:388
+#: src/contacts-app.vala:379
 msgid "The imported file does not seem to contain any contacts"
 msgstr "როგორც ჩანს, შემოტანილი ფაილი კონტაქტებს არ შეიცავს"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:396
+#: src/contacts-app.vala:387
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "თუ გააგრძელებთ, შემოტანილი იქნება %u კონტაქტი"
 msgstr[1] "თუ გააგრძელებთ, შემოტანილი იქნება %u კონტაქტი"
 
-#: src/contacts-app.vala:399
+#: src/contacts-app.vala:390
 msgid "Continue Import?"
 msgstr "გავაგრძელო შემოტანა?"
 
-#: src/contacts-app.vala:400
+#: src/contacts-app.vala:391
 msgid "C_ontinue"
 msgstr "_გაგრძელება"
 
@@ -450,101 +458,101 @@ msgstr "_გახსნა"
 msgid "Failed to set avatar."
 msgstr "ავატარის დაყენების შეცდომა."
 
-#: src/contacts-contact-editor.vala:97
-msgid "Add name"
-msgstr "სახელის დამატება"
-
-#: src/contacts-contact-editor.vala:223
+#: src/contacts-contact-editor.vala:198
 msgid "Show More"
 msgstr "მეტის ჩვენება"
 
-#: src/contacts-contact-editor.vala:312
+#: src/contacts-contact-editor.vala:295
 msgid "Add email"
 msgstr "ელ-ფოსტის დამატება"
 
-#: src/contacts-contact-editor.vala:338
+#: src/contacts-contact-editor.vala:321
 msgid "Add phone number"
 msgstr "ტელეფონის ნომრის დამატება"
 
-#: src/contacts-contact-editor.vala:364 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:347 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "ვებგვერდი"
 
-#: src/contacts-contact-editor.vala:376 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:358 src/contacts-utils.vala:173
+msgid "Full name"
+msgstr "სრული სახელი"
+
+#: src/contacts-contact-editor.vala:369 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "მეტსახელი"
 
-#: src/contacts-contact-editor.vala:427 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:420 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "დაბადების დღე"
 
-#: src/contacts-contact-editor.vala:448
+#: src/contacts-contact-editor.vala:441
 msgid "Remove birthday"
 msgstr "დაბადების დღის წაშლა"
 
-#: src/contacts-contact-editor.vala:466
+#: src/contacts-contact-editor.vala:459
 msgid "Set Birthday"
 msgstr "დაბადების დღის დაყენება"
 
-#: src/contacts-contact-editor.vala:520
+#: src/contacts-contact-editor.vala:513
 msgid "Organisation"
 msgstr "ორგანიზაცია"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:526 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:519 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "როლი"
 
-#: src/contacts-contact-editor.vala:642
+#: src/contacts-contact-editor.vala:635
 msgid "Label"
 msgstr "ჭდე"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:702
+#: src/contacts-contact-editor.vala:695
 msgid "Day"
 msgstr "დღე"
 
-#: src/contacts-contact-editor.vala:706
+#: src/contacts-contact-editor.vala:699
 msgid "Month"
 msgstr "თვე"
 
-#: src/contacts-contact-editor.vala:710
+#: src/contacts-contact-editor.vala:703
 msgid "Year"
 msgstr "წელი"
 
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:711
 msgid "Change Birthday"
 msgstr "დაბადების დღის შეცვლა"
 
-#: src/contacts-contact-editor.vala:725
+#: src/contacts-contact-editor.vala:718
 msgid "_Set"
 msgstr "_დაყენება"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Street"
 msgstr "ქუჩა"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Extension"
 msgstr "გაფართოება"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "City"
 msgstr "ქალაქი"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "State/Province"
 msgstr "რეგიონი/მხარე"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Zip/Postal Code"
 msgstr "საფოსტო ინდექსი"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "PO box"
 msgstr "საფოსტო ყუთი"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Country"
 msgstr "ქვეყანა"
 
@@ -556,20 +564,20 @@ msgstr "სანიშნები"
 msgid "All Contacts"
 msgstr "ყველა კონტაქტი"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:215
 #, c-format
 msgid "Send an email to %s"
 msgstr "ელფოსტის გაგზავნა %s-თან"
 
-#: src/contacts-contact-sheet.vala:289
+#: src/contacts-contact-sheet.vala:288
 msgid "Visit website"
 msgstr "ვებგვერდის ნახვა"
 
-#: src/contacts-contact-sheet.vala:322
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "მათი დაბადების დღე დღესაა! 🎉"
 
-#: src/contacts-contact-sheet.vala:369
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "რუკაზე ჩვენება"
 
@@ -803,10 +811,6 @@ msgstr "კალენდრის მოვლენა"
 msgid "Email address"
 msgstr "ელფოსტის მისამართი"
 
-#: src/contacts-utils.vala:173
-msgid "Full name"
-msgstr "სრული სახელი"
-
 #: src/contacts-utils.vala:174
 msgid "Gender"
 msgstr "სქესი"
@@ -995,6 +999,9 @@ msgstr "დაიმახსოვრებს, გადიდებული�
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "ფანჯარა სრულ ეკრანზეა, თუ არა"
+
+#~ msgid "Add name"
+#~ msgstr "სახელის დამატება"
 
 #~ msgid "Linked Accounts"
 #~ msgstr "დაკავშირებული ანგარიშები"
