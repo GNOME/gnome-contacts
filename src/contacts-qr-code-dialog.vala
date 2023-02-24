@@ -19,7 +19,7 @@ using Folks;
 using GLib;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-qr-code-dialog.ui")]
-public class Contacts.QrCodeDialog : Adw.PreferencesWindow {
+public class Contacts.QrCodeDialog : Gtk.Window {
 
   [GtkChild]
   private unowned Gtk.Picture qr_image;
