@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-21 16:27+0000\n"
-"PO-Revision-Date: 2023-02-23 11:43+0100\n"
+"POT-Creation-Date: 2023-02-24 15:03+0000\n"
+"PO-Revision-Date: 2023-03-01 00:20+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -147,8 +147,8 @@ msgstr "Cancelar os cambios actuais do contacto"
 
 #: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
 #: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:404 src/contacts-avatar-selector.vala:211
-#: src/contacts-contact-editor.vala:721 src/contacts-main-window.vala:551
+#: src/contacts-app.vala:395 src/contacts-avatar-selector.vala:211
+#: src/contacts-contact-editor.vala:714 src/contacts-main-window.vala:551
 #: src/contacts-main-window.vala:607
 msgid "_Cancel"
 msgstr "_Cancelar"
@@ -246,7 +246,7 @@ msgstr "Menú principal"
 msgid "Select Contacts"
 msgstr "Seleccionar contactos"
 
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:338
+#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:329
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -304,11 +304,15 @@ msgstr "Feito"
 msgid "Address Books"
 msgstr "Caderno de enderezos"
 
-#: data/ui/contacts-qr-code-dialog.ui:11
+#: data/ui/contacts-qr-code-dialog.ui:9
 msgid "Share Contact"
 msgstr "Compartir contacto"
 
-#: data/ui/contacts-qr-code-dialog.ui:41
+#: data/ui/contacts-qr-code-dialog.ui:36
+msgid "QR Code"
+msgstr "Código QR"
+
+#: data/ui/contacts-qr-code-dialog.ui:46
 msgid "Scan to Save"
 msgstr "Escanear para gardar"
 
@@ -402,53 +406,53 @@ msgstr ""
 msgid "Go To _Preferences"
 msgstr "Ir a _Preferencias"
 
-#: src/contacts-app.vala:334
+#: src/contacts-app.vala:325
 msgid "Select contact file"
 msgstr "Seleccionar o ficheiro dun contacto"
 
-#: src/contacts-app.vala:337
+#: src/contacts-app.vala:328
 msgid "Import"
 msgstr "Importar"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:344
+#: src/contacts-app.vala:335
 msgid "vCard files"
 msgstr "Ficheiros vCard"
 
-#: src/contacts-app.vala:377
+#: src/contacts-app.vala:368
 msgid "Error reading file"
 msgstr "Produciuse un erro ao ler o ficheiro"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:369
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Produciuse un erro ao ler o ficheiro «%s»"
 
-#: src/contacts-app.vala:379 src/contacts-app.vala:389
+#: src/contacts-app.vala:370 src/contacts-app.vala:380
 msgid "_OK"
 msgstr "_Aceptar"
 
-#: src/contacts-app.vala:387
+#: src/contacts-app.vala:378
 msgid "No contacts found"
 msgstr "Non se atoparon contactos"
 
-#: src/contacts-app.vala:388
+#: src/contacts-app.vala:379
 msgid "The imported file does not seem to contain any contacts"
 msgstr "O ficheiro importado non semella conter ningún contacto"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:396
+#: src/contacts-app.vala:387
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Ao continuar, importarase %u contacto"
 msgstr[1] "Ao continuar, importaranse %u contactos"
 
-#: src/contacts-app.vala:399
+#: src/contacts-app.vala:390
 msgid "Continue Import?"
 msgstr "Desexa continuar coa importación?"
 
-#: src/contacts-app.vala:400
+#: src/contacts-app.vala:391
 msgid "C_ontinue"
 msgstr "C_ontinuar"
 
@@ -472,101 +476,101 @@ msgstr "_Abrir"
 msgid "Failed to set avatar."
 msgstr "Produciuse un fallo ao estabelecer un avatar."
 
-#: src/contacts-contact-editor.vala:97
-msgid "Add name"
-msgstr "Engadir nome"
-
-#: src/contacts-contact-editor.vala:223
+#: src/contacts-contact-editor.vala:198
 msgid "Show More"
 msgstr "Mostrar máis"
 
-#: src/contacts-contact-editor.vala:312
+#: src/contacts-contact-editor.vala:295
 msgid "Add email"
 msgstr "Engadir correo-e"
 
-#: src/contacts-contact-editor.vala:338
+#: src/contacts-contact-editor.vala:321
 msgid "Add phone number"
 msgstr "Engadir un número de teléfono"
 
-#: src/contacts-contact-editor.vala:364 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:347 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "Sitio web"
 
-#: src/contacts-contact-editor.vala:376 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:358 src/contacts-utils.vala:173
+msgid "Full name"
+msgstr "Nome completo"
+
+#: src/contacts-contact-editor.vala:369 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "Alcume"
 
-#: src/contacts-contact-editor.vala:427 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:420 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "Aniversario"
 
-#: src/contacts-contact-editor.vala:448
+#: src/contacts-contact-editor.vala:441
 msgid "Remove birthday"
 msgstr "Quitar aniversario"
 
-#: src/contacts-contact-editor.vala:466
+#: src/contacts-contact-editor.vala:459
 msgid "Set Birthday"
 msgstr "Estabelecer o aniversario"
 
-#: src/contacts-contact-editor.vala:520
+#: src/contacts-contact-editor.vala:513
 msgid "Organisation"
 msgstr "Organización"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:526 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:519 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Rol"
 
-#: src/contacts-contact-editor.vala:642
+#: src/contacts-contact-editor.vala:635
 msgid "Label"
 msgstr "Etiqueta"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:702
+#: src/contacts-contact-editor.vala:695
 msgid "Day"
 msgstr "Día"
 
-#: src/contacts-contact-editor.vala:706
+#: src/contacts-contact-editor.vala:699
 msgid "Month"
 msgstr "Mes"
 
-#: src/contacts-contact-editor.vala:710
+#: src/contacts-contact-editor.vala:703
 msgid "Year"
 msgstr "Ano"
 
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:711
 msgid "Change Birthday"
 msgstr "Cambiar o aniversario"
 
-#: src/contacts-contact-editor.vala:725
+#: src/contacts-contact-editor.vala:718
 msgid "_Set"
 msgstr "_Estabelecer"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Street"
 msgstr "Rúa"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Extension"
 msgstr "Extensión"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "City"
 msgstr "Cidade"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "State/Province"
 msgstr "Estado/provincia"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Zip/Postal Code"
 msgstr "Zip/Código postal"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "PO box"
 msgstr "Apartado de correos"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:779
 msgid "Country"
 msgstr "País"
 
@@ -578,20 +582,20 @@ msgstr "Favoritos"
 msgid "All Contacts"
 msgstr "Todos os contactos"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:215
 #, c-format
 msgid "Send an email to %s"
 msgstr "Enviar un correo electrónico a %s"
 
-#: src/contacts-contact-sheet.vala:289
+#: src/contacts-contact-sheet.vala:288
 msgid "Visit website"
 msgstr "Visitar o sitio web"
 
-#: src/contacts-contact-sheet.vala:322
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "O seu cumpreanos é hoxe! 🎉"
 
-#: src/contacts-contact-sheet.vala:369
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "Mostrar no mapa"
 
@@ -827,10 +831,6 @@ msgstr "Evento de calendario"
 msgid "Email address"
 msgstr "Enderezo de correo"
 
-#: src/contacts-utils.vala:173
-msgid "Full name"
-msgstr "Nome completo"
-
 #: src/contacts-utils.vala:174
 msgid "Gender"
 msgstr "Xénero"
@@ -1020,6 +1020,9 @@ msgstr "Garda se a xanela está maximizada actualmente."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Está a xanela maximizada"
+
+#~ msgid "Add name"
+#~ msgstr "Engadir nome"
 
 #~ msgid "Linked Accounts"
 #~ msgstr "Contas ligadas"
