@@ -44,9 +44,14 @@ private void test_is_empty () {
   assert_true (address.is_empty);
   assert_true (chunk.is_empty);
 
+  // Make sure that the notify works correctly for the address too
+  bool notified = false;
+  address.notify["is-empty"].connect ((o, p) => { notified = true; });
+
   address.address.street = "Yellow brick road";
   assert_false (address.is_empty);
   assert_false (chunk.is_empty);
+  assert_true (notified);
 
   address.address.street = "";
   assert_true (address.is_empty);

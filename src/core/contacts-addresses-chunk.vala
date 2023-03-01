@@ -52,37 +52,40 @@ public class Contacts.AddressesChunk : BinChunk {
 
 public class Contacts.Address : BinChunkChild {
 
-  public PostalAddress address {
-    get { return this._address; }
-    set {
-      if (this._address.equal (value))
-        return;
-
-      bool was_empty = this._address.is_empty ();
-      this._address = value;
-      notify_property ("address");
-      if (was_empty != value.is_empty ())
-        notify_property ("is-empty");
-    }
-  }
-  private PostalAddress _address = new PostalAddress ("", "", "", "", "", "", "", "", "");
+  public PostalAddress address { get; construct; }
 
   public override bool is_empty {
-    get { return this.address.is_empty (); }
+    get { return this._is_empty; }
   }
+  private bool _is_empty = true;
 
   public override string icon_name {
     get { return "mark-location-symbolic"; }
   }
 
+  construct {
+    update_on_address ();
+    this.address.notify.connect ((obj, pspec) => { update_on_address (); });
+  }
+
   public Address () {
+    Object (address: new PostalAddress ("", "", "", "", "", "", "", "", ""));
+
     this.parameters = new Gee.HashMultiMap<string, string> ();
     this.parameters["type"] = "HOME";
   }
 
   public Address.from_field_details (PostalAddressFieldDetails address_field) {
-    this.address = address_field.value;
+    Object (address: address_field.value);
+
     this.parameters = address_field.parameters;
+  }
+
+  private void update_on_address () {
+    if (this.is_empty != this.address.is_empty ()) {
+      this._is_empty = this.address.is_empty ();
+      notify_property ("is-empty");
+    }
   }
 
   protected override int compare_internal (BinChunkChild other)
