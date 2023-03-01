@@ -67,7 +67,7 @@ public class Contacts.StructuredNameChunk : Chunk {
   }
 
   public override Value? to_value () {
-    return this.structured_name;
+    return (this.is_empty)? null : this.structured_name;
   }
 
   public override async void save_to_persona () throws GLib.Error
