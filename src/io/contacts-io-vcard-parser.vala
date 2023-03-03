@@ -52,6 +52,7 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
       debug ("Got %u attributes in this vcard", vcard_attrs.length ());
 
       var contact = new Contact.empty ();
+      // For the structure of this switch-case, see RFC 6350
       foreach (unowned E.VCardAttribute attr in vcard_attrs) {
         switch (attr.get_name ()) {
           // Identification Properties
@@ -82,6 +83,13 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
             break;
           case E.EVC_EMAIL:
             handle_email (contact, attr);
+            break;
+          // Organizational Properties
+          case E.EVC_TITLE:
+            handle_title (contact, attr);
+            break;
+          case E.EVC_ORG:
+            handle_org (contact, attr);
             break;
           // Explanatory Properties
           case E.EVC_NOTE:
@@ -205,6 +213,49 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
 
     var child = add_chunk_child_for_property (contact, "urls");
     ((Contacts.Url) child).raw_url = url;
+    add_params (child, attr);
+  }
+
+  private void handle_title (Contact contact, E.VCardAttribute attr) {
+    var title = attr.get_value ();
+    if (title == null || title == "")
+      return;
+
+    // NOTE: we have handle this specially, since properties like
+    // TITLE, ORG etc can occur multiple times but there's no way to link them
+    // to each other. Just add a OrgRole once and ignore the others for now
+    var chunk = (BinChunk) contact.get_most_relevant_chunk ("roles", true);
+    if (chunk != null) {
+      var orgrole = (Contacts.OrgRole) chunk.get_item (0);
+      if (orgrole.role.title == "")
+        orgrole.role.title = title;
+      return;
+    }
+
+    var child = add_chunk_child_for_property (contact, "roles");
+    ((Contacts.OrgRole) child).role.title = title;
+    add_params (child, attr);
+  }
+
+  private void handle_org (Contact contact, E.VCardAttribute attr) {
+    unowned var values = attr.get_values ();
+    unowned var org = values.data;
+    if (org == null || org == "")
+      return;
+
+    // NOTE: we have handle this specially, since properties like
+    // TITLE, ORG etc can occur multiple times but there's no way to link them
+    // to each other. Just add a OrgRole once and ignore the others for now
+    var chunk = (BinChunk) contact.get_most_relevant_chunk ("roles", true);
+    if (chunk != null) {
+      var orgrole = (Contacts.OrgRole) chunk.get_item (0);
+      if (orgrole.role.organisation_name == "")
+        orgrole.role.organisation_name = org;
+      return;
+    }
+
+    var child = add_chunk_child_for_property (contact, "roles");
+    ((Contacts.OrgRole) child).role.organisation_name = org;
     add_params (child, attr);
   }
 
