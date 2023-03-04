@@ -5,12 +5,13 @@ sources, providing a centralized place for managing your contacts.
 
 ## Building
 
-You can build and install Contacts using [Meson](http://mesonbuild.com/):
+You can build, test and install Contacts using [Meson](http://mesonbuild.com/):
 
 ```sh
-meson build
-ninja -C build
-ninja -C build install
+meson setup _build
+meson compile -C _build
+meson test -C _build
+meson install -C _build
 ```
 
 ## Contributing
