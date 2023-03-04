@@ -1,5 +1,8 @@
-io_vcard_files = [
+io_vcard_tests = [
   'minimal',
+
+  'bday',
+  'email',
 ]
 
 test_deps = [
@@ -9,25 +12,18 @@ test_deps = [
   libcontactscore_dep,
 ]
 
-foreach vcard_name : io_vcard_files
-  vcf_file = meson.current_source_dir() / vcard_name + '.vcf'
-
-  # Ideally we'd do this using a preprocessor symbol or something
-  vcf_test_env = environment()
-  vcf_test_env.append('_VCF_FILE', vcf_file)
-
+foreach test_name : io_vcard_tests
   test_sources = [
     contacts_io_sources,
-    'test-vcard-'+vcard_name+'-import.vala',
+    'test-vcard-'+test_name+'.vala',
   ]
 
-  test_bin = executable(vcard_name,
+  test_bin = executable(test_name,
     test_sources,
     dependencies: test_deps,
   )
 
-  test(vcard_name, test_bin,
-    suite: 'io-vcard',
-    env: vcf_test_env,
+  test(test_name, test_bin,
+    suite: 'vcard',
   )
 endforeach
