@@ -28,7 +28,7 @@ public class Contacts.RolesChunk : BinChunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is RoleDetails);
+      assert (persona is RoleDetails);
       unowned var role_details = (RoleDetails) persona;
 
       foreach (var role_field in role_details.roles) {

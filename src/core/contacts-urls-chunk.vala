@@ -27,7 +27,7 @@ public class Contacts.UrlsChunk : BinChunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is UrlDetails);
+      assert (persona is UrlDetails);
       unowned var url_details = (UrlDetails) persona;
 
       foreach (var url_field in url_details.urls) {

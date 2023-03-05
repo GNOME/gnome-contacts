@@ -23,7 +23,7 @@ public class Contacts.EmailAddressesChunk : BinChunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is EmailDetails);
+      assert (persona is EmailDetails);
       unowned var email_details = (EmailDetails) persona;
 
       foreach (var email_field in email_details.email_addresses) {

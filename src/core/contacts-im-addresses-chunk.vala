@@ -28,7 +28,7 @@ public class Contacts.ImAddressesChunk : BinChunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is ImDetails);
+      assert (persona is ImDetails);
       unowned var im_details = (ImDetails) persona;
 
       var iter = im_details.im_addresses.map_iterator ();

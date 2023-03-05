@@ -59,7 +59,7 @@ public class Contacts.StructuredNameChunk : Chunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is NameDetails);
+      assert (persona is NameDetails);
       persona.bind_property ("structured-name", this, "structured-name");
       this._structured_name = ((NameDetails) persona).structured_name;
     }

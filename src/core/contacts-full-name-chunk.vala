@@ -54,7 +54,7 @@ public class Contacts.FullNameChunk : Chunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is NameDetails);
+      assert (persona is NameDetails);
       persona.bind_property ("full-name", this, "full-name");
       this._full_name = ((NameDetails) persona).full_name;
     }

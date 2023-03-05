@@ -27,7 +27,7 @@ public class Contacts.NotesChunk : BinChunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is NoteDetails);
+      assert (persona is NoteDetails);
       unowned var note_details = (NoteDetails) persona;
 
       foreach (var note_field in note_details.notes) {

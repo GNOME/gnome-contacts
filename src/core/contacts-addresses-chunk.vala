@@ -27,7 +27,7 @@ public class Contacts.AddressesChunk : BinChunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is PostalAddressDetails);
+      assert (persona is PostalAddressDetails);
       unowned var postal_address_details = (PostalAddressDetails) persona;
 
       foreach (var address_field in postal_address_details.postal_addresses) {

@@ -43,7 +43,7 @@ public class Contacts.AvatarChunk : Chunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is AvatarDetails);
+      assert (persona is AvatarDetails);
       persona.bind_property ("avatar", this, "avatar");
       this._avatar = ((AvatarDetails) persona).avatar;
     }

@@ -60,7 +60,7 @@ public class Contacts.BirthdayChunk : Chunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is BirthdayDetails);
+      assert (persona is BirthdayDetails);
       persona.bind_property ("birthday", this, "birthday");
       this._birthday = ((BirthdayDetails) persona).birthday;
     }

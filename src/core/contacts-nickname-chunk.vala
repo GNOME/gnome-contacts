@@ -52,7 +52,7 @@ public class Contacts.NicknameChunk : Chunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is NameDetails);
+      assert (persona is NameDetails);
       persona.bind_property ("nickname", this, "nickname");
       this._nickname = ((NameDetails) persona).nickname;
     }

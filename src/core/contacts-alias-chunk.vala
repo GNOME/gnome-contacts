@@ -49,7 +49,7 @@ public class Contacts.AliasChunk : Chunk {
 
   construct {
     if (persona != null) {
-      return_if_fail (persona is AliasDetails);
+      assert (persona is AliasDetails);
       persona.bind_property ("alias", this, "alias");
       this._alias = ((AliasDetails) persona).alias;
     }
