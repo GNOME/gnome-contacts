@@ -27,7 +27,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     { "edit-contact-cancel", edit_contact_cancel },
     { "edit-contact-save", edit_contact_save },
     { "focus-search", focus_search },
-    { "toggle-favorite", toggle_favorite },
+    { "mark-favorite", mark_favorite },
+    { "unmark-favorite", unmark_favorite },
     { "link-marked-contacts", link_marked_contacts },
     { "delete-marked-contacts", delete_marked_contacts },
     { "export-marked-contacts", export_marked_contacts },
@@ -71,12 +72,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   [GtkChild]
   private unowned Gtk.MenuButton primary_menu_button;
   [GtkChild]
-  private unowned Gtk.MenuButton contact_hamburger_menu_button;
-  private unowned Gtk.PopoverMenu contact_hamburger_popover_menu;
-  private Gtk.Button favorite_button;
-  [GtkChild]
   private unowned Gtk.Box contact_sheet_buttons;
-  private bool ignore_favorite_button_toggled;
   [GtkChild]
   private unowned Gtk.Button add_button;
   [GtkChild]
@@ -140,12 +136,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     unowned var sort_key = this.settings.sort_on_surname? "surname" : "firstname";
     var sort_action = (SimpleAction) this.lookup_action ("sort-on");
     sort_action.set_state (new Variant.string (sort_key));
-
-    contact_hamburger_popover_menu = (Gtk.PopoverMenu) contact_hamburger_menu_button.get_popover ();
-    favorite_button = new Gtk.Button.with_label (_("Mark as Favorite"));
-    favorite_button.set_action_name ("win.toggle-favorite");
-    favorite_button.set_css_classes ({"flat", "favorite-button"});
-    contact_hamburger_popover_menu.add_child (favorite_button, "favorite-toggle");
   }
 
   private void restore_window_state () {
@@ -270,18 +260,29 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     dialog.show ();
   }
 
-  private void toggle_favorite (GLib.SimpleAction action, GLib.Variant? parameter) {
-    // Don't change the contact being favorite while switching between the two of them
-    if (this.ignore_favorite_button_toggled)
-      return;
+  private void update_favorite_actions (bool favorite) {
+    var mark_action = (SimpleAction) lookup_action ("mark-favorite");
+    var unmark_action = (SimpleAction) lookup_action ("unmark-favorite");
 
+    mark_action.set_enabled (!favorite);
+    unmark_action.set_enabled (favorite);
+  }
+
+  private void set_selection_is_favorite (bool favorite) {
     unowned var selected = this.store.get_selected_contact ();
     return_if_fail (selected != null);
 
-    selected.is_favourite = !selected.is_favourite;
+    selected.is_favourite = favorite;
 
-    this.state = UiState.NORMAL;
-    this.contact_hamburger_popover_menu.popdown ();
+    update_favorite_actions (favorite);
+  }
+
+  private void mark_favorite (GLib.SimpleAction action, GLib.Variant? parameter) {
+    set_selection_is_favorite (true);
+  }
+
+  private void unmark_favorite (GLib.SimpleAction action, GLib.Variant? parameter) {
+    set_selection_is_favorite (false);
   }
 
   [GtkCallback]
@@ -483,10 +484,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       // clearing right_header
       this.right_header.title_widget = new Adw.WindowTitle ("", "");
       if (selected != null) {
-        if (selected.is_favourite)
-          this.favorite_button.set_label (_("Unmark as Favorite"));
-        else
-          this.favorite_button.set_label (_("Mark as Favorite"));
+        update_favorite_actions (selected.is_favourite);
       }
       this.state = UiState.SHOWING;
     }

@@ -47,8 +47,14 @@
   <menu id="contact_hamburger_menu_popover">
     <section>
       <item>
-        <attribute name="action">win.toggle-favorite</attribute>
-        <attribute name="custom">favorite-toggle</attribute>
+        <attribute name="label" translatable="yes">Mark as Favorite</attribute>
+        <attribute name="action">win.mark-favorite</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Unmark as Favorite</attribute>
+        <attribute name="action">win.unmark-favorite</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Share as QR Code</attribute>
