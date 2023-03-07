@@ -74,17 +74,6 @@ public class Contacts.QueryFilter : Gtk.Filter {
         // We shouldn't get a notify for this but in reality we do, so ignore it
         if (this.query_string == old_query_str)
           return;
-
-        if (this.query_string.length > old_query_str.length &&
-            this.query_string.index_of (old_query_str) != -1) {
-          this.changed (Gtk.FilterChange.MORE_STRICT);
-          return;
-        }
-        if (this.query_string.length < old_query_str.length &&
-            old_query_str.index_of (this.query_string) != -1) {
-          this.changed (Gtk.FilterChange.LESS_STRICT);
-          return;
-        }
       }
     }
 
