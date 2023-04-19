@@ -119,6 +119,7 @@
                 <property name="child">
                   <object class="GtkBox" id="list_pane_page">
                     <property name="orientation">vertical</property>
+                    <property name="width-request">320</property>
                     <child>
                       <object class="AdwHeaderBar" id="left_header">
                         <property name="hexpand">False</property>
@@ -209,33 +210,56 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkActionBar" id="actions_bar">
-                                <property name="revealed">False</property>
-                                <child>
-                                  <object class="GtkButton" id="export_button">
-                                    <property name="label" translatable="yes" comments="Export refers to the verb">Export</property>
-                                    <property name="tooltip-text" translatable="yes">Export Selected Contacts</property>
-                                    <property name="action-name">win.export-marked-contacts</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="link_button">
-                                    <property name="focus_on_click">False</property>
-                                    <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
-                                    <property name="tooltip-text" translatable="yes">Link Selected Contacts Together</property>
-                                    <property name="action-name">win.link-marked-contacts</property>
-                                  </object>
-                                </child>
-                                <child type="end">
-                                  <object class="GtkButton" id="delete_button">
-                                    <property name="focus_on_click">False</property>
-                                    <property name="label" translatable="yes">Remove</property>
-                                    <property name="action-name">win.delete-marked-contacts</property>
+                              <object class="GtkRevealer" id="actions_bar">
+                                <property name="reveal-child">False</property>
+                                <property name="child">
+                                  <object class="GtkBox">
                                     <style>
-                                      <class name="destructive-action"/>
+                                      <class name="contacts-contact-list-actions"/>
                                     </style>
+                                    <property name="orientation">horizontal</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="spacing">6</property>
+                                        <property name="margin-end">6</property>
+                                        <child>
+                                          <object class="GtkButton" id="export_button">
+                                            <property name="label" translatable="yes" comments="Export refers to the verb">Export</property>
+                                            <property name="tooltip-text" translatable="yes">Export Selected Contacts</property>
+                                            <property name="action-name">win.export-marked-contacts</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="link_button">
+                                            <property name="focus_on_click">False</property>
+                                            <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
+                                            <property name="tooltip-text" translatable="yes">Link Selected Contacts Together</property>
+                                            <property name="action-name">win.link-marked-contacts</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="halign">end</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="spacing">6</property>
+                                        <child>
+                                          <object class="GtkButton" id="delete_button">
+                                            <property name="focus_on_click">False</property>
+                                            <property name="label" translatable="yes">Remove</property>
+                                            <property name="action-name">win.delete-marked-contacts</property>
+                                            <style>
+                                              <class name="destructive-action"/>
+                                            </style>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
                                   </object>
-                                </child>
+                                </property>
                               </object>
                             </child>
                           </object>

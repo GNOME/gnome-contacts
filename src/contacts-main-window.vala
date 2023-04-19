@@ -83,7 +83,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private unowned Gtk.Button selection_button;
 
   [GtkChild]
-  private unowned Gtk.ActionBar actions_bar;
+  private unowned Gtk.Revealer actions_bar;
 
   public UiState state { get; set; default = UiState.NORMAL; }
 
@@ -235,7 +235,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         = this.contacts_list.sensitive
         = !this.state.editing ();
 
-    this.actions_bar.revealed = (this.state == UiState.SELECTING);
+    this.actions_bar.reveal_child = (this.state == UiState.SELECTING);
   }
 
   [GtkCallback]
