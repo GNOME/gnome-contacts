@@ -598,43 +598,48 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   public void export_individuals (Gee.List<Individual> individuals) {
     // Open up a file chooser
-    var chooser = new Gtk.FileChooserNative (_("Export to file"),
-                                             this,
-                                             Gtk.FileChooserAction.SAVE,
-                                             _("_Export"),
-                                             _("_Cancel"));
-    chooser.set_current_name (_("contacts.vcf"));
-    chooser.modal = true;
-    chooser.response.connect ((response) => {
-      if (response != Gtk.ResponseType.ACCEPT) {
-        chooser.destroy ();
-        return;
-      }
-
-      // Do the actual export
-      OutputStream filestream = null;
+    var file_dialog = new Gtk.FileDialog ();
+    file_dialog.title = _("Export to file");
+    file_dialog.accept_label = _("_Export");
+    file_dialog.set_initial_name (_("contacts.vcf"));
+    file_dialog.modal = true;
+    file_dialog.save.begin (this, null, (obj, response) => {
       try {
-        filestream = chooser.get_file ().replace (null, false, FileCreateFlags.NONE);
-      } catch (Error err) {
-        warning ("Couldn't create file: %s", err.message);
-        return;
-      }
+        var file = file_dialog.save.end (response);
 
-      var op = new Io.VCardExportOperation (individuals, filestream);
-      this.operations.execute.begin (op, null, (obj, res) => {
+        // Do the actual export
+        OutputStream filestream = null;
         try {
-          this.operations.execute.end (res);
-          filestream.close ();
-        } catch (Error e) {
-          warning ("ERROR: %s", e.message);
+          filestream = file.replace (null, false, FileCreateFlags.NONE);
+        } catch (Error err) {
+          warning ("Couldn't create file: %s", err.message);
+          return;
         }
-      });
 
-      chooser.destroy ();
-      add_toast_for_operation (op);
+        var op = new Io.VCardExportOperation (individuals, filestream);
+        this.operations.execute.begin (op, null, (obj, res) => {
+          try {
+            this.operations.execute.end (res);
+            filestream.close ();
+          } catch (Error e) {
+            warning ("ERROR: %s", e.message);
+          }
+        });
+
+        add_toast_for_operation (op);
+      } catch (Error error) {
+        switch (error.code) {
+          case Gtk.DialogError.CANCELLED:
+          case Gtk.DialogError.DISMISSED:
+            debug ("Dismissed opening file: %s", error.message);
+            break;
+          case Gtk.DialogError.FAILED:
+          default:
+            warning ("Could not open file: %s", error.message);
+            break;
+        }
+      }
     });
-
-    chooser.show ();
   }
 
   // Little helper

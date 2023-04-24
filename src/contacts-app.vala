@@ -322,36 +322,45 @@ public class Contacts.App : Adw.Application {
   }
 
   private void on_import (SimpleAction action, Variant? param) {
-    var chooser = new Gtk.FileChooserNative (_("Select contact file"),
-                                             this.window,
-                                             Gtk.FileChooserAction.OPEN,
-                                             _("Import"),
-                                             _("Cancel"));
-    chooser.modal = true;
-    chooser.select_multiple = false;
+    var file_dialog = new Gtk.FileDialog ();
+    file_dialog.title = _("Select contact file");
+    file_dialog.accept_label = _("Import");
+    file_dialog.modal = true;
 
     // TODO: somehow get this from the list of importers we have
+    var filters = new ListStore (typeof (Gtk.FileFilter));
     var filter = new Gtk.FileFilter ();
     filter.set_filter_name (_("vCard files"));
     filter.add_pattern ("*.vcf");
     filter.add_pattern ("*.vcard");
-    chooser.add_filter (filter);
+    filters.append (filter);
+    file_dialog.filters = filters;
 
-    chooser.response.connect ((response) => {
-        if (response != Gtk.ResponseType.ACCEPT) {
-          chooser.destroy ();
+
+    file_dialog.open.begin (this.window, null, (obj, response) => {
+      try {
+        var file = file_dialog.open.end (response);
+
+        if (file == null) {
+          debug ("No file selected, or no path available");
           return;
         }
 
-        if (chooser.get_file () == null) {
-          debug ("No file selected, or no path available");
-          chooser.destroy ();
-        }
+        import_file.begin (file);
 
-        import_file.begin (chooser.get_file ());
-        chooser.destroy ();
+      } catch (Error error) {
+        switch (error.code) {
+          case Gtk.DialogError.CANCELLED:
+          case Gtk.DialogError.DISMISSED:
+            debug ("Dismissed opening file: %s", error.message);
+            break;
+          case Gtk.DialogError.FAILED:
+          default:
+            warning ("Could not open file: %s", error.message);
+            break;
+        }
+      }
     });
-    chooser.show ();
   }
 
   private async void import_file (GLib.File file) {

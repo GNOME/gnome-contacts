@@ -205,55 +205,56 @@ public class Contacts.AvatarSelector : Gtk.Window {
 
   [GtkCallback]
   private void on_file_clicked (Gtk.Button button) {
-    var chooser = new Gtk.FileChooserNative (_("Browse for more pictures"),
-                                             this.get_root () as Gtk.Window,
-                                             Gtk.FileChooserAction.OPEN,
-                                             _("_Open"), _("_Cancel"));
-    chooser.set_modal (true);
+    var file_dialog = new Gtk.FileDialog ();
+    file_dialog.title = _("Browse for more pictures");
+    file_dialog.accept_label = _("_Open");
+    file_dialog.modal = true;
 
-    try {
-      unowned var pictures_folder = Environment.get_user_special_dir (UserDirectory.PICTURES);
-      if (pictures_folder != null)
-        chooser.set_current_folder (File.new_for_path (pictures_folder));
-    } catch (Error e) {
-      warning ("Couldn't set avatar selector to Pictures folder: %s", e.message);
-    }
+    unowned var pictures_folder = Environment.get_user_special_dir (UserDirectory.PICTURES);
+    if (pictures_folder != null)
+      file_dialog.set_initial_folder (File.new_for_path (pictures_folder));
 
-    chooser.response.connect ((response) => {
-      if (response != Gtk.ResponseType.ACCEPT) {
-        chooser.destroy ();
-        return;
-      }
-
+    file_dialog.open.begin (this.get_root () as Gtk.Window, null, (obj, response) => {
       try {
-        var file = chooser.get_file ();
-        var in_stream = file.read ();
-        var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
-        in_stream.close ();
-        if (pixbuf.get_width () > MAIN_SIZE || pixbuf.get_height () > MAIN_SIZE) {
-          var dialog = new CropDialog.for_pixbuf (pixbuf,
-                                                  get_root () as Gtk.Window);
-          dialog.cropped.connect ((pixbuf) => {
-              this.selected_avatar = pixbuf;
-              activate_action_variant ("set-avatar", null);
-          });
-          dialog.present ();
-        } else {
-          this.selected_avatar = pixbuf;
-          activate_action_variant ("set-avatar", null);
+        var file = file_dialog.open.end (response);
+
+        try {
+          var in_stream = file.read ();
+          var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
+          in_stream.close ();
+          if (pixbuf.get_width () > MAIN_SIZE || pixbuf.get_height () > MAIN_SIZE) {
+            var dialog = new CropDialog.for_pixbuf (pixbuf,
+                                                    get_root () as Gtk.Window);
+            dialog.cropped.connect ((pixbuf) => {
+                this.selected_avatar = pixbuf;
+                activate_action_variant ("set-avatar", null);
+            });
+            dialog.present ();
+          } else {
+            this.selected_avatar = pixbuf;
+            activate_action_variant ("set-avatar", null);
+          }
+        } catch (GLib.Error e) {
+          warning ("Failed to set avatar: %s", e.message);
+          var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
+                                              null,
+                                              _("Failed to set avatar."));
+          dialog.add_response ("close", _("_Close"));
+          dialog.default_response = "close";
+          dialog.show();
         }
-      } catch (GLib.Error e) {
-        warning ("Failed to set avatar: %s", e.message);
-        var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
-                                            null,
-                                            _("Failed to set avatar."));
-        dialog.add_response ("close", _("_Close"));
-        dialog.default_response = "close";
-        dialog.show();
-      } finally {
-        chooser.destroy ();
+      } catch (Error error) {
+        switch (error.code) {
+          case Gtk.DialogError.CANCELLED:
+          case Gtk.DialogError.DISMISSED:
+            debug ("Dismissed opening file: %s", error.message);
+            break;
+          case Gtk.DialogError.FAILED:
+          default:
+            warning ("Could not open file: %s", error.message);
+            break;
+        }
       }
     });
-    chooser.show ();
   }
 }

@@ -48,7 +48,7 @@ gio_unix = dependency('gio-unix-2.0', version: '>=' + min_glib_version)
 glib = dependency('glib-2.0', version: '>=' + min_glib_version)
 gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_version)
 # gnome_desktop = dependency('gnome-desktop-3.0')
-gtk4_dep = dependency('gtk4', version: '>= 4.6')
+gtk4_dep = dependency('gtk4', version: '>= 4.10')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.2.alpha')
 # E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
