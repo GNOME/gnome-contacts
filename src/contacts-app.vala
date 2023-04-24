@@ -122,8 +122,14 @@ public class Contacts.App : Adw.Application {
   }
 
   public void show_help () {
-    // FIXME: use show_uri_full(), so we can report errors
-    Gtk.show_uri (this.window, "help:gnome-help/contacts", Gdk.CURRENT_TIME);
+    Gtk.UriLauncher help_launcher = new Gtk.UriLauncher ("help:gnome-help/contacts");
+    help_launcher.launch.begin (this.window, null, (obj, res) => {
+      try {
+        help_launcher.launch.end (res);
+      } catch (Error error) {
+        warning ("Could not open help: %s", error.message);
+      }
+    });
   }
 
   public void show_about () {

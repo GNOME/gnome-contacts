@@ -215,7 +215,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
       button.tooltip_text = _("Send an email to %s").printf (email.raw_address);
       button.clicked.connect (() => {
         unowned var window = get_root () as Gtk.Window;
-        Gtk.show_uri (window, email.get_mailto_uri (), 0);
+        Gtk.UriLauncher email_launcher = new Gtk.UriLauncher (email.get_mailto_uri ());
+        email_launcher.launch.begin (window, null, (obj, res) => {
+          try {
+            email_launcher.launch.end (res);
+          } catch (Error error) {
+            warning ("Could not open new email: %s", error.message);
+          }
+        });
       });
 
       group.add (row);
@@ -288,10 +295,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
       button.tooltip_text = _("Visit website");
       button.clicked.connect (() => {
         unowned var window = button.get_root () as Gtk.Window;
-        // FIXME: use show_uri_full so we can show errors
-        Gtk.show_uri (window,
-                      url.get_absolute_url (),
-                      Gdk.CURRENT_TIME);
+        Gtk.UriLauncher website_launcher = new Gtk.UriLauncher (url.get_absolute_url ());
+        website_launcher.launch.begin (window, null, (obj, res) => {
+          try {
+            website_launcher.launch.end (res);
+          } catch (Error error) {
+            warning ("Could not open website: %s", error.message);
+          }
+        });
       });
 
       group.add (row);
@@ -369,8 +380,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
         button.clicked.connect (() => {
           unowned var window = button.get_root () as Gtk.Window;
           var uri = address.to_maps_uri ();
-          // FIXME: use show_uri_full so we can show errors
-          Gtk.show_uri (window, uri, Gdk.CURRENT_TIME);
+          Gtk.UriLauncher map_launcher = new Gtk.UriLauncher (uri);
+          map_launcher.launch.begin (window, null, (obj, res) => {
+            try {
+              map_launcher.launch.end (res);
+            } catch (Error error) {
+              warning ("Could not open map: %s", error.message);
+            }
+          });
         });
       }
 
