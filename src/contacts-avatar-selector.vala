@@ -210,6 +210,26 @@ public class Contacts.AvatarSelector : Gtk.Window {
     file_dialog.accept_label = _("_Open");
     file_dialog.modal = true;
 
+    var filters = new ListStore (typeof (Gtk.FileFilter));
+    var any_image_filter = new Gtk.FileFilter ();
+    any_image_filter.name = _("Image File");
+    Gdk.Pixbuf.get_formats ().foreach ((format) => {
+      var filter = new Gtk.FileFilter ();
+      filter.name = format.get_description ();
+      foreach (string mime_type in format.get_mime_types ()) {
+        filter.add_mime_type (mime_type);
+        any_image_filter.add_suffix (mime_type);
+      }
+      foreach (string extension in format.get_extensions ()) {
+        filter.add_suffix (extension);
+        any_image_filter.add_suffix (extension);
+      }
+      filters.append (filter);
+    });
+    filters.append (any_image_filter);
+    file_dialog.filters = filters;
+    file_dialog.default_filter = any_image_filter;
+
     unowned var pictures_folder = Environment.get_user_special_dir (UserDirectory.PICTURES);
     if (pictures_folder != null)
       file_dialog.set_initial_folder (File.new_for_path (pictures_folder));
