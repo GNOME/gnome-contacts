@@ -265,7 +265,13 @@ public class Contacts.App : Adw.Application {
   }
 
   public override void activate () {
-    // Check if we've already done the setup process
+    var active_window = get_active_window();
+    if (active_window != null) {
+      active_window.present ();
+      return;
+    }
+
+    // If not, the new window depends on whether the user still needs setup
     if (this.settings.did_initial_setup)
       create_window ();
     else
