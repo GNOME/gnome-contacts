@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Sveinn í Felli <sv1@fellsnet.is>, 2015, 2016, 2018, 2019, 2021, 2022.
+# Sveinn í Felli <sv1@fellsnet.is>, 2015, 2016, 2018, 2019, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2022-09-23 09:19+0000\n"
-"PO-Revision-Date: 2022-10-17 10:34+0000\n"
+"POT-Creation-Date: 2023-05-02 13:32+0000\n"
+"PO-Revision-Date: 2023-06-18 09:45+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -18,8 +18,9 @@ msgstr ""
 "X-Generator: Lokalize 21.12.3\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 src/contacts-main-window.vala:189
-#: src/contacts-main-window.vala:212 src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:137
+#: src/contacts-main-window.vala:190 src/contacts-main-window.vala:213
+#: src/main.vala:26
 msgid "Contacts"
 msgstr "Tengiliðir"
 
@@ -49,32 +50,27 @@ msgstr ""
 "tengir færslur sjálfkrafa við ýmis netforrit og tilföng af internetinu."
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:22
-#| msgctxt "shortcut window"
-#| msgid "Create a new contact"
-msgid "Contacts with no contacts."
-msgstr "Tengiliðir með enga tengiliði."
+#| msgid "Contacts with no contacts."
+msgid "Contacts with no contacts"
+msgstr "Tengiliðir með enga tengiliði"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:26
-#| msgid "%s linked to the contact"
 msgid "Contacts filled with contacts"
 msgstr "Tengiliðir fylltir með tengiliðum"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:30
-#| msgid "Contacts unlinked"
 msgid "Contacts in selection mode"
 msgstr "Tengiliðir í valham"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:34
-#| msgid "Contacts Setup"
 msgid "Contacts setup view"
 msgstr "Uppsetningasýn tengiliða"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:38
-#| msgid "Contacts Setup"
 msgid "Contacts edit view"
 msgstr "Breytingasýn tengiliða"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:803 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.appdata.xml.in.in:887 src/contacts-app.vala:144
 msgid "The GNOME Project"
 msgstr "GNOME verkefnið"
 
@@ -99,45 +95,71 @@ msgid "Open menu"
 msgstr "Opna valmynd"
 
 #: data/gtk/help-overlay.ui:23
+#| msgid "Preferences"
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Birta kjörstillingar"
+
+#: data/gtk/help-overlay.ui:29
 msgctxt "shortcut window"
 msgid "Create a new contact"
 msgstr "Búa til nýjan tengilið"
 
-#: data/gtk/help-overlay.ui:29
-msgctxt "shortcut window"
-msgid "Search"
-msgstr "Leita"
-
 #: data/gtk/help-overlay.ui:35
+#| msgid "Other Contacts"
+msgctxt "shortcut window"
+msgid "Search contacts"
+msgstr "Leita í tengiliðum"
+
+#: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
 msgid "Shortcut list"
 msgstr "Listi yfir flýtilykla"
 
-#: data/gtk/help-overlay.ui:41
+#: data/gtk/help-overlay.ui:47
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Hætta"
 
-#: data/ui/contacts-avatar-selector.ui:7
+#: data/gtk/help-overlay.ui:54
+msgctxt "shortcut window"
+msgid "Editing or creating a contact"
+msgstr "Breytingar eða gerð tengiliðar"
+
+#: data/gtk/help-overlay.ui:58
+#| msgid "Show the current version of Contacts"
+msgctxt "shortcut window"
+msgid "Save current changes to contact"
+msgstr "Vista fyrirliggjandi breytingar á tengilið"
+
+#: data/gtk/help-overlay.ui:64
+#| msgid "Show the current version of Contacts"
+msgctxt "shortcut window"
+msgid "Cancel current changes for contact"
+msgstr "Hætta við fyrirliggjandi breytingar á tengilið"
+
+#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
+#: data/ui/contacts-main-window.ui:292 src/contacts-app.vala:234
+#: src/contacts-app.vala:395 src/contacts-avatar-selector.vala:211
+#: src/contacts-contact-editor.vala:714 src/contacts-main-window.vala:549
+#: src/contacts-main-window.vala:605
+msgid "_Cancel"
+msgstr "_Hætta við"
+
+#: data/ui/contacts-avatar-selector.ui:37
 msgid "Select a new avatar"
 msgstr "Veldu nýja auðkennismynd"
 
-#: data/ui/contacts-avatar-selector.ui:11 data/ui/contacts-crop-dialog.ui:12
-#: data/ui/contacts-main-window.ui:106 src/contacts-app.vala:336
-#: src/contacts-contact-editor.vala:727
-msgid "Cancel"
-msgstr "Hætta við"
+#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
+#: data/ui/contacts-setup-window.ui:29
+msgid "_Done"
+msgstr "_Lokið"
 
-#: data/ui/contacts-avatar-selector.ui:17 data/ui/contacts-crop-dialog.ui:17
-#: data/ui/contacts-main-window.ui:275 src/contacts-main-window.vala:221
-msgid "Done"
-msgstr "Lokið"
-
-#: data/ui/contacts-avatar-selector.ui:69
+#: data/ui/contacts-avatar-selector.ui:94
 msgid "Take a Picture…"
 msgstr "Taka mynd…"
 
-#: data/ui/contacts-avatar-selector.ui:76
+#: data/ui/contacts-avatar-selector.ui:101
 msgid "Select a File…"
 msgstr "Veldu skrá…"
 
@@ -149,13 +171,15 @@ msgstr "Veldu tengilið"
 msgid "Change Addressbook"
 msgstr "Skipta um nafnaskrá"
 
-#: data/ui/contacts-linked-personas-dialog.ui:9
-msgid "Linked Accounts"
-msgstr "Tengdir aðgangar"
+#: data/ui/contacts-editable-avatar.ui:17
+#| msgid "Change avatar"
+msgid "Change Avatar"
+msgstr "Skipta um auðkennismynd"
 
-#: data/ui/contacts-linked-personas-dialog.ui:42
-msgid "You can link contacts by selecting them from the contacts list"
-msgstr "Þú getur tengt tengiliði saman með því að velja þá úr tengiliðlistanum"
+#: data/ui/contacts-editable-avatar.ui:36
+#| msgid "Remove Contact"
+msgid "Remove Avatar"
+msgstr "Fjarlægja auðkennismynd"
 
 #: data/ui/contacts-link-suggestion-grid.ui:51
 msgid "Link Contacts"
@@ -174,94 +198,134 @@ msgid "Surname"
 msgstr "Kenninafn"
 
 #: data/ui/contacts-main-window.ui:19
-msgid "Import…"
-msgstr "Flytja inn…"
+#| msgid "Import…"
+msgid "Import From File…"
+msgstr "Flytja inn úr skrá…"
 
-#: data/ui/contacts-main-window.ui:25
+#: data/ui/contacts-main-window.ui:23
+#| msgid "Export Selected Contacts"
+msgid "Export All Contacts…"
+msgstr "Flytja út alla tengiliði…"
+
+#: data/ui/contacts-main-window.ui:29
 msgid "Preferences"
 msgstr "Kjörstillingar"
 
-#: data/ui/contacts-main-window.ui:29
+#: data/ui/contacts-main-window.ui:33
 msgid "Keyboard Shortcuts"
 msgstr "Flýtilyklar"
 
-#: data/ui/contacts-main-window.ui:33
+#: data/ui/contacts-main-window.ui:37
 msgid "Help"
 msgstr "Hjálp"
 
-#: data/ui/contacts-main-window.ui:37
+#: data/ui/contacts-main-window.ui:41
 msgid "About Contacts"
 msgstr "Um Contacts tengiliðaskrána"
 
-#: data/ui/contacts-main-window.ui:82
-msgid "Create new contact"
-msgstr "Búa til nýjan tengilið"
+#: data/ui/contacts-main-window.ui:50
+#| msgid "Mark as favorite"
+msgid "Mark as Favorite"
+msgstr "Merkja sem eftirlæti"
 
-#: data/ui/contacts-main-window.ui:92
-msgid "Menu"
-msgstr "Valmynd"
+#: data/ui/contacts-main-window.ui:55
+#| msgid "Unmark as favorite"
+msgid "Unmark as Favorite"
+msgstr "Taka úr eftirlætum"
 
-#: data/ui/contacts-main-window.ui:99
-msgid "Select Items"
-msgstr "Veldu atriði"
+#: data/ui/contacts-main-window.ui:60
+msgid "Share as QR Code"
+msgstr "Deila sem QR-kóða"
 
-#: data/ui/contacts-main-window.ui:107
+#: data/ui/contacts-main-window.ui:66
+msgid "Delete Contact"
+msgstr "Eyða tengilið"
+
+#: data/ui/contacts-main-window.ui:129
+#| msgid "New Contact"
+msgid "Add New Contact"
+msgstr "Bæta við nýjum tengilið"
+
+#: data/ui/contacts-main-window.ui:145
+msgid "Main Menu"
+msgstr "Aðalvalmynd"
+
+#: data/ui/contacts-main-window.ui:152
+#| msgid "Select a Contact"
+msgid "Select Contacts"
+msgstr "Velja tengiliði"
+
+#: data/ui/contacts-main-window.ui:159 src/contacts-app.vala:329
+msgid "Cancel"
+msgstr "Hætta við"
+
+#: data/ui/contacts-main-window.ui:160
 msgid "Cancel Selection"
 msgstr "Hætta við val"
 
-#: data/ui/contacts-main-window.ui:134
+#: data/ui/contacts-main-window.ui:187
 msgid "Loading"
 msgstr "Hleð inn"
 
-#: data/ui/contacts-main-window.ui:145
-msgid "Type to search"
-msgstr "Skrifaðu til að leita..."
+#: data/ui/contacts-main-window.ui:198
+#| msgid "Other Contacts"
+msgid "Search contacts"
+msgstr "Leita að tengiliðum"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:216
 msgid "Export"
 msgstr "Flytja út"
 
-#: data/ui/contacts-main-window.ui:164
-#| msgid "Select a Contact"
+#: data/ui/contacts-main-window.ui:217
 msgid "Export Selected Contacts"
 msgstr "Flytja út valda tengiliði"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:224
 msgid "Link"
 msgstr "Tengja"
 
-#: data/ui/contacts-main-window.ui:172
+#: data/ui/contacts-main-window.ui:225
 msgid "Link Selected Contacts Together"
 msgstr "Tengja saman valda tengiliði"
 
-#: data/ui/contacts-main-window.ui:179
+#: data/ui/contacts-main-window.ui:232
 msgid "Remove"
 msgstr "Fjarlægja"
 
-#: data/ui/contacts-main-window.ui:223
+#: data/ui/contacts-main-window.ui:278
 msgid "Back"
 msgstr "Til baka"
 
-#: data/ui/contacts-main-window.ui:237 src/contacts-app.vala:233
-#: src/contacts-app.vala:402 src/contacts-avatar-selector.vala:196
-#: src/contacts-main-window.vala:516 src/contacts-main-window.vala:565
-msgid "_Cancel"
-msgstr "_Hætta við"
-
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:307
 msgid "Edit Contact"
 msgstr "Breyta tengilið"
 
-#: data/ui/contacts-main-window.ui:266
-msgid "Delete Contact"
-msgstr "Eyða tengilið"
+#: data/ui/contacts-main-window.ui:313
+msgid "More Contact Actions"
+msgstr "Fleiri aðgerðir með tengiliði"
+
+#: data/ui/contacts-main-window.ui:323 src/contacts-main-window.vala:222
+msgid "Done"
+msgstr "Lokið"
 
 #: data/ui/contacts-preferences-window.ui:6
-#| msgid "Local Address Book"
 msgid "Address Books"
 msgstr "Netfangaskrár"
+
+#: data/ui/contacts-qr-code-dialog.ui:9
+#| msgid "New Contact"
+msgid "Share Contact"
+msgstr "Deila tengilið"
+
+#: data/ui/contacts-qr-code-dialog.ui:36
+msgid "QR Code"
+msgstr "QR-kóði"
+
+#: data/ui/contacts-qr-code-dialog.ui:46
+msgid "Scan to Save"
+msgstr "Skanna til að vista"
 
 #: data/ui/contacts-setup-window.ui:15
 msgid "Contacts Setup"
@@ -272,13 +336,8 @@ msgid "_Quit"
 msgstr "_Hætta"
 
 #: data/ui/contacts-setup-window.ui:22
-#| msgid "Cancel setup and quit"
 msgid "Cancel Setup And Quit"
 msgstr "Hætta við uppsetningu og loka"
-
-#: data/ui/contacts-setup-window.ui:29
-msgid "_Done"
-msgstr "_Lokið"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
 #: data/ui/contacts-setup-window.ui:31
@@ -299,37 +358,37 @@ msgstr ""
 "geymir tengiliðina þína á aðgangi á netinu, geturðu bætt þeim við í "
 "stillingunum fyrir netaðganginn."
 
-#: src/contacts-app.vala:45
+#: src/contacts-app.vala:46
 msgid "Show contact with this email address"
 msgstr "Birta tengilið með þessu tölvupóstfangi"
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:47
 msgid "Show contact with this individual id"
 msgstr "Birta tengilið með þessu einstaklingsauðkenni"
 
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:48
 msgid "Show contacts with the given filter"
 msgstr "Birta tengiliði með uppgefinni síu"
 
-#: src/contacts-app.vala:48
+#: src/contacts-app.vala:49
 msgid "Show the current version of Contacts"
 msgstr "Sýna núverandi útgáfu tengiliðaforritsins"
 
-#: src/contacts-app.vala:110 src/contacts-app.vala:163
+#: src/contacts-app.vala:111 src/contacts-app.vala:164
 msgid "Contact not found"
 msgstr "Tengiliður fannst ekki"
 
-#: src/contacts-app.vala:111
+#: src/contacts-app.vala:112
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Enginn tengiliður með auðkennið %s fannst"
 
-#: src/contacts-app.vala:112 src/contacts-app.vala:165
-#: src/contacts-avatar-selector.vala:238 src/contacts-contact-editor.vala:116
+#: src/contacts-app.vala:113 src/contacts-app.vala:166
+#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
 msgid "_Close"
 msgstr "_Loka"
 
-#: src/contacts-app.vala:149
+#: src/contacts-app.vala:150
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -337,191 +396,194 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 hönnuðir Contacts"
 
-#: src/contacts-app.vala:164
+#: src/contacts-app.vala:165
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Enginn tengiliður með tölvupóstfangið %s fannst"
 
-#: src/contacts-app.vala:227
-#| msgid "No primary addressbook configured"
+#: src/contacts-app.vala:228
 msgid "Primary address book not found"
 msgstr "Engin aðalnafnaskrá fannst"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:230
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
 msgstr ""
-"Tengiliðaforritið finnur ekki uppsettu aðalnafnaskrána. Þú gætir lent í"
-" vandræðum með að búa til eða breyta tengiliðum"
+"Tengiliðaforritið finnur ekki uppsettu aðalnafnaskrána. Þú gætir lent í "
+"vandræðum með að búa til eða breyta tengiliðum"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:231
 msgid "Go To _Preferences"
 msgstr "Skipta yfir í _kjörstillingar"
 
-#: src/contacts-app.vala:332
-#| msgid "Select a Contact"
+#: src/contacts-app.vala:325
 msgid "Select contact file"
 msgstr "Veldu tengiliðaskrá"
 
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:328
 msgid "Import"
 msgstr "Flytja inn"
 
 #. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:335
 msgid "vCard files"
 msgstr "vCard-skrár"
 
-#: src/contacts-app.vala:375
+#: src/contacts-app.vala:368
 msgid "Error reading file"
 msgstr "Villa við lestur skráar"
 
-#: src/contacts-app.vala:376
+#: src/contacts-app.vala:369
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Villa kom upp við að lesa  '%s'-skrána"
 
-#: src/contacts-app.vala:377 src/contacts-app.vala:387
+#: src/contacts-app.vala:370 src/contacts-app.vala:380
 msgid "_OK"
 msgstr "Í _lagi"
 
-#: src/contacts-app.vala:385
-#| msgid "No contact with id %s found"
+#: src/contacts-app.vala:378
 msgid "No contacts found"
 msgstr "Engir tengiliðir fundust"
 
-#: src/contacts-app.vala:386
+#: src/contacts-app.vala:379
 msgid "The imported file does not seem to contain any contacts"
 msgstr "Innflutta skráin inniheldur líkast til enga tengiliði"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:394
+#: src/contacts-app.vala:387
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Við að halda áfram muntu flytja inn %u tengilið"
 msgstr[1] "Við að halda áfram muntu flytja inn %u tengiliði"
 
-#: src/contacts-app.vala:397
+#: src/contacts-app.vala:390
 msgid "Continue Import?"
 msgstr "Halda áfram með innflutning?"
 
-#: src/contacts-app.vala:398
+#: src/contacts-app.vala:391
 msgid "C_ontinue"
 msgstr "_Halda áfram"
 
-#: src/contacts-avatar-selector.vala:124
+#: src/contacts-avatar-selector.vala:126
 msgid "No Camera Detected"
 msgstr "Engin myndavél fannst"
 
-#: src/contacts-avatar-selector.vala:193
+#: src/contacts-avatar-selector.vala:172
+#| msgid "Failed to set avatar."
+msgid "Failed to set avatar"
+msgstr "Ekki tókst að stilla auðkennismynd"
+
+#: src/contacts-avatar-selector.vala:208
 msgid "Browse for more pictures"
 msgstr "Finna fleiri myndir"
 
-#: src/contacts-avatar-selector.vala:196
+#: src/contacts-avatar-selector.vala:211
 msgid "_Open"
 msgstr "_Opna"
 
-#: src/contacts-avatar-selector.vala:237 src/contacts-contact-editor.vala:115
+#: src/contacts-avatar-selector.vala:249
 msgid "Failed to set avatar."
 msgstr "Ekki tókst að stilla auðkennismynd."
 
-#: src/contacts-contact-editor.vala:97
-msgid "Change avatar"
-msgstr "Skipta um táknmynd"
-
-#: src/contacts-contact-editor.vala:133
-msgid "Add name"
-msgstr "Bæta við nafni"
-
-#: src/contacts-contact-editor.vala:256
+#: src/contacts-contact-editor.vala:198
 msgid "Show More"
 msgstr "Birta meira"
 
-#: src/contacts-contact-editor.vala:345
+#: src/contacts-contact-editor.vala:295
 msgid "Add email"
 msgstr "Bæta við tölvupóstfangi"
 
-#: src/contacts-contact-editor.vala:371
+#: src/contacts-contact-editor.vala:321
 msgid "Add phone number"
 msgstr "Bæta við símanúmeri"
 
-#: src/contacts-contact-editor.vala:397 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:347 src/contacts-utils.vala:188
 msgid "Website"
 msgstr "Vefsvæði"
 
-#: src/contacts-contact-editor.vala:409 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:358 src/contacts-utils.vala:173
+msgid "Full name"
+msgstr "Fullt nafn"
+
+#: src/contacts-contact-editor.vala:369 src/contacts-utils.vala:179
 msgid "Nickname"
 msgstr "Gælunafn"
 
-#: src/contacts-contact-editor.vala:460 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:420 src/contacts-utils.vala:170
 msgid "Birthday"
 msgstr "Afmælisdagur"
 
-#: src/contacts-contact-editor.vala:464
+#: src/contacts-contact-editor.vala:441
+#| msgid "Set Birthday"
+msgid "Remove birthday"
+msgstr "Fjarlægja fæðingardag"
+
+#: src/contacts-contact-editor.vala:459
 msgid "Set Birthday"
 msgstr "Stilla afmælisdag"
 
-#: src/contacts-contact-editor.vala:534
+#: src/contacts-contact-editor.vala:513
 msgid "Organisation"
 msgstr "Stofnun/Félag/Fyrirtæki"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:540 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:519 src/contacts-utils.vala:184
 msgid "Role"
 msgstr "Hlutverk"
 
-#: src/contacts-contact-editor.vala:656
+#: src/contacts-contact-editor.vala:635
 msgid "Label"
 msgstr "Skýring"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:712
+#: src/contacts-contact-editor.vala:695
 msgid "Day"
 msgstr "Dagur"
 
-#: src/contacts-contact-editor.vala:716
+#: src/contacts-contact-editor.vala:699
 msgid "Month"
 msgstr "Mánuður"
 
-#: src/contacts-contact-editor.vala:720
+#: src/contacts-contact-editor.vala:703
 msgid "Year"
 msgstr "Ár"
 
-#: src/contacts-contact-editor.vala:725
+#: src/contacts-contact-editor.vala:711
 msgid "Change Birthday"
 msgstr "Breyta afmælisdegi"
 
-#: src/contacts-contact-editor.vala:726
-msgid "Set"
-msgstr "Setja"
+#: src/contacts-contact-editor.vala:718
+msgid "_Set"
+msgstr "_Stilla"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "Street"
 msgstr "Gata"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "Extension"
 msgstr "Viðbót"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "City"
 msgstr "Borg"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "State/Province"
 msgstr "Ríki/Fylki"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "Zip/Postal Code"
 msgstr "Póstnúmer"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "PO box"
 msgstr "Pósthólf"
 
-#: src/contacts-contact-editor.vala:795
+#: src/contacts-contact-editor.vala:779
 msgid "Country"
 msgstr "Land"
 
@@ -533,20 +595,20 @@ msgstr "Eftirlæti"
 msgid "All Contacts"
 msgstr "Allir tengiliðir"
 
-#: src/contacts-contact-sheet.vala:216
+#: src/contacts-contact-sheet.vala:215
 #, c-format
 msgid "Send an email to %s"
 msgstr "Senda tölvupóst á %s"
 
-#: src/contacts-contact-sheet.vala:289
+#: src/contacts-contact-sheet.vala:288
 msgid "Visit website"
 msgstr "Fara á vefsvæði"
 
-#: src/contacts-contact-sheet.vala:325
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "Afmælisdagur! 🎉"
 
-#: src/contacts-contact-sheet.vala:372
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "Birta á landakortinu"
 
@@ -667,10 +729,6 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-linked-personas-dialog.vala:76
-msgid "Unlink"
-msgstr "Aftengja"
-
 #: src/contacts-link-operation.vala:38
 #, c-format
 msgid "Linked %d contact"
@@ -688,64 +746,52 @@ msgstr "Er þetta sami einstaklingur og %s úr %s?"
 msgid "Is this the same person as %s?"
 msgstr "Er þetta sami einstaklingur og %s?"
 
-#: src/contacts-main-window.vala:191
+#: src/contacts-main-window.vala:192
 #, c-format
-#| msgid "%d Selected"
-#| msgid_plural "%d Selected"
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu valinn"
 msgstr[1] "%llu valdir"
 
-#: src/contacts-main-window.vala:221
+#: src/contacts-main-window.vala:222
 msgid "_Add"
 msgstr "Bæt_a við"
 
-#: src/contacts-main-window.vala:251
+#: src/contacts-main-window.vala:252
 #, c-format
 msgid "Editing %s"
 msgstr "Breyti %s"
 
-#: src/contacts-main-window.vala:271
+#: src/contacts-main-window.vala:291
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d valinn"
 msgstr[1] "%d valdir"
 
-#: src/contacts-main-window.vala:291 src/contacts-main-window.vala:487
-#: src/contacts-main-window.vala:527
+#: src/contacts-main-window.vala:311 src/contacts-main-window.vala:520
+#: src/contacts-main-window.vala:560
 msgid "_Undo"
 msgstr "_Afturkalla"
 
-#: src/contacts-main-window.vala:358
+#: src/contacts-main-window.vala:397
 msgid "New Contact"
 msgstr "Nýr tengiliður"
 
-#: src/contacts-main-window.vala:452
-msgid "Unmark as favorite"
-msgstr "Taka úr eftirlætum"
-
-#: src/contacts-main-window.vala:454
-msgid "Mark as favorite"
-msgstr "Merkja sem Eftirlæti"
-
 #. Open up a file chooser
-#: src/contacts-main-window.vala:561
+#: src/contacts-main-window.vala:601
 msgid "Export to file"
 msgstr "Flytja út í skrá"
 
-#: src/contacts-main-window.vala:564
+#: src/contacts-main-window.vala:604
 msgid "_Export"
 msgstr "_Flytja út"
 
-#: src/contacts-main-window.vala:566
-#| msgid "Contacts"
+#: src/contacts-main-window.vala:606
 msgid "contacts.vcf"
 msgstr "tengiliðir.vcf"
 
 #: src/contacts-preferences-window.vala:30
-#| msgid "Local Address Book"
 msgid "Primary Address Book"
 msgstr "Aðalnafnaskrá"
 
@@ -758,13 +804,18 @@ msgstr ""
 "tengiliðum úr öðrum nafnaskrám."
 
 #: src/contacts-preferences-window.vala:40
-#| msgid "Linked Accounts"
 msgid "_Online Accounts"
 msgstr "_Aðgangar á neti"
 
 #: src/contacts-preferences-window.vala:45
-msgid "Opens the Online Accounts panel in GNOME Settings"
-msgstr "Opnar spjald fyrir aðganga á neti í GNOME-stillingunum"
+#| msgid "Opens the Online Accounts panel in GNOME Settings"
+msgid "Open the Online Accounts panel in Settings"
+msgstr "Opnar spjald fyrir aðganga á neti í Stillingunum"
+
+#: src/contacts-qr-code-dialog.vala:33
+#, c-format
+msgid "Scan the QR code to save the contact <b>%s</b>."
+msgstr "Skannaðu QR-kóðann til að vista tengiliðinn <b>%s</b>."
 
 #: src/contacts-unlink-operation.vala:37
 msgid "Unlinking contacts"
@@ -785,10 +836,6 @@ msgstr "Dagatalsviðburður"
 #: src/contacts-utils.vala:172
 msgid "Email address"
 msgstr "Tölvupóstfang"
-
-#: src/contacts-utils.vala:173
-msgid "Full name"
-msgstr "Fullt nafn"
 
 #: src/contacts-utils.vala:174
 msgid "Gender"
@@ -837,7 +884,7 @@ msgid "Unnamed Person"
 msgstr "Nafnlaus aðili"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:86
+#: src/core/contacts-roles-chunk.vala:124
 #, c-format
 msgid "%s at %s"
 msgstr "%s hjá %s"
@@ -917,9 +964,8 @@ msgstr "Telex"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/io/contacts-io-parse-operation.vala:40
+#: src/io/contacts-io-parse-operation.vala:39
 #, c-format
-#| msgid "Sort contacts on surname."
 msgid "Importing contacts from '%s'"
 msgstr "Flyt inn tengiliði úr '%s'"
 
@@ -978,6 +1024,38 @@ msgstr "Geymir hvort forritsglugginn sé hámarkaður."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Er glugginn yfir allan skjáinn"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Leita"
+
+#~ msgid "Linked Accounts"
+#~ msgstr "Tengdir aðgangar"
+
+#~ msgid "You can link contacts by selecting them from the contacts list"
+#~ msgstr ""
+#~ "Þú getur tengt tengiliði saman með því að velja þá úr tengiliðlistanum"
+
+#~ msgid "Create new contact"
+#~ msgstr "Búa til nýjan tengilið"
+
+#~ msgid "Menu"
+#~ msgstr "Valmynd"
+
+#~ msgid "Select Items"
+#~ msgstr "Veldu atriði"
+
+#~ msgid "Type to search"
+#~ msgstr "Skrifaðu til að leita..."
+
+#~ msgid "Add name"
+#~ msgstr "Bæta við nafni"
+
+#~ msgid "Set"
+#~ msgstr "Setja"
+
+#~ msgid "Unlink"
+#~ msgstr "Aftengja"
 
 #~ msgid "Change Address Book…"
 #~ msgstr "Skipta um nafnaskrá..."
@@ -1038,9 +1116,6 @@ msgstr "Er glugginn yfir allan skjáinn"
 #~ msgid "Add contact"
 #~ msgstr "Bæta við tengilið"
 
-#~ msgid "Main Menu"
-#~ msgstr "Aðalvalmynd"
-
 #~ msgid "Setup complete"
 #~ msgstr "Uppsetningu lokið"
 
@@ -1089,9 +1164,6 @@ msgstr "Er glugginn yfir allan skjáinn"
 
 #~ msgid "New Detail"
 #~ msgstr "Nýtt atriði"
-
-#~ msgid "Remove Contact"
-#~ msgstr "Fjarlægja tengilið"
 
 #~ msgid "Quit"
 #~ msgstr "Hætta"
@@ -1177,9 +1249,6 @@ msgstr "Er glugginn yfir allan skjáinn"
 
 #~ msgid "Suggestions"
 #~ msgstr "Uppástungur"
-
-#~ msgid "Other Contacts"
-#~ msgstr "Aðrir tengiliðir"
 
 #~ msgid "Contact deleted: \"%s\""
 #~ msgstr "Tengilið eytt: \"%s\""
