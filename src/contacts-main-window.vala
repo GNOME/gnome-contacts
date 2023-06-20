@@ -486,7 +486,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
       if (selected != null) {
         update_favorite_actions (selected.is_favourite);
       }
-      this.state = UiState.SHOWING;
+      this.state = selected != null ? UiState.SHOWING : UiState.NORMAL;
     }
   }
 
