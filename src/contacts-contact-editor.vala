@@ -647,7 +647,7 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
   }
 }
 
-public class Contacts.BirthdayEditor : Gtk.Window {
+public class Contacts.BirthdayEditor : Adw.Window {
 
   private unowned Gtk.SpinButton day_spin;
   private unowned Gtk.ComboBoxText month_combo;
@@ -662,12 +662,15 @@ public class Contacts.BirthdayEditor : Gtk.Window {
   }
 
   construct {
+    var toolbar_view = new Adw.ToolbarView ();
+    this.content = toolbar_view;
+
     // The grid that will contain the Y/M/D fields
     var grid = new Gtk.Grid ();
     grid.column_spacing = 12;
     grid.row_spacing = 12;
     grid.add_css_class ("contacts-editor-birthday");
-    this.child = grid;
+    toolbar_view.content = grid;
 
     // Day
     var d_spin = new Gtk.SpinButton.with_range (1.0, 31.0, 1.0);
@@ -707,9 +710,8 @@ public class Contacts.BirthdayEditor : Gtk.Window {
 
     // Headerbar
     var titlebar = new Gtk.HeaderBar ();
-    this.titlebar = titlebar;
-    titlebar.title_widget = new Adw.WindowTitle (_("Change Birthday"), "");
     titlebar.show_title_buttons = false;
+    toolbar_view.add_top_bar (titlebar);
 
     var cancel_button = new Gtk.Button.with_mnemonic (_("_Cancel"));
     cancel_button.action_name = "window.close";
@@ -723,6 +725,8 @@ public class Contacts.BirthdayEditor : Gtk.Window {
       destroy ();
     });
     titlebar.pack_end (ok_button);
+
+    set_title (_("Change Birthday"));
   }
 
   public BirthdayEditor (Gtk.Window? window, DateTime? birthday) {
