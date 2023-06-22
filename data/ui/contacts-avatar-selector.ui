@@ -30,6 +30,7 @@
                 <property name="use-underline">True</property>
                 <property name="receives-default">True</property>
                 <property name="action-name">window.close</property>
+                <property name="can-shrink">True</property>
               </object>
             </child>
 
@@ -38,6 +39,7 @@
                 <property name="label" translatable="yes">_Done</property>
                 <property name="use-underline">True</property>
                 <property name="action-name">set-avatar</property>
+                <property name="can-shrink">True</property>
                 <style>
                   <class name="suggested-action"/>
                 </style>
@@ -82,6 +84,7 @@
                 <property name="visible">False</property>
                 <property name="label" translatable="yes">Take a Picture…</property>
                 <property name="receives_default">True</property>
+                <property name="can-shrink">True</property>
                 <signal name="clicked" handler="on_camera_button_clicked"/>
               </object>
             </child>
@@ -89,6 +92,7 @@
               <object class="GtkButton">
                 <property name="label" translatable="yes">Select a File…</property>
                 <property name="receives_default">True</property>
+                <property name="can-shrink">True</property>
                 <signal name="clicked" handler="on_file_clicked"/>
               </object>
             </child>
