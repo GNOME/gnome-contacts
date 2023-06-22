@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContactsAvatarSelector" parent="GtkWindow">
+  <template class="ContactsAvatarSelector" parent="AdwWindow">
     <property name="modal">True</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
-    <binding name="title">
-      <lookup name="title">title_widget</lookup>
-    </binding>
+    <property name="title" translatable="yes">Select a new avatar</property>
 
     <child>
       <object class='GtkShortcutController'>
@@ -19,46 +17,37 @@
       </object>
     </child>
 
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="show-title-buttons">False</property>
+    <property name="content">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <property name="show-start-title-buttons">False</property>
+            <property name="show-end-title-buttons">False</property>
 
-        <child type="start">
-          <object class="GtkButton">
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="use-underline">True</property>
-            <property name="receives-default">True</property>
-            <property name="action-name">window.close</property>
+            <child type="start">
+              <object class="GtkButton">
+                <property name="label" translatable="yes">_Cancel</property>
+                <property name="use-underline">True</property>
+                <property name="receives-default">True</property>
+                <property name="action-name">window.close</property>
+              </object>
+            </child>
+
+            <child type="end">
+              <object class="GtkButton" id="done_button">
+                <property name="label" translatable="yes">_Done</property>
+                <property name="use-underline">True</property>
+                <property name="action-name">set-avatar</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
-
-        <property name="title-widget">
-          <object class="AdwWindowTitle" id="title_widget">
-            <property name="title" translatable="yes">Select a new avatar</property>
-          </object>
-        </property>
-
-        <child type="end">
-          <object class="GtkButton" id="done_button">
-            <property name="label" translatable="yes">_Done</property>
-            <property name="use-underline">True</property>
-            <property name="action-name">set-avatar</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-        </child>
-      </object>
-    </child>
-
-    <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
+        <property name="content">
           <object class="GtkScrolledWindow">
             <property name="hscrollbar_policy">never</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
             <child>
               <object class="GtkViewport">
                 <property name="scroll-to-focus">True</property>
@@ -85,8 +74,8 @@
               </object>
             </child>
           </object>
-        </child>
-        <child>
+        </property>
+        <child type="bottom">
           <object class="GtkActionBar">
             <child>
               <object class="GtkButton" id="camera_button">
@@ -106,6 +95,6 @@
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

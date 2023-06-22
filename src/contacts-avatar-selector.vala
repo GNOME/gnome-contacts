@@ -68,7 +68,7 @@ private class Contacts.Thumbnail : Gtk.FlowBoxChild {
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-selector.ui")]
-public class Contacts.AvatarSelector : Gtk.Window {
+public class Contacts.AvatarSelector : Adw.Window {
 
   public unowned Contact contact { get; construct set; }
 
