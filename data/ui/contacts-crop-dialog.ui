@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ContactsCropDialog" parent="GtkWindow">
+  <template class="ContactsCropDialog" parent="AdwWindow">
     <property name="modal">True</property>
     <property name="default-width">400</property>
     <property name="default-height">400</property>
@@ -16,36 +16,36 @@
       </object>
     </child>
 
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="show-title-buttons">False</property>
+    <property name="content">
+      <object class="AdwToolbarView" id="toolbar_view">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <property name="show-start-title-buttons">False</property>
+            <property name="show-end-title-buttons">False</property>
+            <property name="show-title">False</property>
 
-        <child type="start">
-          <object class="GtkButton">
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="use-underline">True</property>
-            <property name="receives-default">True</property>
-            <property name="action-name">window.close</property>
-          </object>
-        </child>
+            <child type="start">
+              <object class="GtkButton">
+                <property name="label" translatable="yes">_Cancel</property>
+                <property name="use-underline">True</property>
+                <property name="receives-default">True</property>
+                <property name="action-name">window.close</property>
+              </object>
+            </child>
 
-        <property name="title-widget">
-          <object class="AdwWindowTitle" id="title_widget">
-            <property name="title"></property>
-          </object>
-        </property>
-
-        <child type="end">
-          <object class="GtkButton" id="done_button">
-            <property name="label" translatable="yes">_Done</property>
-            <property name="use-underline">True</property>
-            <property name="action-name">crop</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
+            <child type="end">
+              <object class="GtkButton" id="done_button">
+                <property name="label" translatable="yes">_Done</property>
+                <property name="use-underline">True</property>
+                <property name="action-name">crop</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

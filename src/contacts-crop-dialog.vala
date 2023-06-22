@@ -16,7 +16,10 @@
  */
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-crop-dialog.ui")]
-public class Contacts.CropDialog : Gtk.Window {
+public class Contacts.CropDialog : Adw.Window {
+
+  [GtkChild]
+  private unowned Adw.ToolbarView toolbar_view;
 
   private Cc.CropArea crop_area;
 
@@ -31,7 +34,7 @@ public class Contacts.CropDialog : Gtk.Window {
     this.crop_area.vexpand = true;
     this.crop_area.hexpand = true;
     this.crop_area.set_min_size (48, 48);
-    this.child = this.crop_area;
+    this.toolbar_view.content = this.crop_area;
   }
 
   public CropDialog.for_pixbuf (Gdk.Pixbuf pixbuf,
