@@ -110,6 +110,9 @@
       <object class="AdwToastOverlay" id="toast_overlay">
         <child>
           <object class="AdwNavigationSplitView" id="content_box">
+            <property name="sidebar-width-fraction">0.3</property>
+            <property name="min-sidebar-width">260</property>
+            <property name="max-sidebar-width">360</property>
             <signal name="notify::collapsed" handler="on_collapsed"/>
             <signal name="notify::show-content" handler="on_show_content"/>
             <property name="sidebar">
@@ -172,7 +175,6 @@
                         <child>
                           <object class="GtkBox">
                             <property name="orientation">vertical</property>
-                            <property name="width_request">300</property>
                             <property name="homogeneous">True</property>
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
@@ -332,7 +334,7 @@
     </child>
     <child>
       <object class="AdwBreakpoint">
-        <condition>max-width: 700sp</condition>
+        <condition>max-width: 560sp</condition>
         <setter object="content_box" property="collapsed">True</setter>
       </object>
     </child>
