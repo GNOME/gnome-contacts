@@ -650,7 +650,7 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
 public class Contacts.BirthdayEditor : Adw.Window {
 
   private unowned Gtk.SpinButton day_spin;
-  private unowned Gtk.ComboBoxText month_combo;
+  private unowned Gtk.DropDown month_dropdown;
   private unowned Gtk.SpinButton year_spin;
 
   public bool is_set { get; set; default = false; }
@@ -679,14 +679,17 @@ public class Contacts.BirthdayEditor : Adw.Window {
     this.day_spin = d_spin;
 
     // Month
-    var m_combo = new Gtk.ComboBoxText ();
+    string[] months = {};
     var january = new DateTime.local (1, 1, 1, 1, 1, 1);
     for (int i = 0; i < 12; i++) {
       var month = january.add_months (i);
-      m_combo.append_text (month.format ("%B"));
+      months += month.format ("%B");
     }
-    m_combo.hexpand = true;
-    this.month_combo = m_combo;
+    months += null;
+
+    var m_dropdown = new Gtk.DropDown.from_strings (months);
+    m_dropdown.hexpand = true;
+    this.month_dropdown = m_dropdown;
 
     // Year
     var y_spin = new Gtk.SpinButton.with_range (1800, 3000, 1);
@@ -702,7 +705,7 @@ public class Contacts.BirthdayEditor : Adw.Window {
     Gtk.Label month = new Gtk.Label (_("Month"));
     month.set_halign (Gtk.Align.END);
     grid.attach (month, 0, 1);
-    grid.attach (month_combo, 1, 1);
+    grid.attach (month_dropdown, 1, 1);
     Gtk.Label year = new Gtk.Label (_("Year"));
     year.set_halign (Gtk.Align.END);
     grid.attach (year, 0, 2);
@@ -735,11 +738,11 @@ public class Contacts.BirthdayEditor : Adw.Window {
     // Don't forget to change to local timezone first
     var bday_local = (birthday != null)? birthday.to_local () : new DateTime.now_local ();
     this.day_spin.set_value ((double) bday_local.get_day_of_month ());
-    this.month_combo.set_active (bday_local.get_month () - 1);
+    this.month_dropdown.selected = bday_local.get_month () - 1;
     this.year_spin.set_value ((double) bday_local.get_year ());
 
     update_date ();
-    month_combo.changed.connect (() => {
+    month_dropdown.notify["selected"].connect ((obj, pspec) => {
       update_date ();
     });
     year_spin.value_changed.connect (() => {
@@ -750,17 +753,17 @@ public class Contacts.BirthdayEditor : Adw.Window {
   /** Returns the selected birthday (in UTC timezone) */
   public GLib.DateTime get_birthday () {
     return new GLib.DateTime.local (year_spin.get_value_as_int (),
-                                    month_combo.get_active () + 1,
+                                    (int) month_dropdown.selected + 1,
                                     day_spin.get_value_as_int (),
                                     0, 0, 0).to_utc ();
   }
 
   private void update_date() {
-    const int[] month_of_31 = {3, 5, 8, 10};
+    const uint[] month_of_31 = {3, 5, 8, 10};
 
-    if (this.month_combo.get_active () in month_of_31) {
+    if (this.month_dropdown.selected in month_of_31) {
       this.day_spin.set_range (1, 30);
-    } else if (this.month_combo.get_active () == 1) {
+    } else if (this.month_dropdown.selected == 1) {
       if (this.year_spin.get_value_as_int () % 400 == 0 ||
           (this.year_spin.get_value_as_int () % 4 == 0 &&
            this.year_spin.get_value_as_int () % 100 != 0)) {
