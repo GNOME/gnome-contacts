@@ -66,6 +66,6 @@ public class Contacts.SetupWindow : Adw.ApplicationWindow {
 
     // Make visible when we're using a nightly build
     if (Config.PROFILE == "development")
-        get_style_context ().add_class ("devel");
+        add_css_class ("devel");
   }
 }
