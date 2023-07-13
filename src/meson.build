@@ -17,6 +17,7 @@ libcontacts_sources = files(
   'contacts-esd-setup.vala',
   'contacts-im-service.vala',
   'contacts-import-operation.vala',
+  'contacts-individual-section-sorter.vala',
   'contacts-individual-sorter.vala',
   'contacts-link-operation.vala',
   'contacts-operation.vala',

@@ -171,6 +171,7 @@ public class Contacts.Store : GLib.Object {
     // Create the sorting, filtering and selection models
     this.sorter = new IndividualSorter (settings);
     this.sort_model = new Gtk.SortListModel (this.base_model, this.sorter);
+    this.sort_model.section_sorter = new IndividualSectionSorter ();
 
     this.filter = new QueryFilter (query);
     this.filter_model = new Gtk.FilterListModel (this.sort_model, this.filter);
