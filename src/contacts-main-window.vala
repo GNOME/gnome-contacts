@@ -91,29 +91,36 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   public Store store { get; construct set; }
 
+  // Selection list model
+  public ContactSelectionModel selection_model { get; private set; }
+
   public Contacts.OperationList operations { get; construct set; }
 
-  // A separate SelectionModel for all marked contacts
-  private Gtk.MultiSelection marked_contacts;
-
   construct {
+    // Actions
     add_action_entries (ACTION_ENTRIES, this);
 
-    this.store.selection.notify["selected-item"].connect (on_selection_changed);
+    // Selection logic
+    this.selection_model = new ContactSelectionModel (this.store.individuals);
+    bind_property ("state", this.selection_model, "state",
+                   BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
+    this.selection_model.selected.selection_changed.connect (on_selection_changed);
+    this.selection_model.marked.selection_changed.connect (on_marked_contacts_changed);
+    this.selection_model.marked.unselect_all (); // Call here to sync actions
 
-    this.marked_contacts = new Gtk.MultiSelection (this.store.filter_model);
-    this.marked_contacts.selection_changed.connect (on_marked_contacts_changed);
-    this.marked_contacts.unselect_all (); // Call here to sync actions
-
+    // Search
     this.filter_entry.set_key_capture_widget (this);
 
+    // State
     this.notify["state"].connect (on_ui_state_changed);
 
-    this.create_list_pane ();
-    this.create_contact_pane ();
-    this.connect_button_signals ();
-    this.restore_window_state ();
+    // Widgets
+    create_list_pane ();
+    create_contact_pane ();
+    connect_button_signals ();
+    restore_window_state ();
 
+    // Make sure we notify in the UI when this is an unstable development build
     if (Config.PROFILE == "development")
         this.add_css_class ("devel");
   }
@@ -143,14 +150,14 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void create_list_pane () {
-    var contactslist = new ContactList (this.store, this.marked_contacts);
+    var contactslist = new ContactList (this.store, this.selection_model);
     bind_property ("state", contactslist, "state", BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     this.contacts_list = contactslist;
     this.contacts_list_container.set_child (contactslist);
   }
 
   private void create_contact_pane () {
-    this.contact_pane = new ContactPane (this, this.store);
+    this.contact_pane = new ContactPane (this.selection_model, this.store);
     this.contact_pane.visible = true;
     this.contact_pane.hexpand = true;
     this.contact_pane.contacts_linked.connect (contact_pane_contacts_linked_cb);
@@ -238,7 +245,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void edit_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
-    unowned var selected = this.store.get_selected_contact ();
+    unowned var selected = get_selected_individual ();
     return_if_fail (selected != null);
 
     this.state = UiState.UPDATING;
@@ -249,7 +256,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void show_contact_qr_code (GLib.SimpleAction action, GLib.Variant? parameter) {
-    unowned var selected = this.store.get_selected_contact ();
+    unowned var selected = get_selected_individual ();
     var dialog = new QrCodeDialog.for_contact (selected, get_root () as Gtk.Window);
     dialog.show ();
   }
@@ -263,7 +270,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void set_selection_is_favorite (bool favorite) {
-    unowned var selected = this.store.get_selected_contact ();
+    unowned var selected = get_selected_individual ();
     return_if_fail (selected != null);
 
     selected.is_favourite = favorite;
@@ -287,10 +294,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void unlink_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
-    unowned Individual? selected = this.store.get_selected_contact ();
+    unowned Individual? selected = get_selected_individual ();
     return_if_fail (selected != null);
 
-    this.store.selection.unselect_item (this.store.selection.get_selected ());
+    this.selection_model.selected.unselect_all ();
     this.state = UiState.NORMAL;
 
     var operation = new UnlinkOperation (this.store, selected);
@@ -306,11 +313,11 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void delete_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
-    var selection = this.store.selection.get_selection ().copy ();
-    if (selection.is_empty ())
+    unowned var individual = this.selection_model.get_selected_individual ();
+    if (individual == null)
       return;
 
-    this.contacts_list.set_contacts_visible (selection, false);
+    var selection = this.selection_model.selected.get_selection ().copy ();
     this.contact_pane.show_contact (null);
     delete_contacts (selection);
   }
@@ -381,8 +388,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     if (this.state == UiState.UPDATING || this.state == UiState.CREATING)
       return;
 
-    this.store.selection.unselect_item (this.store.selection.get_selected ());
-
+    this.selection_model.selected.unselect_all ();
     this.state = UiState.CREATING;
 
     this.contact_pane_page.title = _("New Contact");
@@ -404,7 +410,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   private void on_show_content () {
     if (this.content_box.collapsed &&
         !this.content_box.show_content)
-      this.store.selection.unselect_item (this.store.selection.get_selected ());
+      this.selection_model.selected.unselect_all ();
   }
 
   public void show_search (string query) {
@@ -413,8 +419,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   private void connect_button_signals () {
     this.select_cancel_button.clicked.connect (() => {
-        this.marked_contacts.unselect_all ();
-        if (this.store.selection.get_selected () != Gtk.INVALID_LIST_POSITION) {
+        this.selection_model.marked.unselect_all ();
+        if (this.selection_model.selected.get_selected () != Gtk.INVALID_LIST_POSITION) {
             this.state = UiState.SHOWING;
         } else {
             this.state = UiState.NORMAL;
@@ -434,8 +440,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     return base.close_request ();
   }
 
-  private void on_selection_changed (Object object, ParamSpec pspec) {
-    unowned var selected = this.store.get_selected_contact ();
+  private void on_selection_changed (Gtk.SelectionModel marked,
+                                     uint position,
+                                     uint n_changed) {
+    unowned var selected = get_selected_individual ();
 
     // Update related actions
     unowned var unlink_action = lookup_action ("unlink-contact");
@@ -461,20 +469,19 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void link_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
-    // Take a copy, since we'll unselect everything later
-    var selection = this.marked_contacts.get_selection ().copy ();
+    // Take a copy since we'll unselect everything later and build the list of
+    // individuals
+    var selection = this.selection_model.marked.get_selection ().copy ();
+    var list = bitset_to_individuals (this.selection_model.marked, selection);
 
     // Go back to normal state as much as possible, and hide the contacts that
     // will be linked together
-    this.store.selection.unselect_item (this.store.selection.get_selected ());
-    this.marked_contacts.unselect_all ();
-    this.contacts_list.set_contacts_visible (selection, false);
+    this.selection_model.selected.unselect_all ();
+    this.selection_model.marked.unselect_all ();
+    foreach (var individual in list)
+      this.store.manual_filter.add_individual (individual);
     this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
-
-    // Build the list of contacts
-    var list = bitset_to_individuals (this.marked_contacts,
-                                      selection);
 
     // Perform the operation
     var operation = new LinkOperation (this.store, list);
@@ -490,34 +497,37 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void delete_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
-    var selection = this.marked_contacts.get_selection ().copy ();
+    var selection = this.selection_model.marked.get_selection ().copy ();
     delete_contacts (selection);
   }
 
   private void delete_contacts (Gtk.Bitset selection) {
+    var individuals = bitset_to_individuals (this.store.individuals, selection);
+
     // Go back to normal state as much as possible, and hide the contacts that
     // will be deleted
-    this.store.selection.unselect_item (this.store.selection.get_selected ());
-    this.marked_contacts.unselect_all ();
-    this.contacts_list.set_contacts_visible (selection, false);
+    this.selection_model.selected.unselect_all ();
+    this.selection_model.marked.unselect_all ();
+    foreach (var individual in individuals)
+      this.store.manual_filter.add_individual (individual);
     this.contact_pane.show_contact (null);
     this.state = UiState.NORMAL;
-
-    var individuals = bitset_to_individuals (this.store.filter_model,
-                                             selection);
 
     // NOTE: we'll do this with a timeout, since the operation is not reversable
     var op = new DeleteOperation (individuals);
 
     var cancellable = new Cancellable ();
     cancellable.cancelled.connect ((c) => {
-      this.contacts_list.set_contacts_visible (selection, true);
+      foreach (var individual in individuals)
+        this.store.manual_filter.remove_individual (individual);
     });
 
     var toast = add_toast_for_operation (op, "win.cancel-operation", _("_Cancel"));
     this.operations.execute_with_timeout.begin (op, toast.timeout, cancellable, (obj, res) => {
       try {
         this.operations.execute_with_timeout.end (res);
+        foreach (var individual in individuals)
+          this.store.manual_filter.remove_individual (individual);
       } catch (GLib.Error e) {
         warning ("Error removing individuals: %s", e.message);
       }
@@ -551,15 +561,14 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   private void export_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
     // Take a copy, since we'll unselect everything later
-    var selection = this.marked_contacts.get_selection ().copy ();
+    var selection = this.selection_model.marked.get_selection ().copy ();
 
     // Go back to normal state as much as possible
-    this.store.selection.unselect_item (this.store.selection.get_selected ());
-    this.marked_contacts.unselect_all ();
+    this.selection_model.selected.unselect_all ();
+    this.selection_model.marked.unselect_all ();
     this.state = UiState.NORMAL;
 
-    var individuals = bitset_to_individuals (this.store.filter_model,
-                                             selection);
+    var individuals = bitset_to_individuals (this.store.individuals, selection);
     export_individuals (individuals);
   }
 
@@ -629,7 +638,11 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   [GtkCallback]
   private void filter_entry_changed (Gtk.Editable editable) {
-    unowned var query = this.store.filter.query as SimpleQuery;
+    unowned var query = this.store.query_filter.query as SimpleQuery;
     query.query_string = this.filter_entry.text;
+  }
+
+  private unowned Individual? get_selected_individual () {
+    return (Individual?) this.selection_model.selected.get_selected_item ();
   }
 }

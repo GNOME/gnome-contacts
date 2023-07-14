@@ -45,25 +45,27 @@ public class Contacts.Store : GLib.Object {
     get { return this._address_books; }
   }
 
-  // Base list model
-  private GLib.ListStore _base_model = new ListStore (typeof (Individual));
-  public GLib.ListModel base_model { get { return this._base_model; } }
+  // Base list model, built from all contacts we obtain through libfolks
+  private GLib.ListStore base_model = new ListStore (typeof (Individual));
 
-  // Sorting list model
-  public Gtk.SortListModel sort_model { get; private set; }
+  // Sorting list model (note that the sorter is public)
+  private Gtk.SortListModel sort_model;
   public IndividualSorter sorter { get; private set; }
 
   // Filtering list model
-  public Gtk.FilterListModel filter_model { get; private set; }
-  public QueryFilter filter { get; private set; }
+  private Gtk.FilterListModel filter_model;
+  public QueryFilter query_filter { get; private set; }
+  public ManualFilter manual_filter { get; private set; }
 
-  // Selection list model
-  public Gtk.SingleSelection selection { get; private set; }
+  /** The list of individuals after all sorting/filtering operations */
+  public GLib.ListModel individuals {
+    get { return this.filter_model; }
+  }
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
 
   private void read_dont_suggest_db () {
-    dont_suggest_link.clear ();
+    this.dont_suggest_link.clear ();
 
     var path = Path.build_filename (Environment.get_user_config_dir (), "gnome-contacts", "dont_suggest.db");
     try {
@@ -173,12 +175,13 @@ public class Contacts.Store : GLib.Object {
     this.sort_model = new Gtk.SortListModel (this.base_model, this.sorter);
     this.sort_model.section_sorter = new IndividualSectionSorter ();
 
-    this.filter = new QueryFilter (query);
-    this.filter_model = new Gtk.FilterListModel (this.sort_model, this.filter);
+    var filter = new Gtk.EveryFilter ();
+    this.query_filter = new QueryFilter (query);
+    filter.append (this.query_filter);
+    this.manual_filter = new ManualFilter ();
+    filter.append (this.manual_filter);
 
-    this.selection = new Gtk.SingleSelection (this.filter_model);
-    this.selection.can_unselect = true;
-    this.selection.autoselect = false;
+    this.filter_model = new Gtk.FilterListModel (this.sort_model, filter);
   }
 
   private void on_individuals_changed_detailed (Gee.MultiMap<Individual?,Individual?> changes) {
@@ -200,8 +203,8 @@ public class Contacts.Store : GLib.Object {
     // but optimizing for it (and making it more comples) makes little sense.
     foreach (unowned var indiv in to_remove) {
       uint pos = 0;
-      if (this._base_model.find (indiv, out pos)) {
-        this._base_model.remove (pos);
+      if (this.base_model.find (indiv, out pos)) {
+        this.base_model.remove (pos);
       } else {
         debug ("Tried to remove individual '%s', but could't find it", indiv.display_name);
       }
@@ -224,17 +227,13 @@ public class Contacts.Store : GLib.Object {
             return;
 
           uint pos;
-          if (this._base_model.find (obj, out pos)) {
-            this._base_model.items_changed (pos, 1, 1);
+          if (this.base_model.find (obj, out pos)) {
+            this.base_model.items_changed (pos, 1, 1);
           }
         });
       }
     }
-    this._base_model.splice (this.base_model.get_n_items (), 0, (Object[]) to_add.data);
-  }
-
-  public unowned Individual? get_selected_contact () {
-    return (Individual) this.selection.get_selected_item ();
+    this.base_model.splice (this.base_model.get_n_items (), 0, (Object[]) to_add.data);
   }
 
   /**
@@ -257,8 +256,8 @@ public class Contacts.Store : GLib.Object {
     // We search for the closest matching Individual
     uint matched_pos = Gtk.INVALID_LIST_POSITION;
     uint strength = 0;
-    for (uint i = 0; i < this.filter_model.get_n_items (); i++) {
-      var individual = (Individual) this.filter_model.get_item (i);
+    for (uint i = 0; i < this.individuals.get_n_items (); i++) {
+      var individual = (Individual) this.individuals.get_item (i);
       uint this_strength = query.is_match (individual);
       if (this_strength > strength) {
         matched_pos = i;
@@ -286,8 +285,8 @@ public class Contacts.Store : GLib.Object {
       disconnect (signal_id);
     }
 
-    for (uint i = 0; i < this.filter_model.get_n_items (); i++) {
-      var individual = (Individual) this.filter_model.get_item (i);
+    for (uint i = 0; i < this.individuals.get_n_items (); i++) {
+      var individual = (Individual) this.individuals.get_item (i);
       if (individual.id == id)
         return i;
     }

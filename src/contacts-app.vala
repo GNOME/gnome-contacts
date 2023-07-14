@@ -102,10 +102,12 @@ public class Contacts.App : Adw.Application {
     return -1;
   }
 
-  public async void show_individual_for_id (string id) {
+  public async void show_individual_for_id (string id)
+      requires (this.window != null) {
+
     uint pos = yield this.contacts_store.find_individual_for_id (id);
     if (pos != Gtk.INVALID_LIST_POSITION) {
-      this.contacts_store.selection.selected = pos;
+      this.window.selection_model.select_item (pos, true);
     } else {
       var dialog = new Adw.MessageDialog (this.window,
                                           _("Contact not found"),
@@ -160,11 +162,12 @@ public class Contacts.App : Adw.Application {
       about.present ();
   }
 
-  public async void show_by_email (string email_address) {
+  public async void show_by_email (string email_address)
+      requires (this.window != null) {
     var query = new SimpleQuery (email_address, { "email-addresses" });
     uint pos = yield this.contacts_store.find_individual_for_query (query);
     if (pos != Gtk.INVALID_LIST_POSITION) {
-      this.contacts_store.selection.selected = pos;
+      this.window.selection_model.select_item (pos, true);
     } else {
       var dialog = new Adw.MessageDialog (this.window,
                                           _("Contact not found"),
@@ -435,7 +438,7 @@ public class Contacts.App : Adw.Application {
   }
 
   private void on_export_all (SimpleAction action, Variant? param) {
-    var model = this.contacts_store.filter_model;
+    var model = this.contacts_store.individuals;
     var individuals = new Gee.ArrayList<Individual> ();
     for (uint i = 0; i < model.get_n_items (); i++)
       individuals.add ((Individual) model.get_item (i));

@@ -28,7 +28,9 @@ const int PROFILE_SIZE = 128;
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-pane.ui")]
 public class Contacts.ContactPane : Adw.Bin {
 
-  private unowned Store store;
+  public unowned Store store { get; construct set; }
+
+  public unowned ContactSelectionModel selection_model { get; construct set; }
 
   private Contact? contact = null;
 
@@ -48,8 +50,8 @@ public class Contacts.ContactPane : Adw.Bin {
 
   public signal void contacts_linked (LinkOperation operation);
 
-  public ContactPane (MainWindow main_window, Store contacts_store) {
-    this.store = contacts_store;
+  public ContactPane (ContactSelectionModel selection_model, Store contacts_store) {
+    Object (selection_model: selection_model, store: contacts_store);
   }
 
   public void add_suggestion (Individual individual, Individual other) {
@@ -186,7 +188,7 @@ public class Contacts.ContactPane : Adw.Bin {
       if (individual != null) {
         var pos = yield this.store.find_individual_for_id (individual.id);
         if (pos != Gtk.INVALID_LIST_POSITION)
-          this.store.selection.selected = pos;
+          this.selection_model.selected.selected = pos;
       }
     } catch (Error err) {
       warning ("Couldn't save changes: %s", err.message);
