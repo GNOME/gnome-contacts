@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-05-02 07:52+0000\n"
-"PO-Revision-Date: 2023-05-02 11:13+0200\n"
-"Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
+"POT-Creation-Date: 2023-07-29 10:56+0000\n"
+"PO-Revision-Date: 2023-07-29 15:48+0200\n"
+"Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 3.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:137
-#: src/contacts-main-window.vala:190 src/contacts-main-window.vala:213
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:117
+#: src/contacts-main-window.vala:186 src/contacts-main-window.vala:209
 #: src/main.vala:26
 msgid "Contacts"
 msgstr "Stiki"
@@ -73,7 +73,7 @@ msgstr "Nastavitveni način stikov"
 msgid "Contacts edit view"
 msgstr "Urejevalni način stikov"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:887 src/contacts-app.vala:144
+#: data/org.gnome.Contacts.appdata.xml.in.in:887 src/contacts-app.vala:150
 msgid "The GNOME Project"
 msgstr "Projekt GNOME"
 
@@ -138,27 +138,27 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Prekliče spremembe stika"
 
-#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
-#: data/ui/contacts-main-window.ui:292 src/contacts-app.vala:234
-#: src/contacts-app.vala:404 src/contacts-contact-editor.vala:714
-#: src/contacts-main-window.vala:549
-msgid "_Cancel"
-msgstr "_Prekliči"
-
-#: data/ui/contacts-avatar-selector.ui:37
+#: data/ui/contacts-avatar-selector.ui:7
 msgid "Select a new avatar"
 msgstr "Izbor nove slike podobe"
 
-#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
-#: data/ui/contacts-setup-window.ui:29
+#: data/ui/contacts-avatar-selector.ui:29 data/ui/contacts-crop-dialog.ui:29
+#: data/ui/contacts-main-window.ui:280 src/contacts-app.vala:240
+#: src/contacts-app.vala:410 src/contacts-contact-editor.vala:719
+#: src/contacts-main-window.vala:517
+msgid "_Cancel"
+msgstr "_Prekliči"
+
+#: data/ui/contacts-avatar-selector.ui:39 data/ui/contacts-crop-dialog.ui:39
+#: data/ui/contacts-setup-window.ui:25
 msgid "_Done"
 msgstr "_Končano"
 
-#: data/ui/contacts-avatar-selector.ui:94
+#: data/ui/contacts-avatar-selector.ui:85
 msgid "Take a Picture…"
 msgstr "Zajemi sliko …"
 
-#: data/ui/contacts-avatar-selector.ui:101
+#: data/ui/contacts-avatar-selector.ui:93
 msgid "Select a File…"
 msgstr "Izbor datoteke …"
 
@@ -234,69 +234,65 @@ msgstr "Souporaba s kodo QR"
 msgid "Delete Contact"
 msgstr "Izbriši stik"
 
-#: data/ui/contacts-main-window.ui:129
+#: data/ui/contacts-main-window.ui:125
 msgid "Add New Contact"
 msgstr "Dodaj nov stik"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:135
 msgid "Main Menu"
 msgstr "Glavni meni"
 
-#: data/ui/contacts-main-window.ui:152
+#: data/ui/contacts-main-window.ui:142
 msgid "Select Contacts"
 msgstr "Izbor stikov"
 
-#: data/ui/contacts-main-window.ui:159
+#: data/ui/contacts-main-window.ui:149
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: data/ui/contacts-main-window.ui:160
+#: data/ui/contacts-main-window.ui:150
 msgid "Cancel Selection"
 msgstr "Prekliči izbor"
 
-#: data/ui/contacts-main-window.ui:187
-msgid "Loading"
-msgstr "Nalaganje"
-
-#: data/ui/contacts-main-window.ui:198
+#: data/ui/contacts-main-window.ui:163
 msgid "Search contacts"
 msgstr "Iskanje stikov"
 
+#: data/ui/contacts-main-window.ui:190
+msgid "Loading"
+msgstr "Nalaganje"
+
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:226
 msgid "Export"
 msgstr "Izvozi"
 
-#: data/ui/contacts-main-window.ui:217
+#: data/ui/contacts-main-window.ui:227
 msgid "Export Selected Contacts"
 msgstr "Izvozi izbrane stike"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:224
+#: data/ui/contacts-main-window.ui:235
 msgid "Link"
 msgstr "Povezava"
 
-#: data/ui/contacts-main-window.ui:225
+#: data/ui/contacts-main-window.ui:236
 msgid "Link Selected Contacts Together"
 msgstr "Poveži izbrane stike v skupino"
 
-#: data/ui/contacts-main-window.ui:232
+#: data/ui/contacts-main-window.ui:251
 msgid "Remove"
 msgstr "Odstrani"
 
-#: data/ui/contacts-main-window.ui:278
-msgid "Back"
-msgstr "Nazaj"
-
-#: data/ui/contacts-main-window.ui:307
+#: data/ui/contacts-main-window.ui:295
 msgid "Edit Contact"
 msgstr "Uredi stike"
 
-#: data/ui/contacts-main-window.ui:313
-msgid "More Contact Actions"
-msgstr "Več dejanj stikov"
+#: data/ui/contacts-main-window.ui:301
+msgid "Contact Menu"
+msgstr "Meni stikov"
 
-#: data/ui/contacts-main-window.ui:323 src/contacts-main-window.vala:222
+#: data/ui/contacts-main-window.ui:311 src/contacts-main-window.vala:218
 msgid "Done"
 msgstr "Končano"
 
@@ -308,36 +304,36 @@ msgstr "Imenik"
 msgid "Share Contact"
 msgstr "Pošlji podatke stika"
 
-#: data/ui/contacts-qr-code-dialog.ui:36
+#: data/ui/contacts-qr-code-dialog.ui:32
 msgid "QR Code"
 msgstr "Koda QR"
 
-#: data/ui/contacts-qr-code-dialog.ui:46
+#: data/ui/contacts-qr-code-dialog.ui:42
 msgid "Scan to Save"
 msgstr "Preberi za shranjevanje"
 
-#: data/ui/contacts-setup-window.ui:15
+#: data/ui/contacts-setup-window.ui:7
 msgid "Contacts Setup"
 msgstr "Nastavitev stikov"
 
-#: data/ui/contacts-setup-window.ui:20
+#: data/ui/contacts-setup-window.ui:15
 msgid "_Quit"
 msgstr "_Končaj"
 
-#: data/ui/contacts-setup-window.ui:22
+#: data/ui/contacts-setup-window.ui:17
 msgid "Cancel Setup And Quit"
 msgstr "Prekliči nastavitev in končaj"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
-#: data/ui/contacts-setup-window.ui:31
+#: data/ui/contacts-setup-window.ui:27
 msgid "Complete setup"
 msgstr "Dokončana namestitev"
 
-#: data/ui/contacts-setup-window.ui:42
+#: data/ui/contacts-setup-window.ui:39
 msgid "Welcome"
 msgstr "Dobrodošli"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:40
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -363,7 +359,7 @@ msgstr "Pokaži stike, skladne s filtrom"
 msgid "Show the current version of Contacts"
 msgstr "Pokaži podrobnosti različice programa"
 
-#: src/contacts-app.vala:111 src/contacts-app.vala:164
+#: src/contacts-app.vala:111 src/contacts-app.vala:170
 msgid "Contact not found"
 msgstr "Stika ni mogoče najti"
 
@@ -372,12 +368,12 @@ msgstr "Stika ni mogoče najti"
 msgid "No contact with id %s found"
 msgstr "Stika z ID %s ni mogoče najti"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:166
+#: src/contacts-app.vala:113 src/contacts-app.vala:172
 #: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:262
 msgid "_Close"
 msgstr "_Zapri"
 
-#: src/contacts-app.vala:150
+#: src/contacts-app.vala:156
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -385,16 +381,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011–2022 Razvijalci programa Stiki"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:171
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Stika z elektronskim naslovom %s ni mogoče najti"
 
-#: src/contacts-app.vala:228
+#: src/contacts-app.vala:234
 msgid "Primary address book not found"
 msgstr "Osnovnega imenika ni mogoče najti"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:236
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -402,45 +398,45 @@ msgstr ""
 "V programu ni nastavljenega osnovnega imenika. To lahko povzroči težave pri "
 "ustvarjanju in urejanju stikov."
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:237
 msgid "Go To _Preferences"
 msgstr "Skoči med _možnosti"
 
-#: src/contacts-app.vala:326
+#: src/contacts-app.vala:332
 msgid "Select contact file"
 msgstr "Izbor datoteke stikov"
 
-#: src/contacts-app.vala:327
+#: src/contacts-app.vala:333
 msgid "Import"
 msgstr "Uvozi"
 
-#: src/contacts-app.vala:333
+#: src/contacts-app.vala:339
 msgid "vCard files"
 msgstr "Datoteke vCard"
 
-#: src/contacts-app.vala:377
+#: src/contacts-app.vala:383
 msgid "Error reading file"
 msgstr "Napaka branja datoteke"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:384
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Prišlo je do napake med branjem datoteke »%s«."
 
-#: src/contacts-app.vala:379 src/contacts-app.vala:389
+#: src/contacts-app.vala:385 src/contacts-app.vala:395
 msgid "_OK"
 msgstr "_V redu"
 
-#: src/contacts-app.vala:387
+#: src/contacts-app.vala:393
 msgid "No contacts found"
 msgstr "Ni najdenih stikov"
 
-#: src/contacts-app.vala:388
+#: src/contacts-app.vala:394
 msgid "The imported file does not seem to contain any contacts"
 msgstr "V uvoženi datoteki ni podatkov o stikih"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:396
+#: src/contacts-app.vala:402
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -449,11 +445,11 @@ msgstr[1] "Z nadaljevanjem bo uvožen %u stik."
 msgstr[2] "Z nadaljevanjem bosta uvožena %u stika."
 msgstr[3] "Z nadaljevanjem bodo uvoženi %u stiki."
 
-#: src/contacts-app.vala:399
+#: src/contacts-app.vala:405
 msgid "Continue Import?"
 msgstr "Ali želite nadaljevati z uvažanjem?"
 
-#: src/contacts-app.vala:400
+#: src/contacts-app.vala:406
 msgid "C_ontinue"
 msgstr "_Nadaljuj"
 
@@ -475,7 +471,7 @@ msgstr "_Odpri"
 
 #: src/contacts-avatar-selector.vala:215
 msgid "Image File"
-msgstr "Slikovna datoteka"
+msgstr "Datoteka slike"
 
 #: src/contacts-avatar-selector.vala:261
 msgid "Failed to set avatar."
@@ -531,59 +527,59 @@ msgid "Label"
 msgstr "Oznaka"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:695
+#: src/contacts-contact-editor.vala:701
 msgid "Day"
 msgstr "Dan"
 
-#: src/contacts-contact-editor.vala:699
+#: src/contacts-contact-editor.vala:705
 msgid "Month"
 msgstr "Mesec"
 
-#: src/contacts-contact-editor.vala:703
+#: src/contacts-contact-editor.vala:709
 msgid "Year"
 msgstr "Leto"
 
-#: src/contacts-contact-editor.vala:711
-msgid "Change Birthday"
-msgstr "Spremeni rojstni dan"
-
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:723
 msgid "_Set"
 msgstr "_Nastavi"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:732
+msgid "Change Birthday"
+msgstr "Spremeni rojstni dan"
+
+#: src/contacts-contact-editor.vala:786
 msgid "Street"
 msgstr "Ulica"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Extension"
 msgstr "Mednarodna številka"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "City"
 msgstr "Mesto"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "State/Province"
 msgstr "Regija / Provinca"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Zip/Postal Code"
 msgstr "Poštna številka"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "PO box"
 msgstr "Poštni predal"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Country"
 msgstr "Država"
 
-#: src/contacts-contact-list.vala:115
+#: src/contacts-contact-list.vala:112
 msgid "Favorites"
 msgstr "Priljubljeni stiki"
 
-#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
+#: src/contacts-contact-list.vala:114 src/contacts-contact-list.vala:120
 msgid "All Contacts"
 msgstr "Vsi vpisani stiki"
 
@@ -592,15 +588,15 @@ msgstr "Vsi vpisani stiki"
 msgid "Send an email to %s"
 msgstr "Pošlji elektronsko pošto za %s"
 
-#: src/contacts-contact-sheet.vala:288
+#: src/contacts-contact-sheet.vala:295
 msgid "Visit website"
 msgstr "Obišči spletišče"
 
-#: src/contacts-contact-sheet.vala:321
+#: src/contacts-contact-sheet.vala:332
 msgid "Their birthday is today! 🎉"
 msgstr "Danes imajo rojstni dan! 🎉"
 
-#: src/contacts-contact-sheet.vala:368
+#: src/contacts-contact-sheet.vala:379
 msgid "Show on the map"
 msgstr "Pokaži na zemljevidu"
 
@@ -742,7 +738,7 @@ msgstr "Ali je so tudi to podatki stika %s iz %s?"
 msgid "Is this the same person as %s?"
 msgstr "Ali so tudi to podatki stika %s?"
 
-#: src/contacts-main-window.vala:192
+#: src/contacts-main-window.vala:188
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
@@ -751,16 +747,16 @@ msgstr[1] "%llu izbrana"
 msgstr[2] "%llu izbrani"
 msgstr[3] "%llu izbrane"
 
-#: src/contacts-main-window.vala:222
+#: src/contacts-main-window.vala:218
 msgid "_Add"
 msgstr "_Dodaj"
 
-#: src/contacts-main-window.vala:252
+#: src/contacts-main-window.vala:246
 #, c-format
 msgid "Editing %s"
 msgstr "Urejanje stika %s"
 
-#: src/contacts-main-window.vala:291
+#: src/contacts-main-window.vala:285
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -769,25 +765,25 @@ msgstr[1] "%d izbran"
 msgstr[2] "%d izbrana"
 msgstr[3] "%d izbrani"
 
-#: src/contacts-main-window.vala:311 src/contacts-main-window.vala:520
-#: src/contacts-main-window.vala:560
+#: src/contacts-main-window.vala:305 src/contacts-main-window.vala:489
+#: src/contacts-main-window.vala:528
 msgid "_Undo"
 msgstr "_Razveljavi"
 
-#: src/contacts-main-window.vala:397
+#: src/contacts-main-window.vala:388
 msgid "New Contact"
 msgstr "Nov stik"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:602
+#: src/contacts-main-window.vala:570
 msgid "Export to file"
 msgstr "Izvozi v datoteko"
 
-#: src/contacts-main-window.vala:603
+#: src/contacts-main-window.vala:571
 msgid "_Export"
 msgstr "_Izvozi"
 
-#: src/contacts-main-window.vala:604
+#: src/contacts-main-window.vala:572
 msgid "contacts.vcf"
 msgstr "stiki.vcf"
 
@@ -1023,3 +1019,315 @@ msgstr "Shrani nastavitev trenutno razpetega okna."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Ali je okno razpeto"
+
+#~ msgid "Back"
+#~ msgstr "Nazaj"
+
+#~ msgid "More Contact Actions"
+#~ msgstr "Več dejanj stikov"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Iskanje"
+
+#~ msgid "Linked Accounts"
+#~ msgstr "Povezani računi"
+
+#~ msgid "You can link contacts by selecting them from the contacts list"
+#~ msgstr "Izbrane stike je mogoče povezati v oknu seznama stikov."
+
+#~ msgid "Create new contact"
+#~ msgstr "Ustvari stik"
+
+#~ msgid "Menu"
+#~ msgstr "Meni"
+
+#~ msgid "Select Items"
+#~ msgstr "Izbor predmetov"
+
+#~ msgid "Type to search"
+#~ msgstr "Iskalni niz ..."
+
+#~ msgid "Add name"
+#~ msgstr "Ime in priimek"
+
+#~ msgid "Set"
+#~ msgstr "Nastavi"
+
+#~ msgid "Unlink"
+#~ msgstr "Odstrani povezavo"
+
+#~ msgid "Change Address Book…"
+#~ msgstr "Zamenjaj imenik …"
+
+#~ msgid "Online Accounts <sup>↗</sup>"
+#~ msgstr "Spletni računi <sup>↗</sup>"
+
+#~ msgid "Change Address Book"
+#~ msgstr "Zamenjaj imenik"
+
+#~ msgid "Change"
+#~ msgstr "Spremeni"
+
+#~ msgid ""
+#~ "New contacts will be added to the selected address book.\n"
+#~ "You are able to view and edit contacts from other address books."
+#~ msgstr ""
+#~ "Novi stiki bodo dodani v izbran imenik.\n"
+#~ "Pregledovanje in urejanje stikov je mogoče na vseh imenikih."
+
+#~ msgid "translator-credits"
+#~ msgstr "Matej Urbančič <mateju@svn@gnome.org>"
+
+#~ msgid "About GNOME Contacts"
+#~ msgstr "O programu stiki Gnome"
+
+#~ msgid "Contact Management Application"
+#~ msgstr "Program za upravljanje stikov"
+
+#, c-format
+#~ msgid "Unable to create new contacts: %s"
+#~ msgstr "Ni mogoče ustvariti novega stika: %s"
+
+#~ msgid "Unable to find newly created contact"
+#~ msgstr "Ni mogoče najti na novo ustvarjenega stika."
+
+#~ msgid "Start a call"
+#~ msgstr "Začni klic"
+
+#~ msgid "Delete field"
+#~ msgstr "Izbriši polje"
+
+#~ msgid "https://example.com"
+#~ msgstr "https://primer.si"
+
+#~ msgid "Take Another…"
+#~ msgstr "Zajemi novo …"
+
+#~ msgid "Share"
+#~ msgstr "Objavi"
+
+#~ msgid "Edit"
+#~ msgstr "Uredi"
+
+#~ msgid "Delete"
+#~ msgstr "Izbriši"
+
+#~ msgid "Add contact"
+#~ msgstr "Dodaj stik"
+
+#~ msgid "Setup complete"
+#~ msgstr "Nastavitev je končana"
+
+#~ msgid "GNOME Contacts"
+#~ msgstr "Stiki GNOME"
+
+#~ msgid "Unable to take photo."
+#~ msgstr "Zajem slike ni mogoč."
+
+#~ msgid "Add number"
+#~ msgstr "Telefonska številka"
+
+#, c-format
+#~ msgid "%d contacts linked"
+#~ msgid_plural "%d contacts linked"
+#~ msgstr[0] "%d povezanih stikov"
+#~ msgstr[1] "%d povezan stik"
+#~ msgstr[2] "%d povezana stika"
+#~ msgstr[3] "%d povezani stiki"
+
+#, c-format
+#~ msgid "%d contact deleted"
+#~ msgid_plural "%d contacts deleted"
+#~ msgstr[0] "%d izbrisanih stikov"
+#~ msgstr[1] "%d izbrisan stik"
+#~ msgstr[2] "%d izbrisana stika"
+#~ msgstr[3] "%d izbrisani stiki"
+
+#, c-format
+#~ msgid "%s linked to %s"
+#~ msgstr "%s je povezan s stikom %s"
+
+#~ msgid "Google Circles"
+#~ msgstr "Google Circles"
+
+#~ msgid "Add"
+#~ msgstr "Dodaj"
+
+#~ msgid "Home email"
+#~ msgstr "Domači elektronski naslov"
+
+#~ msgid "Work email"
+#~ msgstr "Službeni elektronski naslov"
+
+#~ msgid "Mobile phone"
+#~ msgstr "Mobilni telefon"
+
+#~ msgid "Home phone"
+#~ msgstr "Domači telefon"
+
+#~ msgid "Work phone"
+#~ msgstr "Službeni telefon"
+
+#~ msgid "Work address"
+#~ msgstr "Službeni naslov"
+
+#~ msgid "Notes"
+#~ msgstr "Opombe"
+
+#~ msgid "New Detail"
+#~ msgstr "Dodaj polje"
+
+#~ msgid "Edit details"
+#~ msgstr "Uredi podrobnosti"
+
+#~ msgid "You need to enter some data"
+#~ msgstr "Vpisati je treba podatke"
+
+#~ msgid "Unexpected internal error: created contact was not found"
+#~ msgstr "Nepričakovana notranja napaka: ustvarjenega stika ni mogoče najti"
+
+#~ msgid "org.gnome.Contacts"
+#~ msgstr "org.gnome.Contacts"
+
+#~ msgid "Quit"
+#~ msgstr "Končaj"
+
+#~ msgid "About"
+#~ msgstr "O programu"
+
+#~ msgid "_Help"
+#~ msgstr "Pomo_č"
+
+#~ msgid "Selection mode"
+#~ msgstr "Način izbire"
+
+#~ msgid "Select Address Book"
+#~ msgstr "Izbor imenika"
+
+#~ msgid "Install GNOME Maps to open location."
+#~ msgstr "Namestite program Zemljevidi GNOME za prikaz mesta na zemljevidu."
+
+#~ msgid "— contact management"
+#~ msgstr "— upravljanje s stiki"
+
+#~ msgid "Does %s from %s belong here?"
+#~ msgstr "Ali %s iz %s pripada sem?"
+
+#~ msgid "Do these details belong to %s?"
+#~ msgstr "Ali te podrobnosti pripadajo %s?"
+
+#~ msgid "Yes"
+#~ msgstr "Da"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid "%s"
+#~ msgstr "%s"
+
+#~ msgid "No results matched search"
+#~ msgstr "Iskanje ni vrnilo rezultatov"
+
+#~ msgid "Suggestions"
+#~ msgstr "Predlogi"
+
+#~ msgid "Contact deleted: “%s”"
+#~ msgstr "Izbrisan stik: »%s«"
+
+#~ msgid "View subset"
+#~ msgstr "Pogled podmnožice"
+
+#~ msgid "x-office-address-book"
+#~ msgstr "x-office-address-book"
+
+#~ msgid "January"
+#~ msgstr "januar"
+
+#~ msgid "February"
+#~ msgstr "februar"
+
+#~ msgid "April"
+#~ msgstr "april"
+
+#~ msgid "June"
+#~ msgstr "junij"
+
+#~ msgid "July"
+#~ msgstr "julij"
+
+#~ msgid "August"
+#~ msgstr "avgust"
+
+#~ msgid "September"
+#~ msgstr "september"
+
+#~ msgid "October"
+#~ msgstr "oktober"
+
+#~ msgid "November"
+#~ msgstr "november"
+
+#~ msgid "December"
+#~ msgstr "december"
+
+#~ msgid "Contact deleted: \"%s\""
+#~ msgstr "Izbrisani stik: \"%s\""
+
+#~ msgid "_Change Address Book..."
+#~ msgstr "Zamenjaj _imenik ..."
+
+#~ msgid "Personal email"
+#~ msgstr "Osebni elektronski naslov"
+
+#~ msgid ""
+#~ "Add or \n"
+#~ "select a picture"
+#~ msgstr ""
+#~ "Dodaj ali\n"
+#~ "izberi sliko"
+
+#~ msgid "Contact Name"
+#~ msgstr "Ime stika"
+
+#~ msgid "Email"
+#~ msgstr "Elektronska pošta"
+
+#~ msgid "Phone"
+#~ msgstr "Telefon"
+
+#~ msgid "You must specify a contact name"
+#~ msgstr "Navesti je treba ime stika"
+
+#~ msgid "Please select your primary contacts account"
+#~ msgstr "Izbor osnovnega računa stikov"
+
+#~ msgid "Twitter"
+#~ msgstr "Twitter"
+
+#~ msgid "Google Profile"
+#~ msgstr "Profil Google"
+
+#~ msgid "Google Other Contact"
+#~ msgstr "Drugi stiki Google"
+
+#~ msgid "%s - Linked Accounts"
+#~ msgstr "%s povezani računi"
+
+#~ msgid "View"
+#~ msgstr "Pogled"
+
+#~ msgid "New"
+#~ msgstr "Novo"
+
+#~ msgid ""
+#~ "Welcome to Contacts! Please select where you want to keep your address "
+#~ "book:"
+#~ msgstr ""
+#~ "Dobrodošli v program Gnome Stiki! Izberite mesto za shranjevanje imenika:"
+
+#~ msgid "Setup an online account or use a local address book"
+#~ msgstr "Nastavitev spletnega računa ali uporaba krajevnega imenika"
+
+#~ msgid "Use Local Address Book"
+#~ msgstr "Uporabi krajevni imenik"
