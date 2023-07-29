@@ -96,7 +96,9 @@ public class Contacts.App : Adw.Application {
 
     uint pos = yield this.contacts_store.find_individual_for_id (id);
     if (pos != Gtk.INVALID_LIST_POSITION) {
-      this.window.selection_model.select_item (pos, true);
+      bool can_navigate = yield this.window.navigation_request ();
+      if (can_navigate)
+        this.window.selection_model.select_item (pos, true);
     } else {
       var dialog = new Adw.MessageDialog (this.window,
                                           _("Contact not found"),
@@ -156,7 +158,9 @@ public class Contacts.App : Adw.Application {
     var query = new SimpleQuery (email_address, { "email-addresses" });
     uint pos = yield this.contacts_store.find_individual_for_query (query);
     if (pos != Gtk.INVALID_LIST_POSITION) {
-      this.window.selection_model.select_item (pos, true);
+      bool can_navigate = yield this.window.navigation_request ();
+      if (can_navigate)
+        this.window.selection_model.select_item (pos, true);
     } else {
       var dialog = new Adw.MessageDialog (this.window,
                                           _("Contact not found"),

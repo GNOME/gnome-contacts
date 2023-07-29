@@ -429,6 +429,28 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     return base.close_request ();
   }
 
+  public async bool navigation_request () {
+    if (!contact_pane.on_edit_mode)
+      return true;
+
+    var dialog = new Adw.MessageDialog (this,
+                                        _("Discard changes?"),
+                                        _("Changes which are not saved will be permanently lost."));
+    dialog.add_response ("cancel", _("Cancel"));
+    dialog.add_response ("discard", _("Discard"));
+    dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
+    dialog.set_close_response ("cancel");
+
+    string response = yield dialog.choose (null);
+
+    if (response == "discard") {
+      activate_action ("edit-contact-cancel", null);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   private void on_selection_changed (Gtk.SelectionModel marked,
                                      uint position,
                                      uint n_changed) {
@@ -438,12 +460,15 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     unowned var unlink_action = lookup_action ("unlink-contact");
     ((SimpleAction) unlink_action).set_enabled (selected != null && selected.personas.size > 1);
 
-    // We really want to treat selection mode specially
-    if (this.state != UiState.SELECTING) {
-      // FIXME: ask the user to leave edit-mode and act accordingly
-      if (this.contact_pane.on_edit_mode)
-        activate_action ("stop-editing-contact", new Variant.boolean (false));
+    if (this.state == UiState.SELECTING) {
+      // We really want to treat selection mode specially
+      return;
+    } else {
+      show_contact (selected);
+    }
+  }
 
+  private void show_contact (Folks.Individual? selected) {
       this.contact_pane.show_contact (selected);
       if (selected != null)
         this.content_box.show_content = true;
@@ -454,7 +479,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         update_favorite_actions (selected.is_favourite);
       }
       this.state = selected != null ? UiState.SHOWING : UiState.NORMAL;
-    }
   }
 
   private void link_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
