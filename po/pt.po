@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-24 15:03+0000\n"
-"PO-Revision-Date: 2023-02-26 16:18+0000\n"
+"POT-Creation-Date: 2023-08-04 07:35+0000\n"
+"PO-Revision-Date: 2023-08-04 17:48+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -22,19 +22,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:131
-#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:223
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:117
+#: src/contacts-main-window.vala:186 src/contacts-main-window.vala:209
 #: src/main.vala:26
 msgid "Contacts"
 msgstr "Contactos"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:7
 #: data/org.gnome.Contacts.desktop.in.in:4
-msgid "A contacts manager for GNOME"
-msgstr "Um gestor de contactos para o GNOME"
+msgid "Manage your contacts"
+msgstr "Gerir os seus contactos"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:9
 msgid ""
@@ -76,7 +76,7 @@ msgstr "Vista de configuração dos contactos"
 msgid "Contacts edit view"
 msgstr "Vista de edição de contactos"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:829 src/contacts-app.vala:144
+#: data/org.gnome.Contacts.appdata.xml.in.in:887 src/contacts-app.vala:150
 msgid "The GNOME Project"
 msgstr "Projeto GNOME"
 
@@ -140,28 +140,27 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Cancelar alterações atuais no contacto"
 
-#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
-#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:395 src/contacts-avatar-selector.vala:211
-#: src/contacts-contact-editor.vala:714 src/contacts-main-window.vala:551
-#: src/contacts-main-window.vala:607
-msgid "_Cancel"
-msgstr "_Cancelar"
-
-#: data/ui/contacts-avatar-selector.ui:37
+#: data/ui/contacts-avatar-selector.ui:7
 msgid "Select a new avatar"
 msgstr "Selecionar um novo avatar"
 
-#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
-#: data/ui/contacts-setup-window.ui:29
+#: data/ui/contacts-avatar-selector.ui:29 data/ui/contacts-crop-dialog.ui:29
+#: data/ui/contacts-main-window.ui:280 src/contacts-app.vala:240
+#: src/contacts-app.vala:410 src/contacts-contact-editor.vala:719
+#: src/contacts-main-window.vala:517
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: data/ui/contacts-avatar-selector.ui:39 data/ui/contacts-crop-dialog.ui:39
+#: data/ui/contacts-setup-window.ui:25
 msgid "_Done"
 msgstr "_Terminado"
 
-#: data/ui/contacts-avatar-selector.ui:94
+#: data/ui/contacts-avatar-selector.ui:85
 msgid "Take a Picture…"
 msgstr "Tirar uma fotografia…"
 
-#: data/ui/contacts-avatar-selector.ui:101
+#: data/ui/contacts-avatar-selector.ui:93
 msgid "Select a File…"
 msgstr "Selecionar um ficheiro…"
 
@@ -221,77 +220,81 @@ msgstr "Ajuda"
 msgid "About Contacts"
 msgstr "Acerca do Contactos"
 
-#: data/ui/contacts-main-window.ui:54
+#: data/ui/contacts-main-window.ui:50
+msgid "Mark as Favorite"
+msgstr "Marcar como Favorito"
+
+#: data/ui/contacts-main-window.ui:55
+msgid "Unmark as Favorite"
+msgstr "Desmarcar como Favorito"
+
+#: data/ui/contacts-main-window.ui:60
 msgid "Share as QR Code"
 msgstr "Partilhar como código QR"
 
-#: data/ui/contacts-main-window.ui:60
+#: data/ui/contacts-main-window.ui:66
 msgid "Delete Contact"
 msgstr "Eliminar contacto"
 
-#: data/ui/contacts-main-window.ui:123
+#: data/ui/contacts-main-window.ui:125
 msgid "Add New Contact"
 msgstr "Adicionar novo contacto"
 
-#: data/ui/contacts-main-window.ui:139
+#: data/ui/contacts-main-window.ui:135
 msgid "Main Menu"
 msgstr "Menu Principal"
 
-#: data/ui/contacts-main-window.ui:146
+#: data/ui/contacts-main-window.ui:142
 msgid "Select Contacts"
 msgstr "Selecionar contactos"
 
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:329
+#: data/ui/contacts-main-window.ui:149
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: data/ui/contacts-main-window.ui:154
+#: data/ui/contacts-main-window.ui:150
 msgid "Cancel Selection"
 msgstr "Cancelar Seleção"
 
-#: data/ui/contacts-main-window.ui:181
-msgid "Loading"
-msgstr "A carregar"
-
-#: data/ui/contacts-main-window.ui:192
+#: data/ui/contacts-main-window.ui:163
 msgid "Search contacts"
 msgstr "Procurar contactos"
 
+#: data/ui/contacts-main-window.ui:190
+msgid "Loading"
+msgstr "A carregar"
+
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:210
+#: data/ui/contacts-main-window.ui:226
 msgid "Export"
 msgstr "Exportar"
 
-#: data/ui/contacts-main-window.ui:211
+#: data/ui/contacts-main-window.ui:227
 msgid "Export Selected Contacts"
 msgstr "Exportar contactos selecionados"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:218
+#: data/ui/contacts-main-window.ui:235
 msgid "Link"
 msgstr "Ligação"
 
-#: data/ui/contacts-main-window.ui:219
+#: data/ui/contacts-main-window.ui:236
 msgid "Link Selected Contacts Together"
 msgstr "Ligar contactos selecionados em conjunto"
 
-#: data/ui/contacts-main-window.ui:226
+#: data/ui/contacts-main-window.ui:251
 msgid "Remove"
 msgstr "Remover"
 
-#: data/ui/contacts-main-window.ui:272
-msgid "Back"
-msgstr "Recuar"
-
-#: data/ui/contacts-main-window.ui:301
+#: data/ui/contacts-main-window.ui:295
 msgid "Edit Contact"
 msgstr "Editar contacto"
 
-#: data/ui/contacts-main-window.ui:308
-msgid "More Contact Actions"
-msgstr "Mais ações de contacto"
+#: data/ui/contacts-main-window.ui:301
+msgid "Contact Menu"
+msgstr "Menu do contacto"
 
-#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
+#: data/ui/contacts-main-window.ui:311 src/contacts-main-window.vala:218
 msgid "Done"
 msgstr "Terminado"
 
@@ -303,36 +306,36 @@ msgstr "Livro de endereços"
 msgid "Share Contact"
 msgstr "Partilhar contacto"
 
-#: data/ui/contacts-qr-code-dialog.ui:36
+#: data/ui/contacts-qr-code-dialog.ui:32
 msgid "QR Code"
 msgstr "Código QR"
 
-#: data/ui/contacts-qr-code-dialog.ui:46
+#: data/ui/contacts-qr-code-dialog.ui:42
 msgid "Scan to Save"
 msgstr "Digitalizar para guardar"
 
-#: data/ui/contacts-setup-window.ui:15
+#: data/ui/contacts-setup-window.ui:7
 msgid "Contacts Setup"
 msgstr "Configuração de contactos"
 
-#: data/ui/contacts-setup-window.ui:20
+#: data/ui/contacts-setup-window.ui:15
 msgid "_Quit"
 msgstr "_Sair"
 
-#: data/ui/contacts-setup-window.ui:22
+#: data/ui/contacts-setup-window.ui:17
 msgid "Cancel Setup And Quit"
 msgstr "Cancelar a configuração e sair"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
-#: data/ui/contacts-setup-window.ui:31
+#: data/ui/contacts-setup-window.ui:27
 msgid "Complete setup"
 msgstr "Configuração concluída"
 
-#: data/ui/contacts-setup-window.ui:42
+#: data/ui/contacts-setup-window.ui:39
 msgid "Welcome"
 msgstr "Bem-vindo(a)"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:40
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -358,7 +361,7 @@ msgstr "Mostrar contactos com o filtro dado"
 msgid "Show the current version of Contacts"
 msgstr "Mostra a versão atual do Contactos"
 
-#: src/contacts-app.vala:111 src/contacts-app.vala:164
+#: src/contacts-app.vala:111 src/contacts-app.vala:170
 msgid "Contact not found"
 msgstr "Contacto não encontrado"
 
@@ -367,12 +370,12 @@ msgstr "Contacto não encontrado"
 msgid "No contact with id %s found"
 msgstr "Nenhum contacto encontrado com o id %s"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:166
-#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
+#: src/contacts-app.vala:113 src/contacts-app.vala:172
+#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:262
 msgid "_Close"
 msgstr "Fe_char"
 
-#: src/contacts-app.vala:150
+#: src/contacts-app.vala:156
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -380,16 +383,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Os Programados do Contactos"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:171
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Nenhum contacto encontrado com o endereço eletrónico %s"
 
-#: src/contacts-app.vala:228
+#: src/contacts-app.vala:234
 msgid "Primary address book not found"
 msgstr "Livro de endereços principal não encontrado"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:236
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -397,57 +400,56 @@ msgstr ""
 "Os contactos não conseguem encontrar o livro de endereços principal "
 "configurado. Poderá ter problemas com a criação ou edição de contactos"
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:237
 msgid "Go To _Preferences"
 msgstr "Ir para _Preferências"
 
-#: src/contacts-app.vala:325
+#: src/contacts-app.vala:332
 msgid "Select contact file"
 msgstr "Selecionar ficheiro de contacto"
 
-#: src/contacts-app.vala:328
+#: src/contacts-app.vala:333
 msgid "Import"
 msgstr "Importar"
 
-#. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:339
 msgid "vCard files"
 msgstr "Ficheiros vCard"
 
-#: src/contacts-app.vala:368
+#: src/contacts-app.vala:383
 msgid "Error reading file"
 msgstr "Erro ao ler ficheiro"
 
-#: src/contacts-app.vala:369
+#: src/contacts-app.vala:384
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Ocorreu um erro ao ler o ficheiro '%s'"
 
-#: src/contacts-app.vala:370 src/contacts-app.vala:380
+#: src/contacts-app.vala:385 src/contacts-app.vala:395
 msgid "_OK"
 msgstr "_Aceitar"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:393
 msgid "No contacts found"
 msgstr "Nenhum contato encontrado"
 
-#: src/contacts-app.vala:379
+#: src/contacts-app.vala:394
 msgid "The imported file does not seem to contain any contacts"
 msgstr "O ficheiro importado não parece conter quaisquer contactos"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:387
+#: src/contacts-app.vala:402
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Ao continuar, importará o contacto %u"
 msgstr[1] "Ao continuar, importará os contactos %u"
 
-#: src/contacts-app.vala:390
+#: src/contacts-app.vala:405
 msgid "Continue Import?"
 msgstr "Continuar a importar?"
 
-#: src/contacts-app.vala:391
+#: src/contacts-app.vala:406
 msgid "C_ontinue"
 msgstr "C_ontinuar"
 
@@ -459,15 +461,19 @@ msgstr "Nenhuma câmara detetada"
 msgid "Failed to set avatar"
 msgstr "Falha ao definir avatar"
 
-#: src/contacts-avatar-selector.vala:208
+#: src/contacts-avatar-selector.vala:209
 msgid "Browse for more pictures"
 msgstr "Procurar mais imagens"
 
-#: src/contacts-avatar-selector.vala:211
+#: src/contacts-avatar-selector.vala:210
 msgid "_Open"
 msgstr "_Abrir"
 
-#: src/contacts-avatar-selector.vala:249
+#: src/contacts-avatar-selector.vala:215
+msgid "Image File"
+msgstr "Ficheiro de imagem"
+
+#: src/contacts-avatar-selector.vala:261
 msgid "Failed to set avatar."
 msgstr "Falha ao definir avatar."
 
@@ -521,59 +527,59 @@ msgid "Label"
 msgstr "Rótulo"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:695
+#: src/contacts-contact-editor.vala:701
 msgid "Day"
 msgstr "Dia"
 
-#: src/contacts-contact-editor.vala:699
+#: src/contacts-contact-editor.vala:705
 msgid "Month"
 msgstr "Mês"
 
-#: src/contacts-contact-editor.vala:703
+#: src/contacts-contact-editor.vala:709
 msgid "Year"
 msgstr "Ano"
 
-#: src/contacts-contact-editor.vala:711
-msgid "Change Birthday"
-msgstr "Alterar data de nascimento"
-
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:723
 msgid "_Set"
 msgstr "_Definir"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:732
+msgid "Change Birthday"
+msgstr "Alterar data de nascimento"
+
+#: src/contacts-contact-editor.vala:786
 msgid "Street"
 msgstr "Rua"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Extension"
 msgstr "Extensão"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "City"
 msgstr "Cidade"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "State/Province"
 msgstr "Distrito/Província"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Zip/Postal Code"
 msgstr "Código postal"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "PO box"
 msgstr "Código postal"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Country"
 msgstr "País"
 
-#: src/contacts-contact-list.vala:115
+#: src/contacts-contact-list.vala:112
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
+#: src/contacts-contact-list.vala:114 src/contacts-contact-list.vala:120
 msgid "All Contacts"
 msgstr "Todos os contactos"
 
@@ -582,15 +588,15 @@ msgstr "Todos os contactos"
 msgid "Send an email to %s"
 msgstr "Enviar um e-mail para %s"
 
-#: src/contacts-contact-sheet.vala:288
+#: src/contacts-contact-sheet.vala:295
 msgid "Visit website"
 msgstr "Visitar website"
 
-#: src/contacts-contact-sheet.vala:321
+#: src/contacts-contact-sheet.vala:332
 msgid "Their birthday is today! 🎉"
 msgstr "O seu aniversário é hoje! 🎉"
 
-#: src/contacts-contact-sheet.vala:368
+#: src/contacts-contact-sheet.vala:379
 msgid "Show on the map"
 msgstr "Mostrar no mapa"
 
@@ -728,56 +734,48 @@ msgstr "Esta pessoa não é a mesma %s de %s?"
 msgid "Is this the same person as %s?"
 msgstr "Esta pessoa não é a mesma %s?"
 
-#: src/contacts-main-window.vala:145 src/contacts-main-window.vala:489
-msgid "Mark as Favorite"
-msgstr "Marcar como Favorito"
-
-#: src/contacts-main-window.vala:202
+#: src/contacts-main-window.vala:188
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu Selecionado"
 msgstr[1] "%llu Selecionados"
 
-#: src/contacts-main-window.vala:232
+#: src/contacts-main-window.vala:218
 msgid "_Add"
 msgstr "_Adicionar"
 
-#: src/contacts-main-window.vala:262
+#: src/contacts-main-window.vala:246
 #, c-format
 msgid "Editing %s"
 msgstr "A editar %s"
 
-#: src/contacts-main-window.vala:290
+#: src/contacts-main-window.vala:285
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d Selecionado"
 msgstr[1] "%d selecionados"
 
-#: src/contacts-main-window.vala:310 src/contacts-main-window.vala:522
-#: src/contacts-main-window.vala:562
+#: src/contacts-main-window.vala:305 src/contacts-main-window.vala:489
+#: src/contacts-main-window.vala:528
 msgid "_Undo"
 msgstr "_Desfazer"
 
-#: src/contacts-main-window.vala:396
+#: src/contacts-main-window.vala:388
 msgid "New Contact"
 msgstr "Novo contacto"
 
-#: src/contacts-main-window.vala:487
-msgid "Unmark as Favorite"
-msgstr "Desmarcar como Favorito"
-
 #. Open up a file chooser
-#: src/contacts-main-window.vala:603
+#: src/contacts-main-window.vala:570
 msgid "Export to file"
 msgstr "Exportar para ficheiro"
 
-#: src/contacts-main-window.vala:606
+#: src/contacts-main-window.vala:571
 msgid "_Export"
 msgstr "_Exportar"
 
-#: src/contacts-main-window.vala:608
+#: src/contacts-main-window.vala:572
 msgid "contacts.vcf"
 msgstr "contactos.vcf"
 
@@ -873,7 +871,7 @@ msgid "Unnamed Person"
 msgstr "Pessoa sem nome"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:105
+#: src/core/contacts-roles-chunk.vala:124
 #, c-format
 msgid "%s at %s"
 msgstr "%s em %s"
@@ -953,7 +951,7 @@ msgstr "Telex"
 msgid "TTY"
 msgstr "TTY"
 
-#: src/io/contacts-io-parse-operation.vala:40
+#: src/io/contacts-io-parse-operation.vala:39
 #, c-format
 msgid "Importing contacts from '%s'"
 msgstr "A importar contactos de '%s'"
@@ -1015,6 +1013,15 @@ msgstr "Guarda ser a janela está atualmente maximizada."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "A janela está em ecrã inteiro"
+
+#~ msgid "A contacts manager for GNOME"
+#~ msgstr "Um gestor de contactos para o GNOME"
+
+#~ msgid "Back"
+#~ msgstr "Recuar"
+
+#~ msgid "More Contact Actions"
+#~ msgstr "Mais ações de contacto"
 
 #~ msgid "Linked Accounts"
 #~ msgstr "Contas associadas"
