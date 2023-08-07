@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-02-24 15:03+0000\n"
-"PO-Revision-Date: 2023-02-28 22:39+0200\n"
+"POT-Creation-Date: 2023-08-06 05:30+0000\n"
+"PO-Revision-Date: 2023-08-07 18:11+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -21,20 +21,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-POT-Import-Date: 2012-03-05 14:49:55+0000\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:131
-#: src/contacts-main-window.vala:200 src/contacts-main-window.vala:223
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:117
+#: src/contacts-main-window.vala:186 src/contacts-main-window.vala:209
 #: src/main.vala:26
 msgid "Contacts"
 msgstr "Yhteystiedot"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:7
 #: data/org.gnome.Contacts.desktop.in.in:4
-msgid "A contacts manager for GNOME"
-msgstr "Yhteystietojen hallinta Gnomelle"
+msgid "Manage your contacts"
+msgstr "Hallitse yhteystietoja"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:9
 msgid ""
@@ -76,7 +76,7 @@ msgstr "Yhteystietojen asetusnäkymä"
 msgid "Contacts edit view"
 msgstr "Yhteystietojen muokkausnäkymä"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:829 src/contacts-app.vala:144
+#: data/org.gnome.Contacts.appdata.xml.in.in:887 src/contacts-app.vala:150
 msgid "The GNOME Project"
 msgstr "Gnome-projekti"
 
@@ -140,28 +140,27 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Peru nykyiset yhteystiedon muutokset"
 
-#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
-#: data/ui/contacts-main-window.ui:286 src/contacts-app.vala:234
-#: src/contacts-app.vala:395 src/contacts-avatar-selector.vala:211
-#: src/contacts-contact-editor.vala:714 src/contacts-main-window.vala:551
-#: src/contacts-main-window.vala:607
-msgid "_Cancel"
-msgstr "_Peru"
-
-#: data/ui/contacts-avatar-selector.ui:37
+#: data/ui/contacts-avatar-selector.ui:7
 msgid "Select a new avatar"
 msgstr "Valitse uusi avatar-kuva"
 
-#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
-#: data/ui/contacts-setup-window.ui:29
+#: data/ui/contacts-avatar-selector.ui:29 data/ui/contacts-crop-dialog.ui:29
+#: data/ui/contacts-main-window.ui:280 src/contacts-app.vala:240
+#: src/contacts-app.vala:416 src/contacts-contact-editor.vala:719
+#: src/contacts-main-window.vala:517
+msgid "_Cancel"
+msgstr "_Peru"
+
+#: data/ui/contacts-avatar-selector.ui:39 data/ui/contacts-crop-dialog.ui:39
+#: data/ui/contacts-setup-window.ui:25
 msgid "_Done"
 msgstr "_Valmis"
 
-#: data/ui/contacts-avatar-selector.ui:94
+#: data/ui/contacts-avatar-selector.ui:85
 msgid "Take a Picture…"
 msgstr "Ota kuva…"
 
-#: data/ui/contacts-avatar-selector.ui:101
+#: data/ui/contacts-avatar-selector.ui:93
 msgid "Select a File…"
 msgstr "Valitse tiedosto…"
 
@@ -202,7 +201,6 @@ msgid "Import From File…"
 msgstr "Tuo tiedostosta…"
 
 #: data/ui/contacts-main-window.ui:23
-#| msgid "Export Selected Contacts"
 msgid "Export All Contacts…"
 msgstr "Vie kaikki yhteystiedot…"
 
@@ -222,77 +220,81 @@ msgstr "Ohje"
 msgid "About Contacts"
 msgstr "Tietoja - Yhteystiedot"
 
-#: data/ui/contacts-main-window.ui:54
+#: data/ui/contacts-main-window.ui:50
+msgid "Mark as Favorite"
+msgstr "Merkitse suosiksi"
+
+#: data/ui/contacts-main-window.ui:55
+msgid "Unmark as Favorite"
+msgstr "Poista suosikkimerkintä"
+
+#: data/ui/contacts-main-window.ui:60
 msgid "Share as QR Code"
 msgstr "Jaa QR-koodina"
 
-#: data/ui/contacts-main-window.ui:60
+#: data/ui/contacts-main-window.ui:66
 msgid "Delete Contact"
 msgstr "Poista yhteystieto"
 
-#: data/ui/contacts-main-window.ui:123
+#: data/ui/contacts-main-window.ui:125
 msgid "Add New Contact"
 msgstr "Lisää uusi yhteystieto"
 
-#: data/ui/contacts-main-window.ui:139
+#: data/ui/contacts-main-window.ui:135
 msgid "Main Menu"
 msgstr "Päävalikko"
 
-#: data/ui/contacts-main-window.ui:146
+#: data/ui/contacts-main-window.ui:142
 msgid "Select Contacts"
 msgstr "Valitse yhteystiedot"
 
-#: data/ui/contacts-main-window.ui:153 src/contacts-app.vala:329
+#: data/ui/contacts-main-window.ui:149
 msgid "Cancel"
 msgstr "Peru"
 
-#: data/ui/contacts-main-window.ui:154
+#: data/ui/contacts-main-window.ui:150
 msgid "Cancel Selection"
 msgstr "Peru valinta"
 
-#: data/ui/contacts-main-window.ui:181
-msgid "Loading"
-msgstr "Ladataan"
-
-#: data/ui/contacts-main-window.ui:192
+#: data/ui/contacts-main-window.ui:163
 msgid "Search contacts"
 msgstr "Etsi yhteystietoja"
 
+#: data/ui/contacts-main-window.ui:190
+msgid "Loading"
+msgstr "Ladataan"
+
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:210
+#: data/ui/contacts-main-window.ui:226
 msgid "Export"
 msgstr "Vie"
 
-#: data/ui/contacts-main-window.ui:211
+#: data/ui/contacts-main-window.ui:227
 msgid "Export Selected Contacts"
 msgstr "Vie valitut yhteystiedot"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:218
+#: data/ui/contacts-main-window.ui:235
 msgid "Link"
 msgstr "Linkitä"
 
-#: data/ui/contacts-main-window.ui:219
+#: data/ui/contacts-main-window.ui:236
 msgid "Link Selected Contacts Together"
 msgstr "Linkitä valitut yhteystiedot keskenään"
 
-#: data/ui/contacts-main-window.ui:226
+#: data/ui/contacts-main-window.ui:251
 msgid "Remove"
 msgstr "Poista"
 
-#: data/ui/contacts-main-window.ui:272
-msgid "Back"
-msgstr "Takaisin"
-
-#: data/ui/contacts-main-window.ui:301
+#: data/ui/contacts-main-window.ui:295
 msgid "Edit Contact"
 msgstr "Muokkaa yhteystietoa"
 
-#: data/ui/contacts-main-window.ui:308
-msgid "More Contact Actions"
-msgstr "Lisää yhteystietotoimintoja"
+#: data/ui/contacts-main-window.ui:301
+msgid "Contact Menu"
+msgstr "Yhteystietovalikko"
 
-#: data/ui/contacts-main-window.ui:318 src/contacts-main-window.vala:232
+#: data/ui/contacts-main-window.ui:311 src/contacts-main-window.vala:218
 msgid "Done"
 msgstr "Valmis"
 
@@ -304,36 +306,36 @@ msgstr "Osoitekirjat"
 msgid "Share Contact"
 msgstr "Jaa yhteystieto"
 
-#: data/ui/contacts-qr-code-dialog.ui:36
+#: data/ui/contacts-qr-code-dialog.ui:32
 msgid "QR Code"
 msgstr "QR-koodi"
 
-#: data/ui/contacts-qr-code-dialog.ui:46
+#: data/ui/contacts-qr-code-dialog.ui:42
 msgid "Scan to Save"
 msgstr "Skannaa tallentaaksesi"
 
-#: data/ui/contacts-setup-window.ui:15
+#: data/ui/contacts-setup-window.ui:7
 msgid "Contacts Setup"
 msgstr "Yhteystietoasetusten määrittely"
 
-#: data/ui/contacts-setup-window.ui:20
+#: data/ui/contacts-setup-window.ui:15
 msgid "_Quit"
 msgstr "_Lopeta"
 
-#: data/ui/contacts-setup-window.ui:22
+#: data/ui/contacts-setup-window.ui:17
 msgid "Cancel Setup And Quit"
 msgstr "Peru määritys ja lopeta"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
-#: data/ui/contacts-setup-window.ui:31
+#: data/ui/contacts-setup-window.ui:27
 msgid "Complete setup"
 msgstr "Viimeistele määritys"
 
-#: data/ui/contacts-setup-window.ui:42
+#: data/ui/contacts-setup-window.ui:39
 msgid "Welcome"
 msgstr "Tervetuloa"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:40
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -359,7 +361,7 @@ msgstr "Näytä yhteystiedot, jotka vastaavat määritettyä suodatusta"
 msgid "Show the current version of Contacts"
 msgstr "Näytä yhteystietosovelluksen nykyinen versio"
 
-#: src/contacts-app.vala:111 src/contacts-app.vala:164
+#: src/contacts-app.vala:111 src/contacts-app.vala:170
 msgid "Contact not found"
 msgstr "Yhteystietoa ei löydy"
 
@@ -368,12 +370,12 @@ msgstr "Yhteystietoa ei löydy"
 msgid "No contact with id %s found"
 msgstr "Yhteystietoa tunnisteella %s ei löydy"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:166
-#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
+#: src/contacts-app.vala:113 src/contacts-app.vala:172
+#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:262
 msgid "_Close"
 msgstr "_Sulje"
 
-#: src/contacts-app.vala:150
+#: src/contacts-app.vala:156
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -381,16 +383,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Yhteystietosovelluksen kehittäjät"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:171
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Yhteystietoa sähköpostiosoitteella %s ei löydy"
 
-#: src/contacts-app.vala:228
+#: src/contacts-app.vala:234
 msgid "Primary address book not found"
 msgstr "Ensisijaista osoitekirjaa ei löytynyt"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:236
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -398,57 +400,56 @@ msgstr ""
 "Yhteystiedot ei löydä määritettyä ensisijaista osoitekirjaa. Saatat kohdata "
 "ongelmia yhteystietojen luomisessa tai muokkaamisessa"
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:237
 msgid "Go To _Preferences"
 msgstr "Siirry _asetuksiin"
 
-#: src/contacts-app.vala:325
+#: src/contacts-app.vala:338
 msgid "Select contact file"
 msgstr "Valitse yhteystietotiedosto"
 
-#: src/contacts-app.vala:328
+#: src/contacts-app.vala:339
 msgid "Import"
 msgstr "Tuo"
 
-#. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:345
 msgid "vCard files"
 msgstr "vCard-tiedostot"
 
-#: src/contacts-app.vala:368
+#: src/contacts-app.vala:389
 msgid "Error reading file"
 msgstr "Virhe tiedostoa luettaessa"
 
-#: src/contacts-app.vala:369
+#: src/contacts-app.vala:390
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Tiedostoa '%s' luettaessa tapahtui virhe"
 
-#: src/contacts-app.vala:370 src/contacts-app.vala:380
+#: src/contacts-app.vala:391 src/contacts-app.vala:401
 msgid "_OK"
 msgstr "_OK"
 
-#: src/contacts-app.vala:378
+#: src/contacts-app.vala:399
 msgid "No contacts found"
 msgstr "Yhteystietoja ei löytynyt"
 
-#: src/contacts-app.vala:379
+#: src/contacts-app.vala:400
 msgid "The imported file does not seem to contain any contacts"
 msgstr "Tuotu tiedosto ei vaikuta sisältävän yhtäkään yhteystietoa"
 
 #. Second step: ask the user for confirmation
-#: src/contacts-app.vala:387
+#: src/contacts-app.vala:408
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
 msgstr[0] "Jatkamalla tuot %u yhteystiedon"
 msgstr[1] "Jatkamalla tuot %u yhteystietoa"
 
-#: src/contacts-app.vala:390
+#: src/contacts-app.vala:411
 msgid "Continue Import?"
 msgstr "Jatketaanko tuontia?"
 
-#: src/contacts-app.vala:391
+#: src/contacts-app.vala:412
 msgid "C_ontinue"
 msgstr "_Jatka"
 
@@ -460,15 +461,19 @@ msgstr "Kameraa ei havaittu"
 msgid "Failed to set avatar"
 msgstr "Kuvan asettaminen ei onnistunut"
 
-#: src/contacts-avatar-selector.vala:208
+#: src/contacts-avatar-selector.vala:209
 msgid "Browse for more pictures"
 msgstr "Selaa muita kuvia"
 
-#: src/contacts-avatar-selector.vala:211
+#: src/contacts-avatar-selector.vala:210
 msgid "_Open"
 msgstr "_Avaa"
 
-#: src/contacts-avatar-selector.vala:249
+#: src/contacts-avatar-selector.vala:215
+msgid "Image File"
+msgstr "Kuvatiedosto"
+
+#: src/contacts-avatar-selector.vala:261
 msgid "Failed to set avatar."
 msgstr "Avatarin asettaminen ei onnistunut."
 
@@ -522,59 +527,59 @@ msgid "Label"
 msgstr "Nimike"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:695
+#: src/contacts-contact-editor.vala:701
 msgid "Day"
 msgstr "Päivä"
 
-#: src/contacts-contact-editor.vala:699
+#: src/contacts-contact-editor.vala:705
 msgid "Month"
 msgstr "Kuukausi"
 
-#: src/contacts-contact-editor.vala:703
+#: src/contacts-contact-editor.vala:709
 msgid "Year"
 msgstr "Vuosi"
 
-#: src/contacts-contact-editor.vala:711
-msgid "Change Birthday"
-msgstr "Vaihda syntymäpäivä"
-
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:723
 msgid "_Set"
 msgstr "_Aseta"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:732
+msgid "Change Birthday"
+msgstr "Vaihda syntymäpäivä"
+
+#: src/contacts-contact-editor.vala:786
 msgid "Street"
 msgstr "Katu"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Extension"
 msgstr "Alanumero"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "City"
 msgstr "Kaupunki"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "State/Province"
 msgstr "Osavaltio"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Zip/Postal Code"
 msgstr "Postinumero"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "PO box"
 msgstr "Postilokero"
 
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:786
 msgid "Country"
 msgstr "Maa"
 
-#: src/contacts-contact-list.vala:115
+#: src/contacts-contact-list.vala:112
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
+#: src/contacts-contact-list.vala:114 src/contacts-contact-list.vala:120
 msgid "All Contacts"
 msgstr "Kaikki yhteystiedot"
 
@@ -583,15 +588,15 @@ msgstr "Kaikki yhteystiedot"
 msgid "Send an email to %s"
 msgstr "Lähetä sähköpostia %s"
 
-#: src/contacts-contact-sheet.vala:288
+#: src/contacts-contact-sheet.vala:295
 msgid "Visit website"
 msgstr "Käy verkkosivustolla"
 
-#: src/contacts-contact-sheet.vala:321
+#: src/contacts-contact-sheet.vala:332
 msgid "Their birthday is today! 🎉"
 msgstr "Hänellä on syntymäpäivä tänään! 🎉"
 
-#: src/contacts-contact-sheet.vala:368
+#: src/contacts-contact-sheet.vala:379
 msgid "Show on the map"
 msgstr "Näytä kartalla"
 
@@ -729,56 +734,48 @@ msgstr "Onko tämä sama henkilö kuin %s kohteesta %s?"
 msgid "Is this the same person as %s?"
 msgstr "Onko tämä sama henkilö kuin %s?"
 
-#: src/contacts-main-window.vala:145 src/contacts-main-window.vala:489
-msgid "Mark as Favorite"
-msgstr "Merkitse suosiksi"
-
-#: src/contacts-main-window.vala:202
+#: src/contacts-main-window.vala:188
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu valittu"
 msgstr[1] "%llu valittu"
 
-#: src/contacts-main-window.vala:232
+#: src/contacts-main-window.vala:218
 msgid "_Add"
 msgstr "_Lisää"
 
-#: src/contacts-main-window.vala:262
+#: src/contacts-main-window.vala:246
 #, c-format
 msgid "Editing %s"
 msgstr "Muokataan - %s"
 
-#: src/contacts-main-window.vala:290
+#: src/contacts-main-window.vala:285
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d valittu"
 msgstr[1] "%d valittu"
 
-#: src/contacts-main-window.vala:310 src/contacts-main-window.vala:522
-#: src/contacts-main-window.vala:562
+#: src/contacts-main-window.vala:305 src/contacts-main-window.vala:489
+#: src/contacts-main-window.vala:528
 msgid "_Undo"
 msgstr "_Kumoa"
 
-#: src/contacts-main-window.vala:396
+#: src/contacts-main-window.vala:388
 msgid "New Contact"
 msgstr "Uusi yhteystieto"
 
-#: src/contacts-main-window.vala:487
-msgid "Unmark as Favorite"
-msgstr "Poista suosikkimerkintä"
-
 #. Open up a file chooser
-#: src/contacts-main-window.vala:603
+#: src/contacts-main-window.vala:570
 msgid "Export to file"
 msgstr "Vie tiedostoon"
 
-#: src/contacts-main-window.vala:606
+#: src/contacts-main-window.vala:571
 msgid "_Export"
 msgstr "_Vie"
 
-#: src/contacts-main-window.vala:608
+#: src/contacts-main-window.vala:572
 msgid "contacts.vcf"
 msgstr "yhteystiedot.vcf"
 
@@ -874,7 +871,7 @@ msgid "Unnamed Person"
 msgstr "Nimetön henkilö"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:105
+#: src/core/contacts-roles-chunk.vala:124
 #, c-format
 msgid "%s at %s"
 msgstr "%s kohteessa %s"
@@ -954,7 +951,7 @@ msgstr "Telex-kaukokirjoitin"
 msgid "TTY"
 msgstr "Kaukokirjoitin"
 
-#: src/io/contacts-io-parse-operation.vala:40
+#: src/io/contacts-io-parse-operation.vala:39
 #, c-format
 msgid "Importing contacts from '%s'"
 msgstr "Tuodaan yhteystiedot kohteesta '%s'"
@@ -1016,6 +1013,15 @@ msgstr "Varastoi jos ikkuna on parhaillaan suurennettu."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Onko ikkuna koko näytön tilassa"
+
+#~ msgid "A contacts manager for GNOME"
+#~ msgstr "Yhteystietojen hallinta Gnomelle"
+
+#~ msgid "Back"
+#~ msgstr "Takaisin"
+
+#~ msgid "More Contact Actions"
+#~ msgstr "Lisää yhteystietotoimintoja"
 
 #~ msgctxt "shortcut window"
 #~ msgid "Search"
