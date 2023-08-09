@@ -52,6 +52,7 @@ public class Contacts.ContactList : Adw.Bin {
     // Now the listview that will actually show the contact list
     var listview = new Gtk.ListView (this.selection_model, factory);
     listview.header_factory = header_factory;
+    listview.tab_behavior = Gtk.ListTabBehavior.ITEM;
     listview.add_css_class ("contact-list");
     listview.add_css_class ("navigation-sidebar");
     this.list_view = listview;
