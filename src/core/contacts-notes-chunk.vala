@@ -25,6 +25,10 @@ public class Contacts.NotesChunk : BinChunk {
 
   public override string property_name { get { return "notes"; } }
 
+  public override string display_name { get { return _("Notes"); } }
+
+  public override string? icon_name { get { return "note-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is NoteDetails);

@@ -47,6 +47,12 @@ public class Contacts.StructuredNameChunk : Chunk {
 
   public override string property_name { get { return "structured-name"; } }
 
+  // TRANSLATORS: This is a field which contains a name decomposed in several
+  // parts, rather than a single freeform string for the full name
+  public override string display_name { get { return _("Structured name"); } }
+
+  public override string? icon_name { get { return null; } }
+
   public override bool is_empty {
     get {
       return this._structured_name == null || this._structured_name.is_empty ();

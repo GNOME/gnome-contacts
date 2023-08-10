@@ -25,6 +25,10 @@ public class Contacts.AddressesChunk : BinChunk {
 
   public override string property_name { get { return "postal-addresses"; } }
 
+  public override string display_name { get { return _("Postal addresses"); } }
+
+  public override string? icon_name { get { return "mark-location-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is PostalAddressDetails);

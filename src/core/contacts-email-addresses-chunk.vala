@@ -21,6 +21,10 @@ public class Contacts.EmailAddressesChunk : BinChunk {
 
   public override string property_name { get { return "email-addresses"; } }
 
+  public override string display_name { get { return _("Email addresses"); } }
+
+  public override string? icon_name { get { return "mail-unread-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is EmailDetails);

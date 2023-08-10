@@ -46,6 +46,10 @@ public class Contacts.FullNameChunk : Chunk {
 
   public override string property_name { get { return "full-name"; } }
 
+  public override string display_name { get { return _("Full name"); } }
+
+  public override string? icon_name { get { return null; } }
+
   public override bool is_empty { get { return this._full_name.strip () == ""; } }
 
   public override bool dirty {

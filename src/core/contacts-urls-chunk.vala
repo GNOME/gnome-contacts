@@ -25,6 +25,10 @@ public class Contacts.UrlsChunk : BinChunk {
 
   public override string property_name { get { return "urls"; } }
 
+  public override string display_name { get { return _("URLs"); } }
+
+  public override string? icon_name { get { return "website-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is UrlDetails);

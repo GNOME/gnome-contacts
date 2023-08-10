@@ -48,6 +48,10 @@ public class Contacts.BirthdayChunk : Chunk {
 
   public override string property_name { get { return "birthday"; } }
 
+  public override string display_name { get { return _("Birthday"); } }
+
+  public override string? icon_name { get { return "birthday-symbolic"; } }
+
   public override bool is_empty { get { return this.birthday == null; } }
 
   public override bool dirty {

@@ -36,6 +36,16 @@ public abstract class Contacts.Chunk : GLib.Object {
   public abstract string property_name { get; }
 
   /**
+   * The user-visible name for this property
+   */
+  public abstract string display_name { get; }
+
+  /**
+   * The name of an icon to show to the user, if any
+   */
+  public abstract string? icon_name { get; }
+
+  /**
    * Whether this is empty. As an example, you can use to changes in this
    * property to update any UI.
    */

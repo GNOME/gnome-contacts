@@ -180,7 +180,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
       requires (chunk is RolesChunk) {
     unowned var roles_chunk = (RolesChunk) chunk;
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < roles_chunk.get_n_items (); i++) {
       var role = (OrgRole) roles_chunk.get_item (i);
@@ -188,7 +188,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
         continue;
 
       //XXX if no role: set "Organisation" tool tip
-      var row = new ContactSheetRow (chunk.property_name, role.to_string ());
+      var row = new ContactSheetRow (chunk, role.to_string ());
 
       group.add (row);
     }
@@ -200,14 +200,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
       requires (chunk is EmailAddressesChunk) {
     unowned var emails_chunk = (EmailAddressesChunk) chunk;
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < emails_chunk.get_n_items (); i++) {
       var email = (EmailAddress) emails_chunk.get_item (i);
       if (email.is_empty)
         continue;
 
-      var row = new ContactSheetRow (chunk.property_name,
+      var row = new ContactSheetRow (chunk,
                                      email.raw_address,
                                      email.get_email_address_type ().display_name);
 
@@ -235,14 +235,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
       requires (chunk is PhonesChunk) {
     unowned var phones_chunk = (PhonesChunk) chunk;
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < phones_chunk.get_n_items (); i++) {
       var phone = (Phone) phones_chunk.get_item (i);
       if (phone.is_empty)
         continue;
 
-      var row = new ContactSheetRow (chunk.property_name,
+      var row = new ContactSheetRow (chunk,
                                      phone.raw_number,
                                      phone.get_phone_type ().display_name);
       group.add (row);
@@ -259,14 +259,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
 #if 0
     unowned var im_addrs_chunk = (ImAddressesChunk) chunk;
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < im_addrs_chunk.get_n_items (); i++) {
       var im_addr = (ImAddress) im_addrs_chunk.get_item (i);
       if (im_addr.is_empty)
         continue;
 
-        var row = new ContactSheetRow (chunk.property_name,
+        var row = new ContactSheetRow (chunk,
                                        im_addr.address,
                                        ImService.get_display_name (im_addr.protocol));
         group.add (row);
@@ -282,14 +282,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
       requires (chunk is UrlsChunk) {
     unowned var urls_chunk = (UrlsChunk) chunk;
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < urls_chunk.get_n_items (); i++) {
       var url = (Contacts.Url) urls_chunk.get_item (i);
       if (url.is_empty)
         continue;
 
-      var row = new ContactSheetRow (chunk.property_name, url.raw_url);
+      var row = new ContactSheetRow (chunk, url.raw_url);
 
       var button = row.add_button ("external-link-symbolic");
       button.tooltip_text = _("Visit website");
@@ -315,8 +315,8 @@ public class Contacts.ContactSheet : Gtk.Widget {
       requires (chunk is NicknameChunk) {
     unowned var nickname_chunk = (NicknameChunk) chunk;
 
-    var row = new ContactSheetRow (chunk.property_name, nickname_chunk.nickname);
-    return new ContactSheetGroup.single_row (row);
+    var row = new ContactSheetRow (chunk, nickname_chunk.nickname);
+    return new ContactSheetGroup.single_row (chunk, row);
   }
 
   private Gtk.Widget create_widget_for_birthday (Chunk chunk)
@@ -332,22 +332,22 @@ public class Contacts.ContactSheet : Gtk.Widget {
       subtitle = _("Their birthday is today! 🎉");
     }
 
-    var row = new ContactSheetRow (chunk.property_name, birthday_str, subtitle);
-    return new ContactSheetGroup.single_row (row);
+    var row = new ContactSheetRow (chunk, birthday_str, subtitle);
+    return new ContactSheetGroup.single_row (chunk, row);
   }
 
   private Gtk.Widget create_widget_for_notes (Chunk chunk)
       requires (chunk is NotesChunk) {
     unowned var notes_chunk = (NotesChunk) chunk;
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < notes_chunk.get_n_items (); i++) {
       var note = (Note) notes_chunk.get_item (i);
       if (note.is_empty)
         continue;
 
-      var row = new ContactSheetRow (chunk.property_name, note.text);
+      var row = new ContactSheetRow (chunk, note.text);
       group.add (row);
     }
 
@@ -363,14 +363,14 @@ public class Contacts.ContactSheet : Gtk.Widget {
     var map_uris_supported = (appinfo != null);
     debug ("Opening 'maps:' URIs supported: %s", map_uris_supported.to_string ());
 
-    var group = new ContactSheetGroup ();
+    var group = new ContactSheetGroup (chunk);
 
     for (uint i = 0; i < addresses_chunk.get_n_items (); i++) {
       var address = (Address) addresses_chunk.get_item (i);
       if (address.is_empty)
         continue;
 
-      var row = new ContactSheetRow (chunk.property_name,
+      var row = new ContactSheetRow (chunk,
                                      address.to_string ("\n"),
                                      address.get_address_type ().display_name);
 
@@ -404,7 +404,15 @@ public class Contacts.ContactSheetGroup : Adw.PreferencesGroup {
     add_css_class ("contacts-sheet-property");
   }
 
-  public ContactSheetGroup.single_row (ContactSheetRow row) {
+
+  public ContactSheetGroup (Chunk chunk) {
+    update_property (Gtk.AccessibleProperty.LABEL, chunk.display_name);
+  }
+
+  public ContactSheetGroup.single_row (Chunk chunk,
+                                       ContactSheetRow row) {
+    this (chunk);
+
     add (row);
   }
 }
@@ -415,12 +423,12 @@ public class Contacts.ContactSheetRow : Adw.ActionRow {
     this.title_selectable = true;
   }
 
-  public ContactSheetRow (string property_name, string title, string? subtitle = null) {
-    unowned var icon_name = Utils.get_icon_name_for_property (property_name);
+  public ContactSheetRow (Chunk chunk, string title, string? subtitle = null) {
+    unowned var icon_name = chunk.icon_name;
     if (icon_name != null) {
       var icon = new Gtk.Image.from_icon_name (icon_name);
       icon.add_css_class ("contacts-property-icon");
-      icon.tooltip_text = Utils.get_display_name_for_property (property_name);
+      icon.tooltip_text = chunk.display_name;
       this.add_prefix (icon);
     }
 

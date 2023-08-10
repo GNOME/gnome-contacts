@@ -26,6 +26,10 @@ public class Contacts.ImAddressesChunk : BinChunk {
 
   public override string property_name { get { return "im-addresses"; } }
 
+  public override string display_name { get { return _("Instant Messaging addresses"); } }
+
+  public override string? icon_name { get { return "chat-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is ImDetails);

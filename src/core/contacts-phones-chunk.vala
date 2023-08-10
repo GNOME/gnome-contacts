@@ -25,6 +25,10 @@ public class Contacts.PhonesChunk : BinChunk {
 
   public override string property_name { get { return "phone-numbers"; } }
 
+  public override string display_name { get { return _("Phone numbers"); } }
+
+  public override string? icon_name { get { return "phone-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is PhoneDetails);

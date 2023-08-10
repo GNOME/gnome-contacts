@@ -44,6 +44,10 @@ public class Contacts.NicknameChunk : Chunk {
 
   public override string property_name { get { return "nickname"; } }
 
+  public override string display_name { get { return _("Nickname"); } }
+
+  public override string? icon_name { get { return "avatar-default-symbolic"; } }
+
   public override bool is_empty { get { return this._nickname.strip () == ""; } }
 
   public override bool dirty {

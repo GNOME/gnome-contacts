@@ -41,6 +41,10 @@ public class Contacts.AliasChunk : Chunk {
 
   public override string property_name { get { return "alias"; } }
 
+  public override string display_name { get { return _("Alias"); } }
+
+  public override string? icon_name { get { return null; } }
+
   public override bool is_empty { get { return this._alias.strip () == ""; } }
 
   public override bool dirty {

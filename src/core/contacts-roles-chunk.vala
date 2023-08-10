@@ -26,6 +26,11 @@ public class Contacts.RolesChunk : BinChunk {
 
   public override string property_name { get { return "roles"; } }
 
+  // TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
+  public override string display_name { get { return _("Roles"); } }
+
+  public override string? icon_name { get { return "building-symbolic"; } }
+
   construct {
     if (persona != null) {
       assert (persona is RoleDetails);
