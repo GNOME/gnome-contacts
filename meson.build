@@ -33,7 +33,7 @@ min_folks_version = '0.14'
 min_glib_version = '2.64' # We also use this value for --target-glib, so scratch the micro version.
 
 # We know that compiling on a lower version doesn't work
-min_vala_version = '0.54.0'
+min_vala_version = '0.56.11'
 if valac.version().version_compare('<' + min_vala_version)
   error('Your Vala installation is too old (@0@).'.format(valac.version())
       + ' Please make sure you have at least Vala ' + min_vala_version)
