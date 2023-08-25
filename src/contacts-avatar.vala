@@ -21,7 +21,7 @@ using Folks;
  * The Avatar of a Contact is responsible for showing an {@link Folks.Individual}'s
  * avatar, or a fallback if it's not available.
  */
-public class Contacts.Avatar : Adw.Bin {
+public class Contacts.Avatar : Adw.Bin {      
 
   private unowned Individual? _individual = null;
   public Individual? individual {

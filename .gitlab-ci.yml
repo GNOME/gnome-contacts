@@ -30,6 +30,14 @@ i18n:
   script:
     - ./.gitlab/ci/check-potfiles.sh
 
+code_quality:
+  stage: review
+  script:
+    - './.gitlab/ci/code_quality_report.py >code_quality.json'
+  artifacts:
+    reports:
+      codequality: code_quality.json
+
 flatpak:
   image: quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master
   extends: '.flatpak@x86_64'
