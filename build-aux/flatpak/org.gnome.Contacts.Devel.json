@@ -66,32 +66,6 @@
             ]
         },
         {
-            "name": "gnome-online-accounts",
-            "cleanup": [ "/bin", "/share/GConf" ],
-            "buildsystem": "meson",
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/gnome-online-accounts.git"
-                }
-            ],
-            "modules": [
-                {
-                    "name": "librest",
-                    "buildsystem": "meson",
-                    "config-opts": [
-                      "-Dgtk_doc=false"
-                    ],
-                    "sources": [
-                        {
-                            "type": "git",
-                            "url": "https://gitlab.gnome.org/GNOME/librest.git"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "libical",
             "cleanup": [
               "/lib/cmake"
