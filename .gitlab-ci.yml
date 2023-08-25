@@ -33,6 +33,7 @@ i18n:
 code_quality:
   stage: review
   script:
+    - sudo dnf install python3
     - './.gitlab/ci/code_quality_report.py >code_quality.json'
   artifacts:
     reports:
