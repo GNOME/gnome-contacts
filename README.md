@@ -49,7 +49,7 @@ Contacts has its own web page on <https://wiki.gnome.org/Apps/Contacts>.
 
 To discuss issues with developers and other users, you can post to the
 [GNOME Discourse instance](https://discourse.gnome.org/tags/contacts)
-or join [#contacts](irc://irc.gnome.org/contacts) on irc.gnome.org.
+or join [#gnome-contacts](irc://irc.libera.chat/gnome-contacts) on irc.libera.chat.
 
 If you would like to get involved with GNOME projects, please also visit our
 [Newcomers page](https://wiki.gnome.org/Newcomers)
