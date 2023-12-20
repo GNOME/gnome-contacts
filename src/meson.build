@@ -30,6 +30,7 @@ libcontacts_sources = files(
   'contacts-unlink-operation.vala',
   'contacts-utils.vala',
 
+  'io/contacts-io-csv-export-operation.vala',
   'io/contacts-io-export-operation.vala',
   'io/contacts-io-vcard-export-operation.vala',
   'io/contacts-io-parse-operation.vala',
