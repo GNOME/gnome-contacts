@@ -942,8 +942,12 @@
   <url type="translate">https://l10n.gnome.org/module/gnome-contacts/</url>
   <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-contacts</url>
   <update_contact>nielsdg@gnome.org</update_contact>
-  <project_group>GNOME</project_group>
+  <!-- developer_name tag deprecated with Appstream 1.0 -->
   <developer_name>The GNOME Project</developer_name>
+  <project_group>GNOME</project_group>
+  <developer id="gnome.org">
+    <name>The GNOME Project</name>
+  </developer>
   <launchable type="desktop-id">@app_id@.desktop</launchable>
   <translation type="gettext">gnome-contacts</translation>
   <content_rating type="oars-1.1">
@@ -976,7 +980,6 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <custom>
-    <value key="Purism::form_factor">workstation</value>
     <value key="Purism::form_factor">mobile</value>
   </custom>
 </component>
