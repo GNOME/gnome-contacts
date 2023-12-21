@@ -510,7 +510,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     var icon = new Gtk.Image.from_icon_name (chunk_child.icon_name);
     chunk_child.bind_property ("icon-name", icon, "icon-name", BindingFlags.SYNC_CREATE);
     org_row.add_prefix (icon);
-    org_row.title = _("Organisation");
+    org_row.title = _("Organization");
     role_chunk.role.bind_property ("organisation-name", org_row, "text",
                                    BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE);
     var widget = new ContactEditorProperty (org_row);
