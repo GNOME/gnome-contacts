@@ -140,7 +140,7 @@ public class Contacts.ContactList : Adw.Bin {
 
   public void scroll_to_selected () {
     var selected = this.selection_model.selected.selected;
-    this.list_view.activate_action ("list.scroll-to-item", "u", selected);
+    this.list_view.scroll_to (selected, Gtk.ListScrollFlags.NONE, null);
   }
 
   /** A widget that shows a small summary for a contact */
