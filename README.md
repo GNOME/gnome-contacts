@@ -14,6 +14,18 @@ meson test -C _build
 meson install -C _build
 ```
 
+## Changelog
+Starting Contacts 3.25.4, we provide release notes (including unstable releases)
+through the AppData file, so app stores (like GNOME Software) can show release
+notes to users.
+
+Human-readable textual output (similar to this file) can still be generated
+with the following command:
+
+```sh
+$ appstreamcli metainfo-to-news _build/data/org.gnome.Contacts.appdata.xml NEWS
+```
+
 ## Contributing
 
 The code and issue tracker of Contacts can be found at the
