@@ -13,33 +13,36 @@ using Folks;
  */
 public class Contacts.ImportOperation : Operation {
 
-  private Contact[] to_import;
-
-  private unowned Store store;
-
   public override bool reversable { get { return false; } }
 
   private string _description;
   public override string description { owned get { return this._description; } }
 
-  public ImportOperation (Store store, Contact[] to_import) {
-    this.to_import = to_import;
-    this.store = store;
+  public ListModel to_import { get; construct set; }
 
+  public Store store { get; construct set; }
+
+  construct {
     this._description = ngettext ("Imported %u contact",
                                   "Imported %u contacts",
-                                  to_import.length).printf (to_import.length);
+                                  to_import.get_n_items ())
+        .printf (to_import.get_n_items ());
+  }
+
+  public ImportOperation (Store store, ListModel to_import) {
+    Object (store: store, to_import: to_import);
   }
 
   public override async void execute () throws GLib.Error {
     unowned var primary_store = this.store.aggregator.primary_store;
     debug ("Importing %u contacts to primary store '%s'",
-           this.to_import.length, primary_store.display_name);
+           this.to_import.get_n_items (), primary_store.display_name);
 
     uint new_count = 0;
-    foreach (unowned var contact in this.to_import) {
-      unowned var individual =
-          yield contact.apply_changes (this.store.aggregator.primary_store);
+    for (uint i = 0; i < this.to_import.get_n_items (); i++) {
+      var contact = (Contact) this.to_import.get_item (i);
+
+      unowned var individual = yield contact.apply_changes (primary_store);
       if (individual != null) {
         debug ("Created new individual (%s)",
                (individual != null)? individual.id : "null");

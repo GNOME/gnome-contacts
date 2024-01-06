@@ -21,8 +21,9 @@ public class Contacts.Io.ParseOperation : Operation {
   private string _description;
   public override string description { owned get { return this._description; } }
 
-  /** The parsed output  */
-  private GenericArray<Contact> parsed = new GenericArray<Contact> ();
+  /** The parsed output, a list of Contact objects */
+  private GLib.ListStore _parsed = new GLib.ListStore (typeof(Contact));
+  public GLib.ListModel parsed { get { return this._parsed; } }
 
   public ParseOperation (File file) {
     this._description = _("Importing contacts from '%s'").printf (file.get_uri ());
@@ -76,19 +77,11 @@ public class Contacts.Io.ParseOperation : Operation {
         return;
       }
 
-      this.parsed.add (parsed_contact);
+      this._parsed.append (parsed_contact);
     }
   }
 
   public override async void _undo () throws GLib.Error {
     return_if_reached ();
-  }
-
-  public unowned Contact[] get_parsed_result () {
-    return this.parsed.data;
-  }
-
-  public Contact[] steal_parsed_result () {
-    return this.parsed.steal ();
   }
 }
