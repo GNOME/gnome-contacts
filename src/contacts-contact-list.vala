@@ -171,8 +171,13 @@ public class Contacts.ContactList : Adw.Bin {
 
     public bool selected {
       get { return this.selector_button.active; }
-      set { this.selector_button.active = value; }
+      set {
+        this.ignore_selected = true;
+        this.selector_button.active = value;
+        this.ignore_selected = false;
+      }
     }
+    private bool ignore_selected = false;
 
     public signal void toggle_marked (bool select);
 
@@ -203,6 +208,7 @@ public class Contacts.ContactList : Adw.Bin {
       selector_button.add_css_class ("selection-mode");
       // Make sure it doesn't overlap with the scrollbar
       selector_button.margin_end = 12;
+      selector_button.toggled.connect (on_selector_button_toggled);
       append (selector_button);
       this.selector_button = selector_button;
 
@@ -244,6 +250,16 @@ public class Contacts.ContactList : Adw.Bin {
 
     private void on_long_press (Gtk.GestureLongPress gesture, double x, double y) {
       toggle_marked (false);
+    }
+
+    private void on_selector_button_toggled (Gtk.CheckButton selector_button) {
+      // We have to be careful here: we want to handle the case where a user
+      // directly toggles the check button, _but_ once the SelectionModel also
+      // marks this row as selected, we'll end up in an infinite loop as that
+      // toggles the check button again.
+      // Awkwardly work around this by ignoring this signal when set externally
+      if (!this.ignore_selected)
+        toggle_marked (true);
     }
   }
 }
