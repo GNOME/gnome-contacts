@@ -57,7 +57,7 @@ project](https://wiki.gnome.org/TranslationProject/JoiningTranslation).
 
 ## More information
 
-Contacts has its own web page on <https://wiki.gnome.org/Apps/Contacts>.
+Contacts has its own web page on https://apps.gnome.org/Contacts.
 
 To discuss issues with developers and other users, you can post to the
 [GNOME Discourse instance](https://discourse.gnome.org/tags/contacts)
