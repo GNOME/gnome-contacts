@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2024-01-08 13:34+0000\n"
-"PO-Revision-Date: 2024-01-08 16:48+0300\n"
+"POT-Creation-Date: 2024-01-08 23:01+0000\n"
+"PO-Revision-Date: 2024-01-10 14:03+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -74,7 +74,7 @@ msgid "Contacts edit view"
 msgstr "Вид редактирования контактов"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: data/org.gnome.Contacts.appdata.xml.in.in:946 src/contacts-app.vala:141
+#: data/org.gnome.Contacts.appdata.xml.in.in:946 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "Проект GNOME"
 
@@ -144,8 +144,8 @@ msgstr "Выбрать новый аватар"
 
 #: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
 #: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
-#: src/contacts-app.vala:232 src/contacts-contact-editor.vala:708
-#: src/contacts-main-window.vala:514
+#: src/contacts-app.vala:236 src/contacts-contact-editor.vala:708
+#: src/contacts-main-window.vala:538
 msgid "_Cancel"
 msgstr "_Отменить"
 
@@ -254,7 +254,7 @@ msgstr "Главное меню"
 msgid "Select Contacts"
 msgstr "Выбрать контакты"
 
-#: data/ui/contacts-main-window.ui:157
+#: data/ui/contacts-main-window.ui:157 src/contacts-main-window.vala:439
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -367,21 +367,21 @@ msgstr "Показать контакты с заданным фильтром"
 msgid "Show the current version of Contacts"
 msgstr "Показать текущую версию приложения Контакты"
 
-#: src/contacts-app.vala:102 src/contacts-app.vala:162
+#: src/contacts-app.vala:104 src/contacts-app.vala:166
 msgid "Contact not found"
 msgstr "Контакт не найден"
 
-#: src/contacts-app.vala:103
+#: src/contacts-app.vala:105
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Контакт с идентификатором %s не найден"
 
-#: src/contacts-app.vala:104 src/contacts-app.vala:164
+#: src/contacts-app.vala:106 src/contacts-app.vala:168
 #: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
 msgid "_Close"
 msgstr "_Закрыть"
 
-#: src/contacts-app.vala:147
+#: src/contacts-app.vala:149
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -389,16 +389,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Разработчики Контактов"
 
-#: src/contacts-app.vala:163
+#: src/contacts-app.vala:167
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Контакт с адресом электронной почты %s не найден"
 
-#: src/contacts-app.vala:226
+#: src/contacts-app.vala:230
 msgid "Primary address book not found"
 msgstr "Основная адресная книга не найдена"
 
-#: src/contacts-app.vala:228
+#: src/contacts-app.vala:232
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -406,19 +406,19 @@ msgstr ""
 "Контакты не могут найти настроенную основную адресную книгу. Могут "
 "возникнуть проблемы с созданием или редактированием контактов"
 
-#: src/contacts-app.vala:229
+#: src/contacts-app.vala:233
 msgid "Go To _Preferences"
 msgstr "Перейти к _параметрам"
 
-#: src/contacts-app.vala:330
+#: src/contacts-app.vala:334
 msgid "Select contact file"
 msgstr "Выберите файл контактов"
 
-#: src/contacts-app.vala:331
+#: src/contacts-app.vala:335
 msgid "Import"
 msgstr "Импортировать"
 
-#: src/contacts-app.vala:337
+#: src/contacts-app.vala:341
 msgid "vCard files"
 msgstr "файлы vCard"
 
@@ -766,8 +766,8 @@ msgstr[0] "Выбран %d"
 msgstr[1] "Выбрано %d"
 msgstr[2] "Выбрано %d"
 
-#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:485
-#: src/contacts-main-window.vala:527
+#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:509
+#: src/contacts-main-window.vala:551
 msgid "_Undo"
 msgstr "От_менить"
 
@@ -775,16 +775,28 @@ msgstr "От_менить"
 msgid "New Contact"
 msgstr "Создать контакт"
 
+#: src/contacts-main-window.vala:437
+msgid "Discard changes?"
+msgstr "Отклонить изменения?"
+
+#: src/contacts-main-window.vala:438
+msgid "Changes which are not saved will be permanently lost."
+msgstr "Изменения, которые не были сохранены, будут безвозвратно утеряны."
+
+#: src/contacts-main-window.vala:440
+msgid "Discard"
+msgstr "Отклонить"
+
 #. Open up a file chooser
-#: src/contacts-main-window.vala:568
+#: src/contacts-main-window.vala:592
 msgid "Export to file"
 msgstr "Экспортировать в файл"
 
-#: src/contacts-main-window.vala:569
+#: src/contacts-main-window.vala:593
 msgid "_Export"
 msgstr "_Экспортировать"
 
-#: src/contacts-main-window.vala:570
+#: src/contacts-main-window.vala:594
 msgid "contacts.vcf"
 msgstr "contacts.vcf"
 
