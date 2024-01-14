@@ -14,18 +14,12 @@ blueprints = custom_target(
     'ui/contacts-preferences-window.blp',
     'ui/contacts-qr-code-dialog.blp',
     'ui/contacts-setup-window.blp',
+    'ui/contacts-shortcuts-dialog.blp',
   ),
   output: '.',
   command: [
     blueprint_compiler, 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@',
   ],
-)
-
-resource_files = files('contacts.gresource.xml')
-resources = gnome.compile_resources('org.gnome.Contacts', resource_files,
-  c_name: 'resources',
-  source_dir: meson.current_build_dir(),
-  dependencies: blueprints,
 )
 
 # The icons
@@ -92,6 +86,23 @@ if appstreamcli.found()
     ],
   )
 endif
+
+# The resources (NOTE: needed by e.g. src/)
+resource_file = configure_file(
+  output: '@BASENAME@',
+  input: 'contacts.gresource.xml.in',
+  configuration: {
+    'APP_ID': contacts_app_id,
+  },
+)
+resources = gnome.compile_resources('org.gnome.Contacts', resource_file,
+  c_name: 'resources',
+  source_dir: meson.current_build_dir(),
+  dependencies: [
+    appdata_file,
+    blueprints,
+  ],
+)
 
 # DBus service files
 service_config = {

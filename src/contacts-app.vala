@@ -84,7 +84,7 @@ public class Contacts.App : Adw.Application {
 
   public override int handle_local_options (VariantDict options) {
     if ("version" in options) {
-      stdout.printf ("%s %s\n", Config.PACKAGE_NAME, Config.PACKAGE_VERSION);
+      stdout.printf ("%s %s\n", Config.PACKAGE_NAME, Config.VERSION);
       return 0;
     }
 
@@ -139,17 +139,26 @@ public class Contacts.App : Adw.Application {
         application_name = Environment.get_application_name (),
         application_icon = Config.APP_ID,
         developer_name = _("The GNOME Project"),
-        version = Config.PACKAGE_VERSION,
+        version = Config.VERSION,
         website = "https://apps.gnome.org/Contacts",
         issue_url = "https://gitlab.gnome.org/GNOME/gnome-contacts/-/issues/",
         developers = developers,
         designers = designers,
         translator_credits = _("translator-credits"),
-        copyright = _("© 2011 Red Hat, Inc.\n© 2011-2020 The Contacts Developers"),
+        copyright = _("© 2011 Red Hat, Inc.\n© 2011-2026 The Contacts Developers"),
         license_type = Gtk.License.GPL_2_0
       };
 
-      about.present (this.window);
+    about.present (this.window);
+  }
+
+  // AdwAboutWindow is only supposed to show major changes, so fall back to the
+  // latest major version .0 release for now
+  private string find_latest_major_version () {
+    int major_version = Config.MAJOR_VERSION;
+    if (strv_contains ({ "alpha", "beta", "rc" }, Config.MINOR_VERSION))
+      major_version--;
+    return major_version.to_string () + ".0";
   }
 
   public async void show_by_email (string email_address)
