@@ -4,6 +4,12 @@ project('gnome-contacts', [ 'vala', 'c' ],
   meson_version: '>= 0.59',
 )
 
+# Version
+version_array = meson.project_version().split('.')
+contacts_major_version = version_array[0].to_int()
+contacts_minor_version = version_array[1]
+
+# Modules
 gnome = import('gnome')
 i18n = import('i18n')
 
@@ -77,8 +83,9 @@ conf.set_quoted('LOCALEDIR', locale_dir)
 conf.set_quoted('LIBEXECDIR', get_option('prefix') / get_option('libexecdir'))
 conf.set_quoted('PACKAGE_NAME', meson.project_name())
 conf.set_quoted('PACKAGE_STRING', meson.project_name())
-conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 conf.set_quoted('VERSION', meson.project_version())
+conf.set('MAJOR_VERSION', contacts_major_version)
+conf.set_quoted('MINOR_VERSION', contacts_minor_version)
 conf.set_quoted('PROFILE', get_option('profile'))
 conf.set('GOA_API_IS_SUBJECT_TO_CHANGE', true)
 configure_file(output: 'config.h', configuration: conf)

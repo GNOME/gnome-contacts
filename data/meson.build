@@ -1,9 +1,3 @@
-# The resources (NOTE: needed by e.g. src/)
-resource_files = files('contacts.gresource.xml')
-resources = gnome.compile_resources('org.gnome.Contacts', resource_files,
-  c_name: 'resources'
-)
-
 # The icons
 iconsdir = get_option('datadir') / 'icons' / 'hicolor'
 foreach size: ['scalable', 'symbolic']
@@ -49,7 +43,7 @@ appdata_file = i18n.merge_file(
       'app_id': contacts_app_id,
     },
   ),
-  output: '@0@.appdata.xml'.format(contacts_app_id),
+  output: '@BASENAME@',
   type: 'xml',
   po_dir: po_dir,
   install: true,
@@ -68,6 +62,14 @@ if appstreamcli.found()
     ],
   )
 endif
+
+# The resources (NOTE: needed by e.g. src/)
+resource_file = files('contacts.gresource.xml')
+resources = gnome.compile_resources('org.gnome.Contacts', resource_file,
+  c_name: 'resources',
+  source_dir: meson.current_build_dir(),
+  dependencies: appdata_file,
+)
 
 # DBus service files
 service_config = {

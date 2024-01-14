@@ -7,8 +7,10 @@ public const string PROFILE;
 
 /* Package information */
 public const string PACKAGE_NAME;
-public const string PACKAGE_STRING;
-public const string PACKAGE_VERSION;
+
+public const string VERSION;
+public const int MAJOR_VERSION;
+public const string MINOR_VERSION;
 
 /* Gettext package */
 public const string GETTEXT_PACKAGE;
