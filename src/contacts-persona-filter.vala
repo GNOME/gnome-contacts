@@ -24,10 +24,10 @@ public class Contacts.PersonaFilter : Gtk.Filter {
   }
   private string[] _ignored_store_types = { "key-file", };
 
-  public override bool match (GLib.Object? item) {
-    unowned var persona = item as Persona;
-    return_val_if_fail (persona != null, false);
+  public override bool match (GLib.Object? item)
+      requires (item is Persona) {
 
+    unowned var persona = item as Persona;
     return match_persona_store_type (persona);
   }
 

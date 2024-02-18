@@ -126,7 +126,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
       return ((Chunk) item).persona == this.persona;
     });
     var persona_model = new Gtk.FilterListModel (this.contact, (owned) persona_filter);
-    return_if_fail (persona_model.get_n_items () > 0);
+    warn_if_fail (persona_model.get_n_items () > 0);
 
     // Show all properties that we either ...
     var filter = new Gtk.AnyFilter ();
@@ -208,7 +208,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     while (current_position < position) {
       child = child.get_next_sibling ();
       // If this fails, we somehow have less widgets than items in our model
-      return_if_fail (child != null);
+      warn_if_fail (child != null);
       current_position++;
     }
 

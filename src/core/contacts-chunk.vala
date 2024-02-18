@@ -58,8 +58,7 @@ public abstract class Contacts.Chunk : GLib.Object {
   /**
    * Calls the appropriate API to save to the persona.
    */
-  public abstract async void save_to_persona () throws GLib.Error
-      requires (this.persona != null);
+  public abstract async void save_to_persona () throws GLib.Error;
 
   /**
    * Serializes this chunk into a {@link GLib.Variant} accordding to an

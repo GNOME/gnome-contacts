@@ -56,6 +56,6 @@ public class Contacts.ImportOperation : Operation {
   }
 
   public override async void _undo () throws GLib.Error {
-    return_if_reached ();
+    throw new IOError.NOT_SUPPORTED ("Undoing an import operation is not supported");
   }
 }

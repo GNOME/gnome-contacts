@@ -233,12 +233,11 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.actions_bar.reveal_child = (this.state == UiState.SELECTING);
   }
 
-  private void edit_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
+  private void edit_contact (GLib.SimpleAction action, GLib.Variant? parameter)
+      requires (get_selected_individual () != null) {
+
     unowned var selected = get_selected_individual ();
-    return_if_fail (selected != null);
-
     this.state = UiState.UPDATING;
-
     var title = _("Editing %s").printf (selected.display_name);
     this.contact_pane_page.title = title;
     this.contact_pane.edit_contact ();
@@ -258,10 +257,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     unmark_action.set_enabled (favorite);
   }
 
-  private void set_selection_is_favorite (bool favorite) {
-    unowned var selected = get_selected_individual ();
-    return_if_fail (selected != null);
+  private void set_selection_is_favorite (bool favorite)
+      requires (get_selected_individual () != null) {
 
+    unowned var selected = get_selected_individual ();
     selected.is_favourite = favorite;
 
     update_favorite_actions (favorite);
@@ -282,10 +281,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.list_pane_page.title = left_title;
   }
 
-  private void unlink_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
-    unowned Individual? selected = get_selected_individual ();
-    return_if_fail (selected != null);
+  private void unlink_contact (GLib.SimpleAction action, GLib.Variant? parameter)
+      requires (get_selected_individual () != null) {
 
+    unowned var selected = get_selected_individual ();
     this.selection_model.selected.unselect_all ();
     this.state = UiState.NORMAL;
 

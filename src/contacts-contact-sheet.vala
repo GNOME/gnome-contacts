@@ -49,13 +49,13 @@ public class Contacts.ContactSheet : Gtk.Widget {
     // Get the widget where we'll have to append the item at "position". Note
     // that we need to take care of the header and the persona store titles
     unowned var child = get_first_child ();
-    return_if_fail (child != null); // Header is always available
+    warn_if_fail (child != null); // Header is always available
 
     uint current_position = 0;
     while (current_position < position) {
       child = child.get_next_sibling ();
       // If this fails, we somehow have less widgets than items in our model
-      return_if_fail (child != null);
+      warn_if_fail (child != null);
 
       // Ignore persona store labels
       if (child is Gtk.Label)
@@ -67,7 +67,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
     // First, remove the ones that were removed from the model too
     while (removed != 0) {
       unowned var to_remove = child.get_next_sibling ();
-      return_if_fail (to_remove != null); // if this happens we're out of sync
+      warn_if_fail (to_remove != null); // if this happens we're out of sync
       to_remove.unparent ();
       removed--;
     }

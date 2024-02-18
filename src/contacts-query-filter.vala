@@ -69,10 +69,10 @@ public class Contacts.QueryFilter : Gtk.Filter {
     this.changed (Gtk.FilterChange.DIFFERENT);
   }
 
-  public override bool match (GLib.Object? item) {
-    unowned var individual = item as Individual;
-    return_val_if_fail (individual != null, false);
+  public override bool match (GLib.Object? item)
+      requires (item is Individual) {
 
+    unowned var individual = item as Individual;
     return this.query.is_match (individual) > this.min_strength;
   }
 

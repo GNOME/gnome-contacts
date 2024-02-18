@@ -82,6 +82,6 @@ public class Contacts.Io.ParseOperation : Operation {
   }
 
   public override async void _undo () throws GLib.Error {
-    return_if_reached ();
+    throw new IOError.NOT_SUPPORTED ("Undoing a parsing operation is not supported");
   }
 }
