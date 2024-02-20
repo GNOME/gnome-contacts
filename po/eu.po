@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-12-22 10:23+0000\n"
-"PO-Revision-Date: 2023-12-24 10:23+0000\n"
+"POT-Creation-Date: 2024-01-08 23:01+0000\n"
+"PO-Revision-Date: 2024-02-20 10:23+0000\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -21,9 +21,9 @@ msgstr "Project-Id-Version: gnome-contacts master\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:120
-#: src/contacts-main-window.vala:193 src/contacts-main-window.vala:216
-#: src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
+#: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
+#: src/main.vala:15
 msgid "Contacts"
 msgstr "Kontaktuak"
 
@@ -66,7 +66,8 @@ msgstr "Kontaktuak aplikazioaren konfigurazio-ikuspegia"
 msgid "Contacts edit view"
 msgstr "Kontaktuak aplikazioaren edizio-ikuspegia"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:946 src/contacts-app.vala:152
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.Contacts.appdata.xml.in.in:946 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "GNOME proiektua"
 
@@ -130,463 +131,434 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Utzi bertan behera kontaktuaren uneko aldaketak"
 
-#: data/ui/contacts-avatar-selector.ui:7
+#: data/ui/contacts-avatar-selector.ui:12
 msgid "Select a new avatar"
 msgstr "Hautatu avatar berria"
 
-#: data/ui/contacts-avatar-selector.ui:29 data/ui/contacts-crop-dialog.ui:29
-#: data/ui/contacts-main-window.ui:283 src/contacts-app.vala:243
-#: src/contacts-app.vala:419 src/contacts-contact-editor.vala:719
-#: src/contacts-main-window.vala:525
+#: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
+#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
+#: src/contacts-app.vala:236 src/contacts-contact-editor.vala:708
+#: src/contacts-main-window.vala:538
 msgid "_Cancel"
 msgstr "_Utzi"
 
-#: data/ui/contacts-avatar-selector.ui:39 data/ui/contacts-crop-dialog.ui:39
-#: data/ui/contacts-setup-window.ui:25
+#: data/ui/contacts-avatar-selector.ui:44 data/ui/contacts-crop-dialog.ui:44
+#: data/ui/contacts-setup-window.ui:30
 msgid "_Done"
 msgstr "_Eginda"
 
-#: data/ui/contacts-avatar-selector.ui:85
+#: data/ui/contacts-avatar-selector.ui:90
 msgid "Take a Picture…"
 msgstr "Atera argazki bat…"
 
-#: data/ui/contacts-avatar-selector.ui:93
+#: data/ui/contacts-avatar-selector.ui:98
 msgid "Select a File…"
 msgstr "Hautatu fitxategia…"
 
-#: data/ui/contacts-contact-pane.ui:14
+#: data/ui/contacts-contact-pane.ui:19
 msgid "Select a Contact"
 msgstr "Hautatu kontaktua"
 
-#: data/ui/contacts-editor-menu.ui:11
+#: data/ui/contacts-editor-menu.ui:16
 msgid "Change Addressbook"
 msgstr "Aldatu helbide-liburua"
 
-#: data/ui/contacts-editable-avatar.ui:17
+#: data/ui/contacts-editable-avatar.ui:22
 msgid "Change Avatar"
 msgstr "Aldatu avatarra"
 
-#: data/ui/contacts-editable-avatar.ui:36
+#: data/ui/contacts-editable-avatar.ui:41
 msgid "Remove Avatar"
 msgstr "Kendu avatarra"
 
-#: data/ui/contacts-link-suggestion-grid.ui:51
+#: data/ui/contacts-import-dialog.ui:12
+msgid "Import Contacts"
+msgstr "Inportatu kontaktuak"
+
+#: data/ui/contacts-import-dialog.ui:44
+msgid "_Import"
+msgstr "_Inportatu"
+
+#: data/ui/contacts-link-suggestion-grid.ui:56
 msgid "Link Contacts"
 msgstr "Estekatu kontaktuak"
 
-#: data/ui/contacts-main-window.ui:5
+#: data/ui/contacts-main-window.ui:10
 msgid "List Contacts By:"
 msgstr "Zerrendatu kontaktuak honen arabera:"
 
-#: data/ui/contacts-main-window.ui:7
+#: data/ui/contacts-main-window.ui:12
 msgid "First Name"
 msgstr "Izena"
 
-#: data/ui/contacts-main-window.ui:12
+#: data/ui/contacts-main-window.ui:17
 msgid "Surname"
 msgstr "Abizena"
 
-#: data/ui/contacts-main-window.ui:19
+#: data/ui/contacts-main-window.ui:24
 msgid "Import From File…"
 msgstr "Inportatu fitxategitik…"
 
-#: data/ui/contacts-main-window.ui:23
+#: data/ui/contacts-main-window.ui:28
 msgid "Export All Contacts…"
 msgstr "Esportatu kontaktu guztiak…"
 
-#: data/ui/contacts-main-window.ui:29
+#: data/ui/contacts-main-window.ui:34
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: data/ui/contacts-main-window.ui:33
+#: data/ui/contacts-main-window.ui:38
 msgid "Keyboard Shortcuts"
 msgstr "Laster-teklak"
 
-#: data/ui/contacts-main-window.ui:37
+#: data/ui/contacts-main-window.ui:42
 msgid "Help"
 msgstr "Laguntza"
 
-#: data/ui/contacts-main-window.ui:41
+#: data/ui/contacts-main-window.ui:46
 msgid "About Contacts"
 msgstr "Kontaktuak aplikazioari buruz"
 
-#: data/ui/contacts-main-window.ui:50
+#: data/ui/contacts-main-window.ui:55
 msgid "Mark as Favorite"
 msgstr "Markatu gogoko gisa"
 
-#: data/ui/contacts-main-window.ui:55
+#: data/ui/contacts-main-window.ui:60
 msgid "Unmark as Favorite"
 msgstr "Kendu gogokoaren marka"
 
-#: data/ui/contacts-main-window.ui:60
+#: data/ui/contacts-main-window.ui:65
 msgid "Share as QR Code"
 msgstr "Partekatu QR kode gisa"
 
-#: data/ui/contacts-main-window.ui:66
+#: data/ui/contacts-main-window.ui:71
 msgid "Delete Contact"
 msgstr "Ezabatu kontaktua"
 
-#: data/ui/contacts-main-window.ui:128
+#: data/ui/contacts-main-window.ui:133
 msgid "Add New Contact"
 msgstr "Gehitu kontaktu berria"
 
-#: data/ui/contacts-main-window.ui:138
+#: data/ui/contacts-main-window.ui:143
 msgid "Main Menu"
 msgstr "Menu nagusia"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:150
 msgid "Select Contacts"
 msgstr "Hautatu kontaktuak"
 
-#: data/ui/contacts-main-window.ui:152
+#: data/ui/contacts-main-window.ui:157 src/contacts-main-window.vala:439
 msgid "Cancel"
 msgstr "Utzi"
 
-#: data/ui/contacts-main-window.ui:153
+#: data/ui/contacts-main-window.ui:158
 msgid "Cancel Selection"
 msgstr "Utzi hautapena"
 
-#: data/ui/contacts-main-window.ui:166
+#: data/ui/contacts-main-window.ui:171
 msgid "Search contacts"
 msgstr "Bilatu kontaktuak"
 
-#: data/ui/contacts-main-window.ui:192
+#: data/ui/contacts-main-window.ui:197
 msgid "Loading"
 msgstr "Kargatzen"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:229
+#: data/ui/contacts-main-window.ui:234
 msgid "Export"
 msgstr "Esportatu"
 
-#: data/ui/contacts-main-window.ui:230
+#: data/ui/contacts-main-window.ui:235
 msgid "Export Selected Contacts"
 msgstr "Esportatu hautatutako kontaktuak"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:238
+#: data/ui/contacts-main-window.ui:243
 msgid "Link"
 msgstr "Esteka"
 
-#: data/ui/contacts-main-window.ui:239
+#: data/ui/contacts-main-window.ui:244
 msgid "Link Selected Contacts Together"
 msgstr "Estekatu hautatutako kontaktuak elkarrekin"
 
-#: data/ui/contacts-main-window.ui:254
-msgid "Remove"
-msgstr "Kendu"
+#: data/ui/contacts-main-window.ui:259
+msgid "Delete"
+msgstr "Ezabatu"
 
-#: data/ui/contacts-main-window.ui:298
+#: data/ui/contacts-main-window.ui:303
 msgid "Edit Contact"
 msgstr "Editatu kontaktua"
 
-#: data/ui/contacts-main-window.ui:304
+#: data/ui/contacts-main-window.ui:309
 msgid "Contact Menu"
 msgstr "Kontaktuen menua"
 
-#: data/ui/contacts-main-window.ui:314 src/contacts-main-window.vala:225
+#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
 msgid "Done"
 msgstr "Eginda"
 
-#: data/ui/contacts-preferences-window.ui:6
+#: data/ui/contacts-preferences-window.ui:11
 msgid "Address Books"
 msgstr "Helbide-liburuak"
 
-#: data/ui/contacts-qr-code-dialog.ui:9
+#: data/ui/contacts-qr-code-dialog.ui:14
 msgid "Share Contact"
 msgstr "Partekatu kontaktua"
 
-#: data/ui/contacts-qr-code-dialog.ui:32
+#: data/ui/contacts-qr-code-dialog.ui:37
 msgid "QR Code"
 msgstr "QR kodea"
 
-#: data/ui/contacts-qr-code-dialog.ui:42
+#: data/ui/contacts-qr-code-dialog.ui:47
 msgid "Scan to Save"
 msgstr "Eskaneatu gordetzeko"
 
-#: data/ui/contacts-setup-window.ui:7
+#: data/ui/contacts-setup-window.ui:12
 msgid "Contacts Setup"
 msgstr "Kontaktuen konfigurazioa"
 
-#: data/ui/contacts-setup-window.ui:15
+#: data/ui/contacts-setup-window.ui:20
 msgid "_Quit"
 msgstr "I_rten"
 
-#: data/ui/contacts-setup-window.ui:17
+#: data/ui/contacts-setup-window.ui:22
 msgid "Cancel Setup And Quit"
 msgstr "Utzi konfigurazioa eta irten"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
-#: data/ui/contacts-setup-window.ui:27
+#: data/ui/contacts-setup-window.ui:32
 msgid "Complete setup"
 msgstr "Konfigurazio osoa"
 
-#: data/ui/contacts-setup-window.ui:39
+#: data/ui/contacts-setup-window.ui:44
 msgid "Welcome"
 msgstr "Ongi etorri"
 
-#: data/ui/contacts-setup-window.ui:40
+#: data/ui/contacts-setup-window.ui:45
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
 "using the online accounts settings."
 msgstr "Hautatu zure helbide-liburu nagusia: zure kontaktu berriak hor gehituko dira. Kontaktuak lineako kontu batean badituzu, lineako kontu horren ezarpenen bidez gehitu ditzakezu."
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:35
 msgid "Show contact with this email address"
 msgstr "Erakutsi helbide elektroniko hau duen kontaktua"
 
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:36
 msgid "Show contact with this individual id"
 msgstr "Erakutsi ID hau duen kontaktua"
 
-#: src/contacts-app.vala:48
+#: src/contacts-app.vala:37
 msgid "Show contacts with the given filter"
 msgstr "Erakutsi emandako iragazkia betetzen duten kontaktuak"
 
-#: src/contacts-app.vala:49
+#: src/contacts-app.vala:38
 msgid "Show the current version of Contacts"
 msgstr "Erakutsi kontaktuen programaren uneko bertsioa"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:173
+#: src/contacts-app.vala:104 src/contacts-app.vala:166
 msgid "Contact not found"
 msgstr "Ez da kontaktua aurkitu"
 
-#: src/contacts-app.vala:114
+#: src/contacts-app.vala:105
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Ez da %s IDa duen kontakturik aurkitu"
 
-#: src/contacts-app.vala:115 src/contacts-app.vala:175
-#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:262
+#: src/contacts-app.vala:106 src/contacts-app.vala:168
+#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
 msgid "_Close"
 msgstr "It_xi"
 
-#: src/contacts-app.vala:158
+#: src/contacts-app.vala:149
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
 msgstr "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Kontaktuak aplikazioaren garatzaileak"
 
-#: src/contacts-app.vala:174
+#: src/contacts-app.vala:167
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Ez da %s helbide elektronikoa duen kontakturik aurkitu"
 
-#: src/contacts-app.vala:237
+#: src/contacts-app.vala:230
 msgid "Primary address book not found"
 msgstr "Ez da aurkitu helbide-liburu nagusia"
 
-#: src/contacts-app.vala:239
+#: src/contacts-app.vala:232
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
 msgstr "Kontaktuak aplikazioak ezin du konfiguratutako helbide-liburu nagusia aurkitu. Arazoak egon daitezke kontaktuak editatzean"
 
-#: src/contacts-app.vala:240
+#: src/contacts-app.vala:233
 msgid "Go To _Preferences"
 msgstr "Joan _hobespenetara"
 
-#: src/contacts-app.vala:341
+#: src/contacts-app.vala:334
 msgid "Select contact file"
 msgstr "Hautatu kontaktuen fitxategia"
 
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:335
 msgid "Import"
 msgstr "Inportatu"
 
-#: src/contacts-app.vala:348
+#: src/contacts-app.vala:341
 msgid "vCard files"
 msgstr "vCard fitxategiak"
 
-#: src/contacts-app.vala:392
-msgid "Error reading file"
-msgstr "Errorea fitxategia irakurtzean"
-
-#: src/contacts-app.vala:393
-#, c-format
-msgid "An error occurred reading the file '%s'"
-msgstr "Errorea gertatu da '%s' fitxategia irakurtzean"
-
-#: src/contacts-app.vala:394 src/contacts-app.vala:404
-msgid "_OK"
-msgstr "_Ados"
-
-#: src/contacts-app.vala:402
-msgid "No contacts found"
-msgstr "Ez da kontakturik aurkitu"
-
-#: src/contacts-app.vala:403
-msgid "The imported file does not seem to contain any contacts"
-msgstr "Badirudi inportatutako fitxategiak ez duela kontakturik"
-
-#. Second step: ask the user for confirmation
-#: src/contacts-app.vala:411
-#, c-format
-msgid "By continuing, you will import %u contact"
-msgid_plural "By continuing, you will import %u contacts"
-msgstr[0] "Jarraitzen baduzu, kontaktu %u inportatuko da"
-msgstr[1] "Jarraitzen baduzu, %u kontaktu inportatuko dira"
-
-#: src/contacts-app.vala:414
-msgid "Continue Import?"
-msgstr "Jarraitu inportazioarekin?"
-
-#: src/contacts-app.vala:415
-msgid "C_ontinue"
-msgstr "_Jarraitu"
-
-#: src/contacts-avatar-selector.vala:126
+#: src/contacts-avatar-selector.vala:115
 msgid "No Camera Detected"
 msgstr "Ez da kamerarik detektatu"
 
-#: src/contacts-avatar-selector.vala:172
+#: src/contacts-avatar-selector.vala:161
 msgid "Failed to set avatar"
 msgstr "Ezin izan da avatarra ezarri"
 
-#: src/contacts-avatar-selector.vala:209
+#: src/contacts-avatar-selector.vala:198
 msgid "Browse for more pictures"
 msgstr "Arakatu irudi gehiago"
 
-#: src/contacts-avatar-selector.vala:210
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "_Ireki"
 
-#: src/contacts-avatar-selector.vala:215
+#: src/contacts-avatar-selector.vala:204
 msgid "Image File"
 msgstr "Irudi-fitxategia"
 
-#: src/contacts-avatar-selector.vala:261
+#: src/contacts-avatar-selector.vala:250
 msgid "Failed to set avatar."
 msgstr "Ezin izan da avatarra ezarri."
 
-#: src/contacts-contact-editor.vala:198
+#: src/contacts-contact-editor.vala:187
 msgid "Show More"
 msgstr "Erakutsi gehiago"
 
-#: src/contacts-contact-editor.vala:295
+#: src/contacts-contact-editor.vala:284
 msgid "Add email"
 msgstr "Gehitu posta elektronikoa"
 
-#: src/contacts-contact-editor.vala:321
+#: src/contacts-contact-editor.vala:310
 msgid "Add phone number"
 msgstr "Gehitu telefono-zenbakia"
 
-#: src/contacts-contact-editor.vala:347
+#: src/contacts-contact-editor.vala:336
 msgid "Website"
 msgstr "Webgunea"
 
-#: src/contacts-contact-editor.vala:358
-#: src/core/contacts-full-name-chunk.vala:49
+#: src/contacts-contact-editor.vala:347
+#: src/core/contacts-full-name-chunk.vala:38
 msgid "Full name"
 msgstr "Izen-abizenak"
 
-#: src/contacts-contact-editor.vala:369
-#: src/core/contacts-nickname-chunk.vala:47
+#: src/contacts-contact-editor.vala:358
+#: src/core/contacts-nickname-chunk.vala:36
 msgid "Nickname"
 msgstr "Goitizena"
 
-#: src/contacts-contact-editor.vala:420
-#: src/core/contacts-birthday-chunk.vala:51
+#: src/contacts-contact-editor.vala:409
+#: src/core/contacts-birthday-chunk.vala:40
 msgid "Birthday"
 msgstr "Urtebetetzea"
 
-#: src/contacts-contact-editor.vala:441
+#: src/contacts-contact-editor.vala:430
 msgid "Remove birthday"
 msgstr "Kendu urtebetetzea"
 
-#: src/contacts-contact-editor.vala:459
+#: src/contacts-contact-editor.vala:448
 msgid "Set Birthday"
 msgstr "Ezarri urtebetetzea"
 
-#: src/contacts-contact-editor.vala:513
+#: src/contacts-contact-editor.vala:502
 msgid "Organization"
 msgstr "Erakundea"
 
-#: src/contacts-contact-editor.vala:519
+#: src/contacts-contact-editor.vala:508
 msgid "Role"
 msgstr "Egitekoa"
 
-#: src/contacts-contact-editor.vala:635
+#: src/contacts-contact-editor.vala:624
 msgid "Label"
 msgstr "Etiketa"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:701
+#: src/contacts-contact-editor.vala:690
 msgid "Day"
 msgstr "Eguna"
 
-#: src/contacts-contact-editor.vala:705
+#: src/contacts-contact-editor.vala:694
 msgid "Month"
 msgstr "Hila"
 
-#: src/contacts-contact-editor.vala:709
+#: src/contacts-contact-editor.vala:698
 msgid "Year"
 msgstr "Urtea"
 
-#: src/contacts-contact-editor.vala:723
+#: src/contacts-contact-editor.vala:712
 msgid "_Set"
 msgstr "_Ezarri"
 
-#: src/contacts-contact-editor.vala:732
+#: src/contacts-contact-editor.vala:721
 msgid "Change Birthday"
 msgstr "Aldatu urteurrena"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "Street"
 msgstr "Kalea"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "Extension"
 msgstr "Luzapena"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "City"
 msgstr "Hiria"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "State/Province"
 msgstr "Estatua/Probintzia"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "Zip/Postal Code"
 msgstr "Posta-kodea"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "PO box"
 msgstr "Posta-kutxa"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:775
 msgid "Country"
 msgstr "Herrialdea"
 
-#: src/contacts-contact-list.vala:147
+#: src/contacts-contact-list.vala:136
 msgid "Favorites"
 msgstr "Gogokoak"
 
-#: src/contacts-contact-list.vala:149
+#: src/contacts-contact-list.vala:138
 msgid "All Contacts"
 msgstr "Kontaktu guztiak"
 
-#: src/contacts-contact-sheet.vala:215
+#: src/contacts-contact-sheet.vala:204
 #, c-format
 msgid "Send an email to %s"
 msgstr "Bidali posta honi: %s"
 
-#: src/contacts-contact-sheet.vala:295
+#: src/contacts-contact-sheet.vala:284
 msgid "Visit website"
 msgstr "Bisitatu webgunea"
 
-#: src/contacts-contact-sheet.vala:332
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "Beraien urtebetetzea gaur da! 🎉"
 
-#: src/contacts-contact-sheet.vala:379
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "Erakutsi mapan"
 
-#: src/contacts-delete-operation.vala:36
+#: src/contacts-delete-operation.vala:25
 #, c-format
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
@@ -594,333 +566,376 @@ msgstr[0] "Kontaktu %d ezabatzen"
 msgstr[1] "%d kontaktu ezabatzen"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:119
+#: src/contacts-esd-setup.vala:140 src/contacts-utils.vala:108
 msgid "Local Address Book"
 msgstr "Helbide-liburu lokala"
 
-#: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:149
+#: src/contacts-esd-setup.vala:143 src/contacts-esd-setup.vala:158
+#: src/contacts-utils.vala:138
 msgid "Google"
 msgstr "Google"
 
-#: src/contacts-esd-setup.vala:167
+#: src/contacts-esd-setup.vala:155
 msgid "Local Contact"
 msgstr "Kontaktu lokala"
 
-#: src/contacts-im-service.vala:30
+#: src/contacts-im-service.vala:19
 msgid "AOL Instant Messenger"
 msgstr "AOL berehalako mezularitza"
 
-#: src/contacts-im-service.vala:31
+#: src/contacts-im-service.vala:20
 msgid "Facebook"
 msgstr "Facebook"
 
-#: src/contacts-im-service.vala:32
+#: src/contacts-im-service.vala:21
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: src/contacts-im-service.vala:33
+#: src/contacts-im-service.vala:22
 msgid "Google Talk"
 msgstr "Google Talk"
 
-#: src/contacts-im-service.vala:34
+#: src/contacts-im-service.vala:23
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
-#: src/contacts-im-service.vala:35
+#: src/contacts-im-service.vala:24
 msgid "ICQ"
 msgstr "ICQ"
 
-#: src/contacts-im-service.vala:36
+#: src/contacts-im-service.vala:25
 msgid "IRC"
 msgstr "IRC"
 
-#: src/contacts-im-service.vala:37
+#: src/contacts-im-service.vala:26
 msgid "Jabber"
 msgstr "Jabber"
 
-#: src/contacts-im-service.vala:38
+#: src/contacts-im-service.vala:27
 msgid "Livejournal"
 msgstr "Livejournal"
 
-#: src/contacts-im-service.vala:39
+#: src/contacts-im-service.vala:28
 msgid "Local network"
 msgstr "Sare lokala"
 
-#: src/contacts-im-service.vala:40
+#: src/contacts-im-service.vala:29
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
-#: src/contacts-im-service.vala:41
+#: src/contacts-im-service.vala:30
 msgid "MySpace"
 msgstr "MySpace"
 
-#: src/contacts-im-service.vala:42
+#: src/contacts-im-service.vala:31
 msgid "MXit"
 msgstr "MXit"
 
-#: src/contacts-im-service.vala:43
+#: src/contacts-im-service.vala:32
 msgid "Napster"
 msgstr "Napster"
 
-#: src/contacts-im-service.vala:44
+#: src/contacts-im-service.vala:33
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
-#: src/contacts-im-service.vala:45
+#: src/contacts-im-service.vala:34
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
-#: src/contacts-im-service.vala:46
+#: src/contacts-im-service.vala:35
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
-#: src/contacts-im-service.vala:47
+#: src/contacts-im-service.vala:36
 msgid "SILC"
 msgstr "SILC"
 
-#: src/contacts-im-service.vala:48
+#: src/contacts-im-service.vala:37
 msgid "sip"
 msgstr "sip"
 
-#: src/contacts-im-service.vala:49
+#: src/contacts-im-service.vala:38
 msgid "Skype"
 msgstr "Skype"
 
-#: src/contacts-im-service.vala:50
+#: src/contacts-im-service.vala:39
 msgid "Telephony"
 msgstr "Telephony"
 
-#: src/contacts-im-service.vala:51
+#: src/contacts-im-service.vala:40
 msgid "Trepia"
 msgstr "Trepia"
 
-#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
+#: src/contacts-im-service.vala:41 src/contacts-im-service.vala:42
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
-#: src/contacts-im-service.vala:54
+#: src/contacts-im-service.vala:43
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-link-operation.vala:38
+#: src/contacts-import-dialog.vala:60
+msgid "An error occurred reading the selected file"
+msgstr "Errorea gertatu da hautatutako fitxategia irakurtzean"
+
+#: src/contacts-import-dialog.vala:87
+#, c-format
+msgid "An error occurred reading the file '%s'"
+msgstr "Errorea gertatu da '%s' fitxategia irakurtzean"
+
+#: src/contacts-import-dialog.vala:95
+msgid "The imported file does not seem to contain any contacts"
+msgstr "Badirudi inportatutako fitxategiak ez duela kontakturik"
+
+#: src/contacts-import-dialog.vala:100
+#, c-format
+msgid "Found %u contact"
+msgid_plural "Found %u contacts"
+msgstr[0] "Kontaktu %u aurkitu da"
+msgstr[1] "%u kontaktu aurkitu dira"
+
+#: src/contacts-import-dialog.vala:129
+msgid "Can't import: no contacts found"
+msgstr "Ezin da inportatu: ez da kontakturik aurkitu"
+
+#: src/contacts-import-dialog.vala:134
+#, c-format
+msgid "By continuing, you will import %u contact"
+msgid_plural "By continuing, you will import %u contacts"
+msgstr[0] "Jarraitzen baduzu, kontaktu %u inportatuko da"
+msgstr[1] "Jarraitzen baduzu, %u kontaktu inportatuko dira"
+
+#: src/contacts-link-operation.vala:27
 #, c-format
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "Kontaktu %d estekatu da"
 msgstr[1] "%d kontaktu estekatu dira"
 
-#: src/contacts-link-suggestion-grid.vala:49
+#: src/contacts-link-suggestion-grid.vala:38
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "Pertsona hau eta  %s (%s helbidekoa) pertsona bera dira?"
 
-#: src/contacts-link-suggestion-grid.vala:52
+#: src/contacts-link-suggestion-grid.vala:41
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Pertsona hau eta %s bera dira?"
 
-#: src/contacts-main-window.vala:195
+#: src/contacts-main-window.vala:184
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu hautatuta"
 msgstr[1] "%llu hautatuta"
 
-#: src/contacts-main-window.vala:225
+#: src/contacts-main-window.vala:214
 msgid "_Add"
 msgstr "_Gehitu"
 
-#: src/contacts-main-window.vala:253
+#: src/contacts-main-window.vala:242
 #, c-format
 msgid "Editing %s"
 msgstr "'%s' editatzen"
 
-#: src/contacts-main-window.vala:292
+#: src/contacts-main-window.vala:281
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d hautatuta"
 msgstr[1] "%d hautatuta"
 
-#: src/contacts-main-window.vala:312 src/contacts-main-window.vala:496
-#: src/contacts-main-window.vala:538
+#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:509
+#: src/contacts-main-window.vala:551
 msgid "_Undo"
 msgstr "_Desegin"
 
-#: src/contacts-main-window.vala:394
+#: src/contacts-main-window.vala:383
 msgid "New Contact"
 msgstr "Kontaktu berria"
 
+#: src/contacts-main-window.vala:437
+msgid "Discard changes?"
+msgstr "Baztertu aldaketak?"
+
+#: src/contacts-main-window.vala:438
+msgid "Changes which are not saved will be permanently lost."
+msgstr "Gorde ez diren aldaketak betiko galduko dira."
+
+#: src/contacts-main-window.vala:440
+msgid "Discard"
+msgstr "Baztertu"
+
 #. Open up a file chooser
-#: src/contacts-main-window.vala:579
+#: src/contacts-main-window.vala:592
 msgid "Export to file"
 msgstr "Esportatu fitxategira"
 
-#: src/contacts-main-window.vala:580
+#: src/contacts-main-window.vala:593
 msgid "_Export"
 msgstr "_Esportatu"
 
-#: src/contacts-main-window.vala:581
+#: src/contacts-main-window.vala:594
 msgid "contacts.vcf"
 msgstr "contacts.vcf"
 
-#: src/contacts-preferences-window.vala:30
+#: src/contacts-preferences-window.vala:19
 msgid "Primary Address Book"
 msgstr "Helbide-liburu nagusia"
 
-#: src/contacts-preferences-window.vala:31
+#: src/contacts-preferences-window.vala:20
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
 msgstr "Kontaktu berriak hautatutako helbide-liburuari gehituko zaizkio. Beste helbide-liburuetako kontaktuak ikusteko eta editatzeko aukera duzu."
 
-#: src/contacts-preferences-window.vala:40
+#: src/contacts-preferences-window.vala:29
 msgid "_Online Accounts"
 msgstr "_Lineako kontuak"
 
-#: src/contacts-preferences-window.vala:45
+#: src/contacts-preferences-window.vala:34
 msgid "Open the Online Accounts panel in Settings"
 msgstr "Ireki lineako kontuen panela ezarpenetan"
 
-#: src/contacts-qr-code-dialog.vala:33
+#: src/contacts-qr-code-dialog.vala:22
 #, c-format
 msgid "Scan the QR code to save the contact <b>%s</b>."
 msgstr "Eskaneatu QR kodea <b>%s</b> kontaktua gordetzeko."
 
-#: src/contacts-unlink-operation.vala:37
+#: src/contacts-unlink-operation.vala:26
 msgid "Unlinking contacts"
 msgstr "Kontaktuak desestekatzen"
 
-#: src/core/contacts-addresses-chunk.vala:28
+#: src/core/contacts-addresses-chunk.vala:17
 msgid "Postal addresses"
 msgstr "Posta-helbideak"
 
-#: src/core/contacts-alias-chunk.vala:44
+#: src/core/contacts-alias-chunk.vala:33
 msgid "Alias"
 msgstr "Aliasa"
 
-#: src/core/contacts-avatar-chunk.vala:38
+#: src/core/contacts-avatar-chunk.vala:27
 msgid "Avatar"
 msgstr "Avatarra"
 
-#: src/core/contacts-contact.vala:38
+#: src/core/contacts-contact.vala:27
 msgid "Unnamed Person"
 msgstr "Izenik gabeko pertsona"
 
-#: src/core/contacts-email-addresses-chunk.vala:24
+#: src/core/contacts-email-addresses-chunk.vala:13
 msgid "Email addresses"
 msgstr "Posta elektronikoko helbideak"
 
-#: src/core/contacts-im-addresses-chunk.vala:29
+#: src/core/contacts-im-addresses-chunk.vala:18
 msgid "Instant Messaging addresses"
 msgstr "Berehalako mezularitzako helbideak"
 
-#: src/core/contacts-notes-chunk.vala:28
+#: src/core/contacts-notes-chunk.vala:17
 msgid "Notes"
 msgstr "Notes"
 
-#: src/core/contacts-phones-chunk.vala:28
+#: src/core/contacts-phones-chunk.vala:17
 msgid "Phone numbers"
 msgstr "Telefono-zenbakiak"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/core/contacts-roles-chunk.vala:30
+#: src/core/contacts-roles-chunk.vala:19
 msgid "Roles"
 msgstr "Egitekoak"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:129
+#: src/core/contacts-roles-chunk.vala:118
 #, c-format
 msgid "%s at %s"
 msgstr "%s - %s"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/core/contacts-structured-name-chunk.vala:52
+#: src/core/contacts-structured-name-chunk.vala:41
 msgid "Structured name"
 msgstr "Izen egituratua"
 
-#: src/core/contacts-type-descriptor.vala:82
-#: src/core/contacts-type-set.vala:232
+#: src/core/contacts-type-descriptor.vala:71
+#: src/core/contacts-type-set.vala:221
 msgid "Other"
 msgstr "Bestelakoa"
 
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:180 src/core/contacts-type-set.vala:201
-#: src/core/contacts-type-set.vala:227 src/core/contacts-type-set.vala:229
+#: src/core/contacts-type-set.vala:169 src/core/contacts-type-set.vala:190
+#: src/core/contacts-type-set.vala:216 src/core/contacts-type-set.vala:218
 msgid "Home"
 msgstr "Etxekoa"
 
-#: src/core/contacts-type-set.vala:181 src/core/contacts-type-set.vala:202
-#: src/core/contacts-type-set.vala:221 src/core/contacts-type-set.vala:223
+#: src/core/contacts-type-set.vala:170 src/core/contacts-type-set.vala:191
+#: src/core/contacts-type-set.vala:210 src/core/contacts-type-set.vala:212
 msgid "Work"
 msgstr "Lanekoa"
 
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:200
+#: src/core/contacts-type-set.vala:189
 msgid "Personal"
 msgstr "Pertsonala"
 
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:220
+#: src/core/contacts-type-set.vala:209
 msgid "Assistant"
 msgstr "Laguntzailea"
 
-#: src/core/contacts-type-set.vala:222
+#: src/core/contacts-type-set.vala:211
 msgid "Work Fax"
 msgstr "Laneko faxa"
 
-#: src/core/contacts-type-set.vala:224
+#: src/core/contacts-type-set.vala:213
 msgid "Callback"
 msgstr "Atzeradeia"
 
-#: src/core/contacts-type-set.vala:225
+#: src/core/contacts-type-set.vala:214
 msgid "Car"
 msgstr "Autoa"
 
-#: src/core/contacts-type-set.vala:226
+#: src/core/contacts-type-set.vala:215
 msgid "Company"
 msgstr "Enpresa"
 
-#: src/core/contacts-type-set.vala:228
+#: src/core/contacts-type-set.vala:217
 msgid "Home Fax"
 msgstr "Etxeko faxa"
 
-#: src/core/contacts-type-set.vala:230
+#: src/core/contacts-type-set.vala:219
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/core/contacts-type-set.vala:231
+#: src/core/contacts-type-set.vala:220
 msgid "Mobile"
 msgstr "Mugikorra"
 
-#: src/core/contacts-type-set.vala:233
+#: src/core/contacts-type-set.vala:222
 msgid "Fax"
 msgstr "Faxa"
 
-#: src/core/contacts-type-set.vala:234
+#: src/core/contacts-type-set.vala:223
 msgid "Pager"
 msgstr "Bilagailua"
 
-#: src/core/contacts-type-set.vala:235
+#: src/core/contacts-type-set.vala:224
 msgid "Radio"
 msgstr "Irrati-telefonoa"
 
-#: src/core/contacts-type-set.vala:236
+#: src/core/contacts-type-set.vala:225
 msgid "Telex"
 msgstr "Telex-a"
 
 #. To translators: TTY is Teletypewriter
-#: src/core/contacts-type-set.vala:238
+#: src/core/contacts-type-set.vala:227
 msgid "TTY"
 msgstr "Teletipoa"
 
-#: src/core/contacts-urls-chunk.vala:28
+#: src/core/contacts-urls-chunk.vala:17
 msgid "URLs"
 msgstr "URLak"
 
-#: src/io/contacts-io-parse-operation.vala:39
+#: src/io/contacts-io-parse-operation.vala:29
 #, c-format
 msgid "Importing contacts from '%s'"
 msgstr "Kontaktuak inportatzen hemendik: '%s'"
@@ -974,6 +989,21 @@ msgstr "Leihoa maximizatuta dagoen gordetzen du."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Leihoa pantaila osoan al dago?"
+
+#~ msgid "Remove"
+#~ msgstr "Kendu"
+
+#~ msgid "Error reading file"
+#~ msgstr "Errorea fitxategia irakurtzean"
+
+#~ msgid "_OK"
+#~ msgstr "_Ados"
+
+#~ msgid "Continue Import?"
+#~ msgstr "Jarraitu inportazioarekin?"
+
+#~ msgid "C_ontinue"
+#~ msgstr "_Jarraitu"
 
 #~ msgid "A contacts manager for GNOME"
 #~ msgstr "Kontaktuen kudeatzailea GNOMErako"
@@ -1094,9 +1124,6 @@ msgstr "Leihoa pantaila osoan al dago?"
 
 #~ msgid "Edit"
 #~ msgstr "Editatu"
-
-#~ msgid "Delete"
-#~ msgstr "Ezabatu"
 
 #~ msgid "Add contact"
 #~ msgstr "Gehitu kontaktua"
