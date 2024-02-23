@@ -309,6 +309,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
 
     row.title = _("Add phone number");
     row.set_input_purpose (Gtk.InputPurpose.PHONE);
+    row.set_direction (Gtk.TextDirection.LTR);
     chunk_child.bind_property ("raw-number", row, "text",
                                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
 

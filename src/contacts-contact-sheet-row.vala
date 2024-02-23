@@ -36,6 +36,12 @@ public class Contacts.ContactSheetRow : Gtk.ListBoxRow {
       this.subtitle.label = subtitle;
   }
 
+  public void set_title_direction (Gtk.TextDirection direction) {
+    this.title.set_direction (direction);
+    if (get_default_direction () == Gtk.TextDirection.RTL)
+      this.title.xalign = 1.0f;
+  }
+
   public Gtk.Button add_button (string icon) {
     var button = new Gtk.Button.from_icon_name (icon);
     button.valign = Gtk.Align.CENTER;
