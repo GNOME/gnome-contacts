@@ -2,8 +2,15 @@ docs_vapidirs = [
   '--vapidir=@0@'.format(meson.project_source_root() / 'vapi'),
 ]
 
+docs_sources = [
+  libcontactscore_sources,
+  libcontacts_sources,
+  contacts_io_sources,
+  contacts_vala_sources,
+]
+
 custom_target('docs',
-  input: contacts_vala_sources,
+  input: docs_sources,
   output: 'docs',
   command: [ valadoc,
     '--doclet=html',
@@ -25,7 +32,7 @@ custom_target('docs',
     '--pkg=config',
     '--directory=@OUTDIR@',
     docs_vapidirs,
-    [ libcontacts_sources, contacts_vala_sources ],
+    docs_sources,
   ],
   build_by_default: true,
 )
