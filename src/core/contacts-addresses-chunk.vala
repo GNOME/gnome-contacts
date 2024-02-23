@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the postal addresses of a contact (similar
- * to {@link Folks.PostalAddressDetails}}. Each element is a {@link Address}.
+ * to {@link Folks.PostalAddressDetails}. Each element is a {@link Address}.
  */
 public class Contacts.AddressesChunk : BinChunk {
 

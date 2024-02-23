@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the internet messaging (IM) addresses of a
- * contact (similar to {@link Folks.ImDetails}}. Each element is a
+ * contact (similar to {@link Folks.ImDetails}. Each element is a
  * {@link ImAddress}.
  */
 public class Contacts.ImAddressesChunk : BinChunk {

@@ -25,7 +25,7 @@ public abstract class Contacts.Io.ExportOperation : Contacts.Operation {
    * If you want to export to:
    * - a file, use the result of {@link GLib.File.create}
    * - a string, create a {@link GLib.MemoryOutputStream} and append a '\0'
-   *   terminator at the end
+   * terminator at the end
    * - ...
    */
   public GLib.OutputStream output { get; construct set; }

@@ -15,10 +15,10 @@ using Folks;
  * Providing a custom selection which delegates everything rather than using 2
  * models separately has some advantages:
  * - Switching the model for a GtkListView means that it will reload the whole
- *   model, leading to unexpected jumps and performance issues
+ * model, leading to unexpected jumps and performance issues
  * - The selection logic for "selection mode" is slighty different than the one
- *   that GtkMultiSelection implements, so we can try to work around that here
- *   in select_item() and select_range()
+ * that GtkMultiSelection implements, so we can try to work around that here
+ * in select_item() and select_range()
  *
  * If you still want access to a specific selection, you can still fetch them
  * as they are public properties of the instance.

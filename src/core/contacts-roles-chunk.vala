@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the organizations and/or roles of a contact
- * (similar to {@link Folks.RoleDetails}}. Each element is a
+ * (similar to {@link Folks.RoleDetails}. Each element is a
  * {@link Contacts.OrgRole}.
  */
 public class Contacts.RolesChunk : BinChunk {

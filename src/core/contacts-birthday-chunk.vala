@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the birthday of a contact (similar to
- * {@link Folks.BirthdayDetails}}.
+ * {@link Folks.BirthdayDetails}.
  */
 public class Contacts.BirthdayChunk : Chunk {
 

@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the phone numbers of a contact (similar to
- * {@link Folks.PhoneDetails}}. Each element is a {@link Phone}.
+ * {@link Folks.PhoneDetails}. Each element is a {@link Phone}.
  */
 public class Contacts.PhonesChunk : BinChunk {
 

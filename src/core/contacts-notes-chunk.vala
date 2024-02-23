@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the freeform notes attached to a contact
- * (similar to {@link Folks.NoteDetails}}. Each element is a {@link Note}.
+ * (similar to {@link Folks.NoteDetails}. Each element is a {@link Note}.
  */
 public class Contacts.NotesChunk : BinChunk {
 

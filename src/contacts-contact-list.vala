@@ -8,9 +8,9 @@ using Folks;
 
 /**
  * The ContactList is the widget that diplays the list of contacts
- * ({@link Individual}s) that the user sees on the left. It is contained by the
- * {@link ListPane}, which also provides other functionality, such as an action
- * bar.
+ * ({@link Folks.Individual}s) that the user sees on the left. It is contained
+ * by the {@link Contacts.ListPane}, which also provides other functionality,
+ * such as an action bar.
  *
  * On top of the list models, we have a {@link Gtk.SelectionModel} which keeps
  * track of the contacts that were selected.

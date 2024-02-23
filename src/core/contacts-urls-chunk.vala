@@ -8,7 +8,7 @@ using Folks;
 
 /**
  * A {@link Chunk} that represents the associated URLs of a contact (similar to
- * {@link Folks.UrlDetails}}. Each element is a {@link Contacts.Url}.
+ * {@link Folks.UrlDetails}. Each element is a {@link Contacts.Url}.
  */
 public class Contacts.UrlsChunk : BinChunk {
 

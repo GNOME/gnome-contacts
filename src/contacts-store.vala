@@ -15,11 +15,11 @@ using Folks;
  * Internally, the Store works with 3 list models layered on top of each other:
  *
  * - A base list model which contains all contacts in the
- *   {@link Folks.IndividualAggregator}
+ * {@link Folks.IndividualAggregator}
  * - A {@link Gtk.SortListModel}, which sorts the base model according to
- *   first name or last name, or whatever user preference
+ * first name or last name, or whatever user preference
  * - A {@link Gtk.FilterListModel} to filter out contacts using a
- *   {@link Folks.Query}, so a user can filter contacts with the search entry
+ * {@link Folks.Query}, so a user can filter contacts with the search entry
  */
 public class Contacts.Store : GLib.Object {
 
