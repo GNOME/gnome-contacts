@@ -144,4 +144,12 @@ namespace Contacts.Utils {
 
     return store.display_name;
   }
+
+  /**
+   * A function that mostly useful in a <closure> with a single string
+   * argument, for example to hide a GtkLabel when its contents are empty.
+   */
+  public bool string_is_non_empty_closure (GLib.Object ignore, string? str) {
+    return (str != null) && (str != "");
+  }
 }

@@ -93,6 +93,7 @@ contacts_vala_sources = files(
   'contacts-contact-list.vala',
   'contacts-contact-pane.vala',
   'contacts-contact-selection-model.vala',
+  'contacts-contact-sheet-row.vala',
   'contacts-contact-sheet.vala',
   'contacts-crop-dialog.vala',
   'contacts-editable-avatar.vala',

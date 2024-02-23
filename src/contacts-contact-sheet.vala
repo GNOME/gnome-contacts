@@ -234,6 +234,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
       var row = new ContactSheetRow (chunk,
                                      phone.raw_number,
                                      phone.get_phone_type ().display_name);
+      row.set_title_direction (Gtk.TextDirection.LTR);
       group.add (row);
     }
 
@@ -387,12 +388,20 @@ public class Contacts.ContactSheet : Gtk.Widget {
   }
 }
 
-public class Contacts.ContactSheetGroup : Adw.PreferencesGroup {
+public class Contacts.ContactSheetGroup : Gtk.Box {
+
+  private unowned Gtk.ListBox listbox;
 
   construct {
     add_css_class ("contacts-sheet-property");
-  }
 
+    var list_box = new Gtk.ListBox ();
+    list_box.selection_mode = Gtk.SelectionMode.NONE;
+    list_box.hexpand = true;
+    append (list_box);
+    this.listbox = list_box;
+    this.listbox.add_css_class ("boxed-list");
+  }
 
   public ContactSheetGroup (Chunk chunk) {
     update_property (Gtk.AccessibleProperty.LABEL, chunk.display_name);
@@ -404,34 +413,8 @@ public class Contacts.ContactSheetGroup : Adw.PreferencesGroup {
 
     add (row);
   }
-}
 
-public class Contacts.ContactSheetRow : Adw.ActionRow {
-
-  construct {
-    this.title_selectable = true;
-  }
-
-  public ContactSheetRow (Chunk chunk, string title, string? subtitle = null) {
-    unowned var icon_name = chunk.icon_name;
-    if (icon_name != null) {
-      var icon = new Gtk.Image.from_icon_name (icon_name);
-      icon.add_css_class ("contacts-property-icon");
-      icon.tooltip_text = chunk.display_name;
-      this.add_prefix (icon);
-    }
-
-    this.title = Markup.escape_text (title);
-
-    if (subtitle != null)
-      this.subtitle = subtitle;
-  }
-
-  public Gtk.Button add_button (string icon) {
-    var button = new Gtk.Button.from_icon_name (icon);
-    button.valign = Gtk.Align.CENTER;
-    button.add_css_class ("flat");
-    this.add_suffix (button);
-    return button;
+  public void add (Gtk.ListBoxRow row) {
+    this.listbox.append (row);
   }
 }
