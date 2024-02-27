@@ -146,6 +146,7 @@ public class Contacts.App : Adw.Application {
         issue_url = "https://gitlab.gnome.org/GNOME/gnome-contacts/-/issues/new",
         developers = developers,
         designers = designers,
+        translator_credits = _("translator-credits"),
         copyright = _("© 2011 Red Hat, Inc.\n© 2011-2020 The Contacts Developers"),
         license_type = Gtk.License.GPL_2_0
       };
