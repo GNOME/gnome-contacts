@@ -27,42 +27,16 @@ $ appstreamcli metainfo-to-news _build/data/org.gnome.Contacts.appdata.xml NEWS
 ```
 
 ## Contributing
-
 The code and issue tracker of Contacts can be found at the
 [gnome-contacts repository](https://gitlab.gnome.org/GNOME/gnome-contacts) on
 GNOME's GitLab instance.
 
-### Reporting issues
+If you're interesting in help out, please take a look at
+https://welcome.gnome.org/app/Contacts/ to get started.
 
-If you find a bug in Contacts, please [file an
-issue](https://gitlab.gnome.org/GNOME/gnome-contacts/issues) with reproducible
-steps and the version of Contacts you were using at that point.
-
-### Developers
-
-If you want to contribute functionality or bug fixes to Contacts, you should
-fork the Contacts repository, commit your changes, and then [open a merge
-request](https://gitlab.gnome.org/GNOME/gnome-contacts/merge_requests/new) (MR).
-If the MR fixes an existing issue, please refer to that issue in the
-description of the commit.
-
-### Translators
-
-If GNOME Contacts is not translated in your language or you believe that the
-current translation has errors, then you can join one of the various
-translation teams in GNOME. Translators do not commit directly to Git, but are
-advised to use our separate translation infrastructure instead. [More info can
-be found at GNOME's Wiki page on the translation
-project](https://wiki.gnome.org/TranslationProject/JoiningTranslation).
-
-## More information
-
-Contacts has its own web page on https://apps.gnome.org/Contacts.
+Contacts also has its own web page on https://apps.gnome.org/Contacts.
 
 To discuss issues with developers and other users, you can post to the
-[GNOME Discourse instance](https://discourse.gnome.org/tags/contacts)
-or join [#gnome-contacts](irc://irc.libera.chat/gnome-contacts) on irc.libera.chat.
-
-If you would like to get involved with GNOME projects, please also visit our
-[Newcomers page](https://wiki.gnome.org/Newcomers)
-on the Wiki.
+[GNOME Discourse instance](https://discourse.gnome.org/tags/contacts) with the
+`contacts` tag, or join the [#contacts](https://matrix.to/#/#contacts:gnome.org)
+Matrix channel.
