@@ -1,7 +1,7 @@
 # Korean translation for gnome-contacts.
 # Copyright (C) 2011-2013 Seong-ho Cho et al.
 # This file is distributed under the same license as the gnome-contacts package.
-# Seong-ho Cho <shcho@gnome.org>, 2011-2023.
+# Seong-ho Cho <shcho@gnome.org>, 2011-2024.
 #
 # 번역하신 분은 'translator-credits' 에 한글 이름과 email 주소를 적어주십시오.
 # 참고:
@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-08-10 23:38+0000\n"
-"PO-Revision-Date: 2023-08-27 03:44+0900\n"
+"POT-Creation-Date: 2024-02-27 21:49+0000\n"
+"PO-Revision-Date: 2024-03-02 02:28+0900\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -22,12 +22,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:120
-#: src/contacts-main-window.vala:193 src/contacts-main-window.vala:216
-#: src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
+#: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
+#: src/main.vala:15
 msgid "Contacts"
 msgstr "연락처"
 
@@ -75,7 +75,8 @@ msgstr "연락처 목록 설정 보기"
 msgid "Contacts edit view"
 msgstr "연락처 목록 편집 보기"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:915 src/contacts-app.vala:152
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.Contacts.appdata.xml.in.in:992 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "그놈 프로젝트"
 
@@ -139,202 +140,210 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "연락처 내용 바꾸기 취소"
 
-#: data/ui/contacts-avatar-selector.ui:7
+#: data/ui/contacts-avatar-selector.ui:12
 msgid "Select a new avatar"
 msgstr "새 아바타를 선택하십시오"
 
-#: data/ui/contacts-avatar-selector.ui:29 data/ui/contacts-crop-dialog.ui:29
-#: data/ui/contacts-main-window.ui:283 src/contacts-app.vala:243
-#: src/contacts-app.vala:419 src/contacts-contact-editor.vala:719
-#: src/contacts-main-window.vala:525
+#: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
+#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
+#: src/contacts-app.vala:237 src/contacts-contact-editor.vala:709
+#: src/contacts-main-window.vala:537
 msgid "_Cancel"
 msgstr "취소(_C)"
 
-#: data/ui/contacts-avatar-selector.ui:39 data/ui/contacts-crop-dialog.ui:39
-#: data/ui/contacts-setup-window.ui:25
+#: data/ui/contacts-avatar-selector.ui:44 data/ui/contacts-crop-dialog.ui:44
+#: data/ui/contacts-setup-window.ui:30
 msgid "_Done"
 msgstr "완료(_D)"
 
-#: data/ui/contacts-avatar-selector.ui:85
+#: data/ui/contacts-avatar-selector.ui:90
 msgid "Take a Picture…"
 msgstr "사진 촬영…"
 
-#: data/ui/contacts-avatar-selector.ui:93
+#: data/ui/contacts-avatar-selector.ui:98
 msgid "Select a File…"
 msgstr "파일 선택…"
 
-#: data/ui/contacts-contact-pane.ui:14
+#: data/ui/contacts-contact-pane.ui:19
 msgid "Select a Contact"
 msgstr "연락처를 선택하십시오"
 
-#: data/ui/contacts-editor-menu.ui:11
+#: data/ui/contacts-editor-menu.ui:16
 msgid "Change Addressbook"
 msgstr "주소록 바꾸기"
 
-#: data/ui/contacts-editable-avatar.ui:17
+#: data/ui/contacts-editable-avatar.ui:22
 msgid "Change Avatar"
 msgstr "아바타 바꾸기"
 
-#: data/ui/contacts-editable-avatar.ui:36
+#: data/ui/contacts-editable-avatar.ui:41
 msgid "Remove Avatar"
 msgstr "아바타 제거"
 
-#: data/ui/contacts-link-suggestion-grid.ui:51
+#: data/ui/contacts-import-dialog.ui:12
+msgid "Import Contacts"
+msgstr "연락처 가져오기"
+
+#: data/ui/contacts-import-dialog.ui:44
+msgid "_Import"
+msgstr "가져오기(_I)"
+
+#: data/ui/contacts-link-suggestion-grid.ui:56
 msgid "Link Contacts"
 msgstr "연락처 연결"
 
-#: data/ui/contacts-main-window.ui:5
+#: data/ui/contacts-main-window.ui:10
 msgid "List Contacts By:"
 msgstr "연락처 목록 정렬 기준:"
 
-#: data/ui/contacts-main-window.ui:7
+#: data/ui/contacts-main-window.ui:12
 msgid "First Name"
 msgstr "이름"
 
-#: data/ui/contacts-main-window.ui:12
+#: data/ui/contacts-main-window.ui:17
 msgid "Surname"
 msgstr "성"
 
-#: data/ui/contacts-main-window.ui:19
+#: data/ui/contacts-main-window.ui:24
 msgid "Import From File…"
 msgstr "파일에서 가져오기…"
 
-#: data/ui/contacts-main-window.ui:23
+#: data/ui/contacts-main-window.ui:28
 msgid "Export All Contacts…"
 msgstr "모든 연락처 내보내기…"
 
-#: data/ui/contacts-main-window.ui:29
+#: data/ui/contacts-main-window.ui:34
 msgid "Preferences"
 msgstr "기본 설정"
 
-#: data/ui/contacts-main-window.ui:33
+#: data/ui/contacts-main-window.ui:38
 msgid "Keyboard Shortcuts"
 msgstr "키보드 바로 가기"
 
-#: data/ui/contacts-main-window.ui:37
+#: data/ui/contacts-main-window.ui:42
 msgid "Help"
 msgstr "도움말"
 
-#: data/ui/contacts-main-window.ui:41
+#: data/ui/contacts-main-window.ui:46
 msgid "About Contacts"
 msgstr "연락처 프로그램 정보"
 
-#: data/ui/contacts-main-window.ui:50
+#: data/ui/contacts-main-window.ui:55
 msgid "Mark as Favorite"
 msgstr "즐겨찾기로 표시"
 
-#: data/ui/contacts-main-window.ui:55
+#: data/ui/contacts-main-window.ui:60
 msgid "Unmark as Favorite"
 msgstr "즐겨찾기 표시 취소"
 
-#: data/ui/contacts-main-window.ui:60
+#: data/ui/contacts-main-window.ui:65
 msgid "Share as QR Code"
 msgstr "QR 코드로 공유"
 
-#: data/ui/contacts-main-window.ui:66
+#: data/ui/contacts-main-window.ui:71
 msgid "Delete Contact"
 msgstr "연락처 삭제"
 
-#: data/ui/contacts-main-window.ui:128
+#: data/ui/contacts-main-window.ui:133
 msgid "Add New Contact"
 msgstr "새 연락처 추가"
 
-#: data/ui/contacts-main-window.ui:138
+#: data/ui/contacts-main-window.ui:143
 msgid "Main Menu"
 msgstr "주 메뉴"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:150
 msgid "Select Contacts"
 msgstr "연락처 선택"
 
-#: data/ui/contacts-main-window.ui:152
+#: data/ui/contacts-main-window.ui:157 src/contacts-main-window.vala:438
 msgid "Cancel"
 msgstr "취소"
 
-#: data/ui/contacts-main-window.ui:153
+#: data/ui/contacts-main-window.ui:158
 msgid "Cancel Selection"
 msgstr "선택 취소"
 
-#: data/ui/contacts-main-window.ui:166
+#: data/ui/contacts-main-window.ui:171
 msgid "Search contacts"
 msgstr "연락처 검색"
 
-#: data/ui/contacts-main-window.ui:192
+#: data/ui/contacts-main-window.ui:197
 msgid "Loading"
 msgstr "불러오는 중"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:229
+#: data/ui/contacts-main-window.ui:234
 msgid "Export"
 msgstr "내보내기"
 
-#: data/ui/contacts-main-window.ui:230
+#: data/ui/contacts-main-window.ui:235
 msgid "Export Selected Contacts"
 msgstr "선택한 연락처 목록 내보내기"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:238
+#: data/ui/contacts-main-window.ui:243
 msgid "Link"
 msgstr "연결"
 
-#: data/ui/contacts-main-window.ui:239
+#: data/ui/contacts-main-window.ui:244
 msgid "Link Selected Contacts Together"
 msgstr "선택한 연락처를 묶어서 연결"
 
-#: data/ui/contacts-main-window.ui:254
-msgid "Remove"
-msgstr "제거"
+#: data/ui/contacts-main-window.ui:259
+msgid "Delete"
+msgstr "삭제"
 
-#: data/ui/contacts-main-window.ui:298
+#: data/ui/contacts-main-window.ui:303
 msgid "Edit Contact"
 msgstr "연락처 편집"
 
-#: data/ui/contacts-main-window.ui:304
+#: data/ui/contacts-main-window.ui:309
 msgid "Contact Menu"
 msgstr "연락처 메뉴"
 
-#: data/ui/contacts-main-window.ui:314 src/contacts-main-window.vala:225
+#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
 msgid "Done"
 msgstr "완료"
 
-#: data/ui/contacts-preferences-window.ui:6
+#: data/ui/contacts-preferences-window.ui:11
 msgid "Address Books"
 msgstr "주소록"
 
-#: data/ui/contacts-qr-code-dialog.ui:9
+#: data/ui/contacts-qr-code-dialog.ui:14
 msgid "Share Contact"
 msgstr "연락처 공유"
 
-#: data/ui/contacts-qr-code-dialog.ui:32
+#: data/ui/contacts-qr-code-dialog.ui:37
 msgid "QR Code"
 msgstr "QR 코드"
 
-#: data/ui/contacts-qr-code-dialog.ui:42
+#: data/ui/contacts-qr-code-dialog.ui:47
 msgid "Scan to Save"
 msgstr "스캔하여 저장"
 
-#: data/ui/contacts-setup-window.ui:7
+#: data/ui/contacts-setup-window.ui:12
 msgid "Contacts Setup"
 msgstr "연락처 설정"
 
-#: data/ui/contacts-setup-window.ui:15
+#: data/ui/contacts-setup-window.ui:20
 msgid "_Quit"
 msgstr "끝내기(_Q)"
 
-#: data/ui/contacts-setup-window.ui:17
+#: data/ui/contacts-setup-window.ui:22
 msgid "Cancel Setup And Quit"
 msgstr "설정 취소 후 끝내기"
 
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
-#: data/ui/contacts-setup-window.ui:27
+#: data/ui/contacts-setup-window.ui:32
 msgid "Complete setup"
 msgstr "설정 완료"
 
-#: data/ui/contacts-setup-window.ui:39
+#: data/ui/contacts-setup-window.ui:44
 msgid "Welcome"
 msgstr "환영합니다"
 
-#: data/ui/contacts-setup-window.ui:40
+#: data/ui/contacts-setup-window.ui:45
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -343,37 +352,41 @@ msgstr ""
 "주 연락처를 선택하십시오: 새 연락처를 추가할 연락처입니다. 온라인 계정의 연락"
 "처 내용을 유지한다면 온라인 계정 설정에 추가할 수 있습니다."
 
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:35
 msgid "Show contact with this email address"
 msgstr "이 전자메일 주소의 연락처를 보여줍니다"
 
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:36
 msgid "Show contact with this individual id"
 msgstr "이 개별 ID의 연락처를 보여줍니다"
 
-#: src/contacts-app.vala:48
+#: src/contacts-app.vala:37
 msgid "Show contacts with the given filter"
 msgstr "표시 조건에 맞는 연락처를 보여줍니다"
 
-#: src/contacts-app.vala:49
+#: src/contacts-app.vala:38
 msgid "Show the current version of Contacts"
 msgstr "연락처 현재 버전 표시"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:173
+#: src/contacts-app.vala:104 src/contacts-app.vala:167
 msgid "Contact not found"
 msgstr "연락처가 없습니다"
 
-#: src/contacts-app.vala:114
+#: src/contacts-app.vala:105
 #, c-format
 msgid "No contact with id %s found"
 msgstr "%s ID의 연락처를 찾을 수 없습니다"
 
-#: src/contacts-app.vala:115 src/contacts-app.vala:175
-#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:262
+#: src/contacts-app.vala:106 src/contacts-app.vala:169
+#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
 msgid "_Close"
 msgstr "닫기(_C)"
 
-#: src/contacts-app.vala:158
+#: src/contacts-app.vala:149
+msgid "translator-credits"
+msgstr "조성호 <shcho@gnome.org>"
+
+#: src/contacts-app.vala:150
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -381,16 +394,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
 
-#: src/contacts-app.vala:174
+#: src/contacts-app.vala:168
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "%s 전자메일 주소의 연락처를 찾을 수 없습니다"
 
-#: src/contacts-app.vala:237
+#: src/contacts-app.vala:231
 msgid "Primary address book not found"
 msgstr "주 주소록이 없습니다"
 
-#: src/contacts-app.vala:239
+#: src/contacts-app.vala:233
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -398,387 +411,392 @@ msgstr ""
 "연락처 프로그램에서 설정한 주 주소록을 찾을 수 없습니다. 연락처를 만들고 편집"
 "할 때 문제를 경험할 수 있습니다"
 
-#: src/contacts-app.vala:240
+#: src/contacts-app.vala:234
 msgid "Go To _Preferences"
 msgstr "기본 설정으로 이동(_P)"
 
-#: src/contacts-app.vala:341
+#: src/contacts-app.vala:335
 msgid "Select contact file"
 msgstr "연락처 파일을 선택하십시오"
 
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:336
 msgid "Import"
 msgstr "가져오기"
 
-#: src/contacts-app.vala:348
+#: src/contacts-app.vala:342
 msgid "vCard files"
 msgstr "vCard 파일"
 
-#: src/contacts-app.vala:392
-msgid "Error reading file"
-msgstr "파일 읽기 오류"
-
-#: src/contacts-app.vala:393
-#, c-format
-msgid "An error occurred reading the file '%s'"
-msgstr "'%s' 파일을 읽는 중 오류가 발생했습니다"
-
-#: src/contacts-app.vala:394 src/contacts-app.vala:404
-msgid "_OK"
-msgstr "확인(_O)"
-
-#: src/contacts-app.vala:402
-msgid "No contacts found"
-msgstr "연락처가 없습니다"
-
-#: src/contacts-app.vala:403
-msgid "The imported file does not seem to contain any contacts"
-msgstr "가져온 파일에 연락처 정보가 없는 것 같습니다"
-
-#. Second step: ask the user for confirmation
-#: src/contacts-app.vala:411
-#, c-format
-msgid "By continuing, you will import %u contact"
-msgid_plural "By continuing, you will import %u contacts"
-msgstr[0] "계속하면 연락처 %u건을 가져옵니다"
-
-#: src/contacts-app.vala:414
-msgid "Continue Import?"
-msgstr "가져오기를 계속하시겠습니까?"
-
-#: src/contacts-app.vala:415
-msgid "C_ontinue"
-msgstr "계속(_O)"
-
-#: src/contacts-avatar-selector.vala:126
+#: src/contacts-avatar-selector.vala:115
 msgid "No Camera Detected"
 msgstr "감지한 카메라 없음"
 
-#: src/contacts-avatar-selector.vala:172
+#: src/contacts-avatar-selector.vala:161
 msgid "Failed to set avatar"
 msgstr "아바타 설정에 실패했습니다"
 
-#: src/contacts-avatar-selector.vala:209
+#: src/contacts-avatar-selector.vala:198
 msgid "Browse for more pictures"
 msgstr "더 많은 그림 탐색"
 
-#: src/contacts-avatar-selector.vala:210
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "열기(_O)"
 
-#: src/contacts-avatar-selector.vala:215
+#: src/contacts-avatar-selector.vala:204
 msgid "Image File"
 msgstr "그림 파일"
 
-#: src/contacts-avatar-selector.vala:261
+#: src/contacts-avatar-selector.vala:250
 msgid "Failed to set avatar."
 msgstr "아바타 설정에 실패했습니다."
 
-#: src/contacts-contact-editor.vala:198
+#: src/contacts-contact-editor.vala:187
 msgid "Show More"
 msgstr "더 보이기"
 
-#: src/contacts-contact-editor.vala:295
+#: src/contacts-contact-editor.vala:284
 msgid "Add email"
 msgstr "전자메일 주소 추가"
 
-#: src/contacts-contact-editor.vala:321
+#: src/contacts-contact-editor.vala:310
 msgid "Add phone number"
 msgstr "전화번호 추가"
 
-#: src/contacts-contact-editor.vala:347
+#: src/contacts-contact-editor.vala:337
 msgid "Website"
 msgstr "웹사이트"
 
-#: src/contacts-contact-editor.vala:358
-#: src/core/contacts-full-name-chunk.vala:49
+#: src/contacts-contact-editor.vala:348
+#: src/core/contacts-full-name-chunk.vala:38
 msgid "Full name"
 msgstr "성명"
 
-#: src/contacts-contact-editor.vala:369
-#: src/core/contacts-nickname-chunk.vala:47
+#: src/contacts-contact-editor.vala:359
+#: src/core/contacts-nickname-chunk.vala:36
 msgid "Nickname"
 msgstr "닉네임"
 
-#: src/contacts-contact-editor.vala:420
-#: src/core/contacts-birthday-chunk.vala:51
+#: src/contacts-contact-editor.vala:410
+#: src/core/contacts-birthday-chunk.vala:40
 msgid "Birthday"
 msgstr "생년월일"
 
-#: src/contacts-contact-editor.vala:441
+#: src/contacts-contact-editor.vala:431
 msgid "Remove birthday"
 msgstr "생년월일 제거"
 
-#: src/contacts-contact-editor.vala:459
+#: src/contacts-contact-editor.vala:449
 msgid "Set Birthday"
 msgstr "생년월일 설정"
 
-#: src/contacts-contact-editor.vala:513
-msgid "Organisation"
+#: src/contacts-contact-editor.vala:503
+msgid "Organization"
 msgstr "조직"
 
-#: src/contacts-contact-editor.vala:519
+#: src/contacts-contact-editor.vala:509
 msgid "Role"
 msgstr "역할"
 
-#: src/contacts-contact-editor.vala:635
+#: src/contacts-contact-editor.vala:625
 msgid "Label"
 msgstr "레이블"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:701
+#: src/contacts-contact-editor.vala:691
 msgid "Day"
 msgstr "일"
 
-#: src/contacts-contact-editor.vala:705
+#: src/contacts-contact-editor.vala:695
 msgid "Month"
 msgstr "월"
 
-#: src/contacts-contact-editor.vala:709
+#: src/contacts-contact-editor.vala:699
 msgid "Year"
 msgstr "년"
 
-#: src/contacts-contact-editor.vala:723
+#: src/contacts-contact-editor.vala:713
 msgid "_Set"
 msgstr "설정(_S)"
 
-#: src/contacts-contact-editor.vala:732
+#: src/contacts-contact-editor.vala:722
 msgid "Change Birthday"
 msgstr "생년월일 설정"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "Street"
 msgstr "거리"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "Extension"
 msgstr "확장"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "City"
 msgstr "시"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "State/Province"
 msgstr "주/도"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "Zip/Postal Code"
 msgstr "우편 번호"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "PO box"
 msgstr "사서함"
 
-#: src/contacts-contact-editor.vala:786
+#: src/contacts-contact-editor.vala:776
 msgid "Country"
 msgstr "국가"
 
-#: src/contacts-contact-list.vala:147
+#: src/contacts-contact-list.vala:136
 msgid "Favorites"
 msgstr "즐겨찾기"
 
-#: src/contacts-contact-list.vala:149
+#: src/contacts-contact-list.vala:138
 msgid "All Contacts"
 msgstr "모든 연락처"
 
-#: src/contacts-contact-sheet.vala:215
+#: src/contacts-contact-sheet.vala:204
 #, c-format
 msgid "Send an email to %s"
 msgstr "%s에게 전자메일 보내기"
 
-#: src/contacts-contact-sheet.vala:295
+#: src/contacts-contact-sheet.vala:285
 msgid "Visit website"
 msgstr "웹사이트 방문"
 
-#: src/contacts-contact-sheet.vala:332
+#: src/contacts-contact-sheet.vala:322
 msgid "Their birthday is today! 🎉"
 msgstr "오늘이 그들 생일입니다! 🎉"
 
-#: src/contacts-contact-sheet.vala:379
+#: src/contacts-contact-sheet.vala:369
 msgid "Show on the map"
 msgstr "지도에 표시"
 
-#: src/contacts-delete-operation.vala:36
+#: src/contacts-delete-operation.vala:25
 #, c-format
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
 msgstr[0] "연락처 %d개 삭제중"
 
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:119
+#: src/contacts-esd-setup.vala:140 src/contacts-utils.vala:108
 msgid "Local Address Book"
 msgstr "로컬 주소록"
 
-#: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:149
+#: src/contacts-esd-setup.vala:143 src/contacts-esd-setup.vala:158
+#: src/contacts-utils.vala:138
 msgid "Google"
 msgstr "구글"
 
-#: src/contacts-esd-setup.vala:167
+#: src/contacts-esd-setup.vala:155
 msgid "Local Contact"
 msgstr "지역 연락처"
 
-#: src/contacts-im-service.vala:30
+#: src/contacts-im-service.vala:19
 msgid "AOL Instant Messenger"
 msgstr "AOL 인스턴트 메신저"
 
-#: src/contacts-im-service.vala:31
+#: src/contacts-im-service.vala:20
 msgid "Facebook"
 msgstr "페이스북"
 
-#: src/contacts-im-service.vala:32
+#: src/contacts-im-service.vala:21
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
-#: src/contacts-im-service.vala:33
+#: src/contacts-im-service.vala:22
 msgid "Google Talk"
 msgstr "구글 토크"
 
-#: src/contacts-im-service.vala:34
+#: src/contacts-im-service.vala:23
 msgid "Novell Groupwise"
 msgstr "노벨 그룹와이즈"
 
-#: src/contacts-im-service.vala:35
+#: src/contacts-im-service.vala:24
 msgid "ICQ"
 msgstr "ICQ"
 
-#: src/contacts-im-service.vala:36
+#: src/contacts-im-service.vala:25
 msgid "IRC"
 msgstr "IRC"
 
-#: src/contacts-im-service.vala:37
+#: src/contacts-im-service.vala:26
 msgid "Jabber"
 msgstr "재버"
 
-#: src/contacts-im-service.vala:38
+#: src/contacts-im-service.vala:27
 msgid "Livejournal"
 msgstr "라이브저널"
 
-#: src/contacts-im-service.vala:39
+#: src/contacts-im-service.vala:28
 msgid "Local network"
 msgstr "지역 네트워크"
 
-#: src/contacts-im-service.vala:40
+#: src/contacts-im-service.vala:29
 msgid "Windows Live Messenger"
 msgstr "윈도우 라이브 메신저"
 
-#: src/contacts-im-service.vala:41
+#: src/contacts-im-service.vala:30
 msgid "MySpace"
 msgstr "마이스페이스"
 
-#: src/contacts-im-service.vala:42
+#: src/contacts-im-service.vala:31
 msgid "MXit"
 msgstr "MXit"
 
-#: src/contacts-im-service.vala:43
+#: src/contacts-im-service.vala:32
 msgid "Napster"
 msgstr "냅스터"
 
-#: src/contacts-im-service.vala:44
+#: src/contacts-im-service.vala:33
 msgid "Ovi Chat"
 msgstr "Ovi 대화"
 
-#: src/contacts-im-service.vala:45
+#: src/contacts-im-service.vala:34
 msgid "Tencent QQ"
 msgstr "텐센트 QQ"
 
-#: src/contacts-im-service.vala:46
+#: src/contacts-im-service.vala:35
 msgid "IBM Lotus Sametime"
 msgstr "IBM 로터스 새임타임"
 
-#: src/contacts-im-service.vala:47
+#: src/contacts-im-service.vala:36
 msgid "SILC"
 msgstr "SILC"
 
-#: src/contacts-im-service.vala:48
+#: src/contacts-im-service.vala:37
 msgid "sip"
 msgstr "sip"
 
-#: src/contacts-im-service.vala:49
+#: src/contacts-im-service.vala:38
 msgid "Skype"
 msgstr "스카이프"
 
-#: src/contacts-im-service.vala:50
+#: src/contacts-im-service.vala:39
 msgid "Telephony"
 msgstr "텔레포니"
 
-#: src/contacts-im-service.vala:51
+#: src/contacts-im-service.vala:40
 msgid "Trepia"
 msgstr "트레피아"
 
-#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
+#: src/contacts-im-service.vala:41 src/contacts-im-service.vala:42
 msgid "Yahoo! Messenger"
 msgstr "야후! 메신저"
 
-#: src/contacts-im-service.vala:54
+#: src/contacts-im-service.vala:43
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-link-operation.vala:38
+#: src/contacts-import-dialog.vala:60
+msgid "An error occurred reading the selected file"
+msgstr "선택한 파일을 읽는 중 오류가 발생했습니다"
+
+#: src/contacts-import-dialog.vala:87
+#, c-format
+msgid "An error occurred reading the file '%s'"
+msgstr "'%s' 파일을 읽는 중 오류가 발생했습니다"
+
+#: src/contacts-import-dialog.vala:95
+msgid "The imported file does not seem to contain any contacts"
+msgstr "가져온 파일에 연락처 정보가 없는 것 같습니다"
+
+#: src/contacts-import-dialog.vala:100
+#, c-format
+msgid "Found %u contact"
+msgid_plural "Found %u contacts"
+msgstr[0] "연락처 %u개를 찾았습니다"
+
+#: src/contacts-import-dialog.vala:129
+msgid "Can't import: no contacts found"
+msgstr "가져올 수 없음: 연락처가 없습니다"
+
+#: src/contacts-import-dialog.vala:134
+#, c-format
+msgid "By continuing, you will import %u contact"
+msgid_plural "By continuing, you will import %u contacts"
+msgstr[0] "계속하면 연락처 %u건을 가져옵니다"
+
+#: src/contacts-link-operation.vala:27
 #, c-format
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
 msgstr[0] "연락처 %d개를 연결했습니다"
 
-#: src/contacts-link-suggestion-grid.vala:49
+#: src/contacts-link-suggestion-grid.vala:38
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "%2$s님과 %1$s님은 같은 분입니까?"
 
-#: src/contacts-link-suggestion-grid.vala:52
+#: src/contacts-link-suggestion-grid.vala:41
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "%s님과 같은 분입니까?"
 
-#: src/contacts-main-window.vala:195
+#: src/contacts-main-window.vala:184
 #, c-format
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "선택한 항목 %llu개"
 
-#: src/contacts-main-window.vala:225
+#: src/contacts-main-window.vala:214
 msgid "_Add"
 msgstr "추가(_A)"
 
-#: src/contacts-main-window.vala:253
+#: src/contacts-main-window.vala:241
 #, c-format
 msgid "Editing %s"
 msgstr "%s 편집"
 
-#: src/contacts-main-window.vala:292
+#: src/contacts-main-window.vala:280
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "선택 항목 %d개"
 
-#: src/contacts-main-window.vala:312 src/contacts-main-window.vala:496
-#: src/contacts-main-window.vala:538
+#: src/contacts-main-window.vala:300 src/contacts-main-window.vala:508
+#: src/contacts-main-window.vala:550
 msgid "_Undo"
 msgstr "실행 취소(_U)"
 
-#: src/contacts-main-window.vala:394
+#: src/contacts-main-window.vala:382
 msgid "New Contact"
 msgstr "새 연락처"
 
+#: src/contacts-main-window.vala:436
+msgid "Discard changes?"
+msgstr "바뀐 내용을 버리시겠습니까?"
+
+#: src/contacts-main-window.vala:437
+msgid "Changes which are not saved will be permanently lost."
+msgstr "저장하지 않은 바뀐 내용은 완전히 없어집니다."
+
+#: src/contacts-main-window.vala:439
+msgid "Discard"
+msgstr "버리기"
+
 #. Open up a file chooser
-#: src/contacts-main-window.vala:579
+#: src/contacts-main-window.vala:591
 msgid "Export to file"
 msgstr "파일로 내보내기"
 
-#: src/contacts-main-window.vala:580
+#: src/contacts-main-window.vala:592
 msgid "_Export"
 msgstr "내보내기(_E)"
 
-#: src/contacts-main-window.vala:581
+#: src/contacts-main-window.vala:593
 msgid "contacts.vcf"
 msgstr "contacts.vcf"
 
-#: src/contacts-preferences-window.vala:30
+#: src/contacts-preferences-window.vala:19
 msgid "Primary Address Book"
 msgstr "주 주소록"
 
-#: src/contacts-preferences-window.vala:31
+#: src/contacts-preferences-window.vala:20
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -786,152 +804,152 @@ msgstr ""
 "선택한 주소록에 새 연락처를 추가합니다. 다른 주소록에서 연락처를 보고 편집할 "
 "수 있습니다."
 
-#: src/contacts-preferences-window.vala:40
+#: src/contacts-preferences-window.vala:29
 msgid "_Online Accounts"
 msgstr "온라인 계정(_O)"
 
-#: src/contacts-preferences-window.vala:45
+#: src/contacts-preferences-window.vala:34
 msgid "Open the Online Accounts panel in Settings"
 msgstr "그놈 설정의 온라인 계정 창 열기"
 
-#: src/contacts-qr-code-dialog.vala:33
+#: src/contacts-qr-code-dialog.vala:22
 #, c-format
 msgid "Scan the QR code to save the contact <b>%s</b>."
 msgstr "<b>%s</b> 연락처를 저장할 QR 코드를 스캔하십시오."
 
-#: src/contacts-unlink-operation.vala:37
+#: src/contacts-unlink-operation.vala:26
 msgid "Unlinking contacts"
 msgstr "연락처 연결 해제 중"
 
-#: src/core/contacts-addresses-chunk.vala:28
+#: src/core/contacts-addresses-chunk.vala:17
 msgid "Postal addresses"
 msgstr "우편 주소"
 
-#: src/core/contacts-alias-chunk.vala:44
+#: src/core/contacts-alias-chunk.vala:33
 msgid "Alias"
 msgstr "별칭"
 
-#: src/core/contacts-avatar-chunk.vala:38
+#: src/core/contacts-avatar-chunk.vala:27
 msgid "Avatar"
 msgstr "아바타"
 
-#: src/core/contacts-contact.vala:38
+#: src/core/contacts-contact.vala:27
 msgid "Unnamed Person"
 msgstr "이름 없는 사람"
 
-#: src/core/contacts-email-addresses-chunk.vala:24
+#: src/core/contacts-email-addresses-chunk.vala:13
 msgid "Email addresses"
 msgstr "전자메일 주소"
 
-#: src/core/contacts-im-addresses-chunk.vala:29
+#: src/core/contacts-im-addresses-chunk.vala:18
 msgid "Instant Messaging addresses"
 msgstr "인스턴트 메시징 주소"
 
-#: src/core/contacts-notes-chunk.vala:28
+#: src/core/contacts-notes-chunk.vala:17
 msgid "Notes"
 msgstr "참고"
 
-#: src/core/contacts-phones-chunk.vala:28
+#: src/core/contacts-phones-chunk.vala:17
 msgid "Phone numbers"
 msgstr "전화 번호"
 
 #. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/core/contacts-roles-chunk.vala:30
+#: src/core/contacts-roles-chunk.vala:19
 msgid "Roles"
 msgstr "직위"
 
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:129
+#: src/core/contacts-roles-chunk.vala:118
 #, c-format
 msgid "%s at %s"
 msgstr "%2$s의 %1$s"
 
 #. TRANSLATORS: This is a field which contains a name decomposed in several
 #. parts, rather than a single freeform string for the full name
-#: src/core/contacts-structured-name-chunk.vala:52
+#: src/core/contacts-structured-name-chunk.vala:41
 msgid "Structured name"
 msgstr "구조화 이름"
 
-#: src/core/contacts-type-descriptor.vala:82
-#: src/core/contacts-type-set.vala:232
+#: src/core/contacts-type-descriptor.vala:71
+#: src/core/contacts-type-set.vala:221
 msgid "Other"
 msgstr "기타"
 
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:180 src/core/contacts-type-set.vala:201
-#: src/core/contacts-type-set.vala:227 src/core/contacts-type-set.vala:229
+#: src/core/contacts-type-set.vala:169 src/core/contacts-type-set.vala:190
+#: src/core/contacts-type-set.vala:216 src/core/contacts-type-set.vala:218
 msgid "Home"
 msgstr "집"
 
-#: src/core/contacts-type-set.vala:181 src/core/contacts-type-set.vala:202
-#: src/core/contacts-type-set.vala:221 src/core/contacts-type-set.vala:223
+#: src/core/contacts-type-set.vala:170 src/core/contacts-type-set.vala:191
+#: src/core/contacts-type-set.vala:210 src/core/contacts-type-set.vala:212
 msgid "Work"
 msgstr "직업"
 
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:200
+#: src/core/contacts-type-set.vala:189
 msgid "Personal"
 msgstr "개인"
 
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:220
+#: src/core/contacts-type-set.vala:209
 msgid "Assistant"
 msgstr "비서"
 
-#: src/core/contacts-type-set.vala:222
+#: src/core/contacts-type-set.vala:211
 msgid "Work Fax"
 msgstr "업무 팩스"
 
-#: src/core/contacts-type-set.vala:224
+#: src/core/contacts-type-set.vala:213
 msgid "Callback"
 msgstr "콜백"
 
-#: src/core/contacts-type-set.vala:225
+#: src/core/contacts-type-set.vala:214
 msgid "Car"
 msgstr "차"
 
-#: src/core/contacts-type-set.vala:226
+#: src/core/contacts-type-set.vala:215
 msgid "Company"
 msgstr "회사"
 
-#: src/core/contacts-type-set.vala:228
+#: src/core/contacts-type-set.vala:217
 msgid "Home Fax"
 msgstr "집 팩스"
 
-#: src/core/contacts-type-set.vala:230
+#: src/core/contacts-type-set.vala:219
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/core/contacts-type-set.vala:231
+#: src/core/contacts-type-set.vala:220
 msgid "Mobile"
 msgstr "모바일"
 
-#: src/core/contacts-type-set.vala:233
+#: src/core/contacts-type-set.vala:222
 msgid "Fax"
 msgstr "팩스"
 
-#: src/core/contacts-type-set.vala:234
+#: src/core/contacts-type-set.vala:223
 msgid "Pager"
 msgstr "문자 수신기"
 
-#: src/core/contacts-type-set.vala:235
+#: src/core/contacts-type-set.vala:224
 msgid "Radio"
 msgstr "라디오"
 
-#: src/core/contacts-type-set.vala:236
+#: src/core/contacts-type-set.vala:225
 msgid "Telex"
 msgstr "텔렉스"
 
 #. To translators: TTY is Teletypewriter
-#: src/core/contacts-type-set.vala:238
+#: src/core/contacts-type-set.vala:227
 msgid "TTY"
 msgstr "TTY"
 
-#: src/core/contacts-urls-chunk.vala:28
+#: src/core/contacts-urls-chunk.vala:17
 msgid "URLs"
 msgstr "URL"
 
-#: src/io/contacts-io-parse-operation.vala:39
+#: src/io/contacts-io-parse-operation.vala:29
 #, c-format
 msgid "Importing contacts from '%s'"
 msgstr "'%s'에서 연락처 가져오는 중"
@@ -987,6 +1005,21 @@ msgstr "현재 창을 최대화 할 지 여부 설정을 저장합니다."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "창 최대화 여부"
+
+#~ msgid "Remove"
+#~ msgstr "제거"
+
+#~ msgid "Error reading file"
+#~ msgstr "파일 읽기 오류"
+
+#~ msgid "_OK"
+#~ msgstr "확인(_O)"
+
+#~ msgid "Continue Import?"
+#~ msgstr "가져오기를 계속하시겠습니까?"
+
+#~ msgid "C_ontinue"
+#~ msgstr "계속(_O)"
 
 #~ msgid "A contacts manager for GNOME"
 #~ msgstr "그놈 연락처 관리자"
@@ -1090,9 +1123,6 @@ msgstr "창 최대화 여부"
 #~ msgid "Online Accounts <sup>↗</sup>"
 #~ msgstr "온라인 계정 <sup>↗</sup>"
 
-#~ msgid "translator-credits"
-#~ msgstr "조성호 <shcho@gnome.org>"
-
 #~ msgid "About GNOME Contacts"
 #~ msgstr "그놈 연락처 정보"
 
@@ -1107,9 +1137,6 @@ msgstr "창 최대화 여부"
 
 #~ msgid "Edit"
 #~ msgstr "편집"
-
-#~ msgid "Delete"
-#~ msgstr "삭제"
 
 #~ msgid "Add contact"
 #~ msgstr "연락처 추가"
