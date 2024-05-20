@@ -143,7 +143,7 @@ public class Contacts.App : Adw.Application {
         developer_name = _("The GNOME Project"),
         version = Config.PACKAGE_VERSION,
         website = "https://apps.gnome.org/Contacts",
-        issue_url = "https://gitlab.gnome.org/GNOME/gnome-contacts/-/issues/new",
+        issue_url = "https://gitlab.gnome.org/GNOME/gnome-contacts/-/issues/",
         developers = developers,
         designers = designers,
         translator_credits = _("translator-credits"),
