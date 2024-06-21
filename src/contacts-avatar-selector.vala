@@ -96,9 +96,13 @@ public class Contacts.AvatarSelector : Adw.Window {
   }
 
   private async void setup_camera_portal () {
-    this.portal = new Xdp.Portal ();
+    try {
+      this.portal = new Xdp.Portal.initable_new ();
+    } catch (Error e) {
+      warning ("Failed to create XdpPortal instance: %s", e.message);
+    }
 
-    if (portal.is_camera_present ()) {
+    if (portal != null && portal.is_camera_present ()) {
       this.camera_button.sensitive = true;
     } else {
       this.camera_button.tooltip_text = _("No Camera Detected");

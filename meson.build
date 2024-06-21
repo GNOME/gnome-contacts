@@ -53,7 +53,7 @@ libadwaita_dep = dependency('libadwaita-1', version: '>= 1.4.alpha')
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
 # Camera
-libportal_dep = dependency('libportal-gtk4', version: '>= 0.6')
+libportal_dep = dependency('libportal-gtk4', version: '>= 0.7')
 gstreamer_dep = dependency('gstreamer-1.0')
 # QR Code
 libqrencode_dep = dependency('libqrencode', version: '>=4.1.1')
