@@ -84,21 +84,26 @@ SPDX-License-Identifier: GPL-2.0-or-later
         </property>
         <child type="bottom">
           <object class="GtkActionBar">
-            <child>
-              <object class="GtkButton" id="camera_button">
-                <property name="visible">False</property>
-                <property name="label" translatable="yes">Take a Picture…</property>
-                <property name="receives_default">True</property>
-                <property name="can-shrink">True</property>
-                <signal name="clicked" handler="on_camera_button_clicked"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Select a File…</property>
-                <property name="receives_default">True</property>
-                <property name="can-shrink">True</property>
-                <signal name="clicked" handler="on_file_clicked"/>
+            <child type="center">
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkButton" id="camera_button">
+                    <property name="label" translatable="yes">Take a Picture…</property>
+                    <property name="receives-default">True</property>
+                    <property name="can-shrink">True</property>
+                    <signal name="clicked" handler="on_camera_button_clicked"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Select a File…</property>
+                    <property name="receives_default">True</property>
+                    <property name="can-shrink">True</property>
+                    <signal name="clicked" handler="on_file_clicked"/>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

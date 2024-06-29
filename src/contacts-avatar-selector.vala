@@ -11,41 +11,34 @@ const int ICONS_SIZE = 64;
 
 private class Contacts.Thumbnail : Gtk.FlowBoxChild {
 
-  public Gdk.Pixbuf? source_pixbuf { get; construct set; }
+  public Gdk.Texture texture { get; construct set; }
 
-  private Thumbnail (Gdk.Pixbuf? source_pixbuf = null) {
-    Object (visible: true,
-            halign: Gtk.Align.CENTER,
-            source_pixbuf: source_pixbuf);
+  construct {
+    this.halign = Gtk.Align.CENTER;
 
-    this.add_css_class ("circular");
+    add_css_class ("circular");
 
     var avatar = new Avatar (ICONS_SIZE);
-    avatar.set_pixbuf (source_pixbuf);
+    avatar.set_paintable (this.texture);
     this.set_child (avatar);
   }
 
-  public Thumbnail.for_chunk (AvatarChunk chunk)
-      requires (chunk.avatar != null) {
-
-   Gdk.Pixbuf? pixbuf = null;
-    try {
-      var stream = chunk.avatar.load (MAIN_SIZE, null);
-      pixbuf = new Gdk.Pixbuf.from_stream (stream);
-    } catch (Error e) {
-      debug ("Couldn't create thumbnail for chunk: %s", e.message);
-    }
-    this (pixbuf);
+  private Thumbnail (Gdk.Texture texture) {
+    Object (texture: texture);
   }
 
-  public Thumbnail.for_filename (string filename) {
-    Gdk.Pixbuf? pixbuf = null;
-    try {
-      pixbuf = new Gdk.Pixbuf.from_file (filename);
-    } catch (Error e) {
-      debug ("Couldn't create frame for file '%s': %s", filename, e.message);
-    }
-    this (pixbuf);
+  public static async Thumbnail? for_chunk (AvatarChunk chunk) throws Error
+      requires (chunk.avatar != null) {
+
+    var stream = yield chunk.avatar.load_async (MAIN_SIZE);
+    var pixbuf = yield new Gdk.Pixbuf.from_stream_async (stream);
+    return new Thumbnail (Gdk.Texture.for_pixbuf (pixbuf));
+  }
+
+  public static async Thumbnail? for_file (File file) throws Error {
+    var stream = yield file.read_async ();
+    var pixbuf = yield new Gdk.Pixbuf.from_stream_async (stream);
+    return new Thumbnail (Gdk.Texture.for_pixbuf (pixbuf));
   }
 }
 
@@ -69,11 +62,7 @@ public class Contacts.AvatarSelector : Adw.Window {
 
   private Xdp.Portal? portal = null;
 
-  private Gdk.Pixbuf? _selected_avatar = null;
-  public Gdk.Pixbuf? selected_avatar {
-    owned get { return scale_pixbuf_for_avatar_use (this._selected_avatar); }
-    private set { this._selected_avatar = value; }
-  }
+  private Gdk.Texture? selected = null;
 
   static construct {
     install_action ("set-avatar", null, (Gtk.WidgetActionActivateFunc) on_set_avatar);
@@ -93,16 +82,16 @@ public class Contacts.AvatarSelector : Adw.Window {
     var selected = thumbnail_grid.get_selected_children ();
     if (selected != null) {
       unowned var thumbnail = (Thumbnail) selected.data;
-      this.selected_avatar = thumbnail.source_pixbuf;
+      this.selected = thumbnail.texture;
     } else {
-      this.selected_avatar = null;
+      this.selected = null;
     }
   }
 
   private void on_thumbnail_activated (Gtk.FlowBox thumbnail_grid,
                                        Gtk.FlowBoxChild child) {
     unowned var thumbnail = (Thumbnail) child;
-    this.selected_avatar = thumbnail.source_pixbuf;
+    this.selected = thumbnail.texture;
     activate_action_variant ("set-avatar", null);
   }
 
@@ -117,51 +106,23 @@ public class Contacts.AvatarSelector : Adw.Window {
     }
   }
 
-  private Gdk.Pixbuf? scale_pixbuf_for_avatar_use (Gdk.Pixbuf? pixbuf) {
-    if (pixbuf == null)
-      return null;
-
-    int w = pixbuf.get_width ();
-    int h = pixbuf.get_height ();
-
-    if (w <= MAIN_SIZE && h <= MAIN_SIZE)
-      return pixbuf;
-
-    if (w > h) {
-      h = (int) Math.round (h * (float) MAIN_SIZE / w);
-      w = MAIN_SIZE;
-    } else {
-      w = (int) Math.round (w * (float) MAIN_SIZE / h);
-      h = MAIN_SIZE;
-    }
-
-    return pixbuf.scale_simple (w, h, Gdk.InterpType.HYPER);
-  }
-
   /** Sets the selected avatar on the contact (it does _not_ save it) */
   private void on_set_avatar (string action_name, Variant? param) {
-    debug ("Setting avatar");
-    try {
-      uint8[] buffer;
-      this.selected_avatar.save_to_buffer (out buffer, "png", null);
-      var icon = new BytesIcon (new Bytes (buffer));
-
-      // Save into the most relevant avatar
-      var avatar_chunk = this.contact.get_most_relevant_chunk ("avatar", true);
-      if (avatar_chunk == null)
-        avatar_chunk = this.contact.create_chunk ("avatar", null);
-      ((AvatarChunk) avatar_chunk).avatar = icon;
-      destroy ();
-    } catch (Error e) {
-      destroy ();
-
-      warning ("Failed to set avatar: %s", e.message);
-      var dialog = new Adw.MessageDialog (this.transient_for,
-                                          null,
-                                          _("Failed to set avatar"));
-      dialog.add_response ("close", _("_Close"));
-      dialog.show ();
+    if (this.selected == null) {
+      warning ("Trying to save avatar, but none selected");
+      return;
     }
+
+    debug ("Saving avatar");
+    var bytes = this.selected.save_to_png_bytes ();
+    var icon = new BytesIcon (bytes);
+
+    // Save into the most relevant avatar
+    var avatar_chunk = this.contact.get_most_relevant_chunk ("avatar", true);
+    if (avatar_chunk == null)
+      avatar_chunk = this.contact.create_chunk ("avatar", null);
+    ((AvatarChunk) avatar_chunk).avatar = icon;
+    destroy ();
   }
 
   private void update_thumbnail_grid () {
@@ -169,31 +130,48 @@ public class Contacts.AvatarSelector : Adw.Window {
     var chunks = new Gtk.FilterListModel (this.contact, (owned) filter);
     for (uint i = 0; i < chunks.get_n_items (); i++) {
       var chunk = (AvatarChunk) chunks.get_item (i);
-      var thumbnail = new Thumbnail.for_chunk (chunk);
-      if (thumbnail.source_pixbuf != null) {
-        this.thumbnail_grid.insert (thumbnail, -1);
-      }
+      Thumbnail.for_chunk.begin (chunk, (obj, res) => {
+        try {
+          var thumbnail = Thumbnail.for_chunk.end (res);
+          this.thumbnail_grid.insert (thumbnail, -1);
+        } catch (Error e) {
+          debug ("Couldn't create thumbnail for chunk: %s", e.message);
+        }
+      });
     }
 
     var stock_files = Utils.get_stock_avatars ();
-    foreach (var file_name in stock_files) {
-      var thumbnail = new Thumbnail.for_filename (file_name);
-      if (thumbnail.source_pixbuf != null) {
-        this.thumbnail_grid.insert (thumbnail, -1);
-      }
+    foreach (unowned var filename in stock_files) {
+      var file = File.new_for_path (filename);
+      Thumbnail.for_file.begin (file, (obj, res) => {
+        try {
+          var thumbnail = Thumbnail.for_file.end (res);
+          this.thumbnail_grid.insert (thumbnail, -1);
+        } catch (Error e) {
+          debug ("Couldn't create thumbnail for file '%s': %s", filename, e.message);
+        }
+      });
     }
   }
 
   [GtkCallback]
   private void on_camera_button_clicked (Gtk.Button button) {
-    // XXX implement
-    // var dialog = new CropDialog.for_portal (this.portal,
-    //                                         this.get_root () as Gtk.Window);
-    // dialog.show ();
+    var dialog = new CropDialog.for_portal (this.portal,
+                                            this.get_root () as Gtk.Window);
+    dialog.cropped.connect ((dialog, texture) => {
+      this.selected = texture;
+      activate_action_variant ("set-avatar", null);
+      dialog.destroy ();
+    });
+    dialog.present ();
   }
 
   [GtkCallback]
   private void on_file_clicked (Gtk.Button button) {
+    choose_file.begin ((obj, res) => { choose_file.end (res); });
+  }
+
+  private async void choose_file () {
     var file_dialog = new Gtk.FileDialog ();
     file_dialog.title = _("Browse for more pictures");
     file_dialog.accept_label = _("_Open");
@@ -223,47 +201,40 @@ public class Contacts.AvatarSelector : Adw.Window {
     if (pictures_folder != null)
       file_dialog.set_initial_folder (File.new_for_path (pictures_folder));
 
-    file_dialog.open.begin (this.get_root () as Gtk.Window, null, (obj, response) => {
-      try {
-        var file = file_dialog.open.end (response);
+    var parent_window = this.get_root () as Gtk.Window;
+    try {
+      var file = yield file_dialog.open (parent_window, null);
+      var in_stream = yield file.read_async ();
+      var pixbuf = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
+      var texture = Gdk.Texture.for_pixbuf (pixbuf);
+      in_stream.close ();
 
-        try {
-          var in_stream = file.read ();
-          var pixbuf = new Gdk.Pixbuf.from_stream (in_stream, null);
-          in_stream.close ();
-          if (pixbuf.get_width () > MAIN_SIZE || pixbuf.get_height () > MAIN_SIZE) {
-            var dialog = new CropDialog.for_pixbuf (pixbuf,
-                                                    get_root () as Gtk.Window);
-            dialog.cropped.connect ((pixbuf) => {
-                this.selected_avatar = pixbuf;
-                activate_action_variant ("set-avatar", null);
-            });
-            dialog.present ();
-          } else {
-            this.selected_avatar = pixbuf;
-            activate_action_variant ("set-avatar", null);
-          }
-        } catch (GLib.Error e) {
-          warning ("Failed to set avatar: %s", e.message);
-          var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
-                                              null,
-                                              _("Failed to set avatar."));
-          dialog.add_response ("close", _("_Close"));
-          dialog.default_response = "close";
-          dialog.show();
-        }
-      } catch (Error error) {
-        switch (error.code) {
-          case Gtk.DialogError.CANCELLED:
-          case Gtk.DialogError.DISMISSED:
-            debug ("Dismissed opening file: %s", error.message);
-            break;
-          case Gtk.DialogError.FAILED:
-          default:
-            warning ("Could not open file: %s", error.message);
-            break;
-        }
+      var dialog = new CropDialog.for_paintable (texture, parent_window);
+      dialog.cropped.connect ((dialog, texture) => {
+        this.selected = texture;
+        activate_action_variant ("set-avatar", null);
+        dialog.destroy ();
+      });
+      dialog.present ();
+    } catch (Gtk.DialogError error) {
+      switch (error.code) {
+        case Gtk.DialogError.CANCELLED:
+        case Gtk.DialogError.DISMISSED:
+          debug ("Dismissed opening file: %s", error.message);
+          break;
+        case Gtk.DialogError.FAILED:
+        default:
+          warning ("Could not open file: %s", error.message);
+          break;
       }
-    });
+    } catch (GLib.Error e) {
+      warning ("Failed to set avatar: %s", e.message);
+      var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
+                                          null,
+                                          _("Failed to set avatar."));
+      dialog.add_response ("close", _("_Close"));
+      dialog.default_response = "close";
+      dialog.show();
+    }
   }
 }

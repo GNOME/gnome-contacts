@@ -22,7 +22,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
     </child>
 
     <property name="content">
-      <object class="AdwToolbarView" id="toolbar_view">
+      <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
             <property name="show-start-title-buttons">False</property>
@@ -52,6 +52,13 @@ SPDX-License-Identifier: GPL-2.0-or-later
             </child>
           </object>
         </child>
+
+        <property name="content">
+          <object class="CcCropArea" id="crop_area">
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+          </object>
+        </property>
       </object>
     </property>
   </template>

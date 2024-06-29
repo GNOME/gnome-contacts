@@ -581,17 +581,18 @@ cc_crop_area_new (void)
 }
 
 /**
- * cc_crop_area_create_pixbuf:
+ * cc_crop_area_create_texture:
  * @area: A crop area
  *
  * Renders the area's paintable, with the cropping applied by the user, into a
- * GdkPixbuf.
+ * GdkTexture.
  *
  * Returns: (transfer full): The cropped picture
  */
-GdkPixbuf *
-cc_crop_area_create_pixbuf (CcCropArea *area)
+GdkTexture *
+cc_crop_area_create_texture (CcCropArea *area)
 {
+    g_autoptr (GdkPaintable) paintable = NULL;
     g_autoptr (GtkSnapshot) snapshot = NULL;
     g_autoptr (GskRenderNode) node = NULL;
     g_autoptr (GskRenderer) renderer = NULL;
@@ -602,9 +603,10 @@ cc_crop_area_create_pixbuf (CcCropArea *area)
     g_return_val_if_fail (CC_IS_CROP_AREA (area), NULL);
 
     snapshot = gtk_snapshot_new ();
-    gdk_paintable_snapshot (area->paintable, snapshot,
-                            gdk_paintable_get_intrinsic_width (area->paintable),
-                            gdk_paintable_get_intrinsic_height (area->paintable));
+    paintable = gdk_paintable_get_current_image (area->paintable);
+    gdk_paintable_snapshot (paintable, snapshot,
+                            gdk_paintable_get_intrinsic_width (paintable),
+                            gdk_paintable_get_intrinsic_height (paintable));
     node = gtk_snapshot_free_to_node (g_steal_pointer (&snapshot));
 
     renderer = gsk_gl_renderer_new ();
@@ -617,7 +619,7 @@ cc_crop_area_create_pixbuf (CcCropArea *area)
     texture = gsk_renderer_render_texture (renderer, node, &viewport);
     gsk_renderer_unrealize (renderer);
 
-    return gdk_pixbuf_get_from_texture (texture);
+    return g_steal_pointer (&texture);
 }
 
 /**
