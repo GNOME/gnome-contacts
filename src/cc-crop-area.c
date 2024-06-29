@@ -629,12 +629,36 @@ cc_crop_area_get_paintable (CcCropArea *area)
     return area->paintable;
 }
 
+static void
+on_paintable_invalidated (GdkPaintable *paintable,
+                          gpointer      user_data)
+{
+    GtkWidget *widget = GTK_WIDGET (user_data);
+
+    gtk_widget_queue_draw (widget);
+}
+
 void
 cc_crop_area_set_paintable (CcCropArea   *area,
                             GdkPaintable *paintable)
 {
     g_return_if_fail (CC_IS_CROP_AREA (area));
     g_return_if_fail (GDK_IS_PAINTABLE (paintable));
+
+    if (area->paintable) {
+        const guint flags = gdk_paintable_get_flags (paintable);
+
+        if ((flags & GDK_PAINTABLE_STATIC_CONTENTS) == 0)
+            g_signal_handlers_disconnect_by_func (area->paintable,
+                                                  on_paintable_invalidated,
+                                                  area);
+
+        if ((flags & GDK_PAINTABLE_STATIC_SIZE) == 0)
+            g_signal_handlers_disconnect_by_func (area->paintable,
+                                                  on_paintable_invalidated,
+                                                  area);
+
+    }
 
     g_set_object (&area->paintable, paintable);
 
@@ -643,6 +667,23 @@ cc_crop_area_set_paintable (CcCropArea   *area,
     area->image.y = 0;
     area->image.width = 0;
     area->image.height = 0;
+
+    if (paintable) {
+        const guint flags = gdk_paintable_get_flags (paintable);
+
+        if ((flags & GDK_PAINTABLE_STATIC_CONTENTS) == 0)
+          g_signal_connect (paintable,
+                            "invalidate-contents",
+                            G_CALLBACK (on_paintable_invalidated),
+                            area);
+
+        if ((flags & GDK_PAINTABLE_STATIC_SIZE) == 0)
+          g_signal_connect (paintable,
+                            "invalidate-size",
+                            G_CALLBACK (on_paintable_invalidated),
+                            area);
+    }
+
 
     gtk_widget_queue_draw (GTK_WIDGET (area));
 }
