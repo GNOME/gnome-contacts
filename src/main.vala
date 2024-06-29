@@ -12,9 +12,9 @@ main (string[] args) {
   Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
   Intl.textdomain (Config.GETTEXT_PACKAGE);
 
-#if HAVE_CHEESE
-  GtkCheese.init (ref args);
-#endif
+  GLib.Environment.set_application_name (_("Contacts"));
+
+  Gst.init (ref args);
 
   var app = new App ();
   app.run (args);
