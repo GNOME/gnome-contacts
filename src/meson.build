@@ -7,6 +7,8 @@ install_data('org.gnome.Contacts.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
 )
 
+# Validates gsettings file
+
 # Common library
 libcontacts_sources = files(
   'contacts-chunk-filter.vala',
@@ -54,11 +56,11 @@ contacts_deps = [
   gee,
   gio_unix,
   glib,
+  gstreamer_dep,
   gtk4_dep,
   libadwaita_dep,
   libebook,
   libedataserver,
-  # libedataserverui,
   libportal_dep,
   math,
   libqrencode_dep,

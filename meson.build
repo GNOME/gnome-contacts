@@ -52,12 +52,10 @@ libadwaita_dep = dependency('libadwaita-1', version: '>= 1.4.alpha')
 # E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
-# libedataserverui = dependency('libedataserverui-1.2', version: '>=' + min_eds_version)
-# Portals (needed for camera access)
+# Camera
 libportal_dep = dependency('libportal-gtk4', version: '>= 0.6')
-# Cheese
-# cheese_dep = dependency('cheese', required: get_option('cheese'))
-# cheese_gtk_dep = dependency('cheese-gtk', version: '>= 3.3.91', required: get_option('cheese'))
+gstreamer_dep = dependency('gstreamer-1.0')
+# QR Code
 libqrencode_dep = dependency('libqrencode', version: '>=4.1.1')
 # gnome-online-accounts
 if get_option('goa')

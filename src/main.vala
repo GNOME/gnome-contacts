@@ -14,9 +14,7 @@ main (string[] args) {
 
   GLib.Environment.set_application_name (_("Contacts"));
 
-#if HAVE_CHEESE
-  GtkCheese.init (ref args);
-#endif
+  Gst.init (ref args);
 
   var app = new App ();
   app.run (args);

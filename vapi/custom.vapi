@@ -6,7 +6,7 @@ namespace Cc {
         public void set_min_size (int width, int height);
         public void set_paintable (Gdk.Paintable paintable);
         public Gdk.Paintable get_paintable ();
-        public Gdk.Pixbuf create_pixbuf ();
+        public Gdk.Texture create_texture ();
     }
 }
 

@@ -22,7 +22,7 @@ void             cc_crop_area_set_paintable        (CcCropArea   *area,
 void             cc_crop_area_set_min_size         (CcCropArea   *area,
                                                     int           width,
                                                     int           height);
-GdkPixbuf *      cc_crop_area_create_pixbuf        (CcCropArea   *area);
+GdkTexture *     cc_crop_area_create_texture       (CcCropArea   *area);
 
 G_END_DECLS
 

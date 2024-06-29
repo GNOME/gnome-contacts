@@ -106,7 +106,7 @@ public class Contacts.Avatar : Adw.Bin {
 
   private async void load_avatar (LoadableIcon? icon) {
     if (icon == null) {
-      set_pixbuf (null);
+      set_paintable (null);
       return;
     }
 
@@ -116,18 +116,18 @@ public class Contacts.Avatar : Adw.Bin {
                                                                     this.avatar_size,
                                                                     this.avatar_size,
                                                                     true);
-      this.set_pixbuf (pixbuf);
+      set_paintable (Gdk.Texture.for_pixbuf (pixbuf));
     } catch (Error e) {
       warning ("Couldn't load avatar of '%s': %s", this.individual.display_name, e.message);
     }
   }
 
   /**
-   * Manually set the avatar to the given pixbuf, even if the contact has an avatar.
+   * Manually set the avatar to the given paintable,
+   * even if the contact has an avatar.
    */
-  public void set_pixbuf (Gdk.Pixbuf? a_pixbuf) {
-    var img = (a_pixbuf != null)? Gdk.Texture.for_pixbuf (a_pixbuf) : null;
-    ((Adw.Avatar) this.child).set_custom_image (img);
+  public void set_paintable (Gdk.Paintable? paintable) {
+    ((Adw.Avatar) this.child).set_custom_image (paintable);
   }
 
   /* Find a nice name to generate the label and color for the fallback avatar
