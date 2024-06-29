@@ -445,73 +445,78 @@ on_drag_cancel (CcCropArea       *area,
     area->drag_offy = 0;
 }
 
-#define CORNER_LINE_WIDTH 4.0
-#define CORNER_LINE_LENGTH 15.0
-#define CORNER_SIZE (CORNER_LINE_LENGTH + CORNER_LINE_WIDTH / 2)
+#define CORNER_LINE_WIDTH  (4.0)
+#define CORNER_LINE_LENGTH (15.0)
+#define CORNER_LINE_COLOR  ((GdkRGBA) { 1, 1, 1, 1 })
 
 static void
 cc_crop_area_snapshot (GtkWidget   *widget,
                        GtkSnapshot *snapshot)
 {
     CcCropArea *area = CC_CROP_AREA (widget);
-    cairo_t *cr;
     GdkRectangle crop;
+    GskRoundedRect crop_circle;
+    graphene_rect_t img_bounds = GRAPHENE_RECT_INIT (0, 0, area->image.width, area->image.height);
 
     if (area->paintable == NULL)
         return;
 
     update_image_and_crop (area);
 
-
     gtk_snapshot_save (snapshot);
 
-    /* First draw the picture */
-    gtk_snapshot_translate (snapshot, &GRAPHENE_POINT_INIT (area->image.x, area->image.y));
-
-    gdk_paintable_snapshot (area->paintable, snapshot, area->image.width, area->image.height);
-
-    /* Draw the cropping UI on top with cairo */
-    cr = gtk_snapshot_append_cairo (snapshot, &GRAPHENE_RECT_INIT (0, 0, area->image.width, area->image.height));
-
+    /* Calculate the crop circle */
     get_scaled_crop (area, &crop);
     crop.x -= area->image.x;
     crop.y -= area->image.y;
 
-    /* Draw the circle as an ellipse, to prevent rounding from jitter of the edges */
-    cairo_save (cr);
-    cairo_translate (cr, crop.x + crop.width / 2.0, crop.y + crop.height / 2.0);
-    cairo_scale (cr, crop.width / 2.0, crop.height / 2.0);
-    cairo_arc (cr, 0, 0, 1, 0, 2 * G_PI);
-    cairo_restore (cr);
-    cairo_save (cr);
-    cairo_rectangle (cr, 0, 0, area->image.width, area->image.height);
-    cairo_set_source_rgba (cr, 0, 0, 0, 0.4);
-    cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
-    cairo_fill (cr);
-    cairo_restore (cr);
+    gsk_rounded_rect_init_from_rect (&crop_circle,
+                                     &GRAPHENE_RECT_INIT (crop.x, crop.y, crop.width, crop.height),
+                                     crop.width / 2.0);
 
-    /* draw the four corners */
-    cairo_set_source_rgb (cr, 1, 1, 1);
-    cairo_set_line_width (cr, CORNER_LINE_WIDTH);
+    /* Translate to the correct point for rendering the image */
+    gtk_snapshot_translate (snapshot, &GRAPHENE_POINT_INIT (area->image.x, area->image.y));
+
+    /* Draw the picture */
+    gdk_paintable_snapshot (area->paintable, snapshot, area->image.width, area->image.height);
+
+    /* Draw inverted circle mask on top */
+    gtk_snapshot_push_mask (snapshot, GSK_MASK_MODE_INVERTED_ALPHA);
+
+    gtk_snapshot_push_rounded_clip (snapshot, &crop_circle);
+    gtk_snapshot_append_color (snapshot, &(GdkRGBA){0, 0, 0, 1}, &img_bounds);
+    gtk_snapshot_pop (snapshot);
+    gtk_snapshot_pop (snapshot);
+
+    gtk_snapshot_push_opacity (snapshot, 0.4);
+    gtk_snapshot_append_color (snapshot, &(GdkRGBA){0, 0, 0, 1}, &img_bounds);
+    gtk_snapshot_pop (snapshot);
+    gtk_snapshot_pop (snapshot);
+
+    /* Draw the corners */
+#define HORIZONTAL_LINE(x, y) \
+    gtk_snapshot_append_color (snapshot, &CORNER_LINE_COLOR, \
+                               &GRAPHENE_RECT_INIT ((x), (y), CORNER_LINE_LENGTH, CORNER_LINE_WIDTH))
+#define VERTICAL_LINE(x, y) \
+    gtk_snapshot_append_color (snapshot, &CORNER_LINE_COLOR, \
+                               &GRAPHENE_RECT_INIT ((x), (y), CORNER_LINE_WIDTH, CORNER_LINE_LENGTH))
 
     /* top left corner */
-    cairo_move_to (cr, crop.x + CORNER_LINE_WIDTH / 2, crop.y + CORNER_SIZE);
-    cairo_rel_line_to (cr, 0, -CORNER_LINE_LENGTH);
-    cairo_rel_line_to (cr, CORNER_LINE_LENGTH, 0);
+    HORIZONTAL_LINE (crop.x, crop.y);
+    VERTICAL_LINE (crop.x, crop.y);
     /* top right corner */
-    cairo_rel_move_to (cr, crop.width - 2 * CORNER_SIZE, 0);
-    cairo_rel_line_to (cr, CORNER_LINE_LENGTH, 0);
-    cairo_rel_line_to (cr, 0, CORNER_LINE_LENGTH);
+    HORIZONTAL_LINE (crop.x + crop.width - CORNER_LINE_LENGTH, crop.y);
+    VERTICAL_LINE (crop.x + crop.width - CORNER_LINE_WIDTH, crop.y);
     /* bottom right corner */
-    cairo_rel_move_to (cr, 0, crop.height - 2 * CORNER_SIZE);
-    cairo_rel_line_to (cr, 0, CORNER_LINE_LENGTH);
-    cairo_rel_line_to (cr, -CORNER_LINE_LENGTH, 0);
+    HORIZONTAL_LINE (crop.x + crop.width - CORNER_LINE_LENGTH,
+                     crop.y + crop.height - CORNER_LINE_WIDTH);
+    VERTICAL_LINE (crop.x + crop.width - CORNER_LINE_WIDTH,
+                   crop.y + crop.height - CORNER_LINE_LENGTH);
     /* bottom left corner */
-    cairo_rel_move_to (cr, -(crop.width - 2 * CORNER_SIZE), 0);
-    cairo_rel_line_to (cr, -CORNER_LINE_LENGTH, 0);
-    cairo_rel_line_to (cr, 0, -CORNER_LINE_LENGTH);
-
-    cairo_stroke (cr);
+    HORIZONTAL_LINE (crop.x,
+                     crop.y + crop.height - CORNER_LINE_WIDTH);
+    VERTICAL_LINE (crop.x,
+                   crop.y + crop.height - CORNER_LINE_LENGTH);
 
     gtk_snapshot_restore (snapshot);
 }
@@ -686,6 +691,7 @@ cc_crop_area_set_paintable (CcCropArea   *area,
 
 
     gtk_widget_queue_draw (GTK_WIDGET (area));
+    gtk_widget_queue_resize (GTK_WIDGET (area));
 }
 
 /**
