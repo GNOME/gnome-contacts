@@ -64,7 +64,7 @@ G_DEFINE_TYPE (CcCropArea, cc_crop_area, GTK_TYPE_WIDGET);
 static void
 update_image_and_crop (CcCropArea *area)
 {
-    GtkAllocation allocation;
+    int widget_width, widget_height;
     int width, height;
     int dest_width, dest_height;
     double scale;
@@ -72,16 +72,18 @@ update_image_and_crop (CcCropArea *area)
     if (area->paintable == NULL)
         return;
 
-    gtk_widget_get_allocation (GTK_WIDGET (area), &allocation);
+    widget_width = gtk_widget_get_width (GTK_WIDGET (area));
+    widget_height = gtk_widget_get_height (GTK_WIDGET (area));
 
     /* Get the size of the paintable */
     width = gdk_paintable_get_intrinsic_width (area->paintable);
     height = gdk_paintable_get_intrinsic_height (area->paintable);
 
+    if (width == 0 || height == 0)
+        return;
+
     /* Find out the scale to convert to widget width/height */
-    scale = allocation.height / (double) height;
-    if (scale * width > allocation.width)
-        scale = allocation.width / (double) width;
+    scale = MIN (widget_height / (double) height, widget_width / (double) width);
 
     dest_width = width * scale;
     dest_height = height * scale;
@@ -102,8 +104,8 @@ update_image_and_crop (CcCropArea *area)
     }
 
     area->scale = scale;
-    area->image.x = (allocation.width - dest_width) / 2;
-    area->image.y = (allocation.height - dest_height) / 2;
+    area->image.x = (widget_width - dest_width) / 2;
+    area->image.y = (widget_height - dest_height) / 2;
     area->image.width = dest_width;
     area->image.height = dest_height;
 }
