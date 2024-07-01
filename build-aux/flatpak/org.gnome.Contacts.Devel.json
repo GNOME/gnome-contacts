@@ -71,6 +71,12 @@
             "name": "gnome-online-accounts",
             "cleanup": [ "/bin", "/share/GConf" ],
             "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocumentation=false",
+                "-Dfedora=false",
+                "-Dkerberos=false",
+                "-Dman=false"
+            ],
             "sources": [
                 {
                     "type": "git",
