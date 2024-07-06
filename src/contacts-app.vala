@@ -250,6 +250,9 @@ public class Contacts.App : Adw.Application {
 
     base.startup ();
 
+    GLib.Environment.set_application_name (_("Contacts"));
+    Gtk.Window.set_default_icon_name (Config.APP_ID);
+
     create_actions ();
   }
 
