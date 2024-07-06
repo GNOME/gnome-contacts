@@ -6,8 +6,8 @@
 
 /* The link suggestion widget */
 .contacts-link-suggestion {
-  border-top: 1px solid @borders;
-  background-color: shade(@theme_bg_color, 0.9);
+  border-top: 1px solid var(--border-color);
+  background-color: shade(var(--window-bg-color), 0.9);
 }
 
   .contacts-link-suggestion avatar {
@@ -20,7 +20,8 @@
 
 /* Used to provide a little cutout around an overlayed circular button */
 .contacts-cutout-button {
-  background-color: @window_bg_color;
+  background-color: var(--window-bg-color);
+  color: var(--window-fg-color);
   border-radius: 9999px;
   padding: 2px;
 }
