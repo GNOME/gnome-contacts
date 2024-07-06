@@ -135,8 +135,7 @@ public class Contacts.App : Adw.Application {
       "Allan Day <allanpday@gmail.com>"
     };
 
-    var about = new Adw.AboutWindow () {
-        transient_for = this.window,
+    var about = new Adw.AboutDialog () {
         application_name = Environment.get_application_name (),
         application_icon = Config.APP_ID,
         developer_name = _("The GNOME Project"),
@@ -150,7 +149,7 @@ public class Contacts.App : Adw.Application {
         license_type = Gtk.License.GPL_2_0
       };
 
-      about.present ();
+      about.present (this.window);
   }
 
   public async void show_by_email (string email_address)
