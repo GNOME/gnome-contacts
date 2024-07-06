@@ -181,20 +181,20 @@ public class Contacts.PersonaEditor : Gtk.Widget {
 
   // private void add_show_more_button (Gtk.AnyFilter filter) {
   private void add_show_more_button (ChunkPropertyFilter filter) {
-    var show_more_button = new Gtk.Button ();
-    var show_more_content = new Adw.ButtonContent ();
-    show_more_content.icon_name = "view-more-symbolic";
-    show_more_content.label = _("Show More");
-    show_more_button.set_child (show_more_content);
-    show_more_button.halign = Gtk.Align.CENTER;
-    show_more_button.add_css_class ("flat");
-    show_more_button.clicked.connect ((button) => {
-      button.unparent ();
+    var show_more_row = new Adw.ButtonRow ();
+    var listbox = new Adw.PreferencesGroup ();
+
+    listbox.add (show_more_row);
+    listbox.set_parent (this);
+
+    show_more_row.start_icon_name = "view-more-symbolic";
+    show_more_row.title = _("Show More");
+    show_more_row.activated.connect (() => {
+      listbox.unparent ();
       filter.allowed_properties.splice (0,
                                         filter.allowed_properties.get_n_items (),
                                         SUPPORTED_PROPERTIES);
     });
-    show_more_button.set_parent (this);
   }
 
   private void on_model_items_changed (GLib.ListModel model,
