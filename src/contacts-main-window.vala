@@ -432,15 +432,14 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     if (!contact_pane.on_edit_mode)
       return true;
 
-    var dialog = new Adw.MessageDialog (this,
-                                        _("Discard changes?"),
-                                        _("Changes which are not saved will be permanently lost."));
+    var dialog = new Adw.AlertDialog (_("Discard changes?"),
+                                      _("Changes which are not saved will be permanently lost."));
     dialog.add_response ("cancel", _("Cancel"));
     dialog.add_response ("discard", _("Discard"));
     dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
     dialog.set_close_response ("cancel");
 
-    string response = yield dialog.choose (null);
+    string response = yield dialog.choose (this, null);
 
     if (response == "discard") {
       activate_action ("edit-contact-cancel", null);

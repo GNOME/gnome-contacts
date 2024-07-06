@@ -233,12 +233,10 @@ public class Contacts.AvatarSelector : Adw.Window {
       }
     } catch (GLib.Error e) {
       warning ("Failed to set avatar: %s", e.message);
-      var dialog = new Adw.MessageDialog (get_root () as Gtk.Window,
-                                          null,
-                                          _("Failed to set avatar."));
+      var dialog = new Adw.AlertDialog (null, _("Failed to set avatar."));
       dialog.add_response ("close", _("_Close"));
       dialog.default_response = "close";
-      dialog.show();
+      dialog.present(this);
     }
   }
 }

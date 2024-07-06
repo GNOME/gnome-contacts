@@ -100,12 +100,11 @@ public class Contacts.App : Adw.Application {
       if (can_navigate)
         this.window.selection_model.select_item (pos, true);
     } else {
-      var dialog = new Adw.MessageDialog (this.window,
-                                          _("Contact not found"),
-                                          _("No contact with id %s found").printf (id));
+      var dialog = new Adw.AlertDialog (_("Contact not found"),
+                                        _("No contact with id %s found").printf (id));
       dialog.add_response ("close", _("_Close"));
       dialog.default_response = "close";
-      dialog.show ();
+      dialog.present (this.window);
     }
   }
 
@@ -163,12 +162,11 @@ public class Contacts.App : Adw.Application {
       if (can_navigate)
         this.window.selection_model.select_item (pos, true);
     } else {
-      var dialog = new Adw.MessageDialog (this.window,
-                                          _("Contact not found"),
-                                          _("No contact with email address %s found").printf (email_address));
+      var dialog = new Adw.AlertDialog (_("Contact not found"),
+                                        _("No contact with email address %s found").printf (email_address));
       dialog.add_response ("close", _("_Close"));
       dialog.default_response = "close";
-      dialog.show ();
+      dialog.present (this.window);
     }
   }
 
@@ -226,9 +224,8 @@ public class Contacts.App : Adw.Application {
     if (this.contacts_store.aggregator.primary_store != null)
       return;
 
-    var dialog = new Adw.MessageDialog (this.window,
-                                        _("Primary address book not found"),
-                                        null);
+    var dialog = new Adw.AlertDialog (_("Primary address book not found"),
+                                      null);
     dialog.body = _("Contacts can't find the configured primary address book. You might experience issues creating or editing contacts");
     dialog.add_response ("preferences", _("Go To _Preferences"));
     dialog.set_default_response ("preferences");
@@ -240,7 +237,7 @@ public class Contacts.App : Adw.Application {
         show_preferences ();
       dialog.destroy ();
     });
-    dialog.present ();
+    dialog.present (this.window);
   }
 
   public override void startup () {
