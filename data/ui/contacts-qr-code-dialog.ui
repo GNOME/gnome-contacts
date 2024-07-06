@@ -5,15 +5,13 @@ SPDX-License-Identifier: GPL-2.0-or-later
 -->
 
 <interface>
-  <template class="ContactsQrCodeDialog" parent="AdwWindow">
-    <property name="default-width">400</property>
-    <property name="default-height">550</property>
+  <template class="ContactsQrCodeDialog" parent="AdwDialog">
+    <property name="content-width">400</property>
+    <property name="content-height">550</property>
     <property name="height-request">550</property>
-    <property name="modal">True</property>
-    <property name="destroy-with-parent">True</property>
     <property name="title" translatable="yes">Share Contact</property>
 
-    <property name="content">
+    <property name="child">
       <object class="AdwToolbarView">
         <child type="top">
           <object class="GtkHeaderBar"/>

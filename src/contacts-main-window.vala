@@ -245,8 +245,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   private void show_contact_qr_code (GLib.SimpleAction action, GLib.Variant? parameter) {
     unowned var selected = get_selected_individual ();
-    var dialog = new QrCodeDialog.for_contact (selected, get_root () as Gtk.Window);
-    dialog.show ();
+    var dialog = new QrCodeDialog.for_contact (selected);
+    dialog.present (this);
   }
 
   private void update_favorite_actions (bool favorite) {

@@ -8,7 +8,7 @@ using Folks;
 using GLib;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-qr-code-dialog.ui")]
-public class Contacts.QrCodeDialog : Adw.Window {
+public class Contacts.QrCodeDialog : Adw.Dialog {
 
   [GtkChild]
   private unowned Gtk.Picture qr_image;
@@ -16,9 +16,7 @@ public class Contacts.QrCodeDialog : Adw.Window {
   [GtkChild]
   private unowned Gtk.Label qr_subtitle;
 
-  public QrCodeDialog.for_contact (Individual individual, Gtk.Window? parent = null) {
-    Object (transient_for: parent);
-
+  public QrCodeDialog.for_contact (Individual individual) {
     var subtitle = GLib.Markup.printf_escaped (_("Scan the QR code to save the contact <b>%s</b>."),
                                                individual.display_name);
     this.qr_subtitle.set_markup (subtitle);
