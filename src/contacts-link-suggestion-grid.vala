@@ -12,7 +12,7 @@ using Folks;
  * and another (hopefully) similar contact.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-link-suggestion-grid.ui")]
-public class Contacts.LinkSuggestionGrid : Gtk.Grid {
+public class Contacts.LinkSuggestionGrid : Gtk.Box {
 
   private const int AVATAR_SIZE = 54;
 
@@ -24,16 +24,16 @@ public class Contacts.LinkSuggestionGrid : Gtk.Grid {
   private unowned Gtk.Button accept_button;
   [GtkChild]
   private unowned Gtk.Button reject_button;
+  [GtkChild]
+  private unowned Adw.Bin avatar_bin;
 
   public signal void suggestion_accepted ();
   public signal void suggestion_rejected ();
 
   public LinkSuggestionGrid (Individual individual) {
     var image_frame = new Avatar (AVATAR_SIZE, individual);
-    image_frame.hexpand = false;
-    this.attach (image_frame, 0, 0, 1, 2);
+    avatar_bin.set_child (image_frame);
 
-    this.description_label.xalign = 0;
     this.description_label.label = Contacts.Utils.has_main_persona (individual) ?
       _("Is this the same person as %s from %s?")
        .printf (individual.display_name,
