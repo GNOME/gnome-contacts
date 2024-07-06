@@ -44,12 +44,11 @@ public class Contacts.ContactPane : Adw.Bin {
   }
 
   public void add_suggestion (Individual individual, Individual other) {
-    unowned var parent_overlay = this.get_parent () as Gtk.Overlay;
+    unowned var parent_toolbar = this.get_parent () as Adw.ToolbarView;
 
     remove_suggestion_grid ();
     this.suggestion_grid = new LinkSuggestionGrid (other);
-    this.suggestion_grid.valign = Gtk.Align.END;
-    parent_overlay.add_overlay (this.suggestion_grid);
+    parent_toolbar.add_bottom_bar (this.suggestion_grid);
 
     this.suggestion_grid.suggestion_accepted.connect (() => {
       var to_link = new Gee.LinkedList<Individual> ();
@@ -212,8 +211,8 @@ public class Contacts.ContactPane : Adw.Bin {
     if (this.suggestion_grid == null)
       return;
 
-    unowned var parent_overlay = this.get_parent () as Gtk.Overlay;
-    parent_overlay.remove_overlay (suggestion_grid);
+    unowned var parent_toolbar = this.get_parent () as Adw.ToolbarView;
+    parent_toolbar.remove (suggestion_grid);
     this.suggestion_grid = null;
   }
 }

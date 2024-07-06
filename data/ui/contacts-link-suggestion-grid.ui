@@ -6,10 +6,9 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 <interface>
   <template class="ContactsLinkSuggestionGrid" parent="GtkGrid">
-    <property name="orientation">horizontal</property>
     <property name="column_spacing">6</property>
     <style>
-      <class name="contacts-link-suggestion"/>
+      <class name="toolbar"/>
     </style>
     <child>
       <object class="GtkLabel" id="description_label">
@@ -59,15 +58,11 @@ SPDX-License-Identifier: GPL-2.0-or-later
           </object>
         </child>
         <child>
-          <object class="GtkSeparator">
-            <property name="orientation">vertical</property>
-          </object>
-        </child>
-        <child>
           <object class="GtkButton" id="reject_button">
             <property name="valign">center</property>
             <style>
               <class name="flat"/>
+              <class name="circular"/>
             </style>
             <child>
               <object class="GtkImage">

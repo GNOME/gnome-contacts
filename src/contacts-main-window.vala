@@ -34,7 +34,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   [GtkChild]
   private unowned Gtk.Stack list_pane_stack;
   [GtkChild]
-  private unowned Gtk.Overlay contact_pane_container;
+  private unowned Adw.ToolbarView contact_pane_toolbar;
   [GtkChild]
   private unowned Adw.NavigationPage list_pane_page;
   [GtkChild]
@@ -150,7 +150,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contact_pane.visible = true;
     this.contact_pane.hexpand = true;
     this.contact_pane.contacts_linked.connect (contact_pane_contacts_linked_cb);
-    this.contact_pane_container.set_child (this.contact_pane);
+    this.contact_pane_toolbar.set_content (this.contact_pane);
   }
 
   /**
