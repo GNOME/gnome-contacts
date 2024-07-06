@@ -7,14 +7,12 @@
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-preferences-window.ui")]
-public class Contacts.PreferencesWindow : Adw.PreferencesWindow {
+public class Contacts.PreferencesWindow : Adw.PreferencesDialog {
 
   [GtkChild]
   private unowned Adw.PreferencesPage address_books_page;
 
-  public PreferencesWindow (Store contacts_store, Gtk.Window? transient_for) {
-    Object (transient_for: transient_for, search_enabled: false);
-
+  public PreferencesWindow (Store contacts_store) {
     var acc_list = new AccountsList (contacts_store);
     acc_list.title = _("Primary Address Book");
     acc_list.description = _("New contacts will be added to the selected address book. You are able to view and edit contacts from other address books.");

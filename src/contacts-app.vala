@@ -110,8 +110,8 @@ public class Contacts.App : Adw.Application {
   }
 
   public void show_preferences () {
-    var prefs_window = new PreferencesWindow (this.contacts_store, this.window);
-    prefs_window.show ();
+    var prefs_window = new PreferencesWindow (this.contacts_store);
+    prefs_window.present (this.window);
   }
 
   public void show_help () {
