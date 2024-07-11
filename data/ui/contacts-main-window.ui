@@ -179,25 +179,10 @@ SPDX-License-Identifier: GPL-2.0-or-later
                       <object class="GtkStack" id="list_pane_stack">
                         <!-- The loading spinner page -->
                         <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="homogeneous">True</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                              <object class="GtkSpinner">
-                                <property name="spinning">True</property>
-                                <property name="valign">end</property>
-                                <property name="halign">center</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label1">
-                                <property name="valign">start</property>
-                                <property name="halign">center</property>
-                                <property name="label" translatable="yes">Loading</property>
-                              </object>
-                            </child>
+                          <object class="AdwSpinner">
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
                           </object>
                         </child>
                         <!-- The list pane with the actual contacts -->
