@@ -42,7 +42,7 @@ public class Contacts.ImportOperation : Operation {
     for (uint i = 0; i < this.to_import.get_n_items (); i++) {
       var contact = (Contact) this.to_import.get_item (i);
 
-      unowned var individual = yield contact.apply_changes (primary_store);
+      var individual = yield contact.apply_changes (primary_store);
       if (individual != null) {
         debug ("Created new individual (%s)",
                (individual != null)? individual.id : "null");

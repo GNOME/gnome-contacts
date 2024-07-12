@@ -169,7 +169,7 @@ public class Contacts.ContactPane : Adw.Bin {
       // The new individual. Even when editing an exisiting contact, it might
       // be a different Individual than before, so make sure to adjust our
       // selected contact afterwards
-      unowned var individual =
+      var individual =
           yield contact.apply_changes (this.store.aggregator.primary_store);
       debug ("Applied changes resulted in individual (%s)",
              (individual != null)? individual.id : "null");

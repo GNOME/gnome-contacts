@@ -269,8 +269,8 @@ public class Contacts.Contact : GLib.Object, GLib.ListModel {
    *
    * Returns the Individual that was created from applying the changes
    */
-  public async unowned Individual? apply_changes (PersonaStore store) throws GLib.Error {
-    unowned Individual? individual = null;
+  public async Individual? apply_changes (PersonaStore store) throws GLib.Error {
+    Individual? individual = null;
 
     // Create a (shallow) copy of the chunks
     var chunks = this.chunks.copy ((chunk) => { return chunk; });
