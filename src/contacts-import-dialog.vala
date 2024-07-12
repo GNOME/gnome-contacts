@@ -65,27 +65,23 @@ public class Contacts.ImportDialog : Adw.Window {
       group.title = file_name;
 
     // Now, parse the data and show a loading spinner while busy
-    var spinner = new Gtk.Spinner ();
+    var spinner = new Adw.Spinner ();
     group.add (spinner);
 
     GLib.ListModel parsed;
     uint n_parsed = 0;
     try {
-      spinner.start ();
-
       var parse_op = new Io.ParseOperation (file);
       yield parse_op.execute ();
       debug ("Successfully parsed a contact");
       parsed = parse_op.parsed;
       n_parsed = parsed.get_n_items ();
       this.parsed_results.append (parsed);
-      spinner.stop ();
       group.remove (spinner);
     } catch (GLib.Error err) {
       warning ("Couldn't parse file: %s", err.message);
       set_error_label (group,
                        _("An error occurred reading the file '%s'".printf (file_name)));
-      spinner.stop ();
       group.remove (spinner);
       return;
     }
