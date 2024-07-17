@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2023-05-02 13:32+0000\n"
-"PO-Revision-Date: 2023-06-12 09:57-0400\n"
+"POT-Creation-Date: 2024-02-27 21:49+0000\n"
+"PO-Revision-Date: 2024-07-17 22:21+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -22,17 +22,18 @@ msgstr ""
 
 # desktop entry name
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:137
-#: src/contacts-main-window.vala:190 src/contacts-main-window.vala:213
-#: src/main.vala:26
+#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
+#: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
+#: src/main.vala:15
 msgid "Contacts"
 msgstr "Kontakty"
 
-# popis príkazu
+# placeholder
 #: data/org.gnome.Contacts.appdata.xml.in.in:7
 #: data/org.gnome.Contacts.desktop.in.in:4
-msgid "A contacts manager for GNOME"
-msgstr "Správca kontaktov prostredia GNOME"
+#| msgid "Search contacts"
+msgid "Manage your contacts"
+msgstr "Spravujte vaše kontakty"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:9
 msgid ""
@@ -77,7 +78,8 @@ msgstr "Zobrazenie nastavenia aplikácie Kontakty"
 msgid "Contacts edit view"
 msgstr "Zobrazenie úprav aplikácie Kontakty"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:887 src/contacts-app.vala:144
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.Contacts.appdata.xml.in.in:992 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "Projekt GNOME"
 
@@ -101,24 +103,24 @@ msgstr "Pomocník"
 #: data/gtk/help-overlay.ui:17
 msgctxt "shortcut window"
 msgid "Open menu"
-msgstr "Otvorenie ponuky"
+msgstr "Otvoriť ponuku"
 
 #: data/gtk/help-overlay.ui:23
 msgctxt "shortcut window"
 msgid "Show preferences"
-msgstr "Zobrazenie predvolieb"
+msgstr "Zobraziť predvoľby"
 
 # MČ: zobrazí sa, keď nie je vybraný kontakt
 # label
 #: data/gtk/help-overlay.ui:29
 msgctxt "shortcut window"
 msgid "Create a new contact"
-msgstr "Vytvorenie nového kontaktu"
+msgstr "Vytvoriť nový kontakt"
 
 #: data/gtk/help-overlay.ui:35
 msgctxt "shortcut window"
 msgid "Search contacts"
-msgstr "Vyhľadanie kontaktov"
+msgstr "Hľadať kontakty"
 
 #: data/gtk/help-overlay.ui:41
 msgctxt "shortcut window"
@@ -129,7 +131,7 @@ msgstr "Zoznam skratiek"
 #: data/gtk/help-overlay.ui:47
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr "Ukončenie"
+msgstr "Ukončiť"
 
 #: data/gtk/help-overlay.ui:54
 msgctxt "shortcut window"
@@ -139,221 +141,228 @@ msgstr "Úprava alebo vytvorenie kontaktu"
 #: data/gtk/help-overlay.ui:58
 msgctxt "shortcut window"
 msgid "Save current changes to contact"
-msgstr "Uloženie aktuálnych zmien kontaktu"
+msgstr "Uložiť aktuálne zmeny do kontaktu"
 
 #: data/gtk/help-overlay.ui:64
 msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
-msgstr "Zrušenie aktuálnych zmien kontaktu"
+msgstr "Zrušiť aktuálne zmeny v kontakte"
+
+# dialog title
+#: data/ui/contacts-avatar-selector.ui:12
+msgid "Select a new avatar"
+msgstr "Vybrať novú podobizeň"
 
 # button
-#: data/ui/contacts-avatar-selector.ui:28 data/ui/contacts-crop-dialog.ui:25
-#: data/ui/contacts-main-window.ui:292 src/contacts-app.vala:234
-#: src/contacts-app.vala:395 src/contacts-avatar-selector.vala:211
-#: src/contacts-contact-editor.vala:714 src/contacts-main-window.vala:549
-#: src/contacts-main-window.vala:605
+#: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
+#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
+#: src/contacts-app.vala:237 src/contacts-contact-editor.vala:709
+#: src/contacts-main-window.vala:537
 msgid "_Cancel"
 msgstr "_Zrušiť"
 
-# dialog title
-#: data/ui/contacts-avatar-selector.ui:37
-msgid "Select a new avatar"
-msgstr "Výber novej podobizne"
-
-#: data/ui/contacts-avatar-selector.ui:43 data/ui/contacts-crop-dialog.ui:40
-#: data/ui/contacts-setup-window.ui:29
+#: data/ui/contacts-avatar-selector.ui:44 data/ui/contacts-crop-dialog.ui:44
+#: data/ui/contacts-setup-window.ui:30
 msgid "_Done"
 msgstr "_Dokončiť"
 
-#: data/ui/contacts-avatar-selector.ui:94
+#: data/ui/contacts-avatar-selector.ui:90
 msgid "Take a Picture…"
 msgstr "Zachytiť fotografiu…"
 
 # title
-#: data/ui/contacts-avatar-selector.ui:101
+#: data/ui/contacts-avatar-selector.ui:98
 msgid "Select a File…"
 msgstr "Vybrať súbor…"
 
 # MČ: zobrazí sa, keď nie je vybraný kontakt
 # label
-#: data/ui/contacts-contact-pane.ui:14
+#: data/ui/contacts-contact-pane.ui:19
 msgid "Select a Contact"
-msgstr "Výber kontaktu"
+msgstr "Vyberte kontakt"
 
 # DK:window title
-#: data/ui/contacts-editor-menu.ui:11
+#: data/ui/contacts-editor-menu.ui:16
 msgid "Change Addressbook"
 msgstr "Zmeniť adresár kontaktov"
 
 # tooltip
-#: data/ui/contacts-editable-avatar.ui:17
+#: data/ui/contacts-editable-avatar.ui:22
 msgid "Change Avatar"
 msgstr "Zmení podobizeň"
 
 # tooltip
-#: data/ui/contacts-editable-avatar.ui:36
+#: data/ui/contacts-editable-avatar.ui:41
 msgid "Remove Avatar"
 msgstr "Odstráni podobizeň"
 
+# about dialog title
+#: data/ui/contacts-import-dialog.ui:12
+#| msgid "About Contacts"
+msgid "Import Contacts"
+msgstr "Importovať kontakty"
+
+#: data/ui/contacts-import-dialog.ui:44
+#| msgid "Import"
+msgid "_Import"
+msgstr "_Importovať"
+
 # desktop entry name
-#: data/ui/contacts-link-suggestion-grid.ui:51
+#: data/ui/contacts-link-suggestion-grid.ui:56
 msgid "Link Contacts"
 msgstr "Prepojiť kontakty"
 
-#: data/ui/contacts-main-window.ui:5
+#: data/ui/contacts-main-window.ui:10
 msgid "List Contacts By:"
 msgstr "Kontakty zoraďovať podľa:"
 
-#: data/ui/contacts-main-window.ui:7
+#: data/ui/contacts-main-window.ui:12
 msgid "First Name"
 msgstr "Krstného mena"
 
-#: data/ui/contacts-main-window.ui:12
+#: data/ui/contacts-main-window.ui:17
 msgid "Surname"
 msgstr "Priezviska"
 
-#: data/ui/contacts-main-window.ui:19
+#: data/ui/contacts-main-window.ui:24
 msgid "Import From File…"
 msgstr "Importovať zo súboru…"
 
 # menu item
-#: data/ui/contacts-main-window.ui:23
+#: data/ui/contacts-main-window.ui:28
 msgid "Export All Contacts…"
 msgstr "Exportovať všetky kontakty…"
 
-#: data/ui/contacts-main-window.ui:29
+#: data/ui/contacts-main-window.ui:34
 msgid "Preferences"
 msgstr "Predvoľby"
 
-#: data/ui/contacts-main-window.ui:33
+#: data/ui/contacts-main-window.ui:38
 msgid "Keyboard Shortcuts"
 msgstr "Klávesové skratky"
 
 # menu
-#: data/ui/contacts-main-window.ui:37
+#: data/ui/contacts-main-window.ui:42
 msgid "Help"
 msgstr "Pomocník"
 
 # about dialog title
-#: data/ui/contacts-main-window.ui:41
+#: data/ui/contacts-main-window.ui:46
 msgid "About Contacts"
 msgstr "O aplikácii Kontakty"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:50
+#: data/ui/contacts-main-window.ui:55
 msgid "Mark as Favorite"
 msgstr "Označiť ako obľúbený"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:55
+#: data/ui/contacts-main-window.ui:60
 msgid "Unmark as Favorite"
 msgstr "Zrušiť označenie ako obľúbený"
 
-#: data/ui/contacts-main-window.ui:60
+#: data/ui/contacts-main-window.ui:65
 msgid "Share as QR Code"
 msgstr "Sprístupniť QR kódom"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:66
+#: data/ui/contacts-main-window.ui:71
 msgid "Delete Contact"
 msgstr "Odstráni kontakt"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:129
+#: data/ui/contacts-main-window.ui:133
 msgid "Add New Contact"
 msgstr "Pridá nový kontakt"
 
-#: data/ui/contacts-main-window.ui:145
+#: data/ui/contacts-main-window.ui:143
 msgid "Main Menu"
 msgstr "Hlavná ponuka"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:152
+#: data/ui/contacts-main-window.ui:150
 msgid "Select Contacts"
 msgstr "Vyberie kontakty"
 
 # button
-#: data/ui/contacts-main-window.ui:159 src/contacts-app.vala:329
+#: data/ui/contacts-main-window.ui:157 src/contacts-main-window.vala:438
 msgid "Cancel"
 msgstr "Zrušiť"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:160
+#: data/ui/contacts-main-window.ui:158
 msgid "Cancel Selection"
 msgstr "Zruší výber"
 
-# DK:GtkLabel
-#: data/ui/contacts-main-window.ui:187
-msgid "Loading"
-msgstr "Načítava sa"
-
 # placeholder
-#: data/ui/contacts-main-window.ui:198
+#: data/ui/contacts-main-window.ui:171
 msgid "Search contacts"
 msgstr "Vyhľadajte kontakty"
 
+# DK:GtkLabel
+#: data/ui/contacts-main-window.ui:197
+msgid "Loading"
+msgstr "Načítava sa"
+
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:216
+#: data/ui/contacts-main-window.ui:234
 msgid "Export"
 msgstr "Exportovať"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:217
+#: data/ui/contacts-main-window.ui:235
 msgid "Export Selected Contacts"
 msgstr "Exportuje vybrané kontakty"
 
 # button
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:224
+#: data/ui/contacts-main-window.ui:243
 msgid "Link"
 msgstr "Prepojiť"
 
 # tooltip
-#: data/ui/contacts-main-window.ui:225
+#: data/ui/contacts-main-window.ui:244
 msgid "Link Selected Contacts Together"
 msgstr "Prepojí vybrané kontakty dohromady"
 
-# button
-#: data/ui/contacts-main-window.ui:232
-msgid "Remove"
+#: data/ui/contacts-main-window.ui:259
+msgid "Delete"
 msgstr "Odstrániť"
 
-#: data/ui/contacts-main-window.ui:278
-msgid "Back"
-msgstr "Späť"
-
 # tooltip
-#: data/ui/contacts-main-window.ui:307
+#: data/ui/contacts-main-window.ui:303
 msgid "Edit Contact"
 msgstr "Upraví kontakt"
 
-#: data/ui/contacts-main-window.ui:313
-msgid "More Contact Actions"
-msgstr "Viac akcií pre kontakt"
+# desktop entry name
+#: data/ui/contacts-main-window.ui:309
+#| msgid "Contacts Setup"
+msgid "Contact Menu"
+msgstr "Ponuka kontaktu"
 
-#: data/ui/contacts-main-window.ui:323 src/contacts-main-window.vala:222
+#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
 msgid "Done"
 msgstr "Dokončiť"
 
 # builtin_address_book
-#: data/ui/contacts-preferences-window.ui:6
+#: data/ui/contacts-preferences-window.ui:11
 msgid "Address Books"
 msgstr "Adresáre kontaktov"
 
-#: data/ui/contacts-qr-code-dialog.ui:9
+#: data/ui/contacts-qr-code-dialog.ui:14
 msgid "Share Contact"
 msgstr "Sprístupnenie kontaktu"
 
-#: data/ui/contacts-qr-code-dialog.ui:36
+#: data/ui/contacts-qr-code-dialog.ui:37
 msgid "QR Code"
 msgstr "QR kód"
 
-#: data/ui/contacts-qr-code-dialog.ui:46
+#: data/ui/contacts-qr-code-dialog.ui:47
 msgid "Scan to Save"
 msgstr "Uložíte naskenovaním"
 
 # desktop entry name
-#: data/ui/contacts-setup-window.ui:15
+#: data/ui/contacts-setup-window.ui:12
 msgid "Contacts Setup"
 msgstr "Nastavenie aplikácie Kontakty"
 
@@ -369,15 +378,15 @@ msgstr "Zruší nastavenie a skončí"
 
 # tooltip
 #. Translators: "Complete" is a verb here: a user finishes the setup by clicking this button
-#: data/ui/contacts-setup-window.ui:31
+#: data/ui/contacts-setup-window.ui:32
 msgid "Complete setup"
 msgstr "Dokončí nastavenie"
 
-#: data/ui/contacts-setup-window.ui:42
+#: data/ui/contacts-setup-window.ui:44
 msgid "Welcome"
 msgstr "Vitajte"
 
-#: data/ui/contacts-setup-window.ui:43
+#: data/ui/contacts-setup-window.ui:45
 msgid ""
 "Please select your main address book: this is where new contacts will be "
 "added. If you keep your contacts in an online account, you can add them "
@@ -388,38 +397,45 @@ msgstr ""
 "prostredníctvom nastavení účtov služieb."
 
 # popis voľby príkazového riadka
-#: src/contacts-app.vala:46
+#: src/contacts-app.vala:35
 msgid "Show contact with this email address"
 msgstr "Zobrazí kontakt s touto emailovou adresou"
 
 # popis voľby príkazového riadka
-#: src/contacts-app.vala:47
+#: src/contacts-app.vala:36
 msgid "Show contact with this individual id"
 msgstr "Zobrazí kontakty s týmto samostatným identifikátorom"
 
 # popis voľby príkazového riadka
-#: src/contacts-app.vala:48
+#: src/contacts-app.vala:37
 msgid "Show contacts with the given filter"
 msgstr "Zobrazí kontakty podľa zadaného filtra"
 
-#: src/contacts-app.vala:49
+#: src/contacts-app.vala:38
 msgid "Show the current version of Contacts"
 msgstr "Zobrazí aktuálnu verziu aplikácie Kontakty"
 
 # dialog title
-#: src/contacts-app.vala:111 src/contacts-app.vala:164
+#: src/contacts-app.vala:104 src/contacts-app.vala:167
 msgid "Contact not found"
 msgstr "Kontakt sa nenašiel"
 
-#: src/contacts-app.vala:112
+#: src/contacts-app.vala:105
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Žiadny kontakt s identifikátorom %s nebol nájdený"
 
-#: src/contacts-app.vala:113 src/contacts-app.vala:166
-#: src/contacts-avatar-selector.vala:173 src/contacts-avatar-selector.vala:250
+#: src/contacts-app.vala:106 src/contacts-app.vala:169
+#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
 msgid "_Close"
 msgstr "_Zavrieť"
+
+# about dialog
+#: src/contacts-app.vala:149
+msgid "translator-credits"
+msgstr ""
+"Marián Čavojský <cavo+gnomel10n@cavo.sk>\n"
+"Dušan Kazik <prescott66@gmail.com>"
 
 #: src/contacts-app.vala:150
 msgid ""
@@ -429,16 +445,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Vývojári aplikácie Kontakty"
 
-#: src/contacts-app.vala:165
+#: src/contacts-app.vala:168
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Žiadny kontakt s emailovou adresou %s nebol nájdený"
 
-#: src/contacts-app.vala:228
+#: src/contacts-app.vala:231
 msgid "Primary address book not found"
 msgstr "Nenašiel sa žiadny hlavný adresár kontaktov"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:233
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -446,224 +462,192 @@ msgstr ""
 "Aplikácia Kontakty nevie nájsť nastavený hlavný adresár kontaktov. Môžete "
 "naraziť na problémy s vytváraním alebo úpravou kontaktov"
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:234
 msgid "Go To _Preferences"
 msgstr "Prejsť na _predvoľby"
 
 # MČ: zobrazí sa, keď nie je vybraný kontakt
 # label
-#: src/contacts-app.vala:325
+#: src/contacts-app.vala:335
 msgid "Select contact file"
 msgstr "Výber súboru s kontaktmi"
 
-#: src/contacts-app.vala:328
+#: src/contacts-app.vala:336
 msgid "Import"
 msgstr "Importovať"
 
-#. TODO: somehow get this from the list of importers we have
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:342
 msgid "vCard files"
 msgstr "súbory vCard"
 
-#: src/contacts-app.vala:368
-msgid "Error reading file"
-msgstr "Chyba pri čítaní súboru"
-
-#: src/contacts-app.vala:369
-#, c-format
-msgid "An error occurred reading the file '%s'"
-msgstr "Vyskytla sa chyba počas čítania súboru „%s“"
-
-#: src/contacts-app.vala:370 src/contacts-app.vala:380
-msgid "_OK"
-msgstr "_OK"
-
-#: src/contacts-app.vala:378
-msgid "No contacts found"
-msgstr "Nenašli sa žiadne kontakty"
-
-#: src/contacts-app.vala:379
-msgid "The imported file does not seem to contain any contacts"
-msgstr "Zdá sa, že importovaný súbor neobsahuje žiadne kontakty"
-
-#. Second step: ask the user for confirmation
-#: src/contacts-app.vala:387
-#, c-format
-msgid "By continuing, you will import %u contact"
-msgid_plural "By continuing, you will import %u contacts"
-msgstr[0] "Pokračovaním naimportujete %u kontaktov"
-msgstr[1] "Pokračovaním naimportujete %u kontakt"
-msgstr[2] "Pokračovaním naimportujete %u kontakty"
-
-#: src/contacts-app.vala:390
-msgid "Continue Import?"
-msgstr "Pokračovať v importovaní?"
-
-#: src/contacts-app.vala:391
-msgid "C_ontinue"
-msgstr "P_okračovať"
-
-#: src/contacts-avatar-selector.vala:126
+#: src/contacts-avatar-selector.vala:115
 msgid "No Camera Detected"
 msgstr "Nebola zistená žiadna kamera"
 
-#: src/contacts-avatar-selector.vala:172
+#: src/contacts-avatar-selector.vala:161
 msgid "Failed to set avatar"
 msgstr "Zlyhalo nastavenie podobizne"
 
 #  FileChooserDialog title
-#: src/contacts-avatar-selector.vala:208
+#: src/contacts-avatar-selector.vala:198
 msgid "Browse for more pictures"
 msgstr "Vyhľadanie ďalších obrázkov"
 
-#: src/contacts-avatar-selector.vala:211
+#: src/contacts-avatar-selector.vala:199
 msgid "_Open"
 msgstr "_Otvoriť"
 
-#: src/contacts-avatar-selector.vala:249
+#: src/contacts-avatar-selector.vala:204
+msgid "Image File"
+msgstr "Súbor obrázka"
+
+#: src/contacts-avatar-selector.vala:250
 msgid "Failed to set avatar."
 msgstr "Zlyhalo nastavenie podobizne."
 
-#: src/contacts-contact-editor.vala:198
+#: src/contacts-contact-editor.vala:187
 msgid "Show More"
 msgstr "Zobraziť viac"
 
-#: src/contacts-contact-editor.vala:295
+#: src/contacts-contact-editor.vala:284
 msgid "Add email"
 msgstr "Pridať email"
 
-#: src/contacts-contact-editor.vala:321
+#: src/contacts-contact-editor.vala:310
 msgid "Add phone number"
 msgstr "Pridať telefónne číslo"
 
 # label pred url
-#: src/contacts-contact-editor.vala:347 src/contacts-utils.vala:188
+#: src/contacts-contact-editor.vala:337
 msgid "Website"
 msgstr "Webová stránka"
 
-#: src/contacts-contact-editor.vala:358 src/contacts-utils.vala:173
+#: src/contacts-contact-editor.vala:348
+#: src/core/contacts-full-name-chunk.vala:38
 msgid "Full name"
 msgstr "Celé meno"
 
-#: src/contacts-contact-editor.vala:369 src/contacts-utils.vala:179
+#: src/contacts-contact-editor.vala:359
+#: src/core/contacts-nickname-chunk.vala:36
 msgid "Nickname"
 msgstr "Prezývka"
 
-#: src/contacts-contact-editor.vala:420 src/contacts-utils.vala:170
+#: src/contacts-contact-editor.vala:410
+#: src/core/contacts-birthday-chunk.vala:40
 msgid "Birthday"
 msgstr "Narodeniny"
 
 # tooltip
-#: src/contacts-contact-editor.vala:441
+#: src/contacts-contact-editor.vala:431
 msgid "Remove birthday"
 msgstr "Odstráni narodeniny"
 
 # buton label
-#: src/contacts-contact-editor.vala:459
+#: src/contacts-contact-editor.vala:449
 msgid "Set Birthday"
 msgstr "Nastaviť narodeniny"
 
-#: src/contacts-contact-editor.vala:513
-msgid "Organisation"
+#: src/contacts-contact-editor.vala:503
+#| msgid "Organisation"
+msgid "Organization"
 msgstr "Organizácia"
 
-#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
-#: src/contacts-contact-editor.vala:519 src/contacts-utils.vala:184
+#: src/contacts-contact-editor.vala:509
 msgid "Role"
 msgstr "Úloha"
 
-#: src/contacts-contact-editor.vala:635
+#: src/contacts-contact-editor.vala:625
 msgid "Label"
 msgstr "Menovka"
 
 #. Create grid and labels
-#: src/contacts-contact-editor.vala:695
+#: src/contacts-contact-editor.vala:691
 msgid "Day"
 msgstr "Deň"
 
-#: src/contacts-contact-editor.vala:699
+#: src/contacts-contact-editor.vala:695
 msgid "Month"
 msgstr "Mesiac"
 
-#: src/contacts-contact-editor.vala:703
+#: src/contacts-contact-editor.vala:699
 msgid "Year"
 msgstr "Rok"
 
-#: src/contacts-contact-editor.vala:711
-msgid "Change Birthday"
-msgstr "Zmena narodenín"
-
-#: src/contacts-contact-editor.vala:718
+#: src/contacts-contact-editor.vala:713
 msgid "_Set"
 msgstr "_Nastaviť"
 
+#: src/contacts-contact-editor.vala:722
+msgid "Change Birthday"
+msgstr "Zmena narodenín"
+
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "Street"
 msgstr "Ulica"
 
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "Extension"
 msgstr "Miestna časť"
 
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "City"
 msgstr "Mesto"
 
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "State/Province"
 msgstr "Štát/provincia"
 
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "Zip/Postal Code"
 msgstr "PSČ"
 
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "PO box"
 msgstr "P.O. Box"
 
 # postal_element_names
-#: src/contacts-contact-editor.vala:779
+#: src/contacts-contact-editor.vala:776
 msgid "Country"
 msgstr "Krajina"
 
-#: src/contacts-contact-list.vala:115
+#: src/contacts-contact-list.vala:136
 msgid "Favorites"
 msgstr "Obľúbené"
 
 # menu item
-#: src/contacts-contact-list.vala:117 src/contacts-contact-list.vala:123
+#: src/contacts-contact-list.vala:138
 msgid "All Contacts"
 msgstr "Všetky kontakty"
 
 # tooltip
-#: src/contacts-contact-sheet.vala:215
+#: src/contacts-contact-sheet.vala:204
 #, c-format
 msgid "Send an email to %s"
 msgstr "Odošle email na adresu %s"
 
 # tooltip
-#: src/contacts-contact-sheet.vala:288
+#: src/contacts-contact-sheet.vala:285
 msgid "Visit website"
 msgstr "Navštívi webovú stránku"
 
-#: src/contacts-contact-sheet.vala:321
+#: src/contacts-contact-sheet.vala:322
 msgid "Their birthday is today! 🎉"
 msgstr "Dnes má narodeniny! 🎉"
 
 # tooltip
-#: src/contacts-contact-sheet.vala:368
+#: src/contacts-contact-sheet.vala:369
 msgid "Show on the map"
 msgstr "Zobrazí na mape"
 
 # MČ: zobrazí sa, keď nie je vybraný kontakt
 # label
-#: src/contacts-delete-operation.vala:36
+#: src/contacts-delete-operation.vala:25
 #, c-format
 msgid "Deleting %d contact"
 msgid_plural "Deleting %d contacts"
@@ -673,144 +657,182 @@ msgstr[2] "Odstraňujú sa %d kontakty"
 
 # builtin_address_book
 #. Special-case the local address book
-#: src/contacts-esd-setup.vala:152 src/contacts-utils.vala:119
+#: src/contacts-esd-setup.vala:140 src/contacts-utils.vala:108
 msgid "Local Address Book"
 msgstr "Miestny adresár kontaktov"
 
 # builtin_address_book
-#: src/contacts-esd-setup.vala:155 src/contacts-esd-setup.vala:170
-#: src/contacts-utils.vala:149
+#: src/contacts-esd-setup.vala:143 src/contacts-esd-setup.vala:158
+#: src/contacts-utils.vala:138
 msgid "Google"
 msgstr "Google"
 
 # uid_for_contact
-#: src/contacts-esd-setup.vala:167
+#: src/contacts-esd-setup.vala:155
 msgid "Local Contact"
 msgstr "Miestny kontakt"
 
 # im_service
-#: src/contacts-im-service.vala:30
+#: src/contacts-im-service.vala:19
 msgid "AOL Instant Messenger"
 msgstr "AOL Instant Messenger"
 
 # im_service
-#: src/contacts-im-service.vala:31
+#: src/contacts-im-service.vala:20
 msgid "Facebook"
 msgstr "Facebook"
 
 # im_service
-#: src/contacts-im-service.vala:32
+#: src/contacts-im-service.vala:21
 msgid "Gadu-Gadu"
 msgstr "Gadu-Gadu"
 
 # im_service
-#: src/contacts-im-service.vala:33
+#: src/contacts-im-service.vala:22
 msgid "Google Talk"
 msgstr "Google Talk"
 
 # im_service
-#: src/contacts-im-service.vala:34
+#: src/contacts-im-service.vala:23
 msgid "Novell Groupwise"
 msgstr "Novell Groupwise"
 
 # im_service
-#: src/contacts-im-service.vala:35
+#: src/contacts-im-service.vala:24
 msgid "ICQ"
 msgstr "ICQ"
 
 # im_service
-#: src/contacts-im-service.vala:36
+#: src/contacts-im-service.vala:25
 msgid "IRC"
 msgstr "IRC"
 
 # im_service
-#: src/contacts-im-service.vala:37
+#: src/contacts-im-service.vala:26
 msgid "Jabber"
 msgstr "Jabber"
 
 # im_service
-#: src/contacts-im-service.vala:38
+#: src/contacts-im-service.vala:27
 msgid "Livejournal"
 msgstr "Livejournal"
 
 # im_service
-#: src/contacts-im-service.vala:39
+#: src/contacts-im-service.vala:28
 msgid "Local network"
 msgstr "Miestna sieť"
 
 # im_service
-#: src/contacts-im-service.vala:40
+#: src/contacts-im-service.vala:29
 msgid "Windows Live Messenger"
 msgstr "Windows Live Messenger"
 
 # im_service
-#: src/contacts-im-service.vala:41
+#: src/contacts-im-service.vala:30
 msgid "MySpace"
 msgstr "MySpace"
 
 # im_service
-#: src/contacts-im-service.vala:42
+#: src/contacts-im-service.vala:31
 msgid "MXit"
 msgstr "MXit"
 
 # im_service
-#: src/contacts-im-service.vala:43
+#: src/contacts-im-service.vala:32
 msgid "Napster"
 msgstr "Napster"
 
 # im_service
-#: src/contacts-im-service.vala:44
+#: src/contacts-im-service.vala:33
 msgid "Ovi Chat"
 msgstr "Ovi Chat"
 
 # im_service
-#: src/contacts-im-service.vala:45
+#: src/contacts-im-service.vala:34
 msgid "Tencent QQ"
 msgstr "Tencent QQ"
 
 # im_service
-#: src/contacts-im-service.vala:46
+#: src/contacts-im-service.vala:35
 msgid "IBM Lotus Sametime"
 msgstr "IBM Lotus Sametime"
 
 # im_service
-#: src/contacts-im-service.vala:47
+#: src/contacts-im-service.vala:36
 msgid "SILC"
 msgstr "SILC"
 
 # im_service
-#: src/contacts-im-service.vala:48
+#: src/contacts-im-service.vala:37
 msgid "sip"
 msgstr "sip"
 
 # im_service
-#: src/contacts-im-service.vala:49
+#: src/contacts-im-service.vala:38
 msgid "Skype"
 msgstr "Skype"
 
 # im_service
 # MČ: Je to služba (service), ale asi to bude vhodné preložiť. Pôvodne som myslel, že sa niektorá služba tak volá.
-#: src/contacts-im-service.vala:50
+#: src/contacts-im-service.vala:39
 msgid "Telephony"
 msgstr "Telefónia"
 
 # im_service
-#: src/contacts-im-service.vala:51
+#: src/contacts-im-service.vala:40
 msgid "Trepia"
 msgstr "Trepia"
 
 # im_service
-#: src/contacts-im-service.vala:52 src/contacts-im-service.vala:53
+#: src/contacts-im-service.vala:41 src/contacts-im-service.vala:42
 msgid "Yahoo! Messenger"
 msgstr "Yahoo! Messenger"
 
 # im_service
-#: src/contacts-im-service.vala:54
+#: src/contacts-im-service.vala:43
 msgid "Zephyr"
 msgstr "Zephyr"
 
+#: src/contacts-import-dialog.vala:60
+#| msgid "An error occurred reading the file '%s'"
+msgid "An error occurred reading the selected file"
+msgstr "Vyskytla sa chyba počas čítania vybraného súboru"
+
+#: src/contacts-import-dialog.vala:87
+#, c-format
+msgid "An error occurred reading the file '%s'"
+msgstr "Vyskytla sa chyba počas čítania súboru „%s“"
+
+#: src/contacts-import-dialog.vala:95
+msgid "The imported file does not seem to contain any contacts"
+msgstr "Zdá sa, že importovaný súbor neobsahuje žiadne kontakty"
+
 # desktop entry name
-#: src/contacts-link-operation.vala:38
+#: src/contacts-import-dialog.vala:100
+#, c-format
+#| msgid "Linked %d contact"
+#| msgid_plural "Linked %d contacts"
+msgid "Found %u contact"
+msgid_plural "Found %u contacts"
+msgstr[0] "Nájdených %u kontaktov"
+msgstr[1] "Nájdený %u kontakt"
+msgstr[2] "Najdené %u kontakty"
+
+#: src/contacts-import-dialog.vala:129
+#| msgid "No contacts found"
+msgid "Can't import: no contacts found"
+msgstr "Nedá sa importovať: Neboj nájdený žiaden kontakt"
+
+#: src/contacts-import-dialog.vala:134
+#, c-format
+msgid "By continuing, you will import %u contact"
+msgid_plural "By continuing, you will import %u contacts"
+msgstr[0] "Pokračovaním naimportujete %u kontaktov"
+msgstr[1] "Pokračovaním naimportujete %u kontakt"
+msgstr[2] "Pokračovaním naimportujete %u kontakty"
+
+# desktop entry name
+#: src/contacts-link-operation.vala:27
 #, c-format
 msgid "Linked %d contact"
 msgid_plural "Linked %d contacts"
@@ -818,39 +840,37 @@ msgstr[0] "Prepojených %d kontaktov"
 msgstr[1] "Prepojený %d kontakt"
 msgstr[2] "Prepojené %d kontakty"
 
-#: src/contacts-link-suggestion-grid.vala:49
+#: src/contacts-link-suggestion-grid.vala:38
 #, c-format
 msgid "Is this the same person as %s from %s?"
 msgstr "Je to tá istá osoba ako %s z %s?"
 
-#: src/contacts-link-suggestion-grid.vala:52
+#: src/contacts-link-suggestion-grid.vala:41
 #, c-format
 msgid "Is this the same person as %s?"
 msgstr "Je to tá istá osoba ako %s?"
 
 # MǙ: kontakt
-#: src/contacts-main-window.vala:192
+#: src/contacts-main-window.vala:184
 #, c-format
-#| msgid "%d Selected"
-#| msgid_plural "%d Selected"
 msgid "%llu Selected"
 msgid_plural "%llu Selected"
 msgstr[0] "%llu vybraných"
 msgstr[1] "%llu vybraný"
 msgstr[2] "%llu vybrané"
 
-#: src/contacts-main-window.vala:222
+#: src/contacts-main-window.vala:214
 msgid "_Add"
 msgstr "_Pridať"
 
 # label
-#: src/contacts-main-window.vala:252
+#: src/contacts-main-window.vala:241
 #, c-format
 msgid "Editing %s"
 msgstr "Upravuje sa %s"
 
 # MǙ: kontakt
-#: src/contacts-main-window.vala:291
+#: src/contacts-main-window.vala:280
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -858,37 +878,48 @@ msgstr[0] "%d vybratých"
 msgstr[1] "%d vybratý"
 msgstr[2] "%d vybraté"
 
-#: src/contacts-main-window.vala:311 src/contacts-main-window.vala:520
-#: src/contacts-main-window.vala:560
+#: src/contacts-main-window.vala:300 src/contacts-main-window.vala:508
+#: src/contacts-main-window.vala:550
 msgid "_Undo"
 msgstr "_Vrátiť"
 
-#: src/contacts-main-window.vala:397
+#: src/contacts-main-window.vala:382
 msgid "New Contact"
 msgstr "Nový kontakt"
 
+#: src/contacts-main-window.vala:436
+msgid "Discard changes?"
+msgstr "Zahodiť zmeny?"
+
+#: src/contacts-main-window.vala:437
+msgid "Changes which are not saved will be permanently lost."
+msgstr "Zmeny, ktoré nebudú uložené sa nenávratne stratia."
+
+#: src/contacts-main-window.vala:439
+msgid "Discard"
+msgstr "Zahodiť"
+
 #. Open up a file chooser
-#: src/contacts-main-window.vala:601
+#: src/contacts-main-window.vala:591
 msgid "Export to file"
 msgstr "Export do súboru"
 
-#: src/contacts-main-window.vala:604
+#: src/contacts-main-window.vala:592
 msgid "_Export"
 msgstr "_Exportovať"
 
 # desktop entry name
-#: src/contacts-main-window.vala:606
-#| msgid "Contacts"
+#: src/contacts-main-window.vala:593
 msgid "contacts.vcf"
 msgstr "kontakty.vcf"
 
 # builtin_address_book
-#: src/contacts-preferences-window.vala:30
+#: src/contacts-preferences-window.vala:19
 msgid "Primary Address Book"
 msgstr "Hlavný adresár kontaktov"
 
 # DK:label
-#: src/contacts-preferences-window.vala:31
+#: src/contacts-preferences-window.vala:20
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -897,193 +928,183 @@ msgstr ""
 "a upravovať kontakty z iného adresára kontaktov."
 
 # button
-#: src/contacts-preferences-window.vala:40
+#: src/contacts-preferences-window.vala:29
 msgid "_Online Accounts"
 msgstr "Účty sl_užieb"
 
 # tooltip
-#: src/contacts-preferences-window.vala:45
+#: src/contacts-preferences-window.vala:34
 msgid "Open the Online Accounts panel in Settings"
 msgstr "Otvorí panel účtov služieb v nastaveniach"
 
-#: src/contacts-qr-code-dialog.vala:33
+#: src/contacts-qr-code-dialog.vala:22
 #, c-format
 msgid "Scan the QR code to save the contact <b>%s</b>."
 msgstr "Naskenovaním QR kódu uložíte kontakt <b>%s</b>."
 
-#: src/contacts-unlink-operation.vala:37
+#: src/contacts-unlink-operation.vala:26
 msgid "Unlinking contacts"
 msgstr "Ruší sa prepojenie kontaktov"
 
-#: src/contacts-utils.vala:168
+# menu item
+#: src/core/contacts-addresses-chunk.vala:17
+#| msgid "Email address"
+msgid "Postal addresses"
+msgstr "Poštové adresy"
+
+#: src/core/contacts-alias-chunk.vala:33
 msgid "Alias"
 msgstr "Prezývka"
 
-#: src/contacts-utils.vala:169
+#: src/core/contacts-avatar-chunk.vala:27
 msgid "Avatar"
 msgstr "Podobizeň"
 
-#: src/contacts-utils.vala:171
-msgid "Calendar event"
-msgstr "Udalosť kalendára"
-
-# menu item
-#: src/contacts-utils.vala:172
-msgid "Email address"
-msgstr "E-mailová adresa"
-
-#: src/contacts-utils.vala:174
-msgid "Gender"
-msgstr "Pohlavie"
-
-#: src/contacts-utils.vala:175
-msgid "Group"
-msgstr "Skupina"
-
-# im_service
-#: src/contacts-utils.vala:176
-msgid "Instant messaging"
-msgstr "Priama komunikácia"
-
-#: src/contacts-utils.vala:177
-msgid "Favourite"
-msgstr "Obľúbený"
-
-#: src/contacts-utils.vala:178
-msgid "Local ID"
-msgstr "Miestny identifikátor"
-
-#: src/contacts-utils.vala:180
-msgid "Note"
-msgstr "Poznámka"
-
-#: src/contacts-utils.vala:181
-msgid "Phone number"
-msgstr "Telefónne číslo"
-
-# menu item
-#: src/contacts-utils.vala:182
-msgid "Address"
-msgstr "Adresa"
-
-#. TRANSLATORS: This is a field which contains a name decomposed in several
-#. parts, rather than a single freeform string for the full name
-#: src/contacts-utils.vala:187
-msgid "Structured name"
-msgstr "Štruktúrované meno"
-
-#: src/contacts-utils.vala:189
-msgid "Web service"
-msgstr "Webová služba"
-
-#: src/core/contacts-contact.vala:38
+#: src/core/contacts-contact.vala:27
 msgid "Unnamed Person"
 msgstr "Osoba bez mena"
 
+# menu item
+#: src/core/contacts-email-addresses-chunk.vala:13
+#| msgid "Email address"
+msgid "Email addresses"
+msgstr "E-mailové adresy"
+
+# im_service
+#: src/core/contacts-im-addresses-chunk.vala:18
+#| msgid "Instant messaging"
+msgid "Instant Messaging addresses"
+msgstr "Adresy rýchlej komunikácie"
+
+#: src/core/contacts-notes-chunk.vala:17
+msgid "Notes"
+msgstr "Poznámky"
+
+#: src/core/contacts-phones-chunk.vala:17
+#| msgid "Phone number"
+msgid "Phone numbers"
+msgstr "Telefónne čísla"
+
+#. TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
+#: src/core/contacts-roles-chunk.vala:19
+#| msgid "Role"
+msgid "Roles"
+msgstr "Funkcie"
+
 # DK: "role" at "organisation"
 #. TRANSLATORS: "$ROLE at $ORGANISATION", e.g. "CEO at Linux Inc."
-#: src/core/contacts-roles-chunk.vala:124
+#: src/core/contacts-roles-chunk.vala:118
 #, c-format
 msgid "%s at %s"
 msgstr "%s v organizácii %s"
+
+#. TRANSLATORS: This is a field which contains a name decomposed in several
+#. parts, rather than a single freeform string for the full name
+#: src/core/contacts-structured-name-chunk.vala:41
+msgid "Structured name"
+msgstr "Štruktúrované meno"
 
 # store item
 # label
 # format type
 # telefón
 # *https://bugzilla.gnome.org/show_bug.cgi?id=661235
-#: src/core/contacts-type-descriptor.vala:82
-#: src/core/contacts-type-set.vala:232
+#: src/core/contacts-type-descriptor.vala:71
+#: src/core/contacts-type-set.vala:221
 msgid "Other"
 msgstr "Iné"
 
 # phone type
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:180 src/core/contacts-type-set.vala:201
-#: src/core/contacts-type-set.vala:227 src/core/contacts-type-set.vala:229
+#: src/core/contacts-type-set.vala:169 src/core/contacts-type-set.vala:190
+#: src/core/contacts-type-set.vala:216 src/core/contacts-type-set.vala:218
 msgid "Home"
 msgstr "Domov"
 
 # phone type
-#: src/core/contacts-type-set.vala:181 src/core/contacts-type-set.vala:202
-#: src/core/contacts-type-set.vala:221 src/core/contacts-type-set.vala:223
+#: src/core/contacts-type-set.vala:170 src/core/contacts-type-set.vala:191
+#: src/core/contacts-type-set.vala:210 src/core/contacts-type-set.vala:212
 msgid "Work"
 msgstr "Do práce"
 
 # PŠ: aj tak sa použije preklad z evolution-data-server...
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:200
+#: src/core/contacts-type-set.vala:189
 msgid "Personal"
 msgstr "Osobné"
 
 # phone type
 #. List most specific first, always in upper case
-#: src/core/contacts-type-set.vala:220
+#: src/core/contacts-type-set.vala:209
 msgid "Assistant"
 msgstr "Asistent"
 
 # phone type
-#: src/core/contacts-type-set.vala:222
+#: src/core/contacts-type-set.vala:211
 msgid "Work Fax"
 msgstr "Fax do práce"
 
 # phone type
-#: src/core/contacts-type-set.vala:224
+#: src/core/contacts-type-set.vala:213
 msgid "Callback"
 msgstr "Callback"
 
 # phone type
-#: src/core/contacts-type-set.vala:225
+#: src/core/contacts-type-set.vala:214
 msgid "Car"
 msgstr "Do auta"
 
 # phone type
-#: src/core/contacts-type-set.vala:226
+#: src/core/contacts-type-set.vala:215
 msgid "Company"
 msgstr "Spoločnosť"
 
 # phone type
-#: src/core/contacts-type-set.vala:228
+#: src/core/contacts-type-set.vala:217
 msgid "Home Fax"
 msgstr "Fax domov"
 
 # phone type
-#: src/core/contacts-type-set.vala:230
+#: src/core/contacts-type-set.vala:219
 msgid "ISDN"
 msgstr "ISDN"
 
 # phone type
-#: src/core/contacts-type-set.vala:231
+#: src/core/contacts-type-set.vala:220
 msgid "Mobile"
 msgstr "Mobil"
 
 # phone type
-#: src/core/contacts-type-set.vala:233
+#: src/core/contacts-type-set.vala:222
 msgid "Fax"
 msgstr "Fax"
 
 # phone type
-#: src/core/contacts-type-set.vala:234
+#: src/core/contacts-type-set.vala:223
 msgid "Pager"
 msgstr "Pager"
 
 # phone type
-#: src/core/contacts-type-set.vala:235
+#: src/core/contacts-type-set.vala:224
 msgid "Radio"
 msgstr "Vysielačka"
 
 # phone type
-#: src/core/contacts-type-set.vala:236
+#: src/core/contacts-type-set.vala:225
 msgid "Telex"
 msgstr "Telex"
 
 # phone type
 #. To translators: TTY is Teletypewriter
-#: src/core/contacts-type-set.vala:238
+#: src/core/contacts-type-set.vala:227
 msgid "TTY"
 msgstr "Ďalekopis"
 
-#: src/io/contacts-io-parse-operation.vala:39
+#: src/core/contacts-urls-chunk.vala:17
+msgid "URLs"
+msgstr "Adresy URL"
+
+#: src/io/contacts-io-parse-operation.vala:29
 #, c-format
 msgid "Importing contacts from '%s'"
 msgstr "Importujú sa kontakty z „%s“"
@@ -1152,6 +1173,57 @@ msgstr "Ukladá, či je okno momentálne maximalizované."
 msgid "Is the window fullscreen"
 msgstr "Okno je v režime na celú obrazovku"
 
+# popis príkazu
+#~ msgid "A contacts manager for GNOME"
+#~ msgstr "Správca kontaktov prostredia GNOME"
+
+# button
+#~ msgid "Remove"
+#~ msgstr "Odstrániť"
+
+#~ msgid "Back"
+#~ msgstr "Späť"
+
+#~ msgid "More Contact Actions"
+#~ msgstr "Viac akcií pre kontakt"
+
+#~ msgid "Error reading file"
+#~ msgstr "Chyba pri čítaní súboru"
+
+#~ msgid "_OK"
+#~ msgstr "_OK"
+
+#~ msgid "Continue Import?"
+#~ msgstr "Pokračovať v importovaní?"
+
+#~ msgid "C_ontinue"
+#~ msgstr "P_okračovať"
+
+#~ msgid "Calendar event"
+#~ msgstr "Udalosť kalendára"
+
+#~ msgid "Gender"
+#~ msgstr "Pohlavie"
+
+#~ msgid "Group"
+#~ msgstr "Skupina"
+
+#~ msgid "Favourite"
+#~ msgstr "Obľúbený"
+
+#~ msgid "Local ID"
+#~ msgstr "Miestny identifikátor"
+
+#~ msgid "Note"
+#~ msgstr "Poznámka"
+
+# menu item
+#~ msgid "Address"
+#~ msgstr "Adresa"
+
+#~ msgid "Web service"
+#~ msgstr "Webová služba"
+
 #~ msgctxt "shortcut window"
 #~ msgid "Search"
 #~ msgstr "Vyhľadávanie"
@@ -1199,12 +1271,6 @@ msgstr "Okno je v režime na celú obrazovku"
 #~ "Nové kontakty budú pridané do vybratého adresára kontaktov.\n"
 #~ "Môžete prezerať a upravovať kontakty z iného adresára kontaktov."
 
-# about dialog
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Marián Čavojský <cavo+gnomel10n@cavo.sk>\n"
-#~ "Dušan Kazik <prescott66@gmail.com>"
-
 # about dialog title
 #~ msgid "About GNOME Contacts"
 #~ msgstr "O aplikácii Kontakty GNOME"
@@ -1249,9 +1315,6 @@ msgstr "Okno je v režime na celú obrazovku"
 # ToolButton
 #~ msgid "Edit"
 #~ msgstr "Upraviť"
-
-#~ msgid "Delete"
-#~ msgstr "Odstrániť"
 
 # DK:button title
 #~ msgid "Add contact"
@@ -1320,9 +1383,6 @@ msgstr "Okno je v režime na celú obrazovku"
 # menu item
 #~ msgid "Work address"
 #~ msgstr "Adresa do práce"
-
-#~ msgid "Notes"
-#~ msgstr "Poznámky"
 
 # MenuButton
 #~ msgid "New Detail"
