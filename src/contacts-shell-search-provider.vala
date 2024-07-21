@@ -38,9 +38,8 @@ public class Contacts.SearchProvider : Object {
       });
 
       // Add timeout for 1.5s so we can check if we already have some results
-      var timeout = Timeout.add (1500, () => {
+      var timeout = Timeout.add_once (1500, () => {
         GetInitialResultSet.callback ();
-        return false;
       });
       yield;
       Source.remove (timeout);

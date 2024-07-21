@@ -42,10 +42,9 @@ public class Contacts.SetupWindow : Adw.ApplicationWindow {
     // as a user there's no way to know why that might happen, so at least put
     // a warning log message. Make sure we do give Backends some time to come
     // up
-    Timeout.add_seconds (5, () => {
+    Timeout.add_seconds_once (5, () => {
       if (store.address_books.get_n_items () == 0)
         warning ("No address books were found on the system. Are you sure evolution-data-server is running?");
-      return Source.REMOVE;
     });
 
     // Make sure we emit a signal when setup is complete
