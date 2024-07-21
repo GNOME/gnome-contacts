@@ -4,7 +4,8 @@
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions": [
-        "org.freedesktop.Sdk.Extension.vala-nightly"
+        "org.freedesktop.Sdk.Extension.vala-nightly",
+        "org.freedesktop.Sdk.Extension.rust-stable"
     ],
     "command": "gnome-contacts",
     "tags" : [
@@ -212,6 +213,27 @@
                     "sha256" : "5385bc1b8c2f20f3b91d258bf8ccc8cf62023935df2d2676b5b67049f31a049c"
                 }
             ]
+        },
+        {
+            "name": "gst-plugin-gtk4",
+            "buildsystem": "simple",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://crates.io/api/v1/crates/gst-plugin-gtk4/0.13.0/download",
+                    "dest-filename": "gst-plugin-gtk4-0.13.0.tar.gz",
+                    "sha256": "69b98aeb531b6cf9c3a6eb36742cedc0168054e2f040b76ddc61260c10dec589"
+                },
+                "gst-plugin-gtk4-sources.json"
+            ],
+            "build-commands": [
+                "cargo cinstall --offline --release --features=wayland,x11glx,x11egl,gtk_v4_14 --library-type=cdylib --prefix=/app --libdir=/app/lib"
+            ],
+            "build-options": {
+                "env": {
+                    "CARGO_HOME": "/run/build/gst-plugin-gtk4/cargo"
+                }
+            }
         },
         {
             "name": "gnome-contacts",
