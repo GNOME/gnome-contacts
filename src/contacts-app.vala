@@ -208,12 +208,13 @@ public class Contacts.App : Adw.Application {
     });
 
     // Timeout callback
-    timeout_id = Timeout.add_seconds_once (LOADING_TIMEOUT, () => {
+    timeout_id = Timeout.add_seconds (LOADING_TIMEOUT, () => {
       this.contacts_store.disconnect (quiescence_id);
 
       debug ("Didn't achieve quiescence in time! Showing contact list anyway");
       this.window.show_contact_list ();
       check_primary_address_book ();
+      return Source.REMOVE;
     });
   }
 
@@ -311,9 +312,10 @@ public class Contacts.App : Adw.Application {
     if (this.window != null)
       this.window.hide ();
 
-    Timeout.add_seconds_once (5, () => {
+    Timeout.add_seconds (5, () => {
       warning ("Some operations have not finished yet!");
       base.quit ();
+      return Source.REMOVE;
     });
 
     this.operations.flush.begin ((obj, res) => {

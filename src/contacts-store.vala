@@ -141,14 +141,16 @@ public class Contacts.Store : GLib.Object {
     this.aggregator = IndividualAggregator.dup_with_backend_store (backend_store);
     aggregator.notify["is-quiescent"].connect ((obj, pspec) => {
       // We seem to get this before individuals_changed, so hack around it
-      Idle.add_once (() => {
+      Idle.add( () => {
         this.quiescent ();
+        return false;
       });
     });
 
     aggregator.notify["is-prepared"].connect ((obj, pspec) => {
-      Idle.add_once (() => {
+      Idle.add( () => {
         this.prepared ();
+        return false;
       });
     });
 
