@@ -11,13 +11,14 @@ using Folks;
 public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   private const GLib.ActionEntry[] ACTION_ENTRIES = {
+    { "cancel", cancel_action },
     { "new-contact", new_contact },
     { "edit-contact", edit_contact },
-    { "edit-contact-cancel", edit_contact_cancel },
     { "edit-contact-save", edit_contact_save },
     { "focus-search", focus_search },
     { "mark-favorite", mark_favorite },
     { "unmark-favorite", unmark_favorite },
+    { "cancel-selection", cancel_selection_action },
     { "link-marked-contacts", link_marked_contacts },
     { "delete-marked-contacts", delete_marked_contacts },
     { "export-marked-contacts", export_marked_contacts },
@@ -106,7 +107,6 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     // Widgets
     create_list_pane ();
     create_contact_pane ();
-    connect_button_signals ();
     restore_window_state ();
 
     // Make sure we notify in the UI when this is an unstable development build
@@ -353,9 +353,24 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contact_pane_page.title = "";
   }
 
-  private void edit_contact_cancel (SimpleAction action, GLib.Variant? parameter) {
-    if (this.state != UiState.CREATING && this.state != UiState.UPDATING)
-      return;
+  // Action that tries to handle generally canceling something, e.g. when pressing Escape
+  private void cancel_action (SimpleAction action, GLib.Variant? parameter) {
+    switch (this.state) {
+      case UiState.CREATING:
+      case UiState.UPDATING:
+        edit_contact_cancel ();
+        break;
+      case UiState.SELECTING:
+        cancel_selection_action (null, null);
+        break;
+      default:
+        // Do nothing
+        break;
+    }
+  }
+
+  private void edit_contact_cancel ()
+      requires (this.state == UiState.CREATING || this.state == UiState.UPDATING) {
 
     if (this.state == UiState.CREATING) {
       this.state = UiState.NORMAL;
@@ -405,15 +420,13 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.filter_entry.set_text (query);
   }
 
-  private void connect_button_signals () {
-    this.select_cancel_button.clicked.connect (() => {
-        this.selection_model.marked.unselect_all ();
-        if (this.selection_model.selected.get_selected () != Gtk.INVALID_LIST_POSITION) {
-            this.state = UiState.SHOWING;
-        } else {
-            this.state = UiState.NORMAL;
-        }
-    });
+  private void cancel_selection_action (SimpleAction? action, GLib.Variant? parameter) {
+    this.selection_model.marked.unselect_all ();
+    if (this.selection_model.selected.get_selected () != Gtk.INVALID_LIST_POSITION) {
+      this.state = UiState.SHOWING;
+    } else {
+      this.state = UiState.NORMAL;
+    }
   }
 
   public override bool close_request () {

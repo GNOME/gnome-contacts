@@ -99,7 +99,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
         <child>
           <object class="GtkShortcut">
             <property name="trigger">Escape</property>
-            <property name="action">action(win.edit-contact-cancel)</property>
+            <property name="action">action(win.cancel)</property>
           </object>
         </child>
         <child>
@@ -157,6 +157,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
                             <property name="label" translatable="yes">Cancel</property>
                             <property name="tooltip_text" translatable="yes">Cancel Selection</property>
                             <property name="can-shrink">True</property>
+                            <property name="action-name">win.cancel-selection</property>
                           </object>
                         </child>
                       </object>
