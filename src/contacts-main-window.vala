@@ -508,6 +508,10 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   private void delete_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
+    warning("DELETE");
+    if (this.state != UiState.SELECTING)
+      return;
+
     var selection = this.selection_model.marked.get_selection ().copy ();
     delete_contacts (selection);
   }
