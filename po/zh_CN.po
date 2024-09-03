@@ -15,21 +15,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts 43\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2024-02-27 21:49+0000\n"
-"PO-Revision-Date: 2024-02-24 18:33+0800\n"
+"POT-Creation-Date: 2024-07-23 12:54+0000\n"
+"PO-Revision-Date: 2024-09-03 12:23+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
-"Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
+"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 45.3\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 46.1\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
-#: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
-#: src/main.vala:15
+#: src/contacts-app.vala:252 src/contacts-main-window.vala:182
+#: src/contacts-main-window.vala:205 src/main.vala:15
 msgid "Contacts"
 msgstr "联系人"
 
@@ -53,7 +53,7 @@ msgstr ""
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
-msgstr "联系人也可以整合在线地址簿，并自动链接到各种在线帐号的联系人。"
+msgstr "联系人也可以整合在线地址簿，并自动链接到各种在线账号的联系人。"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:22
 msgid "Contacts with no contacts"
@@ -76,7 +76,7 @@ msgid "Contacts edit view"
 msgstr "联系人编辑视图"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: data/org.gnome.Contacts.appdata.xml.in.in:992 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.appdata.xml.in.in:1026 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "GNOME 项目"
 
@@ -145,8 +145,8 @@ msgid "Select a new avatar"
 msgstr "选择新头像"
 
 #: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
-#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
-#: src/contacts-app.vala:237 src/contacts-contact-editor.vala:709
+#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:274
+#: src/contacts-app.vala:236 src/contacts-contact-editor.vala:709
 #: src/contacts-main-window.vala:537
 msgid "_Cancel"
 msgstr "取消(_C)"
@@ -156,11 +156,11 @@ msgstr "取消(_C)"
 msgid "_Done"
 msgstr "完成(_D）"
 
-#: data/ui/contacts-avatar-selector.ui:90
+#: data/ui/contacts-avatar-selector.ui:93
 msgid "Take a Picture…"
 msgstr "拍张照片…"
 
-#: data/ui/contacts-avatar-selector.ui:98
+#: data/ui/contacts-avatar-selector.ui:101
 msgid "Select a File…"
 msgstr "选择文件…"
 
@@ -268,41 +268,37 @@ msgstr "取消选择"
 msgid "Search contacts"
 msgstr "搜索联系人"
 
-#: data/ui/contacts-main-window.ui:197
-msgid "Loading"
-msgstr "加载中"
-
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:234
+#: data/ui/contacts-main-window.ui:220
 msgid "Export"
 msgstr "导出"
 
-#: data/ui/contacts-main-window.ui:235
+#: data/ui/contacts-main-window.ui:221
 msgid "Export Selected Contacts"
 msgstr "导出选中的联系人"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:243
+#: data/ui/contacts-main-window.ui:229
 msgid "Link"
 msgstr "链接"
 
-#: data/ui/contacts-main-window.ui:244
+#: data/ui/contacts-main-window.ui:230
 msgid "Link Selected Contacts Together"
 msgstr "将选中的联系人链接到一起"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:245
 msgid "Delete"
 msgstr "删除"
 
-#: data/ui/contacts-main-window.ui:303
+#: data/ui/contacts-main-window.ui:289
 msgid "Edit Contact"
 msgstr "编辑联系人"
 
-#: data/ui/contacts-main-window.ui:309
+#: data/ui/contacts-main-window.ui:295
 msgid "Contact Menu"
 msgstr "联系人菜单"
 
-#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
+#: data/ui/contacts-main-window.ui:305 src/contacts-main-window.vala:214
 msgid "Done"
 msgstr "完成"
 
@@ -349,8 +345,8 @@ msgid ""
 "added. If you keep your contacts in an online account, you can add them "
 "using the online accounts settings."
 msgstr ""
-"请选择您的主地址簿：新联系人将添加到此地址簿。如果您在在线帐号里保存联系人，"
-"您可以使用帐号设置添加他们。"
+"请选择您的主地址簿：新联系人将添加到此地址簿。如果您在在线账号里保存联系人，"
+"您可以使用账号设置添加他们。"
 
 #: src/contacts-app.vala:35
 msgid "Show contact with this email address"
@@ -366,7 +362,7 @@ msgstr "显示具有指定筛选条件的联系人"
 
 #: src/contacts-app.vala:38
 msgid "Show the current version of Contacts"
-msgstr "显示 联系人 的当前版本"
+msgstr "显示联系人的当前版本"
 
 #: src/contacts-app.vala:104 src/contacts-app.vala:167
 msgid "Contact not found"
@@ -378,7 +374,7 @@ msgid "No contact with id %s found"
 msgstr "未找到 ID 为 %s 的联系人"
 
 #: src/contacts-app.vala:106 src/contacts-app.vala:169
-#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
+#: src/contacts-avatar-selector.vala:239
 msgid "_Close"
 msgstr "关闭(_C)"
 
@@ -391,7 +387,7 @@ msgstr ""
 "tuhaihe <1132321739qq@gmail.com>, 2012, 2013\n"
 "Jeff Bai <jeffbai@aosc.xyz>, 2017\n"
 "Dingzhong Chen <wsxy162@gmail.com>, 2018, 2019\n"
-"lumingzh <lumingzh@qq.com>, 2022"
+"lumingzh <lumingzh@qq.com>, 2022-2024"
 
 #: src/contacts-app.vala:150
 msgid ""
@@ -406,53 +402,49 @@ msgstr ""
 msgid "No contact with email address %s found"
 msgstr "未找到电子邮件地址为 %s 的联系人"
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:230
 msgid "Primary address book not found"
 msgstr "未找到主地址簿"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:232
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
 msgstr "联系人无法找到配置的主地址簿。您可能遇到了创建或编辑联系人的问题"
 
-#: src/contacts-app.vala:234
+#: src/contacts-app.vala:233
 msgid "Go To _Preferences"
 msgstr "跳转到首选项(_P)"
 
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:336
 msgid "Select contact file"
 msgstr "选择联系人文件"
 
-#: src/contacts-app.vala:336
+#: src/contacts-app.vala:337
 msgid "Import"
 msgstr "导入"
 
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:343
 msgid "vCard files"
 msgstr "vCard 文件"
 
-#: src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:108
 msgid "No Camera Detected"
 msgstr "未检测到摄像头"
 
-#: src/contacts-avatar-selector.vala:161
-msgid "Failed to set avatar"
-msgstr "设定头像失败"
-
-#: src/contacts-avatar-selector.vala:198
+#: src/contacts-avatar-selector.vala:180
 msgid "Browse for more pictures"
 msgstr "浏览更多图片"
 
-#: src/contacts-avatar-selector.vala:199
+#: src/contacts-avatar-selector.vala:181
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/contacts-avatar-selector.vala:204
+#: src/contacts-avatar-selector.vala:186
 msgid "Image File"
 msgstr "图像文件"
 
-#: src/contacts-avatar-selector.vala:250
+#: src/contacts-avatar-selector.vala:238
 msgid "Failed to set avatar."
 msgstr "设定头像失败。"
 
@@ -701,26 +693,26 @@ msgstr "Zephyr"
 msgid "An error occurred reading the selected file"
 msgstr "读取选中文件时发生了错误"
 
-#: src/contacts-import-dialog.vala:87
+#: src/contacts-import-dialog.vala:84
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "读取文件“%s”时发生了错误"
 
-#: src/contacts-import-dialog.vala:95
+#: src/contacts-import-dialog.vala:91
 msgid "The imported file does not seem to contain any contacts"
 msgstr "导入的文件似乎未包含任何联系人"
 
-#: src/contacts-import-dialog.vala:100
+#: src/contacts-import-dialog.vala:96
 #, c-format
 msgid "Found %u contact"
 msgid_plural "Found %u contacts"
 msgstr[0] "找到了 %u 个联系人"
 
-#: src/contacts-import-dialog.vala:129
+#: src/contacts-import-dialog.vala:125
 msgid "Can't import: no contacts found"
 msgstr "无法导入：未发现联系人"
 
-#: src/contacts-import-dialog.vala:134
+#: src/contacts-import-dialog.vala:130
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -795,7 +787,7 @@ msgstr "导出(_E)"
 
 #: src/contacts-main-window.vala:593
 msgid "contacts.vcf"
-msgstr "contacts.vcf"
+msgstr "联系人.vcf"
 
 #: src/contacts-preferences-window.vala:19
 msgid "Primary Address Book"
@@ -806,15 +798,15 @@ msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
 msgstr ""
-"新的联系人将被添加入指定的通讯录。你可以在其他通讯录中查看并编辑联系人。"
+"新的联系人将被添加入选中的地址簿。你可以在其它地址簿中查看并编辑联系人。"
 
 #: src/contacts-preferences-window.vala:29
 msgid "_Online Accounts"
-msgstr "在线帐号(_O)"
+msgstr "在线账号(_O)"
 
 #: src/contacts-preferences-window.vala:34
 msgid "Open the Online Accounts panel in Settings"
-msgstr "在设置中打开在线帐号面板"
+msgstr "在设置中打开在线账号面板"
 
 #: src/contacts-qr-code-dialog.vala:22
 #, c-format
@@ -877,7 +869,7 @@ msgstr "结构化名称"
 #: src/core/contacts-type-descriptor.vala:71
 #: src/core/contacts-type-set.vala:221
 msgid "Other"
-msgstr "其他"
+msgstr "其它"
 
 #. List most specific first, always in upper case
 #: src/core/contacts-type-set.vala:169 src/core/contacts-type-set.vala:190
@@ -1009,6 +1001,12 @@ msgstr "存储窗口当前是否最大化的状态。"
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "窗口是否全屏"
+
+#~ msgid "Loading"
+#~ msgstr "加载中"
+
+#~ msgid "Failed to set avatar"
+#~ msgstr "设定头像失败"
 
 #~ msgid "Remove"
 #~ msgstr "移除"
