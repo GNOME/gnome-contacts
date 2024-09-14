@@ -9,22 +9,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2024-02-27 21:49+0000\n"
-"PO-Revision-Date: 2024-02-28 11:22+0000\n"
-"Last-Translator: Andi Chandler <andi@gowling.com>\n"
+"POT-Creation-Date: 2024-07-23 12:54+0000\n"
+"PO-Revision-Date: 2024-09-01 13:01+0100\n"
+"Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: English - United Kingdom <en@li.org>\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.Contacts.appdata.xml.in.in:6
 #: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
-#: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
-#: src/main.vala:15
+#: src/contacts-app.vala:252 src/contacts-main-window.vala:182
+#: src/contacts-main-window.vala:205 src/main.vala:15
 msgid "Contacts"
 msgstr "Contacts"
 
@@ -74,7 +74,7 @@ msgid "Contacts edit view"
 msgstr "Contacts edit view"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: data/org.gnome.Contacts.appdata.xml.in.in:992 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.appdata.xml.in.in:1026 src/contacts-app.vala:143
 msgid "The GNOME Project"
 msgstr "The GNOME Project"
 
@@ -143,8 +143,8 @@ msgid "Select a new avatar"
 msgstr "Select a new avatar"
 
 #: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
-#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
-#: src/contacts-app.vala:237 src/contacts-contact-editor.vala:709
+#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:274
+#: src/contacts-app.vala:236 src/contacts-contact-editor.vala:709
 #: src/contacts-main-window.vala:537
 msgid "_Cancel"
 msgstr "_Cancel"
@@ -154,11 +154,11 @@ msgstr "_Cancel"
 msgid "_Done"
 msgstr "_Done"
 
-#: data/ui/contacts-avatar-selector.ui:90
+#: data/ui/contacts-avatar-selector.ui:93
 msgid "Take a Picture…"
 msgstr "Take a Picture…"
 
-#: data/ui/contacts-avatar-selector.ui:98
+#: data/ui/contacts-avatar-selector.ui:101
 msgid "Select a File…"
 msgstr "Select a File…"
 
@@ -266,41 +266,37 @@ msgstr "Cancel Selection"
 msgid "Search contacts"
 msgstr "Search contacts"
 
-#: data/ui/contacts-main-window.ui:197
-msgid "Loading"
-msgstr "Loading"
-
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:234
+#: data/ui/contacts-main-window.ui:220
 msgid "Export"
 msgstr "Export"
 
-#: data/ui/contacts-main-window.ui:235
+#: data/ui/contacts-main-window.ui:221
 msgid "Export Selected Contacts"
 msgstr "Export Selected Contacts"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:243
+#: data/ui/contacts-main-window.ui:229
 msgid "Link"
 msgstr "Link"
 
-#: data/ui/contacts-main-window.ui:244
+#: data/ui/contacts-main-window.ui:230
 msgid "Link Selected Contacts Together"
 msgstr "Link Selected Contacts Together"
 
-#: data/ui/contacts-main-window.ui:259
+#: data/ui/contacts-main-window.ui:245
 msgid "Delete"
 msgstr "Delete"
 
-#: data/ui/contacts-main-window.ui:303
+#: data/ui/contacts-main-window.ui:289
 msgid "Edit Contact"
 msgstr "Edit Contact"
 
-#: data/ui/contacts-main-window.ui:309
+#: data/ui/contacts-main-window.ui:295
 msgid "Contact Menu"
 msgstr "Contact Menu"
 
-#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
+#: data/ui/contacts-main-window.ui:305 src/contacts-main-window.vala:214
 msgid "Done"
 msgstr "Done"
 
@@ -353,7 +349,7 @@ msgstr ""
 
 #: src/contacts-app.vala:35
 msgid "Show contact with this email address"
-msgstr "Show contact with this e-mail address"
+msgstr "Show contact with this email address"
 
 #: src/contacts-app.vala:36
 msgid "Show contact with this individual id"
@@ -377,7 +373,7 @@ msgid "No contact with id %s found"
 msgstr "No contact with id %s found"
 
 #: src/contacts-app.vala:106 src/contacts-app.vala:169
-#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
+#: src/contacts-avatar-selector.vala:239
 msgid "_Close"
 msgstr "_Close"
 
@@ -400,13 +396,13 @@ msgstr ""
 #: src/contacts-app.vala:168
 #, c-format
 msgid "No contact with email address %s found"
-msgstr "No contact with e-mail address %s found"
+msgstr "No contact with email address %s found"
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:230
 msgid "Primary address book not found"
 msgstr "Primary address book not found"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:232
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -414,43 +410,39 @@ msgstr ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
 
-#: src/contacts-app.vala:234
+#: src/contacts-app.vala:233
 msgid "Go To _Preferences"
 msgstr "Go To _Preferences"
 
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:336
 msgid "Select contact file"
 msgstr "Select contact file"
 
-#: src/contacts-app.vala:336
+#: src/contacts-app.vala:337
 msgid "Import"
 msgstr "Import"
 
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:343
 msgid "vCard files"
 msgstr "vCard files"
 
-#: src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:108
 msgid "No Camera Detected"
 msgstr "No Camera Detected"
 
-#: src/contacts-avatar-selector.vala:161
-msgid "Failed to set avatar"
-msgstr "Failed to set avatar"
-
-#: src/contacts-avatar-selector.vala:198
+#: src/contacts-avatar-selector.vala:180
 msgid "Browse for more pictures"
 msgstr "Browse for more pictures"
 
-#: src/contacts-avatar-selector.vala:199
+#: src/contacts-avatar-selector.vala:181
 msgid "_Open"
 msgstr "_Open"
 
-#: src/contacts-avatar-selector.vala:204
+#: src/contacts-avatar-selector.vala:186
 msgid "Image File"
 msgstr "Image File"
 
-#: src/contacts-avatar-selector.vala:250
+#: src/contacts-avatar-selector.vala:238
 msgid "Failed to set avatar."
 msgstr "Failed to set avatar."
 
@@ -460,7 +452,7 @@ msgstr "Show More"
 
 #: src/contacts-contact-editor.vala:284
 msgid "Add email"
-msgstr "Add e-mail"
+msgstr "Add email"
 
 #: src/contacts-contact-editor.vala:310
 msgid "Add phone number"
@@ -565,7 +557,7 @@ msgstr "All Contacts"
 #: src/contacts-contact-sheet.vala:204
 #, c-format
 msgid "Send an email to %s"
-msgstr "Send an e-mail to %s"
+msgstr "Send an email to %s"
 
 #: src/contacts-contact-sheet.vala:285
 msgid "Visit website"
@@ -700,27 +692,27 @@ msgstr "Zephyr"
 msgid "An error occurred reading the selected file"
 msgstr "An error occurred reading the selected file"
 
-#: src/contacts-import-dialog.vala:87
+#: src/contacts-import-dialog.vala:84
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "An error occurred reading the file '%s'"
 
-#: src/contacts-import-dialog.vala:95
+#: src/contacts-import-dialog.vala:91
 msgid "The imported file does not seem to contain any contacts"
 msgstr "The imported file does not seem to contain any contacts"
 
-#: src/contacts-import-dialog.vala:100
+#: src/contacts-import-dialog.vala:96
 #, c-format
 msgid "Found %u contact"
 msgid_plural "Found %u contacts"
 msgstr[0] "Found %u contact"
 msgstr[1] "Found %u contacts"
 
-#: src/contacts-import-dialog.vala:129
+#: src/contacts-import-dialog.vala:125
 msgid "Can't import: no contacts found"
 msgstr "Can't import: no contacts found"
 
-#: src/contacts-import-dialog.vala:134
+#: src/contacts-import-dialog.vala:130
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -848,7 +840,7 @@ msgstr "Unnamed Person"
 
 #: src/core/contacts-email-addresses-chunk.vala:13
 msgid "Email addresses"
-msgstr "E-mail addresses"
+msgstr "Email addresses"
 
 #: src/core/contacts-im-addresses-chunk.vala:18
 msgid "Instant Messaging addresses"
@@ -1018,6 +1010,12 @@ msgstr "Stores if the window is currently maximised."
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Is the window fullscreen"
+
+#~ msgid "Loading"
+#~ msgstr "Loading"
+
+#~ msgid "Failed to set avatar"
+#~ msgstr "Failed to set avatar"
 
 #~ msgid "Remove"
 #~ msgstr "Remove"
