@@ -15,6 +15,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     { "new-contact", new_contact },
     { "edit-contact", edit_contact },
     { "edit-contact-save", edit_contact_save },
+    { "edit-contact-cancel", edit_contact_cancel },
     { "focus-search", focus_search },
     { "mark-favorite", mark_favorite },
     { "unmark-favorite", unmark_favorite },
