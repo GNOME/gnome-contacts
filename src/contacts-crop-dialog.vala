@@ -56,20 +56,55 @@ public class Contacts.CropDialog : Adw.Window {
 
     var source = Gst.ElementFactory.make ("pipewiresrc", null);
     var queue = Gst.ElementFactory.make ("queue", null);
-    var glsinkbin = Gst.ElementFactory.make ("glsinkbin", null);
     var paintable_sink = Gst.ElementFactory.make ("gtk4paintablesink", null);
-    if (source == null || queue == null || glsinkbin == null || paintable_sink == null) {
+    if (source == null || queue == null || paintable_sink == null) {
       warning ("Your GStreamer installation is missing some required elements");
       return;
     }
 
-    pipeline.add_many (source, queue, glsinkbin);
-    source.link_many (queue, glsinkbin);
+    var paintable_value = GLib.Value (typeof (Gdk.Paintable));
+    paintable_sink.get_property ("paintable", ref paintable_value);
+    var paintable = paintable_value as Gdk.Paintable;
 
-    var paintable = GLib.Value (typeof (Gdk.Paintable));
-    paintable_sink.get_property ("paintable", ref paintable);
-    this.crop_area.set_paintable (paintable as Gdk.Paintable);
-    glsinkbin.set_property ("sink", paintable_sink);
+    // Check if GLContext is supported
+    var gl_context_value = GLib.Value (typeof (Gdk.GLContext));
+    paintable.get_property ("gl-context", ref gl_context_value);
+    var gl_context = gl_context_value as Gdk.GLContext;
+
+    bool is_gl_supported = gl_context != null;
+
+    Gst.Element sink;
+    if (is_gl_supported) {
+      // Use glsinkbin if OpenGL is supported
+      var glsinkbin = Gst.ElementFactory.make ("glsinkbin", null);
+      if (glsinkbin == null) {
+        warning ("Your GStreamer installation is missing the glsinkbin element");
+        return;
+      }
+      glsinkbin.set_property ("sink", paintable_sink);
+      sink = glsinkbin;
+    } else {
+      // Fallback to videoconvert if OpenGL is not supported
+      var bin = new Gst.Bin (null);
+      var convert = Gst.ElementFactory.make ("videoconvert", null);
+      if (convert == null) {
+        warning ("Your GStreamer installation is missing the videoconvert element");
+        return;
+      }
+
+      bin.add_many (convert, paintable_sink);
+      convert.link (paintable_sink);
+
+      var ghost_pad = new Gst.GhostPad ("sink", convert.get_static_pad ("sink"));
+      bin.add_pad (ghost_pad);
+
+      sink = bin;
+    }
+
+    pipeline.add_many (source, queue, sink);
+    source.link_many (queue, sink);
+
+    this.crop_area.set_paintable (paintable);
 
     source.set_property ("fd", pw_fd);
 

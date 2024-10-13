@@ -612,7 +612,8 @@ cc_crop_area_create_texture (CcCropArea *area)
     renderer = gsk_gl_renderer_new ();
     if (!gsk_renderer_realize (renderer, NULL, &error)) {
         g_warning ("Couldn't realize GL renderer: %s", error->message);
-        return NULL;
+        renderer = gsk_cairo_renderer_new ();
+        gsk_renderer_realize (renderer, NULL, NULL);
     }
     viewport = GRAPHENE_RECT_INIT (area->crop.x, area->crop.y,
                                    area->crop.width, area->crop.height);
