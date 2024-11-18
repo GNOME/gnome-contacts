@@ -455,7 +455,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     string response = yield dialog.choose (this, null);
 
     if (response == "discard") {
-      activate_action ("edit-contact-cancel", null);
+      activate_action ("cancel", null);
       return true;
     } else {
       return false;
