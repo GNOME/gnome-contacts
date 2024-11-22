@@ -211,7 +211,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         = this.state.editing ();
     this.right_header.show_end_title_buttons = !this.state.editing ();
     if (this.state.editing ()) {
-      this.done_button.label = (this.state == UiState.CREATING)? _("_Add") : _("Done");
+      this.done_button.label = (this.state == UiState.CREATING)? _("_Add") : _("_Done");
       // Cast is required because Gtk.Button.set_focus_on_click is deprecated and
       // we have to use Gtk.Widget.set_focus_on_click instead
       this.done_button.set_focus_on_click (true);
