@@ -36,7 +36,8 @@ public class Contacts.ContactSelectionModel : Object, GLib.ListModel,
 
       this._state = value;
       notify_property ("state");
-      selection_changed (0, get_n_items ());
+      if (get_n_items () > 0)
+        selection_changed (0, get_n_items ());
     }
   }
   private UiState _state;
