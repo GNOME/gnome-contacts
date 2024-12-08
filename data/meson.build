@@ -43,13 +43,13 @@ endif
 # The appdata file
 appdata_file = i18n.merge_file(
   input: configure_file(
-    input: 'org.gnome.Contacts.appdata.xml.in.in',
+    input: 'org.gnome.Contacts.metainfo.xml.in.in',
     output: '@BASENAME@',
     configuration: {
       'app_id': contacts_app_id,
     },
   ),
-  output: '@0@.appdata.xml'.format(contacts_app_id),
+  output: '@0@.metainfo.xml'.format(contacts_app_id),
   type: 'xml',
   po_dir: po_dir,
   install: true,
