@@ -699,8 +699,9 @@ public class Contacts.BirthdayEditor : Adw.Dialog {
     grid.attach (year_spin, 1, 2);
 
     // Headerbar
-    var titlebar = new Gtk.HeaderBar ();
-    titlebar.show_title_buttons = false;
+    var titlebar = new Adw.HeaderBar ();
+    titlebar.show_end_title_buttons = false;
+    titlebar.show_start_title_buttons = false;
     toolbar_view.add_top_bar (titlebar);
 
     var cancel_button = new Gtk.Button.with_mnemonic (_("_Cancel"));
