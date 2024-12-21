@@ -704,10 +704,12 @@ public class Contacts.BirthdayEditor : Adw.Dialog {
     toolbar_view.add_top_bar (titlebar);
 
     var cancel_button = new Gtk.Button.with_mnemonic (_("_Cancel"));
+    cancel_button.can_shrink = true;
     cancel_button.action_name = "window.close";
     titlebar.pack_start (cancel_button);
 
     var ok_button = new Gtk.Button.with_mnemonic (_("_Set"));
+    ok_button.can_shrink = true;
     ok_button.add_css_class ("suggested-action");
     ok_button.clicked.connect ((b) => {
       this.is_set = true;
