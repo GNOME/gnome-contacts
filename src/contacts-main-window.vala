@@ -447,8 +447,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
     var dialog = new Adw.AlertDialog (_("Discard changes?"),
                                       _("Changes which are not saved will be permanently lost."));
-    dialog.add_response ("cancel", _("Cancel"));
-    dialog.add_response ("discard", _("Discard"));
+    dialog.add_response ("cancel", _("_Cancel"));
+    dialog.add_response ("discard", _("_Discard"));
     dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
     dialog.set_close_response ("cancel");
 

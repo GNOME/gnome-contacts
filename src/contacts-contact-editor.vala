@@ -188,7 +188,8 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     listbox.set_parent (this);
 
     show_more_row.start_icon_name = "view-more-symbolic";
-    show_more_row.title = _("Show More");
+    show_more_row.use_underline = true;
+    show_more_row.title = _("_Show More");
     show_more_row.activated.connect (() => {
       listbox.unparent ();
       filter.allowed_properties.splice (0,

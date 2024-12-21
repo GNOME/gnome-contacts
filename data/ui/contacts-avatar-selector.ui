@@ -90,7 +90,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkButton" id="camera_button">
-                    <property name="label" translatable="yes">Take a Picture…</property>
+                    <property name="label" translatable="yes">_Take a Picture…</property>
+                    <property name="use-underline">True</property>
                     <property name="receives-default">True</property>
                     <property name="can-shrink">True</property>
                     <signal name="clicked" handler="on_camera_button_clicked"/>
@@ -98,7 +99,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">Select a File…</property>
+                    <property name="label" translatable="yes">_Select a File…</property>
+                    <property name="use-underline">True</property>
                     <property name="receives_default">True</property>
                     <property name="can-shrink">True</property>
                     <signal name="clicked" handler="on_file_clicked"/>

@@ -9,41 +9,41 @@ SPDX-License-Identifier: GPL-2.0-or-later
     <section>
       <attribute name="label" translatable="yes">List Contacts By:</attribute>
       <item>
-        <attribute name="label" translatable="yes">First Name</attribute>
+        <attribute name="label" translatable="yes">_First Name</attribute>
         <attribute name="action">win.sort-on</attribute>
         <attribute name="target">firstname</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Surname</attribute>
+        <attribute name="label" translatable="yes">_Surname</attribute>
         <attribute name="action">win.sort-on</attribute>
         <attribute name="target">surname</attribute>
       </item>
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">Import From File…</attribute>
+        <attribute name="label" translatable="yes">_Import From File…</attribute>
         <attribute name="action">app.import</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Export All Contacts…</attribute>
+        <attribute name="label" translatable="yes">_Export All Contacts…</attribute>
         <attribute name="action">app.export-all</attribute>
       </item>
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">Preferences</attribute>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.show-preferences</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Help</attribute>
+        <attribute name="label" translatable="yes">_Help</attribute>
         <attribute name="action">app.help</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">About Contacts</attribute>
+        <attribute name="label" translatable="yes">_About Contacts</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>
@@ -154,7 +154,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
                         <child type="end">
                           <object class="GtkButton" id="select_cancel_button">
                             <property name="visible">False</property>
-                            <property name="label" translatable="yes">Cancel</property>
+                            <property name="label" translatable="yes">_Cancel</property>
+                            <property name="use-underline">True</property>
                             <property name="tooltip_text" translatable="yes">Cancel Selection</property>
                             <property name="can-shrink">True</property>
                             <property name="action-name">win.cancel-selection</property>
@@ -218,7 +219,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
                                 <property name="margin-end">6</property>
                                 <child>
                                   <object class="GtkButton" id="export_button">
-                                    <property name="label" translatable="yes" comments="Export refers to the verb">Export</property>
+                                    <property name="label" translatable="yes" comments="Export refers to the verb">_Export</property>
+                                    <property name="use-underline">True</property>
                                     <property name="tooltip-text" translatable="yes">Export Selected Contacts</property>
                                     <property name="action-name">win.export-marked-contacts</property>
                                     <property name="can-shrink">True</property>
@@ -227,7 +229,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
                                 <child>
                                   <object class="GtkButton" id="link_button">
                                     <property name="focus_on_click">False</property>
-                                    <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">Link</property>
+                                    <property name="label" translatable="yes" comments="Link refers to the verb, from linking contacts together">_Link</property>
+                                    <property name="use-underline">True</property>
                                     <property name="tooltip-text" translatable="yes">Link Selected Contacts Together</property>
                                     <property name="action-name">win.link-marked-contacts</property>
                                     <property name="can-shrink">True</property>
@@ -243,7 +246,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
                                 <child>
                                   <object class="GtkButton" id="delete_button">
                                     <property name="focus_on_click">False</property>
-                                    <property name="label" translatable="yes">Delete</property>
+                                    <property name="label" translatable="yes">_Delete</property>
+                                    <property name="use-underline">True</property>
                                     <property name="action-name">win.delete-marked-contacts</property>
                                     <property name="can-shrink">True</property>
                                     <style>
