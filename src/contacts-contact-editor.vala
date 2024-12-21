@@ -416,12 +416,12 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     update_birthday_button (bd_button, bd_chunk);
     bd_button.clicked.connect (() => {
       unowned var parent_window = get_root () as Gtk.Window;
-      var dialog = new BirthdayEditor (parent_window, bd_chunk.birthday);
+      var dialog = new BirthdayEditor (bd_chunk.birthday);
       dialog.changed.connect (() => {
         if (dialog.is_set)
           bd_chunk.birthday = dialog.get_birthday ();
       });
-      dialog.present ();
+      dialog.present (parent_window);
     });
     row.add_suffix (bd_button);
     row.set_activatable_widget (bd_button);
@@ -638,7 +638,7 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
   }
 }
 
-public class Contacts.BirthdayEditor : Adw.Window {
+public class Contacts.BirthdayEditor : Adw.Dialog {
 
   private unowned Gtk.SpinButton day_spin;
   private unowned Gtk.DropDown month_dropdown;
@@ -648,13 +648,9 @@ public class Contacts.BirthdayEditor : Adw.Window {
 
   public signal void changed ();
 
-  static construct {
-    add_binding_action (Gdk.Key.Escape, 0, "window.close", null);
-  }
-
   construct {
     var toolbar_view = new Adw.ToolbarView ();
-    this.content = toolbar_view;
+    this.child = toolbar_view;
 
     // The grid that will contain the Y/M/D fields
     var grid = new Gtk.Grid ();
@@ -716,16 +712,14 @@ public class Contacts.BirthdayEditor : Adw.Window {
     ok_button.clicked.connect ((b) => {
       this.is_set = true;
       changed ();
-      destroy ();
+      close ();
     });
     titlebar.pack_end (ok_button);
 
     set_title (_("Change Birthday"));
   }
 
-  public BirthdayEditor (Gtk.Window? window, DateTime? birthday) {
-    Object (transient_for: window, modal: true);
-
+  public BirthdayEditor (DateTime? birthday) {
     // Don't forget to change to local timezone first
     var bday_local = (birthday != null)? birthday.to_local () : new DateTime.now_local ();
     this.day_spin.set_value ((double) bday_local.get_day_of_month ());
