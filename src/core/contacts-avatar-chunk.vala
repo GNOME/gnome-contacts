@@ -26,7 +26,7 @@ public class Contacts.AvatarChunk : Chunk {
 
   public override string display_name { get { return _("Avatar"); } }
 
-  public override string? icon_name { get { return "emblem-photos-symbolic"; } }
+  public override string? icon_name { get { return "image-round-symbolic"; } }
 
   public override bool is_empty { get { return this._avatar == null; } }
 
