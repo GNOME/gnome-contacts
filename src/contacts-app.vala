@@ -353,8 +353,8 @@ public class Contacts.App : Adw.Application {
           return;
         }
 
-        var import_dialog = new ImportDialog (this.contacts_store, files, this.window);
-        import_dialog.present ();
+        var import_dialog = new ImportDialog (this.contacts_store, files);
+        import_dialog.present (this.window);
       } catch (Error error) {
         switch (error.code) {
           case Gtk.DialogError.CANCELLED:

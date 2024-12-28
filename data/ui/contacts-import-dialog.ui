@@ -5,25 +5,12 @@ SPDX-License-Identifier: GPL-2.0-or-later
 -->
 
 <interface>
-  <template class="ContactsImportDialog" parent="AdwWindow">
-    <property name="default-width">400</property>
-    <property name="default-height">400</property>
-    <property name="modal">True</property>
+  <template class="ContactsImportDialog" parent="AdwDialog">
+    <property name="content-width">400</property>
+    <property name="content-height">400</property>
     <property name="title" translatable="yes">Import Contacts</property>
 
-    <child>
-      <object class='GtkShortcutController'>
-        <property name='scope'>global</property>
-        <child>
-          <object class='GtkShortcut'>
-            <property name='trigger'>Escape</property>
-            <property name='action'>action(window.close)</property>
-          </object>
-        </child>
-      </object>
-    </child>
-
-    <property name="content">
+    <property name="child">
       <object class="AdwToolbarView">
 
         <child type="top">

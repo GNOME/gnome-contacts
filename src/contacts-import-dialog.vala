@@ -7,7 +7,7 @@
 using Folks;
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-import-dialog.ui")]
-public class Contacts.ImportDialog : Adw.Window {
+public class Contacts.ImportDialog : Adw.Dialog {
 
   [GtkChild]
   private unowned Adw.PreferencesPage page;
@@ -38,9 +38,8 @@ public class Contacts.ImportDialog : Adw.Window {
   }
 
   public ImportDialog (Store contacts_store,
-                       ListModel files,
-                       Gtk.Window? parent = null) {
-    Object (contacts_store: contacts_store, files: files, transient_for: parent);
+                       ListModel files) {
+    Object (contacts_store: contacts_store, files: files);
   }
 
   private async void handle_file (File file, bool show_header) {
