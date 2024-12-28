@@ -50,7 +50,7 @@ private class Contacts.Thumbnail : Gtk.FlowBoxChild {
  * After a user has initially chosen an avatar, we provide a cropping tool.
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-avatar-selector.ui")]
-public class Contacts.AvatarSelector : Adw.Window {
+public class Contacts.AvatarSelector : Adw.Dialog {
 
   public unowned Contact contact { get; construct set; }
 
@@ -68,8 +68,8 @@ public class Contacts.AvatarSelector : Adw.Window {
     install_action ("set-avatar", null, (Gtk.WidgetActionActivateFunc) on_set_avatar);
   }
 
-  public AvatarSelector (Contact contact, Gtk.Window? window = null) {
-    Object (contact: contact, transient_for: window);
+  public AvatarSelector (Contact contact) {
+    Object (contact: contact);
 
     this.thumbnail_grid.selected_children_changed.connect (on_thumbnails_selected);
     this.thumbnail_grid.child_activated.connect (on_thumbnail_activated);

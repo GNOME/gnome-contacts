@@ -5,24 +5,11 @@ SPDX-License-Identifier: GPL-2.0-or-later
 -->
 
 <interface>
-  <template class="ContactsAvatarSelector" parent="AdwWindow">
-    <property name="modal">True</property>
-    <property name="default_width">400</property>
-    <property name="default_height">400</property>
+  <template class="ContactsAvatarSelector" parent="AdwDialog">
+    <property name="content_width">400</property>
+    <property name="content_height">400</property>
     <property name="title" translatable="yes">Select a new avatar</property>
-
-    <child>
-      <object class='GtkShortcutController'>
-        <child>
-          <object class='GtkShortcut'>
-            <property name='trigger'>Escape</property>
-            <property name='action'>action(window.close)</property>
-          </object>
-        </child>
-      </object>
-    </child>
-
-    <property name="content">
+    <property name="child">
       <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">

@@ -55,9 +55,8 @@ public class Contacts.EditableAvatar : Gtk.Widget {
   }
 
   private void on_edit_avatar (string action_name, Variant? param) {
-    var selector = new AvatarSelector (this.contact,
-                                       get_root () as Gtk.Window);
-    selector.present ();
+    var selector = new AvatarSelector (this.contact);
+    selector.present (this);
   }
 
   private void on_delete_avatar (string action_name, Variant? param) {
