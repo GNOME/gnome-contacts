@@ -5,7 +5,7 @@
  */
 
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-crop-dialog.ui")]
-public class Contacts.CropDialog : Adw.Window {
+public class Contacts.CropDialog : Adw.Dialog {
 
   [GtkChild]
   private unowned Cc.CropArea crop_area;
@@ -21,24 +21,19 @@ public class Contacts.CropDialog : Adw.Window {
     this.crop_area.set_min_size (48, 48);
   }
 
-  public CropDialog.for_paintable (Gdk.Paintable paintable,
-                                   Gtk.Window? parent = null) {
-    Object (transient_for: parent);
-
+  public CropDialog.for_paintable (Gdk.Paintable paintable) {
     this.crop_area.set_paintable (paintable);
   }
 
   public CropDialog.for_portal (Xdp.Portal portal,
                                 Gtk.Window? parent = null) {
-    Object (transient_for: parent);
-
-    do_camera.begin(portal, (obj, res) => {
+    do_camera.begin(portal, parent, (obj, res) => {
       do_camera.end (res);
     });
   }
 
-  private async void do_camera (Xdp.Portal portal) {
-    var parent = Xdp.parent_new_gtk (this);
+  private async void do_camera (Xdp.Portal portal, Gtk.Window? parent_window) {
+    var parent = Xdp.parent_new_gtk (parent_window);
     try {
       debug ("Requesting camera access");
       yield portal.access_camera (parent, Xdp.CameraFlags.NONE, null);
@@ -112,9 +107,8 @@ public class Contacts.CropDialog : Adw.Window {
     pipeline.set_state (Gst.State.PLAYING);
 
     // Handle cleanup on window close
-    this.close_request.connect (() => {
+    this.closed.connect (() => {
       pipeline.set_state (Gst.State.NULL);
-      return false;
     });
 
     // Watch the bus

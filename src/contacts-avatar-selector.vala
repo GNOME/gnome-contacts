@@ -165,9 +165,9 @@ public class Contacts.AvatarSelector : Adw.Dialog {
     dialog.cropped.connect ((dialog, texture) => {
       this.selected = texture;
       activate_action_variant ("set-avatar", null);
-      dialog.destroy ();
+      dialog.close ();
     });
-    dialog.present ();
+    dialog.present (this);
   }
 
   [GtkCallback]
@@ -213,13 +213,13 @@ public class Contacts.AvatarSelector : Adw.Dialog {
       var texture = Gdk.Texture.for_pixbuf (pixbuf);
       in_stream.close ();
 
-      var dialog = new CropDialog.for_paintable (texture, parent_window);
+      var dialog = new CropDialog.for_paintable (texture);
       dialog.cropped.connect ((dialog, texture) => {
         this.selected = texture;
         activate_action_variant ("set-avatar", null);
-        dialog.destroy ();
+        dialog.close ();
       });
-      dialog.present ();
+      dialog.present (parent_window);
     } catch (Gtk.DialogError error) {
       switch (error.code) {
         case Gtk.DialogError.CANCELLED:

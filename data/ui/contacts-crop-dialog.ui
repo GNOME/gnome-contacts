@@ -5,23 +5,12 @@ SPDX-License-Identifier: GPL-2.0-or-later
 -->
 
 <interface>
-  <template class="ContactsCropDialog" parent="AdwWindow">
-    <property name="modal">True</property>
-    <property name="default-width">400</property>
-    <property name="default-height">400</property>
+  <template class="ContactsCropDialog" parent="AdwDialog">
+    <property name="content-width">400</property>
+    <property name="content-height">400</property>
+    <property name="title" translatable="yes">Take a Picture</property>
 
-    <child>
-      <object class='GtkShortcutController'>
-        <child>
-          <object class='GtkShortcut'>
-            <property name='trigger'>Escape</property>
-            <property name='action'>action(window.close)</property>
-          </object>
-        </child>
-      </object>
-    </child>
-
-    <property name="content">
+    <property name="child">
       <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
