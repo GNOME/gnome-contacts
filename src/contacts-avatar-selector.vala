@@ -166,6 +166,7 @@ public class Contacts.AvatarSelector : Adw.Dialog {
       this.selected = texture;
       activate_action_variant ("set-avatar", null);
       dialog.close ();
+      this.close ();
     });
     dialog.present (this);
   }
@@ -218,6 +219,7 @@ public class Contacts.AvatarSelector : Adw.Dialog {
         this.selected = texture;
         activate_action_variant ("set-avatar", null);
         dialog.close ();
+        this.close ();
       });
       dialog.present (parent_window);
     } catch (Gtk.DialogError error) {
