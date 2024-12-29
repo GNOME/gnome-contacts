@@ -115,10 +115,6 @@ contacts_c_sources = [
   'cc-crop-area.c',
 ]
 
-# if cheese_dep.found() and cheese_gtk_dep.found()
-#   contacts_c_sources += 'cheese-flash.c'
-# endif
-
 contacts_sources = [
   contacts_c_sources,
   contacts_vala_sources,
