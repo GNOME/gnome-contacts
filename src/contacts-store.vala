@@ -29,11 +29,6 @@ public class Contacts.Store : GLib.Object {
   public IndividualAggregator aggregator { get; private set; }
   public BackendStore backend_store { get { return this.aggregator.backend_store; } }
 
-  private GLib.ListStore _address_books = new GLib.ListStore (typeof (PersonaStore));
-  public GLib.ListModel address_books {
-    get { return this._address_books; }
-  }
-
   // Base list model, built from all contacts we obtain through libfolks
   private GLib.ListStore base_model = new ListStore (typeof (Individual));
 
@@ -49,6 +44,11 @@ public class Contacts.Store : GLib.Object {
   /** The list of individuals after all sorting/filtering operations */
   public GLib.ListModel individuals {
     get { return this.filter_model; }
+  }
+
+  private GLib.ListStore _address_books = new GLib.ListStore (typeof (PersonaStore));
+  public GLib.ListModel address_books {
+    get { return this._address_books; }
   }
 
   public Gee.HashMultiMap<string, string> dont_suggest_link;
