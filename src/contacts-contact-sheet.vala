@@ -158,7 +158,6 @@ public class Contacts.ContactSheet : Gtk.Widget {
     name_label.lines = 4;
     name_label.width_chars = 10;
     name_label.selectable = true;
-    name_label.can_focus = false;
     name_label.add_css_class ("title-1");
     header.append (name_label);
 
