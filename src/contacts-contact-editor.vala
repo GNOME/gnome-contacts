@@ -413,13 +413,12 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     bd_button.valign = Gtk.Align.CENTER;
     update_birthday_button (bd_button, bd_chunk);
     bd_button.clicked.connect (() => {
-      unowned var parent_window = get_root () as Gtk.Window;
       var dialog = new BirthdayEditor (bd_chunk.birthday);
       dialog.changed.connect (() => {
         if (dialog.is_set)
           bd_chunk.birthday = dialog.get_birthday ();
       });
-      dialog.present (parent_window);
+      dialog.present (this);
     });
     row.add_suffix (bd_button);
     row.set_activatable_widget (bd_button);
