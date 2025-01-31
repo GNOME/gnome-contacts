@@ -422,20 +422,9 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     row.add_suffix (bd_button);
     row.set_activatable_widget (bd_button);
 
-    // Add a remove button
-    var remove_button = new Gtk.Button ();
-    remove_button.icon_name = "user-trash-symbolic";
-    remove_button.tooltip_text = _("Remove birthday");
-    remove_button.valign = Gtk.Align.CENTER;
-    remove_button.add_css_class ("flat");
-    remove_button.sensitive = (bd_chunk.birthday != null);
-    remove_button.clicked.connect ((b) => { bd_chunk.birthday = null; });
-    row.add_suffix (remove_button);
-
     // Update both buttons on any changes
     bd_chunk.notify["birthday"].connect ((obj, pspec) => {
       update_birthday_button (bd_button, bd_chunk);
-      remove_button.sensitive = (bd_chunk.birthday != null);
     });
 
     return new ContactEditorProperty (row);
@@ -650,6 +639,8 @@ public class Contacts.BirthdayEditor : Adw.Dialog {
   private unowned Adw.ComboRow month_combo;
   [GtkChild]
   private unowned Adw.SpinRow year_spin;
+  [GtkChild]
+  private unowned Adw.PreferencesGroup remove_group;
 
   public GLib.DateTime? utc_birthday { get; private set; default = null; }
 
@@ -669,6 +660,8 @@ public class Contacts.BirthdayEditor : Adw.Dialog {
   }
 
   public BirthdayEditor (DateTime? birthday) {
+    this.remove_group.visible = birthday != null;
+
     // Don't forget to change to local timezone first
     var bday_local = (birthday != null)? birthday.to_local () : new DateTime.now_local ();
     this.day_spin.set_value ((double) bday_local.get_day_of_month ());
@@ -708,6 +701,13 @@ public class Contacts.BirthdayEditor : Adw.Dialog {
                                                  (int) month_combo.selected + 1,
                                                  (int) day_spin.get_value (),
                                                  0, 0, 0).to_utc ();
+    changed ();
+    close ();
+  }
+
+  [GtkCallback]
+  private void on_remove_activated () {
+    this.utc_birthday = null;
     changed ();
     close ();
   }
