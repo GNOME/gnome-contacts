@@ -407,34 +407,36 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     var row = new Adw.ActionRow ();
     row.add_prefix (new Gtk.Image.from_icon_name ("birthday-symbolic"));
     row.title = _("Birthday");
-
-    // Show a button to set the date (and show it if set)
-    var bd_button = new Gtk.Button ();
-    bd_button.valign = Gtk.Align.CENTER;
-    update_birthday_button (bd_button, bd_chunk);
-    bd_button.clicked.connect (() => {
+    update_birthday_row (row, bd_chunk);
+    row.activated.connect (() => {
       var dialog = new BirthdayEditor (bd_chunk.birthday);
       dialog.changed.connect (() => {
         bd_chunk.birthday = dialog.utc_birthday;
       });
       dialog.present (this);
     });
-    row.add_suffix (bd_button);
-    row.set_activatable_widget (bd_button);
+    row.set_activatable (true);
 
     // Update both buttons on any changes
     bd_chunk.notify["birthday"].connect ((obj, pspec) => {
-      update_birthday_button (bd_button, bd_chunk);
+      update_birthday_row (row, bd_chunk);
     });
+
+    // Add an action image
+    var image = new Gtk.Image.from_icon_name ("go-next-symbolic");
+    image.add_css_class ("edit-icon");
+    row.add_suffix (image);
 
     return new ContactEditorProperty (row);
   }
 
-  private void update_birthday_button (Gtk.Button bd_button, BirthdayChunk bd_chunk) {
+  private void update_birthday_row (Adw.ActionRow row, BirthdayChunk bd_chunk) {
     if (bd_chunk.birthday == null) {
-      bd_button.label = _("Set Birthday");
+      row.subtitle = null;
+      row.remove_css_class ("property");
     } else {
-      bd_button.label = bd_chunk.birthday.to_local ().format ("%x");
+      row.subtitle = bd_chunk.birthday.to_local ().format ("%x");
+      row.add_css_class ("property");
     }
   }
 
