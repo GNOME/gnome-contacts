@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+-->
+
+<interface>
+  <template class="ContactsBirthdayEditor" parent="AdwDialog">
+    <property name="title" translatable="yes">Set Birthday</property>
+    <property name="content-width">360</property>
+
+    <property name="child">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <property name="show-start-title-buttons">False</property>
+            <property name="show-end-title-buttons">False</property>
+
+            <child type="start">
+              <object class="GtkButton">
+                <property name="label" translatable="yes">_Cancel</property>
+                <property name="use-underline">True</property>
+                <property name="receives-default">True</property>
+                <property name="action-name">window.close</property>
+                <property name="can-shrink">True</property>
+              </object>
+            </child>
+
+            <child type="end">
+              <object class="GtkButton" id="ok_button">
+                <property name="label" translatable="yes">_Set</property>
+                <property name="use-underline">True</property>
+                <property name="can-shrink">True</property>
+                <signal name="clicked" handler="on_set_button_clicked"/>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <property name="content">
+          <object class="AdwPreferencesPage">
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwSpinRow" id="day_spin">
+                    <property name="title" translatable="yes">Day</property>
+                    <property name="digits">0</property>
+                    <property name="numeric">True</property>
+
+                    <property name="adjustment">
+                      <object class="GtkAdjustment">
+                        <property name="lower">1</property>
+                        <property name="upper">31</property>
+                        <property name="step-increment">1</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="AdwComboRow" id="month_combo">
+                    <property name="title" translatable="yes">Month</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="AdwSpinRow" id="year_spin">
+                    <property name="title" translatable="yes">Year</property>
+                    <property name="digits">0</property>
+                    <property name="numeric">True</property>
+
+                    <property name="adjustment">
+                      <object class="GtkAdjustment">
+                        <property name="lower">1800</property>
+                        <property name="upper">3000</property>
+                        <property name="step-increment">1</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>
