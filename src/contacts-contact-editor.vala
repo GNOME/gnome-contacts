@@ -603,13 +603,19 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
   }
 
   public ContactEditorProperty (Gtk.Widget widget) {
+    var inner_revealer = new Gtk.Revealer ();
+    inner_revealer.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
+
     var revealer = new Gtk.Revealer ();
+    revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
     revealer.set_parent (this);
 
     var prefs_group = new Adw.PreferencesGroup ();
     prefs_group.add_css_class ("contacts-editor-property");
     this.group = prefs_group;
-    revealer.set_child (prefs_group);
+    inner_revealer.set_child (prefs_group);
+    revealer.set_child (inner_revealer);
+    revealer.bind_property ("child-revealed", inner_revealer, "reveal-child", BindingFlags.SYNC_CREATE);
     bind_property ("reveal", revealer, "reveal-child", BindingFlags.SYNC_CREATE);
 
     group.add (widget);
