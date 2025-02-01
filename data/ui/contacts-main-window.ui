@@ -274,11 +274,13 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
             <property name="content">
               <object class="AdwNavigationPage" id="contact_pane_page">
+                <property name="title" translatable="yes">Select a Contact</property>
                 <property name="name">contact-pane</property>
                 <property name="child">
                   <object class="AdwToolbarView">
                     <child type="top">
                       <object class="AdwHeaderBar" id="right_header">
+                        <property name="show-title">False</property>
                         <child>
                           <object class="GtkButton" id="cancel_button">
                             <property name="visible">False</property>

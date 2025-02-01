@@ -240,6 +240,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.state = UiState.UPDATING;
     var title = _("Editing %s").printf (selected.display_name);
     this.contact_pane_page.title = title;
+    this.right_header.show_title = true;
     this.contact_pane.edit_contact ();
   }
 
@@ -350,7 +351,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contact_pane.stop_editing (false);
     this.contacts_list.scroll_to_selected ();
 
-    this.contact_pane_page.title = "";
+    this.contact_pane_page.title = _("Select a Contact");
+    this.right_header.show_title = false;
   }
 
   // Action that tries to handle generally canceling something, e.g. when pressing Escape
@@ -380,7 +382,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.contact_pane.stop_editing (true);
     this.contacts_list.scroll_to_selected ();
 
-    this.contact_pane_page.title = "";
+    this.contact_pane_page.title = _("Select a Contact");
+    this.right_header.show_title = false;
   }
 
   private void focus_search (SimpleAction action, GLib.Variant? parameter) {
@@ -395,6 +398,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     this.state = UiState.CREATING;
 
     this.contact_pane_page.title = _("New Contact");
+    this.right_header.show_title = true;
 
     this.contact_pane.new_contact ();
     this.content_box.show_content = true;
@@ -485,7 +489,8 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
         this.content_box.show_content = true;
 
       // clearing right_header
-      this.contact_pane_page.title = "";
+      this.contact_pane_page.title = _("Select a Contact");
+      this.right_header.show_title = false;
       if (selected != null) {
         update_favorite_actions (selected.is_favourite);
       }
