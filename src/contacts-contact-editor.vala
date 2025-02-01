@@ -21,7 +21,6 @@ public class Contacts.ContactEditor : Gtk.Widget {
 
   construct {
     var box_layout = new Gtk.BoxLayout (Gtk.Orientation.VERTICAL);
-    box_layout.spacing = 12;
     set_layout_manager (box_layout);
 
     add_css_class ("contacts-contact-editor");
@@ -115,7 +114,6 @@ public class Contacts.PersonaEditor : Gtk.Widget {
 
   construct {
     var box_layout = new Gtk.BoxLayout (Gtk.Orientation.VERTICAL);
-    box_layout.spacing = 6;
     set_layout_manager (box_layout);
 
     add_css_class ("contacts-persona-editor");
@@ -529,7 +527,6 @@ public class Contacts.ContactEditorGroup : Gtk.Widget {
 
   construct {
     var box_layout = new Gtk.BoxLayout (Gtk.Orientation.VERTICAL);
-    box_layout.spacing = 6;
     set_layout_manager (box_layout);
 
     add_css_class ("contact-editor-group");
@@ -605,9 +602,11 @@ public class Contacts.ContactEditorProperty : Gtk.Widget {
   public ContactEditorProperty (Gtk.Widget widget) {
     var inner_revealer = new Gtk.Revealer ();
     inner_revealer.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
+    inner_revealer.overflow = Gtk.Overflow.VISIBLE;
 
     var revealer = new Gtk.Revealer ();
     revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
+    revealer.overflow = Gtk.Overflow.VISIBLE;
     revealer.set_parent (this);
 
     var prefs_group = new Adw.PreferencesGroup ();

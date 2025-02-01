@@ -142,7 +142,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
   }
 
   private Gtk.Widget create_header (Contact contact) {
-    var header = new Gtk.Box (Gtk.Orientation.VERTICAL, 18);
+    var header = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     header.add_css_class ("contacts-sheet-header");
 
     var image_frame = new Avatar.for_contact (PROFILE_SIZE, contact);

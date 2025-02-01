@@ -35,14 +35,19 @@
   margin: 24px 12px 24px 12px;
 }
 
-.contacts-sheet-header,
-.contacts-editor-header {
-  margin: 0 0 12px 0;
+.contacts-sheet,
+.contact-editor-group,
+.contacts-persona-editor {
+  border-spacing: 24px;
 }
 
-.contacts-sheet-property,
-.contacts-editor-property {
-  margin: 9px 6px;
+.contacts-sheet-header,
+.contacts-editor-header {
+  border-spacing: 12px;
+  /* Add 12px to the 24px of border spacing of .contacts-sheet
+   * to mimick the 36px of spacing between the header and the
+   * contents of statuspage. */
+  margin: 0 0 12px 0;
 }
 
 /* Contact Sheet-related CSS class */
@@ -58,6 +63,13 @@
 /* Contact Editor-related CSS classes */
 /* ---------------------------------- */
 
+/* Mimick the style of preferencesgroup */
+.contacts-contact-editor > label {
+    margin-top: 24px;
+    margin-bottom: 6px;
+    min-height: 34px;
+}
+
 .contacts-editor-header-name {
   /* The name in the sheet gets some margin from .title-1,
    * so do something similar here to prevent the name "jumping" */
@@ -65,7 +77,11 @@
 }
 
 /* Common class for all widgets editing a property  */
-.contacts-editor-property {
+.contacts-editor-property:not(:first-child) {
+  /* Set margin-top here rather than border-spacing of
+   * .contact-editor-group for the spacing to be taken into
+   * account in the revealer's animation. */
+  margin-top: 24px;
 }
 
   .contacts-editor-property .contacts-property-icon {
