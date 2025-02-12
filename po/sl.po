@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2025-01-19 11:30+0000\n"
-"PO-Revision-Date: 2025-01-19 15:11+0100\n"
+"POT-Creation-Date: 2025-02-11 20:57+0000\n"
+"PO-Revision-Date: 2025-02-12 17:11+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -144,16 +144,16 @@ msgstr "Prekliče spremembe stika"
 msgid "Select a new avatar"
 msgstr "Izbor nove slike podobe"
 
-#: data/ui/contacts-avatar-selector.ui:21 data/ui/contacts-crop-dialog.ui:23
+#: data/ui/contacts-avatar-selector.ui:21
+#: data/ui/contacts-birthday-editor.ui:21 data/ui/contacts-crop-dialog.ui:23
 #: data/ui/contacts-import-dialog.ui:23 data/ui/contacts-main-window.ui:163
-#: data/ui/contacts-main-window.ui:285 src/contacts-app.vala:233
-#: src/contacts-contact-editor.vala:707 src/contacts-main-window.vala:450
-#: src/contacts-main-window.vala:552
+#: data/ui/contacts-main-window.ui:287 src/contacts-app.vala:233
+#: src/contacts-main-window.vala:454 src/contacts-main-window.vala:557
 msgid "_Cancel"
 msgstr "_Prekliči"
 
 #: data/ui/contacts-avatar-selector.ui:31 data/ui/contacts-crop-dialog.ui:33
-#: data/ui/contacts-main-window.ui:316 data/ui/contacts-setup-window.ui:30
+#: data/ui/contacts-main-window.ui:318 data/ui/contacts-setup-window.ui:30
 #: src/contacts-main-window.vala:214
 msgid "_Done"
 msgstr "_Končano"
@@ -166,7 +166,34 @@ msgstr "_Zajemi sliko …"
 msgid "_Select a File…"
 msgstr "Iz_beri datoteke …"
 
-#: data/ui/contacts-contact-pane.ui:19
+#: data/ui/contacts-birthday-editor.ui:9
+msgid "Set Birthday"
+msgstr "Nastavi rojstni dan"
+
+#: data/ui/contacts-birthday-editor.ui:31
+msgid "_Set"
+msgstr "_Nastavi"
+
+#: data/ui/contacts-birthday-editor.ui:49
+msgid "Day"
+msgstr "Dan"
+
+#: data/ui/contacts-birthday-editor.ui:65
+msgid "Month"
+msgstr "Mesec"
+
+#: data/ui/contacts-birthday-editor.ui:72
+msgid "Year"
+msgstr "Leto"
+
+#: data/ui/contacts-birthday-editor.ui:92
+msgid "Remove Birthday"
+msgstr "Odstrani rojstni dan"
+
+#. clearing right_header
+#: data/ui/contacts-contact-pane.ui:19 data/ui/contacts-main-window.ui:277
+#: src/contacts-main-window.vala:354 src/contacts-main-window.vala:385
+#: src/contacts-main-window.vala:492
 msgid "Select a Contact"
 msgstr "Izbor stika"
 
@@ -271,7 +298,7 @@ msgid "Search contacts"
 msgstr "Iskanje stikov"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:228 src/contacts-main-window.vala:607
+#: data/ui/contacts-main-window.ui:228 src/contacts-main-window.vala:612
 msgid "_Export"
 msgstr "_Izvozi"
 
@@ -292,11 +319,11 @@ msgstr "Poveži izbrane stike v skupino"
 msgid "_Delete"
 msgstr "I_zbriši"
 
-#: data/ui/contacts-main-window.ui:300
+#: data/ui/contacts-main-window.ui:302
 msgid "Edit Contact"
 msgstr "Uredi stike"
 
-#: data/ui/contacts-main-window.ui:306
+#: data/ui/contacts-main-window.ui:308
 msgid "Contact Menu"
 msgstr "Meni stikov"
 
@@ -442,103 +469,74 @@ msgstr "Datoteka slike"
 msgid "Failed to set avatar."
 msgstr "Podobe ni mogoče nastaviti."
 
-#: src/contacts-contact-editor.vala:192
+#: src/contacts-contact-editor.vala:190
 msgid "_Show More"
 msgstr "Po_kaži več"
 
-#: src/contacts-contact-editor.vala:285
+#: src/contacts-contact-editor.vala:283
 msgid "Add email"
 msgstr "Elektronski naslov"
 
-#: src/contacts-contact-editor.vala:311
+#: src/contacts-contact-editor.vala:309
 msgid "Add phone number"
 msgstr "Dodaj telefonsko številko"
 
-#: src/contacts-contact-editor.vala:338
+#: src/contacts-contact-editor.vala:336
 msgid "Website"
 msgstr "Spletna stran"
 
-#: src/contacts-contact-editor.vala:349
+#: src/contacts-contact-editor.vala:347
 #: src/core/contacts-full-name-chunk.vala:38
 msgid "Full name"
 msgstr "Polno Ime"
 
-#: src/contacts-contact-editor.vala:360
+#: src/contacts-contact-editor.vala:358
 #: src/core/contacts-nickname-chunk.vala:36
 msgid "Nickname"
 msgstr "Vzdevek"
 
-#: src/contacts-contact-editor.vala:411
+#: src/contacts-contact-editor.vala:409
 #: src/core/contacts-birthday-chunk.vala:40
 msgid "Birthday"
 msgstr "Rojstni dan"
 
-#: src/contacts-contact-editor.vala:432
-msgid "Remove birthday"
-msgstr "Odstrani rojstni dan"
-
-#: src/contacts-contact-editor.vala:450
-msgid "Set Birthday"
-msgstr "Nastavi rojstni dan"
-
-#: src/contacts-contact-editor.vala:504
+#: src/contacts-contact-editor.vala:491
 msgid "Organization"
 msgstr "Ustanova"
 
-#: src/contacts-contact-editor.vala:510
+#: src/contacts-contact-editor.vala:497
 msgid "Role"
 msgstr "Vloga"
 
-#: src/contacts-contact-editor.vala:626
+#: src/contacts-contact-editor.vala:620
 msgid "Label"
 msgstr "Oznaka"
 
-#. Create grid and labels
-#: src/contacts-contact-editor.vala:688
-msgid "Day"
-msgstr "Dan"
-
-#: src/contacts-contact-editor.vala:692
-msgid "Month"
-msgstr "Mesec"
-
-#: src/contacts-contact-editor.vala:696
-msgid "Year"
-msgstr "Leto"
-
-#: src/contacts-contact-editor.vala:712
-msgid "_Set"
-msgstr "_Nastavi"
-
-#: src/contacts-contact-editor.vala:722
-msgid "Change Birthday"
-msgstr "Spremeni rojstni dan"
-
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Street"
 msgstr "Ulica"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Extension"
 msgstr "Mednarodna številka"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "City"
 msgstr "Mesto"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "State/Province"
 msgstr "Regija / Provinca"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Zip/Postal Code"
 msgstr "Poštna številka"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "PO box"
 msgstr "Poštni predal"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Country"
 msgstr "Država"
 
@@ -550,20 +548,20 @@ msgstr "Priljubljeni stiki"
 msgid "All Contacts"
 msgstr "Vsi vpisani stiki"
 
-#: src/contacts-contact-sheet.vala:204
+#: src/contacts-contact-sheet.vala:203
 #, c-format
 msgid "Send an email to %s"
 msgstr "Pošlji elektronsko pošto za %s"
 
-#: src/contacts-contact-sheet.vala:285
+#: src/contacts-contact-sheet.vala:284
 msgid "Visit website"
 msgstr "Obišči spletišče"
 
-#: src/contacts-contact-sheet.vala:322
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "Danes imajo rojstni dan! 🎉"
 
-#: src/contacts-contact-sheet.vala:369
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "Pokaži na zemljevidu"
 
@@ -758,7 +756,7 @@ msgstr "_Dodaj"
 msgid "Editing %s"
 msgstr "Urejanje stika %s"
 
-#: src/contacts-main-window.vala:280
+#: src/contacts-main-window.vala:281
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -767,33 +765,33 @@ msgstr[1] "%d izbran"
 msgstr[2] "%d izbrana"
 msgstr[3] "%d izbrani"
 
-#: src/contacts-main-window.vala:300 src/contacts-main-window.vala:520
-#: src/contacts-main-window.vala:565
+#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:570
 msgid "_Undo"
 msgstr "_Razveljavi"
 
-#: src/contacts-main-window.vala:397
+#: src/contacts-main-window.vala:400
 msgid "New Contact"
 msgstr "Nov stik"
 
-#: src/contacts-main-window.vala:448
+#: src/contacts-main-window.vala:452
 msgid "Discard changes?"
 msgstr "Ali želite zavreči spremembe?"
 
-#: src/contacts-main-window.vala:449
+#: src/contacts-main-window.vala:453
 msgid "Changes which are not saved will be permanently lost."
 msgstr "Spremembe, ki niso shranjene, bodo trajno izgubljene."
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:455
 msgid "_Discard"
 msgstr "_Zavrzi"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:606
+#: src/contacts-main-window.vala:611
 msgid "Export to file"
 msgstr "Izvozi v datoteko"
 
-#: src/contacts-main-window.vala:608
+#: src/contacts-main-window.vala:613
 msgid "contacts.vcf"
 msgstr "stiki.vcf"
 
