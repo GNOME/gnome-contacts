@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2025-01-19 11:30+0000\n"
-"PO-Revision-Date: 2025-01-20 14:51+0300\n"
+"POT-Creation-Date: 2025-02-11 20:57+0000\n"
+"PO-Revision-Date: 2025-02-12 13:26+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -142,16 +142,16 @@ msgstr "Отменить текущие изменения для контакт
 msgid "Select a new avatar"
 msgstr "Выбрать новый аватар"
 
-#: data/ui/contacts-avatar-selector.ui:21 data/ui/contacts-crop-dialog.ui:23
+#: data/ui/contacts-avatar-selector.ui:21
+#: data/ui/contacts-birthday-editor.ui:21 data/ui/contacts-crop-dialog.ui:23
 #: data/ui/contacts-import-dialog.ui:23 data/ui/contacts-main-window.ui:163
-#: data/ui/contacts-main-window.ui:285 src/contacts-app.vala:233
-#: src/contacts-contact-editor.vala:707 src/contacts-main-window.vala:450
-#: src/contacts-main-window.vala:552
+#: data/ui/contacts-main-window.ui:287 src/contacts-app.vala:233
+#: src/contacts-main-window.vala:454 src/contacts-main-window.vala:557
 msgid "_Cancel"
 msgstr "_Отменить"
 
 #: data/ui/contacts-avatar-selector.ui:31 data/ui/contacts-crop-dialog.ui:33
-#: data/ui/contacts-main-window.ui:316 data/ui/contacts-setup-window.ui:30
+#: data/ui/contacts-main-window.ui:318 data/ui/contacts-setup-window.ui:30
 #: src/contacts-main-window.vala:214
 msgid "_Done"
 msgstr "_Готово"
@@ -164,7 +164,34 @@ msgstr "_Сделать фотоснимок…"
 msgid "_Select a File…"
 msgstr "_Выберите файл…"
 
-#: data/ui/contacts-contact-pane.ui:19
+#: data/ui/contacts-birthday-editor.ui:9
+msgid "Set Birthday"
+msgstr "Установить День рождения"
+
+#: data/ui/contacts-birthday-editor.ui:31
+msgid "_Set"
+msgstr "_Установить"
+
+#: data/ui/contacts-birthday-editor.ui:49
+msgid "Day"
+msgstr "День"
+
+#: data/ui/contacts-birthday-editor.ui:65
+msgid "Month"
+msgstr "Месяц"
+
+#: data/ui/contacts-birthday-editor.ui:72
+msgid "Year"
+msgstr "Год"
+
+#: data/ui/contacts-birthday-editor.ui:92
+msgid "Remove Birthday"
+msgstr "Удалить День рождения"
+
+#. clearing right_header
+#: data/ui/contacts-contact-pane.ui:19 data/ui/contacts-main-window.ui:277
+#: src/contacts-main-window.vala:354 src/contacts-main-window.vala:385
+#: src/contacts-main-window.vala:492
 msgid "Select a Contact"
 msgstr "Выбрать контакт"
 
@@ -269,7 +296,7 @@ msgid "Search contacts"
 msgstr "Поиск контактов"
 
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:228 src/contacts-main-window.vala:607
+#: data/ui/contacts-main-window.ui:228 src/contacts-main-window.vala:612
 msgid "_Export"
 msgstr "_Экспортировать"
 
@@ -290,11 +317,11 @@ msgstr "Связать выбранные контакты вместе"
 msgid "_Delete"
 msgstr "_Удалить"
 
-#: data/ui/contacts-main-window.ui:300
+#: data/ui/contacts-main-window.ui:302
 msgid "Edit Contact"
 msgstr "Изменить контакт"
 
-#: data/ui/contacts-main-window.ui:306
+#: data/ui/contacts-main-window.ui:308
 msgid "Contact Menu"
 msgstr "Меню контакта"
 
@@ -444,103 +471,74 @@ msgstr "Файл изображения"
 msgid "Failed to set avatar."
 msgstr "Не удалось установить аватар."
 
-#: src/contacts-contact-editor.vala:192
+#: src/contacts-contact-editor.vala:190
 msgid "_Show More"
 msgstr "_Показать больше"
 
-#: src/contacts-contact-editor.vala:285
+#: src/contacts-contact-editor.vala:283
 msgid "Add email"
 msgstr "Добавить эл. почту"
 
-#: src/contacts-contact-editor.vala:311
+#: src/contacts-contact-editor.vala:309
 msgid "Add phone number"
 msgstr "Добавить номер телефона"
 
-#: src/contacts-contact-editor.vala:338
+#: src/contacts-contact-editor.vala:336
 msgid "Website"
 msgstr "Веб-страница"
 
-#: src/contacts-contact-editor.vala:349
+#: src/contacts-contact-editor.vala:347
 #: src/core/contacts-full-name-chunk.vala:38
 msgid "Full name"
 msgstr "Полное имя"
 
-#: src/contacts-contact-editor.vala:360
+#: src/contacts-contact-editor.vala:358
 #: src/core/contacts-nickname-chunk.vala:36
 msgid "Nickname"
 msgstr "Псевдоним"
 
-#: src/contacts-contact-editor.vala:411
+#: src/contacts-contact-editor.vala:409
 #: src/core/contacts-birthday-chunk.vala:40
 msgid "Birthday"
 msgstr "День рождения"
 
-#: src/contacts-contact-editor.vala:432
-msgid "Remove birthday"
-msgstr "Удалить День рождения"
-
-#: src/contacts-contact-editor.vala:450
-msgid "Set Birthday"
-msgstr "Установить День рождения"
-
-#: src/contacts-contact-editor.vala:504
+#: src/contacts-contact-editor.vala:491
 msgid "Organization"
 msgstr "Организация"
 
-#: src/contacts-contact-editor.vala:510
+#: src/contacts-contact-editor.vala:497
 msgid "Role"
 msgstr "Роль"
 
-#: src/contacts-contact-editor.vala:626
+#: src/contacts-contact-editor.vala:620
 msgid "Label"
 msgstr "Метка"
 
-#. Create grid and labels
-#: src/contacts-contact-editor.vala:688
-msgid "Day"
-msgstr "День"
-
-#: src/contacts-contact-editor.vala:692
-msgid "Month"
-msgstr "Месяц"
-
-#: src/contacts-contact-editor.vala:696
-msgid "Year"
-msgstr "Год"
-
-#: src/contacts-contact-editor.vala:712
-msgid "_Set"
-msgstr "_Установить"
-
-#: src/contacts-contact-editor.vala:722
-msgid "Change Birthday"
-msgstr "Изменить день рождения"
-
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Street"
 msgstr "Улица"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Extension"
 msgstr "Расширение"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "City"
 msgstr "Город"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "State/Province"
 msgstr "Штат/Область"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Zip/Postal Code"
 msgstr "Почтовый индекс"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "PO box"
 msgstr "Почтовый ящик"
 
-#: src/contacts-contact-editor.vala:774
+#: src/contacts-contact-editor.vala:724
 msgid "Country"
 msgstr "Страна"
 
@@ -552,20 +550,20 @@ msgstr "Избранные"
 msgid "All Contacts"
 msgstr "Все контакты"
 
-#: src/contacts-contact-sheet.vala:204
+#: src/contacts-contact-sheet.vala:203
 #, c-format
 msgid "Send an email to %s"
 msgstr "Отправить электронное письмо на %s"
 
-#: src/contacts-contact-sheet.vala:285
+#: src/contacts-contact-sheet.vala:284
 msgid "Visit website"
 msgstr "Посетить веб-сайт"
 
-#: src/contacts-contact-sheet.vala:322
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "У них сегодня день рождения! 🎉"
 
-#: src/contacts-contact-sheet.vala:369
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "Показать на карте"
 
@@ -756,7 +754,7 @@ msgstr "_Добавить"
 msgid "Editing %s"
 msgstr "Изменение %s"
 
-#: src/contacts-main-window.vala:280
+#: src/contacts-main-window.vala:281
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
@@ -764,33 +762,33 @@ msgstr[0] "Выбран %d"
 msgstr[1] "Выбрано %d"
 msgstr[2] "Выбрано %d"
 
-#: src/contacts-main-window.vala:300 src/contacts-main-window.vala:520
-#: src/contacts-main-window.vala:565
+#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:570
 msgid "_Undo"
 msgstr "От_менить"
 
-#: src/contacts-main-window.vala:397
+#: src/contacts-main-window.vala:400
 msgid "New Contact"
 msgstr "Создать контакт"
 
-#: src/contacts-main-window.vala:448
+#: src/contacts-main-window.vala:452
 msgid "Discard changes?"
 msgstr "Отклонить изменения?"
 
-#: src/contacts-main-window.vala:449
+#: src/contacts-main-window.vala:453
 msgid "Changes which are not saved will be permanently lost."
 msgstr "Изменения, которые не были сохранены, будут безвозвратно утеряны."
 
-#: src/contacts-main-window.vala:451
+#: src/contacts-main-window.vala:455
 msgid "_Discard"
 msgstr "_Отклонить"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:606
+#: src/contacts-main-window.vala:611
 msgid "Export to file"
 msgstr "Экспортировать в файл"
 
-#: src/contacts-main-window.vala:608
+#: src/contacts-main-window.vala:613
 msgid "contacts.vcf"
 msgstr "contacts.vcf"
 
@@ -1015,6 +1013,9 @@ msgstr "Хранит информацию, развёрнуто ли сейча�
 #: src/org.gnome.Contacts.gschema.xml:37
 msgid "Is the window fullscreen"
 msgstr "Является ли окно полноэкранным"
+
+#~ msgid "Change Birthday"
+#~ msgstr "Изменить день рождения"
 
 #~ msgid "Cancel"
 #~ msgstr "Отменить"
