@@ -391,6 +391,10 @@ public class Contacts.ContactSheetGroup : Gtk.Box {
 
   private unowned Gtk.ListBox listbox;
 
+  static construct {
+    set_accessible_role (Gtk.AccessibleRole.GROUP);
+  }
+
   construct {
     add_css_class ("contacts-sheet-property");
 
