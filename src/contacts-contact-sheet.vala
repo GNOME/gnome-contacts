@@ -387,24 +387,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
   }
 }
 
-public class Contacts.ContactSheetGroup : Gtk.Box {
-
-  private unowned Gtk.ListBox listbox;
-
-  static construct {
-    set_accessible_role (Gtk.AccessibleRole.GROUP);
-  }
-
-  construct {
-    add_css_class ("contacts-sheet-property");
-
-    var list_box = new Gtk.ListBox ();
-    list_box.selection_mode = Gtk.SelectionMode.NONE;
-    list_box.hexpand = true;
-    append (list_box);
-    this.listbox = list_box;
-    this.listbox.add_css_class ("boxed-list");
-  }
+public class Contacts.ContactSheetGroup : Adw.PreferencesGroup {
 
   public ContactSheetGroup (Chunk chunk) {
     update_property (Gtk.AccessibleProperty.LABEL, chunk.display_name);
@@ -415,9 +398,5 @@ public class Contacts.ContactSheetGroup : Gtk.Box {
     this (chunk);
 
     add (row);
-  }
-
-  public void add (Gtk.ListBoxRow row) {
-    this.listbox.append (row);
   }
 }
