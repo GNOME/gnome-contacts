@@ -12,7 +12,7 @@ using Folks;
  * generally a Adw.PreferencesRow).
  */
 [GtkTemplate (ui = "/org/gnome/Contacts/ui/contacts-contact-sheet-row.ui")]
-public class Contacts.ContactSheetRow : Gtk.ListBoxRow {
+public class Contacts.ContactSheetRow : Adw.PreferencesRow {
 
   [GtkChild]
   private unowned Gtk.Image image;
