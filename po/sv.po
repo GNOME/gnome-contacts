@@ -1,18 +1,18 @@
 # Swedish translation for gnome-contacts.
-# Copyright © 2011-2024 Free Software Foundation, Inc.
+# Copyright © 2011-2025 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-contacts package.
 # Daniel Nylander <po@danielnylander.se>, 2011, 2012.
 # Mattias Eriksson <snaggen@gmail.com>, 2014.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
 # Luna Jernberg <droidbittin@gmail.com>, 2021, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2024-03-01 16:55+0000\n"
-"PO-Revision-Date: 2024-03-03 13:29+0100\n"
+"POT-Creation-Date: 2025-02-11 21:07+0000\n"
+"PO-Revision-Date: 2025-02-13 22:49+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -20,21 +20,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
+#: data/org.gnome.Contacts.desktop.in.in:3
+#: data/org.gnome.Contacts.metainfo.xml.in.in:6
+#: data/ui/contacts-main-window.ui:131 src/contacts-app.vala:249
 #: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
-#: src/main.vala:15
 msgid "Contacts"
 msgstr "Kontakter"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:7
 #: data/org.gnome.Contacts.desktop.in.in:4
+#: data/org.gnome.Contacts.metainfo.xml.in.in:7
 msgid "Manage your contacts"
 msgstr "Hantera dina kontakter"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:9
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Contacts.desktop.in.in:6
+msgid "friends;address book;"
+msgstr "vänner;adressbok;"
+
+#: data/org.gnome.Contacts.metainfo.xml.in.in:9
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
@@ -46,7 +51,7 @@ msgstr ""
 "Kontakter sammanför detaljerna från alla dina källor och tillhandahåller en "
 "central plats för att hantera dina kontakter."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:15
+#: data/org.gnome.Contacts.metainfo.xml.in.in:15
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
@@ -54,35 +59,30 @@ msgstr ""
 "Kontakter integrerar med adressböcker på nätet och länkar automatiskt "
 "kontakter från olika källor."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:22
+#: data/org.gnome.Contacts.metainfo.xml.in.in:22
 msgid "Contacts with no contacts"
 msgstr "Kontakter utan några kontakter"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:26
+#: data/org.gnome.Contacts.metainfo.xml.in.in:26
 msgid "Contacts filled with contacts"
 msgstr "Kontakter fyllt med kontakter"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:30
+#: data/org.gnome.Contacts.metainfo.xml.in.in:30
 msgid "Contacts in selection mode"
 msgstr "Kontakter i markeringsläge"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:34
+#: data/org.gnome.Contacts.metainfo.xml.in.in:34
 msgid "Contacts setup view"
 msgstr "Konfigurationsvy för Kontakter"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:38
+#: data/org.gnome.Contacts.metainfo.xml.in.in:38
 msgid "Contacts edit view"
 msgstr "Redigeringsvy för Kontakter"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: data/org.gnome.Contacts.appdata.xml.in.in:993 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.metainfo.xml.in.in:1122 src/contacts-app.vala:141
 msgid "The GNOME Project"
 msgstr "GNOME-projektet"
-
-#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.Contacts.desktop.in.in:6
-msgid "friends;address book;"
-msgstr "vänner;adressbok;"
 
 #: data/gtk/help-overlay.ui:7
 msgctxt "shortcut window"
@@ -139,33 +139,66 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Avbryt aktuella ändringar för kontakt"
 
-#: data/ui/contacts-avatar-selector.ui:12
+#: data/ui/contacts-avatar-selector.ui:11
 msgid "Select a new avatar"
 msgstr "Välj en ny profilbild"
 
-#: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
-#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
-#: src/contacts-app.vala:237 src/contacts-contact-editor.vala:709
-#: src/contacts-main-window.vala:537
+#: data/ui/contacts-avatar-selector.ui:21
+#: data/ui/contacts-birthday-editor.ui:21 data/ui/contacts-crop-dialog.ui:23
+#: data/ui/contacts-import-dialog.ui:23 data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:287 src/contacts-app.vala:233
+#: src/contacts-main-window.vala:454 src/contacts-main-window.vala:557
 msgid "_Cancel"
 msgstr "_Avbryt"
 
-#: data/ui/contacts-avatar-selector.ui:44 data/ui/contacts-crop-dialog.ui:44
-#: data/ui/contacts-setup-window.ui:30
+#: data/ui/contacts-avatar-selector.ui:31 data/ui/contacts-crop-dialog.ui:33
+#: data/ui/contacts-main-window.ui:318 data/ui/contacts-setup-window.ui:30
+#: src/contacts-main-window.vala:214
 msgid "_Done"
 msgstr "_Färdig"
 
-#: data/ui/contacts-avatar-selector.ui:90
-msgid "Take a Picture…"
-msgstr "Ta en bild…"
+#: data/ui/contacts-avatar-selector.ui:80
+msgid "_Take a Picture…"
+msgstr "_Ta en bild…"
 
-#: data/ui/contacts-avatar-selector.ui:98
-msgid "Select a File…"
-msgstr "Välj en fil…"
+#: data/ui/contacts-avatar-selector.ui:89
+msgid "_Select a File…"
+msgstr "_Välj en fil…"
 
-#: data/ui/contacts-contact-pane.ui:19
+#: data/ui/contacts-birthday-editor.ui:9
+msgid "Set Birthday"
+msgstr "Ställ in födelsedag"
+
+#: data/ui/contacts-birthday-editor.ui:31
+msgid "_Set"
+msgstr "_Ställ in"
+
+#: data/ui/contacts-birthday-editor.ui:49
+msgid "Day"
+msgstr "Dag"
+
+#: data/ui/contacts-birthday-editor.ui:65
+msgid "Month"
+msgstr "Månad"
+
+#: data/ui/contacts-birthday-editor.ui:72
+msgid "Year"
+msgstr "År"
+
+#: data/ui/contacts-birthday-editor.ui:92
+msgid "Remove Birthday"
+msgstr "Ta bort födelsedag"
+
+#. clearing right_header
+#: data/ui/contacts-contact-pane.ui:19 data/ui/contacts-main-window.ui:277
+#: src/contacts-main-window.vala:354 src/contacts-main-window.vala:385
+#: src/contacts-main-window.vala:492
 msgid "Select a Contact"
 msgstr "Välj en kontakt"
+
+#: data/ui/contacts-crop-dialog.ui:11
+msgid "Take a Picture"
+msgstr "Ta en bild"
 
 #: data/ui/contacts-editor-menu.ui:16
 msgid "Change Addressbook"
@@ -179,11 +212,11 @@ msgstr "Byt profilbild"
 msgid "Remove Avatar"
 msgstr "Ta bort profilbild"
 
-#: data/ui/contacts-import-dialog.ui:12
+#: data/ui/contacts-import-dialog.ui:11
 msgid "Import Contacts"
 msgstr "Importera kontakter"
 
-#: data/ui/contacts-import-dialog.ui:44
+#: data/ui/contacts-import-dialog.ui:31
 msgid "_Import"
 msgstr "_Importera"
 
@@ -196,36 +229,36 @@ msgid "List Contacts By:"
 msgstr "Lista kontakter enligt:"
 
 #: data/ui/contacts-main-window.ui:12
-msgid "First Name"
-msgstr "Förnamn"
+msgid "_First Name"
+msgstr "_Förnamn"
 
 #: data/ui/contacts-main-window.ui:17
-msgid "Surname"
-msgstr "Efternamn"
+msgid "_Surname"
+msgstr "_Efternamn"
 
 #: data/ui/contacts-main-window.ui:24
-msgid "Import From File…"
-msgstr "Importera från fil…"
+msgid "_Import From File…"
+msgstr "_Importera från fil…"
 
 #: data/ui/contacts-main-window.ui:28
-msgid "Export All Contacts…"
-msgstr "Exportera alla kontakter…"
+msgid "_Export All Contacts…"
+msgstr "_Exportera alla kontakter…"
 
 #: data/ui/contacts-main-window.ui:34
-msgid "Preferences"
-msgstr "Inställningar"
+msgid "_Preferences"
+msgstr "I_nställningar"
 
 #: data/ui/contacts-main-window.ui:38
-msgid "Keyboard Shortcuts"
-msgstr "Tangentbordsgenvägar"
+msgid "_Keyboard Shortcuts"
+msgstr "_Tangentbordsgenvägar"
 
 #: data/ui/contacts-main-window.ui:42
-msgid "Help"
-msgstr "Hjälp"
+msgid "_Help"
+msgstr "_Hjälp"
 
 #: data/ui/contacts-main-window.ui:46
-msgid "About Contacts"
-msgstr "Om Kontakter"
+msgid "_About Contacts"
+msgstr "_Om Kontakter"
 
 #: data/ui/contacts-main-window.ui:55
 msgid "Mark as Favorite"
@@ -243,81 +276,69 @@ msgstr "Dela som QR-kod"
 msgid "Delete Contact"
 msgstr "Ta bort kontakt"
 
-#: data/ui/contacts-main-window.ui:133
+#: data/ui/contacts-main-window.ui:139
 msgid "Add New Contact"
 msgstr "Lägg till ny kontakt"
 
-#: data/ui/contacts-main-window.ui:143
+#: data/ui/contacts-main-window.ui:149
 msgid "Main Menu"
 msgstr "Huvudmeny"
 
-#: data/ui/contacts-main-window.ui:150
+#: data/ui/contacts-main-window.ui:156
 msgid "Select Contacts"
 msgstr "Markera kontakter"
 
-#: data/ui/contacts-main-window.ui:157 src/contacts-main-window.vala:438
-msgid "Cancel"
-msgstr "Avbryt"
-
-#: data/ui/contacts-main-window.ui:158
+#: data/ui/contacts-main-window.ui:165
 msgid "Cancel Selection"
 msgstr "Avbryt markering"
 
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:179
 msgid "Search contacts"
 msgstr "Sök efter kontakter"
 
-#: data/ui/contacts-main-window.ui:197
-msgid "Loading"
-msgstr "Läser in"
-
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:234
-msgid "Export"
-msgstr "Exportera"
+#: data/ui/contacts-main-window.ui:228 src/contacts-main-window.vala:612
+msgid "_Export"
+msgstr "_Exportera"
 
-#: data/ui/contacts-main-window.ui:235
+#: data/ui/contacts-main-window.ui:230
 msgid "Export Selected Contacts"
 msgstr "Exportera valda kontakter"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:243
-msgid "Link"
-msgstr "Länka"
+#: data/ui/contacts-main-window.ui:238
+msgid "_Link"
+msgstr "_Länka"
 
-#: data/ui/contacts-main-window.ui:244
+#: data/ui/contacts-main-window.ui:240
 msgid "Link Selected Contacts Together"
 msgstr "Länka ihop valda kontakter"
 
-#: data/ui/contacts-main-window.ui:259
-msgid "Delete"
-msgstr "Ta bort"
+#: data/ui/contacts-main-window.ui:255
+msgid "_Delete"
+msgstr "_Ta bort"
 
-#: data/ui/contacts-main-window.ui:303
+#: data/ui/contacts-main-window.ui:302
 msgid "Edit Contact"
 msgstr "Redigera kontakt"
 
-#: data/ui/contacts-main-window.ui:309
+#: data/ui/contacts-main-window.ui:308
 msgid "Contact Menu"
 msgstr "Kontaktmeny"
-
-#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
-msgid "Done"
-msgstr "Färdig"
 
 #: data/ui/contacts-preferences-window.ui:11
 msgid "Address Books"
 msgstr "Adressböcker"
 
-#: data/ui/contacts-qr-code-dialog.ui:14
+#: data/ui/contacts-qr-code-dialog.ui:11
 msgid "Share Contact"
 msgstr "Dela kontakt"
 
-#: data/ui/contacts-qr-code-dialog.ui:37
+#: data/ui/contacts-qr-code-dialog.ui:38
 msgid "QR Code"
 msgstr "QR-kod"
 
-#: data/ui/contacts-qr-code-dialog.ui:47
+#: data/ui/contacts-qr-code-dialog.ui:48
 msgid "Scan to Save"
 msgstr "Skanna för att spara"
 
@@ -368,21 +389,21 @@ msgstr "Visa kontakter med det angivna filtret"
 msgid "Show the current version of Contacts"
 msgstr "Visa aktuell version av Kontakter"
 
-#: src/contacts-app.vala:104 src/contacts-app.vala:167
+#: src/contacts-app.vala:103 src/contacts-app.vala:164
 msgid "Contact not found"
 msgstr "Kontakten hittades inte"
 
-#: src/contacts-app.vala:105
+#: src/contacts-app.vala:104
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Ingen kontakt med id %s hittades"
 
-#: src/contacts-app.vala:106 src/contacts-app.vala:169
-#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
+#: src/contacts-app.vala:105 src/contacts-app.vala:166
+#: src/contacts-avatar-selector.vala:239
 msgid "_Close"
 msgstr "S_täng"
 
-#: src/contacts-app.vala:149
+#: src/contacts-app.vala:147
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander <po@danielnylander.se>\n"
@@ -393,7 +414,7 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "<tp-sv@listor.tp-sv.se>."
 
-#: src/contacts-app.vala:150
+#: src/contacts-app.vala:148
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -401,16 +422,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Utvecklarna av Kontakter"
 
-#: src/contacts-app.vala:168
+#: src/contacts-app.vala:165
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Ingen kontakt med e-postadressen %s hittades"
 
-#: src/contacts-app.vala:231
+#: src/contacts-app.vala:227
 msgid "Primary address book not found"
 msgstr "Primär adressbok hittades inte"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:229
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -418,143 +439,110 @@ msgstr ""
 "Kontakter kan inte hitta den konfigurerade primära adressboken. Du kan "
 "uppleva problem med att skapa eller redigera kontakter"
 
-#: src/contacts-app.vala:234
+#: src/contacts-app.vala:230
 msgid "Go To _Preferences"
 msgstr "Gå till _Inställningar"
 
-#: src/contacts-app.vala:335
+#: src/contacts-app.vala:334
 msgid "Select contact file"
 msgstr "Välj kontaktfil"
 
-#: src/contacts-app.vala:336
+#: src/contacts-app.vala:335
 msgid "Import"
 msgstr "Importera"
 
-#: src/contacts-app.vala:342
+#: src/contacts-app.vala:341
 msgid "vCard files"
 msgstr "vCard-filer"
 
-#: src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:108
 msgid "No Camera Detected"
 msgstr "Ingen kamera upptäckt"
 
-#: src/contacts-avatar-selector.vala:161
-msgid "Failed to set avatar"
-msgstr "Misslyckades med att ställa in profilbild"
-
-#: src/contacts-avatar-selector.vala:198
+#: src/contacts-avatar-selector.vala:181
 msgid "Browse for more pictures"
 msgstr "Bläddra efter fler bilder"
 
-#: src/contacts-avatar-selector.vala:199
+#: src/contacts-avatar-selector.vala:182
 msgid "_Open"
 msgstr "Ö_ppna"
 
-#: src/contacts-avatar-selector.vala:204
+#: src/contacts-avatar-selector.vala:187
 msgid "Image File"
 msgstr "Bildfil"
 
-#: src/contacts-avatar-selector.vala:250
+#: src/contacts-avatar-selector.vala:238
 msgid "Failed to set avatar."
 msgstr "Misslyckades med att ställa in profilbild."
 
-#: src/contacts-contact-editor.vala:187
-msgid "Show More"
-msgstr "Visa mer"
+#: src/contacts-contact-editor.vala:190
+msgid "_Show More"
+msgstr "_Visa mer"
 
-#: src/contacts-contact-editor.vala:284
+#: src/contacts-contact-editor.vala:283
 msgid "Add email"
 msgstr "Lägg till e-post"
 
-#: src/contacts-contact-editor.vala:310
+#: src/contacts-contact-editor.vala:309
 msgid "Add phone number"
 msgstr "Lägg till ett telefonnummer"
 
-#: src/contacts-contact-editor.vala:337
+#: src/contacts-contact-editor.vala:336
 msgid "Website"
 msgstr "Webbplats"
 
-#: src/contacts-contact-editor.vala:348
+#: src/contacts-contact-editor.vala:347
 #: src/core/contacts-full-name-chunk.vala:38
 msgid "Full name"
 msgstr "Fullständigt namn"
 
-#: src/contacts-contact-editor.vala:359
+#: src/contacts-contact-editor.vala:358
 #: src/core/contacts-nickname-chunk.vala:36
 msgid "Nickname"
 msgstr "Smeknamn"
 
-#: src/contacts-contact-editor.vala:410
+#: src/contacts-contact-editor.vala:409
 #: src/core/contacts-birthday-chunk.vala:40
 msgid "Birthday"
 msgstr "Födelsedag"
 
-#: src/contacts-contact-editor.vala:431
-msgid "Remove birthday"
-msgstr "Ta bort födelsedag"
-
-#: src/contacts-contact-editor.vala:449
-msgid "Set Birthday"
-msgstr "Ställ in födelsedag"
-
-#: src/contacts-contact-editor.vala:503
+#: src/contacts-contact-editor.vala:491
 msgid "Organization"
 msgstr "Organisation"
 
-#: src/contacts-contact-editor.vala:509
+#: src/contacts-contact-editor.vala:497
 msgid "Role"
 msgstr "Roll"
 
-#: src/contacts-contact-editor.vala:625
+#: src/contacts-contact-editor.vala:620
 msgid "Label"
 msgstr "Etikett"
 
-#. Create grid and labels
-#: src/contacts-contact-editor.vala:691
-msgid "Day"
-msgstr "Dag"
-
-#: src/contacts-contact-editor.vala:695
-msgid "Month"
-msgstr "Månad"
-
-#: src/contacts-contact-editor.vala:699
-msgid "Year"
-msgstr "År"
-
-#: src/contacts-contact-editor.vala:713
-msgid "_Set"
-msgstr "_Ställ in"
-
-#: src/contacts-contact-editor.vala:722
-msgid "Change Birthday"
-msgstr "Ändra födelsedag"
-
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "Street"
 msgstr "Gata"
 
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "Extension"
 msgstr "Anknytning"
 
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "City"
 msgstr "Stad"
 
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "State/Province"
 msgstr "Län/Provins"
 
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "Zip/Postal Code"
 msgstr "Postnummer"
 
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "PO box"
 msgstr "Box"
 
-#: src/contacts-contact-editor.vala:776
+#: src/contacts-contact-editor.vala:724
 msgid "Country"
 msgstr "Land"
 
@@ -566,20 +554,20 @@ msgstr "Favoriter"
 msgid "All Contacts"
 msgstr "Alla kontakter"
 
-#: src/contacts-contact-sheet.vala:204
+#: src/contacts-contact-sheet.vala:203
 #, c-format
 msgid "Send an email to %s"
 msgstr "Skicka ett e-postmeddelande till %s"
 
-#: src/contacts-contact-sheet.vala:285
+#: src/contacts-contact-sheet.vala:284
 msgid "Visit website"
 msgstr "Besök webbplats"
 
-#: src/contacts-contact-sheet.vala:322
+#: src/contacts-contact-sheet.vala:321
 msgid "Their birthday is today! 🎉"
 msgstr "Fyller år i dag! 🎉"
 
-#: src/contacts-contact-sheet.vala:369
+#: src/contacts-contact-sheet.vala:368
 msgid "Show on the map"
 msgstr "Visa på kartan"
 
@@ -700,31 +688,31 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-import-dialog.vala:60
+#: src/contacts-import-dialog.vala:59
 msgid "An error occurred reading the selected file"
 msgstr "Ett fel uppstod vid läsning av den valda filen"
 
-#: src/contacts-import-dialog.vala:87
+#: src/contacts-import-dialog.vala:83
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Ett fel uppstod vid läsning av filen ”%s”"
 
-#: src/contacts-import-dialog.vala:95
+#: src/contacts-import-dialog.vala:90
 msgid "The imported file does not seem to contain any contacts"
 msgstr "Den importerade filen verkar inte innehålla några kontakter"
 
-#: src/contacts-import-dialog.vala:100
+#: src/contacts-import-dialog.vala:95
 #, c-format
 msgid "Found %u contact"
 msgid_plural "Found %u contacts"
 msgstr[0] "Hittade %u kontakt"
 msgstr[1] "Hittade %u kontakter"
 
-#: src/contacts-import-dialog.vala:129
+#: src/contacts-import-dialog.vala:124
 msgid "Can't import: no contacts found"
 msgstr "Kan inte importera: inga kontakter hittades"
 
-#: src/contacts-import-dialog.vala:134
+#: src/contacts-import-dialog.vala:129
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -764,52 +752,48 @@ msgstr "_Lägg till"
 msgid "Editing %s"
 msgstr "Redigerar %s"
 
-#: src/contacts-main-window.vala:280
+#: src/contacts-main-window.vala:281
 #, c-format
 msgid "%d Selected"
 msgid_plural "%d Selected"
 msgstr[0] "%d vald"
 msgstr[1] "%d valda"
 
-#: src/contacts-main-window.vala:300 src/contacts-main-window.vala:508
-#: src/contacts-main-window.vala:550
+#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:570
 msgid "_Undo"
 msgstr "_Ångra"
 
-#: src/contacts-main-window.vala:382
+#: src/contacts-main-window.vala:400
 msgid "New Contact"
 msgstr "Ny kontakt"
 
-#: src/contacts-main-window.vala:436
+#: src/contacts-main-window.vala:452
 msgid "Discard changes?"
 msgstr "Förkasta ändringar?"
 
-#: src/contacts-main-window.vala:437
+#: src/contacts-main-window.vala:453
 msgid "Changes which are not saved will be permanently lost."
 msgstr "Ändringar som inte har sparats kommer att förloras permanent."
 
-#: src/contacts-main-window.vala:439
-msgid "Discard"
-msgstr "Förkasta"
+#: src/contacts-main-window.vala:455
+msgid "_Discard"
+msgstr "_Förkasta"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:591
+#: src/contacts-main-window.vala:611
 msgid "Export to file"
 msgstr "Exportera till fil"
 
-#: src/contacts-main-window.vala:592
-msgid "_Export"
-msgstr "_Exportera"
-
-#: src/contacts-main-window.vala:593
+#: src/contacts-main-window.vala:613
 msgid "contacts.vcf"
 msgstr "kontakter.vcf"
 
-#: src/contacts-preferences-window.vala:19
+#: src/contacts-preferences-window.vala:17
 msgid "Primary Address Book"
 msgstr "Primär adressbok"
 
-#: src/contacts-preferences-window.vala:20
+#: src/contacts-preferences-window.vala:18
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -817,15 +801,15 @@ msgstr ""
 "Nya kontakter kommer att läggas till den valda adressboken. Du kan visa och "
 "redigera kontakter från andra adressböcker."
 
-#: src/contacts-preferences-window.vala:29
+#: src/contacts-preferences-window.vala:27
 msgid "_Online Accounts"
 msgstr "_Nätkonton"
 
-#: src/contacts-preferences-window.vala:34
+#: src/contacts-preferences-window.vala:32
 msgid "Open the Online Accounts panel in Settings"
 msgstr "Öppnar panelen Nätkonton i Inställningar"
 
-#: src/contacts-qr-code-dialog.vala:22
+#: src/contacts-qr-code-dialog.vala:20
 #, c-format
 msgid "Scan the QR code to save the contact <b>%s</b>."
 msgstr "Skanna QR-koden för att spara kontakten <b>%s</b>."
@@ -1026,6 +1010,27 @@ msgstr "Lagrar om fönstret för närvarande är maximerat."
 msgid "Is the window fullscreen"
 msgstr "Täcker fönstret hela skärmen"
 
+#~ msgid "Change Birthday"
+#~ msgstr "Ändra födelsedag"
+
+#~ msgid "Help"
+#~ msgstr "Hjälp"
+
+#~ msgid "Cancel"
+#~ msgstr "Avbryt"
+
+#~ msgid "Loading"
+#~ msgstr "Läser in"
+
+#~ msgid "Export"
+#~ msgstr "Exportera"
+
+#~ msgid "Done"
+#~ msgstr "Färdig"
+
+#~ msgid "Failed to set avatar"
+#~ msgstr "Misslyckades med att ställa in profilbild"
+
 #~ msgid "Remove"
 #~ msgstr "Ta bort"
 
@@ -1224,9 +1229,6 @@ msgstr "Täcker fönstret hela skärmen"
 
 #~ msgid "Quit"
 #~ msgstr "Avsluta"
-
-#~ msgid "_Help"
-#~ msgstr "_Hjälp"
 
 #~ msgid "_About"
 #~ msgstr "_Om"
