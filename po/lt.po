@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-contacts master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-contacts/issues\n"
-"POT-Creation-Date: 2024-01-08 23:01+0000\n"
-"PO-Revision-Date: 2024-02-12 23:41+0200\n"
+"POT-Creation-Date: 2025-02-12 20:57+0000\n"
+"PO-Revision-Date: 2025-03-01 23:09+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -17,21 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "(n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:6
-#: data/org.gnome.Contacts.desktop.in.in:3 data/ui/contacts-main-window.ui:125
+#: data/org.gnome.Contacts.desktop.in.in:3
+#: data/org.gnome.Contacts.metainfo.xml.in.in:6
+#: data/ui/contacts-main-window.ui:131 src/contacts-app.vala:249
 #: src/contacts-main-window.vala:182 src/contacts-main-window.vala:205
-#: src/main.vala:15
 msgid "Contacts"
 msgstr "Kontaktai"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:7
 #: data/org.gnome.Contacts.desktop.in.in:4
+#: data/org.gnome.Contacts.metainfo.xml.in.in:7
 msgid "Manage your contacts"
 msgstr "Tvarkyti kontaktus"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:9
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Contacts.desktop.in.in:6
+msgid "friends;address book;"
+msgstr "draugai;adresų knyga;"
+
+#: data/org.gnome.Contacts.metainfo.xml.in.in:9
 msgid ""
 "Contacts keeps and organize your contacts information. You can create, edit, "
 "delete and link together pieces of information about your contacts. Contacts "
@@ -42,7 +47,7 @@ msgstr ""
 "trinti ir susieti kartu informaciją apie savo kontaktus. Kontaktai surenka "
 "informaciją iš visų šaltinių ir pateikia centralizuotą vietą jų tvarkymui."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:15
+#: data/org.gnome.Contacts.metainfo.xml.in.in:15
 msgid ""
 "Contacts will also integrate with online address books and automatically "
 "link contacts from different online sources."
@@ -50,35 +55,30 @@ msgstr ""
 "Kontaktai taip pat gali integruotis su internetinėmis adresų knygomis bei "
 "automatiškai susieti kontaktus iš skirtingų internetinių šaltinių."
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:22
+#: data/org.gnome.Contacts.metainfo.xml.in.in:22
 msgid "Contacts with no contacts"
 msgstr "Kontaktai be kontaktų"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:26
+#: data/org.gnome.Contacts.metainfo.xml.in.in:26
 msgid "Contacts filled with contacts"
 msgstr "Kontaktai, užpildyti kontaktais"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:30
+#: data/org.gnome.Contacts.metainfo.xml.in.in:30
 msgid "Contacts in selection mode"
 msgstr "Kontaktai pasirinkimo veiksenoje"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:34
+#: data/org.gnome.Contacts.metainfo.xml.in.in:34
 msgid "Contacts setup view"
 msgstr "Kontaktų nustatymo rodinys"
 
-#: data/org.gnome.Contacts.appdata.xml.in.in:38
+#: data/org.gnome.Contacts.metainfo.xml.in.in:38
 msgid "Contacts edit view"
 msgstr "Kontaktų redagavimo rodinys"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: data/org.gnome.Contacts.appdata.xml.in.in:946 src/contacts-app.vala:143
+#: data/org.gnome.Contacts.metainfo.xml.in.in:1122 src/contacts-app.vala:141
 msgid "The GNOME Project"
 msgstr "GNOME projektas"
-
-#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.Contacts.desktop.in.in:6
-msgid "friends;address book;"
-msgstr "draugai;adresų knyga;"
 
 #: data/gtk/help-overlay.ui:7
 msgctxt "shortcut window"
@@ -135,33 +135,66 @@ msgctxt "shortcut window"
 msgid "Cancel current changes for contact"
 msgstr "Atsisakyti dabartinių kontakto pakeitimų"
 
-#: data/ui/contacts-avatar-selector.ui:12
+#: data/ui/contacts-avatar-selector.ui:11
 msgid "Select a new avatar"
 msgstr "Pasirinkite naują atvaidą"
 
-#: data/ui/contacts-avatar-selector.ui:34 data/ui/contacts-crop-dialog.ui:34
-#: data/ui/contacts-import-dialog.ui:36 data/ui/contacts-main-window.ui:288
-#: src/contacts-app.vala:236 src/contacts-contact-editor.vala:708
-#: src/contacts-main-window.vala:538
+#: data/ui/contacts-avatar-selector.ui:21
+#: data/ui/contacts-birthday-editor.ui:21 data/ui/contacts-crop-dialog.ui:23
+#: data/ui/contacts-import-dialog.ui:23 data/ui/contacts-main-window.ui:163
+#: data/ui/contacts-main-window.ui:287 src/contacts-app.vala:233
+#: src/contacts-main-window.vala:454 src/contacts-main-window.vala:557
 msgid "_Cancel"
 msgstr "At_sisakyti"
 
-#: data/ui/contacts-avatar-selector.ui:44 data/ui/contacts-crop-dialog.ui:44
-#: data/ui/contacts-setup-window.ui:30
+#: data/ui/contacts-avatar-selector.ui:31 data/ui/contacts-crop-dialog.ui:33
+#: data/ui/contacts-main-window.ui:318 data/ui/contacts-setup-window.ui:30
+#: src/contacts-main-window.vala:214
 msgid "_Done"
 msgstr "_Atlikta"
 
-#: data/ui/contacts-avatar-selector.ui:90
-msgid "Take a Picture…"
-msgstr "Nufotografuoti…"
+#: data/ui/contacts-avatar-selector.ui:80
+msgid "_Take a Picture…"
+msgstr "_Nufotografuoti…"
 
-#: data/ui/contacts-avatar-selector.ui:98
-msgid "Select a File…"
-msgstr "Pasirinkite failą…"
+#: data/ui/contacts-avatar-selector.ui:89
+msgid "_Select a File…"
+msgstr "Pa_sirinkite failą…"
 
-#: data/ui/contacts-contact-pane.ui:19
+#: data/ui/contacts-birthday-editor.ui:9
+msgid "Set Birthday"
+msgstr "Nustatyti gimtadienį"
+
+#: data/ui/contacts-birthday-editor.ui:31
+msgid "_Set"
+msgstr "Nu_statyti"
+
+#: data/ui/contacts-birthday-editor.ui:49
+msgid "Day"
+msgstr "Diena"
+
+#: data/ui/contacts-birthday-editor.ui:65
+msgid "Month"
+msgstr "Mėnuo"
+
+#: data/ui/contacts-birthday-editor.ui:72
+msgid "Year"
+msgstr "Metai"
+
+#: data/ui/contacts-birthday-editor.ui:92
+msgid "Remove Birthday"
+msgstr "Pašalinti gimtadienį"
+
+#. clearing right_header
+#: data/ui/contacts-contact-pane.ui:19 data/ui/contacts-main-window.ui:277
+#: src/contacts-main-window.vala:354 src/contacts-main-window.vala:385
+#: src/contacts-main-window.vala:492
 msgid "Select a Contact"
 msgstr "Pasirinkite kontaktą"
+
+#: data/ui/contacts-crop-dialog.ui:11
+msgid "Take a Picture"
+msgstr "Nufotografuoti…"
 
 #: data/ui/contacts-editor-menu.ui:16
 msgid "Change Addressbook"
@@ -175,11 +208,11 @@ msgstr "Keisti atvaizdą"
 msgid "Remove Avatar"
 msgstr "Pašalinti atvaizdą"
 
-#: data/ui/contacts-import-dialog.ui:12
+#: data/ui/contacts-import-dialog.ui:11
 msgid "Import Contacts"
 msgstr "Importuoti kontaktus"
 
-#: data/ui/contacts-import-dialog.ui:44
+#: data/ui/contacts-import-dialog.ui:31
 msgid "_Import"
 msgstr "_Importuoti"
 
@@ -192,36 +225,36 @@ msgid "List Contacts By:"
 msgstr "Išvardyti kontaktus pagal:"
 
 #: data/ui/contacts-main-window.ui:12
-msgid "First Name"
-msgstr "Vardas"
+msgid "_First Name"
+msgstr "_Vardas"
 
 #: data/ui/contacts-main-window.ui:17
-msgid "Surname"
-msgstr "Pavardė"
+msgid "_Surname"
+msgstr "_Pavardė"
 
 #: data/ui/contacts-main-window.ui:24
-msgid "Import From File…"
-msgstr "Importuoti iš failo…"
+msgid "_Import From File…"
+msgstr "_Importuoti iš failo…"
 
 #: data/ui/contacts-main-window.ui:28
-msgid "Export All Contacts…"
-msgstr "Eksportuoti visus kontaktus…"
+msgid "_Export All Contacts…"
+msgstr "_Eksportuoti visus kontaktus…"
 
 #: data/ui/contacts-main-window.ui:34
-msgid "Preferences"
-msgstr "Nuostatos"
+msgid "_Preferences"
+msgstr "_Nuostatos"
 
 #: data/ui/contacts-main-window.ui:38
-msgid "Keyboard Shortcuts"
-msgstr "Klaviatūros trumpiniai"
+msgid "_Keyboard Shortcuts"
+msgstr "_Klaviatūros trumpiniai"
 
 #: data/ui/contacts-main-window.ui:42
-msgid "Help"
-msgstr "Žinynas"
+msgid "_Help"
+msgstr "_Žinynas"
 
 #: data/ui/contacts-main-window.ui:46
-msgid "About Contacts"
-msgstr "Apie kontaktus"
+msgid "_About Contacts"
+msgstr "_Apie kontaktus"
 
 #: data/ui/contacts-main-window.ui:55
 msgid "Mark as Favorite"
@@ -239,81 +272,69 @@ msgstr "Dalintis kaip QR kodu"
 msgid "Delete Contact"
 msgstr "Ištrinti kontaktą"
 
-#: data/ui/contacts-main-window.ui:133
+#: data/ui/contacts-main-window.ui:139
 msgid "Add New Contact"
 msgstr "Pridėti naują kontaktą"
 
-#: data/ui/contacts-main-window.ui:143
+#: data/ui/contacts-main-window.ui:149
 msgid "Main Menu"
 msgstr "Pagrindinis meniu"
 
-#: data/ui/contacts-main-window.ui:150
+#: data/ui/contacts-main-window.ui:156
 msgid "Select Contacts"
 msgstr "Pasirinkite kontaktus"
 
-#: data/ui/contacts-main-window.ui:157 src/contacts-main-window.vala:439
-msgid "Cancel"
-msgstr "Atsisakyti"
-
-#: data/ui/contacts-main-window.ui:158
+#: data/ui/contacts-main-window.ui:165
 msgid "Cancel Selection"
 msgstr "Atsisakyti pasirinkimo"
 
-#: data/ui/contacts-main-window.ui:171
+#: data/ui/contacts-main-window.ui:179
 msgid "Search contacts"
 msgstr "Ieškoti kontaktų"
 
-#: data/ui/contacts-main-window.ui:197
-msgid "Loading"
-msgstr "Įkeliama"
-
 #. Export refers to the verb
-#: data/ui/contacts-main-window.ui:234
-msgid "Export"
-msgstr "Eksportuoti"
+#: data/ui/contacts-main-window.ui:228 src/contacts-main-window.vala:612
+msgid "_Export"
+msgstr "_Eksportuoti"
 
-#: data/ui/contacts-main-window.ui:235
+#: data/ui/contacts-main-window.ui:230
 msgid "Export Selected Contacts"
 msgstr "Eksportuoti pasirinktus kontaktus"
 
 #. Link refers to the verb, from linking contacts together
-#: data/ui/contacts-main-window.ui:243
-msgid "Link"
-msgstr "Susieti"
+#: data/ui/contacts-main-window.ui:238
+msgid "_Link"
+msgstr "_Susieti"
 
-#: data/ui/contacts-main-window.ui:244
+#: data/ui/contacts-main-window.ui:240
 msgid "Link Selected Contacts Together"
 msgstr "Susieti pasirinktus kontaktus"
 
-#: data/ui/contacts-main-window.ui:259
-msgid "Delete"
-msgstr "Ištrinti"
+#: data/ui/contacts-main-window.ui:255
+msgid "_Delete"
+msgstr "Iš_trinti"
 
-#: data/ui/contacts-main-window.ui:303
+#: data/ui/contacts-main-window.ui:302
 msgid "Edit Contact"
 msgstr "Redaguoti kontaktą"
 
-#: data/ui/contacts-main-window.ui:309
+#: data/ui/contacts-main-window.ui:308
 msgid "Contact Menu"
 msgstr "Kontaktų meniu"
-
-#: data/ui/contacts-main-window.ui:319 src/contacts-main-window.vala:214
-msgid "Done"
-msgstr "Atlikta"
 
 #: data/ui/contacts-preferences-window.ui:11
 msgid "Address Books"
 msgstr "Adresų knygos"
 
-#: data/ui/contacts-qr-code-dialog.ui:14
+#: data/ui/contacts-qr-code-dialog.ui:11
 msgid "Share Contact"
 msgstr "Dalintis kontaktu"
 
-#: data/ui/contacts-qr-code-dialog.ui:37
+#: data/ui/contacts-qr-code-dialog.ui:38
 msgid "QR Code"
 msgstr "QR kodas"
 
-#: data/ui/contacts-qr-code-dialog.ui:47
+#: data/ui/contacts-qr-code-dialog.ui:48
 msgid "Scan to Save"
 msgstr "Nuskaitykite įrašymui"
 
@@ -364,21 +385,27 @@ msgstr "Rodyti kontaktą su šiuo filtru"
 msgid "Show the current version of Contacts"
 msgstr "Rodyti dabartinę Kontaktų versiją"
 
-#: src/contacts-app.vala:104 src/contacts-app.vala:166
+#: src/contacts-app.vala:103 src/contacts-app.vala:164
 msgid "Contact not found"
 msgstr "Kontaktas nerastas"
 
-#: src/contacts-app.vala:105
+#: src/contacts-app.vala:104
 #, c-format
 msgid "No contact with id %s found"
 msgstr "Kontaktas su id %s nerastas"
 
-#: src/contacts-app.vala:106 src/contacts-app.vala:168
-#: src/contacts-avatar-selector.vala:162 src/contacts-avatar-selector.vala:251
+#: src/contacts-app.vala:105 src/contacts-app.vala:166
+#: src/contacts-avatar-selector.vala:239
 msgid "_Close"
 msgstr "_Užverti"
 
-#: src/contacts-app.vala:149
+#: src/contacts-app.vala:147
+msgid "translator-credits"
+msgstr ""
+"išvertė:\n"
+"Aurimas Černius <aurisc4@gmail.com>"
+
+#: src/contacts-app.vala:148
 msgid ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 The Contacts Developers"
@@ -386,16 +413,16 @@ msgstr ""
 "© 2011 Red Hat, Inc.\n"
 "© 2011-2020 Kontaktų kūrėjai"
 
-#: src/contacts-app.vala:167
+#: src/contacts-app.vala:165
 #, c-format
 msgid "No contact with email address %s found"
 msgstr "Kontaktas su el. pašto adresu %s nerastas"
 
-#: src/contacts-app.vala:230
+#: src/contacts-app.vala:227
 msgid "Primary address book not found"
 msgstr "Nerasta pirminė adresų knyga"
 
-#: src/contacts-app.vala:232
+#: src/contacts-app.vala:229
 msgid ""
 "Contacts can't find the configured primary address book. You might "
 "experience issues creating or editing contacts"
@@ -403,7 +430,7 @@ msgstr ""
 "Kontaktams nepavyksta rasti sukonfigūruotos pirminės adresų knygos. Gali "
 "kilti problemų kuriant bei redaguojant kontaktus"
 
-#: src/contacts-app.vala:233
+#: src/contacts-app.vala:230
 msgid "Go To _Preferences"
 msgstr "Eiti į _nuostatas"
 
@@ -419,39 +446,35 @@ msgstr "Importuoti"
 msgid "vCard files"
 msgstr "vCard failai"
 
-#: src/contacts-avatar-selector.vala:115
+#: src/contacts-avatar-selector.vala:108
 msgid "No Camera Detected"
 msgstr "Nerasta kamera"
 
-#: src/contacts-avatar-selector.vala:161
-msgid "Failed to set avatar"
-msgstr "Nepavyko nustatyti atvaizdo"
-
-#: src/contacts-avatar-selector.vala:198
+#: src/contacts-avatar-selector.vala:181
 msgid "Browse for more pictures"
 msgstr "Naršyti daugiau paveikslėlių"
 
-#: src/contacts-avatar-selector.vala:199
+#: src/contacts-avatar-selector.vala:182
 msgid "_Open"
 msgstr "_Atverti"
 
-#: src/contacts-avatar-selector.vala:204
+#: src/contacts-avatar-selector.vala:187
 msgid "Image File"
 msgstr "Paveikslėlio failas"
 
-#: src/contacts-avatar-selector.vala:250
+#: src/contacts-avatar-selector.vala:238
 msgid "Failed to set avatar."
 msgstr "Nepavyko nustatyti atvaizdo."
 
-#: src/contacts-contact-editor.vala:187
-msgid "Show More"
-msgstr "Rodyti daugiau"
+#: src/contacts-contact-editor.vala:190
+msgid "_Show More"
+msgstr "_Rodyti daugiau"
 
-#: src/contacts-contact-editor.vala:284
+#: src/contacts-contact-editor.vala:283
 msgid "Add email"
 msgstr "Pridėti el. paštą"
 
-#: src/contacts-contact-editor.vala:310
+#: src/contacts-contact-editor.vala:309
 msgid "Add phone number"
 msgstr "Pridėti telefono numerį"
 
@@ -474,72 +497,43 @@ msgstr "Slapyvardis"
 msgid "Birthday"
 msgstr "Gimtadienis"
 
-#: src/contacts-contact-editor.vala:430
-msgid "Remove birthday"
-msgstr "Pašalinti gimtadienį"
-
-#: src/contacts-contact-editor.vala:448
-msgid "Set Birthday"
-msgstr "Nustatyti gimtadienį"
-
-#: src/contacts-contact-editor.vala:502
+#: src/contacts-contact-editor.vala:491
 msgid "Organization"
 msgstr "Organizacija"
 
-#: src/contacts-contact-editor.vala:508
+#: src/contacts-contact-editor.vala:497
 msgid "Role"
 msgstr "Rolė"
 
-#: src/contacts-contact-editor.vala:624
+#: src/contacts-contact-editor.vala:620
 msgid "Label"
 msgstr "Užrašas"
 
-#. Create grid and labels
-#: src/contacts-contact-editor.vala:690
-msgid "Day"
-msgstr "Diena"
-
-#: src/contacts-contact-editor.vala:694
-msgid "Month"
-msgstr "Mėnuo"
-
-#: src/contacts-contact-editor.vala:698
-msgid "Year"
-msgstr "Metai"
-
-#: src/contacts-contact-editor.vala:712
-msgid "_Set"
-msgstr "Nu_statyti"
-
-#: src/contacts-contact-editor.vala:721
-msgid "Change Birthday"
-msgstr "Keisti gimtadienį"
-
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "Street"
 msgstr "Gatvė"
 
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "Extension"
 msgstr "Plėtinys"
 
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "City"
 msgstr "Miestas"
 
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "State/Province"
 msgstr "Valstija/provincija"
 
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "Zip/Postal Code"
 msgstr "Zip/pašto kodas"
 
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "PO box"
 msgstr "Pašto dėžutė"
 
-#: src/contacts-contact-editor.vala:775
+#: src/contacts-contact-editor.vala:724
 msgid "Country"
 msgstr "Šalis"
 
@@ -551,7 +545,7 @@ msgstr "Mėgstami"
 msgid "All Contacts"
 msgstr "Visi kontaktai"
 
-#: src/contacts-contact-sheet.vala:204
+#: src/contacts-contact-sheet.vala:203
 #, c-format
 msgid "Send an email to %s"
 msgstr "Siųsti el. laišką %s"
@@ -686,20 +680,20 @@ msgstr "Yahoo! Messenger"
 msgid "Zephyr"
 msgstr "Zephyr"
 
-#: src/contacts-import-dialog.vala:60
+#: src/contacts-import-dialog.vala:59
 msgid "An error occurred reading the selected file"
 msgstr "Kilo klaida skaitant pasirinktą failą"
 
-#: src/contacts-import-dialog.vala:87
+#: src/contacts-import-dialog.vala:83
 #, c-format
 msgid "An error occurred reading the file '%s'"
 msgstr "Kilo klaida skaitant failą „%s“"
 
-#: src/contacts-import-dialog.vala:95
+#: src/contacts-import-dialog.vala:90
 msgid "The imported file does not seem to contain any contacts"
 msgstr "Neatrodo, kad importuojame faile būtų kontaktų"
 
-#: src/contacts-import-dialog.vala:100
+#: src/contacts-import-dialog.vala:95
 #, c-format
 msgid "Found %u contact"
 msgid_plural "Found %u contacts"
@@ -707,11 +701,11 @@ msgstr[0] "Rastas %u kontaktas"
 msgstr[1] "Rasti %u kontaktai"
 msgstr[2] "Rasta %u kontaktų"
 
-#: src/contacts-import-dialog.vala:129
+#: src/contacts-import-dialog.vala:124
 msgid "Can't import: no contacts found"
 msgstr "Nepavyko importuoti: nerasta kontaktų"
 
-#: src/contacts-import-dialog.vala:134
+#: src/contacts-import-dialog.vala:129
 #, c-format
 msgid "By continuing, you will import %u contact"
 msgid_plural "By continuing, you will import %u contacts"
@@ -749,7 +743,7 @@ msgstr[2] "Pasirinkta %llu"
 msgid "_Add"
 msgstr "Pri_dėti"
 
-#: src/contacts-main-window.vala:242
+#: src/contacts-main-window.vala:241
 #, c-format
 msgid "Editing %s"
 msgstr "Keičiamas %s"
@@ -762,45 +756,41 @@ msgstr[0] "Pasirinktas %d"
 msgstr[1] "Pasirinkti %d"
 msgstr[2] "Pasirinkta %d"
 
-#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:509
-#: src/contacts-main-window.vala:551
+#: src/contacts-main-window.vala:301 src/contacts-main-window.vala:525
+#: src/contacts-main-window.vala:570
 msgid "_Undo"
 msgstr "_Atšaukti"
 
-#: src/contacts-main-window.vala:383
+#: src/contacts-main-window.vala:400
 msgid "New Contact"
 msgstr "Naujas kontaktas"
 
-#: src/contacts-main-window.vala:437
+#: src/contacts-main-window.vala:452
 msgid "Discard changes?"
 msgstr "Atmesti pakeitimus?"
 
-#: src/contacts-main-window.vala:438
+#: src/contacts-main-window.vala:453
 msgid "Changes which are not saved will be permanently lost."
 msgstr "Neįrašyti pakeitimai bus negrįžtamai prarasti."
 
-#: src/contacts-main-window.vala:440
-msgid "Discard"
-msgstr "Atmesti"
+#: src/contacts-main-window.vala:455
+msgid "_Discard"
+msgstr "_Atmesti"
 
 #. Open up a file chooser
-#: src/contacts-main-window.vala:592
+#: src/contacts-main-window.vala:611
 msgid "Export to file"
 msgstr "Eksportuoti į failą"
 
-#: src/contacts-main-window.vala:593
-msgid "_Export"
-msgstr "_Eksportuoti"
-
-#: src/contacts-main-window.vala:594
+#: src/contacts-main-window.vala:613
 msgid "contacts.vcf"
 msgstr "kontaktai.vcf"
 
-#: src/contacts-preferences-window.vala:19
+#: src/contacts-preferences-window.vala:17
 msgid "Primary Address Book"
 msgstr "Pirminė adresų knyga"
 
-#: src/contacts-preferences-window.vala:20
+#: src/contacts-preferences-window.vala:18
 msgid ""
 "New contacts will be added to the selected address book. You are able to "
 "view and edit contacts from other address books."
@@ -808,15 +798,15 @@ msgstr ""
 "Nauji kontaktai bus pridėti pažymėtoje adresų knygoje. Galėsite matyti bei "
 "keisti kitų adresų knygų kontaktus."
 
-#: src/contacts-preferences-window.vala:29
+#: src/contacts-preferences-window.vala:27
 msgid "_Online Accounts"
 msgstr "_Internetinės paskyros"
 
-#: src/contacts-preferences-window.vala:34
+#: src/contacts-preferences-window.vala:32
 msgid "Open the Online Accounts panel in Settings"
 msgstr "Atveria internetinių paskyrų skydelį Nustatymuose"
 
-#: src/contacts-qr-code-dialog.vala:22
+#: src/contacts-qr-code-dialog.vala:20
 #, c-format
 msgid "Scan the QR code to save the contact <b>%s</b>."
 msgstr "Nuskaitykite QA kodą kontakto <b>%s</b> įrašymui."
@@ -1017,6 +1007,27 @@ msgstr "Saugo informaciją apie tai, ar langas šiuo metu yra išskleistas ar ne
 msgid "Is the window fullscreen"
 msgstr "Ar langas yra visame ekrane"
 
+#~ msgid "Help"
+#~ msgstr "Žinynas"
+
+#~ msgid "Cancel"
+#~ msgstr "Atsisakyti"
+
+#~ msgid "Loading"
+#~ msgstr "Įkeliama"
+
+#~ msgid "Export"
+#~ msgstr "Eksportuoti"
+
+#~ msgid "Done"
+#~ msgstr "Atlikta"
+
+#~ msgid "Failed to set avatar"
+#~ msgstr "Nepavyko nustatyti atvaizdo"
+
+#~ msgid "Change Birthday"
+#~ msgstr "Keisti gimtadienį"
+
 #~ msgid "Remove"
 #~ msgstr "Pašalinti"
 
@@ -1114,11 +1125,6 @@ msgstr "Ar langas yra visame ekrane"
 
 #~ msgid "Online Accounts <sup>↗</sup>"
 #~ msgstr "Internetinės paskyros <sup>↗</sup>"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "išvertė:\n"
-#~ "Aurimas Černius <aurisc4@gmail.com>"
 
 #~ msgid "About GNOME Contacts"
 #~ msgstr "Apie GNOME kontaktus"
@@ -1222,9 +1228,6 @@ msgstr "Ar langas yra visame ekrane"
 
 #~ msgid "Quit"
 #~ msgstr "Išeiti"
-
-#~ msgid "_Help"
-#~ msgstr "_Žinynas"
 
 #~ msgid "_About"
 #~ msgstr "_Apie"
