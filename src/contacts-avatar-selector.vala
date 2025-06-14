@@ -31,14 +31,23 @@ private class Contacts.Thumbnail : Gtk.FlowBoxChild {
       requires (chunk.avatar != null) {
 
     var stream = yield chunk.avatar.load_async (MAIN_SIZE);
-    var pixbuf = yield new Gdk.Pixbuf.from_stream_async (stream);
-    return new Thumbnail (Gdk.Texture.for_pixbuf (pixbuf));
+    return yield Thumbnail.for_stream(stream);
   }
 
   public static async Thumbnail? for_file (File file) throws Error {
     var stream = yield file.read_async ();
-    var pixbuf = yield new Gdk.Pixbuf.from_stream_async (stream);
-    return new Thumbnail (Gdk.Texture.for_pixbuf (pixbuf));
+    return yield Thumbnail.for_stream(stream);
+  }
+
+  public static async Thumbnail? for_stream (InputStream stream) throws Error {
+    var loader = new Gly.Loader.for_stream (stream);
+    var image = yield loader.load_async (null);
+    if (image == null)
+      return null;
+
+    var frame = yield image.next_frame_async (null);
+    var texture = GlyGtk4.frame_get_texture (frame);
+    return new Thumbnail (texture);
   }
 }
 
