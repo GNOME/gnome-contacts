@@ -56,6 +56,8 @@ contacts_deps = [
   gee,
   gio_unix,
   glib,
+  glycin_dep,
+  glycin_gtk_dep,
   gstreamer_dep,
   gtk4_dep,
   libadwaita_dep,

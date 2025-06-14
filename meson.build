@@ -49,6 +49,9 @@ glib = dependency('glib-2.0', version: '>=' + min_glib_version)
 gmodule_export = dependency('gmodule-export-2.0', version: '>=' + min_glib_version)
 gtk4_dep = dependency('gtk4', version: '>= 4.15.3')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.8.alpha')
+# Images loading
+glycin_dep = dependency('glycin-2', version: '>= 2.0')
+glycin_gtk_dep = dependency('glycin-gtk4-2', version: '>= 2.0')
 # E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)

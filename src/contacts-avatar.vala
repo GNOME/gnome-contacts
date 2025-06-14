@@ -124,11 +124,16 @@ public class Contacts.Avatar : Adw.Bin {
 
     try {
       var stream = yield icon.load_async (this.avatar_size, null);
-      var pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (stream,
-                                                                    this.avatar_size,
-                                                                    this.avatar_size,
-                                                                    true);
-      set_paintable (Gdk.Texture.for_pixbuf (pixbuf));
+      var loader = new Gly.Loader.for_stream (stream);
+      var image = yield loader.load_async (null);
+      if (image == null)
+        return;
+
+      var frame_request = new Gly.FrameRequest ();
+      frame_request.set_scale (this.avatar_size, this.avatar_size);
+      var frame = yield image.get_specific_frame_async (frame_request, null);
+      var texture = GlyGtk4.frame_get_texture (frame);
+      set_paintable (texture);
     } catch (Error e) {
       warning ("Couldn't load avatar of '%s': %s", this.individual.display_name, e.message);
     }
