@@ -1,0 +1,37 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsImportDialog: Adw.Dialog {
+  content-width: 400;
+  content-height: 400;
+  title: _("Import Contacts");
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+
+      [start]
+      Button {
+        label: _("_Cancel");
+        use-underline: true;
+        action-name: "window.close";
+      }
+
+      [end]
+      Button {
+        label: _("_Import");
+        use-underline: true;
+        action-name: "import";
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: Adw.PreferencesPage page {};
+  };
+}

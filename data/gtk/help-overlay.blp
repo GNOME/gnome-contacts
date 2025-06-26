@@ -1,0 +1,59 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+
+ShortcutsWindow help_overlay {
+  ShortcutsSection {
+    ShortcutsGroup {
+      title: C_("shortcut window", "Overview");
+
+      ShortcutsShortcut {
+        action-name: "app.help";
+        title: C_("shortcut window", "Help");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "F10";
+        title: C_("shortcut window", "Open menu");
+      }
+
+      ShortcutsShortcut {
+        action-name: "app.show-preferences";
+        title: C_("shortcut window", "Show preferences");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "<Primary>n";
+        title: C_("shortcut window", "Create a new contact");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "<Ctrl>f";
+        title: C_("shortcut window", "Search contacts");
+      }
+
+      ShortcutsShortcut {
+        action-name: "win.show-help-overlay";
+        title: C_("shortcut window", "Shortcut list");
+      }
+
+      ShortcutsShortcut {
+        action-name: "app.quit";
+        title: C_("shortcut window", "Quit");
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Editing or creating a contact");
+
+      ShortcutsShortcut {
+        accelerator: "<Control>Return";
+        title: C_("shortcut window", "Save current changes to contact");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "Escape";
+        title: C_("shortcut window", "Cancel current changes for contact");
+      }
+    }
+  }
+}

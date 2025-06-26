@@ -1,7 +1,31 @@
 # The resources (NOTE: needed by e.g. src/)
+blueprints = custom_target(
+  input: files(
+    'gtk/help-overlay.blp',
+    'ui/contacts-avatar-selector.blp',
+    'ui/contacts-birthday-editor.blp',
+    'ui/contacts-contact-pane.blp',
+    'ui/contacts-contact-sheet-row.blp',
+    'ui/contacts-crop-dialog.blp',
+    'ui/contacts-editable-avatar.blp',
+    'ui/contacts-import-dialog.blp',
+    'ui/contacts-link-suggestion-grid.blp',
+    'ui/contacts-main-window.blp',
+    'ui/contacts-preferences-window.blp',
+    'ui/contacts-qr-code-dialog.blp',
+    'ui/contacts-setup-window.blp',
+  ),
+  output: '.',
+  command: [
+    blueprint_compiler, 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@',
+  ],
+)
+
 resource_files = files('contacts.gresource.xml')
 resources = gnome.compile_resources('org.gnome.Contacts', resource_files,
-  c_name: 'resources'
+  c_name: 'resources',
+  source_dir: meson.current_build_dir(),
+  dependencies: blueprints,
 )
 
 # The icons

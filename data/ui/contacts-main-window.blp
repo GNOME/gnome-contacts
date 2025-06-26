@@ -1,0 +1,327 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+menu primary_menu_popover {
+  section {
+    label: _("List Contacts By:");
+
+    item {
+      label: _("_First Name");
+      action: "win.sort-on";
+      target: "firstname";
+    }
+
+    item {
+      label: _("_Surname");
+      action: "win.sort-on";
+      target: "surname";
+    }
+  }
+
+  section {
+    item {
+      label: _("_Import From File…");
+      action: "app.import";
+    }
+
+    item {
+      label: _("_Export All Contacts…");
+      action: "app.export-all";
+    }
+  }
+
+  section {
+    item {
+      label: _("_Preferences");
+      action: "app.show-preferences";
+    }
+
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("_Help");
+      action: "app.help";
+    }
+
+    item {
+      label: _("_About Contacts");
+      action: "app.about";
+    }
+  }
+}
+
+menu contact_hamburger_menu_popover {
+  section {
+    item {
+      label: _("Mark as Favorite");
+      action: "win.mark-favorite";
+      hidden-when: "action-disabled";
+    }
+
+    item {
+      label: _("Unmark as Favorite");
+      action: "win.unmark-favorite";
+      hidden-when: "action-disabled";
+    }
+
+    item {
+      label: _("Share as QR Code");
+      action: "win.show-contact-qr-code";
+    }
+  }
+
+  section {
+    item {
+      label: _("Delete Contact");
+      action: "win.delete-contact";
+    }
+  }
+}
+
+template $ContactsMainWindow: Adw.ApplicationWindow {
+  default-width: 800;
+  default-height: 600;
+  width-request: 360;
+  height-request: 240;
+  icon-name: "gnome-contacts";
+
+  ShortcutController {
+    scope: global;
+
+    Shortcut {
+      trigger: "<Control>n";
+      action: "action(win.new-contact)";
+    }
+
+    Shortcut {
+      trigger: "<Control>f";
+      action: "action(win.focus-search)";
+    }
+
+    Shortcut {
+      trigger: "Escape";
+      action: "action(win.cancel)";
+    }
+
+    Shortcut {
+      trigger: "<Control>Return";
+      action: "action(win.edit-contact-save)";
+    }
+
+    Shortcut {
+      trigger: "<Control>Delete";
+      action: "action(win.delete-marked-contacts)";
+    }
+  }
+
+  Adw.ToastOverlay toast_overlay {
+    Adw.NavigationSplitView content_box {
+      sidebar-width-fraction: 0.3;
+      min-sidebar-width: 260;
+      max-sidebar-width: 360;
+      notify::collapsed => $on_collapsed();
+      notify::show-content => $on_show_content();
+
+      sidebar: Adw.NavigationPage list_pane_page {
+        title: _("Contacts");
+        name: "list-pane";
+
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar left_header {
+            [start]
+            Button add_button {
+              tooltip-text: _("Add New Contact");
+              icon-name: "list-add-symbolic";
+              action-name: "win.new-contact";
+            }
+
+            [end]
+            MenuButton primary_menu_button {
+              menu-model: primary_menu_popover;
+              primary: true;
+              tooltip-text: _("Main Menu");
+              icon-name: "open-menu-symbolic";
+            }
+
+            [end]
+            Button selection_button {
+              icon-name: "selection-mode-symbolic";
+              tooltip-text: _("Select Contacts");
+              clicked => $on_selection_button_clicked();
+            }
+
+            [end]
+            Button select_cancel_button {
+              visible: false;
+              label: _("_Cancel");
+              use-underline: true;
+              tooltip-text: _("Cancel Selection");
+              can-shrink: true;
+              action-name: "win.cancel-selection";
+            }
+          }
+
+          [top]
+          Adw.Bin {
+            styles [
+              "toolbar",
+            ]
+
+            child: SearchEntry filter_entry {
+              placeholder-text: _("Search contacts");
+              search-delay: 500;
+              search-changed => $filter_entry_changed();
+            };
+          }
+
+          Stack list_pane_stack {
+            /* The loading spinner page */
+            Adw.Spinner {
+              styles [
+                "dim-label",
+              ]
+            }
+
+            /* The list pane with the actual contacts */
+            Box list_pane {
+              orientation: vertical;
+
+              Adw.Bin contacts_list_container {
+                hexpand: true;
+                vexpand: true;
+              }
+            }
+          }
+
+          [bottom]
+          Revealer actions_bar {
+            reveal-child: false;
+            transition-type: slide_up;
+
+            child: Box {
+              styles [
+                "toolbar",
+              ]
+
+              orientation: horizontal;
+
+              Box {
+                halign: start;
+                hexpand: true;
+                spacing: 6;
+                margin-end: 6;
+
+                Button export_button {
+                  /* Translators: Export refers to the verb */
+                  label: _("_Export");
+                  use-underline: true;
+                  tooltip-text: _("Export Selected Contacts");
+                  action-name: "win.export-marked-contacts";
+                  can-shrink: true;
+                }
+
+                Button link_button {
+                  focus-on-click: false;
+
+                  /* Translators: Link refers to the verb, from linking contacts together */
+                  label: _("_Link");
+                  use-underline: true;
+                  tooltip-text: _("Link Selected Contacts Together");
+                  action-name: "win.link-marked-contacts";
+                  can-shrink: true;
+                }
+              }
+
+              Box {
+                halign: end;
+                hexpand: true;
+                spacing: 6;
+
+                Button delete_button {
+                  focus-on-click: false;
+                  label: _("_Delete");
+                  use-underline: true;
+                  action-name: "win.delete-marked-contacts";
+                  can-shrink: true;
+
+                  styles [
+                    "destructive-action",
+                  ]
+                }
+              }
+            };
+          }
+        };
+      };
+
+      content: Adw.NavigationPage contact_pane_page {
+        title: _("Select a Contact");
+        name: "contact-pane";
+
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar right_header {
+            show-title: false;
+
+            Button cancel_button {
+              visible: false;
+              label: _("_Cancel");
+              use-underline: true;
+              action-name: "win.cancel";
+              can-shrink: true;
+            }
+
+            [end]
+            Box contact_sheet_buttons {
+              visible: false;
+              orientation: horizontal;
+              spacing: 6;
+
+              Button edit_contact_button {
+                icon-name: "document-edit-symbolic";
+                action-name: "win.edit-contact";
+                tooltip-text: _("Edit Contact");
+              }
+
+              [end]
+              MenuButton contact_hamburger_menu_button {
+                menu-model: contact_hamburger_menu_popover;
+                tooltip-text: _("Contact Menu");
+                icon-name: "view-more-symbolic";
+              }
+            }
+
+            [end]
+            Button done_button {
+              visible: false;
+              use-underline: true;
+              label: _("_Done");
+              valign: center;
+              action-name: "win.edit-contact-save";
+              can-shrink: true;
+
+              styles [
+                "suggested-action",
+              ]
+            }
+          }
+
+          Adw.ToolbarView contact_pane_toolbar {}
+        };
+      };
+    }
+  }
+
+  Adw.Breakpoint {
+    condition ("max-width: 560sp")
+
+    setters {
+      content_box.collapsed: true;
+    }
+  }
+}

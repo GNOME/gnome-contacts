@@ -1,0 +1,47 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsEditableAvatar: Widget {
+  Overlay overlay {
+    [overlay]
+    Adw.Bin {
+      halign: end;
+      valign: start;
+
+      styles [
+        "contacts-cutout-button",
+      ]
+
+      Button {
+        action-name: "edit-avatar";
+        icon-name: "document-edit-symbolic";
+        tooltip-text: _("Change Avatar");
+
+        styles [
+          "circular",
+        ]
+      }
+    }
+
+    [overlay]
+    Adw.Bin {
+      halign: end;
+      valign: end;
+
+      styles [
+        "contacts-cutout-button",
+      ]
+
+      Button {
+        action-name: "delete-avatar";
+        icon-name: "user-trash-symbolic";
+        tooltip-text: _("Remove Avatar");
+
+        styles [
+          "circular",
+        ]
+      }
+    }
+  }
+}

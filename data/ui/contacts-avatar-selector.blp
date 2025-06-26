@@ -1,0 +1,89 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsAvatarSelector: Adw.Dialog {
+  content-width: 400;
+  content-height: 400;
+  title: _("Select a new avatar");
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+
+      [start]
+      Button {
+        label: _("_Cancel");
+        use-underline: true;
+        receives-default: true;
+        action-name: "window.close";
+        can-shrink: true;
+      }
+
+      [end]
+      Button done_button {
+        label: _("_Done");
+        use-underline: true;
+        action-name: "set-avatar";
+        can-shrink: true;
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: ScrolledWindow {
+      hscrollbar-policy: never;
+
+      Viewport {
+        scroll-to-focus: true;
+
+        Box {
+          margin-start: 10;
+          margin-end: 10;
+          margin-top: 10;
+          margin-bottom: 10;
+          orientation: vertical;
+          spacing: 10;
+
+          FlowBox thumbnail_grid {
+            column-spacing: 5;
+            row-spacing: 5;
+            max-children-per-line: 8;
+            selection-mode: single;
+            homogeneous: true;
+            activate-on-single-click: false;
+          }
+        }
+      }
+    };
+
+    [bottom]
+    ActionBar {
+      [center]
+      Box {
+        orientation: horizontal;
+        spacing: 6;
+
+        Button camera_button {
+          label: _("_Take a Picture…");
+          use-underline: true;
+          receives-default: true;
+          can-shrink: true;
+          clicked => $on_camera_button_clicked();
+        }
+
+        Button {
+          label: _("_Select a File…");
+          use-underline: true;
+          receives-default: true;
+          can-shrink: true;
+          clicked => $on_file_clicked();
+        }
+      }
+    }
+  };
+}

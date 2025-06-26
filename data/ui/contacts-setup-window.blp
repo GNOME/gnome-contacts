@@ -1,0 +1,46 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsSetupWindow: Adw.ApplicationWindow {
+  default-width: 800;
+  default-height: 600;
+  width-request: 360;
+  title: _("Contacts Setup");
+
+  Adw.ToolbarView {
+    [top]
+    HeaderBar {
+      show-title-buttons: false;
+
+      Button setup_quit_button {
+        label: _("_Quit");
+        use-underline: true;
+        tooltip-text: _("Cancel Setup And Quit");
+        action-name: "app.quit";
+        can-shrink: true;
+      }
+
+      [end]
+      Button setup_done_button {
+        sensitive: false;
+        label: _("_Done");
+        /* Translators: "Complete" is a verb here: a user finishes the setup by clicking this button */
+        tooltip-text: _("Complete setup");
+        use-underline: true;
+        can-shrink: true;
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: Adw.StatusPage {
+      title: _("Welcome");
+      description: _("Please select your main address book: this is where new contacts will be added. If you keep your contacts in an online account, you can add them using the online accounts settings.");
+
+      child: Adw.Clamp clamp {};
+    };
+  }
+}

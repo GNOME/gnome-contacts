@@ -64,6 +64,7 @@ if get_option('goa')
 endif
 
 valadoc = find_program('valadoc', required: get_option('docs'))
+blueprint_compiler = find_program('blueprint-compiler')
 
 
 # Configuration

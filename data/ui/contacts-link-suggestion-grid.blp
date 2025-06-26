@@ -1,0 +1,65 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsLinkSuggestionGrid: Box {
+  spacing: 12;
+  margin-start: 6;
+  margin-end: 6;
+  margin-top: 6;
+  margin-bottom: 6;
+
+  styles [
+    "toolbar",
+  ]
+
+  Adw.Bin avatar_bin {
+    valign: center;
+  }
+
+  Box {
+    orientation: vertical;
+    hexpand: true;
+    valign: center;
+
+    Label description_label {
+      xalign: 0;
+      wrap: true;
+      wrap-mode: word_char;
+      lines: 0;
+      ellipsize: none;
+
+      styles [
+        "title",
+      ]
+    }
+
+    Label extra_info_label {
+      visible: false;
+      xalign: 0;
+      lines: 0;
+      ellipsize: none;
+
+      styles [
+        "dim-label",
+        "subtitle",
+      ]
+    }
+  }
+
+  Button accept_button {
+    valign: center;
+    label: _("Link Contacts");
+    can-shrink: true;
+  }
+
+  Button reject_button {
+    valign: center;
+    icon-name: "window-close-symbolic";
+
+    styles [
+      "flat",
+      "circular",
+    ]
+  }
+}

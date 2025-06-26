@@ -1,0 +1,44 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsCropDialog: Adw.Dialog {
+  content-width: 400;
+  content-height: 400;
+  title: _("Take a Picture");
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+      show-title: false;
+
+      [start]
+      Button {
+        label: _("_Cancel");
+        use-underline: true;
+        receives-default: true;
+        action-name: "window.close";
+        can-shrink: true;
+      }
+
+      [end]
+      Button done_button {
+        label: _("_Done");
+        use-underline: true;
+        action-name: "crop";
+        can-shrink: true;
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: $CcCropArea crop_area {
+      hexpand: true;
+      vexpand: true;
+    };
+  };
+}

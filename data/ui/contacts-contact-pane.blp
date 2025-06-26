@@ -1,0 +1,61 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsContactPane: Adw.Bin {
+  hexpand: true;
+  vexpand: true;
+
+  Stack stack {
+    StackPage none_selected_page {
+      name: "none-selected-page";
+
+      child: Adw.StatusPage {
+        icon-name: "avatar-default-symbolic";
+        title: _("Select a Contact");
+      };
+    }
+
+    StackPage contact_sheet_page {
+      name: "contact-sheet-page";
+
+      child: ScrolledWindow contact_sheet_view {
+        hexpand: true;
+        vexpand: true;
+        hscrollbar-policy: never;
+        vscrollbar-policy: automatic;
+
+        Adw.Clamp contact_sheet_clamp {
+          maximum-size: 500;
+
+          styles [
+            "contacts-sheet-container",
+          ]
+        }
+      };
+    }
+
+    StackPage contact_editor_page {
+      name: "contact-editor-page";
+
+      child: ScrolledWindow contact_editor_view {
+        hexpand: true;
+        vexpand: true;
+        hscrollbar-policy: never;
+        vscrollbar-policy: automatic;
+
+        Adw.Clamp contact_editor_clamp {
+          styles [
+            "contacts-contact-editor-container",
+          ]
+
+          maximum-size: bind contact_sheet_clamp.maximum-size;
+
+          Box contact_editor_box {}
+        }
+      };
+    }
+
+    visible-child-name: "none-selected-page";
+  }
+}

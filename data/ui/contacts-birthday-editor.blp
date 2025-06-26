@@ -1,0 +1,81 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsBirthdayEditor: Adw.Dialog {
+  title: _("Set Birthday");
+  content-width: 360;
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+
+      [start]
+      Button {
+        label: _("_Cancel");
+        use-underline: true;
+        receives-default: true;
+        action-name: "window.close";
+        can-shrink: true;
+      }
+
+      [end]
+      Button ok_button {
+        label: _("_Set");
+        use-underline: true;
+        can-shrink: true;
+        clicked => $on_set_button_clicked();
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: Adw.PreferencesPage {
+      Adw.PreferencesGroup {
+        Adw.SpinRow day_spin {
+          title: _("Day");
+          digits: 0;
+          numeric: true;
+
+          adjustment: Adjustment {
+            lower: 1;
+            upper: 31;
+            step-increment: 1;
+          };
+        }
+
+        Adw.ComboRow month_combo {
+          title: _("Month");
+          vexpand: true;
+        }
+
+        Adw.SpinRow year_spin {
+          title: _("Year");
+          digits: 0;
+          numeric: true;
+
+          adjustment: Adjustment {
+            lower: 1800;
+            upper: 3000;
+            step-increment: 1;
+          };
+        }
+      }
+
+      Adw.PreferencesGroup remove_group {
+        Adw.ButtonRow {
+          title: _("Remove Birthday");
+          activated => $on_remove_activated();
+
+          styles [
+            "destructive-action",
+          ]
+        }
+      }
+    };
+  };
+}

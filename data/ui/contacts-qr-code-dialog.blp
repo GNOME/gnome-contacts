@@ -1,0 +1,69 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsQrCodeDialog: Adw.Dialog {
+  content-width: 400;
+  content-height: 550;
+  title: _("Share Contact");
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
+
+    content: ScrolledWindow {
+      propagate-natural-height: true;
+
+      Adw.Clamp {
+        Box {
+          spacing: 24;
+          orientation: vertical;
+          margin-top: 32;
+          margin-bottom: 32;
+          margin-start: 32;
+          margin-end: 32;
+
+          Picture qr_image {
+            halign: center;
+            height-request: 200;
+            can-shrink: true;
+            alternative-text: _("QR Code");
+
+            styles [
+              "card",
+              "contacts-qr-code-dialog-qr-image",
+            ]
+          }
+
+          Label qr_title {
+            label: _("Scan to Save");
+
+            css-classes: [
+              "title-1",
+            ];
+
+            wrap: true;
+            halign: center;
+            justify: center;
+          }
+
+          Label qr_subtitle {
+            wrap: true;
+            halign: center;
+            justify: center;
+            natural-wrap-mode: none;
+          }
+        }
+
+        ShortcutController {
+          scope: global;
+
+          Shortcut {
+            trigger: "Escape";
+            action: "action(window.close)";
+          }
+        }
+      }
+    };
+  };
+}

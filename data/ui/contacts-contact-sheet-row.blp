@@ -1,0 +1,83 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+using Gtk 4.0;
+using Adw 1;
+
+template $ContactsContactSheetRow: Adw.PreferencesRow {
+  activatable: false;
+
+  accessibility {
+    labelled-by: title;
+    described-by: subtitle;
+  }
+
+  child: Box header {
+    valign: center;
+    hexpand: false;
+
+    styles [
+      "header",
+    ]
+
+    Box prefixes {
+      visible: false;
+
+      styles [
+        "prefixes",
+      ]
+    }
+
+    Image image {
+      valign: center;
+
+      styles [
+        "icon",
+        "contacts-property-icon",
+      ]
+    }
+
+    Box title_box {
+      orientation: vertical;
+      valign: center;
+      hexpand: true;
+
+      styles [
+        "title",
+      ]
+
+      Label title {
+        ellipsize: none;
+        lines: 0;
+        mnemonic-widget: template;
+        selectable: true;
+        wrap: true;
+        wrap-mode: word_char;
+        xalign: 0;
+
+        styles [
+          "title",
+        ]
+      }
+
+      Label subtitle {
+        visible: bind $contacts_utils_string_is_non_empty_closure(subtitle.label) as <bool>;
+        ellipsize: none;
+        lines: 0;
+        wrap: true;
+        wrap-mode: word_char;
+        xalign: 0;
+
+        styles [
+          "subtitle",
+        ]
+      }
+    }
+
+    Box suffixes {
+      visible: false;
+
+      styles [
+        "suffixes",
+      ]
+    }
+  };
+}
