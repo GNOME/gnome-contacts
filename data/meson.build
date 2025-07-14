@@ -1,7 +1,7 @@
 # The resources (NOTE: needed by e.g. src/)
 blueprints = custom_target(
   input: files(
-    'gtk/help-overlay.blp',
+    'ui/contacts-shortcuts-dialog.blp',
     'ui/contacts-avatar-selector.blp',
     'ui/contacts-birthday-editor.blp',
     'ui/contacts-contact-pane.blp',
