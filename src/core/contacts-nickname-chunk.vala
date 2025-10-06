@@ -58,8 +58,8 @@ public class Contacts.NicknameChunk : Chunk {
 
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is NameDetails) {
-
     yield ((NameDetails) this.persona).change_nickname (this.nickname);
+    this.original_nickname = this.nickname;
   }
 
   public override Variant? to_gvariant () {

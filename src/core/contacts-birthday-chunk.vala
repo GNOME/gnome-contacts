@@ -67,6 +67,7 @@ public class Contacts.BirthdayChunk : Chunk {
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is BirthdayDetails) {
     yield ((BirthdayDetails) this.persona).change_birthday (this.birthday);
+    this.original_birthday = this.birthday;
   }
 
   public bool is_today (DateTime now)

@@ -40,6 +40,7 @@ public class Contacts.PhonesChunk : BinChunk {
       requires (this.persona is PhoneDetails) {
     var afds = (Gee.Set<PhoneFieldDetails>) get_abstract_field_details ();
     yield ((PhoneDetails) this.persona).change_phone_numbers (afds);
+    update_original_elements();
   }
 }
 

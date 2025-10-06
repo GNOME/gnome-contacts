@@ -55,8 +55,8 @@ public class Contacts.AliasChunk : Chunk {
 
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is AliasDetails) {
-
     yield ((AliasDetails) this.persona).change_alias (this.alias);
+    this.original_alias = alias;
   }
 
   public override Variant? to_gvariant () {

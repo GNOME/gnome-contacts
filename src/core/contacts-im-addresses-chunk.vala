@@ -50,8 +50,8 @@ public class Contacts.ImAddressesChunk : BinChunk {
       if (afd != null)
         afds[im_addr.protocol] = afd;
     }
-
     yield ((ImDetails) this.persona).change_im_addresses (afds);
+    update_original_elements();
   }
 }
 

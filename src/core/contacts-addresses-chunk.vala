@@ -40,6 +40,7 @@ public class Contacts.AddressesChunk : BinChunk {
       requires (this.persona is PostalAddressDetails) {
     var afds = (Gee.Set<PostalAddressFieldDetails>) get_abstract_field_details ();
     yield ((PostalAddressDetails) this.persona).change_postal_addresses (afds);
+    update_original_elements();
   }
 }
 

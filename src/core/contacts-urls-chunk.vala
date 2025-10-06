@@ -40,6 +40,7 @@ public class Contacts.UrlsChunk : BinChunk {
       requires (this.persona is UrlDetails) {
     var afds = (Gee.Set<UrlFieldDetails>) get_abstract_field_details ();
     yield ((UrlDetails) this.persona).change_urls (afds);
+    update_original_elements();
   }
 }
 

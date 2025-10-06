@@ -50,6 +50,7 @@ public class Contacts.AvatarChunk : Chunk {
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is AvatarDetails) {
     yield ((AvatarDetails) this.persona).change_avatar (this.avatar);
+    this.original_avatar = this.avatar;
   }
 
   public override Variant? to_gvariant () {

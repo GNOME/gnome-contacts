@@ -36,6 +36,7 @@ public class Contacts.EmailAddressesChunk : BinChunk {
       requires (this.persona is EmailDetails) {
     var afds = (Gee.Set<EmailFieldDetails>) get_abstract_field_details ();
     yield ((EmailDetails) this.persona).change_email_addresses (afds);
+    update_original_elements();
   }
 }
 

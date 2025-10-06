@@ -40,6 +40,7 @@ public class Contacts.NotesChunk : BinChunk {
       requires (this.persona is PhoneDetails) {
     var afds = (Gee.Set<NoteFieldDetails>) get_abstract_field_details ();
     yield ((NoteDetails) this.persona).change_notes (afds);
+    update_original_elements();
   }
 }
 

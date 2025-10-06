@@ -66,6 +66,7 @@ public class Contacts.FullNameChunk : Chunk {
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is NameDetails) {
     yield ((NameDetails) this.persona).change_full_name (this.full_name);
+    this.original_full_name = this.full_name;
   }
 
   public override Variant? to_gvariant () {

@@ -42,6 +42,7 @@ public class Contacts.RolesChunk : BinChunk {
       requires (this.persona is RoleDetails) {
     var afds = (Gee.Set<RoleFieldDetails>) get_abstract_field_details ();
     yield ((RoleDetails) this.persona).change_roles (afds);
+    update_original_elements();
   }
 }
 

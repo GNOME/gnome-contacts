@@ -148,13 +148,22 @@ public abstract class Contacts.BinChunk : Chunk, GLib.ListModel {
    * property) as well as doing an initial emptiness check
    */
   protected void finish_initialization () {
+    update_original_elements ();
+    this.original_elements_set = true;
+
+    emptiness_check ();
+  }
+
+  /**
+   * A helper to set the current `elements` as the original elements.
+   * This happens automatically during finish_initialization(), but should also
+   * be called when new values are persistently saved.
+   */
+  protected void update_original_elements() {
     // Make a deep copy to ensure changes don't propagate to original_elements
     this.original_elements = this.elements.copy ((child) => {
         return child.copy ();
     }).steal ();
-    this.original_elements_set = true;
-
-    emptiness_check ();
   }
 
   // Variant (de)serialization

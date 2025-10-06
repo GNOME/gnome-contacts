@@ -68,6 +68,7 @@ public class Contacts.StructuredNameChunk : Chunk {
   public override async void save_to_persona () throws GLib.Error
       requires (this.persona is NameDetails) {
     yield ((NameDetails) this.persona).change_structured_name (this.structured_name);
+    this.original_structured_name = this.structured_name;
   }
 
   public override Variant? to_gvariant () {
