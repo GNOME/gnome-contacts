@@ -19,8 +19,14 @@ public class Contacts.Avatar : Adw.Bin {
       if (this._individual == value)
         return;
 
+      if (this.individual != null)
+        this._individual.notify.disconnect (on_individual_notify);
+
       this._individual = value;
       update_individual ();
+
+      if (this.individual != null)
+        this._individual.notify.connect (on_individual_notify);
     }
   }
 
@@ -73,6 +79,12 @@ public class Contacts.Avatar : Adw.Bin {
 
     var icon = (this.individual != null)? this.individual.avatar : null;
     this.load_avatar.begin (icon);
+  }
+
+  private void on_individual_notify (Object object, ParamSpec pspec) {
+    if (pspec.name == "display-name" || pspec.name == "avatar") {
+      update_individual ();
+    }
   }
 
   private void update_contact () {
