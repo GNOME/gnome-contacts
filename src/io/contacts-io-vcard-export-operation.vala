@@ -16,7 +16,9 @@ public class Contacts.Io.VCardExportOperation : ExportOperation {
 
   // We _could_ parameterize this with our own enum, but there's no need for
   // that at the moment.
+#if !HAVE_EDS_3_59_1
   private E.VCardFormat vcard_format = E.VCardFormat.@30;
+#endif
 
   // This should always be on false, except for debugging/troubleshooting
   // purposes. It forces E-D-S personas to use our manual serialization instead
@@ -53,7 +55,11 @@ public class Contacts.Io.VCardExportOperation : ExportOperation {
     // that's an E.VCard already
     if (persona is Edsf.Persona && !avoid_eds) {
       unowned var contact = ((Edsf.Persona) persona).contact;
+#if HAVE_EDS_3_59_1
+      return contact.to_string ();
+#else
       return contact.to_string (this.vcard_format);
+#endif
     }
 
     var vcard = new E.VCard ();
@@ -104,7 +110,11 @@ public class Contacts.Io.VCardExportOperation : ExportOperation {
       vcard_set_webservice_details (vcard, (WebServiceDetails) persona);
 */
 
+#if HAVE_EDS_3_59_1
+    return vcard.to_string ();
+#else
     return vcard.to_string (this.vcard_format);
+#endif
   }
 
   private void vcard_set_avatar_details (E.VCard vcard,
