@@ -52,6 +52,9 @@ libadwaita_dep = dependency('libadwaita-1', version: '>= 1.8.alpha')
 # E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
+if libebook.version().version_compare('>=3.59.1')
+  add_project_arguments('-D', 'HAVE_EDS_3_59_1', language: 'vala')
+endif
 # Camera
 libportal_dep = dependency('libportal-gtk4', version: '>= 0.7')
 gstreamer_dep = dependency('gstreamer-1.0')
