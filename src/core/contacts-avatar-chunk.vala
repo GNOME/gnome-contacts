@@ -53,12 +53,16 @@ public class Contacts.AvatarChunk : Chunk {
   }
 
   public override Variant? to_gvariant () {
-    // FIXME: implement
-    return null;
+    return this.avatar.serialize();
   }
 
   public override void apply_gvariant (Variant variant,
                                        bool mark_dirty = true) {
-    // FIXME: implement
+
+    var avatar = (LoadableIcon) GLib.Icon.deserialize(variant);
+    if (!mark_dirty) {
+      this.original_avatar = avatar;
+    }
+    this.avatar = avatar;
   }
 }

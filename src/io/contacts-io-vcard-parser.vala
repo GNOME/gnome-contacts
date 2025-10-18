@@ -54,11 +54,9 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
           case E.EVC_NICKNAME:
             handle_nickname (contact, attr);
             break;
-/* FIXME
           case E.EVC_PHOTO:
             handle_photo (contact, attr);
             break;
-*/
           case E.EVC_BDAY:
             handle_bday (contact, attr);
             break;
@@ -137,6 +135,15 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
 
     var nick_chunk = (NicknameChunk) contact.create_chunk ("nickname", null);
     nick_chunk.nickname = nickname;
+  }
+
+  private void handle_photo (Contact contact, E.VCardAttribute attr) {
+    var photo = attr.get_value ();
+    debug ("Got photo '%s'", photo);
+
+    var photo_chunk = (AvatarChunk) contact.create_chunk ("avatar", null);
+    photo_chunk.avatar = (GLib.LoadableIcon) GLib.Icon.new_for_string(photo);
+    debug ("Got photo '%s'", photo_chunk.avatar.serialize().print(true));
   }
 
   // Handles the "BDAY" (birthday) attribute
