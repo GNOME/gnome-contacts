@@ -22,6 +22,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     { "link-marked-contacts", link_marked_contacts },
     { "delete-marked-contacts", delete_marked_contacts },
     { "export-marked-contacts", export_marked_contacts },
+    { "export-selected-contact", export_selected_contact },
     { "show-contact-qr-code", show_contact_qr_code },
     { "unlink-contact", unlink_contact },
     { "delete-contact", delete_contact },
@@ -591,6 +592,13 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     return toast;
   }
 
+  private void export_selected_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
+    unowned var selected = get_selected_individual ();
+    var individuals = new Gee.ArrayList<Individual> ();
+    individuals.add(selected);
+    export_individuals (individuals);
+  }
+
   private void export_marked_contacts (GLib.SimpleAction action, GLib.Variant? parameter) {
     // Take a copy, since we'll unselect everything later
     var selection = this.selection_model.marked.get_selection ().copy ();
@@ -610,7 +618,15 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
     var file_dialog = new Gtk.FileDialog ();
     file_dialog.title = _("Export to file");
     file_dialog.accept_label = _("_Export");
-    file_dialog.set_initial_name (_("contacts.vcf"));
+    if (individuals.size == 1) {
+      file_dialog.set_initial_name (
+        "%s.vcf".printf(
+          new Contact.for_individual(individuals[0]).fetch_display_name ()
+        )
+      );
+    } else {
+      file_dialog.set_initial_name (_("contacts.vcf"));
+    }
     file_dialog.modal = true;
     file_dialog.save.begin (this, null, (obj, response) => {
       try {
