@@ -121,7 +121,7 @@ public class Contacts.ImportDialog : Adw.Dialog {
     action_set_enabled ("import", n_contacts > 0);
 
     if (n_contacts == 0) {
-      this.page.description = _("Can't import: no contacts found");
+      this.page.description = _("Processing contacts...");
       return;
     }
 
