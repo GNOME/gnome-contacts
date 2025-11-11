@@ -52,8 +52,14 @@ libadwaita_dep = dependency('libadwaita-1', version: '>= 1.8.alpha')
 # E-D-S
 libebook = dependency('libebook-1.2', version: '>=' + min_eds_version)
 libedataserver = dependency('libedataserver-1.2', version: '>=' + min_eds_version)
-if libebook.version().version_compare('>=3.59.1')
+
+if libebook.version().version_compare('>= 3.59.1')
   add_project_arguments('-D', 'HAVE_EDS_3_59_1', language: 'vala')
+
+  # if we have an unstable version, disable the Vala "since" check
+  if libebook.version().version_compare('< 3.60')
+    add_project_arguments('--disable-since-check', language: 'vala')
+  endif
 endif
 # Camera
 libportal_dep = dependency('libportal-gtk4', version: '>= 0.7')
