@@ -389,6 +389,7 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
 
   private void focus_search (SimpleAction action, GLib.Variant? parameter) {
     this.filter_entry.grab_focus ();
+    this.filter_entry.select_region (0, -1);
   }
 
   public void new_contact (GLib.SimpleAction action, GLib.Variant? parameter) {
