@@ -181,6 +181,7 @@ template $ContactsMainWindow: Adw.ApplicationWindow {
               placeholder-text: _("Search contacts");
               search-delay: 500;
               search-changed => $filter_entry_changed();
+              stop-search => $filter_entry_search_stopped();
             };
           }
 

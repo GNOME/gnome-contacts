@@ -407,6 +407,11 @@ public class Contacts.MainWindow : Adw.ApplicationWindow {
   }
 
   [GtkCallback]
+  private void filter_entry_search_stopped (Gtk.SearchEntry entry) {
+    this.filter_entry.delete_text (0, -1);
+  }
+
+  [GtkCallback]
   private void on_collapsed () {
     // If we're not showing a contact or in selection mode, we want to show the
     // sidebar on fold
