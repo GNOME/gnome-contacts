@@ -163,7 +163,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
   private void ensure_chunks (Contact contact) {
     // We can't check what properties will be writable by a persona store
     // beforehand, so just create an empty chunk for each property we support
-    unowned var writeable_props = SUPPORTED_PROPERTIES;
+    string[] writeable_props = SUPPORTED_PROPERTIES;
     if (persona != null)
       writeable_props = persona.writeable_properties;
 
