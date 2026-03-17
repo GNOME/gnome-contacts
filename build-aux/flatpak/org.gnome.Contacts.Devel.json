@@ -33,8 +33,9 @@
         "--talk-name=org.gnome.evolution.dataserver.AddressBook10",
         "--talk-name=org.gnome.evolution.dataserver.Sources5",
         "--talk-name=org.gnome.evolution.dataserver.Subprocess.Backend.*",
-        /* Access to the default cache location for E-D-S avatars */
+        /* Access to the default cache and data locations for E-D-S avatars */
         "--filesystem=xdg-cache/evolution/addressbook:ro",
+        "--filesystem=xdg-data/evolution/addressbook/system/photos:ro",
         /* Access for the default avatars */
         "--filesystem=xdg-data/pixmaps/faces:create"
     ],
