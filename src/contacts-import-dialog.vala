@@ -109,6 +109,9 @@ public class Contacts.ImportDialog : Adw.Dialog {
     var label = new Gtk.Label (error);
     label.add_css_class ("error");
     group.add (label);
+    group.update_state(Gtk.AccessibleState.INVALID, Gtk.AccessibleInvalidState.TRUE);
+    group.update_relation(Gtk.AccessibleRelation.ERROR_MESSAGE, label, null);
+    group.announce(error, Gtk.AccessibleAnnouncementPriority.MEDIUM);
   }
 
   private void on_parsed_list_items_changed (ListModel parsed_list,
