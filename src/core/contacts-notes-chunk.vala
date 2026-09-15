@@ -62,7 +62,7 @@ public class Contacts.Note : BinChunkChild {
 
   public Note () {
     this.parameters = new Gee.HashMultiMap<string, string> ();
-    this.parameters["type"] = "PERSONAL";
+    this.parameters["type"] = "HOME";
   }
 
   public Note.from_field_details (NoteFieldDetails note_field) {

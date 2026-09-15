@@ -186,8 +186,8 @@ public class Contacts.TypeSet : Object, GLib.ListModel  {
   private static TypeSet _email;
   private const VcardTypeMapping[] email_data = {
     // List most specific first, always in upper case
-    { N_("Personal"),    { "PERSONAL" } },
     { N_("Home"),        { "HOME" } },
+    { N_("Home"),        { "PERSONAL" } },
     { N_("Work"),        { "WORK" } }
   };
   public static TypeSet email {

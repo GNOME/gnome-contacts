@@ -62,7 +62,7 @@ public class Contacts.Url : BinChunkChild {
 
   public Url () {
     this.parameters = new Gee.HashMultiMap<string, string> ();
-    this.parameters["type"] = "PERSONAL";
+    this.parameters["type"] = "HOME";
   }
 
   public Url.from_field_details (UrlFieldDetails url_field) {

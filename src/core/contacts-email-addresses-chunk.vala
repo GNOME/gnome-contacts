@@ -58,7 +58,7 @@ public class Contacts.EmailAddress : BinChunkChild {
 
   public EmailAddress () {
     this.parameters = new Gee.HashMultiMap<string, string> ();
-    this.parameters["type"] = "PERSONAL";
+    this.parameters["type"] = "HOME";
   }
 
   public EmailAddress.from_field_details (EmailFieldDetails email_field) {
