@@ -4,7 +4,7 @@
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions": [
-        "org.freedesktop.Sdk.Extension.vala-nightly"
+        "org.freedesktop.Sdk.Extension.vala"
     ],
     "command": "gnome-contacts",
     "tags" : [
@@ -12,8 +12,8 @@
       "Nightly"
     ],
     "build-options" : {
-        "prepend-path" : "/usr/lib/sdk/vala-nightly/bin/",
-        "prepend-ld-library-path" : "/usr/lib/sdk/vala-nightly/lib"
+        "prepend-path" : "/usr/lib/sdk/vala/bin/",
+        "prepend-ld-library-path" : "/usr/lib/sdk/vala/lib"
     },
     "finish-args": [
         /* X11 + XShm access */
@@ -57,7 +57,7 @@
             "buildsystem" : "autotools",
             "build-options" : {
                 "env" : {
-                    "ACLOCAL_PATH" : "/usr/lib/sdk/vala-nightly/share/aclocal"
+                    "ACLOCAL_PATH" : "/usr/lib/sdk/vala/share/aclocal"
                 }
             },
             "sources" : [
