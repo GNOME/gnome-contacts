@@ -10,7 +10,8 @@ void main (string[] args) {
   Test.init (ref args);
   Test.add_func ("/io/test_vcard_bday_yyyymmdd", test_vcard_bday_yyyymmdd);
   Test.add_func ("/io/test_vcard_bday_yyyy-mm-dd", test_vcard_bday_yyyy_mm_dd);
-  Test.add_func ("/io/test_vcard_bday_differen_timezones", test_vcard_bday_different_timezones);
+  Test.add_func ("/io/test_vcard_bday_positive_utc_offset", test_vcard_bday_positive_utc_offset);
+  Test.add_func ("/io/test_vcard_bday_negative_utc_offset", test_vcard_bday_negative_utc_offset);
   Test.run ();
 }
 
@@ -48,8 +49,7 @@ private void test_vcard_bday_yyyy_mm_dd () {
     error ("Expected '1957-01-07' but got %d-%d-%d", y, m, d);
 }
 
-private void test_vcard_bday_different_timezones () {
-  // UTC+12
+private void test_vcard_bday_positive_utc_offset () {
   if (Environment.set_variable ("TZ", "NZST-12NZDT", true)) {
     int y, m, d;
     parse_single_contact_bday (VCARD_BDAY_YYYY_MM_DD,
@@ -58,8 +58,9 @@ private void test_vcard_bday_different_timezones () {
       error ("Expected '1957-01-07' but got %d-%d-%d", y, m, d);
   }
   Environment.unset_variable ("TZ");
+}
 
-  // UTC-11
+private void test_vcard_bday_negative_utc_offset () {
   if (Environment.set_variable ("TZ", "BST11BDT", true)) {
     int y, m, d;
     parse_single_contact_bday (VCARD_BDAY_YYYY_MM_DD,
@@ -96,5 +97,5 @@ private void parse_single_contact_bday (string vcard,
   if (bday_chunk.birthday == null)
     error ("Found birthday chunk but birthday was null");
 
-  bday_chunk.birthday.get_ymd (out y, out m, out d);
+  bday_chunk.birthday.to_local ().get_ymd (out y, out m, out d);
 }

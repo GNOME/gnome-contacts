@@ -143,10 +143,10 @@ public class Contacts.Io.VCardParser : Contacts.Io.Parser {
   private void handle_bday (Contact contact, E.VCardAttribute attr) {
     var bday = attr.get_value ();
     var e_date = E.ContactDate.from_string (bday);
-    var datetime = new DateTime.utc ((int) e_date.year,
-                                     (int) e_date.month,
-                                     (int) e_date.day,
-                                     0, 0, 0.0);
+    var datetime = new DateTime.local ((int) e_date.year,
+                                       (int) e_date.month,
+                                       (int) e_date.day,
+                                       0, 0, 0.0);
 
     var bd_chunk = (BirthdayChunk) contact.create_chunk ("birthday", null);
     bd_chunk.birthday = datetime;
