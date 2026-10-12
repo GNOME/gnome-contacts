@@ -17,7 +17,7 @@ public class Contacts.ImAddressesChunk : BinChunk {
 
   public override string display_name { get { return _("Instant Messaging addresses"); } }
 
-  public override string? icon_name { get { return "chat-symbolic"; } }
+  public override string? icon_name { get { return "chat"; } }
 
   construct {
     if (persona != null) {
@@ -70,7 +70,7 @@ public class Contacts.ImAddress : BinChunkChild {
   }
 
   public override string icon_name {
-    get { return "chat-symbolic"; }
+    get { return "chat"; }
   }
 
   public ImAddress () {

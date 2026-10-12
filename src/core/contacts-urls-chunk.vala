@@ -16,7 +16,7 @@ public class Contacts.UrlsChunk : BinChunk {
 
   public override string display_name { get { return _("URLs"); } }
 
-  public override string? icon_name { get { return "website-symbolic"; } }
+  public override string? icon_name { get { return "website"; } }
 
   construct {
     if (persona != null) {
@@ -57,7 +57,7 @@ public class Contacts.Url : BinChunkChild {
   }
 
   public override string icon_name {
-    get { return "website-symbolic"; }
+    get { return "website"; }
   }
 
   public Url () {

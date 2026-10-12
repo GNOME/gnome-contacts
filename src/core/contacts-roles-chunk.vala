@@ -18,7 +18,7 @@ public class Contacts.RolesChunk : BinChunk {
   // TRANSLATORS: This is the role of a contact in an organisation (e.g. CEO)
   public override string display_name { get { return _("Roles"); } }
 
-  public override string? icon_name { get { return "building-symbolic"; } }
+  public override string? icon_name { get { return "building"; } }
 
   construct {
     if (persona != null) {
@@ -55,7 +55,7 @@ public class Contacts.OrgRole : BinChunkChild {
   }
 
   public override string icon_name {
-    get { return "building-symbolic"; }
+    get { return "building"; }
   }
 
   public OrgRole () {

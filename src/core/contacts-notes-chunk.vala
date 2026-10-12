@@ -16,7 +16,7 @@ public class Contacts.NotesChunk : BinChunk {
 
   public override string display_name { get { return _("Notes"); } }
 
-  public override string? icon_name { get { return "note-symbolic"; } }
+  public override string? icon_name { get { return "note"; } }
 
   construct {
     if (persona != null) {
@@ -57,7 +57,7 @@ public class Contacts.Note : BinChunkChild {
   }
 
   public override string icon_name {
-    get { return "note-symbolic"; }
+    get { return "note"; }
   }
 
   public Note () {

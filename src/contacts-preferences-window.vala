@@ -26,7 +26,7 @@ public class Contacts.PreferencesWindow : Adw.PreferencesDialog {
     var goa_button_content = new Adw.ButtonContent ();
     goa_button_content.label = _("_Online Accounts");
     goa_button_content.use_underline = true;
-    goa_button_content.icon_name = "external-link-symbolic";
+    goa_button_content.icon_name = "external-link";
     var goa_button = new Gtk.Button ();
     goa_button.set_child (goa_button_content);
     goa_button.tooltip_text = _("Open the Online Accounts panel in Settings");

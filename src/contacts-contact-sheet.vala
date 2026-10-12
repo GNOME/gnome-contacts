@@ -280,7 +280,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
 
       var row = new ContactSheetRow (chunk, url.raw_url);
 
-      var button = row.add_button ("external-link-symbolic");
+      var button = row.add_button ("external-link");
       button.tooltip_text = _("Visit website");
       button.clicked.connect (() => {
         unowned var window = button.get_root () as Gtk.Window;
@@ -364,7 +364,7 @@ public class Contacts.ContactSheet : Gtk.Widget {
                                      address.get_address_type ().display_name);
 
       if (map_uris_supported) {
-        var button = row.add_button ("map-symbolic");
+        var button = row.add_button ("map");
         button.tooltip_text = _("Show on the map");
         button.clicked.connect (() => {
           unowned var window = button.get_root () as Gtk.Window;

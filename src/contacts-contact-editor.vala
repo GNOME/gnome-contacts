@@ -405,7 +405,7 @@ public class Contacts.PersonaEditor : Gtk.Widget {
     var bd_chunk = (BirthdayChunk) chunk;
 
     var row = new Adw.ActionRow ();
-    row.add_prefix (new Gtk.Image.from_icon_name ("birthday-symbolic"));
+    row.add_prefix (new Gtk.Image.from_icon_name ("birthday"));
     row.title = _("Birthday");
     update_birthday_row (row, bd_chunk);
     row.activated.connect (() => {
